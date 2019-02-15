@@ -1,0 +1,61 @@
+name: startertheme
+
+# See: https://docs.devwithlando.io/tutorials/wordpress.html
+recipe: wordpress
+config:
+  php: '7.2'
+  webroot: public
+  database: mariadb
+  xdebug: true
+
+# See: https://docs.devwithlando.io/config/proxy.html
+proxy:
+  appserver:
+    - web.startertheme.lndo.site
+  node:
+    - node.startertheme.lndo.site
+  database:
+    - db.startertheme.lndo.site
+  mailhog:
+    - mail.startertheme.lndo.site
+  pma:
+    - pma.startertheme.lndo.site
+
+# See: https://docs.devwithlando.io/config/services.html
+services:
+  node:
+    type: node
+    globals:
+      npm: "latest"
+      gulp-cli: "latest"
+  database:
+    portforward: 3308
+    creds:
+      user: wordpress
+      password: wordpress
+      database: wordpress
+  mailhog:
+    type: mailhog
+    hogfrom:
+    - appserver
+    portforward: 1026
+  pma:
+    type: phpmyadmin
+    hosts: database
+
+# See: https://docs.devwithlando.io/config/tooling.html
+tooling:
+  npm:
+    service: node
+  node:
+    service: node
+  gulp:
+    service: node
+  yarn:
+    service: node
+
+# See: https://docs.devwithlando.io/config/events.html
+events:
+  post-start:
+    - appserver: cd $LANDO_MOUNT && composer install
+    - node: cd $LANDO_MOUNT && npm install
