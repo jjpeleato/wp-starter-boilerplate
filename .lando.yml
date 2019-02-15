@@ -58,4 +58,4 @@ tooling:
 events:
   post-start:
     - appserver: cd $LANDO_MOUNT && composer install
-    - node: cd $LANDO_MOUNT && npm install
+    - node: cd $LANDO_MOUNT && npm install --save-dev
