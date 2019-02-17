@@ -11,6 +11,8 @@ More information about theme:
 - Website: https://underscores.me/
 - Theme: https://github.com/automattic/_s
 
+**Note:** Install the WooCommerce boilerplate and not sassify.
+
 ### Installing dependencies
 
 - You have to install **Lando**: https://docs.devwithlando.io/
@@ -31,10 +33,11 @@ For more information visit:
 ### Installing
 
 1. Open your terminal and browse to the root location of your project.
-2. Run `$lando start`.
+2. Cut (don't copy) the `./assets/functions.php` file into root directory of theme and include the following code: `require_once ('assets/functions.php');` on end of `[theme]/functions.php` document. **Note: The logic custom programming write to `assets/functions.php`.**
+3. Run `$lando start`.
 	- The project has a .lando.yml file with all the environment settings.
 	- The command starts the installation process when it finishes, you can see all the URLs to access.
-3. End. Happy developing.
+4. End. Happy developing.
 
 ### Developing with NPM or Yarn, Gulp and Deployer
 
@@ -42,9 +45,15 @@ For more information visit:
 - Run: `$lando npm install` or `$lando yarn install` then: `$lando gulp [action]`
 - To work with and compile your Sass and JS files on the fly start: `$lando gulp`
 - Gulp actions commands list:
-    - `$lando gulp css` Compile SASS to CSS
-    - `$lando gulp js` Concat and minify JS files
-    - `$lando gulp watch` Compile SASS to CSS and concat and minify JS files in real-time
+    - `$lando gulp validateScss` Validate SASS with stylelint.
+    - `$lando gulp css` Compile SASS to CSS.
+    - `$lando gulp cssAssets` Copy CSS assets to CSS directory.
+    - `$lando gulp fontAssets` Copy FONTS assets to CSS directory.
+    - `$lando gulp js` Concat and minify JS files.
+    - `$lando gulp jsAssets` Copy JS assets to CSS directory.
+    - `$lando gulp images` CoPY and minify images.
+    - `$lando gulp watch` Compile SASS to CSS and concat and minify JS files in real-time.
+    - `$lando gulp clean` Delete all files.
 - NPM actions commands list:
     - `$lando npm run gulp:dev` Compile for development environment
     - `$lando npm run gulp:prod` Compile for production environment
