@@ -1,0 +1,1006 @@
+# Translation of Plugins - User Role Editor - Stable (latest release) in Spanish (Spain)
+# This file is distributed under the same license as the Plugins - User Role Editor - Stable (latest release) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2019-01-15 11:24:59+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/2.4.0-alpha\n"
+"Language: es\n"
+"Project-Id-Version: Plugins - User Role Editor - Stable (latest release)\n"
+
+#: includes/classes/screen-help.php:85
+msgid "Super administrator only may create, edit and delete users under WordPress multi-site by default. Turn this option on in order to remove this limitation."
+msgstr "Solo el super administrador puede crear, editar y eliminar usuarios en WordPress multi-sitio por defecto. Activa esta opción para eliminar esta limitación."
+
+#: includes/classes/screen-help.php:66
+msgid "select roles below to assign them to the new user automatically as an addition to the primary role. Note for multisite environment: take into account that other default roles should exist at the site, in order to be assigned to the new registered users."
+msgstr "seleccionar funciones a continuación para asignarlas automáticamente al nuevo usuario además del perfil principal. Nota para el entorno multisitio: tenga en cuenta que deben existir otros perfiles por defecto en el sitio, para poder asignarlos a los nuevos usuarios registrados."
+
+#: includes/classes/screen-help.php:48
+msgid "Show at the \"Users\" page a quant of users without role. Module allows to assign all of them an empty role \"No rights\", in order to look on the users list with role \"No rights\" at the separate tab then."
+msgstr "Mostrar en la página \"Usuarios\" una cantidad de usuarios sin perfil. El módulo permite asignar a todos ellos un perfil vacío \"Sin derechos\", para poder ver la lista de usuarios con el perfil \"Sin derechos\" en la pestaña separada."
+
+#: includes/classes/screen-help.php:28
+msgid "If turned off - capabilities section of selected user is shown in readonly mode. Administrator can not assign capabilities to the user directly. He should make it using roles only."
+msgstr "Si está desactivada - la sección de capacidades del usuario seleccionado se muestra en modo de sólo lectura. El administrador no puede asignar capacidades al usuario directamente. Debería hacerlo usando sólo perfiles."
+
+#: includes/classes/capability.php:54
+msgid "Error: this word is used by WordPress as a role ID"
+msgstr "Error: esta palabra la está usando WordPress como ID de un perfil"
+
+#: includes/classes/lib.php:309
+msgid "Wrong request!"
+msgstr "¡Solicitud errónea!"
+
+#: includes/classes/screen-help.php:19
+msgid "automatically converts capability names from the technical form for internal use like \"edit_others_posts\" to more user friendly form, e.g. \"Edit others posts\"."
+msgstr "convierte automáticamente los nombres de capacidad del formulario técnico para uso interno como \"edit_others_posts\" a un formulario más fácil de usar, por ejemplo, \"Editar entradas de otros\"."
+
+#: includes/classes/screen-help.php:16
+msgid "turn this option on in order to make the \"Administrator\" role available at the User Role Editor roles selection drop-down list. It is hidden by default for security reasons."
+msgstr "activa esta opción para que la función \"Administrador\" esté disponible en la lista desplegable de selección de funciones del editor de perfiles de usuario. Está oculto por defecto por razones de seguridad."
+
+#: includes/classes/screen-help.php:22
+msgid "Capabilities like \"level_0\", \"level_1\" are deprecated and are not used by WordPress. They are left at the user roles for the compatibility purpose with the old themes and plugins code. Turning on this option will show those deprecated capabilities."
+msgstr "Capacidades como \"level_0\", \"level_1\" son obsoletas y no las usa WordPress. Se dejan en los perfiles de usuario por compatibilidad con código de temas y plugins antiguos. Al activar esta opción se mostrarán las capacidades obsoletas."
+
+#: includes/settings-template.php:107
+msgid "columns"
+msgstr "columnas"
+
+#: includes/settings-template.php:101
+msgid "Show capabilities in"
+msgstr "Mostrar capacidades en"
+
+#: includes/settings-template.php:42
+msgid "Tools"
+msgstr "Herramientas"
+
+#: includes/classes/view.php:322
+msgid "Columns:"
+msgstr "Columnas:"
+
+#: includes/classes/view.php:319
+msgid "Granted Only"
+msgstr "Solo las concedidas"
+
+#: includes/classes/view.php:303
+msgid "Granted"
+msgstr "Concedidas"
+
+#: includes/classes/view.php:303
+msgid "Total"
+msgstr "Total"
+
+#: includes/classes/view.php:303
+msgid "Group"
+msgstr "Grupo"
+
+#: includes/classes/user-view.php:61
+msgid "Switch&nbsp;To"
+msgstr "Cambiar a"
+
+#: includes/classes/user-role-editor.php:732
+msgid "If any plugins (such as WooCommerce, S2Member and many others) have changed user roles and capabilities during installation, all those changes will be LOST!"
+msgstr "Si algún plugin (como WooCommerce, S2Member y muchos otros) ha cambiado perfiles y capacidades de usuario durante la instalación, ¡todos estos cambios se PERDERÁN!"
+
+#: includes/classes/user-role-editor.php:731
+msgid " Resetting will restore default user roles and capabilities from WordPress core."
+msgstr "Restablecer restaurará los perfiles y capacidades de usuario por defecto del núcleo de WordPress."
+
+#: includes/classes/user-role-editor.php:730
+msgid "DANGER!"
+msgstr "¡PELIGRO!"
+
+#: includes/classes/user-role-editor.php:681
+#: includes/classes/user-role-editor.php:728
+msgid "No"
+msgstr "No"
+
+#: includes/classes/user-role-editor.php:680
+#: includes/classes/user-role-editor.php:727
+msgid "Yes"
+msgstr "Sí"
+
+#: includes/classes/user-role-editor.php:679
+#: includes/classes/user-role-editor.php:726
+msgid "Confirm"
+msgstr "Confirmar"
+
+#: includes/classes/user-role-editor.php:285
+msgid "To:"
+msgstr "A:"
+
+#: includes/classes/tools.php:50
+msgid "Reset Roles to its original state"
+msgstr "Restablece los perfiles a su estado original"
+
+#: includes/classes/tools.php:45
+msgid "If checked, then apply action to ALL sites. Main site only is affected in other case."
+msgstr "Si se marca aplica la acción a TODOS los sitios. En caso contrario solo se aplica al sitio principal."
+
+#: includes/classes/tools.php:36
+msgid "For more information on how to undo undesired changes and restore plugins capabilities in case you lost them by mistake go to: "
+msgstr "Para más información sobre cómo deshacer cambios no deseados y restaurar capacidades de plugins en caso de perderlas por error ir a:"
+
+#: includes/classes/tools.php:35
+msgid "If any plugins (such as WooCommerce, S2Member and many others) have changed user roles and capabilities during installation, those changes will be LOST!"
+msgstr "Si algún plugin (como WooCommerce, S2Member y muchos otros) ha cambiado perfiles y capacidades de usuario durante la instalación, ¡estos cambios se PERDERÁN!"
+
+#: includes/classes/tools.php:34
+msgid "Resetting will setup default user roles and capabilities from WordPress core."
+msgstr "Restablecer configurará los perfiles y capacidades de usuario por defecto del núcleo de WordPress."
+
+#: includes/classes/tools.php:32
+msgid "WARNING!"
+msgstr "¡ADVERTENCIA!"
+
+#: includes/classes/settings.php:151
+msgid "Tools: Reset: User Roles were initialized"
+msgstr "Herramientas: Restablecer: Se restablecieron los perfiles de usuario"
+
+#: includes/classes/screen-help.php:26
+msgid "Show confirmation dialog before save changes made to a current role."
+msgstr "Muestra un mensaje de confirmación antes de guardar cambios realizados a un perfil existente."
+
+#: includes/classes/screen-help.php:25 includes/settings-template.php:86
+msgid "Confirm role update"
+msgstr "Confirmar actualización de perfil"
+
+#: includes/classes/role-additional-options.php:113
+msgid "Additional Options"
+msgstr "Opciones adicionales"
+
+#: includes/classes/role-additional-options.php:53
+msgid "Hide admin bar"
+msgstr "Ocultar barra de administración"
+
+#: includes/classes/grant-roles.php:324
+msgid "Select role(s) which you wish to grant!"
+msgstr "¡Elige el/los perfil/es que quieres conceder!"
+
+#: includes/classes/grant-roles.php:323
+msgid "Select users to which you wish to grant roles!"
+msgstr "¡Elige los usuarios a los que quieres conceder perfiles!"
+
+#: includes/classes/grant-roles.php:322
+msgid "Grant roles to selected users"
+msgstr "Conceder perfiles a los usuarios seleccionados"
+
+#: includes/classes/view.php:273
+msgid "Working..."
+msgstr "Trabajando…"
+
+#: includes/classes/grant-roles.php:286
+msgid "Grant Roles"
+msgstr "Conceder perfiles"
+
+#: includes/classes/grant-roles.php:255
+msgid "Other Roles: "
+msgstr "Otros perfiles:"
+
+#: includes/classes/grant-roles.php:235
+msgid "Primary Role: "
+msgstr "Perfil principal:"
+
+#: includes/classes/grant-roles.php:212
+msgid "Requested user does not exist"
+msgstr "El usuario solicitado no existe"
+
+#: includes/classes/grant-roles.php:206
+msgid "Wrong request, valid user ID was missed"
+msgstr "Petición errónea, no se encuentra un ID válido de usuario"
+
+#: includes/classes/grant-roles.php:189
+msgid "Roles were granted to users successfully"
+msgstr "Perfiles concedidos con éxito a los usuarios"
+
+#: includes/classes/grant-roles.php:180
+msgid "Invalid data at the other roles list"
+msgstr "Datos no válidos en la lista del resto de perfiles"
+
+#: includes/classes/grant-roles.php:167
+msgid "Invalid primary role"
+msgstr "Perfil principal no válido"
+
+#: includes/classes/grant-roles.php:159
+msgid "Can not edit user or invalid data at the users list"
+msgstr "No se puede editar el usuario o hay datos no válidos en la lista de usuarios"
+
+#: includes/classes/grant-roles.php:153 includes/classes/grant-roles.php:199
+msgid "Not enough permissions"
+msgstr "Faltan permisos"
+
+#: includes/classes/capability.php:211
+msgid "capabilities were removed successfully"
+msgstr "las capacidades se han borrado con éxito"
+
+#: includes/classes/capability.php:197 includes/classes/capability.php:202
+msgid "There are no capabilities available for deletion!"
+msgstr "¡No hay capacidades disponibles para su borrado!"
+
+#: includes/classes/capability.php:47
+msgid "Error: this capability is used internally by WordPress"
+msgstr "Error: esta capacidad la usa internamente WordPress"
+
+#: includes/classes/capabilities-groups-manager.php:123
+msgid "Deprecated"
+msgstr "Obsoleto"
+
+#: includes/classes/capabilities-groups-manager.php:117
+msgid "Users"
+msgstr "Usuarios"
+
+#: includes/classes/capabilities-groups-manager.php:116
+msgid "Plugins"
+msgstr "Plugins"
+
+#: includes/classes/capabilities-groups-manager.php:115
+msgid "Pages"
+msgstr "Páginas"
+
+#: includes/classes/capabilities-groups-manager.php:114
+msgid "Posts"
+msgstr "Entradas"
+
+#: includes/classes/capabilities-groups-manager.php:113
+msgid "Themes"
+msgstr "Temas"
+
+#: includes/classes/capabilities-groups-manager.php:110
+msgid "All"
+msgstr "Todo"
+
+#: includes/classes/capabilities-groups-manager.php:91
+#: includes/classes/capabilities-groups-manager.php:111
+msgid "Core"
+msgstr "Núcleo"
+
+#: includes/classes/capabilities-groups-manager.php:90
+msgid "WooCommerce"
+msgstr "WooCommerce"
+
+#: includes/classes/capabilities-groups-manager.php:44
+msgid "Custom Post Types"
+msgstr "Tipos de contenido personalizados"
+
+#. Author of the plugin
+msgid "Vladimir Garagulya"
+msgstr "Vladimir Garagulya"
+
+#. Description of the plugin
+msgid "Change/add/delete WordPress user roles and capabilities."
+msgstr "Cambiar/añadir/eliminar perfiles de usuario de WordPress y capacidades."
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+msgid "https://www.role-editor.com"
+msgstr "https://www.role-editor.com"
+
+#: includes/classes/user-view.php:191
+msgid "Other Roles:"
+msgstr "Otros perfiles:"
+
+#: includes/classes/user-view.php:182
+msgid "bbPress Role:"
+msgstr "Perfil de bbPress:"
+
+#: includes/classes/user-view.php:176
+msgid "Primary Role:"
+msgstr "Perfil principal:"
+
+#: includes/classes/user-view.php:138
+msgid "Change capabilities for user"
+msgstr "Cambiar Capacidades para el usuario"
+
+#: includes/classes/user-view.php:73
+msgid "Network Super Admin"
+msgstr "Súper administrador de Red "
+
+#: includes/classes/capabilities-groups-manager.php:126
+msgid "Custom capabilities"
+msgstr "Capacidades personalizadas"
+
+#: includes/classes/view.php:316
+msgid "Quick filter:"
+msgstr "Filtro rápido:"
+
+#: includes/classes/tools.php:44 includes/classes/role-view.php:391
+msgid "Apply to All Sites"
+msgstr "Aplicar a todos los sitios"
+
+#: includes/classes/role-view.php:378
+msgid "If checked, then apply action to ALL sites of this Network"
+msgstr "Si está marcado, se aplicará la acción a TODOS los sitios de la red"
+
+#: includes/classes/user-view.php:155 includes/classes/role-view.php:364
+msgid "Show capabilities in human readable form"
+msgstr "Mostrar capacidades en forma legible para humanos"
+
+#: includes/classes/role-view.php:408
+msgid "Select Role and change its capabilities:"
+msgstr "Selecciona perfil y cambia sus capacidades:"
+
+#: includes/settings-template.php:207
+msgid "Allow non super administrators to create, edit, and delete users"
+msgstr "No está permitido a los super administradores crear, editar y borrar usuarios"
+
+#: includes/settings-template.php:181
+msgid "Note for multisite environment: take into account that other default roles should exist at the site, in order to be assigned to the new registered users."
+msgstr "Nota para el entorno multisite: ten en cuenta que deben existir otros perfiles por defecto en el sitio, para ser asignados a los nuevos usuarios registrados."
+
+#: includes/settings-template.php:175
+msgid "Other default roles for new registered user: "
+msgstr "Otros perfiles por defecto para el nuevo usuario registrado:"
+
+#: includes/settings-template.php:168
+msgid "Primary default role: "
+msgstr "Perfil primario por defecto:"
+
+#: includes/settings-template.php:121 includes/settings-template.php:156
+#: includes/settings-template.php:188 includes/settings-template.php:220
+msgid "Save"
+msgstr "Guardar"
+
+#: includes/settings-template.php:46
+msgid "About"
+msgstr "Acerca de"
+
+#: includes/settings-template.php:16
+msgid "User Role Editor - Options"
+msgstr "Editor de perfil de usuario - Opciones"
+
+#: includes/classes/user-role-editor.php:701
+msgid " Capability name (ID) must contain latin characters, digits, hyphens or underscore only!"
+msgstr "¡El nombre de la capacidad (ID) sólo debe contener caracteres alfanuméricos, guiones altos o bajos!"
+
+#: includes/classes/user-role-editor.php:700
+msgid " Capability name (ID) can not be empty!"
+msgstr "¡El nombre de la capacidad (ID) no puede estar vacío!"
+
+#: includes/classes/user-role-editor.php:699
+msgid "Warning! Be careful - removing critical capability could crash some plugin or other custom code"
+msgstr "¡Atención! Ten cuidado - eliminar capacidades esenciales podría inhabilitar algún plugin o código personalizado"
+
+#: includes/classes/user-role-editor.php:697
+msgid "Set New Default Role"
+msgstr "Establecer nuevo perfil"
+
+#: includes/classes/user-role-editor.php:696
+msgid "Default Role"
+msgstr "Perfil predeterminado"
+
+#: includes/classes/user-role-editor.php:695
+#: includes/classes/user-role-editor.php:735
+msgid "Continue?"
+msgstr "¿Continuar?"
+
+#: includes/classes/user-role-editor.php:733
+msgid "For more information on how to undo undesired changes and restore plugin capabilities go to"
+msgstr "Para obtener más información sobre cómo deshacer cambios indeseados y restaurar las capacidades del plugin ve a"
+
+#: includes/classes/tools.php:50 includes/classes/user-role-editor.php:729
+msgid "Reset"
+msgstr "Reiniciar"
+
+#: includes/classes/user-role-editor.php:694
+#: includes/classes/user-role-editor.php:698
+msgid "Delete Capability"
+msgstr "Eliminar capacidades"
+
+#: includes/classes/user-role-editor.php:693
+msgid "Add Capability"
+msgstr "Agregar capacidad"
+
+#: includes/classes/user-role-editor.php:692
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: includes/classes/user-role-editor.php:691
+msgid "Delete Role"
+msgstr "Eliminar perfil"
+
+#: includes/classes/user-role-editor.php:689
+msgid "Add Role"
+msgstr "Agregar perfil"
+
+#: includes/classes/user-role-editor.php:688
+msgid " WordPress does not support numeric Role name (ID). Add latin characters to it."
+msgstr "WordPress no admite nombres de perfil numérico (ID). Añade caracteres latinos."
+
+#: includes/classes/user-role-editor.php:687
+msgid " Role name (ID) must contain latin characters, digits, hyphens or underscore only!"
+msgstr "¡El nombre del perfil (ID) sólo debe contener caracteres alfanuméricos, guiones altos o bajos!"
+
+#: includes/classes/user-role-editor.php:686
+msgid " Role name (ID) can not be empty!"
+msgstr "¡El nombre del perfil (ID) no puede estar vacío!"
+
+#: includes/classes/user-role-editor.php:685
+#: includes/classes/user-role-editor.php:690
+msgid "Rename Role"
+msgstr "Renombrar perfil"
+
+#: includes/classes/user-role-editor.php:684
+msgid "Add New Role"
+msgstr "Agregar nuevo perfil"
+
+#: includes/classes/user-role-editor.php:683
+msgid "Please confirm permissions update"
+msgstr "Por favor confirma las actualizaciones de permisos"
+
+#: includes/classes/user-role-editor.php:682
+msgid "Update"
+msgstr "Actualizar"
+
+#: includes/classes/user-role-editor.php:608
+msgid "You do not have sufficient permissions to manage options for User Role Editor."
+msgstr "Permisos insuficientes para trabajar"
+
+#: includes/classes/settings.php:120
+msgid "Default Roles are updated"
+msgstr "Los perfiles predeterminados serán actualizados"
+
+#: includes/classes/settings.php:70 includes/classes/settings.php:90
+#: includes/classes/settings.php:140
+msgid "User Role Editor options are updated"
+msgstr "Opciones actualizadas"
+
+#: includes/classes/user-role-editor.php:547
+#: includes/classes/capabilities-groups-manager.php:121
+#: includes/settings-template.php:36
+msgid "Multisite"
+msgstr "Multisitio"
+
+#: includes/classes/user-role-editor.php:541 includes/settings-template.php:31
+msgid "Default Roles"
+msgstr "Perfiles predeterminados"
+
+#: includes/classes/user-role-editor.php:535 includes/settings-template.php:26
+msgid "Additional Modules"
+msgstr "Módulos adicionales"
+
+#: includes/classes/user-role-editor.php:529
+#: includes/classes/capabilities-groups-manager.php:112
+#: includes/settings-template.php:20
+msgid "General"
+msgstr "General"
+
+#: includes/classes/user-role-editor.php:480
+#: includes/classes/user-role-editor.php:493
+msgid "Settings"
+msgstr "Configuración"
+
+#: includes/classes/user-role-editor.php:359
+#: includes/classes/user-role-editor.php:361
+msgid "You do not have permission to edit this user."
+msgstr "No tienes los suficientes permisos para editar este usuario"
+
+#: includes/classes/user-role-editor.php:287
+msgid "Provide new role"
+msgstr "Proporcionar nuevo perfil"
+
+#: includes/classes/user-role-editor.php:286
+msgid "No rights"
+msgstr "Sin permisos"
+
+#: includes/classes/user-role-editor.php:284
+msgid "Change role for users without role"
+msgstr "Cambiar el perfil de los usuarios sin él"
+
+#: includes/classes/user-other-roles.php:229
+msgid "Additional Capabilities"
+msgstr "Capacidades adicionales"
+
+#: includes/classes/user-other-roles.php:180
+msgid "Edit"
+msgstr "Editar"
+
+#: includes/classes/user-other-roles.php:173
+#: includes/classes/user-role-editor.php:387
+msgid "Capabilities"
+msgstr "Capacidades"
+
+#: includes/classes/user-other-roles.php:86
+msgid "Select additional roles for this user"
+msgstr "Seleccionar un perfil adicional para este usuario"
+
+#: includes/classes/user-other-roles.php:85
+#: includes/classes/user-other-roles.php:194
+msgid "Other Roles"
+msgstr "Otros perfiles"
+
+#: includes/classes/screen-help.php:84
+msgid "Allow non super-administrators to create, edit and delete users"
+msgstr "No está permitido a los no super-administradores crear, editar y borrar usuarios"
+
+#: includes/classes/screen-help.php:65
+msgid "Other default roles for new registered user"
+msgstr "Otros rperfiles por defecto para el nuevo usuario registrado"
+
+#: includes/classes/screen-help.php:47 includes/settings-template.php:141
+msgid "Count users without role"
+msgstr "Contar usuarios sin perfil"
+
+#: includes/classes/screen-help.php:27 includes/settings-template.php:94
+msgid "Edit user capabilities"
+msgstr "Editar las capacidades del usuario"
+
+#: includes/classes/user-view.php:165 includes/classes/role-view.php:374
+#: includes/classes/screen-help.php:21 includes/settings-template.php:78
+msgid "Show deprecated capabilities"
+msgstr "Mostrar capacidades obsoletas"
+
+#: includes/classes/screen-help.php:18 includes/settings-template.php:70
+msgid "Show capabilities in the human readable form"
+msgstr "Mostrar capacidades de forma legible para humanos"
+
+#: includes/classes/screen-help.php:15 includes/settings-template.php:61
+msgid "Show Administrator role at User Role Editor"
+msgstr "Mostrar perfil del administrador en el editor de perfiles de usuario"
+
+#: includes/classes/screen-help.php:12 includes/classes/screen-help.php:43
+#: includes/classes/screen-help.php:62 includes/classes/screen-help.php:81
+msgid "User Role Editor Options page help"
+msgstr "Página de ayuda de opciones del editor de perfiles de usuario"
+
+#: includes/classes/lib.php:2081
+msgid "Denied: %s"
+msgstr "Denegado: %s"
+
+#: includes/classes/user-view.php:98 includes/classes/grant-roles.php:241
+msgid "&mdash; No role for this site &mdash;"
+msgstr "&mdash; Ningún perfil para este sitio &mdash;"
+
+#: includes/classes/role-view.php:74
+msgid "None"
+msgstr "Ninguno"
+
+#: includes/classes/role-view.php:107
+msgid "Delete All Unused Roles"
+msgstr "Eliminar todos los perfiles no utilizados"
+
+#: includes/classes/lib.php:1901
+msgid "FAQ"
+msgstr "FAQ"
+
+#: includes/classes/lib.php:1900 includes/classes/user-role-editor.php:506
+msgid "Changelog"
+msgstr "Registro de cambios"
+
+#: includes/classes/lib.php:1899
+msgid "Plugin download"
+msgstr "Descargar plugin"
+
+#: includes/classes/lib.php:1898
+msgid "Plugin webpage"
+msgstr "Página web del Plugin"
+
+#: includes/classes/lib.php:1897
+msgid "Author's website"
+msgstr "Sitio web del Autor"
+
+#: includes/classes/lib.php:1896
+msgid "Version:"
+msgstr "Versión:"
+
+#: includes/classes/capability.php:208
+msgid "Capability %s was removed successfully"
+msgstr "Las capacidades %s se eliminaron correctamente"
+
+#: includes/classes/capability.php:103
+msgid "Capability %s exists already"
+msgstr "La Capacidad %s ya existe"
+
+#: includes/classes/capability.php:101
+msgid "Capability %s was added successfully"
+msgstr "La capacidad %s se añadió con éxito"
+
+#: includes/classes/capability.php:38
+msgid "Error: Capability name must contain latin characters and digits only!"
+msgstr "Error: El nombre de la Capacidad sólo debe contener caracteres alfanuméricos!"
+
+#: includes/classes/lib.php:1718
+msgid "Export"
+msgstr "Exportar"
+
+#: includes/classes/lib.php:1717
+msgid "Delete themes"
+msgstr "Eliminar temas (plantillas)"
+
+#: includes/classes/lib.php:1716
+msgid "Edit theme options"
+msgstr "Editar opciones del tema (plantilla)"
+
+#: includes/classes/lib.php:1715
+msgid "Promote users"
+msgstr "Promover usuarios"
+
+#: includes/classes/lib.php:1714
+msgid "Add users"
+msgstr "Agregar usuarios"
+
+#: includes/classes/lib.php:1713
+msgid "Remove users"
+msgstr "Eliminar usuarios"
+
+#: includes/classes/lib.php:1712
+msgid "List users"
+msgstr "Listar usuarios"
+
+#: includes/classes/lib.php:1711
+msgid "Update core"
+msgstr "Actualizar núcleo"
+
+#: includes/classes/lib.php:1710
+msgid "Install themes"
+msgstr "Instalar temas (plantillas)"
+
+#: includes/classes/lib.php:1709
+msgid "Update themes"
+msgstr "Actualizar temas (plantillas)"
+
+#: includes/classes/lib.php:1708
+msgid "Install plugins"
+msgstr "Instalar plugins"
+
+#: includes/classes/lib.php:1707
+msgid "Delete plugins"
+msgstr "Eliminar plugins"
+
+#: includes/classes/lib.php:1706
+msgid "Update plugins"
+msgstr "Actualizar plugins"
+
+#: includes/classes/lib.php:1705
+msgid "Edit dashboard"
+msgstr "Editar escritorio"
+
+#: includes/classes/lib.php:1704
+msgid "Unfiltered upload"
+msgstr "Subir sin filtrado"
+
+#: includes/classes/lib.php:1703
+msgid "Create users"
+msgstr "Crear usuarios"
+
+#: includes/classes/lib.php:1702
+msgid "Delete users"
+msgstr "Eliminar usuarios"
+
+#: includes/classes/lib.php:1701
+msgid "Read private pages"
+msgstr "Leer páginas privadas"
+
+#: includes/classes/lib.php:1700
+msgid "Edit private pages"
+msgstr "Editar páginas privadas"
+
+#: includes/classes/lib.php:1699
+msgid "Delete private pages"
+msgstr "Eliminar páginas privadas"
+
+#: includes/classes/lib.php:1698
+msgid "Read private posts"
+msgstr "Leer entradas privadas"
+
+#: includes/classes/lib.php:1697
+msgid "Edit private posts"
+msgstr "Editar entradas privadas"
+
+#: includes/classes/lib.php:1696
+msgid "Delete private posts"
+msgstr "Eliminar entradas privadas"
+
+#: includes/classes/lib.php:1695
+msgid "Delete published posts"
+msgstr "Eliminar entradas publicadas"
+
+#: includes/classes/lib.php:1694
+msgid "Delete others posts"
+msgstr "Eliminar entradas ajenas"
+
+#: includes/classes/lib.php:1693
+msgid "Delete posts"
+msgstr "Eliminar entradas"
+
+#: includes/classes/lib.php:1692
+msgid "Delete published pages"
+msgstr "Eliminar páginas publicadas"
+
+#: includes/classes/lib.php:1691
+msgid "Delete others pages"
+msgstr "Eliminar páginas ajenas"
+
+#: includes/classes/lib.php:1690
+msgid "Delete pages"
+msgstr "Eliminar páginas"
+
+#: includes/classes/lib.php:1689
+msgid "Publish pages"
+msgstr "Publicar páginas"
+
+#: includes/classes/lib.php:1688
+msgid "Edit published pages"
+msgstr "Editar páginas publicadas"
+
+#: includes/classes/lib.php:1687
+msgid "Edit others pages"
+msgstr "Editar páginas ajenas"
+
+#: includes/classes/lib.php:1686
+msgid "Level 0"
+msgstr "Nivel 0"
+
+#: includes/classes/lib.php:1685
+msgid "Level 1"
+msgstr "Nivel 1"
+
+#: includes/classes/lib.php:1684
+msgid "Level 2"
+msgstr "Nivel 2"
+
+#: includes/classes/lib.php:1683
+msgid "Level 3"
+msgstr "Nivel 3"
+
+#: includes/classes/lib.php:1682
+msgid "Level 4"
+msgstr "Nivel 4"
+
+#: includes/classes/lib.php:1681
+msgid "Level 5"
+msgstr "Nivel 5"
+
+#: includes/classes/lib.php:1680
+msgid "Level 6"
+msgstr "Nivel 6"
+
+#: includes/classes/lib.php:1679
+msgid "Level 7"
+msgstr "Nivel 7"
+
+#: includes/classes/lib.php:1678
+msgid "Level 8"
+msgstr "Nivel 8"
+
+#: includes/classes/lib.php:1677
+msgid "Level 9"
+msgstr "Nivel 9"
+
+#: includes/classes/lib.php:1676
+msgid "Level 10"
+msgstr "Nivel 10"
+
+#: includes/classes/lib.php:1675
+msgid "Read"
+msgstr "Leer"
+
+#: includes/classes/lib.php:1674
+msgid "Edit pages"
+msgstr "Editar páginas"
+
+#: includes/classes/lib.php:1673
+msgid "Publish posts"
+msgstr "Publicar entradas"
+
+#: includes/classes/lib.php:1672
+msgid "Edit published posts"
+msgstr "Editar entradas publicadas"
+
+#: includes/classes/lib.php:1671
+msgid "Edit others posts"
+msgstr "Editar entradas ajenas"
+
+#: includes/classes/lib.php:1670
+msgid "Edit posts"
+msgstr "Editar entradas"
+
+#: includes/classes/lib.php:1669
+msgid "Unfiltered html"
+msgstr "HTML sin filtrar"
+
+#: includes/classes/lib.php:1668
+msgid "Import"
+msgstr "Importar"
+
+#: includes/classes/lib.php:1667
+msgid "Upload files"
+msgstr "Subir archivos"
+
+#: includes/classes/lib.php:1666
+msgid "Manage links"
+msgstr "Administrar enlaces"
+
+#: includes/classes/lib.php:1665
+msgid "Manage categories"
+msgstr "Administrar categorías"
+
+#: includes/classes/lib.php:1664
+msgid "Moderate comments"
+msgstr "Moderar comentarios"
+
+#: includes/classes/lib.php:1663
+msgid "Manage options"
+msgstr "Administrar opciones"
+
+#: includes/classes/lib.php:1662
+msgid "Edit files"
+msgstr "Editar archivos"
+
+#: includes/classes/lib.php:1661
+msgid "Edit users"
+msgstr "Editar usuarios"
+
+#: includes/classes/lib.php:1660
+msgid "Edit plugins"
+msgstr "Editar plugins"
+
+#: includes/classes/lib.php:1659
+msgid "Activate plugins"
+msgstr "Activar plugins"
+
+#: includes/classes/lib.php:1658
+msgid "Edit themes"
+msgstr "Editar temas (plantillas)"
+
+#: includes/classes/lib.php:1657
+msgid "Switch themes"
+msgstr "Cambiar temas (plantillas)"
+
+#: includes/classes/lib.php:1655
+msgid "Subscriber"
+msgstr "Suscriptor"
+
+#: includes/classes/lib.php:1654
+msgid "Contributor"
+msgstr "Contribuyente"
+
+#: includes/classes/lib.php:1653
+msgid "Author"
+msgstr "Autor"
+
+#: includes/classes/lib.php:1652
+msgid "Editor"
+msgstr "Editor"
+
+#: includes/classes/lib.php:1636
+msgid "This role does not exist - "
+msgstr "Este perfil no existe - "
+
+#: includes/classes/lib.php:1634
+msgid "Can not set Administrator role as a default one"
+msgstr "No se puede establecer el perfil de administrador como perfil por defecto"
+
+#: includes/classes/lib.php:1629
+msgid "Default role for new users is set to %s successfully"
+msgstr "El perfil predeterminado para nuevos usuarios ha sido establecido a %s"
+
+#: includes/classes/lib.php:1631
+msgid "Error encountered during default role change operation"
+msgstr "Un error fue encontrado durante el cambio del perfil predeterminado"
+
+#: includes/classes/lib.php:1596
+msgid "Role %s is deleted successfully"
+msgstr "El perfil %s fue eliminado exitosamente"
+
+#: includes/classes/lib.php:1594
+msgid "Unused roles are deleted successfully"
+msgstr "Los perfiles sin uso se borraron con éxito."
+
+#: includes/classes/lib.php:1592
+msgid "Error encountered during role delete operation"
+msgstr "Un error fue encontrado durante la eliminación del perfil"
+
+#: includes/classes/lib.php:1520
+msgid "Role %s is renamed to %s successfully"
+msgstr "El perfil %s se ha renombrado a %s correctamente"
+
+#: includes/classes/lib.php:1512
+msgid "Role %s does not exists"
+msgstr "El perfil %s no existe"
+
+#: includes/classes/lib.php:1505
+msgid "Error: Empty role display name is not allowed."
+msgstr "Error: No está permitido un nombre mostrado de perfil vacío."
+
+#: includes/classes/lib.php:1487
+msgid "Error: Role ID is empty!"
+msgstr "Error: ¡El ID del perfil está vacío!"
+
+#: includes/classes/lib.php:1464
+msgid "Role %s is created successfully"
+msgstr "El perfil %s fue creado exitosamente"
+
+#: includes/classes/lib.php:1462
+msgid "Error is encountered during new role create operation"
+msgstr "Un error fue encontrado durante la creación del nuevo perfil"
+
+#: includes/classes/lib.php:1447
+msgid "Role %s exists already"
+msgstr "El perfil %s ya existe"
+
+#: includes/classes/lib.php:1432 includes/classes/lib.php:1498
+msgid "Error: WordPress does not support numeric Role name (ID). Add latin characters to it."
+msgstr "Error: WordPress no soporta nombres de perfil numéricos (ID). Añádele letras."
+
+#: includes/classes/lib.php:1428 includes/classes/lib.php:1494
+msgid "Error: Role ID must contain latin characters, digits, hyphens or underscore only!"
+msgstr "Error: ¡La ID del perfil sólo debe contener caracteres alfanuméricos, guiones altos o bajos!"
+
+#: includes/classes/capability.php:79 includes/classes/capability.php:190
+#: includes/classes/lib.php:1173 includes/classes/lib.php:1419
+#: includes/classes/lib.php:1534 includes/classes/lib.php:1581
+#: includes/classes/user-role-editor.php:641
+msgid "Insufficient permissions to work with User Role Editor"
+msgstr "Permisos insuficientes para trabajar con el editor de perfiles"
+
+#: includes/classes/lib.php:451
+msgid "User Roles are restored to WordPress default values. "
+msgstr "Los perfiles de usuario fueron restaurados a los predeterminados de WordPress"
+
+#: includes/classes/lib.php:393
+msgid "Error occurred during user update"
+msgstr "Ocurrió un error durante la actualización del usuario"
+
+#: includes/classes/lib.php:388
+msgid "User capabilities are updated successfully"
+msgstr "Las Capacidades de Usuario fueron actualizadas exitosamente"
+
+#: includes/classes/lib.php:381
+msgid "Error occurred during role(s) update"
+msgstr "Ocurrió un error durante la actualización del perfil/es"
+
+#: includes/classes/lib.php:375
+msgid "Roles are updated for all network"
+msgstr "Perfiles actualizados en toda la red"
+
+#: includes/classes/lib.php:373
+msgid "Role is updated successfully"
+msgstr "El perfil fue actualizado satisfactoriamente"
+
+#: includes/classes/lib.php:312
+msgid "does not exist"
+msgstr "no existe"
+
+#: includes/classes/lib.php:311
+msgid "Role"
+msgstr "Perfil"
+
+#: includes/classes/lib.php:309 includes/classes/lib.php:311
+msgid "Error: "
+msgstr "Error:"
+
+#. Plugin Name of the plugin
+#: includes/classes/lib.php:246 includes/classes/user-role-editor.php:557
+#: includes/classes/user-role-editor.php:588
+#: includes/classes/capabilities-groups-manager.php:75
+msgid "User Role Editor"
+msgstr "User Role Editor"
+
+#: includes/classes/role-view.php:252
+msgid "Capability name (ID): "
+msgstr "Nombre de la Capacidad (ID):"
+
+#: includes/classes/role-view.php:227
+msgid "Select Role:"
+msgstr "Seleccionar perfil:"
+
+#: includes/classes/role-view.php:211
+msgid "Make copy of: "
+msgstr "Hacer copia de:"
+
+#: includes/classes/role-view.php:209 includes/classes/role-view.php:220
+msgid "Display Role Name: "
+msgstr "Mostrar nombre del perfil:"
+
+#: includes/classes/role-view.php:207 includes/classes/role-view.php:218
+msgid "Role name (ID): "
+msgstr "Nombre del perfil (ID):"
+
+#: includes/classes/lib.php:223
+msgid "Error: wrong request"
+msgstr "Error: Petición inválida"
