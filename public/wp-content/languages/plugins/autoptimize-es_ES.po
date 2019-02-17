@@ -1,0 +1,587 @@
+# Translation of Plugins - Autoptimize - Stable (latest release) in Spanish (Spain)
+# This file is distributed under the same license as the Plugins - Autoptimize - Stable (latest release) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2018-11-26 23:50:56+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/2.4.0-alpha\n"
+"Language: es\n"
+"Project-Id-Version: Plugins - Autoptimize - Stable (latest release)\n"
+
+#. translators: link points to shortpixel.
+#: classes/autoptimizeExtra.php:907
+msgid "%1$sSign-up now%2$s to receive a 1 000 bonus + 50&#37; more image optimization credits regardless of the traffic used. More image optimizations can be purchased starting with $4.99."
+msgstr "%1$sRegístrate ahora%2$s para recibir un bono de 1000 + 50% de créditos de optimización de imágenes independientemente del tráfico utilizado. Se pueden adquirir más optimizaciones de imágenes desde 4,99$."
+
+#. translators: "here to refresh" links to the Autoptimize Extra page and
+#. forces a refresh of the img opt stats.
+#: classes/autoptimizeExtra.php:744
+msgid "click %1$shere to refresh%2$s"
+msgstr "haz clic %1$saquí para recargar%2$s"
+
+#: classes/autoptimizeExtra.php:738
+msgid "based on status at "
+msgstr "basado en el estado en"
+
+#: classes/autoptimizeExtra.php:740
+msgid "based on previously fetched data"
+msgstr "basado en los datos recuperados previamente"
+
+#. Translators: the URL added points to the Autopmize Extra settings.
+#: classes/autoptimizeMain.php:544
+msgid "Did you know Autoptimize includes on-the-fly image optimization and CDN via ShortPixel? Check out the %1$sAutoptimize Extra settings%2$s to activate this option."
+msgstr "¿Sabías que Autoptimize incluye optimización de imágenes al vuelo y CDN a través de ShortPixel? Echa un vistazo a los %1$sajustes extra de Autoptimize%2$s para activar esta opción."
+
+#. translators: link points Async Javascript settings page.
+#: classes/autoptimizeExtra.php:971
+msgid "You have \"Async JavaScript\" installed, %1$sconfiguration of async javascript is best done there%2$s."
+msgstr "Tienes \"Async Javascript\" instalado, %1$sla configuración de javascript asíncrono se realiza mejor allí%2$s."
+
+#. translators: link points to shortpixel image test page.
+#: classes/autoptimizeExtra.php:942
+msgid "You can %1$stest compression levels here%2$s."
+msgstr "Puedes %1$scomprobar los niveles de compresión aquí%2$s."
+
+#. translators: links points to shortpixel TOS & Privacy Policy.
+#: classes/autoptimizeExtra.php:914
+msgid "Usage of this feature is subject to Shortpixel's %1$sTerms of Use%2$s and %3$sPrivacy policy%4$s."
+msgstr "El uso de esta característica está sujeto a los %1$stérminos de uso%2$s de Shortpixel's y su %3$spolítica de privacidad%4$s."
+
+#. translators: link points to shortpixel FAQ.
+#: classes/autoptimizeExtra.php:912
+msgid "<strong>Questions</strong>? Have a look at the %1$sShortPixel FAQ%2$s!"
+msgstr "¿<strong>Preguntas</strong>? ¡Dale un vistazo a las %1$sFAQ de ShortPixel%2$s!"
+
+#. translators: link points to shortpixel.
+#: classes/autoptimizeExtra.php:902
+msgid "Get more Google love and improve your website's loading speed by having the images optimized on the fly by %1$sShortPixel%2$s and then cached and served fast from a CDN."
+msgstr "Obtén más amor de Google y mejora la velocidad de carga de tu sitio web al tener las imágenes optimizadas al vuelo por %1$sShortPixel%2$s y después almacenarlas en caché y servirlas rápidamente desde un CDN."
+
+#. Description of the plugin
+msgid "Optimize your website's performance: JS, CSS, HTML, images, Google Fonts and more!"
+msgstr "¡Optimiza el rendimiento de tu web: JS, CSS, HTML, imágenes, fuentes de Google y más!"
+
+#: classes/autoptimizeExtra.php:920
+msgid "Image Optimization quality"
+msgstr "Calidad de optimización de imágenes"
+
+#: classes/autoptimizeExtra.php:904
+msgid "For a limited time only, this service is offered free for all Autoptimize users, <b>don't miss the chance to test it</b> and see how much it could improve your site's speed."
+msgstr "Solo por tiempo limitado se ofrece este servicio totalmente gratis, <b>no te pierdas la oportunidad de probarlo</b> y comprobar cuanto puedes mejorar la velocidad de tu sitio."
+
+#: classes/autoptimizeExtra.php:899
+msgid "Shortpixel status: "
+msgstr "Estado de Shortpixel"
+
+#: classes/autoptimizeExtra.php:878
+msgid "Optimize images on the fly and serve them from a CDN."
+msgstr "Optimiza imágenes sobre la marcha y sírvelas desde una CDN."
+
+#: classes/autoptimizeExtra.php:876
+msgid "Optimize Images"
+msgstr "Optimizar imágenes"
+
+#: classes/autoptimizeExtra.php:871
+msgid "Combine and preload in head (fonts load late, but are not render-blocking)"
+msgstr "Combinar y precargar en la cabecera (las fuentes cargan tarde pero no bloquean la carga de la página)"
+
+#: classes/autoptimizeExtra.php:870
+msgid "Combine and link in head (fonts load fast but are render-blocking)"
+msgstr "Combinar y enlazar en la cabecera (las fuentes cargan rápido pero bloquean la carga de la página)"
+
+#: classes/autoptimizeExtra.php:853
+msgid "The image optimization service is launching, but not yet available for this domain, it should become available in the next couple of days."
+msgstr "El servicio de optimización de imágenes está cargándose, pero aún no está disponible para este dominio. Estará disponible en un par de días."
+
+#. translators: "Autoptimize support forum" will appear in a "a href".
+#: classes/autoptimizeExtra.php:843
+msgid "The image optimization service is currently down, image optimization will be skipped until further notice. Check the %1$sAutoptimize support forum%2$s for more info."
+msgstr "El servicio de optimización de imágenes está actualmente caído, se omitirá la optimización de imágenes hasta nuevo aviso. Revisa el %1$sforo de soporte de Autoptimize%2$s para más información."
+
+#: classes/autoptimizeExtra.php:832
+msgid "Most of below Extra optimizations require at least one of HTML, JS or CSS autoptimizations being active."
+msgstr "La mayoría de las siguientes optimizaciones adicionales requieren que al menos estén activas las autoptimizaciones de HTML, JS o CSS."
+
+#. translators: "log in to check your account" will appear in a "a href".
+#: classes/autoptimizeExtra.php:748
+msgid "Your ShortPixel image optimization and CDN quota are in good shape, %1$slog in to check your account%2$s."
+msgstr "Tu cuota de optimización de imágenes y CDN de ShortPixel está en buena forma, %1$saccede para revisar tu cuenta%2$s."
+
+#. translators: "add more credits" will appear in a "a href".
+#: classes/autoptimizeExtra.php:732
+msgid "Your ShortPixel image optimization and CDN quota was used, %1$sadd more credits%2$s to keep fast serving optimized images on your site"
+msgstr "Tu cuota de optimización de imágenes y CDN de ShortPixel se ha consumido, %1$sañade más créditos%2$s para seguir sirviendo imágenes optimizadas y rápidas en tu sitio."
+
+#. translators: "add more credits" will appear in a "a href".
+#: classes/autoptimizeExtra.php:729
+msgid "Your ShortPixel image optimization and CDN quota is almost used, make sure you %1$sadd more credits%2$s to avoid slowing down your website."
+msgstr "Tu cuota de optimización de imágenes y CDN de ShortPixel está casi gastada, asegúrate de %1$sañadir más créditos%2$s para evitar que se ralentice tu web."
+
+#: classes/autoptimizeConfig.php:306
+msgid "This can be fully automated for different types of pages with the %s."
+msgstr "Esto puede ser completamente automatizado para diferentes tipos de páginas con %s."
+
+#: classes/autoptimizeConfig.php:279
+msgid "Aggregate all linked CSS-files? If this option is off, the individual CSS-files will remain in place but will be minified."
+msgstr "¿Unificar todos los archivos CSS enlazados? Si esta opción está desactivada los archivos CSS seguirán en su lugar pero minimizados."
+
+#: classes/autoptimizeConfig.php:277
+msgid "Aggregate CSS-files?"
+msgstr "¿Unificar archivos CSS?"
+
+#: classes/autoptimizeConfig.php:237
+msgid "Aggregate all linked JS-files to have them loaded non-render blocking? If this option is off, the individual JS-files will remain in place but will be minified."
+msgstr "¿Unificar todos los archivos JS enlazados para que se carguen sin bloquear la carga de la página? Si esta opción está desactivada los archivos JS individuales seguirán en su lugar pero minimizados."
+
+#: classes/autoptimizeConfig.php:235
+msgid "Aggregate JS-files?"
+msgstr "¿Unificar archivos JS?"
+
+#: classes/autoptimizeConfig.php:183
+msgid "You are using the (no longer supported) AUTOPTIMIZE_LEGACY_MINIFIERS constant. Ensure your site is working properly and remove the constant, it doesn't do anything any more."
+msgstr "Estás utilizando la constante (ya no compatible) AUTOPTIMIZE_LEGACY_MINIFIERS. Asegúrate de que tu sitio funciona correctamente y borra la constante, si no sirve para ninguna otra cosa."
+
+#: autoptimize.php:32
+msgid "Autoptimize requires PHP 5.3 (or higher) to function properly. Please upgrade PHP. The Plugin has been auto-deactivated."
+msgstr "Autoptimize requiere PHP 5.3 (o superior) para que funcione correctamente. Por favor, actualiza PHP. El plugin se ha desactivado automáticamente."
+
+#: classes/autoptimizePartners.php:77
+msgid "More info"
+msgstr "Más información"
+
+#. translators: %s will be replaced by a link to "wp youtube lyte" plugin.
+#: classes/autoptimizeExtra.php:996
+msgid "%s allows you to “lazy load” your videos, by inserting responsive “Lite YouTube Embeds\". "
+msgstr "%s te permite la \"carga diferida\" de tus vídeos, insertando los \"incrustados ligeros adaptables de YouTube\""
+
+#: classes/autoptimizeExtra.php:993
+msgid "Click here to configure it."
+msgstr "Haz clic aquí para configurarlo."
+
+#: classes/autoptimizeExtra.php:991
+msgid "Great, you have WP YouTube Lyte installed."
+msgstr "Genial, has instalado WP YouTube Lyte."
+
+#: classes/autoptimizeExtra.php:987
+msgid "Optimize YouTube videos"
+msgstr "Optimizar vídeos de YouTube"
+
+#: classes/autoptimizeExtra.php:981 classes/autoptimizeExtra.php:998
+msgid "Click here to install and activate it."
+msgstr "Haz clic aquí para instalarlo y activarlo."
+
+#. translators: %s will be replaced by a link to the "async javascript" plugin.
+#: classes/autoptimizeExtra.php:979
+msgid "Configuration of async javascript is easier and more flexible using the %s plugin."
+msgstr "La configuración del javascript asíncrono es más fácil y más flexible usando el plugin %s."
+
+#: classes/autoptimizeExtra.php:977
+msgid "Comma-separated list of local or 3rd party JS-files that should loaded with the <code>async</code> flag. JS-files from your own site will be automatically excluded if added here. "
+msgstr "Lista separada por comas de otros archivos JS que deberían cargarse con la marca <code>async</code>. Los archivos JS de tu propio sitio se excluirán automáticamente si se añaden aquí."
+
+#: classes/autoptimizeExtra.php:966
+msgid "Async Javascript-files <em>(advanced users)</em>"
+msgstr "Archivos JavaScript asíncronos <em>(usuarios avanzados)</em>"
+
+#: classes/autoptimizeExtra.php:962
+msgid "Add 3rd party domains you want the browser to <a href=\"https://www.keycdn.com/support/preconnect/#primary\" target=\"_blank\">preconnect</a> to, separated by comma's. Make sure to include the correct protocol (HTTP or HTTPS)."
+msgstr "Añade otros dominios a los que quieras que el navegador se <a href=\"https://www.keycdn.com/support/preconnect/#primary\" target=\"_blank\">pre-conecte</a>, separados por comas. Asegúrate de incluir el protocolo correcto (HTTP o HTTPS)."
+
+#: classes/autoptimizeExtra.php:960
+msgid "Preconnect to 3rd party domains <em>(advanced users)</em>"
+msgstr "Pre-conexión a otros dominios <em>(usuarios avanzados)</em>"
+
+#: classes/autoptimizeExtra.php:872
+msgid "Combine and load fonts asynchronously with <a href=\"https://github.com/typekit/webfontloader#readme\" target=\"_blank\">webfont.js</a>"
+msgstr "Combinar y cargar las fuentes asíncronamente con <a href=\"https://github.com/typekit/webfontloader#readme\" target=\"_blank\">webfont.js</a>"
+
+#: classes/autoptimizeExtra.php:868
+msgid "Leave as is"
+msgstr "Dejar tal cual"
+
+#: classes/autoptimizeExtra.php:866
+msgid "Google Fonts"
+msgstr "Google Fonts"
+
+#: classes/autoptimizeExtra.php:956
+msgid "Removing query strings (or more specifically the <code>ver</code> parameter) will not improve load time, but might improve performance scores."
+msgstr "Al quitar las cadenas de petición (o más en concreto el parámetro <code>ver</code>) no mejorará el tiempo de carga, pero mejorará las puntuaciones de rendimiento. "
+
+#: classes/autoptimizeExtra.php:954
+msgid "Remove query strings from static resources"
+msgstr "Quitar cadenas de petición de recursos estáticos"
+
+#: classes/autoptimizeExtra.php:950
+msgid "Removes WordPress' core emojis' inline CSS, inline JavaScript, and an otherwise un-autoptimized JavaScript file."
+msgstr "Quita el CSS incrustado de los emojis de WordPress, el JavaScript incrustado y cualquier otro archivo JavaScript no autoptimizado."
+
+#: classes/autoptimizeExtra.php:948
+msgid "Remove emojis"
+msgstr "Quitar emojis"
+
+#: classes/autoptimizeExtra.php:863
+msgid "The following settings can improve your site's performance even more."
+msgstr "Los siguientes ajustes pueden mejorar aún más el rendimiento de tu sitio."
+
+#: classes/autoptimizeExtra.php:862
+msgid "Extra Auto-Optimizations"
+msgstr "Auto-optimizaciones adicionales"
+
+#: classes/autoptimizeExtra.php:799
+msgid "Extra"
+msgstr "Extra"
+
+#: classes/autoptimizeCLI.php:30
+msgid "Cache flushed."
+msgstr "Caché borrada."
+
+#: classes/autoptimizeCLI.php:28
+msgid "Flushing the cache..."
+msgstr "Borrando la caché…"
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+msgid "https://autoptimize.com/"
+msgstr "https://autoptimize.com/"
+
+#: classes/autoptimizeToolbar.php:136
+msgid "Your Autoptimize cache might not have been purged successfully, please check on the <a href=%s>Autoptimize settings page</a>."
+msgstr "Puede que tu caché de Autoptimize no se haya vaciado correctamente, por favor, revisa la <a href=%s>página de ajustes de Autoptimize</a>."
+
+#: classes/autoptimizeConfig.php:422
+msgid "Need help? <a href='https://wordpress.org/plugins/autoptimize/faq/'>Check out the FAQ here</a>."
+msgstr "¿Necesitas ayuda? <a href='https://wordpress.org/plugins/autoptimize/faq/'>Revis la FAQ aquí</a>."
+
+#: classes/autoptimizeConfig.php:386
+msgid "By default Autoptimize is also active on your shop's cart/ checkout, uncheck not to optimize those."
+msgstr "Por defecto, Autoptimize también está activo en tu carrito/pago de la tienda, desmarca para no optimizar esto."
+
+#: classes/autoptimizeConfig.php:384
+msgid "Also optimize shop cart/ checkout?"
+msgstr "¿Optimizar también el carrito/pago de la tienda?"
+
+#: classes/autoptimizeConfig.php:378
+msgid "By default Autoptimize is also active for logged on users, uncheck not to optimize when logged in e.g. to use a pagebuilder."
+msgstr "Por defecto Autoptimize también está activo para los usuarios conectados, desmarca esto para no optimizar cuando un usuario conectado, por ejemplo, usa un maquetador visual."
+
+#: classes/autoptimizeConfig.php:376
+msgid "Also optimize for logged in users?"
+msgstr "¿También optimizar para usuarios conectados?"
+
+#: classes/autoptimizeConfig.php:368
+msgid "Misc Options"
+msgstr "Otras opciones"
+
+#: classes/autoptimizeConfig.php:360
+msgid "%1$s files, totalling %2$s Kbytes (calculated at %3$s)"
+msgstr "%1$s archivos, con un total de %2$s Kbytes (calculado a las %3$s)"
+
+#: classes/autoptimizeConfig.php:334
+msgid "Enter your CDN root URL to enable CDN for Autoptimized files. The URL can be http, https or protocol-relative (e.g. <code>//cdn.example.com/</code>). This is not needed for Cloudflare."
+msgstr "Introduce la URL raíz de tu para activar la CDN en los archivos Autoptimizados. La URL puede ser http, https o relativa al protocolo (p.ej. <code>//cdn.example.com/</code>). Esto no es necesario con Cloudflare."
+
+#: classes/autoptimizeConfig.php:242
+msgid "Let Autoptimize also extract JS from the HTML. <strong>Warning</strong>: this can make Autoptimize's cache size grow quickly, so only enable this if you know what you're doing."
+msgstr "Permite que Autoptimize también extraiga JS del HTML. <strong>Advertencia</strong>: esto puede hacer crecer rápidamente la caché de Autoptimize así que activa esto solo si sabes lo que estás haciendo."
+
+#: classes/autoptimizeConfig.php:251 classes/autoptimizeConfig.php:293
+msgid "(deprecated)"
+msgstr "(obsoleto)"
+
+#: classes/autoptimizeConfig.php:247
+msgid "Load JavaScript early, this can potentially fix some JS-errors, but makes the JS render blocking."
+msgstr "Carga pronto el JavaScript, esto puede solucionar potencialmente algunos errores de JS, pero bloquea la carga de JS."
+
+#: classes/autoptimizeConfig.php:178
+msgid "<strong>You are using a very old version of PHP</strong> (5.2.x or older) which has <a href=%s>serious security and performance issues</a>. Support for PHP 5.5 and below will be removed in one of the next AO released, please ask your hoster to provide you with an upgrade path to 7.x."
+msgstr "<strong>Estás usando una versión antigua de PHP</strong> (5.2.x o anterior) lo que conlleva <a href=%s>serios problemas de rendimiento y seguridad</a>. La compatibilidad con PHP 5.5 y versiones anteriores se eliminará en la siguiente versión de AO, por favor, pide a tu proveedor de alojamiento que te ofrezca un modo de actualizar a la versión 7.x."
+
+#. Translators: %s is the cache directory location.
+#: classes/autoptimizeMain.php:523
+msgid "Autoptimize cannot write to the cache directory (%s), please fix to enable CSS/ JS optimization!"
+msgstr "Autoptimize no puede escribir en el directorio de caché (%s), por favor, ¡soluciona esto para activar la optimización de CSS/ JS!"
+
+#: classes/autoptimizePartners.php:49
+msgid "Have a look at <a href=\"http://optimizingmatters.com/\">optimizingmatters.com</a> for Autoptimize power-ups!"
+msgstr "¡Echa un vistazo a <a href=\"http://optimizingmatters.com/\">optimizingmatters.com</a> para mejorar Autoptimize!"
+
+#: classes/autoptimizePartners.php:138
+msgid "These Autoptimize power-ups and related services will improve your site's performance even more!"
+msgstr "¡Estas mejoras de Autoptimize y servicios relacionados mejorarán el rendimiento de tu sitio aún más!"
+
+#: classes/autoptimizePartners.php:34
+msgid "Optimize More!"
+msgstr "¡Optimizar más!"
+
+#: classes/autoptimizeCacheChecker.php:67
+msgid "Autoptimize's cache size is getting big, consider purging the cache. Have a look at https://wordpress.org/plugins/autoptimize/faq/ to see how you can keep the cache size under control."
+msgstr "El tamaño de la caché de Autoptimize se está haciendo grande, plantéate vaciar la caché. Echa un vistazo a https://wordpress.org/plugins/autoptimize/faq/ para ver cómo se puede mantener el tamaño de caché bajo control."
+
+#: classes/autoptimizeCacheChecker.php:66
+msgid "Autoptimize cache size warning"
+msgstr "Aviso de tamaño de caché de Autoptimize"
+
+#: classes/autoptimizeToolbar.php:137
+msgid "Dismiss this notice."
+msgstr "Descartar este aviso."
+
+#: classes/autoptimizeToolbar.php:106
+msgid "Delete Cache"
+msgstr "Borrar caché"
+
+#: classes/autoptimizeToolbar.php:98
+msgid "Files"
+msgstr "Archivos "
+
+#: classes/autoptimizeToolbar.php:97
+msgid "Size"
+msgstr "Tamaño "
+
+#: classes/autoptimizeConfig.php:812
+msgid "Main"
+msgstr "Principal"
+
+#: classes/autoptimizeConfig.php:222
+msgid "Enable this if you want HTML comments to remain in the page."
+msgstr "Activa esta opción si deseas mantener los comentarios HTML en la página."
+
+#: classes/autoptimizeCacheChecker.php:92
+msgid "<strong>Autoptimize's cache size is getting big</strong>, consider purging the cache. Have a look at <a href=\"https://wordpress.org/plugins/autoptimize/faq/\" target=\"_blank\" rel=\"noopener noreferrer\">the Autoptimize FAQ</a> to see how you can keep the cache size under control."
+msgstr "<strong>El tamaño de caché de Autoptimize se está haciendo grande</strong>, plantéate vaciar la caché. Echa un vistazo a <a href=\"https://wordpress.org/plugins/autoptimize/faq/\" target=\"_blank\" rel=\"noopener noreferrer\">las preguntas más frecuentes de Autoptimize</a> para ver cómo se puede mantener el de tamaño de caché bajo control."
+
+#: classes/autoptimizeConfig.php:798
+msgid "Posted %s"
+msgstr "Publicado el %s"
+
+#: classes/autoptimizeConfig.php:793
+msgid "No items"
+msgstr "Ningún elemento"
+
+#: classes/autoptimizeConfig.php:423
+msgid "Try my other plugins!"
+msgstr "¡Prueba mis otros plugins!"
+
+#: classes/autoptimizeConfig.php:423
+msgid "Happy with Autoptimize?"
+msgstr "¿Estás contento con Autoptimize?"
+
+#: classes/autoptimizeConfig.php:284
+msgid "Check this option for Autoptimize to also aggregate CSS in the HTML."
+msgstr "Marca esta opción para que Autoptimize también tenga en cuenta los CSS incrustados en el código HTML."
+
+#: classes/autoptimizeConfig.php:282
+msgid "Also aggregate inline CSS?"
+msgstr "¿Incluir CSS incrustados?"
+
+#: classes/autoptimizeExtra.php:869
+msgid "Remove Google Fonts"
+msgstr "Quitar las Google Fonts"
+
+#: classes/autoptimizeConfig.php:240
+msgid "Also aggregate inline JS?"
+msgstr "¿Incluir JS incrustados?"
+
+#. Author of the plugin
+msgid "Frank Goossens (futtta)"
+msgstr "Frank Goossens (futtta)"
+
+#: classes/autoptimizeConfig.php:665 classes/autoptimizeConfig.php:671
+msgid "Settings"
+msgstr "Ajustes"
+
+#: classes/autoptimizeConfig.php:610
+msgid "Autoptimize Options"
+msgstr "Opciones de Autoptimize"
+
+#: classes/autoptimizeConfig.php:447
+msgid "Do not donate for this plugin!"
+msgstr "¡No dones a este plugin!"
+
+#: classes/autoptimizeConfig.php:432
+msgid "Web Technology"
+msgstr "Tecnología web"
+
+#: classes/autoptimizeConfig.php:431
+msgid "WordPress"
+msgstr "WordPress"
+
+#. Plugin Name of the plugin
+#: classes/autoptimizeToolbar.php:79 classes/autoptimizeConfig.php:430
+msgid "Autoptimize"
+msgstr "Autoptimize"
+
+#: classes/autoptimizeConfig.php:428
+msgid "futtta about"
+msgstr "Acerca de futtta"
+
+#: classes/autoptimizeConfig.php:399
+msgid "Save Changes and Empty Cache"
+msgstr "Guardar cambios y vaciar la caché"
+
+#: classes/autoptimizeExtra.php:1004 classes/autoptimizeConfig.php:398
+msgid "Save Changes"
+msgstr "Guardar cambios"
+
+#: classes/autoptimizeConfig.php:373
+msgid "By default files saved are static css/js, uncheck this option if your webserver doesn't properly handle the compression and expiry."
+msgstr "Por defecto los archivos JS y CSS se guardan como estáticos. Desactiva esta opción si tu servidor no realiza correctamente la compresión y la caducidad de los mismos."
+
+#: classes/autoptimizeConfig.php:371
+msgid "Save aggregated script/css as static files?"
+msgstr "¿Guardar los scripts y el CSS unificados como ficheros estáticos?"
+
+#: classes/autoptimizeConfig.php:351
+msgid "Cached styles and scripts"
+msgstr "Estilos y scripts en caché"
+
+#: classes/autoptimizeConfig.php:348
+msgid "No"
+msgstr "No"
+
+#: classes/autoptimizeConfig.php:348
+msgid "Yes"
+msgstr "Sí"
+
+#: classes/autoptimizeConfig.php:347
+msgid "Can we write?"
+msgstr "¿Podemos escribir?"
+
+#: classes/autoptimizeConfig.php:343
+msgid "Cache folder"
+msgstr "Carpeta de caché"
+
+#: classes/autoptimizeToolbar.php:87 classes/autoptimizeConfig.php:340
+msgid "Cache Info"
+msgstr "Información de la caché"
+
+#: classes/autoptimizeConfig.php:332
+msgid "CDN Base URL"
+msgstr "URL base de la CDN"
+
+#: classes/autoptimizeConfig.php:329
+msgid "CDN Options"
+msgstr "Opciones de la CDN"
+
+#: classes/autoptimizeConfig.php:323
+msgid "A comma-separated list of CSS you want to exclude from being optimized."
+msgstr "Una lista separada por comas del CSS que quieras excluir de la optimización."
+
+#: classes/autoptimizeConfig.php:321
+msgid "Exclude CSS from Autoptimize:"
+msgstr "CSS a excluir de Autoptimize:"
+
+#: classes/autoptimizeConfig.php:318
+msgid "Inlining all CSS can improve performance for sites with a low pageviews/ visitor-rate, but may slow down performance otherwise."
+msgstr "Insertar todo el CSS puede mejorar el rendimiento en sitios con un bajo número de páginas vistas/visitas, pero puede disminuir el rendimiento de lo contrario."
+
+#: classes/autoptimizeConfig.php:316
+msgid "Inline all CSS?"
+msgstr "¿Combinar todos los CSS?"
+
+#: classes/autoptimizeConfig.php:313
+msgid "Paste the above the fold CSS here."
+msgstr "Pega aquí el código CSS asimétrico."
+
+#: classes/autoptimizeConfig.php:302
+msgid "Inline \"above the fold CSS\" while loading the main autoptimized CSS only after page load. <a href=\"http://wordpress.org/plugins/autoptimize/faq/\" target=\"_blank\">Check the FAQ</a> for more info."
+msgstr "Incrusta el \"CSS de encima del pliegue\" y carga el CSS principal auto-optimizado una vez que se ha cargado la página. ¡<a href=\"http://wordpress.org/plugins/autoptimize/faq/\" target=\"_blank\">Consulta las preguntas frecuentes</a> antes de activar esta opción!"
+
+#: classes/autoptimizeConfig.php:299
+msgid "Inline and Defer CSS?"
+msgstr "¿Incrustar y retrasar CSS?"
+
+#: classes/autoptimizeConfig.php:295
+msgid "Don't autoptimize CSS outside the head-section. If the cache gets big, you might want to enable this."
+msgstr "No autoptimizar el CSS que se encuentre fuera de la sección de cabecera. Si la caché crece mucho, es posible que quieras activar esta opción."
+
+#: classes/autoptimizeConfig.php:293
+msgid "Look for styles only in &lt;head&gt;?"
+msgstr "¿Buscar estilos sólo en el &lt;head&gt;?"
+
+#: classes/autoptimizeConfig.php:289
+msgid "Enable this to include small background-images in the CSS itself instead of as separate downloads."
+msgstr "Activa esto para incluir las imágenes de fondo pequeñas en el propio CSS en vez de como descargas separadas."
+
+#: classes/autoptimizeConfig.php:287
+msgid "Generate data: URIs for images?"
+msgstr "¿Crear data:URIs de imágenes?"
+
+#: classes/autoptimizeConfig.php:273
+msgid "Optimize CSS Code?"
+msgstr "¿Optimizar el código CSS?"
+
+#: classes/autoptimizeConfig.php:270
+msgid "CSS Options"
+msgstr "Opciones de CSS"
+
+#: classes/autoptimizeConfig.php:264
+msgid "If your scripts break because of a JS-error, you might want to try this."
+msgstr "Si los scripts se interrumpen debido a algún error de JavaScript, es posible que desees probar con esta opción."
+
+#: classes/autoptimizeConfig.php:262
+msgid "Add try-catch wrapping?"
+msgstr "¿Añadir bloques try-catch?"
+
+#: classes/autoptimizeConfig.php:259
+msgid "A comma-separated list of scripts you want to exclude from being optimized, for example 'whatever.js, another.js' (without the quotes) to exclude those scripts from being aggregated by Autoptimize."
+msgstr "Una lista separada por comas de los scripts que desees excluir de la optimización, por ejemplo, 'loquesea.js, otro.js' (sin las comillas) para excluir esos scripts de ser combinados y minimizados por Autoptimize."
+
+#: classes/autoptimizeConfig.php:257
+msgid "Exclude scripts from Autoptimize:"
+msgstr "Scripts a excluir de Autoptimize:"
+
+#: classes/autoptimizeConfig.php:253
+msgid "Mostly useful in combination with previous option when using jQuery-based templates, but might help keeping cache size under control."
+msgstr "Útil sobre todo en combinación con la opción anterior cuando se utilizan plantillas basadas en jQuery, pero también puede ayudar a mantener el tamaño de la caché bajo control."
+
+#: classes/autoptimizeConfig.php:251
+msgid "Look for scripts only in &lt;head&gt;?"
+msgstr "¿Buscar scripts solo en &lt;head&gt;?"
+
+#: classes/autoptimizeConfig.php:245
+msgid "Force JavaScript in &lt;head&gt;?"
+msgstr "¿Forzar JavaScript en &lt;head&gt;?"
+
+#: classes/autoptimizeConfig.php:231
+msgid "Optimize JavaScript Code?"
+msgstr "¿Optimizar el código JavaScript?"
+
+#: classes/autoptimizeConfig.php:228
+msgid "JavaScript Options"
+msgstr "Opciones de JavaScript"
+
+#: classes/autoptimizeConfig.php:220
+msgid "Keep HTML comments?"
+msgstr "¿Mantener comentarios HTML?"
+
+#: classes/autoptimizeConfig.php:216
+msgid "Optimize HTML Code?"
+msgstr "¿Optimizar el código HTML?"
+
+#: classes/autoptimizeConfig.php:213
+msgid "HTML Options"
+msgstr "Opciones de HTML"
+
+#: classes/autoptimizeConfig.php:193 classes/autoptimizeConfig.php:198
+msgid "Hide advanced settings"
+msgstr "Ocultar opciones avanzadas"
+
+#: classes/autoptimizeConfig.php:192 classes/autoptimizeConfig.php:197
+msgid "Show advanced settings"
+msgstr "Mostrar opciones avanzadas"
+
+#: classes/autoptimizeExtra.php:825 classes/autoptimizeConfig.php:189
+#: classes/autoptimizePartners.php:136
+msgid "Autoptimize Settings"
+msgstr "Ajustes de Autoptimize"
+
+#: classes/autoptimizeMain.php:537
+msgid "Autoptimize has just been updated. Please <strong>test your site now</strong> and adapt Autoptimize config if needed."
+msgstr "Autoptimize acaba de actualizarse. Por favor, <strong>haz una prueba de tu sitio</strong> y adapta la configuración de Autoptimize si fuese necesario."
+
+#: classes/autoptimizeMain.php:530
+msgid "Thank you for installing and activating Autoptimize. Please configure it under \"Settings\" -> \"Autoptimize\" to start improving your site's performance."
+msgstr "Gracias por instalar y activar Autoptimize. Por favor, ve a \"Ajustes\" -> \"Autoptimize\" para empezar a mejorar el rendimiento de tu sitio."

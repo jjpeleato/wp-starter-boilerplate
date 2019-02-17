@@ -1,0 +1,41 @@
+#maintenance_page {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	line-height: 1.4;
+	background: #eee;
+}
+
+#maintenance_page #content {
+	display: block;
+	max-width: 768px;
+	margin: 0 auto;
+	text-align: center;
+	padding-top: 45px;
+}
+
+/* defult content styles */
+#maintenance_page #content.default h1{
+	font-size: 48px;
+	font-weight: bold;
+	line-height: 1.25;
+	color: #999;
+	display: inline-block;
+	margin: 0 0 10px;
+	padding: 0;
+	border-bottom: 1px solid #f90;
+	text-transform: uppercase;
+}
+#maintenance_page #content.default h3 {
+	margin: 0 0 15px;
+	font-size: 24px;
+	line-height: 1.25;
+	font-weight: normal;
+}
+@media (max-width: 480px){
+	#maintenance_page #content.default h1 {
+		font-size: 36px;
+	}
+	#maintenance_page #content.default h3 {
+		font-size: 18px;
+	}
+}

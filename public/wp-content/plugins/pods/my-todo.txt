@@ -1,0 +1,58 @@
+* debounce checkbox change events
+* Get verification on CSS and checkbox event fixes
+
+* maybe min with Mn and Radio
+* See if you can make no conflict work with Marionette
+
+* Test bi-di with add new
+	* pre-poulate relationship?
+	* What about unsaved changes?
+
+* kill jquery.pods.js validate
+* Babel 7 is coming (and I think Gutenberg is using it)
+* @wordpress on NPM
+* i18n
+* a11y
+* TESTS!  (Jest, what does Scott have experience with)
+* Gutenborg
+	* Underscore is on its way out: https://github.com/WordPress/gutenberg/pull/5933
+
+* Text: Check access restriction options, check if they affect validation/required
+* Text/other: some things (allow HTML/allow shortcode) are only detected
+  server-side and can be ugly for required fields
+
+
+(ul).pods-form-fields
+(li).pods-field
+.pods-form-front .pods-field-input
+ul.pods-files li.pods-file
+
+
+.pods-form-front .pods-field-input {
+    width: 75%;
+    min-width: 200px;
+    float: left;
+}
+
+ul.pods-files {
+    background: #fff;
+    margin: 0 0 15px 0;
+    padding: 0;
+    border-radius: 3px;
+    border: 1px solid #dfdfdf;
+}
+
+ul.pods-files li.pods-file {
+    display: block;
+    padding: 8px 10px;
+    margin: 0;
+    border-bottom: 1px solid #efefef;
+    border-radius: 3px;
+}
+
+ul.pods-file-meta {
+    display: block;
+    overflow: hidden;
+    zoom: 1;
+    position: relative;
+}

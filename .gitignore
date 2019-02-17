@@ -1,0 +1,111 @@
+############################
+# Ignore files/directories #
+############################
+node_modules/
+vendor/
+public/foo.php
+public/wp-content/themes/ao-apolo/assets/css/
+public/wp-content/themes/ao-apolo/assets/js/
+
+########################
+# Wordpress Core files #
+########################
+public/wp-config.php
+public/wp-content/backup-db/
+public/wp-content/backups/
+public/wp-content/blogs.dir/
+public/wp-content/upgrade/
+public/wp-content/uploads/
+public/wp-content/plugins/hello.php
+
+public/.htaccess
+public/license.txt
+public/readme.html
+
+###################################
+# WordPress Cache untracked files #
+###################################
+public/wp-content/cache/
+public/wp-content/advanced-cache.php
+public/wp-content/wp-cache-config.php
+
+############
+# Sitemaps #
+############
+public/sitemap.xml
+public/sitemap.xml.gz
+
+#############################
+# Logs, databases and misc. #
+#############################
+/.idea
+*.log
+*.sql
+*.sqlite
+*.sass-cache
+.bash_history
+.bash_logout
+.bashrc
+.cache
+.profile
+.mysql_history
+
+############
+# Packages #
+############
+*.7z
+*.dmg
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+*.bat
+
+###################
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+###################
+# Temporary files #
+###################
+*.swp
+*.swo
+*~
+
+######################
+# OS generated files #
+######################
+.DS_Store*
+ehthumbs.db
+Icon?
+Thumbs.db
+*.lock
+.env
+package-lock.json
+composer.lock
+
+##################################
+# W3 Total Cache untracked files #
+##################################
+public/wp-content/db.php
+public/wp-content/object-cache.php
+public/wp-content/w3tc-config/
+
+########################################
+# EWWW Image Optimizer untracked files #
+########################################
+public/wp-content/ewww/
+
+#############################
+# WordFence untracked files #
+#############################
+public/wp-content/wfcache/
+public/wp-content/wflogs/
+public/wordfence-waf.php

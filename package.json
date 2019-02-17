@@ -1,0 +1,62 @@
+{
+    "name": "wp-starter-theme",
+    "version": "0.0.0",
+    "description": "WordPress base repository for any project.",
+    "keywords": [
+        "lando",
+        "node",
+        "npm",
+        "yarn",
+        "gulp-v4",
+        "stylelint",
+        "jshint",
+        "bootstrap",
+        "popper",
+        "sass",
+        "css3"
+    ],
+    "homepage": "https://www.jjpeleato.com/",
+    "author": "@jjpeleato",
+    "license": "GPL-2.0",
+    "main": "gulpfile.babel.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "gulp:dev": "gulp",
+        "gulp:prod": "env NODE_ENV=production gulp"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/jjpeleato/wp-starter-theme.git"
+    },
+    "dependencies": {
+        "@fortawesome/fontawesome-free": "^5.7.2",
+        "bootstrap": "^4.2.1",
+        "jquery": "^3.3.1",
+        "popper.js": "^1.14.7"
+    },
+    "devDependencies": {
+        "autoprefixer": "^9.4.7",
+        "babel-core": "^6.14.0",
+        "babel-preset-env": "^1.7.0",
+        "babel-register": "^6.26.0",
+        "browser-sync": "^2.26.3",
+        "del": "^3.0.0",
+        "gulp": "^4.0.0",
+        "gulp-autoprefixer": "^6.0.0",
+        "gulp-concat": "^2.6.1",
+        "gulp-imagemin": "^5.0.3",
+        "gulp-jshint": "^2.1.0",
+        "gulp-notify": "^3.2.0",
+        "gulp-rename": "^1.4.0",
+        "gulp-sass": "^4.0.2",
+        "gulp-sourcemaps": "^2.6.4",
+        "gulp-stylelint": "^8.0.0",
+        "gulp-uglify": "^3.0.1",
+        "gulp-uglifycss": "^1.1.0",
+        "gulp-util": "^3.0.8",
+        "jshint": "^2.10.1",
+        "stylelint": "^9.10.1",
+        "stylelint-config-standard": "^18.2.0",
+        "stylelint-scss": "^3.5.3"
+    }
+}
