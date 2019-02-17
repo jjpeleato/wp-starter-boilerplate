@@ -1,0 +1,57 @@
+/* Mixins
+--------------------------------------------------------------------------------------------------------------------- */
+
+// OPACITY
+@mixin opacity($opacity) {
+  opacity: $opacity;
+  filter: alpha(opacity=($opacity * 100));
+}
+
+// CLEARFIX
+@mixin clearfix {
+  *zoom: 1;
+  clear: both;
+
+  &::before,
+  &::after {
+    content: "";
+    display: table;
+  }
+
+  &::after {
+    clear: both;
+  }
+}
+
+// INVISIBLE
+@mixin invisible {
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  overflow: hidden;
+  position: absolute !important;
+}
+
+// BORDER RADIUS
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  border-radius: $radius;
+}
+
+// TRANSFORM
+@mixin transform($transforms) {
+  -moz-transform: $transforms;
+  -o-transform: $transforms;
+  -webkit-transform: $transforms;
+  -ms-transform: $transforms;
+  transform: $transforms;
+}
+
+// TRANSITION
+@mixin transition($name, $time, $function) {
+  transition: $name $time $function;
+  -moz-transition: $name $time $function;
+  -ms-transition: $name $time $function;
+  -o-transition: $name $time $function;
+  -webkit-transition: $name $time $function;
+}
