@@ -53,6 +53,11 @@ tooling:
     service: node
   yarn:
     service: node
+  dep:
+    service: appserver
+    desription: run deployer commands
+    cmd:
+      - "vendor/bin/dep"
 
 # See: https://docs.devwithlando.io/config/events.html
 events:
