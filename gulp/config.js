@@ -15,7 +15,7 @@ const paths = {
             './assets/scss/**/*.scss'
         ],
         vendor: [
-            './node_modules/bootstrap/dist/css/bootstrap.min.css'
+            './node_modules/bootstrap/dist/css/bootstrap.css'
         ],
         dest: theme + 'css/'
     },
@@ -24,8 +24,8 @@ const paths = {
             './assets/js/**/*.js'
         ],
         vendor: [
-            './node_modules/popper.js/dist/popper.min.js',
-            './node_modules/bootstrap/dist/js/bootstrap.min.js'
+            './node_modules/popper.js/dist/popper.js',
+            './node_modules/bootstrap/dist/js/bootstrap.js'
         ],
         dest: theme + 'js/'
     },
@@ -36,10 +36,14 @@ const paths = {
         dest: theme + 'css/fonts/'
     },
     imgAssets: {
-        src: [
-            './assets/img/*'
-        ],
-        dest: theme + 'assets/img/'
+		src: [
+			'./assets/img/**/*.png',
+			'./assets/img/**/*.jpeg',
+			'./assets/img/**/*.jpg',
+			'./assets/img/**/*.gif',
+			'./assets/img/**/*.ico'
+		],
+        dest: theme + 'img/'
     },
 };
 

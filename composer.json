@@ -2,7 +2,7 @@
     "name": "wp-starter-theme",
     "description": "WordPress base repository for any project.",
     "keywords": ["lando", "WordPress", "deployer", "psr1", "psr2"],
-    "homepage": "https://github.com/jjpeleato/wp-starter-theme.git",
+    "homepage": "https://github.com/jjpeleato/wp-starter-boilerplate.git",
     "license": "GPL-2.0",
     "authors": [
         {
@@ -29,13 +29,13 @@
     "scripts": {
         "test": "phpunit",
         "dep/local": [
-            "dep deploy --hosts=localhost --branch=develop"
+            "dep deploy localhost --branch=develop"
         ],
         "dep/pre": [
-            "dep deploy --hosts=pre --branch=develop"
+            "dep deploy pre --branch=develop"
         ],
 		"dep/pro": [
-			"dep deploy --hosts=pro --branch=master"
+			"dep deploy pro --branch=master"
 		]
     }
 }

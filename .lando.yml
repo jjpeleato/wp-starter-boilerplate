@@ -3,7 +3,7 @@ name: startertheme
 # See: https://docs.devwithlando.io/tutorials/wordpress.html
 recipe: wordpress
 config:
-  php: '7.2'
+  php: '7.3'
   webroot: public
   database: mariadb
   xdebug: true
