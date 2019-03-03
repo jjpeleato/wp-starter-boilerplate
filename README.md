@@ -33,13 +33,14 @@ For more information visit:
 ### Installing
 
 1. Open your terminal and browse to the root location of your project.
-2. Open the lando.yml and rename the project and proxy name.
+2. Open the `lando.yml` and rename the project and proxy name.
 3. Download and install the main theme. Recommended: https://underscores.me/
-4. Cut (don't copy) the `./assets/functions.php` file into root directory of theme and include the following code: `require_once ('assets/functions.php');` on end of `[theme]/functions.php` document. **Note: The logic custom programming write to `assets/functions.php`.**
-5. Run `$lando start`.
+4. Open the `gulp/config.js` and rename the `theme` const according theme path.
+5. Cut (don't copy) the `./assets/functions.php` file into root directory of theme and include the following code: `require_once ('assets/functions.php');` on end of `[theme]/functions.php` document. **Note: The logic custom programming write to `assets/functions.php`.**
+6. Run `$lando start`.
 	- The project has a .lando.yml file with all the environment settings.
 	- The command starts the installation process when it finishes, you can see all the URLs to access.
-6. End. Happy developing.
+7. End. Happy developing.
 
 ### Developing with NPM or Yarn, Gulp and Deployer
 
