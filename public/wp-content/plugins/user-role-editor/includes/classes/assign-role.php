@@ -102,7 +102,7 @@ class URE_Assign_Role {
             $query = "SELECT COUNT(DISTINCT usermeta.user_id) {$part2}";
         } else {
             $where = $this->get_thorougly_where_condition();
-            $query = "SELECT count(ID) from {$wpdb->users} users {$where}";
+            $query = "SELECT count(ID) FROM {$wpdb->users} users {$where}";
         }
         
         return $query;
@@ -126,7 +126,7 @@ class URE_Assign_Role {
     // end of count_users_without_role()
         
     
-    public function get_users_without_role($new_role='') {        
+    public function get_users_without_role() {        
         global $wpdb;
         
         $top_limit = self::MAX_USERS_TO_PROCESS;

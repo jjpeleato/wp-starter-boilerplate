@@ -1,5 +1,11 @@
 CHANGES LOG (full version).
 ===========================
+= [4.50] 20.02.2019 =
+* Update: General code restructure and optimization.
+* Update: URE_Base_Lib::get_blog_ids() returns null, if it's called under WordPress single site (not multisite).
+* Update: URE_Editor::prepare_capabilities_to_save() : "Invalid argument supplied for foreach()" warning was excluded in case there was no valid data structures initialization.
+* Update: 'administrator' role protection was enhanced. URE always does not allow to revoke capability from 'administrator' role. That was possible earlier after the 'administrator' role update.
+
 = [4.49] 15.01.2019 =
 * Update: Selected role ID was added to "Delete role" confirmation dialog.
 * Update: Method URE_Base_Lib::get_short_list_str() was enhanced.
