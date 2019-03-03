@@ -11,6 +11,7 @@ import { fontAssets } from './styles';
 import { images } from './images';
 import { js } from './scripts';
 import { jsAssets } from './scripts';
+import { validateJs } from './scripts';
 import { validateScss } from './styles';
 import { watch } from './watch';
 
@@ -19,11 +20,11 @@ gulp.task(
     'default',
     gulp.series(
 		clean,
+        validateScss,
         css,
-        cssAssets,
         fontAssets,
+        validateJs,
         js,
-        jsAssets,
 		images
     )
 );
@@ -34,5 +35,6 @@ gulp.task('fontAssets', fontAssets);
 gulp.task('images', images);
 gulp.task('js', js);
 gulp.task('jsAssets', jsAssets);
+gulp.task('validateJs', validateJs);
 gulp.task('validateScss', validateScss);
 gulp.task('watch', watch);

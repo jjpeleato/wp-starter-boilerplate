@@ -3,8 +3,9 @@ Contributors: shinephp
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=vladimir%40shinephp%2ecom&lc=RU&item_name=ShinePHP%2ecom&item_number=User%20Role%20Editor%20WordPress%20plugin&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
 Tags: user, role, editor, security, access, permission, capability
 Requires at least: 4.0
-Tested up to: 5.0.3
-Stable tag: 4.49
+Tested up to: 5.1
+Stable tag: 4.50
+Requires PHP: 5.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -79,6 +80,15 @@ https://translate.wordpress.org/projects/wp-plugins/user-role-editor/
 
 
 == Changelog =
+
+= [4.50] 03.02.2019 =
+* PHP version 5.5 was marked as required.
+* Update: General code restructure and optimization.
+* Update: URE_Base_Lib::get_blog_ids() returns null, if it's called under WordPress single site (not multisite).
+* Update: URE_Editor::prepare_capabilities_to_save() : "Invalid argument supplied for foreach()" warning was excluded in case there was no valid data structures initialization.
+* Update: 'administrator' role protection was enhanced. URE always does not allow to revoke capability from 'administrator' role. That was possible earlier after the 'administrator' role update.
+* Update: 2 new actions 'ure_settings_tools_show' and 'ure_settings_tools_exec' allows to extends the list of sections available at the Settings->User Role Editor->Tools tab.
+
 = [4.49] 15.01.2019 =
 * Update: Selected role ID was added to "Delete role" confirmation dialog.
 * Update: Method URE_Base_Lib::get_short_list_str() was enhanced.
@@ -92,7 +102,7 @@ https://translate.wordpress.org/projects/wp-plugins/user-role-editor/
 * Update: URE plugin version update routine is called now at the wp-admin backend only.
 * Update: Direct access to URE_Lib::bbpress property was excluded as a preparation to future code enhancements. 
 
-For full list of changes applied to User Role Editor plugin look changelog.txt file.
+File changelog.txt contains the full list of changes.
 
 
 == Additional Documentation ==
@@ -102,16 +112,8 @@ You can find more information about "User Role Editor" plugin at [this page](htt
 I am ready to answer on your questions about plugin usage. Use [plugin page comments](http://www.shinephp.com/user-role-editor-wordpress-plugin/) for that.
 
 == Upgrade Notice ==
-= [4.49] 15.01.2019 =
-* Update: Selected role ID was added to "Delete role" confirmation dialog.
-* Update: Method URE_Base_Lib::get_short_list_str() was enhanced.
-* Update: Method URE_Base_Lib::get_blog_ids() was made public.
-* Update: Method URE_Lib::get_usermeta_table_name() was excluded.
-* Fix: PHP warning "Undefined index:'unexisted role ID'" was fixed at URE_Lib::roles_text() (wp-content/plugins/user-role-editor/includes/classes/lib.php:360).
-* Fix: Bug was fixed with incorrect usage of transient for option "Show deprecated capabilities".
-
-
-
+= [4.47] 12.11.2018 =
+* Update: Code was restructured, optimized. Almost 100% of the code was covered by PHPUnit tests.
 
 
 

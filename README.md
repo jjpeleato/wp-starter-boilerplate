@@ -1,12 +1,12 @@
-# WordPress: Starter theme
+# WordPress: Starter boilerplate
 
 WordPress base repository for any project.
 
 ## Project
 
-Built with WordPress platform using the following technologies: Underscores, HTML 5, Bootstrap 4, JavaScript, jQuery, CSS3, SASS & Compass, Lando (Docker), NPM or Yarn, Gulp v.4 and Deployer.
+Built with WordPress platform using the following technologies: HTML 5, Bootstrap 4, JavaScript, jQuery, CSS3, SASS & Compass, Lando (Docker), NPM or Yarn, Gulp v.4 and Deployer.
 
-More information about theme:
+For your projects I recommend underscores theme. More information about:
 
 - Website: https://underscores.me/
 - Theme: https://github.com/automattic/_s
@@ -33,11 +33,14 @@ For more information visit:
 ### Installing
 
 1. Open your terminal and browse to the root location of your project.
-2. Cut (don't copy) the `./assets/functions.php` file into root directory of theme and include the following code: `require_once ('assets/functions.php');` on end of `[theme]/functions.php` document. **Note: The logic custom programming write to `assets/functions.php`.**
-3. Run `$lando start`.
+2. Open the `lando.yml` and rename the project and proxy name.
+3. Download and install the main theme. Recommended: https://underscores.me/
+4. Open the `gulp/config.js` and rename the `theme` const according theme path.
+5. Cut (don't copy) the `./assets/functions.php` file into root directory of theme and include the following code: `require_once ('assets/functions.php');` on end of `[theme]/functions.php` document. **Note: The logic custom programming write to `assets/functions.php`.**
+6. Run `$lando start`.
 	- The project has a .lando.yml file with all the environment settings.
 	- The command starts the installation process when it finishes, you can see all the URLs to access.
-4. End. Happy developing.
+7. End. Happy developing.
 
 ### Developing with NPM or Yarn, Gulp and Deployer
 
@@ -50,6 +53,7 @@ For more information visit:
     - `$lando gulp cssAssets` Copy CSS assets to CSS directory.
     - `$lando gulp fontAssets` Copy FONTS assets to CSS directory.
     - `$lando gulp js` Concat and minify JS files.
+    - `$lando gulp validateJs` Validate JS with jshint.
     - `$lando gulp jsAssets` Copy JS assets to CSS directory.
     - `$lando gulp images` CoPY and minify images.
     - `$lando gulp watch` Compile SASS to CSS and concat and minify JS files in real-time.

@@ -4,8 +4,7 @@
 node_modules/
 vendor/
 public/foo.php
-public/wp-content/themes/ao-apolo/assets/css/
-public/wp-content/themes/ao-apolo/assets/js/
+public/wp-content/themes/ao-apolo/
 
 ########################
 # Wordpress Core files #
@@ -109,3 +108,8 @@ public/wp-content/ewww/
 public/wp-content/wfcache/
 public/wp-content/wflogs/
 public/wordfence-waf.php
+
+#################################################
+# All In One WordPress Security untracked files #
+#################################################
+public/wp-content/aiowps_backups

@@ -53,6 +53,7 @@ class URE_Base_Lib {
         
         if (!property_exists($this, $property_name)) {
             syslog(LOG_ERR, 'Lib class does not have such property '. $property_name);
+            return null;
         }
         
         return $this->$property_name;
@@ -74,30 +75,11 @@ class URE_Base_Lib {
     public function get_main_site() {
         global $current_site;
         
-        return $current_site->blog_id;
+        $blog_id = is_object($current_site) ? $current_site->blog_id : null;
+        
+        return $blog_id;
     }
     // end of get_main_site()
-
-
-
-    /**
-     * Returns the array of multi-site WP sites/blogs IDs for the current network
-     * @global wpdb $wpdb
-     * @return array
-     */
-    public function get_blog_ids() {
-        global $wpdb;
-
-        $network = get_current_site();        
-        $query = $wpdb->prepare(
-                    "SELECT blog_id FROM {$wpdb->blogs}
-                        WHERE site_id=%d ORDER BY blog_id ASC",
-                        array($network->id));
-        $blog_ids = $wpdb->get_col($query);
-
-        return $blog_ids;
-    }
-    // end of get_blog_ids()
 
     
     /**
@@ -127,6 +109,7 @@ class URE_Base_Lib {
         }
     }
     // end of show_message()
+    
 
     /**
      * Returns value by name from GET/POST/REQUEST. Minimal type checking is provided
@@ -326,6 +309,30 @@ class URE_Base_Lib {
         return $result;        
     }
     // end of esc_sql_in_list()
+    
+    
+    /**
+     * Returns the array of multi-site WP sites/blogs IDs for the current network
+     * @global wpdb $wpdb
+     * @return array
+     */
+    public function get_blog_ids() {
+        global $wpdb;
+
+        if (!$this->multisite) {
+            return null;
+        }
+        
+        $network = get_current_site();        
+        $query = $wpdb->prepare(
+                    "SELECT blog_id FROM {$wpdb->blogs}
+                        WHERE site_id=%d ORDER BY blog_id ASC",
+                        array( $network->id ) );
+        $blog_ids = $wpdb->get_col( $query );
+
+        return $blog_ids;
+    }
+    // end of get_blog_ids()
     
     
     /**
