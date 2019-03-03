@@ -8,6 +8,7 @@ import sass from 'gulp-sass';
 import stylelint from 'gulp-stylelint';
 import uglifycss from 'gulp-uglifycss';
 import util from 'gulp-util';
+import concat from "gulp-concat";
 
 /**
  * Validate SCSS according Stylint (https://stylelint.io/)
@@ -33,8 +34,8 @@ function css()
     return gulp
         .src(merge)
         .pipe(sass(config.options.sass))
+		.pipe(config.environment === 'production' ? concat('style.min.css') : concat('style.css'))
         .pipe(config.environment === 'production' ? uglifycss(config.options.uglifyCss) : util.noop())
-        .pipe(config.environment === 'production' ? rename({ suffix: '.min' }) : util.noop())
         .pipe(gulp.dest(config.paths.sassAssets.dest));
 }
 

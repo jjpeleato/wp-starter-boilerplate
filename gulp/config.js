@@ -58,7 +58,7 @@ const options = {
         ]
     },
     sass: {
-        outputStyle: 'compressed', // output_style = expanded or nested or compact or compressed
+        outputStyle: 'expanded', // output_style = expanded or nested or compact or compressed
         precision: 10
     },
     uglifyCss: {

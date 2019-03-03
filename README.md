@@ -6,7 +6,7 @@ WordPress base repository for any project.
 
 Built with WordPress platform using the following technologies: HTML 5, Bootstrap 4, JavaScript, jQuery, CSS3, SASS & Compass, Lando (Docker), NPM or Yarn, Gulp v.4 and Deployer.
 
-More information about theme:
+For your projects I recommend underscores theme. More information about:
 
 - Website: https://underscores.me/
 - Theme: https://github.com/automattic/_s
