@@ -23,6 +23,9 @@ proxy:
 
 # See: https://docs.devwithlando.io/config/services.html
 services:
+  appserver:
+    run_as_root:
+      - "chown www-data: -R /app"
   node:
     type: node
     globals:
