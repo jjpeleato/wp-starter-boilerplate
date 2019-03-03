@@ -10,18 +10,32 @@ import uglifycss from 'gulp-uglifycss';
 import util from 'gulp-util';
 
 /**
+ * Validate SCSS according Stylint (https://stylelint.io/)
+ * @returns {*}
+ */
+function validateScss()
+{
+    return gulp
+        .src(config.paths.sassAssets.src)
+        .pipe(config.lintcss === true ? stylelint(config.options.stylelint) : util.noop());
+}
+
+exports.validateScss = validateScss;
+
+/**
  * Compile SASS to CSS and validate SASS according Stylelint (https://stylelint.io/)
  * @returns {*}
  */
 function css()
 {
+    let merge = config.paths.sassAssets.vendor.concat(config.paths.sassAssets.src);
+
     return gulp
-        .src(config.paths.sassAssets.src)
-        .pipe(config.lintcss === true ? stylelint(config.options.stylelint) : util.noop())
+        .src(merge)
         .pipe(sass(config.options.sass))
         .pipe(config.environment === 'production' ? uglifycss(config.options.uglifyCss) : util.noop())
         .pipe(config.environment === 'production' ? rename({ suffix: '.min' }) : util.noop())
-        .pipe(gulp.dest(config.paths.sassAssets.dest))
+        .pipe(gulp.dest(config.paths.sassAssets.dest));
 }
 
 exports.css = css;
@@ -32,9 +46,9 @@ exports.css = css;
  */
 function cssAssets()
 {
-    return gulp
-        .src(config.paths.sassAssets.vendor)
-        .pipe(gulp.dest(config.paths.sassAssets.dest));
+	return gulp
+		.src(config.paths.sassAssets.vendor)
+		.pipe(gulp.dest(config.paths.sassAssets.dest));
 }
 
 exports.cssAssets = cssAssets;
@@ -50,16 +64,3 @@ function fontAssets()
 }
 
 exports.fontAssets = fontAssets;
-
-/**
- * Validate SCSS according Stylint (https://stylelint.io/)
- * @returns {*}
- */
-function validateScss()
-{
-	return gulp
-		.src(config.paths.sassAssets.src)
-		.pipe(stylelint(config.options.stylelint))
-}
-
-exports.validateScss = validateScss;
