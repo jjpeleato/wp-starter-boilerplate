@@ -34,7 +34,7 @@ function css()
     return gulp
         .src(merge)
         .pipe(sass(config.options.sass))
-		.pipe(config.environment === 'production' ? concat('style.min.css') : concat('style.css'))
+		.pipe(config.environment === 'production' ? concat('custom-style.min.css') : concat('custom-style.css'))
         .pipe(config.environment === 'production' ? uglifycss(config.options.uglifyCss) : util.noop())
         .pipe(gulp.dest(config.paths.sassAssets.dest));
 }
