@@ -36,6 +36,14 @@
 					function(){ jQuery('#wordfenceMisconfiguredHowGetIPsNotice').fadeOut(); }
 				);
 			},
+			switchLiveTrafficSecurityOnlyChoice: function(choice) {
+				this.ajax('wordfence_switchLiveTrafficSecurityOnlyChoice', {
+						choice: choice
+					},
+					function(res){ jQuery('#switchLiveTrafficSecurityOnlyChoice').fadeOut(); },
+					function(){ jQuery('#switchLiveTrafficSecurityOnlyChoice').fadeOut(); }
+				);
+			},
 			dismissAdminNotice: function(nid) {
 				this.ajax('wordfence_dismissAdminNotice', {
 						id: nid
