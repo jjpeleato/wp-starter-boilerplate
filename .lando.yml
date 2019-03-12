@@ -1,4 +1,4 @@
-name: startertheme
+name: starterboilerplate
 
 # See: https://docs.devwithlando.io/tutorials/wordpress.html
 recipe: wordpress
@@ -11,15 +11,15 @@ config:
 # See: https://docs.devwithlando.io/config/proxy.html
 proxy:
   appserver:
-    - web.startertheme.lndo.site
+    - web.starterboilerplate.lndo.site
   node:
-    - node.startertheme.lndo.site
+    - node.starterboilerplate.lndo.site
   database:
-    - db.startertheme.lndo.site
+    - db.starterboilerplate.lndo.site
   mailhog:
-    - mail.startertheme.lndo.site
+    - mail.starterboilerplate.lndo.site
   pma:
-    - pma.startertheme.lndo.site
+    - pma.starterboilerplate.lndo.site
 
 # See: https://docs.devwithlando.io/config/services.html
 services:
@@ -30,6 +30,7 @@ services:
     type: node
     globals:
       npm: "latest"
+      yarn: "latest"
       gulp-cli: "latest"
   database:
     portforward: 3308
@@ -40,7 +41,7 @@ services:
   mailhog:
     type: mailhog
     hogfrom:
-    - appserver
+      - appserver
     portforward: 1026
   pma:
     type: phpmyadmin
@@ -48,13 +49,13 @@ services:
 
 # See: https://docs.devwithlando.io/config/tooling.html
 tooling:
-  npm:
-    service: node
   node:
     service: node
-  gulp:
+  npm:
     service: node
   yarn:
+    service: node
+  gulp:
     service: node
   dep:
     service: appserver

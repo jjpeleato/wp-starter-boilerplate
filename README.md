@@ -11,7 +11,7 @@ For your projects I recommend underscores theme. More information about:
 - Website: https://underscores.me/
 - Theme: https://github.com/automattic/_s
 
-**Note:** Install the WooCommerce boilerplate and not sassify.
+**Note:** You can install the WooCommerce boilerplate and not sassify if it is ecommerce.
 
 ### Installing dependencies
 
@@ -28,15 +28,15 @@ For more information visit:
 
 **Note:** If you work with Windows. To execute the commands, we recommend installing **Cygwin** http://www.cygwin.com/
 
-**Note:** We recommend installing the following IDE for PHP Programming: Visual Studio Code (https://code.visualstudio.com/) or PHPStorm (recommended) (https://www.jetbrains.com/phpstorm/).
+**Note:** I recommend installing the following IDE for PHP Programming: Visual Studio Code (https://code.visualstudio.com/) or PHPStorm (recommended) (https://www.jetbrains.com/phpstorm/).
 
 ### Installing
 
-1. Open your terminal and browse to the root location of your project.
-2. Open the `lando.yml` and rename the project and proxy name.
-3. Download and install the main theme. Recommended: https://underscores.me/
-4. Open the `gulp/config.js` and rename the `theme` const according theme path.
-5. Cut (don't copy) the `./assets/functions.php` file into root directory of theme and include the following code: `require_once ('assets/functions.php');` on end of `[theme]/functions.php` document. **Note: The logic custom programming write to `assets/functions.php`.**
+1. Open the `lando.yml` and rename the project and proxy name.
+2. Download and install the main theme. I recommend: https://underscores.me/
+3. Open the `gulp/config.js` and rename the `theme` const according theme path.
+4. Cut (don't copy) the `./assets/functions.php` file into root directory of theme and include the following code: `require_once ('assets/functions.php');` on end of `[theme]/functions.php` document. **Note: The logic custom programming write to `assets/functions.php`.**
+5. Open your terminal and browse to the root location of your project.
 6. Run `$lando start`.
 	- The project has a .lando.yml file with all the environment settings.
 	- The command starts the installation process when it finishes, you can see all the URLs to access.
@@ -61,6 +61,11 @@ For more information visit:
 - NPM actions commands list:
     - `$lando npm run gulp:dev` Compile for development environment
     - `$lando npm run gulp:prod` Compile for production environment
+- Run: `$lando composer install` then: `$lando dep [action]`.
+- Deployer actions commands list:
+    - `$lando dep deploy local` Deploy to the local machine in the docker container.
+    - `$lando dep deploy pre` Deploy to the pre production server.
+    - `$lando dep deploy pro` Deploy to the production server.
 
 ## Finally
 

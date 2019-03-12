@@ -1,5 +1,5 @@
 {
-    "name": "wp-starter-theme",
+    "name": "jjpeleato/wp-starter-theme",
     "description": "WordPress base repository for any project.",
     "keywords": ["lando", "WordPress", "deployer", "psr1", "psr2"],
     "homepage": "https://github.com/jjpeleato/wp-starter-boilerplate.git",
@@ -11,10 +11,9 @@
 		}
     ],
     "require": {
-        "php": "^7.2.0"
+        "php": "^7.3.0"
     },
     "require-dev": {
-		"phpunit/phpunit": "^8",
         "deployer/deployer": "^6.4"
     },
     "autoload-dev": {
@@ -27,15 +26,6 @@
         "sort-packages": true
     },
     "scripts": {
-        "test": "phpunit",
-        "dep/local": [
-            "dep deploy localhost --branch=develop"
-        ],
-        "dep/pre": [
-            "dep deploy pre --branch=develop"
-        ],
-		"dep/pro": [
-			"dep deploy pro --branch=master"
-		]
+        "test": "phpunit"
     }
 }
