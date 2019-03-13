@@ -37,16 +37,16 @@ if ( ! $machete_alfonso_content ) {
 	$machete_alfonso_content = '';
 }
 
-$settings = wp_enqueue_code_editor( array( 'type' => 'text/html' ) );
+$machete_settings = wp_enqueue_code_editor( array( 'type' => 'text/html' ) );
 
-if ( false !== $settings ) {
+if ( false !== $machete_settings ) {
 
-	$json_settings = wp_json_encode( $settings );
+	$machete_json_settings = wp_json_encode( $machete_settings );
 
 	$machete_code_editor  = 'jQuery( function() { ' . "\n";
-	$machete_code_editor .= sprintf( ' wp.codeEditor.initialize( "header_content", %s );', $json_settings ) . "\n";
-	$machete_code_editor .= sprintf( ' wp.codeEditor.initialize( "alfonso_content", %s );', $json_settings ) . "\n";
-	$machete_code_editor .= sprintf( ' wp.codeEditor.initialize( "footer_content", %s );', $json_settings ) . "\n";
+	$machete_code_editor .= sprintf( ' wp.codeEditor.initialize( "header_content", %s );', $machete_json_settings ) . "\n";
+	$machete_code_editor .= sprintf( ' wp.codeEditor.initialize( "alfonso_content", %s );', $machete_json_settings ) . "\n";
+	$machete_code_editor .= sprintf( ' wp.codeEditor.initialize( "footer_content", %s );', $machete_json_settings ) . "\n";
 	$machete_code_editor .= ' } );' . "\n";
 
 	wp_add_inline_script( 'code-editor', $machete_code_editor );
@@ -54,8 +54,8 @@ if ( false !== $settings ) {
 ?>
 
 <div class="wrap machete-wrap machete-section-wrap">
+	<div class="wp-header-end"></div><!-- admin notices go after .wp-header-end or .wrap>h2:first-child -->
 	<h1><?php $this->icon(); ?> <?php esc_html_e( 'Analytics and Custom Code', 'machete' ); ?></h1>
-
 	<p class="tab-description"><?php esc_html_e( 'You don\'t need a zillion plugins to perform easy task like inserting a verification meta tag (Google Search Console, Bing, Pinterest), a json-ld snippet or a custom styleseet (Google Fonts, Print Styles, accesibility tweaks...).', 'machete' ); ?></p>
 	<?php $machete->admin_tabs( 'machete-utils' ); ?>
 	<p class="tab-performance"><span><strong><i class="dashicons dashicons-clock"></i> <?php esc_html_e( 'Performance impact:', 'machete' ); ?></strong> <?php esc_html_e( 'This tool generates up to three static HTML files that are loaded via PHP on each pageview. When enabled, custom body content requires one aditional database request.', 'machete' ); ?></span></p>
