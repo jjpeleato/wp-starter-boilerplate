@@ -1465,12 +1465,20 @@ ul.updraft_premium_description_list li:last-child::after {
 
 .updraftplus_com_login_status, .updraftplus_com_key_status {
 	display: none;
-	border-left-color: #DC3232 !important;
 	background: #FFF;
 	border-left: 4px solid #FFF;
+	border-left-color: #DC3232;
 	box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
 	margin: 5px 0 15px 0;
 	padding: 5px 12px;
+}
+
+.updraftplus_com_login_status.success {
+	border-left-color: green;
+}
+
+#updraft-wrap strong.success {
+	color: green;
 }
 
 .updraft_feat_table {
@@ -2789,6 +2797,7 @@ div#updraft-wrap a {
 
 .updraftplus_spinner.spinner.visible {
 	visibility: visible;
+	width: auto;
 }
 
 .updraftcentral_cloud_notices .updraftplus_spinner {

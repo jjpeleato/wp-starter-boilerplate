@@ -463,9 +463,9 @@ class UpdraftPlus_Commands {
 			case 'backupnow_modal_contents':
 				$updraft_dir = $updraftplus->backups_dir_location();
 				if (!UpdraftPlus_Filesystem_Functions::really_is_writable($updraft_dir)) {
-						$output = array('error' => true, 'html' => __("The 'Backup Now' button is disabled as your backup directory is not writable (go to the 'Settings' tab and find the relevant option).", 'updraftplus'));
+					$output = array('error' => true, 'html' => __("The 'Backup Now' button is disabled as your backup directory is not writable (go to the 'Settings' tab and find the relevant option).", 'updraftplus'));
 				} else {
-									$output = array('html' => $updraftplus_admin->backupnow_modal_contents());
+					$output = array('html' => $updraftplus_admin->backupnow_modal_contents(), 'backupnow_file_entities' => apply_filters('updraftplus_backupnow_file_entities', array()), 'incremental_installed' => apply_filters('updraftplus_incremental_addon_installed', false));
 				}
 				break;
 			
@@ -770,7 +770,7 @@ class UpdraftPlus_Commands {
 		if (false === ($updraftplus_admin = $this->_load_ud_admin()) || false === ($updraftplus = $this->_load_ud())) return new WP_Error('no_updraftplus');
 		
 		global $updraftplus_addons2;
-		
+
 		$options = $updraftplus_addons2->get_option(UDADDONS2_SLUG.'_options');
 		$new_options = $data['data'];
 		
@@ -801,7 +801,6 @@ class UpdraftPlus_Commands {
 				UpdraftPlus_Options::update_updraft_option('updraft_auto_updates', 0);
 			}
 		}
-
 		if ($result) {
 			return array(
 				'success' => true
