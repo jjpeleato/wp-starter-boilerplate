@@ -34,18 +34,18 @@ define("DEPLOY_CONFIG", [
 		]
 	],
 	'pre' => [
-		'hostname' => getenv('DB_HOST'),
-		'port' => getenv('DB_HOST'),
-		'user' => getenv('DB_HOST'),
-		'http_user' => getenv('DB_HOST'),
-		'deploy_path' => getenv('DB_HOST')
+		'hostname' => getenv('DEP_PRE_HOSTNAME'),
+		'port' => (int) getenv('DEP_PRE_PORT'),
+		'user' => getenv('DEP_PRE_USER'),
+		'http_user' => getenv('DEP_PRE_HTTP_USER'),
+		'deploy_path' => getenv('DEP_PRE_DEPLOY_PATH')
 	],
 	'pro' => [
-		'hostname' => getenv('DB_HOST'),
-		'port' => getenv('DB_HOST'),
-		'user' => getenv('DB_HOST'),
-		'http_user' => getenv('DB_HOST'),
-		'deploy_path' => getenv('DB_HOST')
+		'hostname' => getenv('DEP_PRO_HOSTNAME'),
+		'port' => (int) getenv('DEP_PRO_PORT'),
+		'user' => getenv('DEP_PRO_USER'),
+		'http_user' => getenv('DEP_PRO_HTTP_USER'),
+		'deploy_path' => getenv('DEP_PRO_DEPLOY_PATH')
 	]
 ]);
 
