@@ -54,7 +54,7 @@ For more information visit:
 │  ├─ .htaccess.dist
 │  ├─ .htpasswd.dist
 │  └─ functions.php.dist
-├─ .gulp/
+├─ gulp/
 ├─ public/ # WordPress directory
 ├─ .babelrc
 ├─ .editorconfig

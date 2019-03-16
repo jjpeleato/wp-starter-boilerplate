@@ -55,24 +55,20 @@ msgstr "Importa ur archivo SQL y ejecuta sobre él un busca/reemplaza"
 msgid "Backup to an SQL file"
 msgstr "Copia de seguridad a un archivo SQL"
 
-#. Author of the plugin/theme
+#. Author of the plugin
 msgid "Delicious Brains"
 msgstr "Delicious Brains"
 
-#. #-#-#-#-#  better-search-replace-code.pot (Better Search Replace 1.3.2) 
-#. #-#-#-#-#
-#. Plugin URI of the plugin/theme
-#. #-#-#-#-#  better-search-replace-code.pot (Better Search Replace 1.3.2) 
-#. #-#-#-#-#
-#. Author URI of the plugin/theme
+#. Plugin URI of the plugin
+#. Author URI of the plugin
 msgid "https://bettersearchreplace.com"
 msgstr "https://bettersearchreplace.com"
 
-#: includes/class-bsr-admin.php:233
+#: includes/class-bsr-admin.php:232
 msgid "seconds"
 msgstr "segundos"
 
-#: includes/class-bsr-ajax.php:155
+#: includes/class-bsr-ajax.php:153
 msgid "Processing table %d of %d: %s"
 msgstr "Procesando tabla %d de %d: %s"
 
@@ -80,7 +76,7 @@ msgstr "Procesando tabla %d de %d: %s"
 msgid "Processing..."
 msgstr "Procesando…"
 
-#. Description of the plugin/theme
+#. Description of the plugin
 msgid "A small plugin for running a search/replace on your WordPress database."
 msgstr "Un pequeño plugin para ejecutar una búsqueda/sustitución en tu base de datos de WordPress."
 
@@ -152,7 +148,7 @@ msgstr "Para comenzar, utiliza el formulario de abajo para introducir el texto q
 msgid "This tool allows you to search and replace text in your database (supports serialized arrays and objects)."
 msgstr "Esta herramienta te permite buscar y sustituir texto en tu base de datos (es compatible con arrays y objetos serializados)."
 
-#: templates/bsr-help.php:29
+#: templates/bsr-help.php:30
 msgid "Download System Info"
 msgstr "Descargar información del sistema"
 
@@ -192,31 +188,31 @@ msgstr "Error al actualizar la fila: %d."
 msgid "(%s MB)"
 msgstr "(%s MB)"
 
-#: includes/class-bsr-admin.php:287 templates/bsr-dashboard.php:74
+#: templates/bsr-dashboard.php:74 includes/class-bsr-admin.php:288
 msgid "Upgrade to Pro"
 msgstr "Actualiza a Pro"
 
-#: includes/class-bsr-admin.php:242
+#: includes/class-bsr-admin.php:241
 msgid "Learn more about the pro version"
 msgstr "Aprende más sobre la versión pro"
 
-#: includes/class-bsr-admin.php:241
+#: includes/class-bsr-admin.php:240
 msgid "Want even more details, easy database migrations, and saved search/replace profiles?"
 msgstr "¿Quieres aún más detalles, migraciones de bases de datos sencillas y guardar perfiles de búsqueda/sustitución? "
 
-#: includes/class-bsr-admin.php:212
+#: includes/class-bsr-admin.php:211
 msgid "Time"
 msgstr "Hora"
 
-#: includes/class-bsr-admin.php:212
+#: includes/class-bsr-admin.php:211
 msgid "Rows Updated"
 msgstr "Filas actualizadas"
 
-#: includes/class-bsr-admin.php:212
+#: includes/class-bsr-admin.php:211
 msgid "Changes Found"
 msgstr "Cambios encontrados"
 
-#: includes/class-bsr-admin.php:212
+#: includes/class-bsr-admin.php:211
 msgid "Table"
 msgstr "Tabla"
 
@@ -228,10 +224,8 @@ msgstr "<p>Durante la búsqueda y sustitución, se han realizado búsquedas en <
 msgid "<p><strong>DRY RUN:</strong> <strong>%d</strong> tables were searched, <strong>%d</strong> cells were found that need to be updated, and <strong>%d</strong> changes were made.</p><p><a href=\"%s\" class=\"thickbox\" title=\"Dry Run Details\">Click here</a> for more details, or use the form below to run the search/replace.</p>"
 msgstr "<p><strong>SIMULACRO:</strong> se han encontrado <strong>%d</strong>  tablas, <strong>%d</strong> celdas que necesitan actualizarse y se han hecho <strong>%d</strong> cambios.</p><p><a href=\"%s\" class=\"thickbox\" title=\"Detalles sobre simulacros\">Haz clic aquí</a> para más detalles, o usa el formulario de abajo para ejecutar buscar/sustituir.</p>"
 
-#. #-#-#-#-#  better-search-replace-code.pot (Better Search Replace 1.3.2) 
-#. #-#-#-#-#
-#. Plugin Name of the plugin/theme
-#: includes/class-bsr-admin.php:85 templates/bsr-dashboard.php:34
+#. Plugin Name of the plugin
+#: templates/bsr-dashboard.php:34 includes/class-bsr-admin.php:85
 msgid "Better Search Replace"
 msgstr "Better Search Replace"
 
