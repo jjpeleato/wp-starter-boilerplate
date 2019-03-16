@@ -38,11 +38,12 @@ For more information visit:
 │  ├─ img/
 │  ├─ js/
 │  ├─ scss/
-│  ├─ js/
 │  ├─ .htaccess.dist
 │  ├─ .htpasswd.dist
 │  └─ functions.php.dist
 ├─ gulp/
+│  ├─ task/
+│  └─ config.js # Paths and configuration Gulp system.
 ├─ public/ # WordPress directory
 ├─ .babelrc
 ├─ .editorconfig
