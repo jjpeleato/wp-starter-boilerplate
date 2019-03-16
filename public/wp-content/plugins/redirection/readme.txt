@@ -3,8 +3,8 @@ Contributors: johnny5
 Donate link: https://redirection.me/donation/
 Tags: redirect, htaccess, 301, 404, seo, permalink, apache, nginx, post, admin
 Requires at least: 4.5
-Tested up to: 5.1
-Stable tag: 4.0.1
+Tested up to: 5.1.1
+Stable tag: 4.1
 Requires PHP: 5.4
 License: GPLv3
 
@@ -158,6 +158,17 @@ The plugin works in a similar manner to how WordPress handles permalinks and sho
 * Alters database to support case insensitivity, trailing slashes, and query params. Please backup your data
 
 == Changelog ==
+
+= 4.1 - 16th Mar 2019 =
+* Move 404 export option to import/export page
+* Add additional redirect suggestions
+* Add import from Rank Math
+* Fix 'force https' causing WP to redirect to admin URL when accessing www subdomain
+* Fix .htaccess import adding ^ to the source
+* Fix handling of double-slashed URLs
+* Fix WP CLI on single site
+* Add DB upgrade to catch URLs with double-slash URLs
+* Remove unnecessary escaped slashes from JSON output
 
 = 4.0.1 - 2nd Mar 2019 =
 * Improve styling of query flags
