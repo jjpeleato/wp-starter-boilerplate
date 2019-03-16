@@ -3,7 +3,7 @@
  * Plugin Name: Machete
  * Plugin URI: https://machetewp.com
  * Description: Machete is a lean and simple suite of tools that makes WordPress development easier: cookie bar, tracking codes, custom code editor, header cleanup, post and page cloner
- * Version: 3.2.3
+ * Version: 3.3
  * Author: Nilo Velez
  * Author URI: https://www.nilovelez.com
  * License: WTFPL
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'MACHETE_VERSION', '3.1.3' );
+define( 'MACHETE_VERSION', '3.3' );
 
 $machete_get_upload_dir = wp_upload_dir();
 define( 'MACHETE_BASE_PATH', plugin_dir_path( __FILE__ ) );
@@ -32,7 +32,8 @@ define( 'MACHETE_RELATIVE_DATA_PATH', substr( MACHETE_DATA_PATH, strlen( ABSPATH
 define( 'MACHETE_DATA_URL', $machete_get_upload_dir['baseurl'] . '/machete/' );
 
 register_activation_hook(
-	__FILE__, function() {
+	__FILE__,
+	function() {
 		add_option( 'machete_activation_welcome', 'pending' );
 	}
 );
@@ -56,14 +57,18 @@ require MACHETE_BASE_PATH . 'inc/cookies/class-machete-cookies-module.php';
 require MACHETE_BASE_PATH . 'inc/utils/class-machete-utils-module.php';
 require MACHETE_BASE_PATH . 'inc/maintenance/class-machete-maintenance-module.php';
 require MACHETE_BASE_PATH . 'inc/clone/class-machete-clone-module.php';
+require MACHETE_BASE_PATH . 'inc/social/class-machete-social-module.php';
 require MACHETE_BASE_PATH . 'inc/importexport/class-machete-importexport-module.php';
 require MACHETE_BASE_PATH . 'inc/powertools/class-machete-powertools-module.php';
 
 // Management of disabled modules.
 $machete_disabled_modules = get_option( 'machete_disabled_modules', array() );
-foreach ( $machete_disabled_modules as $module ) {
-	if ( isset( $machete->modules[ $module ] ) && $machete->modules[ $module ]->params['can_be_disabled'] ) {
-		$machete->modules[ $module ]->params['is_active'] = false;
+foreach ( $machete_disabled_modules as $machete_module ) {
+	if (
+		isset( $machete->modules[ $machete_module ] ) &&
+		$machete->modules[ $machete_module ]->params['can_be_disabled']
+	) {
+		$machete->modules[ $machete_module ]->params['is_active'] = false;
 	}
 }
 
@@ -75,10 +80,13 @@ if ( defined( 'MACHETE_POWERTOOLS_INIT' ) ) {
 
 // Main init.
 add_action(
-	'init', function() {
+	'init',
+	function() {
 		global $machete;
 
-		if ( ! is_admin() ) {
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			define( 'MACHETE_CLI_INIT', true );
+		} elseif ( ! is_admin() ) {
 			define( 'MACHETE_FRONT_INIT', true );
 			require_once 'machete-frontend.php';
 		} else {

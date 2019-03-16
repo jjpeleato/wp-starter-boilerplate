@@ -11,6 +11,7 @@ if ( ! defined( 'MACHETE_ADMIN_INIT' ) ) {
 } ?>
 
 <div class="wrap machete-wrap machete-section-wrap">
+	<div class="wp-header-end"></div><!-- admin notices go after .wp-header-end or .wrap>h2:first-child -->
 	<h1><?php $this->icon(); ?> <?php esc_html_e( 'Import/Export Options', 'machete' ); ?></h1>
 
 	<p class="tab-description"><?php esc_html_e( 'You can use this section to backup and restore your Machete configuration. You can also take a backup from one site and restore to another. Be careful, your current configuration will be overwritten when you import a backup file', 'machete' ); ?></p>
@@ -34,10 +35,10 @@ if ( ! defined( 'MACHETE_ADMIN_INIT' ) ) {
 			</tr>
 		</thead>
 		<tbody>
-		<?php foreach ( $this->exportable_modules as $machete_module => $args ) { ?>
+		<?php foreach ( $this->exportable_modules as $machete_module => $machete_args ) { ?>
 			<tr>
-				<th scope="row" class="check-column"><input type="checkbox" name="moduleChecked[]" value="<?php echo esc_attr( $machete_module ); ?>" id="<?php echo esc_attr( $machete_module . '_fld' ); ?>" <?php checked( true, $args['checked'], true ); ?>></th>
-				<td class="column-title column-primary"><strong><?php echo esc_html( $args['full_title'] ); ?></strong>
+				<th scope="row" class="check-column"><input type="checkbox" name="moduleChecked[]" value="<?php echo esc_attr( $machete_module ); ?>" id="<?php echo esc_attr( $machete_module . '_fld' ); ?>" <?php checked( true, $machete_args['checked'], true ); ?>></th>
+				<td class="column-title column-primary"><strong><?php echo esc_html( $machete_args['full_title'] ); ?></strong>
 				<button type="button" class="toggle-row"><span class="screen-reader-text"><?php esc_html_e( 'Show more details', 'machete' ); ?></span></button>
 				</td>
 			</tr>

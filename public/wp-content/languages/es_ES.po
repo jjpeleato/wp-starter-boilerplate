@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 5.1.x - Development package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2019-02-09 19:37:45+0000\n"
+"PO-Revision-Date: 2019-03-08 20:25:53+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -36,6 +36,14 @@ msgstr "."
 msgid "number_format_decimal_point"
 msgstr ","
 
+#: wp-includes/functions.php:6884
+msgid "Update PHP"
+msgstr "Actualizar PHP"
+
+#: wp-includes/ms-site.php:67
+msgid "Could not retrieve site data."
+msgstr "No se pudieron recuperar los datos del sitio."
+
 #: wp-includes/js/dist/block-library.js:2253
 msgid "Embed Crowdsignal (formerly Polldaddy) content."
 msgstr "Incrusta contenido de Crowdsignal (anteriormente Polldaddy)."
@@ -46,7 +54,7 @@ msgid "REST API routes must be registered on the %s action."
 msgstr "Las rutas de la API REST deben registrarse en la acción %s."
 
 #. translators: used to join last two items in a list with more than 2 times
-#: wp-includes/formatting.php:4907
+#: wp-includes/formatting.php:4909
 msgid "%1$s, and %2$s"
 msgstr "%1$s, y %2$s"
 
@@ -66,65 +74,65 @@ msgid "Your comment is awaiting moderation. This is a preview, your comment will
 msgstr "Tu comentario está pendiente de moderación. Esto es una vista previa, tu comentario estará visible cuando se apruebe."
 
 #. translators: %s: database table name
-#: wp-includes/ms-site.php:1297
+#: wp-includes/ms-site.php:1311
 msgid "The %s table is not installed. Please run the network database upgrade."
 msgstr "La tabla %s no se ha instalado. Por favor, ejecuta la actualización de la base de datos de la red."
 
-#: wp-includes/ms-site.php:784
+#: wp-includes/ms-site.php:798
 msgid "The site appears to be already uninitialized."
 msgstr "Parece que ya se ha cancelado la inicialización del sitio."
 
 #. translators: %d: site ID
-#: wp-includes/ms-site.php:666
+#: wp-includes/ms-site.php:680
 msgid "Site %d"
 msgstr "%d del sitio"
 
-#: wp-includes/ms-site.php:653
+#: wp-includes/ms-site.php:667
 msgid "The site appears to be already initialized."
 msgstr "Parece que este sitio ya está inicializado."
 
-#: wp-includes/ms-site.php:649 wp-includes/ms-site.php:780
+#: wp-includes/ms-site.php:663 wp-includes/ms-site.php:794
 msgid "Site with the ID does not exist."
 msgstr "No existe un sitio con este ID."
 
-#: wp-includes/ms-site.php:593
+#: wp-includes/ms-site.php:607
 msgid "Both registration and last updated dates must be valid dates."
 msgstr "La fecha de registro y de última actualización deben tener un formato válido."
 
-#: wp-includes/ms-site.php:582
+#: wp-includes/ms-site.php:596
 msgid "Both registration and last updated dates must be provided."
 msgstr "Hay que facilitar tanto las fechas de registro como la de la última actualización."
 
-#: wp-includes/ms-site.php:575
+#: wp-includes/ms-site.php:589
 msgid "Site network ID must be provided."
 msgstr "Hay que indicar el ID de red del sitio."
 
-#: wp-includes/ms-site.php:570
+#: wp-includes/ms-site.php:584
 msgid "Site path must not be empty."
 msgstr "La ruta del sitio no debe estar vacía."
 
-#: wp-includes/ms-site.php:565
+#: wp-includes/ms-site.php:579
 msgid "Site domain must not be empty."
 msgstr "El dominio del sitio no debe estar vacío."
 
-#: wp-includes/ms-site.php:240
+#: wp-includes/ms-site.php:254
 msgid "Could not delete site from the database."
 msgstr "No se pudo borrar el sitio de la base de datos."
 
-#: wp-includes/ms-site.php:151
+#: wp-includes/ms-site.php:165
 msgid "Could not update site in the database."
 msgstr "No se puede actualizar el sitio en la base de datos"
 
-#: wp-includes/ms-site.php:137 wp-includes/ms-site.php:190
+#: wp-includes/ms-site.php:151 wp-includes/ms-site.php:204
 msgid "Site does not exist."
 msgstr "El sitio no existe."
 
-#: wp-includes/ms-site.php:132 wp-includes/ms-site.php:185
-#: wp-includes/ms-site.php:644 wp-includes/ms-site.php:775
+#: wp-includes/ms-site.php:146 wp-includes/ms-site.php:199
+#: wp-includes/ms-site.php:658 wp-includes/ms-site.php:789
 msgid "Site ID must not be empty."
 msgstr "El ID del sitio no debe estar vacío."
 
-#: wp-includes/ms-site.php:67
+#: wp-includes/ms-site.php:61
 msgid "Could not insert site into the database."
 msgstr "No se pudo insertar el sitio en la base de datos."
 
@@ -138,7 +146,7 @@ msgid "Formats"
 msgstr "Formatos"
 
 #. translators: used to join items in a list with more than 2 items
-#: wp-includes/formatting.php:4905
+#: wp-includes/formatting.php:4907
 msgid "%1$s, %2$s"
 msgstr "%1$s, %2$s"
 
@@ -2691,6 +2699,7 @@ msgstr "Tamaño de fuente personalizado"
 #. translators: accessibility text
 #: wp-includes/widgets/class-wp-widget-custom-html.php:310
 #: wp-includes/customize/class-wp-customize-nav-menu-locations-control.php:59
+#: wp-includes/functions.php:6886
 #: wp-includes/class-wp-customize-manager.php:4270
 #: wp-includes/class-wp-customize-manager.php:5572
 #: wp-includes/class-wp-customize-manager.php:5593
@@ -3420,7 +3429,7 @@ msgid "[deleted]"
 msgstr "[borrado]"
 
 #. translators: %d: Comment ID
-#: wp-includes/comment.php:3501
+#: wp-includes/comment.php:3503
 msgid "Comment %d contains personal data but could not be anonymized."
 msgstr "El comentario %d contiene datos personales pero no se pueden anonimizar."
 
@@ -3526,39 +3535,39 @@ msgctxt "request status"
 msgid "Pending"
 msgstr "Pendientes"
 
-#: wp-includes/comment.php:3357
+#: wp-includes/comment.php:3359
 msgid "Comment URL"
 msgstr "URL del comentario"
 
-#: wp-includes/comment.php:3356
+#: wp-includes/comment.php:3358
 msgid "Comment Content"
 msgstr "Contenido del comentario"
 
-#: wp-includes/comment.php:3355
+#: wp-includes/comment.php:3357
 msgid "Comment Date"
 msgstr "Fecha del comentario"
 
-#: wp-includes/comment.php:3354
+#: wp-includes/comment.php:3356
 msgid "Comment Author User Agent"
 msgstr "Agente de usuario del autor del comentario"
 
-#: wp-includes/comment.php:3353
+#: wp-includes/comment.php:3355
 msgid "Comment Author IP"
 msgstr "IP del autor del comentario"
 
-#: wp-includes/comment.php:3352
+#: wp-includes/comment.php:3354
 msgid "Comment Author URL"
 msgstr "URL del autor del comentario"
 
-#: wp-includes/comment.php:3351
+#: wp-includes/comment.php:3353
 msgid "Comment Author Email"
 msgstr "Correo electrónico del autor del comentario"
 
-#: wp-includes/comment.php:3350
+#: wp-includes/comment.php:3352
 msgid "Comment Author"
 msgstr "Autor del comentario"
 
-#: wp-includes/comment.php:3315 wp-includes/comment.php:3424
+#: wp-includes/comment.php:3317 wp-includes/comment.php:3426
 msgid "WordPress Comments"
 msgstr "Comentarios de WordPress"
 
@@ -6670,7 +6679,7 @@ msgstr "No se puede crear un comentario ya existente."
 
 #: wp-includes/rest-api/endpoints/class-wp-rest-comments-controller.php:403
 #: wp-includes/rest-api/endpoints/class-wp-rest-comments-controller.php:420
-#: wp-includes/comment.php:3250
+#: wp-includes/comment.php:3252
 msgid "Sorry, you must be logged in to comment."
 msgstr "Lo siento, debes estar conectado para comentar."
 
@@ -7541,12 +7550,12 @@ msgstr "Contraseña modificada para el usuario %s"
 msgid "Image crop area preview. Requires mouse interaction."
 msgstr "Vista previa del área de recorte de la imagen. Requiere la interacción del ratón."
 
-#: wp-includes/formatting.php:4665
+#: wp-includes/formatting.php:4667
 msgid "https://codex.wordpress.org/Using_Permalinks#Choosing_your_permalink_structure"
 msgstr "https://codex.wordpress.org/Using_Permalinks#Choosing_your_permalink_structure"
 
 #. translators: %s: Codex URL
-#: wp-includes/formatting.php:4664
+#: wp-includes/formatting.php:4666
 msgid "A structure tag is required when using custom permalinks. <a href=\"%s\">Learn more</a>"
 msgstr "Se requiere una etiqueta de estructura cuando se utilizan enlaces permanentes personalizados. <a href=\"%s\">Aprender más</a>"
 
@@ -8548,7 +8557,7 @@ msgstr "Desplegar/Plegar sección: %s"
 #. Asian characters), enter 'characters_excluding_spaces' or
 #. 'characters_including_spaces'. Otherwise, enter 'words'. Do not translate
 #. into your own language.
-#: wp-includes/script-loader.php:2091 wp-includes/formatting.php:3751
+#: wp-includes/script-loader.php:2091 wp-includes/formatting.php:3753
 #: wp-includes/js/dist/editor.js:29052
 msgctxt "Word count type. Do not translate!"
 msgid "words"
@@ -9973,7 +9982,7 @@ msgstr "Los widgets son secciones independientes de contenido que pueden colocar
 msgid "You are customizing %s"
 msgstr "Estás personalizando %s"
 
-#: wp-includes/comment.php:3299
+#: wp-includes/comment.php:3301
 msgid "<strong>ERROR</strong>: The comment could not be saved. Please try again later."
 msgstr "<strong>ERROR</strong>: El comentario no se pudo guardar. Por favor, inténtalo de nuevo más tarde."
 
@@ -11093,7 +11102,7 @@ msgstr "No válido"
 
 #. translators: Time difference between two dates, in years. %s: Number of
 #. years
-#: wp-includes/formatting.php:3652
+#: wp-includes/formatting.php:3654
 msgid "%s year"
 msgid_plural "%s years"
 msgstr[0] "%s año"
@@ -11101,7 +11110,7 @@ msgstr[1] "%s años"
 
 #. translators: Time difference between two dates, in months. %s: Number of
 #. months
-#: wp-includes/formatting.php:3645
+#: wp-includes/formatting.php:3647
 msgid "%s month"
 msgid_plural "%s months"
 msgstr[0] "%s mes"
@@ -11109,7 +11118,7 @@ msgstr[1] "%s meses"
 
 #. translators: Time difference between two dates, in weeks. %s: Number of
 #. weeks
-#: wp-includes/formatting.php:3638
+#: wp-includes/formatting.php:3640
 msgid "%s week"
 msgid_plural "%s weeks"
 msgstr[0] "%s semana"
@@ -12136,7 +12145,7 @@ msgid "&#8221;"
 msgstr "&#8221;"
 
 #. translators: opening curly double quote
-#: wp-includes/formatting.php:98 wp-includes/formatting.php:5228
+#: wp-includes/formatting.php:98 wp-includes/formatting.php:5230
 msgctxt "opening curly double quote"
 msgid "&#8220;"
 msgstr "&#8220;"
@@ -12240,15 +12249,15 @@ msgstr "El tamaño del archivo %s excede el tamaño permitido en este sitio."
 msgid "Feedback"
 msgstr "Sugerencias"
 
-#: wp-includes/comment.php:3258
+#: wp-includes/comment.php:3260
 msgid "<strong>ERROR</strong>: please fill the required fields (name, email)."
 msgstr "<strong>ERROR:</strong> por favor, completa los campos requeridos (nombre, correo electrónico)."
 
-#: wp-includes/comment.php:3260
+#: wp-includes/comment.php:3262
 msgid "<strong>ERROR</strong>: please enter a valid email address."
 msgstr "<strong>ERROR</strong>: Por favor, introduce un correo electrónico válido."
 
-#: wp-includes/comment.php:3285
+#: wp-includes/comment.php:3287
 msgid "<strong>ERROR</strong>: please type a comment."
 msgstr "<strong>ERROR</strong>: Por favor, introduce un comentario."
 
@@ -12272,7 +12281,7 @@ msgstr "Foros de soporte"
 msgid "Documentation"
 msgstr "Documentación"
 
-#: wp-includes/general-template.php:3953 wp-includes/formatting.php:3740
+#: wp-includes/general-template.php:3953 wp-includes/formatting.php:3742
 msgid "&hellip;"
 msgstr "&hellip;"
 
@@ -12338,7 +12347,7 @@ msgctxt "admin color scheme"
 msgid "Blue"
 msgstr "Azul"
 
-#: wp-includes/formatting.php:4646
+#: wp-includes/formatting.php:4648
 msgid "The timezone you have entered is not valid. Please select a valid timezone."
 msgstr "La zona horaria que has introducido no es válida. Por favor, selecciona una zona horaria válida."
 
@@ -12761,7 +12770,7 @@ msgid "F, Y"
 msgstr "j F Y"
 
 #. translators: used to join items in a list with only 2 items
-#: wp-includes/formatting.php:4909
+#: wp-includes/formatting.php:4911
 msgid "%1$s and %2$s"
 msgstr "%1$s y %2$s"
 
@@ -13014,7 +13023,7 @@ msgstr ""
 "%2$s"
 
 #: wp-includes/ms-functions.php:679 wp-includes/ms-functions.php:1307
-#: wp-includes/ms-site.php:610
+#: wp-includes/ms-site.php:624
 msgid "Sorry, that site already exists!"
 msgstr "Lo siento, ¡ese sitio ya existe!"
 
@@ -13030,15 +13039,15 @@ msgstr "Este sitio ha sido archivado o suspendido."
 msgid "The given object ID is not that of a menu item."
 msgstr "El ID de objeto dado no es de un objeto de menú."
 
-#: wp-includes/formatting.php:4587
+#: wp-includes/formatting.php:4589
 msgid "The Site address you entered did not appear to be a valid URL. Please enter a valid URL."
 msgstr "La dirección del sitio no parece ser una URL válida. Por favor, introduce una válida."
 
-#: wp-includes/formatting.php:4574
+#: wp-includes/formatting.php:4576
 msgid "The WordPress address you entered did not appear to be a valid URL. Please enter a valid URL."
 msgstr "La dirección de WordPress parece no ser una URL válida. Por favor, introduce una válida."
 
-#: wp-includes/formatting.php:4464
+#: wp-includes/formatting.php:4466
 msgid "The email address entered did not appear to be a valid email address. Please enter a valid email address."
 msgstr "La dirección de correo electrónico parece que no es válida. Por favor, introduce una válida."
 
@@ -14863,7 +14872,7 @@ msgid ", "
 msgstr ", "
 
 #. translators: Time difference between two dates, in days. %s: Number of days
-#: wp-includes/formatting.php:3631
+#: wp-includes/formatting.php:3633
 msgid "%s day"
 msgid_plural "%s days"
 msgstr[0] "%s día"
@@ -14872,7 +14881,7 @@ msgstr[1] "%s días"
 #. translators: Time duration in hour or hours.
 #. translators: Time difference between two dates, in hours. %s: Number of
 #. hours
-#: wp-includes/functions.php:377 wp-includes/formatting.php:3624
+#: wp-includes/functions.php:377 wp-includes/formatting.php:3626
 msgid "%s hour"
 msgid_plural "%s hours"
 msgstr[0] "%s hora"
@@ -14880,7 +14889,7 @@ msgstr[1] "%s horas"
 
 #. translators: Time difference between two dates, in minutes (min=minute). %s:
 #. Number of minutes
-#: wp-includes/formatting.php:3617
+#: wp-includes/formatting.php:3619
 msgid "%s min"
 msgid_plural "%s mins"
 msgstr[0] "%s min"
@@ -15771,7 +15780,7 @@ msgid "Submit"
 msgstr "Enviar"
 
 #. translators: Name of a comment's author after being anonymized.
-#: wp-includes/comment.php:3470 wp-includes/class-wp-theme.php:835
+#: wp-includes/comment.php:3472 wp-includes/class-wp-theme.php:835
 #: wp-includes/comment-template.php:31
 msgid "Anonymous"
 msgstr "Anónimo"
@@ -15885,7 +15894,7 @@ msgstr "Extracto"
 msgid "Publish"
 msgstr "Publicar"
 
-#: wp-includes/script-loader.php:1485 wp-includes/comment.php:3400
+#: wp-includes/script-loader.php:1485 wp-includes/comment.php:3402
 msgid "Comments"
 msgstr "Comentarios"
 

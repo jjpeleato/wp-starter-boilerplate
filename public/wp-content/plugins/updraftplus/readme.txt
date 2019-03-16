@@ -3,7 +3,7 @@ Contributors: Backup with UpdraftPlus, DavidAnderson, DNutbourne, aporter, snigh
 Tags: backup, restore, database backup, wordpress backup, cloud backup, s3, dropbox, google drive, onedrive, ftp, backups
 Requires at least: 3.2
 Tested up to: 5.1
-Stable tag: 1.16.6
+Stable tag: 1.16.8
 Author URI: https://updraftplus.com
 Donate link: https://david.dw-perspective.org.uk/donate
 License: GPLv3 or later
@@ -57,7 +57,7 @@ The free version of UpdraftPlus works just fine, but if you need more features a
 * Multisite/multi-network compatible
 * Backs up non WP files and databases to multiple remote destinations
 * More storage destinations (e.g. OneDrive, BackBlaze, Azure, SFTP) and multiple destinations
-* Database encrpytion
+* Database encryption
 * Advanced reporting
 * Supports WP-CLI
 * Free dedicated expert support
@@ -81,7 +81,7 @@ A temporary clone is an instant copy of this website, running on our servers. Yo
 * Fast: Takes just the time needed to create a backup and send it.
 * Flexible: If you want, test upgrading to a different PHP or WP version.
 
-To create a temporary clone you need: 1) credit in your account and 2) to connect to your account, below. You can buy UpdraftClone tokens <a href="https://updraftplus.com/shop/updraftclone-tokens/">from our shop, here</a>. 
+To create a temporary clone you need: 1) credit in your account and 2) to connect to your account. You can buy UpdraftClone tokens <a href="https://updraftplus.com/shop/updraftclone-tokens/">from our shop, here</a>. 
 
 = Are you multi-lingual? Can you translate? =
 
@@ -131,7 +131,7 @@ To find out more, why not take a look at our comparison page. UpdraftPremium is 
 
 = How do I install UpdraftPlus? =
 
-Here are the installation guidelines from our <a href="https://updraftplus.com/download/">YouTube channel</a>.
+Here are the installation guidelines from our <a href="https://www.youtube.com/watch?v=7ReY7Z19h2I">YouTube channel</a> or from <a href="https://updraftplus.com/download/">our website</a>.
 
 = Where are your other FAQs, other than the few found here? =
 
@@ -166,7 +166,36 @@ Unfortunately not; since this is free software, there’s no warranty and no gua
 
 The <a href="https://updraftplus.com/news/">UpdraftPlus backup blog</a> is the best place to learn in more detail about any important changes.
 
-N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which is 1 higher in the first digit, and has an extra component on the end, but the changelog below still applies. i.e. changes listed for 1.16.6.x of the free version correspond to changes made in 2.16.6.x of the paid version.
+N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which is 1 higher in the first digit, and has an extra component on the end, but the changelog below still applies. i.e. changes listed for 1.16.8.x of the free version correspond to changes made in 2.16.8.x of the paid version.
+
+= 1.16.8 - 13/Mar/2019 =
+
+* FIX: If requesting clone credentials that were not ready, the loop could rapidly repeat instead of waiting the intended time
+* TWEAK: Some background updates checks (paid versions) that were intended to be suppressed, weren't being.
+
+= 1.16.7 - 11/Mar/2019 = 
+
+* FEATURE: Add support for bucket-specific application keys in Backblaze
+* FEATURE: Added the ability to take incremental backups via UpdraftCentral
+* FIX: Dropbox authorisation setting getting lost after saving UpdraftPlus settings in the free version
+* FIX: Issue where an error wasn't thrown if you tried to restore a backup with no valid components
+* TRANSLATION: Norwegian (Bokmål) and Polish translations are now complete and supplied from wordpress.org, so can be removed from the free plugin zip (saves 900KB disk space - if your mother tongue is not English and you want to improve UpdraftPlus, take a look at: https://translate.wordpress.org/projects/wp-plugins/updraftplus).
+* TWEAK: Ride a polling status check on the regular heartbeat check, thereby reducing the need for stand-alone polls
+* TWEAK: If FTP settings were removed and an attempt was made to download a backup, then a zero-sized file would be created and then an unclear error shown, instead of just showing a clear error.
+* TWEAK: For premium users: Added the option to connect to UpdraftCentral Cloud at point of connecting a license to a site
+* TWEAK: If on PHP 5.3 or later, then register our Google SPL auto-loader with the 'prepend' flag, so that we can avoid loading incompatible Google SDKs registered (but not yet used) by other components
+* TWEAK: Clear settings visuals after wipe settings
+* TWEAK: Improve UpdraftPlus news layout on dashboard
+* TWEAK: Handle a case seen where the updates checker failed to load
+* TWEAK: Prevent a possible PHP notice when requesting a rating
+* TWEAK: Update to the current series (4.5) of yahnis-elsts/plugin-update-checker (paid versions)
+* TWEAK: The "follow this link to refresh your (licensing) connection)" (paid versions) link was not functioning
+* TWEAK: Alert the user in the UI if they have activated a storage destination without any settings
+* TWEAK: If a directory is not found during a restore but the parent directory is then, where relevant, UpdraftPlus will automatically try to create the missing directory
+* TWEAK: Use the correct nonce name when requesting filesystem credentials if needing the WP_Filesystem API to delete old directories
+* TWEAK: Regression in 1.16.6 - certain types of final errors stopped being shown in the final report and had to be read from the log file
+* TWEAK: Refactor the remote storage logging code in all remote storage modules
+* TWEAK: Prevent the download entities UI becoming uglified from multiple button presses
 
 = 1.16.6 - 14/Feb/2019 = 
 
@@ -182,7 +211,6 @@ N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which i
 * TWEAK: Advise the user if they changed the plugin's slug (and so won't be able to get updates) (paid versions)
 * TWEAK: Make use of wp_get_themes rather than relying solely to get_themes which is already deprecated
 * TWEAK: Regression: When a user aborted a fatal error occurred before all clean-up actions were complete
-* TWEAK: Refactor the remote storage logging code in Backblaze and Azure modules
 
 = 1.16.5 - 28/Jan/2019 =
 
@@ -757,7 +785,7 @@ Older changes are found <a href="https://plugins.svn.wordpress.org/updraftplus/t
 
 == License ==
 
-    Copyright 2011-18 David Anderson
+    Copyright 2011-19 David Anderson
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -778,4 +806,4 @@ Furthermore, reliance upon any non-English translation is at your own risk. Updr
 We recognise and thank the following for code and/or libraries used and/or modified under the terms of their open source licences; see: https://updraftplus.com/acknowledgements/
 
 == Upgrade Notice ==
-* 1.16.6: Improved email reporting, performance improvements; plus various other small tweaks and enhancements. A recommended update for all.
+* 1.16.8: Add some performance improvements regarding clones and updates. A recommended updated for all.

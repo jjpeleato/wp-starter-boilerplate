@@ -1548,15 +1548,10 @@ class UpdraftPlus_Backup {
 						if (empty($this->skipped_tables)) $this->skipped_tables = array();
 
 						// whichdb could be an int in which case to get the name of the database and the array key use the name from dbinfo
-						if ('wp' !== $whichdb) {
-							$key = $dbinfo['name'];
-						} else {
-							$key = $whichdb;
-						}
+						$key = ('wp' === $whichdb) ? 'wp' : $dbinfo['name'];
 
-						if (empty($this->skipped_tables[$key])) $this->skipped_tables[$key] = '';
-						if ('' != $this->skipped_tables[$key]) $this->skipped_tables[$key] .= ',';
-						$this->skipped_tables[$key] .= $table;
+						if (empty($this->skipped_tables[$key])) $this->skipped_tables[$key] = array();
+						$this->skipped_tables[$key][] = $table;
 
 						$total_tables--;
 					} else {
@@ -2076,11 +2071,11 @@ class UpdraftPlus_Backup {
 		$this->stow("# Hostname: ".$this->dbinfo['host']."\n");
 		$this->stow("# Database: ".UpdraftPlus_Manipulation_Functions::backquote($this->dbinfo['name'])."\n");
 
-		if (!empty($this->skipped_tables)) {
+		if (!empty($this->skipped_tables[$this->whichdb])) {
 			if ('wp' == $this->whichdb) {
-				$this->stow("# Skipped tables: " . $this->skipped_tables[$this->whichdb]."\n");
+				$this->stow("# Skipped tables: " . implode(', ', $this->skipped_tables['wp'])."\n");
 			} elseif (isset($this->skipped_tables[$this->dbinfo['name']])) {
-				$this->stow("# Skipped tables: " . $this->skipped_tables[$this->dbinfo['name']]."\n");
+				$this->stow("# Skipped tables: " . implode(', ', $this->skipped_tables[$this->dbinfo['name']])."\n");
 			}
 		}
 		
