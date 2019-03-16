@@ -117,12 +117,12 @@ desc('Install NPM packages and run gulp task');
 task('deploy:build', '
     npm install --save-dev;
     ./node_modules/.bin/gulp;
-');
+')->onStage('pre', 'pro');
 
 desc('Set the owner and group according http_user');
 task('deploy:owner', function () {
 	run('chown ' . DEPLOY_CONFIG['pro']['http_user'] . ': ' . DEPLOY_CONFIG['pro']['deploy_path'] . ' -R');
-})->onStage('pro');
+})->onStage('pre', 'pro');
 
 desc('Restart Apache service');
 task('restart:apache', function () {
