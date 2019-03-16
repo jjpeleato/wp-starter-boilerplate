@@ -2102,7 +2102,7 @@ class UpdraftPlus {
 
 			if (empty($useful_checkin) || $useful_checkin < $last_resumption) {
 				$this->log(sprintf('The current run is resumption number %d, and there was nothing useful done on the last run (last useful run: %s) - will not schedule a further attempt until we see something useful happening this time', $resumption_no, $useful_checkin));
-				// Internally, we do actually scheduled a resumption; but only in order to be able to nice handle and log the failure, which otherwise may not be logged
+				// Internally, we do actually schedule a resumption; but only in order to be able to nicely handle and log the failure, which otherwise may not be logged
 				$this->jobdata_set('fail_on_resume', $next_resumption);
 				$schedule_resumption = 1;
 			} else {
@@ -3008,8 +3008,10 @@ class UpdraftPlus {
 			}
 		} else {
 			if ($this->newresumption_scheduled) {
-				$this->log("There were errors in the uploads, so the 'resume' event is remaining scheduled");
-				$this->jobdata_set('jobstatus', 'resumingforerrors');
+				if ($this->current_resumption + 1 != $this->jobdata_get('fail_on_resume')) {
+					$this->log("There were errors in the uploads, so the 'resume' event is remaining scheduled");
+					$this->jobdata_set('jobstatus', 'resumingforerrors');
+				}
 			}
 			// If there were no errors before moving to the upload stage, on the first run, then bring the resumption back very close. Since this is only attempted on the first run, it is really only an efficiency thing for a quicker finish if there was an unexpected networking event. We don't want to do it straight away every time, as it may be that the cloud service is down - and might be up in 5 minutes time. This was added after seeing a case where resumption 0 got to run for 10 hours... and the resumption 7 that should have picked up the uploading of 1 archive that failed never occurred.
 			if (isset($this->error_count_before_cloud_backup) && 0 === $this->error_count_before_cloud_backup) {
@@ -3066,7 +3068,13 @@ class UpdraftPlus {
 				do_action('updraftplus_remotesend_upload_complete');
 			}
 			if ($do_cleanup) $delete_jobdata = apply_filters('updraftplus_backup_complete', $delete_jobdata);
-		} elseif (false == $this->newresumption_scheduled) {
+		} elseif (false == $this->newresumption_scheduled || $this->current_resumption + 1 == $this->jobdata_get('fail_on_resume')) {
+		
+			if ($this->current_resumption + 1 == $this->jobdata_get('fail_on_resume')) {
+				$this->log("The resumption is being cancelled, as it was only scheduled to enable error reporting, which can be performed now");
+				wp_clear_scheduled_hook('updraft_backup_resume', array($this->current_resumption + 1, $this->nonce));
+			}
+		
 			$send_an_email = true;
 			$final_message = __('The backup attempt has finished, apparently unsuccessfully', 'updraftplus');
 			if (!empty($clone_job)) $this->get_updraftplus_clone()->clone_failed_delete(array('clone_id' => $clone_id, 'secret_token' => $secret_token));

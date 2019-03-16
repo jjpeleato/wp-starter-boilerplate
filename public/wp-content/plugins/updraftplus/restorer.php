@@ -985,7 +985,7 @@ class Updraft_Restorer {
 	 * $preserve_existing: this setting only applies at the top level: 0 = overwrite with no backup; 1 = make backup of existing; 2 = do nothing if there is existing, 3 = do nothing to the top level directory, but do copy-in contents (and over-write files). Thus, on a multi-archive set where you want a backup, you'd do this: first call with $preserve_existing === 1, then on subsequent zips call with 3
 	 *
 	 * @param  string  $working_dir       specify working directory
-	 * @param  string  $dest_dir          specify destination directory
+	 * @param  string  $dest_dir          specify destination directory (a WP_Filesystem path)
 	 * @param  integer $preserve_existing check to preserve exisitng file
 	 * @param  array   $do_not_overwrite  Specify files or directories not to overwrite
 	 * @param  string  $type              specify type
@@ -1011,7 +1011,12 @@ class Updraft_Restorer {
 		if (empty($upgrade_files)) return true;
 
 		if (!$wpfs->is_dir($dest_dir)) {
-			return new WP_Error('no_such_dir', __('The directory does not exist', 'updraftplus')." ($dest_dir)");
+			if ($wpfs->is_dir(dirname($dest_dir))) {
+				if (!$wpfs->mkdir($dest_dir, FS_CHMOD_DIR)) return new WP_Error('mkdir_failed', __('The directory does not exist, and the attempt to create it failed', 'updraftplus') . ' (' . $dest_dir . ')');
+				$updraftplus->log("Destination directory did not exist, but was successfully created ($dest_dir)");
+			} else {
+				return new WP_Error('no_such_dir', __('The directory does not exist', 'updraftplus') . " ($dest_dir)");
+			}
 		}
 
 		$wpcore_config_moved = false;
@@ -1294,6 +1299,10 @@ class Updraft_Restorer {
 				break;
 			case WP_CONTENT_DIR . '/themes':
 				$wp_filesystem_dir = $wp_filesystem->wp_themes_dir();
+				// If the themes directory does not exist then it's possible to get a broken path, confirm and try to resolve this
+				if (!$wp_filesystem->exists($wp_filesystem_dir) && $wp_filesystem_dir == $wp_filesystem->find_folder(WP_CONTENT_DIR.get_theme_root()) && $wp_filesystem->exists($wp_filesystem->wp_content_dir())) {
+					$wp_filesystem_dir = $wp_filesystem->find_folder(WP_CONTENT_DIR.'/themes');
+				}
 				break;
 			default:
 				$wp_filesystem_dir = $wp_filesystem->find_folder($path);

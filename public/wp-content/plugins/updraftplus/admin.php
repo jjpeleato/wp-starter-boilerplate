@@ -23,6 +23,8 @@ class UpdraftPlus_Admin {
 	
 	private $regions = array('London', 'New York', 'San Francisco', 'Amsterdam', 'Singapore', 'Frankfurt', 'Toronto', 'Bangalore');
 
+	private $storage_service_without_settings;
+
 	/**
 	 * Constructor
 	 */
@@ -225,6 +227,20 @@ class UpdraftPlus_Admin {
 		}
 
 		if ($this->disk_space_check(1048576*35) === false) add_action('all_admin_notices', array($this, 'show_admin_warning_diskspace'));
+
+		$all_services = UpdraftPlus_Storage_Methods_Interface::get_enabled_storage_objects_and_ids($updraftplus->get_canonical_service_list());
+		$this->storage_service_without_settings = array();
+		foreach ($all_services as $method => $sinfo) {
+			if (empty($sinfo['object']) || empty($sinfo['instance_settings']) || !is_callable(array($sinfo['object'], 'options_exist'))) continue;
+			foreach ($sinfo['instance_settings'] as $opt) {
+				if (!$sinfo['object']->options_exist($opt)) {
+					$this->storage_service_without_settings[] = $updraftplus->backup_methods[$method];
+				}
+			}
+		}
+		if (!empty($this->storage_service_without_settings)) {
+			add_action('all_admin_notices', array($this, 'show_admin_warning_if_remote_storage_settting_are_empty'));
+		}
 	}
 	
 	private function setup_all_admin_notices_udonly($service, $override = false) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Filter use
@@ -444,6 +460,8 @@ class UpdraftPlus_Admin {
 		// Ajax for settings import and export
 		add_action('wp_ajax_updraft_importsettings', array($this, 'updraft_ajax_importsettings'));
 
+		add_filter('heartbeat_received', array($this, 'process_status_in_heartbeat'), 10, 2);
+
 		// UpdraftPlus templates
 		$this->register_template_directories();
 		
@@ -500,11 +518,7 @@ class UpdraftPlus_Admin {
 		if (UpdraftPlus_Options::admin_page() != $pagenow || empty($_REQUEST['page']) || 'updraftplus' != $_REQUEST['page']) return;
 		$this->setup_all_admin_notices_udonly($service);
 
-		/**
-		 * Initialise checkout embed
-		 */
 		global $updraftplus_checkout_embed;
-
 		if (!class_exists('Updraft_Checkout_Embed')) include_once UPDRAFTPLUS_DIR.'/includes/checkout-embed/class-udp-checkout-embed.php';
 
 		// Create an empty list (usefull for testing, thanks to the filter bellow)
@@ -518,7 +532,6 @@ class UpdraftPlus_Admin {
 
 		$checkout_embed_products = apply_filters('updraftplus_checkout_embed_products', $checkout_embed_products);
 
-		// Instanciate Checkout Embed
 		if (!empty($checkout_embed_products)) {
 			$updraftplus_checkout_embed = new Updraft_Checkout_Embed(
 				'updraftplus',                                              // plugin name
@@ -540,6 +553,10 @@ class UpdraftPlus_Admin {
 				do_action('updraftplus_version_changed', UpdraftPlus_Options::get_updraft_option('updraftplus_version'), $updraftplus->version);
 			}
 			UpdraftPlus_Options::update_updraft_option('updraftplus_version', $updraftplus->version);
+		}
+
+		if (isset($_POST['action']) && 'updraft_wipesettings' == $_POST['action'] && isset($_POST['nonce']) && UpdraftPlus_Options::user_can_manage()) {
+			if (wp_verify_nonce($_POST['nonce'], 'updraftplus-wipe-setting-nonce')) $this->updraft_wipe_settings();
 		}
 	}
 
@@ -955,11 +972,15 @@ class UpdraftPlus_Admin {
 			'already_uploaded' => __('(already uploaded)', 'updraftplus'),
 			'onedrive_folder_url_warning' => __('Please specify the Microsoft OneDrive folder name, not the URL.', 'updraftplus'),
 			'updraftcentral_cloud' => __('UpdraftCentral Cloud', 'updraftplus'),
+			'udc_cloud_connected' => __('Connected. Requesting UpdraftCentral Key.', 'updraftplus'),
+			'udc_cloud_key_created' => __('Key created. Adding site to UpdraftCentral Cloud.', 'updraftplus'),
 			'login_successful' => __('Login successful.', 'updraftplus').' '.__('Please follow this link to open %s in a new window.', 'updraftplus'),
+			'login_successful_short' => __('Login successful; reloading information.', 'updraftplus'),
 			'registration_successful' => __('Registration successful.', 'updraftplus').' '.__('Please follow this link to open %s in a new window.', 'updraftplus'),
 			'username_password_required' => __('Both email and password fields are required.', 'updraftplus'),
 			'valid_email_required' => __('An email is required and needs to be in a valid format.', 'updraftplus'),
 			'trouble_connecting' => __('Trouble connecting? Try using an alternative method in the advanced security options.', 'updraftplus'),
+			'checking_tfa_code' => __('Verifying one-time password...', 'updraftplus'),
 			'perhaps_login' => __('Perhaps you would want to login instead.', 'updraftplus'),
 			'generating_key' => __('Please wait while the system generates and registers an encryption key for your website with UpdraftCentral Cloud.', 'updraftplus'),
 			'updraftcentral_cloud_redirect' => __('Please wait while you are redirected to UpdraftCentral Cloud.', 'updraftplus'),
@@ -2574,7 +2595,7 @@ class UpdraftPlus_Admin {
 				}
 				$pval = $updraftplus->have_addons ? 1 : 0;
 
-				echo '<strong>'.__('Actions', 'updraftplus').':</strong> <a href="'.UpdraftPlus_Options::admin_page_url().'?page=updraftplus&updraft_restore_success='.$s_val.'&pval='.$pval.'">'.__('Return to UpdraftPlus Configuration', 'updraftplus').'</a>';
+				echo '<strong>'.__('Actions', 'updraftplus').':</strong> <a href="'.UpdraftPlus_Options::admin_page_url().'?page=updraftplus&updraft_restore_success='.$s_val.'&pval='.$pval.'">'.__('Return to UpdraftPlus configuration', 'updraftplus').'</a>';
 				return;
 				
 			} elseif (is_wp_error($backup_success)) {
@@ -2584,7 +2605,7 @@ class UpdraftPlus_Admin {
 				$updraftplus->log_wp_error($backup_success);
 				$updraftplus->log('Restore failed');
 				$updraftplus->list_errors();
-				echo '<strong>'.__('Actions', 'updraftplus').':</strong> <a href="'.UpdraftPlus_Options::admin_page_url().'?page=updraftplus">'.__('Return to UpdraftPlus Configuration', 'updraftplus').'</a>';
+				echo '<strong>'.__('Actions', 'updraftplus').':</strong> <a href="'.UpdraftPlus_Options::admin_page_url().'?page=updraftplus">'.__('Return to UpdraftPlus configuration', 'updraftplus').'</a>';
 				return;
 			} elseif (false === $backup_success) {
 				// This means, "not yet - but stay on the page because we may be able to do it later, e.g. if the user types in the requested information"
@@ -2593,7 +2614,7 @@ class UpdraftPlus_Admin {
 				echo '</p>';
 				$updraftplus->log("Restore failed");
 				$updraftplus->list_errors();
-				echo '<strong>'.__('Actions', 'updraftplus').':</strong> <a href="'.UpdraftPlus_Options::admin_page_url().'?page=updraftplus">'.__('Return to UpdraftPlus Configuration', 'updraftplus').'</a>';
+				echo '<strong>'.__('Actions', 'updraftplus').':</strong> <a href="'.UpdraftPlus_Options::admin_page_url().'?page=updraftplus">'.__('Return to UpdraftPlus configuration', 'updraftplus').'</a>';
 				return;
 			}
 		}
@@ -2635,15 +2656,11 @@ class UpdraftPlus_Admin {
 			} elseif (false !== $created) {
 				echo '<p>'.__('Backup directory successfully created.', 'updraftplus').'</p><br>';
 			}
-			echo '<b>'.__('Actions', 'updraftplus').':</b> <a href="'.UpdraftPlus_Options::admin_page_url().'?page=updraftplus">'.__('Return to UpdraftPlus Configuration', 'updraftplus').'</a>';
+			echo '<b>'.__('Actions', 'updraftplus').':</b> <a href="'.UpdraftPlus_Options::admin_page_url().'?page=updraftplus">'.__('Return to UpdraftPlus configuration', 'updraftplus').'</a>';
 			return;
 		}
 
 		echo '<div id="updraft_backup_started" class="updated updraft-hidden" style="display:none;"></div>';
-
-		if (isset($_POST['action']) && 'updraft_wipesettings' == $_POST['action']) {
-			$this->updraft_wipe_settings();
-		}
 
 		// This opens a div
 		$this->settings_header();
@@ -3023,13 +3040,28 @@ class UpdraftPlus_Admin {
 				<?php
 				if ('updraftplus-addons' == $option_page) {
 				?>
-					<tr>
+					<tr class="non_tfa_fields">
 						<th></th>
 						<td>
 							<label>
 								<input type="checkbox" id="<?php echo $option_page; ?>_options_auto_updates" tabindex="2" data-updraft_settings_test="updraft_auto_updates" name="<?php echo $option_page; ?>_options[updraft_auto_update]" value="1" <?php if (UpdraftPlus_Options::get_updraft_option('updraft_auto_updates')) echo 'checked="checked"'; ?> />
 								<?php _e('Ask WordPress to update UpdraftPlus automatically when an update is available', 'updraftplus');?>
 							</label>
+							<?php
+								$our_keys = UpdraftPlus_Options::get_updraft_option('updraft_central_localkeys');
+								if (!is_array($our_keys)) $our_keys = array();
+				
+								if (empty($our_keys)) :
+								?>
+									<p class="<?php echo $option_page; ?>-connect-to-udc">
+										<label>
+											<input type="checkbox" id="<?php echo $option_page; ?>_options_auto_udc_connect" tabindex="2" name="<?php echo $option_page; ?>_options[updraft_auto_udc_connect]" value="1" checked="checked" />
+											<?php _e('Add this website to UpdraftCentral (remote, centralised control) - free for up to 5 sites.', 'updraftplus'); ?> <a target="_blank" href="https://updraftcentral.com"><?php _e('Learn more about UpdraftCentral', 'updraftplus'); ?></a>
+										</label>
+									</p>
+
+								<?php endif; ?>
+
 						</td>
 					</tr>
 					<?php
@@ -3482,7 +3514,7 @@ class UpdraftPlus_Admin {
 		} else {
 			echo '<p>',__('Old directory removal failed for some reason. You may want to do this manually.', 'updraftplus').'</p><br>';
 		}
-		if ($show_return) echo '<b>'.__('Actions', 'updraftplus').':</b> <a href="'.UpdraftPlus_Options::admin_page_url().'?page=updraftplus">'.__('Return to UpdraftPlus Configuration', 'updraftplus').'</a>';
+		if ($show_return) echo '<b>'.__('Actions', 'updraftplus').':</b> <a href="'.UpdraftPlus_Options::admin_page_url().'?page=updraftplus">'.__('Return to UpdraftPlus configuration', 'updraftplus').'</a>';
 	}
 
 	/**
@@ -3492,7 +3524,7 @@ class UpdraftPlus_Admin {
 	 */
 	private function delete_old_dirs() {
 		global $wp_filesystem, $updraftplus;
-		$credentials = request_filesystem_credentials(wp_nonce_url(UpdraftPlus_Options::admin_page_url()."?page=updraftplus&action=updraft_delete_old_dirs", 'updraftplus-credentialtest-nonce'));
+		$credentials = request_filesystem_credentials(wp_nonce_url(UpdraftPlus_Options::admin_page_url()."?page=updraftplus&action=updraft_delete_old_dirs", 'updraftplus-credentialtest-nonce', 'updraft_delete_old_dirs_nonce'));
 		WP_Filesystem($credentials);
 		if ($wp_filesystem->errors->get_error_code()) {
 			foreach ($wp_filesystem->errors->get_error_messages() as $message) show_message($message);
@@ -5406,5 +5438,47 @@ ENDHERE;
 		}
 		
 		return $version;
+	}
+
+	/**
+	 * Show remote storage settings are empty warning
+	 */
+	public function show_admin_warning_if_remote_storage_settting_are_empty() {
+		if ((isset($_REQUEST['page']) && 'updraftplus' == $_REQUEST['page']) || (defined('DOING_AJAX') && DOING_AJAX)) {
+			$this->show_admin_warning(sprintf(__('You have requested saving to remote storage (%s), but without entering any settings for that storage.', 'updraftplus'), implode(', ', $this->storage_service_without_settings)), 'error');
+		} else {
+			$this->show_admin_warning('UpdraftPlus: '.sprintf(__('You have requested saving to remote storage (%s), but without entering any settings for that storage.', 'updraftplus'), implode(', ', $this->storage_service_without_settings)).' <a href="'.UpdraftPlus_Options::admin_page_url().'?page=updraftplus&amp;tab=settings">'.__('Return to UpdraftPlus configuration', 'updraftplus').'</a>', 'error');
+		}
+	}
+
+	/**
+	 * Receive Heartbeat data and respond.
+	 *
+	 * Processes data received via a Heartbeat request, and returns additional data to pass back to the front end.
+	 *
+	 * @param array $response - Heartbeat response data to pass back to front end.
+	 * @param array $data     - Data received from the front end (unslashed).
+	 */
+	public function process_status_in_heartbeat($response, $data) {
+		if (!is_array($response) || empty($data['updraftplus'])) return $response;
+		try {
+			$response['updraftplus'] = $this->get_activejobs_list(UpdraftPlus_Manipulation_Functions::wp_unslash($data['updraftplus']));
+		} catch (Exception $e) {
+			$log_message = 'PHP Fatal Exception error ('.get_class($e).') has occurred during get active job list. Error Message: '.$e->getMessage().' (Code: '.$e->getCode().', line '.$e->getLine().' in '.$e->getFile().')';
+			error_log($log_message);
+			$response['updraftplus'] = array(
+				'fatal_error' => true,
+				'fatal_error_message' => $log_message
+			);
+		// @codingStandardsIgnoreLine
+		} catch (Error $e) {
+			$log_message = 'PHP Fatal error ('.get_class($e).') has occurred during get active job list. Error Message: '.$e->getMessage().' (Code: '.$e->getCode().', line '.$e->getLine().' in '.$e->getFile().')';
+			error_log($log_message);
+			$response['updraftplus'] = array(
+				'fatal_error' => true,
+				'fatal_error_message' => $log_message
+			);
+		}
+		return $response;
 	}
 }

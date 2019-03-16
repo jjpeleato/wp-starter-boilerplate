@@ -11,6 +11,7 @@ if ( ! defined( 'MACHETE_ADMIN_INIT' ) ) {
 } ?>
 
 <div class="wrap machete-wrap machete-section-wrap">
+	<div class="wp-header-end"></div><!-- admin notices go after .wp-header-end or .wrap>h2:first-child -->
 	<h1><?php $this->icon(); ?> <?php esc_html_e( 'Coming Soon & Maintenance Mode', 'machete' ); ?></h1>
 
 	<p class="tab-description"><?php esc_html_e( 'If you have to close yout website temporarly to the public, the navive WordPress maintenance mode falls short and most coming soon plugins are bulky, incomplete or expensive. Machete maintenance mode is light, simple and versatile.', 'machete' ); ?></p>
@@ -61,12 +62,12 @@ if ( ! defined( 'MACHETE_ADMIN_INIT' ) ) {
 				<select name="page_id" id="page_id_fld">
 					<option value=""><?php esc_html_e( 'Use default content', 'machete' ); ?></option>
 					<?php
-					$pages = get_pages();
-					foreach ( $pages as $page ) {
-						echo '<option value="' . esc_attr( $page->ID ) . '" ' .
-							selected( $page->ID, $this->settings['page_id'] ) . '>' .
-							esc_html( $page->post_title ) .
-							'</option>';
+					$machete_pages = get_pages();
+					foreach ( $machete_pages as $machete_page ) {
+						echo '<option value="' . esc_attr( $machete_page->ID ) . '" ' .
+						selected( $machete_page->ID, $this->settings['page_id'] ) . '>' .
+						esc_html( $machete_page->post_title ) .
+						'</option>';
 					}
 					?>
 				</select>

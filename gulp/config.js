@@ -37,6 +37,7 @@ const paths = {
     },
     imgAssets: {
 		src: [
+			'./assets/img/**/*.svg',
 			'./assets/img/**/*.png',
 			'./assets/img/**/*.jpeg',
 			'./assets/img/**/*.jpg',

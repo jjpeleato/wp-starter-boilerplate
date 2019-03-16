@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - Redirection - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2019-02-20 20:45:28+0000\n"
+"PO-Revision-Date: 2019-03-11 18:54:22+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -65,7 +65,7 @@ msgstr ""
 
 #: redirection-strings.php:405
 msgid "Exact match"
-msgstr ""
+msgstr "Exakt matchning"
 
 #: redirection-strings.php:232
 msgid "Caching software (e.g Cloudflare)"
@@ -77,11 +77,11 @@ msgstr ""
 
 #: redirection-strings.php:160
 msgid "No more options"
-msgstr ""
+msgstr "Inga fler alternativ"
 
 #: redirection-strings.php:159
 msgid "URL options"
-msgstr ""
+msgstr "URL-alternativ"
 
 #: redirection-strings.php:155
 msgid "Query Parameters"
@@ -93,7 +93,7 @@ msgstr ""
 
 #: redirection-strings.php:113
 msgid "Ignore all parameters"
-msgstr ""
+msgstr "Ignorera alla parametrar"
 
 #: redirection-strings.php:112
 msgid "Exact match all parameters in any order"
@@ -109,7 +109,7 @@ msgstr ""
 
 #: redirection-strings.php:404
 msgid "Relative REST API"
-msgstr ""
+msgstr "Relativ REST API"
 
 #: redirection-strings.php:403
 msgid "Raw REST API"
@@ -133,7 +133,7 @@ msgstr ""
 
 #: redirection.php:37
 msgid "Disabled! Detected PHP %s, need PHP 5.4+"
-msgstr ""
+msgstr "Inaktiverad! Upptäckte PHP %s, behöver PHP 5.4+"
 
 #: redirection-strings.php:266
 msgid "Please make a backup of your Redirection data: {{download}}downloading a backup{{/download}}."
@@ -154,7 +154,7 @@ msgstr ""
 
 #: redirection-strings.php:265
 msgid "Redirection database needs updating"
-msgstr ""
+msgstr "Redirections databas behöver uppdateras"
 
 #: redirection-strings.php:264
 msgid "Update Required"
@@ -166,7 +166,7 @@ msgstr "Jag behöver lite support!"
 
 #: redirection-strings.php:238
 msgid "Finish Setup"
-msgstr ""
+msgstr "Slutför inställning"
 
 #: redirection-strings.php:237
 msgid "Checking your REST API"
@@ -231,7 +231,7 @@ msgstr ""
 
 #: redirection-strings.php:217
 msgid "Monitor permalink changes in WordPress posts and pages"
-msgstr ""
+msgstr "Övervaka ändringar i permalänkar i WordPress-inlägg och sidor"
 
 #: redirection-strings.php:216
 msgid "These are some options you may want to enable now. They can be changed at any time."
@@ -347,7 +347,7 @@ msgstr ""
 
 #: redirection-strings.php:10
 msgid "Upgrading Redirection"
-msgstr ""
+msgstr "Uppgraderar Redirection"
 
 #: redirection-strings.php:9
 msgid "Please remain on this page until complete."
@@ -359,7 +359,7 @@ msgstr ""
 
 #: redirection-strings.php:7
 msgid "Stop upgrade"
-msgstr ""
+msgstr "Stoppa uppgradering"
 
 #: redirection-strings.php:6
 msgid "Skip this stage"
@@ -393,7 +393,7 @@ msgstr ""
 #. translators: version number
 #: api/api-plugin.php:81
 msgid "Your database does not need updating to %s."
-msgstr ""
+msgstr "Din databas behöver inte uppdateras till %s."
 
 #. translators: 1: SQL string
 #: database/database-upgrader.php:74
@@ -1451,7 +1451,7 @@ msgstr "Ogiltig omdirigeringsåtgärd"
 msgid "Invalid redirect matcher"
 msgstr "Ogiltig omdirigeringsmatchning"
 
-#: models/redirect.php:253
+#: models/redirect.php:261
 msgid "Unable to add new redirect"
 msgstr "Det går inte att lägga till en ny omdirigering"
 
@@ -1865,8 +1865,8 @@ msgstr "Typ"
 msgid "Modified Posts"
 msgstr "Modifierade inlägg"
 
-#: database/schema/latest.php:132 models/group.php:148
-#: redirection-strings.php:268
+#: models/group.php:148 redirection-strings.php:268
+#: database/schema/latest.php:132
 msgid "Redirections"
 msgstr "Omdirigeringar"
 

@@ -1,4 +1,10 @@
 
+# htpasswd
+AuthType Basic
+AuthName "Password Protected Area"
+AuthUserFile /path/to/current/public/.htpasswd
+Require valid-user
+
 # .htaccess secure
 <files .htaccess>
     order allow,deny

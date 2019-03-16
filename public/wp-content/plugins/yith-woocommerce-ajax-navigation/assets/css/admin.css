@@ -1,0 +1,238 @@
+/* widget area */
+.yith_wcan_placeholder + .spinner {
+    background-position: center;
+    float: left;
+    margin: 10px 0;
+    width: 100%;
+}
+
+.yith_wcan_placeholder table {
+    width: 100%;
+}
+
+.yith_wcan_placeholder th {
+    text-align: left;
+}
+
+.yith_wcan_placeholder td {
+    vertical-align: middle;
+}
+
+p.yit-wcan-display-label,
+p.yit-wcan-display-color,
+p#yit-wcan-style,
+p#yit-wcan-show-count,
+p.yit-wcan-display-tags,
+div.yit-wcan-widget-tag-list {
+    display: none;
+}
+
+div.yit-wcan-widget-tag-list.tags{
+    display: block;
+}
+
+p#yit-wcan-style.yit-wcan-style-color,
+p#yit-wcan-style.yit-wcan-style-multicolor,
+p#yit-wcan-show-count.yit-wcan-show-count-list,
+p#yit-wcan-show-count.yit-wcan-show-count-categories,
+p#yit-wcan-show-count.yit-wcan-show-count-brands,
+p#yit-wcan-show-count.yit-wcan-show-count-tags{
+    display: block;
+}
+
+label.yith-wcan-reset-table{
+    width: 50%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+/* Options Panel Customizzation */
+
+.plugin-option .form-table tr {
+    background-color: #ffffff;
+    border: none;
+}
+
+.plugin-option .form-table tr th {
+    padding: 20px 10px 20px 20px;
+}
+
+.yith_wcan_placeholder .wp-picker-holder {
+  position: absolute;
+  z-index: 999;
+}
+
+.yith-wcan-multicolor .wp-picker-container .wp-picker-clear {
+  display: none;
+}
+
+/* == Panel Customization === */
+
+.yit-plugins_page_yith_wcan_panel .plugin-option{
+    margin-right: 15px;
+}
+
+.yit-plugins_page_yith_wcan_panel .plugin-option .yit-options .option, .plugin-option .yit_options .option {
+    width: 270px;
+}
+
+.yit-plugins_page_yith_wcan_panel .plugin-option .yit-options .option, .plugin-option .yit_options .option.yit-upload {
+    width: 350px;
+}
+
+.yit-plugins_page_yith_wcan_panel .plugin-option .yit-options .option, .plugin-option .yit_options.on_off_container .option {
+    width: 100px;
+}
+
+.yit-plugins_page_yith_wcan_panel .plugin-option .yit-options .option, .plugin-option .yit_options.on_off_container .description {
+    line-height: 38px;
+}
+
+.yit-plugins_page_yith_wcan_panel .plugin-option .form-table tr th {
+    width: 240px;
+}
+
+div#yit_wcan_options_yith_wcan_dropdown_style-container .select_wrapper,
+div#yit_wcan_options_yith_wcan_tag_query_option-container .select_wrapper,
+div#yit_wcan_options_yith_wcan_scroll_top_mode-container .select_wrapper {
+  width: 220px;
+}
+
+input.yith-wcan-price-filter-input.widefat {
+    width: 30%;
+    display: inline-block;
+    margin-bottom: 10px;
+    margin-right: 15px;
+}
+
+.yith-wcan-price-filter label {
+    display: block;
+    margin-bottom: 15px;
+}
+
+.yith-add-new-range-button {
+    margin-bottom: 15px;
+}
+
+.plugin-option .form-table td .yith_wcan_select_tag tbody td,
+.plugin-option .form-table td .yith_wcan_select_tag thead td{
+    padding: 5px 5px 5px 0;
+    line-height: 0;
+}
+
+.plugin-option .form-table td .yith_wcan_select_tag tbody td.term_count{
+    text-align: center;
+}
+
+.plugin-option .form-table td .yith_wcan_select_tag thead {
+    margin-bottom: 15px;
+}
+
+.plugin-option .form-table td .yith_wcan_select_tag thead td{
+    font-weight: bold;
+    text-transform: uppercase;
+    padding-bottom: 25px;
+}
+
+.yith_wcan_select_tag_wrapper {
+    max-height: 150px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.yith_wcan_select_tag_wrapper .term_count{
+    text-align: center;
+}
+
+.yith_wcan_tags_query_type{
+    margin-bottom: 15px;
+}
+
+.yith-wcan-select-option .select-all {
+  margin-right: 15px;
+}
+.yith-wcan-select-option .select-all,
+.yith-wcan-select-option .unselect-all {
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+
+.yith-wcan-select-option a.select-all:focus,
+.yith-wcan-select-option a.unselect-all:focus{
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.yith-wcan-admin-note {
+    display: block;
+    font-style: italic;
+}
+
+.yith-wcan-admin-note-star {
+  font-size: 8px;
+}
+
+#yith-wcan-tag-list-messages {
+    display: none;
+    background-color: #FAFAFA ;
+    border: 1px solid #e5e5e5;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+}
+
+input#yit_wcan_options_yith_wcan_ajax_shop_pagination,
+input#yit_wcan_options_yith_wcan_ajax_shop_container,
+input#yit_wcan_options_yith_wcan_ajax_shop_result_container,
+input#yit_wcan_options_yith_wcan_ajax_widget_title_class,
+input#yit_wcan_options_yith_wcan_ajax_scroll_top_class,
+input#yit_wcan_options_yith_wcan_ajax_shop_pagination_anchor_class,
+input#yit_wcan_options_yith_wcan_enable_see_all_categories_link_text,
+input#yit_wcan_options_yith_wcan_ajax_widget_title_tag {
+    width: 230px;
+}
+
+#yit_wcan_options_yith_wcan_ajax_shop_terms_order-container .select_wrapper,
+#yit_wcan_options_yith_wcan_ajax_shop_filter_style-container .select_wrapper {
+    width: 235px;
+}
+
+div#yit_wcan_options_yith_wcan_custom_style-container .option {
+    width: 85%;
+}
+
+textarea#yit_wcan_options_yith_wcan_custom_style {
+    min-height: 300px;
+    padding: 8px;
+    resize: none;
+}
+
+div#yit_wcan_options_yith_wcan_seo_value-container .option,
+div#yit_wcan_options_yith_wcan_seo_value-container .option .select_wrapper,
+#yit_wcan_options_yith_wcan_seo_option-container .select_wrapper {
+    width: auto;
+}
+
+/* === OLD Theme Panel Fix */
+.yit-plugins_page_yith_wcan_panel .yit_options .description {
+    float: none;
+    display: block;
+    margin-left: 0;
+    width: 100%;
+    clear: both;
+}
+
+.yit-plugins_page_yith_wcan_panel .yit_options input:not(.button):not(.number):not(#export-file):not(#delete-cache):not(#reset-theme-options):not(#delete-custom-sidebars):not(#delete-resized-images):not(#install-sampledata) {
+    margin-bottom: 10px;
+}
+
+.yith-wcan-see-all-taxonomies-text-default,
+.yith-wcan-see-all-taxonomies-text-description {
+    display: block;
+}

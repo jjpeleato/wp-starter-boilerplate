@@ -1,8 +1,15 @@
 ############################
 # Ignore files/directories #
 ############################
-node_modules/
-vendor/
+/.idea
+/.env
+/node_modules
+/vendor
+/www
+package-lock.json
+composer.lock
+yarn.lock
+yarn-error.log
 public/foo.php
 public/wp-content/themes/ao-apolo/
 
@@ -10,11 +17,11 @@ public/wp-content/themes/ao-apolo/
 # Wordpress Core files #
 ########################
 public/wp-config.php
-public/wp-content/backup-db/
-public/wp-content/backups/
-public/wp-content/blogs.dir/
-public/wp-content/upgrade/
-public/wp-content/uploads/
+public/wp-content/backup-db
+public/wp-content/backups
+public/wp-content/blogs.dir
+public/wp-content/upgrade
+public/wp-content/uploads
 public/wp-content/plugins/hello.php
 
 public/.htaccess
@@ -24,20 +31,22 @@ public/readme.html
 ###################################
 # WordPress Cache untracked files #
 ###################################
-public/wp-content/cache/
+public/wp-content/cache
 public/wp-content/advanced-cache.php
 public/wp-content/wp-cache-config.php
 
 ############
 # Sitemaps #
 ############
+public/sitemap.backup.xml
+public/sitemap.backup.xml.gz
+public/sitemap_index.xml
 public/sitemap.xml
 public/sitemap.xml.gz
 
 #############################
 # Logs, databases and misc. #
 #############################
-/.idea
 *.log
 *.sql
 *.sqlite
@@ -86,30 +95,32 @@ ehthumbs.db
 Icon?
 Thumbs.db
 *.lock
-.env
-package-lock.json
-composer.lock
 
 ##################################
 # W3 Total Cache untracked files #
 ##################################
 public/wp-content/db.php
 public/wp-content/object-cache.php
-public/wp-content/w3tc-config/
+public/wp-content/w3tc-config
 
 ########################################
 # EWWW Image Optimizer untracked files #
 ########################################
-public/wp-content/ewww/
+public/wp-content/ewww
 
 #############################
 # WordFence untracked files #
 #############################
-public/wp-content/wfcache/
-public/wp-content/wflogs/
+public/wp-content/wfcache
+public/wp-content/wflogs
 public/wordfence-waf.php
 
 #################################################
 # All In One WordPress Security untracked files #
 #################################################
 public/wp-content/aiowps_backups
+
+#############
+# WP Rocket #
+#############
+public/wp-content/wp-rocket-config
