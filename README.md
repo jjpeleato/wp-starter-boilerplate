@@ -30,18 +30,6 @@ For more information visit:
 
 **Note:** I recommend installing the following IDE for PHP Programming: Visual Studio Code (https://code.visualstudio.com/) or PHPStorm (recommended) (https://www.jetbrains.com/phpstorm/).
 
-### Installing
-
-1. Open the `lando.yml` and rename the project and proxy name.
-2. Download and install the main theme. I recommend: https://underscores.me/
-3. Open the `gulp/config.js` and rename the `theme` const according theme path.
-4. Cut (don't copy) the `./assets/functions.php` file into root directory of theme and include the following code: `require_once ('core/functions.php');` on end of `[theme]/functions.php` document. **Note: The logic custom programming write to `core/functions.php`.**
-5. Open your terminal and browse to the root location of your project.
-6. Run `$lando start`.
-	- The project has a .lando.yml file with all the environment settings.
-	- The command starts the installation process when it finishes, you can see all the URLs to access.
-7. End. Happy developing.
-
 ### Project skeleton
 
 ```
@@ -73,6 +61,18 @@ For more information visit:
 └─ README.md
 ```
 
+### Installing
+
+1. Open the `lando.yml` and rename the project and proxy name.
+2. Download and install the main theme. I recommend: https://underscores.me/
+3. Open the `gulp/config.js` and rename the `theme` const according theme path.
+4. Cut (don't copy) the `./assets/functions.php` file into root directory of theme and include the following code: `require_once ('core/functions.php');` on end of `[theme]/functions.php` document. **Note: The logic custom programming write to `core/functions.php`.**
+5. Open your terminal and browse to the root location of your project.
+6. Run `$lando start`.
+	- The project has a .lando.yml file with all the environment settings.
+	- The command starts the installation process when it finishes, you can see all the URLs to access.
+7. End. Happy developing.
+
 ### Developing with NPM or Yarn, Gulp and Deployer
 
 - Open your terminal and browse to the root location of your project.
@@ -86,13 +86,14 @@ For more information visit:
     - `$lando gulp js` Concat and minify JS files.
     - `$lando gulp validateJs` Validate JS with jshint.
     - `$lando gulp jsAssets` Copy JS assets to CSS directory.
-    - `$lando gulp images` CoPY and minify images.
+    - `$lando gulp images` Copy and minify images.
     - `$lando gulp watch` Compile SASS to CSS and concat and minify JS files in real-time.
     - `$lando gulp clean` Delete all files.
 - NPM actions commands list:
     - `$lando npm run gulp:dev` Compile for development environment
     - `$lando npm run gulp:prod` Compile for production environment
 - If required. Run: `$lando composer install` then: `$lando dep [action]`.
+- If you deploy with Deployer. Copy the `.env.dist` to `.env` and you add the server credentials and git repository.
 - Deployer actions commands list:
     - `$lando dep deploy local` Deploy to the local machine in the docker container.
     - `$lando dep deploy pre` Deploy to the pre production server.
