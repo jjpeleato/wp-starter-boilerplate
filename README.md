@@ -125,7 +125,7 @@ The present project uses several technologies and tools for the automation and d
 ### Clarifications
 
 1. It is very important that if you deploy the project to publish. The **DocumentRoot** on the VirtualHost has to point to the **public/** directory.
-1. It is very important that if you deploy the project to publish with **Deployer**. The **DocumentRoot** on the VirtualHost has to point to the **public/current/** directory.
+2. It is very important that if you deploy the project to publish with **Deployer**. The **DocumentRoot** on the VirtualHost has to point to the **current/public/** directory.
 
 ### Others clarifications
 
