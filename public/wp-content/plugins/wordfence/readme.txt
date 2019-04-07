@@ -4,7 +4,7 @@ Tags: security, firewall, malware scanner, web application firewall, antivirus, 
 Requires at least: 3.9
 Requires PHP: 5.3
 Tested up to: 5.1
-Stable tag: 7.2.3
+Stable tag: 7.2.4
 
 Secure your website with the most comprehensive WordPress security plugin. Firewall, malware scan, blocking, live traffic, login security & more.
 
@@ -176,6 +176,14 @@ Secure your website with Wordfence.
 
 
 == Changelog ==
+
+= 7.2.4 - March 26, 2019 =
+* Improvement: Updated vulnerability database integration.
+* Improvement: Better messaging when a WAF rule update fails to better indicate the cause.
+* Fix: Removed a double slash that could occur in an image path.
+* Fix: Adjusted timeouts to improve reliability of WAF rule updates on slower servers.
+* Fix: Improved connection process with Wordfence Central for better reliability on servers with non-standard paths.
+* Fix: Switched to autoloader with fastMult enabled on sodum_compat to minimize connection issues.
 
 = 7.2.3 - February 28, 2019 =
 * Improvement: Country names are now shown instead of two letter codes where appropriate.

@@ -2258,31 +2258,46 @@ ENDHERE;
 		$this->create_forbidden = false;
 		$this->drop_forbidden = false;
 		$this->lock_forbidden = false;
+		
+		// This will get flipped if positive success is confirmed
+		$this->triggers_forbidden = true;
 
 		$this->last_error = '';
 		$random_table_name = 'updraft_tmp_'.rand(0, 9999999).md5(microtime(true));
 
 		// The only purpose in funnelling queries directly here is to be able to get the error number
 		if ($this->use_wpdb()) {
+		
 			$req = $wpdb->query("CREATE TABLE $random_table_name (test INT)");
 			// WPDB, for several query types, returns the number of rows changed; in distinction from an error, indicated by (bool)false
-			if (0 === $req) {
-				$req = true;
-			}
+			if (0 === $req) $req = true;
 			if (!$req) $this->last_error = $wpdb->last_error;
 			$this->last_error_no = false;
+
+			if ($req && false !== $wpdb->query("CREATE TRIGGER test_trigger BEFORE INSERT ON $random_table_name FOR EACH ROW SET @sum = @sum + NEW.test")) $this->triggers_forbidden = false;
+
 		} else {
+		
 			if ($this->use_mysqli) {
 				$req = mysqli_query($this->mysql_dbh, "CREATE TABLE $random_table_name (test INT)");
 			} else {
 				// @codingStandardsIgnoreLine
 				$req = mysql_unbuffered_query("CREATE TABLE $random_table_name (test INT)", $this->mysql_dbh);
 			}
+			
 			if (!$req) {
 				// @codingStandardsIgnoreLine
-				$this->last_error = ($this->use_mysqli) ? mysqli_error($this->mysql_dbh) : mysql_error($this->mysql_dbh);
+				$this->last_error = $this->use_mysqli ? mysqli_error($this->mysql_dbh) : mysql_error($this->mysql_dbh);
 				// @codingStandardsIgnoreLine
-				$this->last_error_no = ($this->use_mysqli) ? mysqli_errno($this->mysql_dbh) : mysql_errno($this->mysql_dbh);
+				$this->last_error_no = $this->use_mysqli ? mysqli_errno($this->mysql_dbh) : mysql_errno($this->mysql_dbh);
+			} else {
+				if ($this->use_mysqli) {
+					$reqtrigger = mysqli_query($this->mysql_dbh, "CREATE TRIGGER test_trigger BEFORE INSERT ON $random_table_name FOR EACH ROW SET @sum = @sum + NEW.test");
+				} else {
+					// @codingStandardsIgnoreLine
+					$reqtrigger = mysql_unbuffered_query("CREATE TRIGGER test_trigger BEFORE INSERT ON $random_table_name FOR EACH ROW SET @sum = @sum + NEW.test", $this->mysql_dbh);
+				}
+				if ($reqtrigger) $this->triggers_forbidden = false;
 			}
 		}
 
@@ -2349,7 +2364,7 @@ ENDHERE;
 
 		$this->max_allowed_packet = $updraftplus->max_packet_size();
 
-		$updraftplus->log("Entering maintenance mode");
+		$updraftplus->log('Entering maintenance mode');
 		$this->wp_upgrader->maintenance_mode(true);
 
 		// N.B. There is no such function as bzeof() - we have to detect that another way
@@ -2702,12 +2717,17 @@ ENDHERE;
 					$sql_line = UpdraftPlus_Manipulation_Functions::str_lreplace($smatches[1]." ".$charset, "SET NAMES ".$this->restore_options['updraft_restorer_charset'], $sql_line);
 					$updraftplus->log('SET NAMES: '.sprintf(__('Requested character set (%s) is not present - changing to %s.', 'updraftplus'), esc_html($charset), esc_html($this->restore_options['updraft_restorer_charset'])), 'notice-restore');
 				}
+			} elseif (preg_match('/^\s*create trigger /i', $sql_line)) {
+				$sql_type = 9;
+				if ('' != $this->old_table_prefix && $import_table_prefix != $this->old_table_prefix) $sql_line = UpdraftPlus_Manipulation_Functions::str_replace_once($this->old_table_prefix, $import_table_prefix, $sql_line);
+				if ($this->triggers_forbidden) $updraftplus->log("Database user lacks permission to create triggers; statement will not be executed ($sql_line)");
 			} else {
 				// Prevent the previous value of $sql_type being retained for an unknown type
 				$sql_type = 0;
 			}
 			
-			if (6 != $sql_type && 7 != $sql_type) {
+			// Do not execute "USE" or "CREATE|DROP DATABASE" commands
+			if (6 != $sql_type && 7 != $sql_type && (9 != $sql_type || false == $this->triggers_forbidden)) {
 				$do_exec = $this->sql_exec($sql_line, $sql_type);
 				if (is_wp_error($do_exec)) return $do_exec;
 			} else {
@@ -2756,6 +2776,7 @@ ENDHERE;
 		if (!$wp_filesystem->delete($working_dir.'/'.$db_basename, false, 'f')) {
 			$this->restore_log_permission_failure_message($working_dir, 'Delete '.$working_dir.'/'.$db_basename);
 		}
+
 		return true;
 
 	}
@@ -2957,6 +2978,12 @@ ENDHERE;
 					return new WP_Error('initial_db_error', sprintf(__('An error occurred on the first %s command - aborting run', 'updraftplus'), 'INSERT (options)'));
 				}
 				return false;
+			}
+			
+			static $first_trigger = true;
+			if (9 == $sql_type && $first_trigger) {
+				$first_trigger = false;
+				$updraftplus->log('Restoring TRIGGERs...');
 			}
 
 			if ($this->use_wpdb()) {

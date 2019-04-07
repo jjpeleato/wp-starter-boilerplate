@@ -46,6 +46,7 @@ class wfRESTAuthenticationController {
 	public function nonce($request) {
 		$response = rest_ensure_response(array(
 			'nonce' => self::generateNonce(),
+			'admin_url' => network_admin_url(),
 		));
 		return $response;
 	}
@@ -55,7 +56,7 @@ class wfRESTAuthenticationController {
 	 * @return mixed|WP_REST_Response
 	 */
 	public function authenticate($request) {
-		require_once WORDFENCE_PATH . '/vendor/paragonie/sodium_compat/autoload.php';
+		require_once WORDFENCE_PATH . '/vendor/paragonie/sodium_compat/autoload-fast.php';
 
 		$siteID = wfConfig::get('wordfenceCentralSiteID');
 		if (!$siteID) {
@@ -116,7 +117,7 @@ class wfRESTAuthenticationController {
 	 * @return mixed|WP_REST_Response
 	 */
 	public function authenticatePremium($request) {
-		require_once WORDFENCE_PATH . '/vendor/paragonie/sodium_compat/autoload.php';
+		require_once WORDFENCE_PATH . '/vendor/paragonie/sodium_compat/autoload-fast.php';
 
 		// verify signature.
 		$data = $request->get_param('data');

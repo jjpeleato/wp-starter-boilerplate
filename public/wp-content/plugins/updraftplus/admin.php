@@ -19,7 +19,7 @@ class UpdraftPlus_Admin {
 
 	private $php_versions = array('5.4', '5.5', '5.6', '7.0', '7.1', '7.2', '7.3');
 
-	private $wp_versions = array('3.2', '3.3', '3.4', '3.5', '3.6', '3.7', '3.8', '3.9', '4.0', '4.1', '4.2', '4.3', '4.4', '4.5', '4.6', '4.7', '4.8', '4.9', '5.0');
+	private $wp_versions = array('3.2', '3.3', '3.4', '3.5', '3.6', '3.7', '3.8', '3.9', '4.0', '4.1', '4.2', '4.3', '4.4', '4.5', '4.6', '4.7', '4.8', '4.9', '5.0', '5.1');
 	
 	private $regions = array('London', 'New York', 'San Francisco', 'Amsterdam', 'Singapore', 'Frankfurt', 'Toronto', 'Bangalore');
 
@@ -507,6 +507,8 @@ class UpdraftPlus_Admin {
 			'dismiss_confirm' => __('Are you sure you want to dismiss all UpdraftPlus news forever?', 'updraftplus'),
 		);
 		
+		add_filter('woocommerce_in_plugin_update_message', array($this, 'woocommerce_in_plugin_update_message'));
+		
 		$updraftplus_dashboard_news = new Updraft_Dashboard_News('https://feeds.feedburner.com/updraftplus/', 'https://updraftplus.com/news/', $news_translations);
 		
 		// New-install admin tour
@@ -514,6 +516,10 @@ class UpdraftPlus_Admin {
 			include_once(UPDRAFTPLUS_DIR.'/includes/updraftplus-tour.php');
 		}
 
+		if ('index.php' == $GLOBALS['pagenow'] && UpdraftPlus_Options::user_can_manage()) {
+			add_action('admin_print_footer_scripts', array($this, 'admin_index_print_footer_scripts'));
+		}
+		
 		// Next, the actions that only come on the UpdraftPlus page
 		if (UpdraftPlus_Options::admin_page() != $pagenow || empty($_REQUEST['page']) || 'updraftplus' != $_REQUEST['page']) return;
 		$this->setup_all_admin_notices_udonly($service);
@@ -560,6 +566,31 @@ class UpdraftPlus_Admin {
 		}
 	}
 
+	/**
+	 * Runs upon the WP action woocommerce_in_plugin_update_message
+	 *
+	 * @param String $msg - the message that WooCommerce will print
+	 *
+	 * @return String - filtered value
+	 */
+	public function woocommerce_in_plugin_update_message($msg) {
+		return '<br><strong>'.__('You can test upgrading your site on an instant copy using UpdraftClone credits', 'updraftplus').' - <a href="'.UpdraftPlus_Options::admin_page_url().'?page=updraftplus&amp;tab=migrate#updraft-navtab-migrate-content">'.__('go here', 'updraftplus').'</a></strong>'.$msg;
+	}
+
+	/**
+	 * Runs upon the WP action admin_print_footer_scripts if an entitled user is on the main WP dashboard page
+	 */
+	public function admin_index_print_footer_scripts() {
+		?>
+		<script>
+			jQuery(document).ready(function($) {
+				if ($('#dashboard-widgets #dashboard_php_nag').length < 1) return;
+				$('#dashboard-widgets #dashboard_php_nag .button-container').before('<a href="<?php echo UpdraftPlus_Options::admin_page_url(); ?>?page=updraftplus&amp;tab=migrate#updraft-navtab-migrate-content"><?php echo esc_js(__('You can test running your site on a different PHP (or WordPress) version using UpdraftClone credits.', 'updraftplus')); ?></a>');
+			});
+		</script>
+		<?php
+	}
+	
 	/**
 	 * Sets up what is needed to allow an in-page backup to be run. Will enqueue scripts and output appropriate HTML (so, should be run when at a suitable place). Not intended for use on the UpdraftPlus settings page.
 	 *
@@ -2549,74 +2580,9 @@ class UpdraftPlus_Admin {
 		/**
 		 * We use request here because the initial restore is triggered by a POSTed form. we then may need to obtain credential for the WP_Filesystem. to do this WP outputs a form, but we don't pass our parameters via that. So the values are passed back in as GET parameters.
 		 */
-		if (isset($_REQUEST['action']) && (('updraft_restore' == $_REQUEST['action'] && isset($_REQUEST['backup_timestamp'])) || ('updraft_restore_continue' == $_REQUEST['action'] && !empty($_REQUEST['restoreid'])))) {
-
-			$is_continuation = ('updraft_restore_continue' == $_REQUEST['action']) ? true : false;
-
-			if ($is_continuation) {
-				$restore_in_progress = get_site_option('updraft_restore_in_progress');
-				if ($restore_in_progress != $_REQUEST['restoreid']) {
-					$abort_restore_already = true;
-					$updraftplus->log(__('Sufficient information about the in-progress restoration operation could not be found.', 'updraftplus').' (restoreid_mismatch)', 'error', 'restoreid_mismatch');
-				} else {
-
-					$restore_jobdata = $updraftplus->jobdata_getarray($restore_in_progress);
-					if (is_array($restore_jobdata) && isset($restore_jobdata['job_type']) && 'restore' == $restore_jobdata['job_type'] && isset($restore_jobdata['second_loop_entities']) && !empty($restore_jobdata['second_loop_entities']) && isset($restore_jobdata['job_time_ms']) && isset($restore_jobdata['backup_timestamp'])) {
-						$backup_timestamp = $restore_jobdata['backup_timestamp'];
-						$continuation_data = $restore_jobdata;
-					} else {
-						$abort_restore_already = true;
-						$updraftplus->log(__('Sufficient information about the in-progress restoration operation could not be found.', 'updraftplus').' (restoreid_nojobdata)', 'error', 'restoreid_nojobdata');
-					}
-				}
-
-			} else {
-				$backup_timestamp = $_REQUEST['backup_timestamp'];
-				$continuation_data = null;
-			}
-
-			if (empty($abort_restore_already)) {
-				$backup_success = $this->restore_backup($backup_timestamp, $continuation_data);
-			} else {
-				$backup_success = false;
-			}
-
-			if (empty($updraftplus->errors) && true === $backup_success) {
-				// TODO: Deal with the case of some of the work having been deferred
-				echo '<p><strong>';
-				$updraftplus->log_e('Restore successful!');
-				echo '</strong></p>';
-				$updraftplus->log('Restore successful');
-				$s_val = 1;
-				if (!empty($this->entities_to_restore) && is_array($this->entities_to_restore)) {
-					foreach ($this->entities_to_restore as $k => $v) {
-						if ('db' != $v) $s_val = 2;
-					}
-				}
-				$pval = $updraftplus->have_addons ? 1 : 0;
-
-				echo '<strong>'.__('Actions', 'updraftplus').':</strong> <a href="'.UpdraftPlus_Options::admin_page_url().'?page=updraftplus&updraft_restore_success='.$s_val.'&pval='.$pval.'">'.__('Return to UpdraftPlus configuration', 'updraftplus').'</a>';
-				return;
-				
-			} elseif (is_wp_error($backup_success)) {
-				echo '<p>';
-				$updraftplus->log_e('Restore failed...');
-				echo '</p>';
-				$updraftplus->log_wp_error($backup_success);
-				$updraftplus->log('Restore failed');
-				$updraftplus->list_errors();
-				echo '<strong>'.__('Actions', 'updraftplus').':</strong> <a href="'.UpdraftPlus_Options::admin_page_url().'?page=updraftplus">'.__('Return to UpdraftPlus configuration', 'updraftplus').'</a>';
-				return;
-			} elseif (false === $backup_success) {
-				// This means, "not yet - but stay on the page because we may be able to do it later, e.g. if the user types in the requested information"
-				echo '<p>';
-				$updraftplus->log_e('Restore failed...');
-				echo '</p>';
-				$updraftplus->log("Restore failed");
-				$updraftplus->list_errors();
-				echo '<strong>'.__('Actions', 'updraftplus').':</strong> <a href="'.UpdraftPlus_Options::admin_page_url().'?page=updraftplus">'.__('Return to UpdraftPlus configuration', 'updraftplus').'</a>';
-				return;
-			}
+		if (isset($_REQUEST['action']) && (('updraft_restore' == $_REQUEST['action'] && isset($_REQUEST['backup_timestamp'])) || ('updraft_restore_continue' == $_REQUEST['action'] && !empty($_REQUEST['job_id'])))) {
+			$this->prepare_restore();
+			return;
 		}
 
 		if (isset($_REQUEST['action']) && 'updraft_delete_old_dirs' == $_REQUEST['action']) {
@@ -2907,7 +2873,7 @@ class UpdraftPlus_Admin {
 	 */
 	public function show_admin_restore_in_progress_notice() {
 	
-		if (isset($_REQUEST['action']) && 'updraft_restore_abort' === $_REQUEST['action'] && !empty($_REQUEST['restoreid'])) {
+		if (isset($_REQUEST['action']) && 'updraft_restore_abort' === $_REQUEST['action'] && !empty($_REQUEST['job_id'])) {
 			delete_site_option('updraft_restore_in_progress');
 			return;
 		}
@@ -2923,7 +2889,7 @@ class UpdraftPlus_Admin {
 		<form method="post" action="<?php echo UpdraftPlus_Options::admin_page_url().'?page=updraftplus'; ?>">
 			<?php wp_nonce_field('updraftplus-credentialtest-nonce'); ?>
 			<input id="updraft_restore_continue_action" type="hidden" name="action" value="updraft_restore_continue">
-			<input type="hidden" name="restoreid" value="<?php echo $restore_jobdata['jobid'];?>" value="<?php echo esc_attr($restore_jobdata['jobid']);?>">
+			<input type="hidden" name="job_id" value="<?php echo $restore_jobdata['jobid'];?>" value="<?php echo esc_attr($restore_jobdata['jobid']);?>">
 			<button onclick="jQuery('#updraft_restore_continue_action').val('updraft_restore_continue'); jQuery(this).parent('form').submit();" type="submit" class="button-primary"><?php _e('Continue restoration', 'updraftplus'); ?></button>
 			<button onclick="jQuery('#updraft_restore_continue_action').val('updraft_restore_abort'); jQuery(this).parent('form').submit();" class="button-secondary"><?php _e('Dismiss', 'updraftplus');?></button>
 		</form><?php
@@ -4462,22 +4428,126 @@ ENDHERE;
 	}
 
 	/**
-	 * Processes $_POST (keys: updraft_restore and updraft_restore_*) to build an array of entities to restore.
-	 * Can also edit $_POST['updraft_restore']
+	 * This function starts the updraftplus restore process it processes $_REQUEST
+	 * (keys: updraft_*, meta_foreign, backup_timestamp and job_id)
+	 *
+	 * @return void
+	 */
+	public function prepare_restore() {
+
+		global $updraftplus;
+		
+		// If this is the start of a restore then get the restore data from the posted data and put it into jobdata.
+		if (isset($_REQUEST['action']) && 'updraft_restore' == $_REQUEST['action']) {
+
+			// on restore start job_id is empty but if we needed file system permissions then we have already started a job so reuse it
+			$restore_job_id = empty($_REQUEST['job_id']) ? false : $_REQUEST['job_id'];
+
+			// Set up nonces, log files etc.
+			$updraftplus->initiate_restore_job($restore_job_id);
+			
+			if (empty($restore_job_id)) {
+				$jobdata_to_save = array();
+				foreach ($_REQUEST as $key => $value) {
+					if (false !== strpos($key, 'updraft_') || 'backup_timestamp' == $key || 'meta_foreign' == $key) {
+						if ('updraft_restorer_restore_options' == $key) parse_str(stripslashes($value), $value);
+						$jobdata_to_save[$key] = $value;
+					}
+				}
+
+				$updraftplus->jobdata_set_multi($jobdata_to_save);
+
+				// Use a site option, as otherwise on multisite when all the array of options is updated via UpdraftPlus_Options::update_site_option(), it will over-write any restored UD options from the backup
+				update_site_option('updraft_restore_in_progress', $updraftplus->nonce);
+			}
+		}
+		
+		$is_continuation = ('updraft_restore_continue' == $_REQUEST['action']) ? true : false;
+
+		if ($is_continuation) {
+			$restore_in_progress = get_site_option('updraft_restore_in_progress');
+			if ($restore_in_progress != $_REQUEST['job_id']) {
+				$abort_restore_already = true;
+				$updraftplus->log(__('Sufficient information about the in-progress restoration operation could not be found.', 'updraftplus') . ' (job_id_mismatch)', 'error', 'job_id_mismatch');
+			} else {
+				$restore_jobdata = $updraftplus->jobdata_getarray($restore_in_progress);
+				if (is_array($restore_jobdata) && isset($restore_jobdata['job_type']) && 'restore' == $restore_jobdata['job_type'] && isset($restore_jobdata['second_loop_entities']) && !empty($restore_jobdata['second_loop_entities']) && isset($restore_jobdata['job_time_ms']) && isset($restore_jobdata['backup_timestamp'])) {
+					$backup_timestamp = $restore_jobdata['backup_timestamp'];
+					$continuation_data = $restore_jobdata;
+				} else {
+					$abort_restore_already = true;
+					$updraftplus->log(__('Sufficient information about the in-progress restoration operation could not be found.', 'updraftplus') . ' (job_id_nojobdata)', 'error', 'job_id_nojobdata');
+				}
+			}
+
+		} else {
+			$backup_timestamp = $_REQUEST['backup_timestamp'];
+			$continuation_data = null;
+		}
+
+		if (empty($abort_restore_already)) {
+			$backup_success = $this->restore_backup($backup_timestamp, $continuation_data);
+		} else {
+			$backup_success = false;
+		}
+
+		if (empty($updraftplus->errors) && true === $backup_success) {
+			// TODO: Deal with the case of some of the work having been deferred
+			echo '<p><strong>';
+			$updraftplus->log_e('Restore successful!');
+			echo '</strong></p>';
+			$updraftplus->log('Restore successful');
+			$s_val = 1;
+			if (!empty($this->entities_to_restore) && is_array($this->entities_to_restore)) {
+				foreach ($this->entities_to_restore as $k => $v) {
+					if ('db' != $v) $s_val = 2;
+				}
+			}
+			$pval = $updraftplus->have_addons ? 1 : 0;
+
+			echo '<strong>' . __('Actions', 'updraftplus') . ':</strong> <a href="' . UpdraftPlus_Options::admin_page_url() . '?page=updraftplus&updraft_restore_success=' . $s_val . '&pval=' . $pval . '">' . __('Return to UpdraftPlus configuration', 'updraftplus') . '</a>';
+			return;
+
+		} elseif (is_wp_error($backup_success)) {
+			echo '<p>';
+			$updraftplus->log_e('Restore failed...');
+			echo '</p>';
+			$updraftplus->log_wp_error($backup_success);
+			$updraftplus->log('Restore failed');
+			$updraftplus->list_errors();
+			echo '<strong>' . __('Actions', 'updraftplus') . ':</strong> <a href="' . UpdraftPlus_Options::admin_page_url() . '?page=updraftplus">' . __('Return to UpdraftPlus configuration', 'updraftplus') . '</a>';
+			return;
+		} elseif (false === $backup_success) {
+			// This means, "not yet - but stay on the page because we may be able to do it later, e.g. if the user types in the requested information"
+			echo '<p>';
+			$updraftplus->log_e('Restore failed...');
+			echo '</p>';
+			$updraftplus->log("Restore failed");
+			$updraftplus->list_errors();
+			echo '<strong>' . __('Actions', 'updraftplus') . ':</strong> <a href="' . UpdraftPlus_Options::admin_page_url() . '?page=updraftplus">' . __('Return to UpdraftPlus configuration', 'updraftplus') . '</a>';
+			return;
+		}
+	}
+
+	/**
+	 * Processes the jobdata to build an array of entities to restore.
 	 *
 	 * @param Array $backup_set - information on the backup to restore
 	 *
-	 * @return Array
+	 * @return Array - the entities to restore built from the restore jobdata
 	 */
-	private function get_entities_to_restore_from_post($backup_set) {
-	
-		// Now, need to turn any updraft_restore_<entity> fields (that came from a potential WP_Filesystem form) back into parts of the _POST array (which we want to use)
-		if (empty($_POST['updraft_restore']) || (!is_array($_POST['updraft_restore']))) $_POST['updraft_restore'] = array();
-	
+	private function get_entities_to_restore_from_jobdata($backup_set) {
+
+		global $updraftplus;
+
+		$updraft_restore = $updraftplus->jobdata_get('updraft_restore');
+
+		if (empty($updraft_restore) || (!is_array($updraft_restore))) $updraft_restore = array();
+
 		$entities_to_restore = array();
 		$foreign_known = apply_filters('updraftplus_accept_archivename', array());
 
-		foreach ($_POST['updraft_restore'] as $entity) {
+		foreach ($updraft_restore as $entity) {
 			if (empty($backup_set['meta_foreign'])) {
 				$entities_to_restore[$entity] = $entity;
 			} else {
@@ -4489,49 +4559,23 @@ ENDHERE;
 			}
 		}
 
-		foreach ($_POST as $key => $value) {
-		
-			if (0 !== strpos($key, 'updraft_restore_')) continue;
-			
-			$nkey = substr($key, 16);
-			
-			if (isset($entities_to_restore[$nkey])) continue;
-			
-			$_POST['updraft_restore'][] = $nkey;
-			
-			if (empty($backup_set['meta_foreign'])) {
-				$entities_to_restore[$nkey] = $nkey;
-			} else {
-				if ('db' == $entity && !empty($foreign_known[$backup_set['meta_foreign']]['separatedb'])) {
-					$entities_to_restore[$nkey] = 'db';
-				} else {
-					$entities_to_restore[$nkey] = 'wpcore';
-				}
-			}
-
-		}
-		
 		return $entities_to_restore;
 	}
 	
 	/**
-	 * Gets the restoration options as passed in via $_POST
+	 * Processes the jobdata to build an array of restoration options
 	 *
-	 * @return Array
+	 * @return Array - the restore options built from the restore jobdata
 	 */
-	private function get_restore_options_from_post() {
+	private function get_restore_options_from_jobdata() {
 	
 		global $updraftplus;
-	
-		$restore_options = array();
+
+		$restore_options = $updraftplus->jobdata_get('updraft_restorer_restore_options');
 		
-		if (!empty($_POST['updraft_restorer_restore_options'])) {
-			parse_str(stripslashes($_POST['updraft_restorer_restore_options']), $restore_options);
-		}
+		$restore_options['updraft_encryptionphrase'] = empty($restore_jobdata['updraft_encryptionphrase']) ? '' : (string) stripslashes($restore_jobdata['updraft_encryptionphrase']);
 		
-		$restore_options['updraft_encryptionphrase'] = empty($_POST['updraft_encryptionphrase']) ? '' : (string) stripslashes($_POST['updraft_encryptionphrase']);
-		
-		$restore_options['updraft_restorer_wpcore_includewpconfig'] = !empty($_POST['updraft_restorer_wpcore_includewpconfig']);
+		$restore_options['updraft_restorer_wpcore_includewpconfig'] = !empty($restore_jobdata['updraft_restorer_wpcore_includewpconfig']);
 		
 		$restore_options['updraft_incremental_restore_point'] = empty($restore_options['updraft_incremental_restore_point']) ? -1 : (int) $restore_options['updraft_incremental_restore_point'];
 		
@@ -4560,11 +4604,8 @@ ENDHERE;
 
 		$second_loop_entities = empty($continuation_data['second_loop_entities']) ? array() : $continuation_data['second_loop_entities'];
 		
-		// This will print HTML and die() if necessary; can also edit $_POST['updraft_restore_*'] to make it reflect the contents of $_POST['updraft_restore']
-		UpdraftPlus_Filesystem_Functions::ensure_wp_filesystem_set_up_for_restore($second_loop_entities, array('backup_timestamp' => $timestamp));
-
-		// Set up nonces, log files etc.
-		$updraftplus->initiate_restore_job();
+		// This will print HTML and die() if necessary
+		UpdraftPlus_Filesystem_Functions::ensure_wp_filesystem_set_up_for_restore(array('backup_timestamp' => $timestamp, 'job_id' => $updraftplus->nonce));
 
 		// The <div> is closed by Updraft_Restorer::post_restore_clean_up()
 		echo '<h1>'.__('UpdraftPlus Restoration: Progress', 'updraftplus').'</h1><div id="updraft-restore-progress">';
@@ -4572,11 +4613,11 @@ ENDHERE;
 		// Provide download link for the log file
 		$this->show_admin_warning('<a target="_blank" href="?action=downloadlog&page=updraftplus&updraftplus_backup_nonce='.htmlspecialchars($updraftplus->nonce).'">'.__('Follow this link to download the log file for this restoration (needed for any support requests).', 'updraftplus').'</a>');
 
-		// N.B. This both processes, and edits, $_POST['updraft_restore'], and processes $_POST['updraft_
-		$entities_to_restore = $this->get_entities_to_restore_from_post($backup_set);
+		$entities_to_restore = $this->get_entities_to_restore_from_jobdata($backup_set);
 
 		if (empty($entities_to_restore)) {
-			echo '<p>'.__('ABORT: Could not find the information on which entities to restore.', 'updraftplus').'</p><p>'.__('If making a request for support, please include this information:', 'updraftplus').' '.count($_POST).' : '.htmlspecialchars(serialize($_POST)).'</p>';
+			$restore_jobdata = $updraftplus->jobdata_getarray($updraftplus->nonce);
+			echo '<p>'.__('ABORT: Could not find the information on which entities to restore.', 'updraftplus').'</p><p>'.__('If making a request for support, please include this information:', 'updraftplus').' '.count($restore_jobdata).' : '.htmlspecialchars(serialize($restore_jobdata)).'</p>';
 			return new WP_Error('missing_info', 'Backup information not found');
 		}
 
@@ -4590,8 +4631,8 @@ ENDHERE;
 		if (!empty($continuation_data['restore_options'])) {
 			$restore_options = $continuation_data['restore_options'];
 		} else {
-			// Gather the restore options into one place - code after here should read the options, and not the HTTP variables
-			$restore_options = $this->get_restore_options_from_post();
+			// Gather the restore options into one place - code after here should read the options
+			$restore_options = $this->get_restore_options_from_jobdata();
 			$updraftplus->jobdata_set('restore_options', $restore_options);
 		}
 			
@@ -4605,7 +4646,6 @@ ENDHERE;
 		$updraftplus_restorer->post_restore_clean_up($restore_result);
 		
 		return $restore_result;
-		
 	}
 	
 	/**
@@ -5303,9 +5343,11 @@ ENDHERE;
 	/**
 	 * This function will build and return the UpdraftPlus tempoaray clone ui widget
 	 *
-	 * @return string - the UpdraftPlus tempoary clone ui widget
+	 * @param boolean $is_admin_user - a boolean to indicate if the user who requested the clone has clone management permissions
+	 *
+	 * @return string - the clone UI widget
 	 */
-	public function updraftplus_clone_ui_widget() {
+	public function updraftplus_clone_ui_widget($is_admin_user = false) {
 		$output = '<p class="updraftplus-option updraftplus-option-inline php-version">';
 		$output .= '<span class="updraftplus-option-label">'.sprintf(__('%s version:', 'updraftplus'), 'PHP').'</span> ';
 		$output .= $this->output_select_data($this->php_versions, 'php');
@@ -5318,7 +5360,7 @@ ENDHERE;
 		$output .= ' <span class="updraftplus-option-label">'.__('Clone region:', 'updraftplus').'</span> ';
 		$output .= $this->output_select_data($this->regions, 'region');
 		$output .= '</p>';
-		if (defined('UPDRAFTPLUS_UPDRAFTCLONE_DEVELOPMENT') && UPDRAFTPLUS_UPDRAFTCLONE_DEVELOPMENT) {
+		if ((defined('UPDRAFTPLUS_UPDRAFTCLONE_DEVELOPMENT') && UPDRAFTPLUS_UPDRAFTCLONE_DEVELOPMENT) || $is_admin_user) {
 			$output .= '<p class="updraftplus-option updraftplus-option-inline updraftclone-branch">';
 			$output .= ' <span class="updraftplus-option-label">UpdraftClone Branch:</span> ';
 			$output .= '<input id="updraftplus_clone_updraftclone_branch" type="text" size="36" name="updraftplus_clone_updraftclone_branch" value="">';

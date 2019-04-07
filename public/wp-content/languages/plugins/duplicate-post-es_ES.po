@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - Duplicate Post - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2018-05-15 11:24:15+0000\n"
+"PO-Revision-Date: 2019-03-29 10:17:43+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -25,7 +25,7 @@ msgstr "Sirviendo a la comunidad WordPress desde noviembre de 2007."
 
 #: duplicate-post-admin.php:194
 msgid "Duplicate Post turns 10!"
-msgstr "¡Duplicate post tiene un 10!"
+msgstr "¡Duplicate Post cumple 10 años!"
 
 #. Plugin URI of the plugin/theme
 msgid "https://duplicate-post.lopo.it/"
@@ -33,7 +33,7 @@ msgstr "https://duplicate-post.lopo.it/"
 
 #: duplicate-post-options.php:235
 msgid "you probably want this unchecked, unless you have very special requirements"
-msgstr "probablemente quieras desmarcar esto, a menos que tengas requisitos muy especiales"
+msgstr "probablemente quieras dejar esto desmarcado, a menos que tengas requisitos muy especiales"
 
 #: duplicate-post-admin.php:652 duplicate-post-options.php:91
 msgid "Documentation"
@@ -41,7 +41,7 @@ msgstr "Documentación"
 
 #: duplicate-post-admin.php:196
 msgid "Help me develop the plugin and provide support by <a href=\"%s\">donating even a small sum</a>."
-msgstr "Ayúdame a desarrollar el plugin y ofrecer soporte <a href=\"%s\">donando aunque sea una mínima cantidad</a>."
+msgstr "Ayúdame a desarrollar el plugin y ofrecer soporte <a href=\"%s\">donando aunque sea una cantidad pequeña</a>."
 
 #: duplicate-post-options.php:378
 msgid "Show update notice"
@@ -49,11 +49,11 @@ msgstr "Mostrar aviso de actualización"
 
 #: duplicate-post-options.php:367
 msgid "Bulk Actions"
-msgstr "Acciones en masa"
+msgstr "Acciones masivas"
 
 #: duplicate-post-options.php:285
 msgid "You can use * to match zero or more alphanumeric characters or underscores: e.g. field*"
-msgstr "Puedes usar * para sustituir cero o más caracteres alfanuméricos o guiones bajos: p. ej. campo* "
+msgstr "Puedes usar * para hacer coincidir cero o más caracteres alfanuméricos o guiones bajos: p. ej. campo* "
 
 #: duplicate-post-options.php:244
 msgid "Menu order"
@@ -112,11 +112,11 @@ msgstr "Elige los tipos de entrada que quieres que active el plugin"
 
 #: duplicate-post-options.php:336
 msgid "Enable for these post types"
-msgstr "Disponible para este tipo de entradas"
+msgstr "Activo para estos tipos de contenidos"
 
 #: duplicate-post-options.php:330
 msgid "Passwords and contents of password-protected posts may become visible to undesired users and visitors"
-msgstr "Las contraseñas y los contenidos de entradas protegidas con contraseña pueden convertirse en visibles para usuarios y visitantes no deseados"
+msgstr "Las contraseñas y los contenidos de entradas protegidas con contraseña pueden convertirse en visibles para usuarios no deseados y visitantes "
 
 #: duplicate-post-options.php:292
 msgid "Show/hide private taxonomies"
@@ -228,7 +228,7 @@ msgstr "Barra de administración"
 
 #: duplicate-post-options.php:361
 msgid "Edit screen"
-msgstr "Pantalla de editar"
+msgstr "Pantalla de edición"
 
 #: duplicate-post-options.php:359
 msgid "Post list"
@@ -256,11 +256,11 @@ msgstr "Sufijo del título"
 
 #: duplicate-post-options.php:254
 msgid "Prefix to be added before the title, e.g. \"Copy of\" (blank for no prefix)"
-msgstr "Prefijo a añadir antes del título original. p.e. “Copia de” (dejar libre para no añadir prefijo)"
+msgstr "Prefijo a añadir antes del título original. p.e. \"Copia de\" (dejar en blanco para no añadir prefijo)"
 
 #: duplicate-post-options.php:249
 msgid "Title prefix"
-msgstr "Prefijo del titulo"
+msgstr "Prefijo del título"
 
 #: duplicate-post-options.php:309
 msgid "Select the taxonomies you don't want to be copied"
@@ -272,7 +272,7 @@ msgstr "No copiar estas taxonomías"
 
 #: duplicate-post-options.php:284
 msgid "Comma-separated list of meta fields that must not be copied"
-msgstr "Lista separada por coma de los campos personalizados que NO deben ser copiados"
+msgstr "Lista separada por coma de los campos meta que no deben ser copiados"
 
 #: duplicate-post-options.php:279
 msgid "Do not copy these fields"
@@ -294,7 +294,7 @@ msgstr "Traducir"
 
 #: duplicate-post-admin.php:653
 msgid "Donate"
-msgstr "Hacer una donación"
+msgstr "Donar"
 
 #: duplicate-post-admin.php:323
 msgid "Copy creation failed, could not find original:"
@@ -302,7 +302,7 @@ msgstr "Ha fallado la creación de la copia. No se ha encontrado el original:"
 
 #: duplicate-post-admin.php:284
 msgid "No post to duplicate has been supplied!"
-msgstr "No se facilitó ninguna entrada a copiar"
+msgstr "¡No se ha proporcionado ninguna entrada para duplicar!"
 
 #: duplicate-post-admin.php:237
 msgid "New Draft"

@@ -15,6 +15,10 @@ class wfFirewall
 	const BLACKLIST_MODE_DISABLED = 'disabled';
 	const BLACKLIST_MODE_ENABLED = 'enabled';
 	
+	const UPDATE_FAILURE_RATELIMIT = 'ratelimit';
+	const UPDATE_FAILURE_UNREACHABLE = 'unreachable';
+	const UPDATE_FAILURE_FILESYSTEM = 'filesystem';
+	
 	/**
 	 * Returns a string suitable for display of the firewall status.
 	 * 

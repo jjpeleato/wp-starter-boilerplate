@@ -1,5 +1,13 @@
 CHANGES LOG (full version).
 ===========================
+
+= [4.50.2] 01.04.2019 =
+* Fix: WordPress multisite: PHP Notice "wpmu_new_blog is deprecated since version 5.1.0! Use wp_insert_site instead." was removed. URE uses 'wp_initialize_site' action now instead of deprecated 'wpmu_new_blog'. This fix provides correct roles replication from the main blog/site to a new created blog/site.
+
+= [4.50.1] 16.03.2019 =
+* Fix: WP Multisite: Users->Capabilities->Update: "Fatal error: Uncaught Error: Call to undefined method URE_Editor::check_blog_user() in /wp-content/plugins/user-role-editor/includes/classes/editor.php on line 576" was fixed. 
+* Fix: WooCommerce group was not shown under "Custom capabilities" section.
+
 = [4.50] 20.02.2019 =
 * Update: General code restructure and optimization.
 * Update: URE_Base_Lib::get_blog_ids() returns null, if it's called under WordPress single site (not multisite).

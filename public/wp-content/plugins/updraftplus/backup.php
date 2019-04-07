@@ -77,7 +77,7 @@ class UpdraftPlus_Backup {
 	
 	// The absolute upper limit that will be considered for a zip batch (in bytes)
 	private $zip_batch_ceiling;
-
+	
 	/**
 	 * Class constructor
 	 *
@@ -1688,6 +1688,32 @@ class UpdraftPlus_Backup {
 			if (0 == $sind % 100) UpdraftPlus_Job_Scheduler::something_useful_happened();
 		}
 
+		// DB triggers
+		if ($this->wpdb_obj->get_results("SHOW TRIGGERS")) {
+			foreach ($all_tables as $ti) {
+				$table = $ti['name'];
+				if (!empty($this->skipped_tables)) {
+					if ('wp' == $this->whichdb) {
+						if (in_array($table, $this->skipped_tables[$this->whichdb])) continue;
+					} elseif (isset($this->skipped_tables[$this->dbinfo['name']])) {
+						if (in_array($table, $this->skipped_tables[$this->dbinfo['name']])) continue;
+					}
+				}
+				$table_triggers = $this->wpdb_obj->get_results($wpdb->prepare("SHOW TRIGGERS LIKE %s", $table), ARRAY_A);
+				if ($table_triggers) {
+					$this->stow("\n\n# Triggers of $description ".UpdraftPlus_Manipulation_Functions::backquote($table)."\n\n");
+					foreach ($table_triggers as $trigger) {
+						$trigger_name = UpdraftPlus_Manipulation_Functions::backquote($trigger['Trigger']);
+						$trigger_time = $trigger['Timing'];
+						$trigger_event = $trigger['Event'];
+						$trigger_statement = $trigger['Statement'];
+						$trigger_query = "CREATE TRIGGER $trigger_name $trigger_time $trigger_event ON ".UpdraftPlus_Manipulation_Functions::backquote($table)." FOR EACH ROW $trigger_statement";
+						$this->stow("$trigger_query;\n\n");
+					}
+				}
+			}
+		}
+
 		$this->stow("/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;\n/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;\n/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;\n");
 
 		$updraftplus->log($file_base.'-db'.$this->whichdb_suffix.'.gz: finished writing out complete database file ('.round(filesize($backup_final_file_name)/1024, 1).' KB)');
@@ -1849,7 +1875,7 @@ class UpdraftPlus_Backup {
 				$err_msg = sprintf("Error getting $description structure of %s", $table);
 				$this->stow("#\n# $err_msg\n#\n");
 			}
-		
+
 			// Comment in SQL-file
 			$this->stow("\n\n# ".sprintf("Data contents of $description %s", UpdraftPlus_Manipulation_Functions::backquote($table))."\n\n");
 

@@ -843,12 +843,20 @@ class wfConfig {
 		$emails = self::getAlertEmails();
 		return sizeof($emails) > 0 ? true : false;
 	}
-	public static function getAlertEmails(){
+	public static function alertEmailBlacklist() {
+		return array('3c4aa9bd643bd9bb9873014227151a85b24ab8d72fe02cc5799b0edc56eabb67', 'aa06081e3962a3c17a85a06ddf9e418ca1ba8fead3f9b7a20beaf51848a1fd75', 'a25a360bded101e25ebabe5643161ddbb6c3fa33838bbe9a123c2ec0cda8d370', '36e8407dfa80d64cfe42ede4d9d5ce2d4840a5e4781b5f8a7b3b8eacec86fcad');
+	}
+	public static function getAlertEmails() {
+		$blacklist = self::alertEmailBlacklist();
 		$dat = explode(',', self::get('alertEmails'));
 		$emails = array();
-		foreach($dat as $email){
-			if(preg_match('/\@/', $email)){
-				$emails[] = trim($email);
+		foreach ($dat as $email) {
+			$email = trim($email);
+			if (preg_match('/\@/', $email)) {
+				$hash = hash('sha256', $email);
+				if (!in_array($hash, $blacklist)) {
+					$emails[] = $email;
+				}
 			}
 		}
 		return $emails;

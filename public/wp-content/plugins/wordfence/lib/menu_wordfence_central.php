@@ -52,7 +52,7 @@ else {
 					<div class="wf-flex-row wf-flex-grow-all">
 						<div class="wf-flex-row-1 wf-block wf-active">
 							<div class="wf-central-dashboard">
-								<img class="wf-central-dashboard-logo" src="<?php echo wfUtils::getBaseURL() ?>/images/wf-central-logo.svg" alt="Wordfence Central">
+								<img class="wf-central-dashboard-logo" src="<?php echo wfUtils::getBaseURL() ?>images/wf-central-logo.svg" alt="Wordfence Central">
 								<div class="wf-central-dashboard-copy">
 									<p><strong><?php _e('Wordfence Central', 'wordfence') ?></strong></p>
 									<p><?php _e('Wordfence Central allows you to manage Wordfence on multiple sites from one location. It makes security monitoring and configuring Wordfence easier.', 'wordfence') ?></p>
