@@ -22,7 +22,7 @@ class wfOnboardingController {
 	 * Sets the appropriate initial settings for an existing install so it's not forced through onboarding.
 	 */
 	public static function migrateOnboarding() {
-		$alertEmails = wfConfig::get('alertEmails');
+		$alertEmails = wfConfig::getAlertEmails();
 		$onboardingAttempt1 = wfConfig::get('onboardingAttempt1');
 		if (!empty($alertEmails) && empty($onboardingAttempt1)) {
 			wfConfig::set('onboardingAttempt1', self::ONBOARDING_FIRST_LICENSE); //Mark onboarding as done
@@ -128,14 +128,14 @@ class wfOnboardingController {
 			return false;
 		}
 		
-		$alertEmails = wfConfig::get('alertEmails');
+		$alertEmails = wfConfig::getAlertEmails();
 		$show = !wfConfig::get('onboardingAttempt2') && empty($alertEmails); //Unset defaults to true, all others false
 		return $show;
 	}
 	
 	public static function shouldShowAttempt3() {
 		if (isset($_GET['page']) && preg_match('/^Wordfence/', $_GET['page'])) {
-			$alertEmails = wfConfig::get('alertEmails');
+			$alertEmails = wfConfig::getAlertEmails();
 			return empty($alertEmails);
 		}
 		

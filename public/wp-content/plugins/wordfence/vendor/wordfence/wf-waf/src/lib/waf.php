@@ -1760,7 +1760,7 @@ class wfWAFCronFetchRulesEvent extends wfWAFCronEvent {
 				$payload['disabled'] = implode('|', $waf->getDisabledRuleIDs());
 			}
 			
-			$this->response = wfWAFHTTP::get(WFWAF_API_URL_SEC . "?" . http_build_query($payload, null, '&'));
+			$this->response = wfWAFHTTP::get(WFWAF_API_URL_SEC . "?" . http_build_query($payload, null, '&'), null, 10, 5);
 			if ($this->response) {
 				$jsonData = wfWAFUtils::json_decode($this->response->getBody(), true);
 				if (is_array($jsonData)) {
@@ -1806,7 +1806,7 @@ class wfWAFCronFetchRulesEvent extends wfWAFCronEvent {
 					'h'        => $waf->getStorageEngine()->getConfig('homeURL', null, 'synced') ? $waf->getStorageEngine()->getConfig('homeURL', null, 'synced') : $guessSiteURL,
 					'openssl'  => $waf->hasOpenSSL() ? 1 : 0,
 					'betaFeed' => (int) $waf->getStorageEngine()->getConfig('betaThreatDefenseFeed', null, 'synced'),
-				), null, '&'));
+				), null, '&'), null, 15, 5);
 			if ($this->response) {
 				$jsonData = wfWAFUtils::json_decode($this->response->getBody(), true);
 				if (is_array($jsonData)) {
@@ -1894,6 +1894,10 @@ class wfWAFCronFetchRulesEvent extends wfWAFCronEvent {
 			}
 		}
 		return $newEvent;
+	}
+	
+	public function getResponse() {
+		return $this->response;
 	}
 }
 

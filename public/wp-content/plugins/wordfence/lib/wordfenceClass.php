@@ -4651,7 +4651,7 @@ HTACCESS;
 	}
 	public static function ajax_updateAlertEmail_callback(){
 		$email = trim($_POST['email']);
-		if(! preg_match('/[^\@]+\@[^\.]+\.[^\.]+/', $email)){
+		if(! preg_match('/[^\@]+\@[^\.]+\.[^\.]+/', $email) || in_array(hash('sha256', $email), wfConfig::alertEmailBlacklist())){
 			return array( 'err' => "Invalid email address given.");
 		}
 		wfConfig::set('alertEmails', $email);
@@ -5668,6 +5668,7 @@ HTML;
 			'modalTemplate' => wfView::create('common/modal-prompt', array('title' => '${title}', 'message' => '${message}', 'primaryButton' => array('id' => 'wf-generic-modal-close', 'label' => __('Close', 'wordfence'), 'link' => '#')))->render(),
 			'tokenInvalidTemplate' => wfView::create('common/modal-prompt', array('title' => '${title}', 'message' => '${message}', 'primaryButton' => array('id' => 'wf-token-invalid-modal-reload', 'label' => __('Reload', 'wordfence'), 'link' => '#')))->render(),
 			'modalHTMLTemplate' => wfView::create('common/modal-prompt', array('title' => '${title}', 'message' => '{{html message}}', 'primaryButton' => array('id' => 'wf-generic-modal-close', 'label' => __('Close', 'wordfence'), 'link' => '#')))->render(),
+			'alertEmailBlacklist' => wfConfig::alertEmailBlacklist(),
 			));
 	}
 	public static function showTOUPPOverlay($classList) {
@@ -6813,8 +6814,24 @@ to your httpd.conf if using Apache, or find documentation on how to disable dire
 			$event = new wfWAFCronFetchRulesEvent(time() - 2);
 			$event->setWaf(wfWAF::getInstance());
 			$success = $event->fire();
+			$failureReason = false;
+			if (!$success && method_exists($event, 'getResponse')) {
+				$response = $event->getResponse();
+				if ($response === false) {
+					$failureReason = wfFirewall::UPDATE_FAILURE_UNREACHABLE;
+				}
+				else {
+					$jsonData = @json_decode($response->getBody(), true);
+					if (isset($jsonData['errorMessage']) && strpos($jsonData['errorMessage'], 'rate limit') !== false) {
+						$failureReason = wfFirewall::UPDATE_FAILURE_RATELIMIT;
+					}
+					else if (isset($jsonData['data']['signature'])) {
+						$failureReason = wfFirewall::UPDATE_FAILURE_FILESYSTEM;
+					}
+				}
+			}
 			
-			return self::_getWAFData($success);
+			return self::_getWAFData($success, $failureReason);
 		}
 		catch (Exception $e) {
 			$wafData = array(
@@ -7065,7 +7082,7 @@ to your httpd.conf if using Apache, or find documentation on how to disable dire
 		$waf->getStorageEngine()->setConfig('whitelistedURLParams', $whitelist, 'livewaf');
 	}
 
-	private static function _getWAFData($updated = null) {
+	private static function _getWAFData($updated = null, $failureReason = false) {
 		$data['learningMode'] = wfWAF::getInstance()->isInLearningMode();
 		$data['rules'] = wfWAF::getInstance()->getRules();
 		/** @var wfWAFRule $rule */
@@ -7111,6 +7128,9 @@ to your httpd.conf if using Apache, or find documentation on how to disable dire
 		$data['isPaid'] = (bool) wfConfig::get('isPaid', 0);
 		if ($updated !== null) {
 			$data['updated'] = (bool) $updated;
+			if (!$updated) {
+				$data['failure'] = $failureReason;
+			}
 		}
 		return $data;
 	}
@@ -8255,7 +8275,7 @@ if (file_exists(%1$s)) {
 		// Step 2: Makes POST request to `/central/api/wf/site/<guid>` endpoint passing in the new public key.
 		// Uses JWT from auth grant endpoint as auth.
 
-		require_once WORDFENCE_PATH . '/vendor/paragonie/sodium_compat/autoload.php';
+		require_once WORDFENCE_PATH . '/vendor/paragonie/sodium_compat/autoload-fast.php';
 
 		$accessToken = wfConfig::get('wordfenceCentralAccessToken');
 		if (!$accessToken) {

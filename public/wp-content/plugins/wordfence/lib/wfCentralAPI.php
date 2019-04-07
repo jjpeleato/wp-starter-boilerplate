@@ -253,7 +253,7 @@ class wfCentralAuthenticatedAPIRequest extends wfCentralAPIRequest {
 	}
 
 	public function fetchToken() {
-		require_once WORDFENCE_PATH . '/vendor/paragonie/sodium_compat/autoload.php';
+		require_once WORDFENCE_PATH . '/vendor/paragonie/sodium_compat/autoload-fast.php';
 
 		$defaultArgs = array(
 			'timeout' => 6,

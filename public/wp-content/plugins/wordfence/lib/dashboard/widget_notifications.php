@@ -32,7 +32,7 @@
 		<div class="wf-flex-col-xs-100 wf-flex-col-lg-50 wf-col-lg-half-padding-left wf-dashboard-item-flex-wrapper wf-central-connected">
 			<div class="wf-dashboard-item active wf-flex-row-1">
 				<div class="wf-central-dashboard">
-					<img class="wf-central-dashboard-logo" src="<?php echo wfUtils::getBaseURL() ?>/images/wf-central-logo.svg" alt="Wordfence Central">
+					<img class="wf-central-dashboard-logo" src="<?php echo wfUtils::getBaseURL() ?>images/wf-central-logo.svg" alt="Wordfence Central">
 					<div class="wf-central-dashboard-copy">
 						<p><strong><?php _e('Wordfence Central Status', 'wordfence') ?></strong></p>
 						<p><?php
