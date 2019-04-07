@@ -74,7 +74,7 @@ For more information visit:
 	- The command starts the installation process when it finishes, you can see all the URLs to access.
 7. End. Happy developing.
 
-### Developing with NPM or Yarn, Gulp and Deployer
+### Developing with NPM or Yarn, Gulp. PHP_CodeSniffer and Deployer
 
 - Open your terminal and browse to the root location of your project.
 - If required. Run: `$lando npm install --save-dev` or `$lando yarn install --dev` then: `$lando gulp [action]`
@@ -116,9 +116,10 @@ The present project uses several technologies and tools for the automation and d
 10. Babel: https://babeljs.io/
 11. Bootstrap: https://getbootstrap.com/
 12. EditorConfig: https://editorconfig.org/
-13. Stylelint: https://stylelint.io/
-14. Jshint: https://jshint.com/
-15. Human.txt: http://humanstxt.org/
+13. PHP_CodeSniffer: https://github.com/squizlabs/PHP_CodeSniffer
+14. Stylelint: https://stylelint.io/
+15. Jshint: https://jshint.com/
+16. Human.txt: http://humanstxt.org/
 
 **Note:** Thanks a lot of developers that to work on this projects.
 

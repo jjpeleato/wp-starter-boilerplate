@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 name="wp-starter-boilerplate"
+		 xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
+
+	<description>Sniffs for the coding standards of your project</description>
+
+	<!-- Exclude WP Core folders and files from being checked. -->
+	<exclude-pattern>/public/wp-admin/*</exclude-pattern>
+	<exclude-pattern>/public/wp-includes/*</exclude-pattern>
+	<exclude-pattern>/public/wp-*.php</exclude-pattern>
+	<exclude-pattern>/public/index.php</exclude-pattern>
+	<exclude-pattern>/public/xmlrpc.php</exclude-pattern>
+	<exclude-pattern>/public/wp-content/plugins/*</exclude-pattern>
+
+	<!-- Exclude the Composer Vendor directory. -->
+	<exclude-pattern>/vendor/*</exclude-pattern>
+
+	<!-- Exclude the Node Modules directory. -->
+	<exclude-pattern>/node_modules/*</exclude-pattern>
+
+	<!-- display progress -->
+	<arg name="report" value="full"/>
+	<arg name="colors"/>
+	<arg value="sp"/>
+	<arg name="extensions" value="php"/>
+
+	<!-- Add rules -->
+</ruleset>
