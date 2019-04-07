@@ -22,7 +22,7 @@ if ( ! class_exists( 'YITH_WCAN_Reset_Navigation_Widget' ) ) {
         function __construct() {
             $widget_ops  = array( 'classname' => 'yith-woocommerce-ajax-product-filter yith-woo-ajax-reset-navigation yith-woo-ajax-navigation woocommerce widget_layered_nav', 'description' => _x( 'Reset all filters set by YITH WooCommerce Ajax Product Filter', '[Plugin Name]', 'yith-woocommerce-ajax-navigation' ) );
             $control_ops = array( 'width' => 400, 'height' => 350 );
-            parent::__construct( 'yith-woo-ajax-reset-navigation', __( 'YITH WooCommerce Ajax Reset Filter', 'yith-woocommerce-ajax-navigation' ), $widget_ops, $control_ops );
+            parent::__construct( 'yith-woo-ajax-reset-navigation', __( 'YITH Ajax Reset Filter', 'yith-woocommerce-ajax-navigation' ), $widget_ops, $control_ops );
         }
 
 
@@ -54,7 +54,18 @@ if ( ! class_exists( 'YITH_WCAN_Reset_Navigation_Widget' ) ) {
 
                 //clean the url
                 if( ! isset( $_GET['source_id'] ) ){
-	                $link = get_post_type_archive_link( 'product' ); //yit_get_woocommerce_layered_nav_link();
+                    $link = '';
+
+                    //Check if the user have enabled only WC PRice Filter
+                    if( yit_is_filtered_uri() && ( isset( $_GET['min_price'] ) || isset( $_GET['max_price'] ) ) && is_product_taxonomy() ){
+                        $queried_object = get_queried_object();
+
+                        if( $queried_object instanceof WP_Term ){
+                            $link = get_term_link( $queried_object );
+                        }
+                    }
+
+	                $link = empty( $link ) || $link instanceof WP_Error ? get_post_type_archive_link( 'product' ) : $link;
 
                     foreach ( (array) $_chosen_attributes as $taxonomy => $data ) {
                         $taxonomy_filter = str_replace( 'pa_', '', $taxonomy );
@@ -66,12 +77,21 @@ if ( ! class_exists( 'YITH_WCAN_Reset_Navigation_Widget' ) ) {
 
                 else{
                     //Start filter from Product category Page
-                    $term = get_term_by( 'term_id', $_GET['source_id'], $_GET['source_tax'] );
+                    $term = null;
+
+                    if( ! empty( $_GET['source_id'] ) && ! empty( $_GET['source_tax'] ) ){
+	                    $term = get_term_by( 'term_id', $_GET['source_id'], $_GET['source_tax'] );
+                    }
 
                     if( $term instanceof WP_Term ){
                         $link = get_term_link( $term, $term->taxonomy  );
                     }
                 }
+
+	            if( is_search() && isset( $_GET['s'] ) && isset( $_GET['post_type'] ) ){
+		            $s = urlencode( stripslashes( $_GET['s'] ) );
+		            $link = add_query_arg( array( 's' => $s, 'post_type' => $_GET['post_type'] ), get_home_url() );
+	            }
 
                 $link = apply_filters( 'yith_woocommerce_reset_filter_link', $link );
 

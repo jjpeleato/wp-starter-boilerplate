@@ -88,7 +88,9 @@ function yith_wcan_attributes_table( $type, $attribute, $id, $name, $values = ar
             $return = sprintf( '<table><tr><th>%s</th><th>%s</th></tr>', __( 'Term', 'yith-woocommerce-ajax-navigation' ), __( 'Color', 'yith-woocommerce-ajax-navigation' ) );
 
             foreach ( $terms as $term ) {
-                $return .= "<tr><td><label for='{$id}{$term->term_id}'>{$term->name}</label></td><td><input type='text' id='{$id}{$term->term_id}' name='{$name}[colors][{$term->term_id}]' value='" . ( isset( $values[$term->term_id] ) ? $values[$term->term_id] : '' ) . "' size='3' class='yith-colorpicker' /></td></tr>";
+            	if( $term instanceof WP_Term ){
+		            $return .= "<tr><td><label for='{$id}{$term->term_id}'>{$term->name}</label></td><td><input type='text' id='{$id}{$term->term_id}' name='{$name}[colors][{$term->term_id}]' value='" . ( isset( $values[$term->term_id] ) ? $values[$term->term_id] : '' ) . "' size='3' class='yith-colorpicker' /></td></tr>";
+	            }
             }
 
             $return .= '</table>';
@@ -699,7 +701,7 @@ if( ! function_exists( 'yit_reorder_hierachical_categories' ) ) {
     }
 }
 
-if( ! function_exists( 'remove_premium_query_arg' ) ) {
+if( ! function_exists( 'yith_remove_premium_query_arg' ) ) {
     /**
      * Remove Premium query args
      *
@@ -708,7 +710,7 @@ if( ! function_exists( 'remove_premium_query_arg' ) ) {
      * @since    2.8.1
      * @author   Andrea Grillo <andrea.grillo@yithemes.com>
      */
-    function remove_premium_query_arg( $link ) {
+    function yith_remove_premium_query_arg( $link ) {
         $reset           = array( 'orderby', 'onsale_filter', 'instock_filter', 'product_tag', 'product_cat' );
         $brands_taxonomy = yit_get_brands_taxonomy();
         if ( ! empty( $brands_taxonomy ) ) {

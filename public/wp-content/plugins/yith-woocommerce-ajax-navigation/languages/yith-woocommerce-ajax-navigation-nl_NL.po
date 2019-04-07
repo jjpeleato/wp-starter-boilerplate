@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: YITH WooCommerce Ajax Product Filter\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-01 14:36+0100\n"
-"PO-Revision-Date: 2018-02-01 14:36+0100\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/init\n"
+"POT-Creation-Date: 2019-04-06 13:19:15+00:00\n"
+"PO-Revision-Date: 2019-04-06 15:20+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: nl_NL\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.9\n"
+"X-Generator: Poedit 2.2.1\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
 "_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
@@ -29,7 +29,6 @@ msgid "Custom Style"
 msgstr "Aangepaste stijl"
 
 #: includes/class.yith-wcan-admin.php:128
-#: includes/class.yith-wcan-admin.php:195
 msgid "Premium Version"
 msgstr "Premium versie"
 
@@ -38,39 +37,27 @@ msgstr "Premium versie"
 msgid "Ajax Product Filter"
 msgstr "Ajax Product Filter"
 
-#: includes/class.yith-wcan-admin.php:191
-msgid "Premium live demo"
-msgstr "Premium live demo"
-
-#: includes/class.yith-wcan-admin.php:191
-msgid "Live demo"
-msgstr "Live demo"
-
-#: includes/class.yith-wcan-admin.php:219
-msgid "Plugin Documentation"
-msgstr "Plugin Documentatie"
-
-#: includes/functions.yith-wcan.php:57 includes/functions.yith-wcan.php:71
-#: includes/functions.yith-wcan.php:93
+#: includes/functions.yith-wcan.php:88 includes/functions.yith-wcan.php:104
+#: includes/functions.yith-wcan.php:126
 msgid "Term"
 msgstr "Termijn"
 
-#: includes/functions.yith-wcan.php:57
-#: widgets/class.yith-wcan-navigation-widget.php:867
+#: includes/functions.yith-wcan.php:88
+#: widgets/class.yith-wcan-navigation-widget.php:868
 msgid "Color"
 msgstr "Kleur"
 
-#: includes/functions.yith-wcan.php:71
+#: includes/functions.yith-wcan.php:104
 msgctxt "For multicolor: I.E. white and red T-Shirt"
 msgid "Color 1"
 msgstr "Kleur 1"
 
-#: includes/functions.yith-wcan.php:71
+#: includes/functions.yith-wcan.php:104
 msgctxt "For multicolor: I.E. white and red T-Shirt"
 msgid "Color 2"
 msgstr "Kleur 2"
 
-#: includes/functions.yith-wcan.php:93
+#: includes/functions.yith-wcan.php:126
 msgid "Labels"
 msgstr "Labels"
 
@@ -144,11 +131,15 @@ msgid "Enter here the CSS class or id for the results count container"
 msgstr "Vul hier de CSS klasse of id in voor de resultaten optellen container"
 
 #: settings/frontend-options.php:57
-msgid "Scroll top anchor"
+#, fuzzy
+#| msgid "Scroll top anchor"
+msgid "Scroll up to top anchor"
 msgstr "Scroll top anker"
 
 #: settings/frontend-options.php:58
-msgid "Enter here the HTML tag for the scroll to top feature"
+#, fuzzy
+#| msgid "Enter here the HTML tag for the scroll to top feature"
+msgid "Enter here the HTML tag for the scroll up to to top feature"
 msgstr "Vul hier de THML tag in voor de scroll to top functie"
 
 #: settings/frontend-options.php:65
@@ -168,7 +159,6 @@ msgid "WooCommerce Default"
 msgstr ""
 
 #: templates/admin/premium.php:203 templates/admin/premium.php:441
-#, php-format
 msgid ""
 "Upgrade to %1$spremium version%2$s of %1$sYITH WooCommerce Ajax Product "
 "Filter%2$s to benefit from all features!"
@@ -191,7 +181,6 @@ msgid "Two more layouts"
 msgstr ""
 
 #: templates/admin/premium.php:224
-#, php-format
 msgid ""
 "The YITH WooCommerce Ajax product Filter widget get richer with 2 new "
 "layouts to filter the products of your shop.%1$sBicolor%2$s: the perfect "
@@ -208,7 +197,6 @@ msgid "Price range"
 msgstr ""
 
 #: templates/admin/premium.php:237
-#, php-format
 msgid ""
 "One of the most requested filter for e-commerce sites is the one that let "
 "you select products by their prices. Thanks to YITH WooCommerce Ajax List "
@@ -221,7 +209,6 @@ msgid "Ajax Stock/On Sale Filters"
 msgstr ""
 
 #: templates/admin/premium.php:256
-#, php-format
 msgid ""
 "A new widget for the premium version of the plugin. Whoever will surf the "
 "pages of your shop will be able to display only the products on sale and/or "
@@ -234,7 +221,6 @@ msgid "Product sorting"
 msgstr ""
 
 #: templates/admin/premium.php:269
-#, php-format
 msgid ""
 "With the new %1$sYITH WooCommerce Ajax Sort By%2$s widget, you can give your "
 "users the freedom to sort products with the ajax technology, without the "
@@ -257,7 +243,6 @@ msgid "WooCommerce Price Filter"
 msgstr ""
 
 #: templates/admin/premium.php:301
-#, php-format
 msgid ""
 "Take advantage of the premium version of the plugin to edit the default "
 "behavior of WooCommerce Price Filter. Change the %1$slayout of the filter"
@@ -282,7 +267,6 @@ msgid " Filter by category"
 msgstr ""
 
 #: templates/admin/premium.php:333
-#, php-format
 msgid ""
 "Configure the widget to let your users filter product by a %1$sselected "
 "category%2$s. Your users will be even happier to browse your shop."
@@ -362,86 +346,139 @@ msgid "Filter the list of products without reloading the page"
 msgstr "Filter de lijst met producten, zonder te pagina opnieuw te laden"
 
 #: widgets/class.yith-wcan-navigation-widget.php:39
-msgctxt "Admin: Widget Title"
-msgid "YITH WooCommerce Ajax Product Filter"
-msgstr "YITH WooCommerce Ajax Product Filter"
+#, fuzzy
+#| msgid "Ajax Product Filter"
+msgctxt "[Plugin Name] Admin: Widget Title"
+msgid "YITH Ajax Product Filter"
+msgstr "Ajax Product Filter"
 
-#: widgets/class.yith-wcan-navigation-widget.php:153
+#: widgets/class.yith-wcan-navigation-widget.php:154
 msgid "Filters:"
 msgstr "Filters:"
 
-#: widgets/class.yith-wcan-navigation-widget.php:866
+#: widgets/class.yith-wcan-navigation-widget.php:867
 msgid "List"
 msgstr "Lijst"
 
-#: widgets/class.yith-wcan-navigation-widget.php:868
+#: widgets/class.yith-wcan-navigation-widget.php:869
 msgid "Label"
 msgstr "Label"
 
-#: widgets/class.yith-wcan-navigation-widget.php:869
+#: widgets/class.yith-wcan-navigation-widget.php:870
 msgid "Dropdown"
 msgstr "Dropdown"
 
-#: widgets/class.yith-wcan-navigation-widget.php:876
-#: widgets/class.yith-wcan-reset-navigation-widget.php:104
+#: widgets/class.yith-wcan-navigation-widget.php:877
+#: widgets/class.yith-wcan-reset-navigation-widget.php:126
 msgid "Title"
 msgstr "Titel"
 
-#: widgets/class.yith-wcan-navigation-widget.php:882
+#: widgets/class.yith-wcan-navigation-widget.php:883
 msgid "Type:"
 msgstr "Type:"
 
-#: widgets/class.yith-wcan-navigation-widget.php:893
+#: widgets/class.yith-wcan-navigation-widget.php:894
 msgid "Query Type:"
 msgstr "Query Type:"
 
-#: widgets/class.yith-wcan-navigation-widget.php:895
+#: widgets/class.yith-wcan-navigation-widget.php:896
 msgid "AND"
 msgstr "EN"
 
-#: widgets/class.yith-wcan-navigation-widget.php:896
+#: widgets/class.yith-wcan-navigation-widget.php:897
 msgid "OR"
 msgstr "OF"
 
-#: widgets/class.yith-wcan-navigation-widget.php:902
+#: widgets/class.yith-wcan-navigation-widget.php:903
 msgid "Attribute:"
 msgstr "Eigenschap:"
 
-#: widgets/class.yith-wcan-navigation-widget.php:909
+#: widgets/class.yith-wcan-navigation-widget.php:910
 msgid "Display (default All):"
 msgstr "Weergave (allen default):"
 
-#: widgets/class.yith-wcan-navigation-widget.php:911
+#: widgets/class.yith-wcan-navigation-widget.php:912
 msgid "All (no hierarchical)"
 msgstr "Allen (niet hiërarchisch)"
 
-#: widgets/class.yith-wcan-navigation-widget.php:912
+#: widgets/class.yith-wcan-navigation-widget.php:913
 msgid "All (hierarchical)"
 msgstr "Allen (hiërarchisch)"
 
-#: widgets/class.yith-wcan-navigation-widget.php:913
+#: widgets/class.yith-wcan-navigation-widget.php:914
 msgid "Only Parent"
 msgstr "Alleen bovenliggend"
 
-#: widgets/class.yith-wcan-navigation-widget.php:920
+#: widgets/class.yith-wcan-navigation-widget.php:921
 msgid "CSS custom class"
 msgstr "CSS custom klasse"
 
 #: widgets/class.yith-wcan-reset-navigation-widget.php:23
+#, fuzzy
+#| msgid "Reset all filters set by YITH WooCommerce Ajax Product Filter"
+msgctxt "[Plugin Name]"
 msgid "Reset all filters set by YITH WooCommerce Ajax Product Filter"
 msgstr "Alle filters van YITH WooCommerce Ajax Product Filter resetten"
 
 #: widgets/class.yith-wcan-reset-navigation-widget.php:25
-msgid "YITH WooCommerce Ajax Reset Filter"
+#, fuzzy
+#| msgid "YITH WooCommerce Ajax Reset Filter"
+msgid "YITH Ajax Reset Filter"
 msgstr "YITH WooCommerce Ajax Reset Filter"
 
-#: widgets/class.yith-wcan-reset-navigation-widget.php:97
+#: widgets/class.yith-wcan-reset-navigation-widget.php:119
 msgid "Reset All Filters"
 msgstr "Alle filters resetten"
 
-#: widgets/class.yith-wcan-reset-navigation-widget.php:110
+#: widgets/class.yith-wcan-reset-navigation-widget.php:132
 msgid "Button Label"
 msgstr "Labelknop"
+
+#. Plugin Name of the plugin/theme
+#, fuzzy
+#| msgctxt "Admin: Widget Title"
+#| msgid "YITH WooCommerce Ajax Product Filter"
+msgid "YITH WooCommerce Ajax Product Filter"
+msgstr "YITH WooCommerce Ajax Product Filter"
+
+#. Plugin URI of the plugin/theme
+msgid "https://wordpress.org/plugins/yith-woocommerce-ajax-navigation/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"<code><strong>YITH WooCommerce AJAX Product Filter</strong></code> allows "
+"your users to find the product they are looking for as quickly as possible. "
+"Thanks to the plugin you will be able to set up one or more search filters "
+"for your WooCommerce products, improve the user experience and give the "
+"impression of being in a big and reliable store. <a href=\"https://yithemes."
+"com/\" target=\"_blank\">Get more plugins for your e-commerce shop on "
+"<strong>YITH</strong></a>"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "YITH"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://yithemes.com/"
+msgstr ""
+
+#, fuzzy
+#~| msgctxt "Admin: Widget Title"
+#~| msgid "YITH WooCommerce Ajax Product Filter"
+#~ msgctxt "[Plugin Name] Admin: Widget Title"
+#~ msgid "YITH WooCommerce Ajax Product Filter"
+#~ msgstr "YITH WooCommerce Ajax Product Filter"
+
+#~ msgid "Premium live demo"
+#~ msgstr "Premium live demo"
+
+#~ msgid "Live demo"
+#~ msgstr "Live demo"
+
+#~ msgid "Plugin Documentation"
+#~ msgstr "Plugin Documentatie"
 
 #~ msgid "Settings"
 #~ msgstr "Instellingen"

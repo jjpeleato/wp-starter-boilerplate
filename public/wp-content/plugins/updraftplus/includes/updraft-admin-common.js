@@ -1358,7 +1358,7 @@ function zip_files_jstree(entity, timestamp, type, findex) {
  * @param {string} what - the file entity
  */
 function remove_updraft_downloader(item, what) {
-	jQuery(item).parent().fadeOut().remove();
+	jQuery(item).fadeOut().remove();
 	if (0 == jQuery('.updraftplus_downloader_container_'+what+' .updraftplus_downloader').length) jQuery('.updraftplus_downloader_container_'+what).remove();
 }
 

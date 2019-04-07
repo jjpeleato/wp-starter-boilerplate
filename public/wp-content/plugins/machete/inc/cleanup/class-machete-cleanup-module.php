@@ -43,6 +43,10 @@ class MACHETE_CLEANUP_MODULE extends MACHETE_MODULE {
 				'title'       => __( 'feed_links', 'machete' ),
 				'description' => __( 'Remove Automatics RSS links. RSS will still work, but you will need to provide your own links.', 'machete' ),
 			),
+			'feed_generator'        => array(
+				'title'       => __( 'feed_generator', 'machete' ),
+				'description' => __( 'Remove generator tag from RSS feeds.', 'machete' ),
+			),
 			'next_prev'         => array(
 				'title'       => __( 'adjacent_posts', 'machete' ),
 				'description' => __( 'Remove the next and previous post links from the header', 'machete' ),
@@ -53,7 +57,7 @@ class MACHETE_CLEANUP_MODULE extends MACHETE_MODULE {
 			),
 			'wp_generator'      => array(
 				'title'       => __( 'wp_generator', 'machete' ),
-				'description' => __( 'Remove WordPress meta generator tag. Used by atackers to detect the WordPress version.', 'machete' ),
+				'description' => __( 'Remove WordPress and WooCommerce meta generator tags. Used by atackers to detect the WordPress version.', 'machete' ),
 			),
 			'ver'               => array(
 				'title'       => __( 'version', 'machete' ),

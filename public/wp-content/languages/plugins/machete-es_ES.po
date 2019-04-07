@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - Machete - Development (trunk) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2019-03-07 00:12:33+0000\n"
+"PO-Revision-Date: 2019-03-22 22:08:59+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11,11 +11,19 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: Plugins - Machete - Development (trunk)\n"
 
-#: inc/cleanup/class-machete-cleanup-module.php:118
+#: inc/cleanup/class-machete-cleanup-module.php:48
+msgid "Remove generator tag from RSS feeds."
+msgstr "Quitar la etiqueta generator de los feeds RSS."
+
+#: inc/cleanup/class-machete-cleanup-module.php:47
+msgid "feed_generator"
+msgstr "feed_generator"
+
+#: inc/cleanup/class-machete-cleanup-module.php:122
 msgid "Might break external appplications if they need to access your site's API anonymously."
 msgstr "Puede dar problemas con aplicaciones externas que tengan que acceder a la API de tu sitio de forma anónima."
 
-#: inc/cleanup/class-machete-cleanup-module.php:118
+#: inc/cleanup/class-machete-cleanup-module.php:122
 msgid "Remove the JSON-API links from page headers. Also require that API consumers be authenticated."
 msgstr "Elimina de las cabeceras de página los enlaces a la JSON-API. También requiere identificarse para consumir la API."
 
@@ -65,17 +73,17 @@ msgstr "Esta herramienta añade 6.1Kb y una sola llamada a base de datos a cada 
 msgid "Social sharing made the Machete way. The icons are made as a custom webfont embedded in a CSS minified file that only weights 5.8Kb. The sharing actions are made uning each platform's native share URLs."
 msgstr "Compartir en redes sociales a lo Machete. Los iconos son una webfont personalizada embebida en un archivo CSS minimizado que sólo pesa 5.8 Kb. Las acciones de compartir se realizan usando la URL para compartir nativa de cada plataforma."
 
-#: inc/social/class-machete-social-module.php:180
+#: inc/social/class-machete-social-module.php:178
 msgctxt "Product post type singular label"
 msgid "product"
 msgstr "producto"
 
-#: inc/social/class-machete-social-module.php:177
+#: inc/social/class-machete-social-module.php:175
 msgctxt "Post post type singular label"
 msgid "post"
 msgstr "entrada"
 
-#: inc/social/class-machete-social-module.php:174
+#: inc/social/class-machete-social-module.php:172
 msgctxt "Page post type singular label"
 msgid "page"
 msgstr "página"
@@ -196,11 +204,11 @@ msgstr "Se producido un problema al acceder al sistema de ficheros. Comprueba tu
 msgid "This function needs direct access to the filesystem."
 msgstr "Esta función necesita acceso directo al sistema de ficheros."
 
-#: inc/cleanup/class-machete-cleanup-module.php:138
+#: inc/cleanup/class-machete-cleanup-module.php:142
 msgid "When WordPress generates a JPEG thumbnail it compress the image to 82% quality. Check this this to reduce the default quality to 72%. (It doesn't affect original image quality)."
 msgstr "Cuando WordPress genera una miniatura JPEG, comprime la imagen con una calidad del 82%. Marca esto para reducir la calidad por defecto al 72%. (No afecta a la calidad de la imagen original)."
 
-#: inc/cleanup/class-machete-cleanup-module.php:137
+#: inc/cleanup/class-machete-cleanup-module.php:141
 msgid "Reduce JPEG quality"
 msgstr "Reducir la calidad JPEG"
 
@@ -360,31 +368,31 @@ msgstr "Clásico oscuro"
 msgid "Classic Light"
 msgstr "Clásico claro"
 
-#: inc/cleanup/optimization.php:265
+#: inc/cleanup/optimization.php:277
 msgid "The REST API on this site has been disabled."
 msgstr "La REST API de este sitio ha sido desactivada."
 
-#: inc/cleanup/class-machete-cleanup-module.php:134
+#: inc/cleanup/class-machete-cleanup-module.php:138
 msgid "Activate only if you are not using the reCAPTCHA Contact Form 7 field"
 msgstr "Actívalo sólo si no estás utilizando el campo reCAPTCHA de Contact Form 7"
 
-#: inc/cleanup/class-machete-cleanup-module.php:134
+#: inc/cleanup/class-machete-cleanup-module.php:138
 msgid "Disables the Contact Form 7 refill script. Saves one hit to wp-ajax.php per pageview on cached sites"
 msgstr "Desactiva el script refill de Contact Form 7. Ahorra una petición a wp-ajax.php por vista de página en los sitios con caché."
 
-#: inc/cleanup/class-machete-cleanup-module.php:133
+#: inc/cleanup/class-machete-cleanup-module.php:137
 msgid "Remove CF7 refill"
 msgstr "Quitar el refill de CF7"
 
-#: inc/cleanup/class-machete-cleanup-module.php:126
+#: inc/cleanup/class-machete-cleanup-module.php:130
 msgid "May break some themes and plugins that depend on legacy code."
 msgstr "Puede romper algunos temas y plugins que dependen de código obsoleto."
 
-#: inc/cleanup/class-machete-cleanup-module.php:122
+#: inc/cleanup/class-machete-cleanup-module.php:126
 msgid "Disable the XML-RPC interface. "
 msgstr "Desactiva la interfaz XML-RPC."
 
-#: inc/cleanup/class-machete-cleanup-module.php:121
+#: inc/cleanup/class-machete-cleanup-module.php:125
 msgid "XML-RPC"
 msgstr "XML-RPC"
 
@@ -432,27 +440,27 @@ msgstr "Limpieza de funcionalidades"
 msgid "Completely safe"
 msgstr "Completamente seguro"
 
-#: inc/cleanup/class-machete-cleanup-module.php:111
+#: inc/cleanup/class-machete-cleanup-module.php:115
 msgid "URLs in comments are converted to links by default. This feature is often exploited by spammers."
 msgstr "Por defecto, las URLs de los comentarios se convierte automáticamente en enlaces. Los spammers se aprovechan a menudo de ello."
 
-#: inc/cleanup/class-machete-cleanup-module.php:110
+#: inc/cleanup/class-machete-cleanup-module.php:114
 msgid "No comment autolinks"
 msgstr "Comentarios sin autolinks"
 
-#: inc/cleanup/class-machete-cleanup-module.php:107
+#: inc/cleanup/class-machete-cleanup-module.php:111
 msgid "Prevents WordPress from generating the medium_large 768px thumbnail size of image uploads."
 msgstr "Evita que WordPress genere el tamaño de miniatura medium_large de 768px"
 
-#: inc/cleanup/class-machete-cleanup-module.php:106
+#: inc/cleanup/class-machete-cleanup-module.php:110
 msgid "medium_large thumbnail"
 msgstr "miniatura medium_large"
 
-#: inc/cleanup/class-machete-cleanup-module.php:103
+#: inc/cleanup/class-machete-cleanup-module.php:107
 msgid "Disables the plugins and theme editor. A mostly useless tool that can be very dangerous in the wrong hands."
 msgstr "Desactiva el editor de plugins y temas. Una herramienta de dudosa utilidad que puede ser muy peligrosa en la manos equivocadas."
 
-#: inc/cleanup/class-machete-cleanup-module.php:102
+#: inc/cleanup/class-machete-cleanup-module.php:106
 msgid "Plugin and theme editor"
 msgstr "Editor de plugins y temas"
 
@@ -462,11 +470,11 @@ msgstr "Editor de plugins y temas"
 msgid "Show more details"
 msgstr "Mostrar detalles"
 
-#: inc/cleanup/class-machete-cleanup-module.php:99
+#: inc/cleanup/class-machete-cleanup-module.php:103
 msgid "Removes the filter that converts Wordpress to WordPress in every dang title, content or comment text."
 msgstr "Quita el filtro que convierte Wordpress en WordPress en el contenido de cada título, contenido o comentario."
 
-#: inc/cleanup/class-machete-cleanup-module.php:98
+#: inc/cleanup/class-machete-cleanup-module.php:102
 msgid "capital_P_dangit"
 msgstr "capital_P_dangit"
 
@@ -585,7 +593,7 @@ msgstr "Activar el plugin"
 msgid "Download Machete PowerTools"
 msgstr "Descargar Machete PowerTools"
 
-#: inc/cleanup/class-machete-cleanup-module.php:117
+#: inc/cleanup/class-machete-cleanup-module.php:121
 msgid "JSON API"
 msgstr "JSON API"
 
@@ -690,35 +698,35 @@ msgstr "Borrar revisiones de entrada sin uso"
 msgid "Delete Expired Transients"
 msgstr "Borrar transitorios caducados"
 
-#: inc/cleanup/class-machete-cleanup-module.php:95
+#: inc/cleanup/class-machete-cleanup-module.php:99
 msgid "You can shorten the time posts are kept in the trash, which is 30 days by default, to 1 week."
 msgstr "Puedes acortar el tiempo que se mantienen las entradas en la papelera de los 30 días predeterminados a una semana."
 
-#: inc/cleanup/class-machete-cleanup-module.php:94
+#: inc/cleanup/class-machete-cleanup-module.php:98
 msgid "Empty trash every week"
 msgstr "Vaciar la papelera cada semana"
 
-#: inc/cleanup/class-machete-cleanup-module.php:91
+#: inc/cleanup/class-machete-cleanup-module.php:95
 msgid "Load the comment-reply JS file only when needed."
 msgstr "Carga el JS de las respuestas a comentarios sólo cuando hace falta."
 
-#: inc/cleanup/class-machete-cleanup-module.php:90
+#: inc/cleanup/class-machete-cleanup-module.php:94
 msgid "JS Comment reply"
 msgstr "JS de respuestas de comentarios"
 
-#: inc/cleanup/class-machete-cleanup-module.php:87
+#: inc/cleanup/class-machete-cleanup-module.php:91
 msgid "By default, heartbeat makes a post call every 15 seconds on post edit pages. Change to 60 seconds (less CPU usage)."
 msgstr "Por defecto, heartbeat hace una llamada POST cada 15 segundos en las páginas de edición. Esto lo cambia a 60 segundos."
 
-#: inc/cleanup/class-machete-cleanup-module.php:86
+#: inc/cleanup/class-machete-cleanup-module.php:90
 msgid "Slow Heartbeat"
 msgstr "Ralentizar Heartbeat"
 
-#: inc/cleanup/class-machete-cleanup-module.php:130
+#: inc/cleanup/class-machete-cleanup-module.php:134
 msgid "Since WordPress 4.4, oEmbed is installed and available by default. If you don’t need oEmbed, you can remove it."
 msgstr "Desde WordPress 4.4, oEmbed está instalado y habilitado por defecto. Puedes desactivarlo si no lo necesitas."
 
-#: inc/cleanup/class-machete-cleanup-module.php:129
+#: inc/cleanup/class-machete-cleanup-module.php:133
 msgid "Remove oEmbed Scripts"
 msgstr "Quitar los scripts de oEmbed"
 
@@ -782,27 +790,27 @@ msgstr "Artimañas de optimización"
 msgid "This section removes code from the &lt;head&gt; tag. This makes your site faster and reduces the amount of information revealed to a potential attacker."
 msgstr "Esta sección quita código de la etiqueta &lt;head&gt;. Esto hace que su sitio sea más rápido y reduce la información revelada a un potencial atacante,"
 
-#: inc/cleanup/class-machete-cleanup-module.php:126
+#: inc/cleanup/class-machete-cleanup-module.php:130
 msgid "jQuery-migrate provides diagnostics that can simplify upgrading to new versions of jQuery, you can safely disable it."
 msgstr "jQuery-migrate es una herramienta de diagnóstico para ayuda a cambiar entre versiones de jQuery, es seguro deshabilitarlo."
 
-#: inc/cleanup/class-machete-cleanup-module.php:125
+#: inc/cleanup/class-machete-cleanup-module.php:129
 msgid "remove jQuery-migrate"
 msgstr "quitar jQuery-migrate"
 
-#: inc/cleanup/class-machete-cleanup-module.php:83
+#: inc/cleanup/class-machete-cleanup-module.php:87
 msgid "Limits the number of stored revisions to 5 only WP_POST_REVISIONS constant has been defined."
 msgstr "Limita el número de revisiones almacenadas a 5, sólo si se ha definido la constante WP_POST_REVISIONS"
 
-#: inc/cleanup/class-machete-cleanup-module.php:82
+#: inc/cleanup/class-machete-cleanup-module.php:86
 msgid "Limit Post Revisions"
 msgstr "Limitar Post Revisions"
 
-#: inc/cleanup/class-machete-cleanup-module.php:79
+#: inc/cleanup/class-machete-cleanup-module.php:83
 msgid "Starting with 4.7, WordPress tries to make thumbnails from each PDF you upload, potentially crashing your server if GhostScript and Imagemagick aren't properly configured. This option disables PDF thumbnails."
 msgstr "A partir de la versión 4.7, WordPress intenta sacar miniaturas de cada PDF que subes, pudiendo hacer que tu servidor se cuelgue si no tienes GhostScript e Imagemagick bien configurados. Esta opción deshabilita las miniaturas de los PDF."
 
-#: inc/cleanup/class-machete-cleanup-module.php:78
+#: inc/cleanup/class-machete-cleanup-module.php:82
 msgid "PDF Thumbnails"
 msgstr "Miniaturas de PDF"
 
@@ -1128,59 +1136,59 @@ msgstr "Explicación"
 msgid "Remove"
 msgstr "Quitar"
 
-#: inc/cleanup/class-machete-cleanup-module.php:68
+#: inc/cleanup/class-machete-cleanup-module.php:72
 msgid "Removes dns-prefetch links from the header"
 msgstr "Quitar de la cabecera los enlaces dns-prefetch"
 
-#: inc/cleanup/class-machete-cleanup-module.php:67
+#: inc/cleanup/class-machete-cleanup-module.php:71
 msgid "dns-prefetch"
 msgstr "dns-prefetch"
 
-#: inc/cleanup/class-machete-cleanup-module.php:64
+#: inc/cleanup/class-machete-cleanup-module.php:68
 msgid "Removes a block of inline CSS used by old themes from the header"
 msgstr "Quitar de la cabecera un bloque de CSS que usaban los temas antiguos."
 
-#: inc/cleanup/class-machete-cleanup-module.php:63
+#: inc/cleanup/class-machete-cleanup-module.php:67
 msgid "recent_comments_style"
 msgstr "recent_comments_style"
 
-#: inc/cleanup/class-machete-cleanup-module.php:75
+#: inc/cleanup/class-machete-cleanup-module.php:79
 msgid "Remove lots of emoji styles and scripts from the header, RSS, mail function, tinyMCE editor..."
 msgstr "Quitar un montón de scripts y hojas de estilo para los emoij de la cabecera, los feeds RSS, la función mail,  tinyMCE editor..."
 
-#: inc/cleanup/class-machete-cleanup-module.php:74
+#: inc/cleanup/class-machete-cleanup-module.php:78
 msgid "Emojicons"
 msgstr "Emojicons"
 
-#: inc/cleanup/class-machete-cleanup-module.php:60
+#: inc/cleanup/class-machete-cleanup-module.php:64
 msgid "Remove WordPress version var (?ver=) after styles and scripts. Used by atackers to detect the WordPress version."
 msgstr "Quitar la variable de versión de WordPress (?ver=) de los estilos y los scripts. La usan los hackers para detectar la versión de WordPress."
 
-#: inc/cleanup/class-machete-cleanup-module.php:59
+#: inc/cleanup/class-machete-cleanup-module.php:63
 msgid "version"
 msgstr "version"
 
-#: inc/cleanup/class-machete-cleanup-module.php:56
-msgid "Remove WordPress meta generator tag. Used by atackers to detect the WordPress version."
-msgstr "Quitar la metaetiqueta \"generator\" de WordPress. La usan los hackers para detectar la versión de WordPress."
+#: inc/cleanup/class-machete-cleanup-module.php:60
+msgid "Remove WordPress and WooCommerce meta generator tags. Used by atackers to detect the WordPress version."
+msgstr "Quitar las metaetiquetas \"generator\" de WordPress y de WooCommerce. La usan los hackers para detectar la versión de WordPress."
 
-#: inc/cleanup/class-machete-cleanup-module.php:55
+#: inc/cleanup/class-machete-cleanup-module.php:59
 msgid "wp_generator"
 msgstr "wp_generator"
 
-#: inc/cleanup/class-machete-cleanup-module.php:52
+#: inc/cleanup/class-machete-cleanup-module.php:56
 msgid "Remove the shortlink url from header"
 msgstr "Quitar la url del shortlink de la cabecera"
 
-#: inc/cleanup/class-machete-cleanup-module.php:51
+#: inc/cleanup/class-machete-cleanup-module.php:55
 msgid "shortlink"
 msgstr "shortlink"
 
-#: inc/cleanup/class-machete-cleanup-module.php:48
+#: inc/cleanup/class-machete-cleanup-module.php:52
 msgid "Remove the next and previous post links from the header"
 msgstr "Quitar de la cabecera los enlaces a la entradas anterior y siguiente"
 
-#: inc/cleanup/class-machete-cleanup-module.php:47
+#: inc/cleanup/class-machete-cleanup-module.php:51
 msgid "adjacent_posts"
 msgstr "adjacent_posts"
 

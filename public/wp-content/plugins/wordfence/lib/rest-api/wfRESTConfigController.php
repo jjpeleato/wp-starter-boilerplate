@@ -146,6 +146,7 @@ class wfRESTConfigController extends wfRESTBaseController {
 		$systemInfo['output_buffering'] = ini_get('output_buffering');
 		$systemInfo['ip'] = wfUtils::getIPAndServerVariable();
 		$systemInfo['detected_ips'] = wfUtils::getAllServerVariableIPs();
+		$systemInfo['admin_url'] = network_admin_url();
 
 		$response = rest_ensure_response(array(
 			'config' => $config,
@@ -217,7 +218,7 @@ class wfRESTConfigController extends wfRESTBaseController {
 	 * @return mixed|WP_REST_Response
 	 */
 	public function premiumConnect($request) {
-		require_once WORDFENCE_PATH . '/vendor/paragonie/sodium_compat/autoload.php';
+		require_once WORDFENCE_PATH . '/vendor/paragonie/sodium_compat/autoload-fast.php';
 
 		// Store values sent by Central.
 		$wordfenceCentralPK = $request['public-key'];
