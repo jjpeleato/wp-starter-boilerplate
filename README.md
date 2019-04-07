@@ -59,6 +59,7 @@ For more information visit:
 ├─ gulpfile.babel.js
 ├─ LICENSE
 ├─ package.json
+├─ phpcs.xml
 └─ README.md
 ```
 
@@ -99,6 +100,9 @@ For more information visit:
     - `$lando dep deploy local` Deploy to the local machine in the docker container.
     - `$lando dep deploy pre` Deploy to the pre production server.
     - `$lando dep deploy pro` Deploy to the production server.
+- If you work with PHP CodeSniffer. If required run `$lando phpcs --config-set installed_paths /path/to/wpcs`
+	- `$lando phpcs` Runs the phpcs
+	- `$lando phpcbf` Runs the phpcbf
 
 ### Technologies and tools
 

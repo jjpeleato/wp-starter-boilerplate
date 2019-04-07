@@ -62,6 +62,16 @@ tooling:
     desription: run deployer commands
     cmd:
       - "vendor/bin/dep"
+  phpcs:
+    service: appserver
+    desription: "Analyze code against the WordPress coding standards with PHP_CodeSniffer"
+    cmd:
+      - "vendor/bin/phpcs"
+  phpcbf:
+    service: appserver
+    desription: "Fix coding standards warnings/errors automatically with PHP Code Beautifier"
+    cmd:
+      - "vendor/bin/phpcbf"
 
 # See: https://docs.devwithlando.io/config/events.html
 events:
