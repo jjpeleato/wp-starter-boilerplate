@@ -5,7 +5,7 @@ Tags: image, compress, resize, optimize, optimization, lossless, lossy, seo, web
 Requires at least: 4.9
 Tested up to: 5.1
 Requires PHP: 5.6
-Stable tag: 4.6.3
+Stable tag: 4.7.2
 License: GPLv3
 
 Speed up your website and improve your visitors' experience by automatically compressing and resizing images and PDFs. Boost SEO and improve sales.
@@ -59,7 +59,7 @@ All images created by the built-in WP_Image_Editor class will be automatically o
 
 = WebP Images =
 
-One-click WebP with ExactDN and JS WebP Rewriting. Otherwise, can generate WebP versions of your images, and enables you to serve even smaller images to supported browsers. Several methods are available for serving WebP images, including Apache-compatible rewrite rules and our JS WebP Rewriting option compatible with caches and CDNs. Also works with the WebP option in the Cache Enabler plugin from KeyCDN.
+Automatic WebP conversion with ExactDN, no additional configuration. Otherwise, can generate WebP versions of your images, and enables you to serve even smaller images to supported browsers. Several methods are available for serving WebP images, including Apache-compatible rewrite rules and our JS WebP Rewriting option compatible with caches and CDNs. Also works with the WebP option in the Cache Enabler plugin from KeyCDN.
 
 = WP-CLI =
 
@@ -173,6 +173,48 @@ http://developer.yahoo.com/performance/rules.html#opt_images
 
 * Feature requests can be viewed and submitted at https://github.com/nosilver4u/ewww-image-optimizer/labels/enhancement
 * If you would like to help translate this plugin in your language, get started here: https://translate.wordpress.org/projects/wp-plugins/ewww-image-optimizer/
+
+= 4.7.2 =
+* changed: JS WebP no longer necessary with ExactDN
+* fixed: fatal error from NextGEN get_image_sizes() method
+* fixed: debugging mode gets stuck
+* fixed: ExactDN has unexpected results when content_width global equals zero
+* fixed: img elements with unquoted src attributes ignored by ExactDN, Lazy Load, and JS WebP
+
+= 4.7.1 =
+* added: CSS background image support for <li> elements
+* added: ExactDN + Lazy Load will auto-calculate dimensions for img elements without srcset/responsive markup
+* added: ExactDN parses thumbnail url for personalization.com + WooCommerce integration
+* added: ExactDN can use data-actual-width attribute for srcset generation
+* added: ExactDN + Lazy Load uses devicePixelRatio to provide clearer background images
+* fixed: Lazy Load for CSS background images misfires when display height is greater than width
+* fixed: visitors without JS see Lazy Load placeholder + fallback image
+
+= 4.7.0 =
+* added: lazy load (on ExactDN tab for now)
+* added: JS WebP supports background images via lazy load (div elements only for now)
+* added: ExactDN supports compression of background images (div elements only for now)
+* added: compat with Google Cloud Storage via WP Offload Media
+* added: automatic PNG to JPG conversion for ExactDN
+* added: ExactDN parsing for legacy WooCommerce API (current API works as-is)
+* changed: responsive image 'sizes' attribute can be auto-calculated by lazy load
+* changed: JS WebP no longer requires jQuery
+* changed: ExactDN srcset multipliers include fullscreen value of 1920px
+* changed: force resize function to ignore filesize with ewww_image_optimizer_resize_filesize_ignore filter
+* changed: prevent .php script/style generators from going through ExactDN
+* changed: ExactDN sites can dismiss exec notice to disable local compression
+* changed: automatic compression disabled during WooCommerce regen with admin notice
+* changed: use wp_resource_hints filter to include ExactDN dns-prefetch earlier in the page header
+* changed: gather debugging information on settings page even when debugging is not enabled yet
+* fixed: Bulk Optimize scanner does not update queue in some cases
+* fixed: ExactDN does not handle themes that support wide and full-screen images in block editor
+* fixed: ExactDN constrains images to 640px in Twenty Nineteen theme
+* fixed: ExactDN mangles Flatsome lazy load placeholder image URL
+* fixed: empty attributes not recognized properly by HTML parser, resulting in broken markup
+* fixed: table nav button styling broken in WP 5.1
+* fixed: ExactDN applies resizing args during image_downsize() even when full/original image is too small
+* fixed: animated GIF resizing breaks the use of image_resize_dimensions filter in WP_Image_Editor_GD
+* fixed: NextGen bulk optimizer unable to decode meta_data
 
 = 4.6.3 =
 * changed: folders to ignore setting applies to resizing also
