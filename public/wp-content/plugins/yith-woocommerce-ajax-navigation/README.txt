@@ -3,8 +3,8 @@
 Contributors: yithemes
 Tags: woocommerce ajax product filter download, woocommerce, widget, ajax, ajax filtered nav, ajax navigation, ajax filtered navigation, woocommerce layered navigation, woocommerce layered nav, product filter, product filters, ajax product filter, woocommerce ajax product filter, woocommerce filters, sidebar filter, sidebar ajax filter, ajax price filter, price filter, product sorting, woocommerce filter, taxonomy filter, attribute filter, attributes filter, woocommerce product sort, ajax sort, woocommerce ajax product filter, advanced product filters, ajax product filters, filters, woocommerce ajax product filters, woocommerce product filters, woocommerce product filters, category filter, attribute filters, woocommerce products filter, woocommerce price filter, yit, yith, yithemes
 Requires at least: 4.0
-Tested up to: 4.9
-Stable tag: 3.6.1
+Tested up to: 5.1
+Stable tag: 3.6.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -159,7 +159,20 @@ If you want to see a demonstration version of the premium plugin, you can see it
 
 == Changelog ==
 
-= 3.6.1 - Released on 22th October, 2018 =
+= 3.6.2 - Released on 08th April, 2019 =
+
+* New: Support to WooCommerce 3.6
+* Tweak: New Widgets name
+* Update: Plugin Core Framework
+* Fix: Undefined variable term_id in attributes table
+* Fix: Wrong reset page with WooCommerce Filter by price widget
+* Fix: Support to Aurum theme - Filter issue using AND operator
+* Fix: Undefined index: source_tax in YITH Reset Filter widget
+* Fix: Issue with reset filter in product categories page
+* Fix: Reset button doesn't works if a variable use a slash char in query string
+* Dev: new parameter for filter 'yith_wcan_dropdown_label'
+
+= 3.6.1 - Released on 11th October, 2018 =
 
 * Update: Plugin Core Framework
 
