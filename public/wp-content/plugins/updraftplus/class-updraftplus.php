@@ -3651,7 +3651,7 @@ class UpdraftPlus {
 					// Now deal with entries in $skip_these_dirs ending in * or starting with *
 					foreach ($skip_these_dirs as $skip => $sind) {
 						if ('*' == substr($skip, -1, 1) && '*' == substr($skip, 0, 1) && strlen($skip) > 2) {
-							if (strpos($entry, substr($skip, 1, strlen($skip-2))) !== false) {
+							if (strpos($entry, substr($skip, 1, strlen($skip)-2)) !== false) {
 								$this->log("finding files: $entry: skipping: excluded by options (glob)");
 								$add_to_list = false;
 							}
@@ -4082,9 +4082,15 @@ class UpdraftPlus {
 
 	/**
 	 * Sets up the nonce, basic job data, opens a log file for a new restore job, and makes sure that the Updraft_Restorer class is available
+	 *
+	 * @param boolean|string $nonce - the job nonce we want to use or false for a new one
+	 *
+	 * @return void
 	 */
-	public function initiate_restore_job() {
-		$this->backup_time_nonce();
+	public function initiate_restore_job($nonce = false) {
+		$this->backup_time_nonce($nonce);
+		// we reset here so that we ensure the correct jobdata gets loaded while we resume
+		$this->jobdata_reset();
 		$this->jobdata_set('job_type', 'restore');
 		$this->jobdata_set('job_time_ms', $this->job_time_ms);
 		$this->logfile_open($this->nonce);
@@ -4874,6 +4880,15 @@ class UpdraftPlus {
 				break;
 			case 'shop_premium':
 				return apply_filters('updraftplus_com_shop_premium', 'https://updraftplus.com/shop/updraftplus-premium/');
+				break;
+			case 'shop_vault_5':
+				return apply_filters('updraftplus_com_shop_vault_5', 'https://updraftplus.com/shop/updraftplus-vault-storage-5-gb/');
+				break;
+			case 'shop_vault_15':
+				return apply_filters('updraftplus_com_shop_vault_15', 'https://updraftplus.com/shop/updraftplus-vault-storage-15-gb/');
+				break;
+			case 'shop_vault_50':
+				return apply_filters('updraftplus_com_shop_vault_50', 'https://updraftplus.com/shop/updraftplus-vault-storage-50-gb/');
 				break;
 			default:
 				return 'URL not found ('.$which_page.')';

@@ -897,8 +897,9 @@ class UpdraftPlus_Commands {
 			$content .= '</div>';
 			
 			if (0 != $response['tokens']) {
+				$is_admin_user = isset($response['is_admin_user']) ? $response['is_admin_user'] : false;
 				$content .= '<div class="updraftclone_action_box">';
-				$content .= $updraftplus_admin->updraftplus_clone_ui_widget();
+				$content .= $updraftplus_admin->updraftplus_clone_ui_widget($is_admin_user);
 				$content .= '<p class="updraftplus_clone_status"></p>';
 				$content .= '<button id="updraft_migrate_createclone" class="button button-primary button-hero" data-clone_id="'.$response['clone_info']['id'].'" data-secret_token="'.$response['clone_info']['secret_token'].'">'. __('Create clone', 'updraftplus') . '</button>';
 				$content .= '<span class="updraftplus_spinner spinner">' . __('Processing', 'updraftplus') . '...</span>';

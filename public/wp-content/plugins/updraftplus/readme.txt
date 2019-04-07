@@ -1,9 +1,9 @@
-=== UpdraftPlus WordPress Backup Plugin ===
+﻿=== UpdraftPlus WordPress Backup Plugin ===
 Contributors: Backup with UpdraftPlus, DavidAnderson, DNutbourne, aporter, snightingale, bcrodua
 Tags: backup, restore, database backup, wordpress backup, cloud backup, s3, dropbox, google drive, onedrive, ftp, backups
 Requires at least: 3.2
 Tested up to: 5.1
-Stable tag: 1.16.8
+Stable tag: 1.16.10
 Author URI: https://updraftplus.com
 Donate link: https://david.dw-perspective.org.uk/donate
 License: GPLv3 or later
@@ -168,6 +168,16 @@ The <a href="https://updraftplus.com/news/">UpdraftPlus backup blog</a> is the b
 
 N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which is 1 higher in the first digit, and has an extra component on the end, but the changelog below still applies. i.e. changes listed for 1.16.8.x of the free version correspond to changes made in 2.16.8.x of the paid version.
 
+= 1.16.10 - 23/Mar/2019 =
+
+* FEATURE: Added support for backing up and restoring SQL triggers
+* FIX: Prevent the downloader UI being removed before it's complete in the case of multi-archive sets (regression)
+* TWEAK: Refactor the restore code and use jobdata to save information about the restore rather than using $_POST data
+* TWEAK: Automatically show the UpdraftClone admin UI for UpdraftClone developers for easier debugging
+* TWEAK: Prevent a PHP notice with certain exclusion settings
+* TWEAK: Add a mention of UpdraftClone in WP's PHP version notice and WooCommerce's "untested extensions" notice
+* TWEAK: Add 5.1 to the built-in list of available UpdraftClone WP versions
+
 = 1.16.8 - 13/Mar/2019 =
 
 * FIX: If requesting clone credentials that were not ready, the loop could rapidly repeat instead of waiting the intended time
@@ -191,6 +201,8 @@ N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which i
 * TWEAK: Update to the current series (4.5) of yahnis-elsts/plugin-update-checker (paid versions)
 * TWEAK: The "follow this link to refresh your (licensing) connection)" (paid versions) link was not functioning
 * TWEAK: Alert the user in the UI if they have activated a storage destination without any settings
+* TWEAK: Refactor the remote storage logging code in the S3, Email, Remote send, Backblaze, WebDAV, UpdraftVault, FTP, Google Cloud and Azure modules
+* FEATURE: Ability to purchase UpdraftVault subscriptions, including a new 5GB 1 month trial, directly from the UpdraftVault settings
 * TWEAK: If a directory is not found during a restore but the parent directory is then, where relevant, UpdraftPlus will automatically try to create the missing directory
 * TWEAK: Use the correct nonce name when requesting filesystem credentials if needing the WP_Filesystem API to delete old directories
 * TWEAK: Regression in 1.16.6 - certain types of final errors stopped being shown in the final report and had to be read from the log file
@@ -299,6 +311,8 @@ N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which i
 * TWEAK: Don't show individual add-ons that have not been bought in the account add-ons page if the user has Premium.
 * TWEAK: Include the raw updates check response information in the internal/advanced dump
 * TWEAK: Added the UpdraftClone video
+
+* TWEAK: Ability for user to buy Premium without leaving the plugin's settings pages
 
 = 1.15.3 - 29/Oct/2018 =
 
@@ -806,4 +820,4 @@ Furthermore, reliance upon any non-English translation is at your own risk. Updr
 We recognise and thank the following for code and/or libraries used and/or modified under the terms of their open source licences; see: https://updraftplus.com/acknowledgements/
 
 == Upgrade Notice ==
-* 1.16.8: Add some performance improvements regarding clones and updates. A recommended updated for all.
+* 1.16.10: Add capability to backup SQL triggers. Fix a regression causing incomplete downloading of multi-archive backup sets in the UI. Add UpdraftClone mention in WP's PHP update notice. A recommended update for all.

@@ -49,37 +49,17 @@ class UpdraftPlus_Filesystem_Functions {
 		return UpdraftPlus_Manipulation_Functions::convert_numeric_size_to_text($size);
 
 	}
-
+	
 	/**
 	 * Ensure that WP_Filesystem is instantiated and functional. Otherwise, outputs necessary HTML and dies.
-	 * Will also consult $_POST['updraft_restore'] and can set $_POST['updraft_restore_*'] and $_POST['updraft_restorer_*']
 	 *
-	 * @param Array|Null $second_loop_entities - array of files grouped by type
-	 * @param Array		 $url_parameters	   - parameters and values to be added to the URL output
+	 * @param array $url_parameters - parameters and values to be added to the URL output
+	 *
+	 * @return void
 	 */
-	public static function ensure_wp_filesystem_set_up_for_restore($second_loop_entities, $url_parameters = array()) {
+	public static function ensure_wp_filesystem_set_up_for_restore($url_parameters = array()) {
 	
 		global $wp_filesystem;
-
-		// request_filesystem_credentials passes on fields just via hidden name/value pairs.
-		// Build array of parameters to be passed via this
-		$extra_fields = array();
-		if (isset($_POST['updraft_restore']) && is_array($_POST['updraft_restore'])) {
-			foreach ($_POST['updraft_restore'] as $entity) {
-				$_POST['updraft_restore_'.$entity] = 1;
-				$extra_fields[] = 'updraft_restore_'.$entity;
-			}
-		}
-
-		foreach ($second_loop_entities as $type => $files) {
-			$_POST['updraft_restore_'.$type] = 1;
-			if (!in_array('updraft_restore_'.$type, $extra_fields)) $extra_fields[] = 'updraft_restore_'.$type;
-		}
-
-		// Now make sure that updraft_restorer_ option fields get passed along to request_filesystem_credentials
-		foreach ($_POST as $key => $value) {
-			if (0 === strpos($key, 'updraft_restorer_')) $extra_fields[] = $key;
-		}
 
 		$build_url = UpdraftPlus_Options::admin_page().'?page=updraftplus&action=updraft_restore';
 		
@@ -87,7 +67,7 @@ class UpdraftPlus_Filesystem_Functions {
 			$build_url .= '&'.$k.'='.$v;
 		}
 		
-		$credentials = request_filesystem_credentials($build_url, '', false, false, $extra_fields);
+		$credentials = request_filesystem_credentials($build_url, '', false, false);
 		
 		WP_Filesystem($credentials);
 		
