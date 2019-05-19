@@ -17,6 +17,7 @@ class wfOnboardingController {
 	const TOUR_SCAN = 'scan';
 	const TOUR_BLOCKING = 'blocking';
 	const TOUR_LIVE_TRAFFIC = 'livetraffic';
+	const TOUR_LOGIN_SECURITY = 'loginsecurity';
 	
 	/**
 	 * Sets the appropriate initial settings for an existing install so it's not forced through onboarding.
@@ -45,7 +46,8 @@ class wfOnboardingController {
 							self::shouldShowNewTour(self::TOUR_FIREWALL) || self::shouldShowUpgradeTour(self::TOUR_FIREWALL) ||
 							self::shouldShowNewTour(self::TOUR_SCAN) || self::shouldShowUpgradeTour(self::TOUR_SCAN) ||
 							self::shouldShowNewTour(self::TOUR_BLOCKING) || self::shouldShowUpgradeTour(self::TOUR_BLOCKING) ||
-							self::shouldShowNewTour(self::TOUR_LIVE_TRAFFIC) || self::shouldShowUpgradeTour(self::TOUR_LIVE_TRAFFIC));
+							self::shouldShowNewTour(self::TOUR_LIVE_TRAFFIC) || self::shouldShowUpgradeTour(self::TOUR_LIVE_TRAFFIC) ||
+							self::shouldShowNewTour(self::TOUR_LOGIN_SECURITY) || self::shouldShowUpgradeTour(self::TOUR_LOGIN_SECURITY));
 		if (!self::shouldShowAttempt1() && !self::shouldShowAttempt2() && !self::shouldShowAttempt3() && !$willShowAnyTour) {
 			return;
 		}
@@ -64,9 +66,18 @@ class wfOnboardingController {
 			self::shouldShowNewTour(self::TOUR_FIREWALL) || self::shouldShowUpgradeTour(self::TOUR_FIREWALL) ||
 			self::shouldShowNewTour(self::TOUR_SCAN) || self::shouldShowUpgradeTour(self::TOUR_SCAN) ||
 			self::shouldShowNewTour(self::TOUR_BLOCKING) || self::shouldShowUpgradeTour(self::TOUR_BLOCKING) ||
-			self::shouldShowNewTour(self::TOUR_LIVE_TRAFFIC) || self::shouldShowUpgradeTour(self::TOUR_LIVE_TRAFFIC));
+			self::shouldShowNewTour(self::TOUR_LIVE_TRAFFIC) || self::shouldShowUpgradeTour(self::TOUR_LIVE_TRAFFIC) ||
+			self::shouldShowNewTour(self::TOUR_LOGIN_SECURITY) || self::shouldShowUpgradeTour(self::TOUR_LOGIN_SECURITY));
 		
-		if (wfUtils::isAdmin() && (($willShowAnyPluginOnboarding && preg_match('~(?:^|/)wp-admin(?:/network)?/plugins\.php~i', $_SERVER['REQUEST_URI'])) || (isset($_GET['page']) && preg_match('/^Wordfence/', @$_GET['page'])))) {
+		if (wfUtils::isAdmin() && 
+			(($willShowAnyPluginOnboarding && preg_match('~(?:^|/)wp-admin(?:/network)?/plugins\.php~i', $_SERVER['REQUEST_URI'])) || 
+				(isset($_GET['page']) && 
+					(preg_match('/^Wordfence/', @$_GET['page']) || 
+						($willShowAnyTour && preg_match('/^WFLS/', @$_GET['page']))
+					)
+				)
+			)
+		) {
 			wp_enqueue_style('wordfence-font', wfUtils::getBaseURL() . wfUtils::versionedAsset('css/wf-roboto-font.css'), '', WORDFENCE_VERSION);
 			wp_enqueue_style('wordfence-ionicons-style', wfUtils::getBaseURL() . wfUtils::versionedAsset('css/wf-ionicons.css'), '', WORDFENCE_VERSION);
 			wp_enqueue_style('wordfenceOnboardingCSS', wfUtils::getBaseURL() . wfUtils::versionedAsset('css/wf-onboarding.css'), '', WORDFENCE_VERSION);
@@ -84,7 +95,8 @@ class wfOnboardingController {
 							self::shouldShowNewTour(self::TOUR_FIREWALL) || self::shouldShowUpgradeTour(self::TOUR_FIREWALL) ||
 							self::shouldShowNewTour(self::TOUR_SCAN) || self::shouldShowUpgradeTour(self::TOUR_SCAN) ||
 							self::shouldShowNewTour(self::TOUR_BLOCKING) || self::shouldShowUpgradeTour(self::TOUR_BLOCKING) ||
-							self::shouldShowNewTour(self::TOUR_LIVE_TRAFFIC) || self::shouldShowUpgradeTour(self::TOUR_LIVE_TRAFFIC));
+							self::shouldShowNewTour(self::TOUR_LIVE_TRAFFIC) || self::shouldShowUpgradeTour(self::TOUR_LIVE_TRAFFIC) ||
+							self::shouldShowNewTour(self::TOUR_LOGIN_SECURITY) || self::shouldShowUpgradeTour(self::TOUR_LOGIN_SECURITY));
 		
 		$screen = get_current_screen();
 		if ($screen->base == 'plugins' && self::shouldShowAttempt1()) {

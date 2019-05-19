@@ -343,7 +343,7 @@ abstract class UpdraftPlus_BackupModule {
 
 		$id = $this->get_id();
 
-		return $methods[$id];
+		return isset($methods[$id]) ? $methods[$id] : $id;
 	}
 
 	/**

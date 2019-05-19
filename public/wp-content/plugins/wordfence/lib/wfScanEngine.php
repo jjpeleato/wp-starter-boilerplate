@@ -617,6 +617,7 @@ class wfScanEngine {
 			wfCommonBackupFileTest::createFromRootPath('.user.ini'),
 //			wfCommonBackupFileTest::createFromRootPath('.htaccess'),
 			wfCommonBackupFileTest::createFromRootPath('wp-config.php.bak'),
+			wfCommonBackupFileTest::createFromRootPath('wp-config.php.bak.a2'),
 			wfCommonBackupFileTest::createFromRootPath('wp-config.php.swo'),
 			wfCommonBackupFileTest::createFromRootPath('wp-config.php.save'),
 			new wfCommonBackupFileTest(home_url('%23wp-config.php%23'), ABSPATH . '#wp-config.php#'),

@@ -3,10 +3,10 @@ Contributors: yoast, joostdevalk, tacoverdo, omarreiss, atimmer, jipmoors
 Donate link: https://yoa.st/1up
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
-Tags: SEO, XML sitemap, Google Search Console, Content analysis, Readability
+Tags: SEO, XML sitemap, Content analysis, Readability
 Requires at least: 4.9
-Tested up to: 5.1.1
-Stable tag: 10.1.3
+Tested up to: 5.2
+Stable tag: 11.2.1
 Requires PHP: 5.2.4
 
 Improve your WordPress SEO: Write better content and have a fully optimized WordPress site using the Yoast SEO plugin.
@@ -42,11 +42,10 @@ Yoast SEO does everything in its power to please both visitors and search engine
 
 * Yoast SEO tunes the engine of your site so you can work on creating great content.
 * Our cornerstone content and internal linking features help you optimize your site structure in a breeze.
-* Integrates with Google Search Console: See how your site performs in the search engines and fix crawl errors.
 * Manage SEO roles: Give your colleagues access to specific sections of the Yoast SEO plugin.
 * Bulk editor: Make large-scale edits to your site.
 * **[Premium]** Social previews to manage the way your page is shared on social networks like Facebook and Twitter.
-* **[Premium]** Redirect manager: It keeps your site healthy by easily redirecting errors from Google Search Console, deleted pages and changed URLs.
+* **[Premium]** Redirect manager: It keeps your site healthy by easily redirecting deleted pages and changed URLs.
 
 ### Premium support
 
@@ -106,82 +105,69 @@ You'll find answers to many of your questions on [kb.yoast.com](https://yoa.st/1
 
 == Changelog ==
 
-= 10.1.3 =
-Release Date: April 4th, 2019
+= 11.2.1 =
+Release Date: May 16th, 2019
 
 Bugfixes:
 
-* Reverted a fix relating replacement variables on the block editor, which was causing a slow and unworkable editting experience.
-* Fixes a bug where the license information from MyYoast is being saved aggressively, causing updates in MyYoast to take 24 hours to show up in the site.
-* Fixes a bug where the `rel="publisher"` Google+ tag was being output on the frontend if that profile was provided in the past.
-* Fixes a bug where the server could experience a high load when using external object cache.
-* Fixes the bug where Yoast SEO would contact Yoast.com for license checks on specific Yoast-pages even when no Yoast addons are installed.
-
-= 10.1.2 =
-Release Date: April 3rd, 2019
-
-Bugfixes:
-
-* Fixes the bug where Yoast SEO would contact Yoast.com for license checks even when no Yoast addons are installed.
-
-= 10.1.1 =
-Release Date: April 2nd, 2019
-
-Bugfixes:
-
-* Fixes a bug where a fatal error can occur on license requests which return an unexpected result.
-
-= 10.1.0 =
-Release Date: April 2nd, 2019
-
-Enhancements:
-
-* Removes Google+ from the various interfaces: social accounts, user profiles and more.
-* Adds a Wikipedia URL field to the social accounts list, to be used in `sameAs` Schema.org output.
-* Adds a LinkedIn profile URL field to user profiles, a first sign of things to come in 10.2.
-* Removes the `og:image:alt` tag as it causes potential accessibility issues when content is shared via Facebook.
-* Adds support for browsers auto-fill in the form fields that collect user information.
-* Adds missing screen reader text to the SEO score icon in the front end admin bar.
-* Increases the recommended sentence length limit for Spanish and Catalan to be more in line with best practices in these languages, props to [Sílvia Fustegueres](https://www.ampersand.net/en/).
-* Improves the list of Catalan transition words, props to [Sílvia Fustegueres](https://www.ampersand.net/en/).
-* Improves the list of Swedish transition words.
-
-Bugfixes:
-
-* Fixes a bug where selecting a parent page for a page would lead to console errors and a not-working 'parent page' snippet variable.
-* Fixes a bug where no focus indication was shown for the title separators in the configuration wizard and settings.
-* Fixes a bug where taxonomy terms weren't shown correctly in the Snippet Preview, for example when using the `Categories`, `Tags` or any custom taxonomy replacement variable.
-* Fixes a bug where breadcrumb structured data wasn't output when breadcrumbs are disabled and a theme with breadcrumb support has been installed.
-* Fixes a bug where a PHP notice would be written to `debug.log` when adding a new site to a WordPress 5.1 multisite installation.
+* Fixes a bug where the metabox would be empty on WordPress versions below 5.0.
+* Fixes a bug where the metabox would be empty when both the classic editor plugin as well as the Gutenberg plugin were installed.
 
 Other:
 
-* Removes all functionality that has been deprecated before Yoast SEO 6.1.
+* Introduces a notification that encourages updating to the latest WordPress version.
 
-= 10.0.1 =
-Release Date: March 19th, 2019
-
-Bugfixes:
-
-* Fixes a bug where network-wide settings were not saved on multisite environments.
-
-= 10.0.0 =
-Release Date: March 12th, 2019
+= 11.2.0 =
+Release Date: May 15th, 2019
 
 Enhancements:
 
-* The recalibrated analysis is out of its beta phase and is now the default for the SEO analysis. Thanks for testing and giving us your valuable feedback! You are awesome! 👍
-* Adds `$taxonomy` to the arguments passed to the `wpseo_terms` filter. Props to [polevaultweb](https://github.com/polevaultweb).
-* Changes the screen reader text of the SEO score indicator in the menu bar and the traffic light in the snippet preview from `Bad SEO score.` to `Needs improvement.`
-* Props to [Kingdutch](https://github.com/Kingdutch) for helping improve our open source content analysis library.
+* Introduces a fallback to the first image in the content for the schema output when no featured image has been set.
+* Adds a `wpseo_schema_person_social_profiles` filter to allow filtering in/out extra social profiles to show.
+* Adds a `wpseo_schema_needs_<class_name>` filter that allows filtering graph pieces in or out.
+* Adds a `wpseo_sitemap_post_statuses` filter to add posts with custom post statuses to the sitemap. Props to [stodorovic](https://github.com/stodorovic) and [tolnem](https://github.com/tolnem).
+* Adds a custom overlay color to the snippet preview modal.
+* Adds the correct focus style to the Configuration Wizard navigation buttons.
+* Props to [@ramiy](https://profiles.wordpress.org/ramiy/) for making translating the plugin easier by merging near identical strings.
 
 Bugfixes:
 
-* Fixes a bug where the `focus keyphrase` snippet variable was not correctly applied on term pages.
-* Fixes a bug where the Facebook image that was set for the WooCommerce Shop page would not be outputted as `og:image`. Props [stodorovic](https://github.com/stodorovic).
-* Fixes a bug where the featured image set on a WooCommerce Shop page would not be outputted as Facebook OpenGraph Image or Twitter Image. Props [stodorovic](https://github.com/stodorovic).
-* Fixes a bug where backslashes and consecutive double quotes would be removed from the focus keyphrase when saving a post or term.
-* Fixes a bug where backslashes would be removed from the breadcrumb title, focus keyphrase, title or meta description when saving a term.
+* Fixes a bug where the URL to Pinterest's claim page was incorrect. Props [@ramiy](https://profiles.wordpress.org/ramiy/).
+* Fixes a bug where notifications about incompatibility would be thrown for inactive add-ons.
+* Fixes a bug where URLs with a non-Yoast SEO related xsl query string parameter would result in a blank page. Props [@stodorovic](https://github.com/stodorovic) and [@yiska](https://github.com/yiska).
+
+Other:
+
+* Removes the `add_opengraph_namespace` filter because the OGP.me HTML namespace is not used anymore.
+* Decouples the sitemap debug information from the general `WP_DEBUG` development flag and introduces the `YOAST_SEO_DEBUG_SITEMAPS` flag to better control this functionality.
+
+= 11.1.1 =
+Release Date: May 6th, 2019
+
+Bugfixes:
+
+* Fixes a bug where an empty width and height would be outputted in the image schema when there was no retrievable width and height.
+* Fixes a bug where using the `$context` argument in the deprecated `wpseo_json_ld_output` filter would result in a fatal error when using PHP 7.1 or higher.
+
+Other:
+
+* Adds a notification to explain why users’ Google Search Console reports are no longer showing any entries. [Read more about the reasons behind this](https://yoa.st/gsc-dep-changelog).
+* Removes the Google Search Console step from the configuration wizard.
+
+= 11.1.0 =
+Release Date: April 30th, 2019
+
+Enhancements:
+
+* Improves how we generate the image parts for the Schema output. [Read more about the ImageObject output](https://yoa.st/image-schema).
+* Adds `filesize` to whitelisted properties on `$image`. Props to [cmmarslender](https://github.com/cmmarslender).
+* Optimizes the code to avoid an unnecessary DB query to remove notifications storage when it's already empty. Props to [rmc47](https://github.com/rmc47).
+* Improves the breadcrumbs accessibility by adding `aria-current` to the active item.
+
+Bugfixes:
+
+* Fixes a bug where the position of the buttons in the FAQ and How-To structured data blocks was compromised when running the development build of Gutenberg.
+* Fixed a bug where social profile settings would be empty because it was relying on the user choosing whether the site represents a company or a person.
 
 = Earlier versions =
 

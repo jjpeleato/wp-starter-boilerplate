@@ -11,6 +11,7 @@ if (!defined('WORDFENCE_VERSION')) { exit; }
  * @var string $messageHTML The raw HTML message for the prompt. This supersedes $message.
  * @var array $primaryButton The parameters for the primary button. The array is in the format array('id' => <element id>, 'label' => <button text>, 'link' => <href value>)
  * @var array $secondaryButtons The parameters for any secondary buttons. It is an array of arrays in the format array('id' => <element id>, 'label' => <button text>, 'link' => <href value>, 'target' => <target value, optional>, 'rel' => <rel value, optional>). The ordering of entries is the right-to-left order the buttons will be displayed.
+ * @var string $progressIndicator The ID for a progress indicator to the left of all buttons. Optional.
  */
 
 if (!isset($titleHTML)) {
@@ -42,6 +43,9 @@ $secondaryButtons = array_reverse($secondaryButtons);
 	</div>
 	<div class="wf-modal-footer">
 		<ul class="wf-flex-horizontal wf-flex-align-right wf-full-width">
+		<?php if (isset($progressIndicator) && $progressIndicator): ?>
+			<li class="wf-padding-add-left-small"><img src="<?php echo esc_attr(wfUtils::getBaseURL() . '/images/loading_large.gif'); ?>" alt="Loading" width="32" height="32" id="<?php echo esc_attr($progressIndicator); ?>" style="display: none;"></li>
+		<?php endif; ?>
 		<?php foreach ($secondaryButtons as $button): ?>
 			<li class="wf-padding-add-left-small"><a href="<?php echo esc_attr($button['link']); ?>" class="wf-btn <?php echo isset($button['type']) ? $button['type'] : 'wf-btn-default'; ?> wf-btn-callout-subtle" id="<?php echo esc_attr($button['id']); ?>"<?php if (isset($button['target'])) { echo ' target="' . esc_attr($button['target']) . '"'; } ?><?php if (isset($button['rel'])) { echo ' rel="' . esc_attr($button['rel']) . '"'; } ?>><?php echo isset($button['labelHTML']) ? $button['labelHTML'] : esc_html($button['label']); ?></a></li>
 		<?php endforeach; ?>

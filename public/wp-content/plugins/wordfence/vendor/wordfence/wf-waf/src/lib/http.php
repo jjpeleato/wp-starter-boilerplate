@@ -349,6 +349,12 @@ class wfWAFHTTPTransportCurl extends wfWAFHTTPTransport {
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		if ($this->getConnectTimeout() !== null) { curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->getConnectTimeout()); }
 		curl_setopt($ch, CURLOPT_TIMEOUT, $this->getTimeout());
+		if (defined('CURLOPT_ACCEPT_ENCODING')) {
+			curl_setopt($ch, CURLOPT_ACCEPT_ENCODING, ''); //The empty string is a magic value that means "send all supported encodings"
+		}
+		else if (defined('CURLOPT_ENCODING')) {
+			curl_setopt($ch, CURLOPT_ENCODING, '');
+		}
 		curl_setopt($ch, CURLOPT_HEADER, 1);
 		curl_setopt($ch, CURLOPT_CAINFO, WFWAF_PATH . 'cacert.pem'); //On some systems curl uses an outdated root certificate chain file
 		$curlResponse = curl_exec($ch);

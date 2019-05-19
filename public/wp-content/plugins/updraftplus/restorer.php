@@ -585,6 +585,13 @@ class Updraft_Restorer {
 		global $updraftplus;
 		static $logfile_handle;
 		static $opened_log_time;
+		static $last_buffer_flush;
+
+		// If more than 2 seconds has past then flush the buffer
+		if ($last_buffer_flush + 2 < time()) {
+			flush();
+			$last_buffer_flush = time();
+		}
 		
 		if (empty($logfile_handle)) {
 			$logfile_name = $updraftplus->backups_dir_location()."/log.$nonce-browser.txt";

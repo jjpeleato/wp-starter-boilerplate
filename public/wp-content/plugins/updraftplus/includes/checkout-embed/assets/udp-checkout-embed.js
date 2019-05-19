@@ -7,7 +7,7 @@
 			if (!buttons.length) return;
 
 			var that = this;
-			buttons.on('click', function(e) {
+			$(document).on('click', 'a[data-embed-checkout]', function(e) {
 				e.preventDefault();
 				that.modal.open($(this));
 			});

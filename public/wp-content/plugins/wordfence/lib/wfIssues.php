@@ -377,26 +377,14 @@ class wfIssues {
 	public function deleteNew($types = null) {
 		if (!is_array($types)) {
 			if (wfCentral::isConnected()) {
-				$result = $this->getDB()->querySelect("SELECT id FROM {$this->issuesTable} WHERE status = 'new'");
-				$issues = array();
-				foreach ($result as $row) {
-					$issues[] = $row['id'];
-				}
-				wfCentral::deleteIssues($issues);
+				wfCentral::deleteNewIssues();
 			}
 
 			$this->getDB()->queryWrite("DELETE FROM {$this->issuesTable} WHERE status = 'new'");
 		}
 		else {
 			if (wfCentral::isConnected()) {
-				$query = "SELECT id FROM {$this->issuesTable} WHERE status = 'new' AND type IN (" . implode(',', array_fill(0, count($types), "'%s'")) . ")";
-				array_unshift($types, $query);
-				$result = call_user_func_array(array($this->getDB(), 'querySelect'), $types);
-				$issues = array();
-				foreach ($result as $row) {
-					$issues[] = $row['id'];
-				}
-				wfCentral::deleteIssues($issues);
+				wfCentral::deleteIssueTypes($types, 'new');
 			}
 
 			$query = "DELETE FROM {$this->issuesTable} WHERE status = 'new' AND type IN (" . implode(',', array_fill(0, count($types), "'%s'")) . ")";

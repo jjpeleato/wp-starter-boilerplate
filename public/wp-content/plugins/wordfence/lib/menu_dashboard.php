@@ -206,7 +206,7 @@ else if (wfConfig::get('touppPromptNeeded')) {
 											'id' => 'wf-dashboard-option-tools',
 											'img' => 'tools.svg',
 											'title' => __('Tools', 'wordfence'),
-											'subtitle' => __('Powerful tools like 2 factor authentication to help lock down your site', 'wordfence'),
+											'subtitle' => __('Live Traffic, Whois Lookup, Import/Export, and Diagnostics', 'wordfence'),
 											'link' => network_admin_url('admin.php?page=WordfenceTools'),
 										))->render();
 										?>

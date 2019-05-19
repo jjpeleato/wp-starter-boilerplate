@@ -715,7 +715,7 @@ class UpdraftPlus_Commands {
 		if (!UpdraftPlus_Options::user_can_manage()) return new WP_Error('updraftplus_permission_denied');
 
 		// pass false to this method so that it does not remove the UpdraftCentral key
-		$response = $updraftplus_admin->updraft_wipe_settings(false);
+		$response = $updraftplus_admin->wipe_settings(false);
 
 		return $response;
 	}

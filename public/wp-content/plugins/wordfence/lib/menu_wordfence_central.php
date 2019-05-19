@@ -14,8 +14,8 @@ $stepContent = array(
 	5 => __('Retrieving access token using authorization grant.', 'wordfence'),
 	6 => __('Redirecting back to Wordfence Central.', 'wordfence'),
 );
-$connected = wfConfig::get('wordfenceCentralConnected');
-$partialConnection = wfConfig::get('wordfenceCentralSiteID');
+$connected = wfCentral::isConnected();
+$partialConnection = wfCentral::isPartialConnection();
 
 ?>
 <?php
@@ -104,7 +104,7 @@ else {
 				<div class="wf-center-lg">
 					<p><?php _e('It looks like you\'ve tried to connect this site to Wordfence Central, but the installation did not finish.', 'wordfence') ?></p>
 					<p>
-						<a href="<?php echo WORDFENCE_CENTRAL_URL_SEC ?>/sites/connection-issues?complete-setup=<?php echo esc_attr($partialConnection) ?>"
+						<a href="<?php echo WORDFENCE_CENTRAL_URL_SEC ?>/sites/connection-issues?complete-setup=<?php echo esc_attr(wfConfig::get('wordfenceCentralSiteID')) ?>"
 								class="wf-btn wf-btn-primary"
 						><?php _e('Resume Installation', 'wordfence') ?></a>
 						<a href="<?php echo esc_url($wordfenceURL); ?>" class="wf-btn wf-btn-warning"><?php _e('Disconnect Site', 'wordfence') ?></a>

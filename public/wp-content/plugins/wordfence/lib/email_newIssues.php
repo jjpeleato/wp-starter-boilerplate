@@ -107,7 +107,6 @@ if (!empty($i['tmplData']['badURL'])):
 		<li><?php _e('Receive real-time Firewall and Scan engine rule updates for protection as threats emerge', 'wordfence'); ?></li>
 		<li><?php _e('Real-time IP Blacklist blocks the most malicious IPs from accessing your site', 'wordfence'); ?></li>
 		<li><?php _e('Country blocking', 'wordfence'); ?></li>
-		<li><?php _e('Two factor authentication', 'wordfence'); ?></li>
 		<li><?php _e('IP reputation monitoring', 'wordfence'); ?></li>
 		<li><?php _e('Schedule scans to run more frequently and at optimal times', 'wordfence'); ?></li>
 		<li><?php _e('Access to Premium Support', 'wordfence'); ?></li>
