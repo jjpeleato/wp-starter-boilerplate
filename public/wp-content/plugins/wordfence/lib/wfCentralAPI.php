@@ -324,6 +324,13 @@ class wfCentral {
 	}
 
 	/**
+	 * @return bool
+	 */
+	public static function isPartialConnection() {
+		return !wfConfig::get('wordfenceCentralConnected') && wfConfig::get('wordfenceCentralSiteID');
+	}
+
+	/**
 	 * @param array $issue
 	 * @return bool|wfCentralAPIResponse
 	 */
@@ -380,6 +387,28 @@ class wfCentral {
 				'type'       => 'issue-list',
 				'attributes' => array(
 					'ids' => $issues,
+				)
+			),
+		));
+		try {
+			$response = $request->execute();
+			return $response;
+		} catch (wfCentralAPIException $e) {
+			error_log($e);
+		}
+		return false;
+	}
+
+	/**
+	 * @return bool|wfCentralAPIResponse
+	 */
+	public static function deleteNewIssues() {
+		$siteID = wfConfig::get('wordfenceCentralSiteID');
+		$request = new wfCentralAuthenticatedAPIRequest('/site/' . $siteID . '/issues', 'DELETE', array(
+			'data' => array(
+				'type'       => 'issue-list',
+				'attributes' => array(
+					'status' => 'new',
 				)
 			),
 		));

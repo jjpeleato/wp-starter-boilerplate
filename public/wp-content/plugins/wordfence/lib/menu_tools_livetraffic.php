@@ -88,10 +88,6 @@ if (!wfConfig::liveTrafficEnabled($overridden)):
 			<div class="wf-block-content">
 				<div class="wf-container-fluid">
 					<div class="wf-row">
-						<?php
-						// $rightRail = new wfView('marketing/rightrail');
-						// echo $rightRail;
-						?>
 						<div class="<?php echo wfStyle::contentClasses(); ?>">
 							<div id="wf-live-traffic-legend">
 								<ul>
@@ -368,7 +364,7 @@ if (!wfConfig::liveTrafficEnabled($overridden)):
 																	</span>
 																</span>
 																<span data-bind="if: statusCode() == 404">
-																	tried to access <span style="color: #F00;">non-existent page</span>
+																	tried to access a <span style="color: #F00;">non-existent page</span>
 																</span>
 
 																<span data-bind="if: statusCode() == 200 && !action()">
@@ -377,7 +373,7 @@ if (!wfConfig::liveTrafficEnabled($overridden)):
 																<span data-bind="if: (statusCode() == 301 || statusCode() == 302) && !action()">
 																	was redirected when visiting
 																</span>
-																<span data-bind="if: (statusCode() == 301 || statusCode() == 302) && action()">
+																<span data-bind="if: (statusCode() == 301 || statusCode() == 302) && action() && firewallAction()">
 																	was <span data-bind="text: firewallAction"></span> at
 																</span>
 																<span data-bind="if: ((statusCode() == 403 || statusCode() == 503) && action() != 'loginFailValidUsername' && action() != 'loginFailInvalidUsername')">
