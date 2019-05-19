@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 import config from './../config';
 
@@ -7,7 +7,7 @@ import imagemin from 'gulp-imagemin';
 import util from "gulp-util";
 
 /**
- * Minify PNG, JPEG, GIF and SVG images with imagemin
+ * Copy and minify PNG, JPEG, GIF and SVG images with imagemin
  */
 function images()
 {
@@ -18,3 +18,16 @@ function images()
 }
 
 exports.images = images;
+
+/**
+ * Copy and minify PNG, JPEG, GIF and SVG assets images with imagemin
+ */
+function imagesAssets()
+{
+	return gulp
+		.src(config.paths.imgAssets.vendor)
+		.pipe(config.environment === 'production' ? imagemin() : util.noop())
+		.pipe(gulp.dest(config.paths.imgAssets.destVendor));
+}
+
+exports.imagesAssets = imagesAssets;

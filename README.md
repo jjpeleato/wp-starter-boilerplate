@@ -81,16 +81,19 @@ For more information visit:
 - If required. Run: `$lando npm install --save-dev` or `$lando yarn install --dev` then: `$lando gulp [action]`
 - To work with and compile your Sass and JS files on the fly start: `$lando gulp`
 - Gulp actions commands list:
-    - `$lando gulp validateScss` Validate SASS with stylelint.
-    - `$lando gulp css` Compile SASS to CSS.
-    - `$lando gulp cssAssets` Copy CSS assets to CSS directory.
-    - `$lando gulp fontAssets` Copy FONTS assets to CSS directory.
-    - `$lando gulp js` Concat and minify JS files.
-    - `$lando gulp validateJs` Validate JS with jshint.
-    - `$lando gulp jsAssets` Copy JS assets to CSS directory.
-    - `$lando gulp images` Copy and minify images.
-    - `$lando gulp watch` Compile SASS to CSS and concat and minify JS files in real-time.
     - `$lando gulp clean` Delete all files.
+    - `$lando gulp css` Compile SASS to CSS and validate SASS according Stylelint (https://stylelint.io/). Not concat.
+    - `$lando gulp cssAssets` Copy CSS assets to public directory.
+    - `$lando gulp cssWithConcat` Concat and compile SASS to CSS and validate SASS according Stylelint (https://stylelint.io/).
+    - `$lando gulp fontAssets` Copy fonts assets to public directory.
+    - `$lando gulp images` Copy and minify PNG, JPEG, GIF and SVG images with imagemin.
+    - `$lando gulp imagesAssets` Copy and minify PNG, JPEG, GIF and SVG assets images with imagemin.
+    - `$lando gulp js` Validate the code with JSHint. Minify the JS files.
+    - `$lando gulp jsAssets` Copy JS assets to public directory.
+    - `$lando gulp jsWithConcat` Validate the code with Jshint. Concat and minify the JS files.
+    - `$lando gulp validateJs` Validate JS with JSHint (https://jshint.com/).
+    - `$lando gulp validateScss` Validate SCSS according Stylint (https://stylelint.io/).
+    - `$lando gulp watch` Compile SASS to CSS and concat and minify JS files in real-time.
 - NPM actions commands list:
     - `$lando npm run gulp:dev` Compile for development environment
     - `$lando npm run gulp:prod` Compile for production environment

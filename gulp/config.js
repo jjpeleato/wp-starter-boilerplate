@@ -15,19 +15,23 @@ const paths = {
             './assets/scss/**/*.scss'
         ],
         vendor: [
-            './node_modules/bootstrap/dist/css/bootstrap.css'
+            './node_modules/bootstrap/dist/css/bootstrap.min.css'
         ],
-        dest: theme + 'css/'
+        dest: theme + 'css/',
+		destVendor: theme + 'vendor/'
     },
     jsAssets: {
         src: [
-            './assets/js/**/*.js'
+			'./assets/js/vendor/**/*.js',
+			'./assets/js/custom.js'
         ],
         vendor: [
-            './node_modules/popper.js/dist/popper.js',
-            './node_modules/bootstrap/dist/js/bootstrap.js'
+            './node_modules/jquery/dist/jquery.min.js',
+            './node_modules/popper.js/dist/popper.min.js',
+            './node_modules/bootstrap/dist/js/bootstrap.min.js'
         ],
-        dest: theme + 'js/'
+        dest: theme + 'js/',
+		destVendor: theme + 'vendor/'
     },
     fontAssets: {
         src: [
@@ -44,7 +48,9 @@ const paths = {
 			'./assets/img/**/*.gif',
 			'./assets/img/**/*.ico'
 		],
-        dest: theme + 'img/'
+		vendor: [],
+        dest: theme + 'img/',
+		destVendor: theme + 'vendor/'
     },
 };
 

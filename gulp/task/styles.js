@@ -24,10 +24,26 @@ function validateScss()
 exports.validateScss = validateScss;
 
 /**
- * Compile SASS to CSS and validate SASS according Stylelint (https://stylelint.io/)
+ * Compile SASS to CSS and validate SASS according Stylelint (https://stylelint.io/). Not concat
  * @returns {*}
  */
 function css()
+{
+	return gulp
+		.src(config.paths.sassAssets.src)
+		.pipe(sass(config.options.sass))
+		.pipe(config.environment === 'production' ? uglifycss(config.options.uglifyCss) : util.noop())
+		.pipe(config.environment === 'production' ? rename({ suffix: '.min' }) : util.noop())
+		.pipe(gulp.dest(config.paths.sassAssets.dest));
+}
+
+exports.css = css;
+
+/**
+ * Concat and compile SASS to CSS and validate SASS according Stylelint (https://stylelint.io/)
+ * @returns {*}
+ */
+function cssWithConcat()
 {
     let merge = config.paths.sassAssets.vendor.concat(config.paths.sassAssets.src);
 
@@ -39,7 +55,7 @@ function css()
         .pipe(gulp.dest(config.paths.sassAssets.dest));
 }
 
-exports.css = css;
+exports.cssWithConcat = cssWithConcat;
 
 /**
  * Copy CSS assets to public directory
@@ -49,13 +65,13 @@ function cssAssets()
 {
 	return gulp
 		.src(config.paths.sassAssets.vendor)
-		.pipe(gulp.dest(config.paths.sassAssets.dest));
+		.pipe(gulp.dest(config.paths.sassAssets.destVendor));
 }
 
 exports.cssAssets = cssAssets;
 
 /**
- * Copy ICOMOON assets to public directory
+ * Copy fonts assets to public directory
  */
 function fontAssets()
 {
