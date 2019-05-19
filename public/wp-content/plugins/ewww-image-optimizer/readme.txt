@@ -3,9 +3,9 @@ Contributors: nosilver4u
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MKMQKCBFFG3WW
 Tags: image, compress, resize, optimize, optimization, lossless, lossy, seo, webp, wp-cli, scale, tinypng, tinyjpg
 Requires at least: 4.9
-Tested up to: 5.1
+Tested up to: 5.2
 Requires PHP: 5.6
-Stable tag: 4.7.2
+Stable tag: 4.7.4
 License: GPLv3
 
 Speed up your website and improve your visitors' experience by automatically compressing and resizing images and PDFs. Boost SEO and improve sales.
@@ -174,6 +174,25 @@ http://developer.yahoo.com/performance/rules.html#opt_images
 * Feature requests can be viewed and submitted at https://github.com/nosilver4u/ewww-image-optimizer/labels/enhancement
 * If you would like to help translate this plugin in your language, get started here: https://translate.wordpress.org/projects/wp-plugins/ewww-image-optimizer/
 
+= 4.7.4 =
+* fixed: ExactDN modifies Autoptimize CDN setting even when Include All Resources is disabled
+* fixed: noscript elements with newlines being parsed incorrectly by Lazy Load and JS WebP
+* fixed: Lazy Load parsing breaking img elements in script blocks
+* fixed: Lazy Load and JS WebP bail when SVGs are wrapped in XML tags
+* fixed: ExactDN mixes x and w srcset descriptors
+* fixed: page parsers (ExactDN, Lazy, JS WebP) still fail to process some img elements that have unquoted src attributes
+
+= 4.7.3 =
+* added: disable WebP script block on certain pages by defining EWWW_IMAGE_OPTIMIZER_NO_JS as true
+* changed: use SVG inline image placeholder if width and height are known when LQIP is disabled or ExactDN is not available
+* changed: Lazy Load ignores images using browser-native loading attribute
+* fixed: page parsers (ExactDN, Lazy, JS WebP) do not properly handle attributes that start on a new line
+* fixed: page parsers do not recognize img elements with unquoted attributes
+* fixed: uninstaller cannot clear queue table due to undefined table name
+* fixed: implode throws notice when image sizes array is multi-dimensional
+* fixed: srcset url replaced incorrectly when using pixel density descriptors
+* fixed: srcset url added with 0 width when width attribute is empty
+
 = 4.7.2 =
 * changed: JS WebP no longer necessary with ExactDN
 * fixed: fatal error from NextGEN get_image_sizes() method
@@ -215,35 +234,6 @@ http://developer.yahoo.com/performance/rules.html#opt_images
 * fixed: ExactDN applies resizing args during image_downsize() even when full/original image is too small
 * fixed: animated GIF resizing breaks the use of image_resize_dimensions filter in WP_Image_Editor_GD
 * fixed: NextGen bulk optimizer unable to decode meta_data
-
-= 4.6.3 =
-* changed: folders to ignore setting applies to resizing also
-* fixed: lazy load placeholders have inconsistent URLs with ExactDN
-* fixed: bulk resume indicator gets stuck
-* fixed: bulk scanning queue gets out of sync and skips images
-* fixed: async processing does not handle memory limit specified in G (gigabytes)
-
-= 4.6.2 =
-* changed: API key may be defined as EWWW_IMAGE_OPTIMIZER_CLOUD_KEY
-* fixed: if img tag is missing dimensions, ExactDN sometimes loads original rather than existing thumbnail
-* fixed: TinyPNG/TinyJPG images skipped when Force Re-optimize is checked
-
-= 4.6.1 =
-* added: automatic configuration for ExactDN + WP Offload Media
-* fixed: bulk action from media library skipping last attachment in selection
-* fixed: uninstall function throws fatal error preventing deletion
-
-= 4.6.0 =
-* added: preserve animations in GIF images during resize operations for sites using Imagick extension
-* changed: EXACTDN_EXCLUDE applies to all resources, including images, CSS, JS, fonts, etc.
-* changed: API/ExactDN preserves color profiles, even when removing image metadata
-* changed: new queue table for bulk optimizer to avoid exceeding max packet size for MySQL
-* changed: unit tests run on PHP 7.3 also
-* fixed: too many settings updates when trying to prevent slow queries
-* fixed: ExactDN rewrites urls to static HTML files
-* fixed: ExactDN skips 1x url in some cases, causing browser upscaling
-* fixed: PHP notice when EXACTDN_EXCLUDE is defined
-* fixed: race condition in Alt WebP prevents Webp derivatives from replacing the originals
 
 = Earlier versions =
 Please refer to the separate changelog.txt file.
