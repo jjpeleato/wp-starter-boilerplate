@@ -40,7 +40,6 @@ include_once( 'lib/yit-debug.php');
 include_once( 'lib/yith-dashboard.php' );
 include_once( 'lib/privacy/yit-privacy.php' );
 include_once( 'lib/privacy/yit-privacy-plugin-abstract.php' );
-include_once( 'lib/promo/yith-promo.php' );
 
 /* === Gutenberg Support === */
 if( class_exists( 'WP_Block_Type_Registry' ) ){
@@ -155,11 +154,6 @@ if( ! function_exists( 'yit_plugin_fw_row_meta' ) ){
 						}
 					}
 				}
-			}
-
-			//Add YITH Refer ID
-			if( ! empty( $url ) && defined( 'YITH_REFER_ID' ) ){
-				$url = add_query_arg( array( 'refer_id', YITH_REFER_ID ), $url );
 			}
 
 			if( ! empty( $url ) && ! empty( $label ) ){
