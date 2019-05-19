@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 import config from './../config';
 
@@ -11,6 +11,7 @@ function clean()
 {
 	return del([
 		config.paths.sassAssets.dest,
+		config.paths.sassAssets.destVendor,
 		config.paths.jsAssets.dest,
 		config.paths.fontAssets.dest,
 		config.paths.imgAssets.dest
