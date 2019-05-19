@@ -21,13 +21,16 @@ define("DEPLOY_CONFIG", [
 		'shared_files' => [
 			'public/.htaccess',
 			'public/.htpasswd',
-			'public/wp-config.php'
+			'public/wp-config.php',
+			'public/wp-content/advanced-cache.php'
 		],
 		'shared_dirs' => [
-			'public/wp-content/uploads'
+			'public/wp-content/uploads',
+			'public/wp-content/cache'
 		],
 		'writable_dirs' => [
-			'public/wp-content/uploads'
+			'public/wp-content/uploads',
+			'public/wp-content/cache'
 		],
 		'clear_paths' => [
 			'deploy.php'
@@ -114,25 +117,36 @@ host('pro')
 
 // Custom task
 desc('Install NPM packages and run gulp task');
-task('deploy:build', '
+task('deploy:build:pre', '
     npm install --save-dev;
-    ./node_modules/.bin/gulp;
-')->onStage('pre', 'pro');
+    npm run gulp:dev;
+')->onStage('pre');
+
+desc('Install NPM packages and run gulp task');
+task('deploy:build:pro', '
+    npm install --save-dev;
+    npm run gulp:prod;
+')->onStage('pro');
 
 desc('Set the owner and group according http_user');
-task('deploy:owner', function () {
+task('deploy:owner:pre', function () {
+	run('chown ' . DEPLOY_CONFIG['pre']['http_user'] . ': ' . DEPLOY_CONFIG['pre']['deploy_path'] . ' -R');
+})->onStage('pre');
+
+desc('Set the owner and group according http_user');
+task('deploy:owner:pro', function () {
 	run('chown ' . DEPLOY_CONFIG['pro']['http_user'] . ': ' . DEPLOY_CONFIG['pro']['deploy_path'] . ' -R');
-})->onStage('pre', 'pro');
+})->onStage('pro');
 
 desc('Restart Apache service');
 task('restart:apache', function () {
 	run('service apache2 restart');
-})->onStage('pro');
+})->onStage('pre', 'pro');
 
 desc('Restart PHP-FPM service');
 task('restart:php-fpm', function () {
 	run('service php7.3-fpm restart');
-})->onStage('pro');
+})->onStage('pre', 'pro');
 
 // Tasks
 desc('Deploy your project');
@@ -156,7 +170,9 @@ task('deploy', [
 after('deploy:failed', 'deploy:unlock');
 
 // If deploy is successfully
-after('deploy', 'deploy:build');
-after('deploy', 'deploy:owner');
+after('deploy:vendors', 'deploy:build:pre');
+after('deploy:vendors', 'deploy:build:pro');
+after('deploy', 'deploy:owner:pre');
+after('deploy', 'deploy:owner:pro');
 //after('deploy', 'restart:apache');
 //after('deploy', 'restart:php-fpm');
