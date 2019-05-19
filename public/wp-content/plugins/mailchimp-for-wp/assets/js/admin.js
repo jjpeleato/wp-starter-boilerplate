@@ -3,7 +3,7 @@
 
 var _tlite = _interopRequireDefault(require("tlite"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var m = window.m = require('mithril');
 
@@ -25,7 +25,7 @@ if (context !== null) {
   settings = Settings(context, helpers, events);
 }
 
-(0, _tlite.default)(function (el) {
+(0, _tlite["default"])(function (el) {
   return el.className.indexOf('mc4wp-tooltip') > -1;
 }); // list fetcher
 
@@ -2163,9 +2163,9 @@ if (typeof module !== 'undefined' && module.exports) {
 
 },{}],12:[function(require,module,exports){
 /*!
- * EventEmitter v5.2.5 - git.io/ee
+ * EventEmitter v5.2.6 - git.io/ee
  * Unlicense - http://unlicense.org/
- * Oliver Caldwell - http://oli.me.uk/
+ * Oliver Caldwell - https://oli.me.uk/
  * @preserve
  */
 

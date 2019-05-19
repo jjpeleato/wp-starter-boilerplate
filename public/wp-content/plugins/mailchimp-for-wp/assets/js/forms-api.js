@@ -3,7 +3,7 @@
 
 var _conditionalElements = _interopRequireDefault(require("./forms/conditional-elements.js"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var mc4wp = window.mc4wp || {};
 
@@ -97,7 +97,7 @@ Gator(document.body).on('change', '.mc4wp-form', function (event) {
   forms.trigger(form.id + '.change', [form, event]);
 }); // init conditional elements
 
-_conditionalElements.default.init(); // register early listeners
+_conditionalElements["default"].init(); // register early listeners
 
 
 if (mc4wp.listeners) {
@@ -130,7 +130,7 @@ window.mc4wp = mc4wp;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 function getFieldValues(form, fieldName) {
   var values = [];
@@ -232,7 +232,7 @@ var _default = {
     evaluate();
   }
 };
-exports.default = _default;
+exports["default"] = _default;
 
 },{}],3:[function(require,module,exports){
 'use strict';
@@ -1770,6 +1770,13 @@ module.exports = scrollTo;
 var ease = require('./ease');
 var Emitter = require('./emitter');
 
+function extend(obj, src) {
+  for (var key in src) {
+    if (src.hasOwnProperty(key)) obj[key] = src[key];
+  }
+  return obj;
+}
+
 function Tween(obj) {
   if (!(this instanceof Tween)) return new Tween(obj);
   this._from = obj;
@@ -1781,7 +1788,7 @@ Emitter(Tween.prototype);
 
 Tween.prototype.reset = function(){
   this.isArray = Object.prototype.toString.call(this._from) === '[object Array]';
-  this._curr = Object.assign({}, this._from);
+  this._curr = extend({}, this._from);
   this._done = false;
   this._start = Date.now();
   return this;
@@ -1860,11 +1867,12 @@ Tween.prototype.update = function(fn){
 };
 
 module.exports = Tween;
+
 },{"./ease":11,"./emitter":12}],16:[function(require,module,exports){
 /*!
- * EventEmitter v5.2.5 - git.io/ee
+ * EventEmitter v5.2.6 - git.io/ee
  * Unlicense - http://unlicense.org/
- * Oliver Caldwell - http://oli.me.uk/
+ * Oliver Caldwell - https://oli.me.uk/
  * @preserve
  */
 
