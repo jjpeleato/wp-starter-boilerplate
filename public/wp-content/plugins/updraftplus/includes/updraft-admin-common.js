@@ -1,6 +1,6 @@
 /**
  * Send an action over AJAX. A wrapper around jQuery.ajax. In future, all consumers can be reviewed to simplify some of the options, where there is historical cruft.
- * N.B. updraft_iframe_modal() below uses the Ajax URL for the iframe's src attribute
+ * N.B. updraft_iframe_modal() below uses the AJAX URL for the iframe's src attribute
  *
  * @param {string}   action   - the action to send
  * @param {*}        data     - data to send
@@ -222,7 +222,12 @@ function updraft_remote_storage_tabs_setup() {
 	});
 	
 	var servicecheckbox = jQuery('.updraft_servicecheckbox');
-	if (typeof servicecheckbox.labelauty === 'function') { servicecheckbox.labelauty(); }
+	if (typeof servicecheckbox.labelauty === 'function') {
+		servicecheckbox.labelauty();
+		var $vault_label = jQuery('label[for=updraft_servicecheckbox_updraftvault]');
+		var $vault_info = jQuery('<div class="udp-info"><span class="info-trigger">?</span><div class="info-content-wrapper"><div class="info-content">'+updraftlion.updraftvault_info+'</div></div></div>');
+		$vault_label.append($vault_info);
+	}
 	
 }
 
@@ -1358,7 +1363,7 @@ function zip_files_jstree(entity, timestamp, type, findex) {
  * @param {string} what - the file entity
  */
 function remove_updraft_downloader(item, what) {
-	jQuery(item).fadeOut().remove();
+	jQuery(item).closest('.updraftplus_downloader').fadeOut().remove();
 	if (0 == jQuery('.updraftplus_downloader_container_'+what+' .updraftplus_downloader').length) jQuery('.updraftplus_downloader_container_'+what).remove();
 }
 
@@ -1441,6 +1446,7 @@ function updraft_downloader(base, backup_timestamp, what, whicharea, set_content
  * @returns Mixed parsed JSON object. Will only return if parsing is successful (otherwise, will throw)
  */
 function ud_parse_json(json_mix_str) {
+
 	// Here taking first and last char in variable, because these are used more than once in this function
 	var first_char = json_mix_str.charAt(0);
 	var last_char = json_mix_str.charAt(json_mix_str.length - 1);
@@ -1450,7 +1456,7 @@ function ud_parse_json(json_mix_str) {
 		var result = JSON.parse(json_mix_str);
 		return result;
 	} catch (e) {
-		console.log("UpdraftPlus: Exception when trying to parse JSON (1) - will attempt to fix/re-parse");
+		console.log('UpdraftPlus: Exception when trying to parse JSON (1) - will attempt to fix/re-parse based upon first/last curly brackets');
 		console.log(json_mix_str);
 	}
 
@@ -1462,12 +1468,43 @@ function ud_parse_json(json_mix_str) {
 		var json_str = json_mix_str.slice(json_start_pos, json_last_pos + 1);
 		try {
 			var parsed = JSON.parse(json_str);
-			console.log("UpdraftPlus: JSON re-parse successful");
+			console.log('UpdraftPlus: JSON re-parse successful');
 			return parsed;
 		} catch (e) {
-			 console.log("UpdraftPlus: Exception when trying to parse JSON (2)");
-			 // Throw it again, so that our function works just like JSON.parse() in its behaviour.
-			 throw e;
+			console.log('UpdraftPlus: Exception when trying to parse JSON (2) - will attempt to fix/re-parse based upon bracket counting');
+			 
+			var cursor = json_start_pos;
+			var open_count = 0;
+			var last_character = '';
+			var inside_string = false;
+			
+			// Don't mistake this for a real JSON parser. Its aim is to improve the odds in real-world cases seen, not to arrive at universal perfection.
+			while ((open_count > 0 || cursor == json_start_pos) && cursor <= json_last_pos) {
+				
+				var current_character = json_mix_str.charAt(cursor);
+				
+				if (!inside_string && '{' == current_character) {
+					open_count++;
+				} else if (!inside_string && '}' == current_character) {
+					open_count--;
+				} else if ('"' == current_character && '\\' != last_character) {
+					inside_string = inside_string ? false : true;
+				}
+					
+				last_character = current_character;
+				cursor++;
+			}
+			console.log("Started at cursor="+json_start_pos+", ended at cursor="+cursor+" with result following:");
+			console.log(json_mix_str.substring(json_start_pos, cursor));
+			
+			try {
+				var parsed = JSON.parse(json_mix_str.substring(json_start_pos, cursor));
+				console.log('UpdraftPlus: JSON re-parse successful');
+				return parsed;
+			} catch (e) {
+				// Throw it again, so that our function works just like JSON.parse() in its behaviour.
+				throw e;
+			}
 		}
 	}
 

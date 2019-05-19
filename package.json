@@ -29,25 +29,25 @@
         "url": "git+https://github.com/jjpeleato/wp-starter-boilerplate.git"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-free": "^5.7.2",
+        "@fortawesome/fontawesome-free": "^5.8.2",
         "bootstrap": "^4.2.1",
-        "jquery": "^3.3.1",
-        "lazyload": "^2.0.0-beta.2",
+        "jquery": "^3.4.1",
+        "lazyload": "^2.0.0-rc.2",
         "owl.carousel": "^2.3.4",
         "photoswipe": "^4.1.3",
-        "popper.js": "^1.14.7",
+        "popper.js": "^1.15.0",
         "skrollr": "^0.6.26",
         "wow.js": "^1.2.2"
     },
     "devDependencies": {
-        "@babel/core": "^7.3.4",
-        "@babel/preset-env": "^7.3.4",
-        "@babel/register": "^7.0.0",
-        "autoprefixer": "^9.4.7",
-        "browser-sync": "^2.26.3",
+        "@babel/core": "^7.4.4",
+        "@babel/preset-env": "^7.4.4",
+        "@babel/register": "^7.4.4",
+        "autoprefixer": "^9.5.1",
+        "browser-sync": "^2.26.5",
         "del": "^3.0.0",
-        "gulp": "^4.0.0",
-        "gulp-autoprefixer": "^6.0.0",
+        "gulp": "^4.0.2",
+        "gulp-autoprefixer": "^6.1.0",
         "gulp-concat": "^2.6.1",
         "gulp-imagemin": "^5.0.3",
         "gulp-jshint": "^2.1.0",
@@ -59,9 +59,9 @@
         "gulp-terser": "^1.1.7",
         "gulp-uglifycss": "^1.1.0",
         "gulp-util": "^3.0.8",
-        "jshint": "^2.10.1",
+        "jshint": "^2.10.2",
         "stylelint": "^9.10.1",
-        "stylelint-config-standard": "^18.2.0",
-        "stylelint-scss": "^3.5.3"
+        "stylelint-config-standard": "^18.3.0",
+        "stylelint-scss": "^3.6.1"
     }
 }

@@ -152,8 +152,6 @@ class UpdraftPlus {
 	/**
 	 * Enables automatic updates for the plugin.
 	 *
-	 * Enables automatic updates for the plugin..
-	 *
 	 * @access public
 	 * @see __construct
 	 * @internal uses auto_update_plugin filter
@@ -2976,7 +2974,7 @@ class UpdraftPlus {
 	 * @param Boolean $allow_email - if this is false, then no email will be sent
 	 * @param Boolean $force_abort - set to indicate that the user is manually aborting the backup
 	 */
-	private function backup_finish($do_cleanup, $allow_email, $force_abort = false) {
+	public function backup_finish($do_cleanup, $allow_email, $force_abort = false) {
 
 		if (!empty($this->semaphore)) $this->semaphore->unlock();
 
@@ -4665,6 +4663,8 @@ class UpdraftPlus {
 			'updraftplus_tmp_googledrive_access_token',
 			'updraftplus_dismissedautobackup',
 			'dismissed_general_notices_until',
+			'dismissed_clone_php_notices_until',
+			'dismissed_clone_wc_notices_until',
 			'dismissed_season_notices_until',
 			'updraftplus_dismissedexpiry',
 			'updraftplus_dismisseddashnotice',

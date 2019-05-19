@@ -94,7 +94,6 @@ class wfLog {
 		$this->throttleTable = wfDB::networkTable('wfThrottleLog');
 		$this->statusTable = wfDB::networkTable('wfStatus');
 		$this->ipRangesTable = wfDB::networkTable('wfBlocksAdv');
-		$this->perfTable = wfDB::networkTable('wfPerfLog');
 		
 		add_filter('determine_current_user', array($this, '_userIDDetermined'), 99, 1);
 	}
@@ -153,26 +152,7 @@ class wfLog {
 	public function getCurrentRequest() {
 		return $this->currentRequest;
 	}
-
-	public function logPerf($IP, $UA, $URL, $data){
-		$IP = wfUtils::inet_pton($IP);
-		$this->getDB()->queryWrite("insert into " . $this->perfTable . " (IP, userID, UA, URL, ctime, fetchStart, domainLookupStart, domainLookupEnd, connectStart, connectEnd, requestStart, responseStart, responseEnd, domReady, loaded) values (%s, %d, '%s', '%s', unix_timestamp(), %d, %d, %d, %d, %d, %d, %d, %d, %d, %d)", 
-			$IP, 
-			$this->getCurrentUserID(), 
-			$UA, 
-			$URL,
-			$data['fetchStart'],
-			$data['domainLookupStart'],
-			$data['domainLookupEnd'],
-			$data['connectStart'],
-			$data['connectEnd'],
-			$data['requestStart'],
-			$data['responseStart'],
-			$data['responseEnd'],
-			$data['domReady'],
-			$data['loaded']
-			);
-	}
+	
 	public function logLogin($action, $fail, $username){
 		if(! $username){
 			return;
@@ -286,49 +266,7 @@ class wfLog {
 		}
 		return false;
 	}
-
-	public function getPerfStats($afterTime, $limit = 50){
-		$serverTime = $this->getDB()->querySingle("select unix_timestamp()");
-		$results = $this->getDB()->querySelect("select * from " . $this->perfTable . " where ctime > %f order by ctime desc limit %d", $afterTime, $limit);
-		$this->resolveIPs($results);
-		$browscap = new wfBrowscap();
-		foreach($results as &$res){
-			$res['timeAgo'] = wfUtils::makeTimeAgo($serverTime - $res['ctime']);
-			$res['IP'] = wfUtils::inet_ntop($res['IP']);
-			$res['browser'] = false;
-			if($res['UA']){
-				$b = $browscap->getBrowser($res['UA']);
-				if ($b && $b['Parent'] != 'DefaultProperties') {
-					$res['browser'] = array(
-						'browser' => $b['Browser'],
-						'version' => $b['Version'],
-						'platform' => $b['Platform'],
-						'isMobile' => $b['isMobileDevice'],
-						'isCrawler' => $b['Crawler']
-						);
-				}
-				else {
-					$IP = wfUtils::getIP();
-					$res['browser'] = array(
-						'isCrawler' => !wfLog::isHumanRequest($IP, $res['UA'])
-					);
-				}
-			}
-			if($res['userID']){
-				$ud = get_userdata($res['userID']);
-				if($ud){
-					$res['user'] = array(
-						'editLink' => wfUtils::editUserLink($res['userID']),
-						'display_name' => $ud->display_name,
-						'ID' => $res['userID']
-						);
-				}
-			} else {
-				$res['user'] = false;
-			}
-		}
-		return $results;
-	}
+	
 	public function getHits($hitType /* 'hits' or 'logins' */, $type, $afterTime, $limit = 50, $IP = false){
 		global $wpdb;
 		$IPSQL = "";

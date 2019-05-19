@@ -19,7 +19,7 @@ class UpdraftPlus_Admin {
 
 	private $php_versions = array('5.4', '5.5', '5.6', '7.0', '7.1', '7.2', '7.3');
 
-	private $wp_versions = array('3.2', '3.3', '3.4', '3.5', '3.6', '3.7', '3.8', '3.9', '4.0', '4.1', '4.2', '4.3', '4.4', '4.5', '4.6', '4.7', '4.8', '4.9', '5.0', '5.1');
+	private $wp_versions = array('3.2', '3.3', '3.4', '3.5', '3.6', '3.7', '3.8', '3.9', '4.0', '4.1', '4.2', '4.3', '4.4', '4.5', '4.6', '4.7', '4.8', '4.9', '5.0', '5.1', '5.2');
 	
 	private $regions = array('London', 'New York', 'San Francisco', 'Amsterdam', 'Singapore', 'Frankfurt', 'Toronto', 'Bangalore');
 
@@ -562,7 +562,7 @@ class UpdraftPlus_Admin {
 		}
 
 		if (isset($_POST['action']) && 'updraft_wipesettings' == $_POST['action'] && isset($_POST['nonce']) && UpdraftPlus_Options::user_can_manage()) {
-			if (wp_verify_nonce($_POST['nonce'], 'updraftplus-wipe-setting-nonce')) $this->updraft_wipe_settings();
+			if (wp_verify_nonce($_POST['nonce'], 'updraftplus-wipe-setting-nonce')) $this->wipe_settings();
 		}
 	}
 
@@ -574,18 +574,20 @@ class UpdraftPlus_Admin {
 	 * @return String - filtered value
 	 */
 	public function woocommerce_in_plugin_update_message($msg) {
-		return '<br><strong>'.__('You can test upgrading your site on an instant copy using UpdraftClone credits', 'updraftplus').' - <a href="'.UpdraftPlus_Options::admin_page_url().'?page=updraftplus&amp;tab=migrate#updraft-navtab-migrate-content">'.__('go here', 'updraftplus').'</a></strong>'.$msg;
+		if (time() < UpdraftPlus_Options::get_updraft_option('dismissed_clone_wc_notices_until', 0)) return $msg;
+		return '<div class="updraft-ad-container"><br><strong>'.__('You can test upgrading your site on an instant copy using UpdraftClone credits', 'updraftplus').' - <a href="'.UpdraftPlus_Options::admin_page_url().'?page=updraftplus&amp;tab=migrate#updraft-navtab-migrate-content">'.__('go here to learn more', 'updraftplus').'</a></strong><a href="#" onclick="jQuery(\'.updraft-ad-container\').slideUp(); jQuery.post(ajaxurl, {action: \'updraft_ajax\', subaction: \'dismiss_clone_wc_notice\', nonce: \''. wp_create_nonce('updraftplus-credentialtest-nonce') .'\' });return false;"> - '. __('dismiss notice', 'updraftplus') .'</a></div>'.$msg;
 	}
 
 	/**
 	 * Runs upon the WP action admin_print_footer_scripts if an entitled user is on the main WP dashboard page
 	 */
 	public function admin_index_print_footer_scripts() {
+		if (time() < UpdraftPlus_Options::get_updraft_option('dismissed_clone_php_notices_until', 0)) return;
 		?>
 		<script>
 			jQuery(document).ready(function($) {
 				if ($('#dashboard-widgets #dashboard_php_nag').length < 1) return;
-				$('#dashboard-widgets #dashboard_php_nag .button-container').before('<a href="<?php echo UpdraftPlus_Options::admin_page_url(); ?>?page=updraftplus&amp;tab=migrate#updraft-navtab-migrate-content"><?php echo esc_js(__('You can test running your site on a different PHP (or WordPress) version using UpdraftClone credits.', 'updraftplus')); ?></a>');
+				$('#dashboard-widgets #dashboard_php_nag .button-container').before('<div class="updraft-ad-container"><a href="<?php echo UpdraftPlus_Options::admin_page_url(); ?>?page=updraftplus&amp;tab=migrate#updraft-navtab-migrate-content"><?php echo esc_js(__('You can test running your site on a different PHP (or WordPress) version using UpdraftClone credits.', 'updraftplus')); ?></a> (<a href="#" onclick="jQuery(\'.updraft-ad-container\').slideUp(); jQuery.post(ajaxurl, {action: \'updraft_ajax\', subaction: \'dismiss_clone_php_notice\', nonce: \'<?php echo wp_create_nonce('updraftplus-credentialtest-nonce'); ?>\' });return false;"> <?php _e('Dismiss notice', 'updraftplus'); ?></a>)</div>');
 			});
 		</script>
 		<?php
@@ -628,90 +630,14 @@ class UpdraftPlus_Admin {
 		<?php
 	}
 	
+	/**
+	 * Called via the ajax_restore actions to prepare the restore over AJAX
+	 *
+	 * @return void
+	 */
 	public function updraft_ajaxrestore() {
-// TODO: All needs testing with restricted filesystem permissions. Those credentials need to be POST-ed too - currently not.
-// TODO
-// error_log(serialize($_POST));
-
-		if (empty($_POST['subaction']) || 'restore' != $_POST['subaction']) {
-			echo json_encode(array('e' => 'Illegitimate data sent (0)'));
-			die();
-		}
-
-		if (empty($_POST['restorenonce'])) {
-			echo json_encode(array('e' => 'Illegitimate data sent (1)'));
-			die();
-		}
-
-		$restore_nonce = (string) $_POST['restorenonce'];
-
-		if (empty($_POST['ajaxauth'])) {
-			echo json_encode(array('e' => 'Illegitimate data sent (2)'));
-			die();
-		}
-
-		global $updraftplus;
-
-		$ajax_auth = get_site_option('updraft_ajax_restore_'.$restore_nonce);
-
-		if (!$ajax_auth) {
-			echo json_encode(array('e' => 'Illegitimate data sent (3)'));
-			die();
-		}
-
-		if (!preg_match('/^([0-9a-f]+):(\d+)/i', $ajax_auth, $matches)) {
-			echo json_encode(array('e' => 'Illegitimate data sent (4)'));
-			die();
-		}
-
-		$nonce_time = $matches[2];
-		$auth_code_sent = $matches[1];
-		if (time() > $nonce_time + 600) {
-			echo json_encode(array('e' => 'Illegitimate data sent (5)'));
-			die();
-		}
-
-// TODO: Deactivate the auth code whilst the operation is underway
-
-		$last_one = empty($_POST['lastone']) ? false : true;
-
-		@set_time_limit(UPDRAFTPLUS_SET_TIME_LIMIT);
-
-		$updraftplus->backup_time_nonce($restore_nonce);
-		$updraftplus->logfile_open($restore_nonce);
-
-		$timestamp = empty($_POST['timestamp']) ? false : (int) $_POST['timestamp'];
-		$multisite = empty($_POST['multisite']) ? false : (bool) $_POST['multisite'];
-		$created_by_version = empty($_POST['created_by_version']) ? false : (int) $_POST['created_by_version'];
-
-		// TODO: We need to know about first_one (not yet sent), as well as last_one
-
-		// TODO: Verify the values of these
-		$type = empty($_POST['type']) ? false : (int) $_POST['type'];
-		$backupfile = empty($_POST['backupfile']) ? false : (string) $_POST['backupfile'];
-
-		$updraftplus->log("Deferred restore resumption: $type: $backupfile (timestamp=$timestamp, last_one=$last_one)");
-
-
-
-		$backupable_entities = $updraftplus->get_backupable_file_entities(true);
-
-		if (!isset($backupable_entities[$type])) {
-			echo json_encode(array('e' => 'Illegitimate data sent (6 - no such entity)', 'data' => $type));
-			die();
-		}
-
-
-		if ($last_one) {
-			// Remove the auth nonce from the DB to prevent abuse
-			delete_site_option('updraft_ajax_restore_'.$restore_nonce);
-		} else {
-			// Reset the counter after a successful operation
-			update_site_option('updraft_ajax_restore_'.$restore_nonce, $auth_code_sent.':'.time());
-		}
-
-		echo json_encode(array('e' => 'TODO', 'd' => $_POST));
-		die;
+		$this->prepare_restore();
+		die();
 	}
 
 	/**
@@ -821,7 +747,7 @@ class UpdraftPlus_Admin {
 	 */
 	public function admin_enqueue_scripts() {
 
-		global $updraftplus, $wp_locale;
+		global $updraftplus, $wp_locale, $updraftplus_checkout_embed;
 		
 		$enqueue_version = $updraftplus->use_unminified_scripts() ? $updraftplus->version.'.'.time() : $updraftplus->version;
 		$min_or_not = $updraftplus->use_unminified_scripts() ? '' : '.min';
@@ -863,6 +789,13 @@ class UpdraftPlus_Admin {
 		}
 		$remote_storage_options_and_templates = UpdraftPlus_Storage_Methods_Interface::get_remote_storage_options_and_templates();
 		$main_tabs = $this->get_main_tabs_array();
+
+		$checkout_embed_5gb_trial_attribute = '';
+
+		if (is_a($updraftplus_checkout_embed, 'Updraft_Checkout_Embed')) {
+			$checkout_embed_5gb_trial_attribute = $updraftplus_checkout_embed->get_product('updraftplus-vault-storage-5-gb') ? 'data-embed-checkout="'.apply_filters('updraftplus_com_link', $updraftplus_checkout_embed->get_product('updraftplus-vault-storage-5-gb', UpdraftPlus_Options::admin_page_url().'?page=updraftplus&tab=settings')).'"' : '';
+		}
+
 		wp_localize_script('updraft-admin-common', 'updraftlion', array(
 			'tab' => empty($_GET['tab']) ? 'backups' : $_GET['tab'],
 			'sendonlyonwarnings' => __('Send a report only when there are warnings/errors', 'updraftplus'),
@@ -1033,6 +966,13 @@ class UpdraftPlus_Admin {
 			'clone_key_required' => __('UpdraftClone key is required.', 'updraftplus'),
 			'files_new_backup' => __('Include your files in the backup', 'updraftplus'),
 			'files_incremental_backup' => __('File backup options', 'updraftplus'),
+			'ajax_restore_invalid_response' => __('Restore error: HTML was detected in the response. You may have a security module on your webserver blocking the restoration operation.', 'updraftplus'),
+			'updraftvault_info' => '<h3>'.__('Try UpdraftVault!', 'updraftplus').'</h3>'
+				.'<p>'.__('UpdraftVault is our remote storage which works seamlessly with UpdraftPlus.', 'updraftplus')
+				.'	<a href="'.apply_filters('updraftplus_com_link', 'https://updraftplus.com/updraftvault/').'" target="_blank">'.__('Find out more here.', 'updraftplus').'</a>'
+				.'</p>'
+				.'<p><a href="'.apply_filters('updraftplus_com_link', $updraftplus->get_url('shop_vault_5')).'" target="_blank" '.$checkout_embed_5gb_trial_attribute.' class="button button-primary">'.__('Try it - 1 month for $1!', 'updraftplus').'</a></p>'
+
 		));
 	}
 	
@@ -2889,6 +2829,7 @@ class UpdraftPlus_Admin {
 		<form method="post" action="<?php echo UpdraftPlus_Options::admin_page_url().'?page=updraftplus'; ?>">
 			<?php wp_nonce_field('updraftplus-credentialtest-nonce'); ?>
 			<input id="updraft_restore_continue_action" type="hidden" name="action" value="updraft_restore_continue">
+			<input type="hidden" name="updraftplus_ajax_restore" value="continue_ajax_restore">
 			<input type="hidden" name="job_id" value="<?php echo $restore_jobdata['jobid'];?>" value="<?php echo esc_attr($restore_jobdata['jobid']);?>">
 			<button onclick="jQuery('#updraft_restore_continue_action').val('updraft_restore_continue'); jQuery(this).parent('form').submit();" type="submit" class="button-primary"><?php _e('Continue restoration', 'updraftplus'); ?></button>
 			<button onclick="jQuery('#updraft_restore_continue_action').val('updraft_restore_abort'); jQuery(this).parent('form').submit();" class="button-secondary"><?php _e('Dismiss', 'updraftplus');?></button>
@@ -3930,7 +3871,7 @@ class UpdraftPlus_Admin {
 	public function show_double_warning($text, $extraclass = '', $echo = true) {
 
 		$ret = "<div class=\"error updraftplusmethod $extraclass\"><p>$text</p></div>";
-		$ret .= "<p class=\"double-warning\">$text</p>";
+		$ret .= "<div class=\"notice error below-h2\"><p>$text</p></div>";
 
 		if ($echo) echo $ret;
 		return $ret;
@@ -4436,15 +4377,15 @@ ENDHERE;
 	public function prepare_restore() {
 
 		global $updraftplus;
+
+		// on restore start job_id is empty but if we needed file system permissions or this is a resumption then we have already started a job so reuse it
+		$restore_job_id = empty($_REQUEST['job_id']) ? false : $_REQUEST['job_id'];
+
+		// Set up nonces, log files etc.
+		$updraftplus->initiate_restore_job($restore_job_id);
 		
 		// If this is the start of a restore then get the restore data from the posted data and put it into jobdata.
 		if (isset($_REQUEST['action']) && 'updraft_restore' == $_REQUEST['action']) {
-
-			// on restore start job_id is empty but if we needed file system permissions then we have already started a job so reuse it
-			$restore_job_id = empty($_REQUEST['job_id']) ? false : $_REQUEST['job_id'];
-
-			// Set up nonces, log files etc.
-			$updraftplus->initiate_restore_job($restore_job_id);
 			
 			if (empty($restore_job_id)) {
 				$jobdata_to_save = array();
@@ -4460,6 +4401,36 @@ ENDHERE;
 				// Use a site option, as otherwise on multisite when all the array of options is updated via UpdraftPlus_Options::update_site_option(), it will over-write any restored UD options from the backup
 				update_site_option('updraft_restore_in_progress', $updraftplus->nonce);
 			}
+		}
+
+		// If this is the start of an ajax restore then end execution here so it can then be booted over ajax
+		if (isset($_REQUEST['updraftplus_ajax_restore']) && 'start_ajax_restore' == $_REQUEST['updraftplus_ajax_restore']) {
+			// return to prevent any more code from running
+			return $this->prepare_ajax_restore();
+
+		} elseif (isset($_REQUEST['updraftplus_ajax_restore']) && 'continue_ajax_restore' == $_REQUEST['updraftplus_ajax_restore']) {
+			// If we enter here then in order to restore we needed to require the filesystem credentials we should save these before returning back to the browser and load them back after the AJAX call, this prevents us asking for the filesystem credentials again
+			$filesystem_credentials = array(
+				'hostname' => '',
+				'username' => '',
+				'password' => '',
+				'connection_type' => '',
+				'upgrade' => '',
+			);
+
+			$credentials_found = false;
+
+			foreach ($_REQUEST as $key => $value) {
+				if (array_key_exists($key, $filesystem_credentials)) {
+					$filesystem_credentials[$key] = stripslashes($value);
+					$credentials_found = true;
+				}
+			}
+
+			if ($credentials_found) $updraftplus->jobdata_set('filesystem_credentials', $filesystem_credentials);
+
+			// return to prevent any more code from running
+			return $this->prepare_ajax_restore();
 		}
 		
 		$is_continuation = ('updraft_restore_continue' == $_REQUEST['action']) ? true : false;
@@ -4479,7 +4450,20 @@ ENDHERE;
 					$updraftplus->log(__('Sufficient information about the in-progress restoration operation could not be found.', 'updraftplus') . ' (job_id_nojobdata)', 'error', 'job_id_nojobdata');
 				}
 			}
-
+		} elseif (isset($_REQUEST['updraftplus_ajax_restore']) && 'do_ajax_restore' == $_REQUEST['updraftplus_ajax_restore']) {
+			$backup_timestamp = $updraftplus->jobdata_get('backup_timestamp');
+			$filesystem_credentials = $updraftplus->jobdata_get('filesystem_credentials', array());
+			
+			if (empty($filesystem_credentials)) {
+				$continuation_data = array('updraftplus_ajax_restore' => 'continue_ajax_restore');
+			} else {
+				$continuation_data = null;
+				// If the filesystem credentials are not empty then we now need to load these back into $_POST so that WP_Filesystem can access them
+				foreach ($filesystem_credentials as $key => $value) {
+					$_POST[$key] = $value;
+				}
+			}
+			
 		} else {
 			$backup_timestamp = $_REQUEST['backup_timestamp'];
 			$continuation_data = null;
@@ -4527,6 +4511,28 @@ ENDHERE;
 			echo '<strong>' . __('Actions', 'updraftplus') . ':</strong> <a href="' . UpdraftPlus_Options::admin_page_url() . '?page=updraftplus">' . __('Return to UpdraftPlus configuration', 'updraftplus') . '</a>';
 			return;
 		}
+	}
+
+	/**
+	 * This function will load the required ajax and output any relevant html for the ajax restore
+	 *
+	 * @return void
+	 */
+	private function prepare_ajax_restore() {
+		global $updraftplus;
+
+		$enqueue_version = $updraftplus->use_unminified_scripts() ? $updraftplus->version . '.' . time() : $updraftplus->version;
+		$min_or_not = $updraftplus->use_unminified_scripts() ? '' : '.min';
+
+		wp_enqueue_script('updraft-admin-restore', UPDRAFTPLUS_URL . '/js/updraft-admin-restore' . $min_or_not . '.js', array(), $enqueue_version);
+
+		$this->show_admin_warning('<p>'.__('Starting restore job:', 'updraftplus').' '.$updraftplus->nonce.'</p><p>'.__('The restore operation has begun. Do not press stop or close your browser until it reports itself as having finished.', 'updraftplus').'</p>');
+		
+		// Provide download link for the log file
+		$this->show_admin_warning('<a target="_blank" href="?action=downloadlog&page=updraftplus&updraftplus_backup_nonce='.htmlspecialchars($updraftplus->nonce).'">'.__('Follow this link to download the log file for this restoration (needed for any support requests).', 'updraftplus').'</a>');
+		
+		echo '<input type="hidden" id="updraftplus_ajax_restore_job_id" name="updraftplus_restore_job_id" value="' . $updraftplus->nonce . '">';
+		echo '<div id="updraftplus_ajax_restore_output"></div>';
 	}
 
 	/**
@@ -4603,15 +4609,23 @@ ENDHERE;
 		$backup_set['timestamp'] = $timestamp;
 
 		$second_loop_entities = empty($continuation_data['second_loop_entities']) ? array() : $continuation_data['second_loop_entities'];
+
+		$url_parameters = array(
+			'backup_timestamp' => $timestamp,
+			'job_id' => $updraftplus->nonce
+		);
+
+		if (!empty($continuation_data['updraftplus_ajax_restore'])) $url_parameters['updraftplus_ajax_restore'] = $continuation_data['updraftplus_ajax_restore'];
+
+		$updraftplus->log("Ensuring WP_Filesystem is setup for a restore");
 		
 		// This will print HTML and die() if necessary
-		UpdraftPlus_Filesystem_Functions::ensure_wp_filesystem_set_up_for_restore(array('backup_timestamp' => $timestamp, 'job_id' => $updraftplus->nonce));
+		UpdraftPlus_Filesystem_Functions::ensure_wp_filesystem_set_up_for_restore($url_parameters);
+
+		$updraftplus->log("WP_Filesystem is setup and ready for a restore");
 
 		// The <div> is closed by Updraft_Restorer::post_restore_clean_up()
 		echo '<h1>'.__('UpdraftPlus Restoration: Progress', 'updraftplus').'</h1><div id="updraft-restore-progress">';
-
-		// Provide download link for the log file
-		$this->show_admin_warning('<a target="_blank" href="?action=downloadlog&page=updraftplus&updraftplus_backup_nonce='.htmlspecialchars($updraftplus->nonce).'">'.__('Follow this link to download the log file for this restoration (needed for any support requests).', 'updraftplus').'</a>');
 
 		$entities_to_restore = $this->get_entities_to_restore_from_jobdata($backup_set);
 
@@ -5013,7 +5027,7 @@ ENDHERE;
 	 * @param  boolean $wipe_all_settings Set to true as default as we want to remove all options, set to false if calling from UpdraftCentral, as we do not want to remove the UpdraftCentral key or we will lose connection to the site.
 	 * @return boolean
 	 */
-	public function updraft_wipe_settings($wipe_all_settings = true) {
+	public function wipe_settings($wipe_all_settings = true) {
 		
 		global $updraftplus;
 

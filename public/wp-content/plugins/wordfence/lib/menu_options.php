@@ -88,7 +88,7 @@ if (isset($_GET['source']) && wfPage::isValidPage($_GET['source'])) {
 				'wf-option-alertOn-update' => __('Email me when Wordfence is automatically updated', 'wordfence'),
 				'wf-option-alertOn-wordfenceDeactivated' => __('Email me if Wordfence is deactivated', 'wordfence'),
 				'wf-option-alertOn-wafDeactivated' => __('Email me if the Wordfence Web Application Firewall is turned off', 'wordfence'),
-				'wf-option-alertOn-scanIssues' => __('Alert me with scan results for issues of this severity level', 'wordfence'),
+				'wf-option-alertOn-scanIssues' => __('Alert me with scan results of this severity level or greater', 'wordfence'),
 				'wf-option-alertOn-block' => __('Alert when an IP address is blocked', 'wordfence'),
 				'wf-option-alertOn-loginLockout' => __('Alert when someone is locked out from login', 'wordfence'),
 				'wf-option-alertOn-lostPasswdForm' => __('Alert when the "lost password" form is used for a valid user', 'wordfence'),
@@ -178,8 +178,6 @@ if (isset($_GET['source']) && wfPage::isValidPage($_GET['source'])) {
 				'wf-option-maxExecutionTime' => __('Maximum execution time for each scan stage', 'wordfence'),
 				'wf-option-scan-exclude' => __('Exclude files from scan that match these wildcard patterns', 'wordfence'),
 				'wf-option-scan-include-extra' => __('Additional scan signatures', 'wordfence'),
-				'wf-option-loginSec-requireAdminTwoFactor' => __('Require Cellphone Sign-in for all Administrators', 'wordfence'),
-				'wf-option-loginSec-enableSeparateTwoFactor' => __('Enable Separate Prompt for Two Factor Code', 'wordfence'),
 				'wf-option-liveTrafficEnabled' => __('Traffic logging mode (Live Traffic)', 'wordfence'),
 				'wf-option-liveTraf-ignorePublishers' => __('Don\'t log signed-in users with publishing access', 'wordfence'),
 				'wf-option-liveTraf-ignoreUsers' => __('List of comma separated usernames to ignore', 'wordfence'),
@@ -190,6 +188,13 @@ if (isset($_GET['source']) && wfPage::isValidPage($_GET['source'])) {
 				'wf-option-exportOptions' => __('Export this site\'s Wordfence options for import on another site', 'wordfence'),
 				'wf-option-importOptions' => __('Import Wordfence options from another site using a token', 'wordfence'),
 			);
+			
+			if (wfCredentialsController::useLegacy2FA()) {
+				$indexOptions['wf-option-loginSec-requireAdminTwoFactor'] = __('Require Cellphone Sign-in for all Administrators', 'wordfence');
+				$indexOptions['wf-option-loginSec-enableSeparateTwoFactor'] = __('Enable Separate Prompt for Two Factor Code', 'wordfence');
+			}
+			
+			$indexOptions = array_merge($indexOptions, wfModuleController::shared()->optionIndexes);
 			
 			echo wfView::create('options/block-all-options-controls', array(
 				'showIcon' => false,
@@ -381,9 +386,11 @@ else if (wfConfig::get('touppPromptNeeded')) {
 						'showIcon' => false,
 					))->render();
 					
-					echo wfView::create('tools/options-group-2fa', array(
-						'stateKey' => 'wf-unified-2fa-options',
-					))->render();
+					if (wfCredentialsController::useLegacy2FA()) {
+						echo wfView::create('tools/options-group-2fa', array(
+							'stateKey' => 'wf-unified-2fa-options',
+						))->render();
+					}
 					
 					echo wfView::create('tools/options-group-live-traffic', array(
 						'stateKey' => 'wf-unified-live-traffic-options',
@@ -418,6 +425,12 @@ else if (wfConfig::get('touppPromptNeeded')) {
 							</div>
 						</div>
 					</div> <!-- end import options -->
+					<?php
+					$moduleOptionBlocks = wfModuleController::shared()->optionBlocks;
+					foreach ($moduleOptionBlocks as $b) {
+						echo $b;
+					}
+					?>
 				</div> <!-- end options block -->
 			</div> <!-- end content block -->
 		</div> <!-- end row -->

@@ -233,9 +233,10 @@ class WC_Structured_Data {
 					);
 				} else {
 					$markup_offer = array(
-						'@type'     => 'AggregateOffer',
-						'lowPrice'  => wc_format_decimal( $lowest, wc_get_price_decimals() ),
-						'highPrice' => wc_format_decimal( $highest, wc_get_price_decimals() ),
+						'@type'      => 'AggregateOffer',
+						'lowPrice'   => wc_format_decimal( $lowest, wc_get_price_decimals() ),
+						'highPrice'  => wc_format_decimal( $highest, wc_get_price_decimals() ),
+						'offerCount' => count( $product->get_children() ),
 					);
 				}
 			} else {
@@ -268,7 +269,7 @@ class WC_Structured_Data {
 			$markup['offers'] = array( apply_filters( 'woocommerce_structured_data_product_offer', $markup_offer, $product ) );
 		}
 
-		if ( $product->get_review_count() && 'yes' === get_option( 'woocommerce_enable_review_rating' ) ) {
+		if ( $product->get_review_count() && wc_review_ratings_enabled() ) {
 			$markup['aggregateRating'] = array(
 				'@type'       => 'AggregateRating',
 				'ratingValue' => $product->get_average_rating(),

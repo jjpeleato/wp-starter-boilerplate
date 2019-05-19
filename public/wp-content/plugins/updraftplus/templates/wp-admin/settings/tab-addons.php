@@ -308,27 +308,27 @@ if ($updraftplus_checkout_embed) {
 		</section>
 	<?php endif; ?>
 	<section id="other-plugins">
-		<h2>More great plugins by the Updraft Team</h2>
+		<h2><?php _e('More great plugins by the Updraft Team', 'updraftplus'); ?></h2>
 		<div class="updraft-more-plugins">
 			<div class="udp-box">
 				<h3><img src="<?php echo UPDRAFTPLUS_URL; ?>/images/other-plugins/updraft-central.png" alt="UpdraftCentral"></h3>
-				<p>Backup multiple websites from one place</p>
-				<a target="_blank" href="https://updraftcentral.com/">Find out more</a>
+				<p><?php _e('Manage multiple WordPress sites from one central dashboard', 'updraftplus'); ?></p>
+				<a target="_blank" href="https://updraftcentral.com/?utm_source=updraftplus&utm_medium=cross-sell&utm_campaign=addons-tab"><?php _e('Find out more', 'updraftplus'); ?></a>
 			</div>
 			<div class="udp-box">
 				<h3><img src="<?php echo UPDRAFTPLUS_URL; ?>/images/other-plugins/wp-optimize.png" alt="WP Optimize"></h3>
-				<p>Keep your database fast & efficient</p>
-				<a target="_blank" href="https://getwpo.com/">Find out more</a>
+				<p><?php _e('Keep your database fast & efficient', 'updraftplus'); ?></p>
+				<a target="_blank" href="https://getwpo.com/?utm_source=updraftplus&utm_medium=cross-sell&utm_campaign=addons-tab"><?php _e('Find out more', 'updraftplus'); ?></a>
 			</div>
 			<div class="udp-box">
 				<h3><img src="<?php echo UPDRAFTPLUS_URL; ?>/images/other-plugins/keyy.png" alt="Keyy"></h3>
-				<p>Instant & secure logins with a wave of your phone</p>
-				<a target="_blank" href="https://getkeyy.com/">Find out more</a>
+				<p><?php _e('Instant & secure logins with a wave of your phone', 'updraftplus'); ?></p>
+				<a target="_blank" href="https://getkeyy.com/?utm_source=updraftplus&utm_medium=cross-sell&utm_campaign=addons-tab"><?php _e('Find out more', 'updraftplus'); ?></a>
 			</div>
 			<div class="udp-box">
 				<h3><img src="<?php echo UPDRAFTPLUS_URL; ?>/images/other-plugins/meta-slider.png" alt="MetaSlider"></h3>
-				<p>Create powerful, seo-optimized slideshows in minutes</p>
-				<a target="_blank" href="https://www.metaslider.com/">Find out more</a>
+				<p><?php _e('Create powerful, seo-optimized slideshows in minutes', 'updraftplus'); ?></p>
+				<a target="_blank" href="https://www.metaslider.com/?utm_source=updraftplus&utm_medium=cross-sell&utm_campaign=addons-tab"><?php _e('Find out more', 'updraftplus'); ?></a>
 			</div>
 		</div>
 	</section>	

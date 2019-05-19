@@ -267,17 +267,17 @@
     },
     {
         "name": "paragonie/sodium_compat",
-        "version": "v1.9.1",
-        "version_normalized": "1.9.1.0",
+        "version": "v1.10.0",
+        "version_normalized": "1.10.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/paragonie/sodium_compat.git",
-            "reference": "87125d5b265f98c4d1b8d83a1f0726607c229421"
+            "reference": "228a9fc64cf4ba84c7967c1076d94209db03e0ee"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/paragonie/sodium_compat/zipball/87125d5b265f98c4d1b8d83a1f0726607c229421",
-            "reference": "87125d5b265f98c4d1b8d83a1f0726607c229421",
+            "url": "https://api.github.com/repos/paragonie/sodium_compat/zipball/228a9fc64cf4ba84c7967c1076d94209db03e0ee",
+            "reference": "228a9fc64cf4ba84c7967c1076d94209db03e0ee",
             "shasum": ""
         },
         "require": {
@@ -291,7 +291,7 @@
             "ext-libsodium": "PHP < 7.0: Better performance, password hashing (Argon2i), secure memory management (memzero), and better security.",
             "ext-sodium": "PHP >= 7.0: Better performance, password hashing (Argon2i), secure memory management (memzero), and better security."
         },
-        "time": "2019-03-20T17:19:05+00:00",
+        "time": "2019-05-13T16:04:50+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

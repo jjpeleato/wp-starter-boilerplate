@@ -297,7 +297,7 @@ class EWWWIO_Alt_Webp extends EWWWIO_Page_Parser {
 			is_feed() ||
 			is_preview() ||
 			( defined( 'REST_REQUEST' ) && REST_REQUEST ) ||
-			preg_match( '/<\?xml/', $buffer )
+			preg_match( '/^<\?xml/', $buffer )
 		) {
 			if ( empty( $buffer ) ) {
 				ewwwio_debug_message( 'empty buffer' );
@@ -323,7 +323,7 @@ class EWWWIO_Alt_Webp extends EWWWIO_Page_Parser {
 			if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
 				ewwwio_debug_message( 'rest request' );
 			}
-			if ( preg_match( '/<\?xml/', $buffer ) ) {
+			if ( preg_match( '/^<\?xml/', $buffer ) ) {
 				ewwwio_debug_message( 'not html, xml tag found' );
 			}
 			if ( strpos( $buffer, 'amp-boilerplate' ) ) {
@@ -337,7 +337,7 @@ class EWWWIO_Alt_Webp extends EWWWIO_Page_Parser {
 
 		/* TODO: detect non-utf8 encoding and convert the buffer (if necessary). */
 
-		$images = $this->get_images_from_html( preg_replace( '/<noscript.*?\/noscript>/', '', $buffer ), false );
+		$images = $this->get_images_from_html( preg_replace( '/<noscript.*?\/noscript>/s', '', $buffer ), false );
 		if ( ewww_image_optimizer_iterable( $images[0] ) ) {
 			foreach ( $images[0] as $index => $image ) {
 				$file = $images['img_url'][ $index ];
@@ -456,7 +456,7 @@ class EWWWIO_Alt_Webp extends EWWWIO_Page_Parser {
 			} // End foreach().
 		} // End if().
 		// Now we will look for any lazy images that don't have a src attribute (this search returns ALL img elements though).
-		$images = $this->get_images_from_html( preg_replace( '/<noscript.*?\/noscript>/', '', $buffer ), false, false );
+		$images = $this->get_images_from_html( preg_replace( '/<noscript.*?\/noscript>/s', '', $buffer ), false, false );
 		if ( ewww_image_optimizer_iterable( $images[0] ) ) {
 			ewwwio_debug_message( 'parsing images without requiring src' );
 			foreach ( $images[0] as $index => $image ) {
@@ -533,7 +533,7 @@ class EWWWIO_Alt_Webp extends EWWWIO_Page_Parser {
 							}
 						}
 					}
-					if ( $picture != $pictures[ $index ] ) {
+					if ( $picture !== $pictures[ $index ] ) {
 						ewwwio_debug_message( 'found webp for picture element' );
 						$buffer = str_replace( $pictures[ $index ], $picture, $buffer );
 					}
@@ -559,7 +559,7 @@ class EWWWIO_Alt_Webp extends EWWWIO_Page_Parser {
 						ewwwio_debug_message( "found webp for ngg data-thumbnail: $thumb" );
 					}
 				}
-				if ( $link != $links[ $index ] ) {
+				if ( $link !== $links[ $index ] ) {
 					$buffer = str_replace( $links[ $index ], $link, $buffer );
 				}
 			}
@@ -591,7 +591,7 @@ class EWWWIO_Alt_Webp extends EWWWIO_Page_Parser {
 						}
 						$param_num++;
 					}
-					if ( $listitem != $listitems[ $index ] ) {
+					if ( $listitem !== $listitems[ $index ] ) {
 						$buffer = str_replace( $listitems[ $index ], $listitem, $buffer );
 					}
 				}
@@ -771,6 +771,9 @@ class EWWWIO_Alt_Webp extends EWWWIO_Page_Parser {
 	 * Load minified inline version of webp script (from jscompress.com).
 	 */
 	function inline_script() {
+		if ( defined( 'EWWW_IMAGE_OPTIMIZER_NO_JS' ) && EWWW_IMAGE_OPTIMIZER_NO_JS ) {
+			return;
+		}
 		ewwwio_debug_message( 'loading webp script without wp_add_inline_script' );
 		echo "<script>$this->inline_script</script>";
 	}

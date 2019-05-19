@@ -76,7 +76,7 @@ if (!isset($collapseable)) {
 								array('value' => wfIssues::SEVERITY_LOW, 'label' => __('Low', 'wordfence')),
 							),
 							'selectValue' => wfConfig::get('alertOn_severityLevel'),
-							'title' => __('Alert me with scan results for issues of this severity level:', 'wordfence'),
+							'title' => __('Alert me with scan results of this severity level or greater:', 'wordfence'),
 						))->render();
 						?>
 					</li>

@@ -14,8 +14,8 @@ import { validateJs } from './scripts';
 /* Tasks */
 function watch()
 {
-    gulp.watch(config.paths.sassAssets.src, gulp.series(validateScss, css));
-    gulp.watch(config.paths.jsAssets.src, gulp.series(validateJs, js));
+	gulp.watch(config.paths.sassAssets.src, { ignoreInitial: false }, gulp.series(validateScss, css));
+	gulp.watch(config.paths.jsAssets.src, { ignoreInitial: false }, gulp.series(validateJs, js));
 }
 
 exports.watch = watch;

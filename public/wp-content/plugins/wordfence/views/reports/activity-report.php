@@ -4,7 +4,7 @@ if (!defined('WORDFENCE_VERSION')) { exit; }
  * @var wfActivityReportView $this
  */
 ?>
-<a class="wf-logo" href="//www.wordfence.com/zz8/"><img src="<?php echo wfUtils::getBaseURL(); ?>images/logo.png" alt=""/></a>
+<a class="wf-logo" href="//www.wordfence.com/zz8/"><img src="<?php echo wfUtils::getBaseURL(); ?>images/wf-horizontal.svg" alt="Wordfence"/></a>
 
 <h2><?php printf(__('Top %d IPs Blocked', 'wordfence'), $limit); ?></h2>
 

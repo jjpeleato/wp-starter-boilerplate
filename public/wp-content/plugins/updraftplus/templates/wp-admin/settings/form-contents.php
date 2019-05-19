@@ -135,7 +135,7 @@ foreach ($default_options as $k => $v) {
 	</tr>
 </table>
 
-<hr class="updraft_separator width-900">
+<hr class="updraft_separator">
 
 <h2 class="updraft_settings_sectionheading"><?php _e('File Options', 'updraftplus');?></h2>
 
