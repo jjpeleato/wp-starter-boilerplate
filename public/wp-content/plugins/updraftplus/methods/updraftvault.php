@@ -298,11 +298,13 @@ class UpdraftPlus_BackupModule_updraftvault extends UpdraftPlus_BackupModule_s3 
 		$checkout_embed_5gb_attribute = '';
 		$checkout_embed_15gb_attribute = '';
 		$checkout_embed_50gb_attribute = '';
+		$checkout_embed_250gb_attribute = '';
 		
 		if ($updraftplus_checkout_embed) {
 			$checkout_embed_5gb_attribute = $updraftplus_checkout_embed->get_product('updraftplus-vault-storage-5-gb') ? 'data-embed-checkout="'.apply_filters('updraftplus_com_link', $updraftplus_checkout_embed->get_product('updraftplus-vault-storage-5-gb', UpdraftPlus_Options::admin_page_url().'?page=updraftplus&tab=settings')).'"' : '';
 			$checkout_embed_15gb_attribute = $updraftplus_checkout_embed->get_product('updraftplus-vault-storage-15-gb') ? 'data-embed-checkout="'.apply_filters('updraftplus_com_link', $updraftplus_checkout_embed->get_product('updraftplus-vault-storage-15-gb', UpdraftPlus_Options::admin_page_url().'?page=updraftplus&tab=settings')).'"' : '';
 			$checkout_embed_50gb_attribute = $updraftplus_checkout_embed->get_product('updraftplus-vault-storage-50-gb') ? 'data-embed-checkout="'.apply_filters('updraftplus_com_link', $updraftplus_checkout_embed->get_product('updraftplus-vault-storage-50-gb', UpdraftPlus_Options::admin_page_url().'?page=updraftplus&tab=settings')).'"' : '';
+			$checkout_embed_250gb_attribute = $updraftplus_checkout_embed->get_product('updraftplus-vault-storage-250-gb') ? 'data-embed-checkout="'.apply_filters('updraftplus_com_link', $updraftplus_checkout_embed->get_product('updraftplus-vault-storage-250-gb', UpdraftPlus_Options::admin_page_url().'?page=updraftplus&tab=settings')).'"' : '';
 		}
 		
 		// Used to decide whether we can afford HTTP calls or not, or would prefer to rely on cached data
@@ -344,26 +346,35 @@ class UpdraftPlus_BackupModule_updraftvault extends UpdraftPlus_BackupModule_s3 
 				<div id="updraftvault_settings_showoptions" style="display:none;" class="updraft-hidden">
 					<p>
 						'. __('UpdraftPlus Vault brings you storage that is <strong>reliable, easy to use and a great price</strong>.', 'updraftplus').' '.__('Press a button to get started.', 'updraftplus').'</p>
-					<div class="vault-purchase-option">
-						<div class="vault-purchase-option-size">5 GB</div>
-						<div class="vault-purchase-option-link"><b>'.sprintf(__('%s per year', 'updraftplus'), '$35').'</b></div>
-						<div class="vault-purchase-option-or">'.__('with the option of', 'updraftplus').'</div>
-						<div class="vault-purchase-option-link"><b>'.sprintf(__('%s month %s trial', 'updraftplus'), '1', '$1').'</b></div>
-						<div class="vault-purchase-option-link"><a target="_blank" title="Start a 5GB UpdraftVault Subscription" href="'.apply_filters('updraftplus_com_link', $updraftplus->get_url('shop_vault_5')).'" '.$checkout_embed_5gb_attribute.'><button class="button-primary">'.__('Start Trial', 'updraftplus').'</button></a></div>
-					</div>
-					<div class="vault-purchase-option">
-						<div class="vault-purchase-option-size">15 GB</div>
-						<div class="vault-purchase-option-link"><b>'.sprintf(__('%s per quarter', 'updraftplus'), '$20').'</b></div>
-						<div class="vault-purchase-option-or">'.__('or (annual discount)', 'updraftplus').'</div>
-						<div class="vault-purchase-option-link"><b>'.sprintf(__('%s per year', 'updraftplus'), '$70').'</b></div>
-						<div class="vault-purchase-option-link"><a target="_blank" title="Start a 15GB UpdraftVault Subscription" href="'.apply_filters('updraftplus_com_link', $updraftplus->get_url('shop_vault_15')).'" '.$checkout_embed_15gb_attribute.'><button class="button-primary">'.__('Start Subscription', 'updraftplus').'</button></a></div>
-					</div>
-					<div class="vault-purchase-option">
-						<div class="vault-purchase-option-size">50 GB</div>
-						<div class="vault-purchase-option-link"><b>'.sprintf(__('%s per quarter', 'updraftplus'), '$50').'</b></div>
-						<div class="vault-purchase-option-or">'.__('or (annual discount)', 'updraftplus').'</div>
-						<div class="vault-purchase-option-link"><b>'.sprintf(__('%s per year', 'updraftplus'), '$175').'</b></div>
-						<div class="vault-purchase-option-link"><a target="_blank" title="Start a 50GB UpdraftVault Subscription" href="'.apply_filters('updraftplus_com_link', $updraftplus->get_url('shop_vault_50')).'" '.$checkout_embed_50gb_attribute.'><button class="button-primary">'.__('Start Subscription', 'updraftplus').'</button></a></div>
+					<div class="vault-purchase-option-container">
+						<div class="vault-purchase-option">
+							<div class="vault-purchase-option-size">5 GB</div>
+							<div class="vault-purchase-option-link"><b>'.sprintf(__('%s per year', 'updraftplus'), '$35').'</b></div>
+							<div class="vault-purchase-option-or">'.__('with the option of', 'updraftplus').'</div>
+							<div class="vault-purchase-option-link"><b>'.sprintf(__('%s month %s trial', 'updraftplus'), '1', '$1').'</b></div>
+							<div class="vault-purchase-option-link"><a target="_blank" title="Start a 5GB UpdraftVault Subscription" href="'.apply_filters('updraftplus_com_link', $updraftplus->get_url('shop_vault_5')).'" '.$checkout_embed_5gb_attribute.'><button class="button-primary">'.__('Start Trial', 'updraftplus').'</button></a></div>
+						</div>
+						<div class="vault-purchase-option">
+							<div class="vault-purchase-option-size">15 GB</div>
+							<div class="vault-purchase-option-link"><b>'.sprintf(__('%s per quarter', 'updraftplus'), '$20').'</b></div>
+							<div class="vault-purchase-option-or">'.__('or (annual discount)', 'updraftplus').'</div>
+							<div class="vault-purchase-option-link"><b>'.sprintf(__('%s per year', 'updraftplus'), '$70').'</b></div>
+							<div class="vault-purchase-option-link"><a target="_blank" title="Start a 15GB UpdraftVault Subscription" href="'.apply_filters('updraftplus_com_link', $updraftplus->get_url('shop_vault_15')).'" '.$checkout_embed_15gb_attribute.'><button class="button-primary">'.__('Start Subscription', 'updraftplus').'</button></a></div>
+						</div>
+						<div class="vault-purchase-option">
+							<div class="vault-purchase-option-size">50 GB</div>
+							<div class="vault-purchase-option-link"><b>'.sprintf(__('%s per quarter', 'updraftplus'), '$50').'</b></div>
+							<div class="vault-purchase-option-or">'.__('or (annual discount)', 'updraftplus').'</div>
+							<div class="vault-purchase-option-link"><b>'.sprintf(__('%s per year', 'updraftplus'), '$175').'</b></div>
+							<div class="vault-purchase-option-link"><a target="_blank" title="Start a 50GB UpdraftVault Subscription" href="'.apply_filters('updraftplus_com_link', $updraftplus->get_url('shop_vault_50')).'" '.$checkout_embed_50gb_attribute.'><button class="button-primary">'.__('Start Subscription', 'updraftplus').'</button></a></div>
+						</div>
+						<div class="vault-purchase-option">
+							<div class="vault-purchase-option-size">250 GB</div>
+							<div class="vault-purchase-option-link"><b>'.sprintf(__('%s per quarter', 'updraftplus'), '$125').'</b></div>
+							<div class="vault-purchase-option-or">'.__('or (annual discount)', 'updraftplus').'</div>
+							<div class="vault-purchase-option-link"><b>'.sprintf(__('%s per year', 'updraftplus'), '$450').'</b></div>
+							<div class="vault-purchase-option-link"><a target="_blank" title="Start a 250GB UpdraftVault Subscription" href="'.apply_filters('updraftplus_com_link', $updraftplus->get_url('shop_vault_250')).'" '.$checkout_embed_250gb_attribute.'><button class="button-primary">'.__('Start Subscription', 'updraftplus').'</button></a></div>
+						</div>
 					</div>
 					<p class="clear-left padding-top-20px">
 						'.__('Payments can be made in US dollars, euros or GB pounds sterling, via card or PayPal.', 'updraftplus').' '. __('Subscriptions can be cancelled at any time.', 'updraftplus').'

@@ -58,6 +58,14 @@ class Controller_DB {
 		$wpdb->query($wpdb->prepare("UPDATE `{$table}` SET `vtime` = LEAST(`vtime`, %d)", Controller_Time::time()));
 	}
 	
+	public function uninstall() {
+		$tables = array(self::TABLE_2FA_SECRETS, self::TABLE_SETTINGS);
+		foreach ($tables as $table) {
+			global $wpdb;
+			$wpdb->query('DROP TABLE IF EXISTS `' . self::network_table($table) . '`');
+		}
+	}
+	
 	protected function _create_schema() {
 		$tables = array(
 			self::TABLE_2FA_SECRETS => '(

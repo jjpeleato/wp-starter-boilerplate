@@ -25,6 +25,7 @@ class Model_DB extends Model_Settings {
 		
 		if ($wpdb->query($wpdb->prepare("INSERT INTO `{$table}` (`name`, `value`, `autoload`) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE `value` = VALUES(`value`), `autoload` = VALUES(`autoload`)", $key, $value, $autoload)) !== false && $autoload != self::AUTOLOAD_NO) {
 			$this->_update_cached($key, $value);
+			do_action('wfls_settings_set', $key, $value);
 		}
 	}
 	

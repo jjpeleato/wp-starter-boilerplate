@@ -11,6 +11,7 @@
  * @since 10.2
  */
 class WPSEO_Schema_Article implements WPSEO_Graph_Piece {
+
 	/**
 	 * A value object with context variables.
 	 *
@@ -19,7 +20,7 @@ class WPSEO_Schema_Article implements WPSEO_Graph_Piece {
 	private $context;
 
 	/**
-	 * WPSEO_Schema_Breadcrumb constructor.
+	 * WPSEO_Schema_Article constructor.
 	 *
 	 * @param WPSEO_Schema_Context $context A value object with context variables.
 	 */
@@ -34,6 +35,10 @@ class WPSEO_Schema_Article implements WPSEO_Graph_Piece {
 	 */
 	public function is_needed() {
 		if ( ! is_singular() ) {
+			return false;
+		}
+
+		if ( $this->context->site_represents === false ) {
 			return false;
 		}
 
@@ -52,17 +57,17 @@ class WPSEO_Schema_Article implements WPSEO_Graph_Piece {
 			'@type'            => 'Article',
 			'@id'              => $this->context->canonical . WPSEO_Schema_IDs::ARTICLE_HASH,
 			'isPartOf'         => array( '@id' => $this->context->canonical . WPSEO_Schema_IDs::WEBPAGE_HASH ),
-			'author'           => array(
-				'@id'  => $this->get_author_url( $post ),
-				'name' => get_the_author_meta( 'display_name', $post->post_author ),
-			),
-			'publisher'        => array( '@id' => $this->get_publisher_url() ),
+			'author'           => array( '@id' => WPSEO_Schema_Utils::get_user_schema_id( $post->post_author, $this->context ) ),
 			'headline'         => get_the_title(),
 			'datePublished'    => mysql2date( DATE_W3C, $post->post_date_gmt, false ),
 			'dateModified'     => mysql2date( DATE_W3C, $post->post_modified_gmt, false ),
 			'commentCount'     => $comment_count['approved'],
-			'mainEntityOfPage' => $this->context->canonical . WPSEO_Schema_IDs::WEBPAGE_HASH,
+			'mainEntityOfPage' => array( '@id' => $this->context->canonical . WPSEO_Schema_IDs::WEBPAGE_HASH ),
 		);
+
+		if ( $this->context->site_represents_reference ) {
+			$data['publisher'] = $this->context->site_represents_reference;
+		}
 
 		$data = $this->add_image( $data );
 		$data = $this->add_keywords( $data );
@@ -91,34 +96,6 @@ class WPSEO_Schema_Article implements WPSEO_Graph_Piece {
 		$post_types = apply_filters( 'wpseo_schema_article_post_types', array( 'post' ) );
 
 		return in_array( $post_type, $post_types );
-	}
-
-	/**
-	 * Determine the proper author URL.
-	 *
-	 * @param \WP_Post $post Post object.
-	 *
-	 * @return string
-	 */
-	private function get_author_url( $post ) {
-		if ( $this->context->site_represents === 'person' && $this->context->site_user_id === (int) $post->post_author ) {
-			return $this->context->site_url . WPSEO_Schema_IDs::PERSON_HASH;
-		}
-
-		return get_author_posts_url( $post->post_author ) . WPSEO_Schema_IDs::AUTHOR_HASH;
-	}
-
-	/**
-	 * Determine the proper publisher URL.
-	 *
-	 * @return string
-	 */
-	private function get_publisher_url() {
-		if ( $this->context->site_represents === 'person' ) {
-			return $this->context->site_url . WPSEO_Schema_IDs::PERSON_HASH;
-		}
-
-		return $this->context->site_url . WPSEO_Schema_IDs::ORGANIZATION_HASH;
 	}
 
 	/**
@@ -191,7 +168,7 @@ class WPSEO_Schema_Article implements WPSEO_Graph_Piece {
 	 * @return array $data The Article data.
 	 */
 	private function add_image( $data ) {
-		if ( has_post_thumbnail( $this->context->id ) ) {
+		if ( $this->context->has_image ) {
 			$data['image'] = array(
 				'@id' => $this->context->canonical . WPSEO_Schema_IDs::PRIMARY_IMAGE_HASH,
 			);

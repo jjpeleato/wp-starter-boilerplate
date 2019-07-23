@@ -25,4 +25,16 @@ class WFLSPHP52Compatability {
 	public static function secrets_table() {
 		return \WordfenceLS\Controller_DB::shared()->secrets;
 	}
+	
+	public static function ntp_time() {
+		return \WordfenceLS\Controller_Time::ntp_time();
+	}
+	
+	public static function using_ntp_time() {
+		return \WordfenceLS\Controller_Settings::shared()->get_bool(\WordfenceLS\Controller_Settings::OPTION_USE_NTP);
+	}
+	
+	public static function using_wf_time() {
+		return !self::using_ntp_time() && defined('WORDFENCE_LS_FROM_CORE') && WORDFENCE_LS_FROM_CORE && ((int) wfConfig::get('timeoffset_wf', false)) != 0;
+	}
 }

@@ -43,7 +43,7 @@ class URE_Ajax_Processor {
     protected function get_required_cap() {
         
         if ($this->action=='grant_roles' || $this->action=='get_user_roles') {
-            $cap = 'edit_users';
+            $cap = 'promote_users';
         } else {
             $cap = URE_Own_Capabilities::get_key_capability();
         }

@@ -1230,9 +1230,9 @@ function render() {
   container.innerHTML = html;
 }
 
-function init(editor, fields) {
+function init(editor, fields, settings) {
   var groupingsNotice = function groupingsNotice() {
-    var text = "Your form contains old style <code>GROUPINGS</code> fields. <br /><br />Please remove these fields from your form and then re-add them through the available field buttons to make sure your data is getting through to Mailchimp correctly.";
+    var text = "Your form contains deprecated <code>GROUPINGS</code> fields. <br /><br />Please remove these fields from your form and then re-add them through the available field buttons to make sure your data is getting through to Mailchimp correctly.";
     var formCode = editor.getValue().toLowerCase();
     formCode.indexOf('name="groupings') > -1 ? show('deprecated_groupings', text) : hide('deprecated_groupings');
   };
@@ -1247,6 +1247,16 @@ function init(editor, fields) {
       return f.title();
     }).join('</li><li>') + '</li></ul>';
     missingFields.length > 0 ? show('required_fields_missing', text) : hide('required_fields_missing');
+  };
+
+  var mailchimpListsNotice = function mailchimpListsNotice() {
+    var text = '<strong>Heads up!</strong> You have not yet selected a Mailchimp list to subscribe people to. Please select at least one list from the <a href="javascript:void(0)" data-tab="settings" class="tab-link">settings tab</a>.';
+
+    if (settings.getSelectedLists().length > 0) {
+      hide('no_lists_selected');
+    } else {
+      show('no_lists_selected', text);
+    }
   }; // old groupings
 
 
@@ -1257,6 +1267,7 @@ function init(editor, fields) {
   requiredFieldsNotice();
   editor.on('blur', requiredFieldsNotice);
   editor.on('focus', requiredFieldsNotice);
+  document.body.addEventListener('change', mailchimpListsNotice);
 }
 
 module.exports = {
@@ -1375,7 +1386,7 @@ window.setTimeout(function () {
   m.redraw();
 }, 2000); // init notices
 
-notices.init(editor, fields); // expose some methods
+notices.init(editor, fields, settings); // expose some methods
 
 window.mc4wp = window.mc4wp || {};
 window.mc4wp.forms = window.mc4wp.forms || {};
@@ -7197,8 +7208,15 @@ window.mc4wp.forms.fields = fields;
     var line = getLine(doc, pos.line);
     if (line.markedSpans) { for (var i = 0; i < line.markedSpans.length; ++i) {
       var sp = line.markedSpans[i], m = sp.marker;
-      if ((sp.from == null || (m.inclusiveLeft ? sp.from <= pos.ch : sp.from < pos.ch)) &&
-          (sp.to == null || (m.inclusiveRight ? sp.to >= pos.ch : sp.to > pos.ch))) {
+
+      // Determine if we should prevent the cursor being placed to the left/right of an atomic marker
+      // Historically this was determined using the inclusiveLeft/Right option, but the new way to control it
+      // is with selectLeft/Right
+      var preventCursorLeft = ("selectLeft" in m) ? !m.selectLeft : m.inclusiveLeft;
+      var preventCursorRight = ("selectRight" in m) ? !m.selectRight : m.inclusiveRight;
+
+      if ((sp.from == null || (preventCursorLeft ? sp.from <= pos.ch : sp.from < pos.ch)) &&
+          (sp.to == null || (preventCursorRight ? sp.to >= pos.ch : sp.to > pos.ch))) {
         if (mayClear) {
           signal(m, "beforeCursorEnter");
           if (m.explicitlyCleared) {
@@ -7210,14 +7228,14 @@ window.mc4wp.forms.fields = fields;
 
         if (oldPos) {
           var near = m.find(dir < 0 ? 1 : -1), diff = (void 0);
-          if (dir < 0 ? m.inclusiveRight : m.inclusiveLeft)
+          if (dir < 0 ? preventCursorRight : preventCursorLeft)
             { near = movePos(doc, near, -dir, near && near.line == pos.line ? line : null); }
           if (near && near.line == pos.line && (diff = cmp(near, oldPos)) && (dir < 0 ? diff < 0 : diff > 0))
             { return skipAtomicInner(doc, near, pos, dir, mayClear) }
         }
 
         var far = m.find(dir < 0 ? -1 : 1);
-        if (dir < 0 ? m.inclusiveLeft : m.inclusiveRight)
+        if (dir < 0 ? preventCursorLeft : preventCursorRight)
           { far = movePos(doc, far, dir, far.line == pos.line ? line : null); }
         return far ? skipAtomicInner(doc, far, pos, dir, mayClear) : null
       }
@@ -9750,7 +9768,7 @@ window.mc4wp.forms.fields = fields;
       for (var i = newBreaks.length - 1; i >= 0; i--)
         { replaceRange(cm.doc, val, newBreaks[i], Pos(newBreaks[i].line, newBreaks[i].ch + val.length)); }
     });
-    option("specialChars", /[\u0000-\u001f\u007f-\u009f\u00ad\u061c\u200b-\u200f\u2028\u2029\ufeff]/g, function (cm, val, old) {
+    option("specialChars", /[\u0000-\u001f\u007f-\u009f\u00ad\u061c\u200b-\u200f\u2028\u2029\ufeff\ufff9-\ufffc]/g, function (cm, val, old) {
       cm.state.specialChars = new RegExp(val.source + (val.test("\t") ? "" : "|\t"), "g");
       if (old != Init) { cm.refresh(); }
     });
@@ -11798,7 +11816,7 @@ window.mc4wp.forms.fields = fields;
 
   addLegacyProps(CodeMirror);
 
-  CodeMirror.version = "5.46.0";
+  CodeMirror.version = "5.48.2";
 
   return CodeMirror;
 
@@ -12861,7 +12879,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     if (ch == '"' || ch == "'") {
       state.tokenize = tokenString(ch);
       return state.tokenize(stream, state);
-    } else if (ch == "." && stream.match(/^\d+(?:[eE][+\-]?\d+)?/)) {
+    } else if (ch == "." && stream.match(/^\d[\d_]*(?:[eE][+\-]?[\d_]+)?/)) {
       return ret("number", "number");
     } else if (ch == "." && stream.match("..")) {
       return ret("spread", "meta");
@@ -12869,10 +12887,10 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
       return ret(ch);
     } else if (ch == "=" && stream.eat(">")) {
       return ret("=>", "operator");
-    } else if (ch == "0" && stream.match(/^(?:x[\da-f]+|o[0-7]+|b[01]+)n?/i)) {
+    } else if (ch == "0" && stream.match(/^(?:x[\dA-Fa-f_]+|o[0-7_]+|b[01_]+)n?/)) {
       return ret("number", "number");
     } else if (/\d/.test(ch)) {
-      stream.match(/^\d*(?:n|(?:\.\d*)?(?:[eE][+\-]?\d+)?)?/);
+      stream.match(/^[\d_]*(?:n|(?:\.[\d_]*)?(?:[eE][+\-]?[\d_]+)?)?/);
       return ret("number", "number");
     } else if (ch == "/") {
       if (stream.eat("*")) {
@@ -12989,8 +13007,12 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
         ++depth;
       } else if (wordRE.test(ch)) {
         sawSomething = true;
-      } else if (/["'\/]/.test(ch)) {
-        return;
+      } else if (/["'\/`]/.test(ch)) {
+        for (;; --pos) {
+          if (pos == 0) return
+          var next = stream.string.charAt(pos - 1)
+          if (next == ch && stream.string.charAt(pos - 2) != "\\") { pos--; break }
+        }
       } else if (sawSomething && !depth) {
         ++pos;
         break;
@@ -13368,9 +13390,12 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
   }
   function maybetype(type, value) {
     if (isTS) {
-      if (type == ":" || value == "in") return cont(typeexpr);
+      if (type == ":") return cont(typeexpr);
       if (value == "?") return cont(maybetype);
     }
+  }
+  function maybetypeOrIn(type, value) {
+    if (isTS && (type == ":" || value == "in")) return cont(typeexpr)
   }
   function mayberettype(type) {
     if (isTS && type == ":") {
@@ -13412,7 +13437,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     } else if (type == ":") {
       return cont(typeexpr)
     } else if (type == "[") {
-      return cont(expect("variable"), maybetype, expect("]"), typeprop)
+      return cont(expect("variable"), maybetypeOrIn, expect("]"), typeprop)
     } else if (type == "(") {
       return pass(functiondecl, typeprop)
     }

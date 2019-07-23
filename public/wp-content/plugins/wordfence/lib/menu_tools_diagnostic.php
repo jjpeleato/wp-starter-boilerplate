@@ -94,7 +94,7 @@ if (!isset($sendingDiagnosticEmail)) {
 				<table>
 					<thead>
 					<tr>
-						<th colspan="<?php echo $cols ?>"><?php echo esc_html($title) ?></th>
+						<th colspan="2"><?php echo esc_html($title) ?></th>
 					</tr>
 					</thead>
 					<tbody>
@@ -103,13 +103,12 @@ if (!isset($sendingDiagnosticEmail)) {
 						$infoOnly = isset($result['infoOnly']) && $result['infoOnly'];
 						?>
 						<tr>
-							<td style="width: 75%; min-width: 300px"
-									colspan="<?php echo $cols - 1 ?>"><?php echo wp_kses($result['label'], array(
+							<td style="width: 75%; min-width: 300px"><?php echo (is_array($result['label']) && isset($result['label']['raw']) && $result['label']['raw'] ? $result['label']['value'] : wp_kses($result['label'], array(
 									'code'   => array(),
 									'strong' => array(),
 									'em'     => array(),
 									'a'      => array('href' => true),
-								)) ?></td>
+								))) ?></td>
 							<td>
 								<?php if ($infoOnly): ?>
 									<div class="wf-result-info"><?php echo nl2br(esc_html($result['message'])); ?></div>
@@ -147,13 +146,12 @@ if (!isset($sendingDiagnosticEmail)) {
 								$infoOnly = isset($result['infoOnly']) && $result['infoOnly'];
 								?>
 								<li>
-									<div style="width: 75%; min-width: 300px;"
-											colspan="<?php echo $cols - 1 ?>"><?php echo wp_kses($result['label'], array(
+									<div style="width: 75%; min-width: 300px;"><?php echo (is_array($result['label']) && isset($result['label']['raw']) && $result['label']['raw'] ? $result['label']['value'] : wp_kses($result['label'], array(
 											'code'   => array(),
 											'strong' => array(),
 											'em'     => array(),
 											'a'      => array('href' => true),
-										)) ?></div>
+										))) ?></div>
 									<div class="wf-right">
 									<?php if ($infoOnly): ?>
 										<div class="wf-result-info"><?php echo nl2br(esc_html($result['message'])); ?></div>
@@ -321,6 +319,7 @@ if (!isset($sendingDiagnosticEmail)) {
 						'DOMAIN_CURRENT_SITE'		   => __('Defines the multisite domain for the current site', 'wordfence'),
 						'PATH_CURRENT_SITE'			   => __('Defines the multisite path for the current site', 'wordfence'),
 						'BLOG_ID_CURRENT_SITE'		   => __('Defines the multisite database ID for the current site', 'wordfence'),
+						'WP_DISABLE_FATAL_ERROR_HANDLER' => array('description' => __('Disable the fatal error handler', 'wordfence'), 'value' => (defined('WP_DISABLE_FATAL_ERROR_HANDLER') && WP_DISABLE_FATAL_ERROR_HANDLER ? __('Yes', 'wordfence') : __('No', 'wordfence'))),
 					);
 
 					foreach ($wordPressValues as $settingName => $settingData):
@@ -376,7 +375,7 @@ if (!isset($sendingDiagnosticEmail)) {
 						}
 						?>
 						<tr>
-							<td colspan="<?php echo $cols - 1 ?>">
+							<td>
 								<strong><?php echo esc_html($pluginData['Name']); ?> (<?php echo esc_html($slug); ?>)</strong>
 								<?php if (!empty($pluginData['Version'])): ?>
 									- <?php printf(__('Version %s', 'wordfence'), esc_html($pluginData['Version'])); ?>
@@ -422,7 +421,7 @@ if (!isset($sendingDiagnosticEmail)) {
 							}
 							?>
 							<tr>
-								<td colspan="<?php echo $cols - 1 ?>">
+								<td>
 									<strong><?php echo esc_html($pluginData['Name']) ?> (<?php echo esc_html($slug); ?>)</strong>
 									<?php if (!empty($pluginData['Version'])): ?>
 										- <?php printf(__('Version %s', 'wordfence'), esc_html($pluginData['Version'])); ?>
@@ -435,7 +434,7 @@ if (!isset($sendingDiagnosticEmail)) {
 					<?php else: ?>
 						<tbody>
 						<tr>
-							<td colspan="<?php echo $cols ?>"><?php _e('No MU-Plugins', 'wordfence'); ?></td>
+							<td><?php _e('No MU-Plugins', 'wordfence'); ?></td>
 						</tr>
 						</tbody>
 
@@ -461,12 +460,14 @@ if (!isset($sendingDiagnosticEmail)) {
 					<?php
 					//Taken from plugin.php and modified to always show multisite drop-ins
 					$dropins = array(
-						'advanced-cache.php' => array( __( 'Advanced caching plugin'       ), 'WP_CACHE' ), // WP_CACHE
-						'db.php'             => array( __( 'Custom database class'         ), true ), // auto on load
-						'db-error.php'       => array( __( 'Custom database error message' ), true ), // auto on error
-						'install.php'        => array( __( 'Custom installation script'    ), true ), // auto on installation
-						'maintenance.php'    => array( __( 'Custom maintenance message'    ), true ), // auto on maintenance
-						'object-cache.php'   => array( __( 'External object cache'         ), true ), // auto on load
+						'advanced-cache.php'	 => array( __( 'Advanced caching plugin'       ), 'WP_CACHE' ), // WP_CACHE
+						'db.php'            	 => array( __( 'Custom database class'         ), true ), // auto on load
+						'db-error.php'      	 => array( __( 'Custom database error message' ), true ), // auto on error
+						'install.php'       	 => array( __( 'Custom installation script'    ), true ), // auto on installation
+						'maintenance.php'   	 => array( __( 'Custom maintenance message'    ), true ), // auto on maintenance
+						'object-cache.php'  	 => array( __( 'External object cache'         ), true ), // auto on load
+						'php-error.php'          => array( __( 'Custom PHP error message'	   ), true ), // auto on error
+						'fatal-error-handler.php'=> array( __( 'Custom PHP fatal error handler' ), true ), // auto on error
 					);
 					$dropins['sunrise.php'       ] = array( __( 'Executed before Multisite is loaded' ), is_multisite() && 'SUNRISE' ); // SUNRISE
 					$dropins['blog-deleted.php'  ] = array( __( 'Custom site deleted message'   ), is_multisite() ); // auto on deleted blog
@@ -478,7 +479,7 @@ if (!isset($sendingDiagnosticEmail)) {
 						$active = file_exists(WP_CONTENT_DIR . DIRECTORY_SEPARATOR . $file) && is_readable(WP_CONTENT_DIR . DIRECTORY_SEPARATOR . $file) && $data[1];
 						?>
 						<tr>
-							<td colspan="<?php echo $cols - 1 ?>">
+							<td>
 								<strong><?php echo esc_html($data[0]) ?> (<?php echo esc_html($file); ?>)</strong>
 							</td>
 							<?php if ($active): ?>
@@ -519,7 +520,7 @@ if (!isset($sendingDiagnosticEmail)) {
 							}
 							?>
 							<tr>
-								<td colspan="<?php echo $cols - 1 ?>">
+								<td>
 									<strong><?php echo esc_html($themeData['Name']) ?> (<?php echo esc_html($slug); ?>)</strong>
 									<?php if (!empty($themeData['Version'])): ?>
 										- <?php printf(__('Version %s', 'wordfence'), esc_html($themeData['Version'])); ?>
@@ -535,7 +536,7 @@ if (!isset($sendingDiagnosticEmail)) {
 					<?php else: ?>
 						<tbody>
 						<tr>
-							<td colspan="<?php echo $cols ?>"><?php _e('No Themes', 'wordfence'); ?></td>
+							<td><?php _e('No Themes', 'wordfence'); ?></td>
 						</tr>
 						</tbody>
 
@@ -567,7 +568,7 @@ if (!isset($sendingDiagnosticEmail)) {
 								if (is_numeric($timestamp)) {
 									?>
 									<tr>
-										<td colspan="<?php echo $cols - 1 ?>"><?php echo esc_html(date('r', $timestamp)) ?></td>
+										<td><?php echo esc_html(date('r', $timestamp)) ?></td>
 										<td><?php echo esc_html($cron_job) ?></td>
 									</tr>
 									<?php
@@ -610,7 +611,7 @@ if (!isset($sendingDiagnosticEmail)) {
 				<div class="wf-block-content wf-clearfix wf-padding-no-left wf-padding-no-right">
 					<ul class="wf-block-list wf-padding-add-left-large wf-padding-add-right-large">
 						<li style="border-bottom: 1px solid #e2e2e2;">
-							<div style="width: 75%; min-width: 300px;" colspan="<?php echo $cols - 1 ?>"><?php _e('Wordfence Table Check', 'wordfence'); ?></div>
+							<div style="width: 75%; min-width: 300px;"><?php _e('Wordfence Table Check', 'wordfence'); ?></div>
 							<div class="wf-right">
 								<?php if ($total > 250): ?>
 									<div class="wf-result-info"><?php _e('Unable to verify - table count too high', 'wordfence'); ?></div>

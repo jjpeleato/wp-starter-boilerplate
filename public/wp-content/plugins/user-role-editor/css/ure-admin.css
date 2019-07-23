@@ -203,8 +203,17 @@ input.warning:hover, a.warning:hover {
     display: none;
 }
 
+#ure_admin_menu_access_table td {
+    cursor: pointer;
+}
+
 #ure_admin_menu_access_table tr:hover {
-    background-color: #2ea2cc;
+    background-color: #04a4cc; 
+    color: #ffffff;
+}
+
+.ure_table_row_selected {
+    background-color: #04a4cc;
     color: #ffffff;
 }
 

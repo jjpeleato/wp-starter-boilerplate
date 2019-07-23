@@ -15,10 +15,12 @@
 extract( $field );
 
 $class = isset( $class ) ? $class : 'yith-plugin-fw-textarea';
+$rows = isset( $rows ) ? $rows : 5;
+$cols = isset( $cols ) ? $cols : 50;
 ?>
 <textarea id="<?php echo $id ?>"
           name="<?php echo $name ?>"
           class="<?php echo $class ?>"
-          rows="5" cols="50" <?php if ( isset( $std ) ) : ?>data-std="<?php echo $std ?>"<?php endif ?>
+          rows="<?php echo $rows ?>" cols="<?php echo $cols ?>" <?php if ( isset( $std ) ) : ?>data-std="<?php echo $std ?>"<?php endif ?>
     <?php echo $custom_attributes ?>
     <?php if ( isset( $data ) ) echo yith_plugin_fw_html_data_to_string( $data ); ?>><?php echo $value ?></textarea>

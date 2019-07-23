@@ -111,6 +111,10 @@ class Controller_CAPTCHA {
 	 * @return bool
 	 */
 	public function is_human($score) {
+		if (Controller_Settings::shared()->get_bool(\WordfenceLS\Controller_Settings::OPTION_CAPTCHA_TEST_MODE)) {
+			return true;
+		}
+		
 		$threshold = $this->threshold();
 		return ($score >= $threshold || abs($score - $threshold) < 0.0001);
 	}

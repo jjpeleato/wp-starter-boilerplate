@@ -168,6 +168,10 @@ class UpdraftPlus_Clone extends UpdraftPlus_Login {
 	public function clone_checkin($data) {
 		$action = 'updraftplus_clone_checkin';
 		if (empty($data['site_url'])) $data['site_url'] = trailingslashit(network_site_url());
+		if (!empty($data['log_contents'])) {
+			$data['log_contents'] = base64_encode(gzcompress($data['log_contents']));
+			$data['format'] = 'gzcompress';
+		}
 
 		$response = $this->send_remote_request($data, $action);
 

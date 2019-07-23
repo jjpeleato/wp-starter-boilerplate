@@ -72,6 +72,11 @@ class Controller_AJAX {
 				'permissions' => array(),
 				'required_parameters' => array('nonce', 'id'),
 			),
+			'reset_recaptcha_stats' => array(
+				'handler' => array($this, '_ajax_reset_recaptcha_stats_callback'),
+				'permissions' => array(Controller_Permissions::CAP_MANAGE_SETTINGS => __('You do not have permission to reset reCAPTCHA statistics.', 'wordfence-2fa')),
+				'required_parameters' => array('nonce'),
+			),
 		);
 		
 		$this->_init_actions();
@@ -399,7 +404,7 @@ class Controller_AJAX {
 		$sent = 0;
 		foreach ($admins as $a) {
 			/** @var \WP_User $a */
-			if (!Controller_Users::shared()->has_2fa_active($a)) {
+			if (Controller_Users::shared()->has_2fa_active($a)) {
 				continue;
 			}
 			
@@ -445,5 +450,11 @@ class Controller_AJAX {
 	
 	public function _ajax_dismiss_notice_callback() {
 		Controller_Notices::shared()->remove_notice($_POST['id'], false, wp_get_current_user());
+	}
+	
+	public function _ajax_reset_recaptcha_stats_callback() {
+		Controller_Settings::shared()->set_array(Controller_Settings::OPTION_CAPTCHA_STATS, array('counts' => array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), 'avg' => 0));
+		$response = array('success' => true);
+		return die(json_encode($response));
 	}
 }
