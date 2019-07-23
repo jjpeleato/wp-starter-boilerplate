@@ -8,6 +8,7 @@ class wfSupportController {
 	const ITEM_CHANGELOG = 'changelog';
 	
 	const ITEM_NOTICE_WAF_INACCESSIBLE_CONFIG = 'notice-waf-inaccessible-config';
+	const ITEM_NOTICE_WAF_MOD_PHP_FIX = 'notice-waf-mod-php-fix';
 	const ITEM_NOTICE_WAF_READ_ONLY_WARNING = 'notice-waf-read-only-warning';
 	const ITEM_NOTICE_MISCONFIGURED_HOW_GET_IPS = 'notice-misconfigured-how-get-ips';
 	const ITEM_NOTICE_SWITCH_LIVE_TRAFFIC = 'notice-switch-live-traffic';
@@ -183,6 +184,7 @@ class wfSupportController {
 			//These all fall through to the query format
 				
 			case self::ITEM_NOTICE_WAF_INACCESSIBLE_CONFIG:
+			case self::ITEM_NOTICE_WAF_MOD_PHP_FIX:
 			case self::ITEM_NOTICE_WAF_READ_ONLY_WARNING:
 			case self::ITEM_NOTICE_MISCONFIGURED_HOW_GET_IPS:
 			case self::ITEM_NOTICE_SWITCH_LIVE_TRAFFIC:

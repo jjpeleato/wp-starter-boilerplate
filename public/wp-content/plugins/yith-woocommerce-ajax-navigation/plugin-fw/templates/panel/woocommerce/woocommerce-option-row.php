@@ -10,7 +10,7 @@ $default_field = array(
 );
 $field         = wp_parse_args( $field, $default_field );
 
-$display_row = !in_array( $field[ 'type' ], array( 'hidden', 'html', 'sep', 'simple-text', 'title' ) );
+$display_row = !in_array( $field[ 'type' ], array( 'hidden', 'html', 'sep', 'simple-text', 'title', 'list-table' ) );
 $display_row = isset( $field[ 'yith-display-row' ] ) ? !!$field[ 'yith-display-row' ] : $display_row;
 
 $extra_row_classes = apply_filters( 'yith_plugin_fw_panel_wc_extra_row_classes', array(), $field );

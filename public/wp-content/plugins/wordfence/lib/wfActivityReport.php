@@ -589,7 +589,7 @@ SQL
 				$paramKey = base64_decode($actionData['paramKey']);
 				$paramValue = base64_decode($actionData['paramValue']);
 				if (strlen($paramValue) > 100) {
-					$paramValue = substr($paramValue, 0, 100) . chr(2026);
+					$paramValue = substr($paramValue, 0, 100) . '...';
 				}
 				
 				if (preg_match('/([a-z0-9_]+\.[a-z0-9_]+)(?:\[(.+?)\](.*))?/i', $paramKey, $matches)) {

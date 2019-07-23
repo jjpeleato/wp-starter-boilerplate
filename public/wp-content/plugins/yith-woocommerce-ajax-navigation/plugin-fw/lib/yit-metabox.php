@@ -134,6 +134,9 @@ if ( !class_exists( 'YIT_Metabox' ) ) {
             add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ), 15 );
 
             add_filter( 'yit_icons_screen_ids', array( $this, 'add_screen_ids_for_icons' ) );
+
+	        add_action( 'wp_ajax_yith_plugin_fw_save_toggle_element_metabox', array( $this, 'save_toggle_element' ) );
+	        add_filter( 'admin_body_class', array( $this, 'add_body_class' ), 10, 1 );
         }
 
         /**
@@ -486,55 +489,86 @@ if ( !class_exists( 'YIT_Metabox' ) ) {
                 return $post_id;
             }*/
 
-            $this->reorder_tabs();
-
             if ( isset( $_POST[ 'yit_metaboxes' ] ) ) {
                 $yit_metabox_data = $_POST[ 'yit_metaboxes' ];
 
                 if ( is_array( $yit_metabox_data ) ) {
-
                     foreach ( $yit_metabox_data as $field_name => $field_value ) {
-
                         if ( !add_post_meta( $post_id, $field_name, $field_value, true ) ) {
                             update_post_meta( $post_id, $field_name, $field_value );
                         }
-
-
-                    }
-
-                }
-
-
-            }
-
-            foreach ( $this->tabs as $tab ) {
-
-                foreach ( $tab[ 'fields' ] as $field ) {
-
-                    if ( in_array( $field[ 'type' ], array( 'title' ) ) ) {
-                        continue;
-                    }
-
-                    if ( isset( $_POST[ 'yit_metaboxes' ][ $field[ 'id' ] ] ) ) {
-
-                        if ( in_array( $field[ 'type' ], array( 'onoff', 'checkbox' ) ) ) {
-                            update_post_meta( $post_id, $field[ 'id' ], '1' );
-                        } else {
-                            $value = $_POST[ 'yit_metaboxes' ][ $field[ 'id' ] ];
-                            if ( !empty( $field[ 'yith-sanitize-callback' ] ) && is_callable( $field[ 'yith-sanitize-callback' ] ) ) {
-                                $value = call_user_func( $field[ 'yith-sanitize-callback' ], $value );
-                            }
-                            add_post_meta( $post_id, $field[ 'id' ], $value, true ) || update_post_meta( $post_id, $field[ 'id' ], $value );
-                        }
-                    } elseif ( in_array( $field[ 'type' ], array( 'onoff', 'checkbox' ) ) ) {
-                        update_post_meta( $post_id, $field[ 'id' ], '0' );
-                    } else {
-                        delete_post_meta( $post_id, $field[ 'id' ] );
                     }
                 }
             }
+
+            $this->sanitize_fields( $post_id );
+
 
         }
+
+	    /**
+	     * Sanitize the fields of metabox.
+	     *
+	     * @return void
+	     * @since 3.2.1
+	     * @author Emanuela Castorina
+	     */
+	    public function  sanitize_fields( $post_id ) {
+
+		    $this->reorder_tabs();
+
+		    foreach ( $this->tabs as $tab ) {
+
+			    foreach ( $tab['fields'] as $field ) {
+
+				    if ( in_array( $field['type'], array( 'title' ) ) ) {
+					    continue;
+				    }
+
+				    if ( isset( $_POST['yit_metaboxes'][ $field['id'] ] ) ) {
+					    if ( in_array( $field['type'], array( 'onoff', 'checkbox' ) ) ) {
+						    update_post_meta( $post_id, $field['id'], '1' );
+					    }elseif( in_array( $field['type'], array( 'toggle-element' ) ) ){
+					    	if ( isset( $field['elements'] ) && $field['elements'] ) {
+							    $elements_value = $_POST['yit_metaboxes'][ $field['id'] ];
+							    if ( $elements_value ) {
+							    	if( isset( $elements_value['box_id'])){
+							    		unset( $elements_value['box_id']);
+								    }
+
+								    foreach ( $field['elements'] as $element ) {
+									    foreach ( $elements_value as $key => $element_value ) {
+										    if ( isset( $field['onoff_field'] ) ) {
+										    	$elements_value[ $key ][ $field['onoff_field']['id'] ] = ! isset( $element_value[ $field['onoff_field']['id'] ] ) ? 0 : $element_value[ $field['onoff_field']['id'] ];
+										    }
+										    if ( in_array( $element['type'], array( 'onoff', 'checkbox' ) ) ) {
+											    $elements_value[ $key ][ $element['id'] ] = ! isset( $element_value[ $element['id'] ] ) ? 0 : 1;
+										    }
+
+										    if ( ! empty( $element['yith-sanitize-callback'] ) && is_callable( $element['yith-sanitize-callback'] ) ) {
+											    $elements_value[ $key ][ $element['id'] ]  = call_user_func( $element['yith-sanitize-callback'],  $elements_value[ $key ][ $element['id'] ] );
+										    }
+									    }
+								    }
+							    }
+
+							    update_post_meta( $post_id, $field['id'], maybe_serialize( $elements_value ) );
+						    }
+					    } else {
+						    $value = $_POST['yit_metaboxes'][ $field['id'] ];
+						    if ( ! empty( $field['yith-sanitize-callback'] ) && is_callable( $field['yith-sanitize-callback'] ) ) {
+							    $value = call_user_func( $field['yith-sanitize-callback'], $value );
+						    }
+						    add_post_meta( $post_id, $field['id'], $value, true ) || update_post_meta( $post_id, $field['id'], $value );
+					    }
+				    } elseif ( in_array( $field['type'], array( 'onoff', 'checkbox' ) ) ) {
+					    update_post_meta( $post_id, $field['id'], '0' );
+				    } else {
+					    delete_post_meta( $post_id, $field['id'] );
+				    }
+			    }
+		    }
+	    }
 
         /**
          * Remove Fields
@@ -552,6 +586,65 @@ if ( !class_exists( 'YIT_Metabox' ) ) {
                 $this->remove_field( $field );
             }
         }
+
+
+	    /**
+	     * Add custom class to body
+	     *
+	     * It is necessary to add new style to the metaboxes
+	     *
+	     * @param $classes
+	     *
+	     * @return   string
+	     * @author   Emanuela Castorina
+	     */
+	    public function add_body_class( $classes ) {
+		    global $post;
+
+		    $exclude_post_types = apply_filters( 'yith_plugin_fw_exclude_post_types_to_additional_classes', array( 'product' ) );
+
+		    if ( $post && in_array( $post->post_type, $exclude_post_types ) ) {
+			    return $classes;
+		    }
+
+		    $new_class = apply_filters( 'yith_plugin_fw_metabox_class', '', $post );
+
+		    if ( empty( $new_class ) ) {
+			    return $classes;
+		    }
+
+		    $classes = yith_plugin_fw_remove_duplicate_classes( $classes. ' '. $new_class);
+
+		    return $classes;
+	    }
+
+	    /**
+	     * Save the element toggle via Ajax.
+	     *
+	     * @return void
+	     * @since 3.2.1
+	     * @author Emanuela Castorina
+	     */
+	    public function save_toggle_element() {
+		    if ( ! isset( $_REQUEST['post_ID'] ) ) {
+			    return;
+		    }
+
+		    if ( !isset( $_REQUEST[ 'yit_metaboxes_nonce' ] ) || !wp_verify_nonce( $_REQUEST[ 'yit_metaboxes_nonce' ], 'metaboxes-fields-nonce' ) ) {
+			    return;
+		    }
+		    $post_id = $_REQUEST['post_ID'];
+
+		    if ( isset( $_REQUEST['yit_metaboxes'] ) ) {
+			    $yit_metabox_data = $_REQUEST['yit_metaboxes'];
+
+			    if ( is_array( $yit_metabox_data ) ) {
+					$this->sanitize_fields( $post_id );
+			    }
+		    } elseif ( ! isset( $_REQUEST['yit_metaboxes'] ) || ! isset( $_REQUEST['yit_metaboxes'][ $_REQUEST['toggle_id'] ] ) ) {
+			    delete_post_meta( $post_id, $_REQUEST['toggle_id'] );
+		    }
+	    }
     }
 }
 

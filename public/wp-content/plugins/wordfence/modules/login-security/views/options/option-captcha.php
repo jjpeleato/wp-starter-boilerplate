@@ -17,9 +17,9 @@ $secretValue = \WordfenceLS\Controller_Settings::shared()->get($secretOptionName
 			<li class="wfls-option-title">
 				<ul class="wfls-flex-vertical wfls-flex-align-left">
 					<li>
-						<strong id="wfls-enable-auth-captcha-label"><?php _e('Enable reCAPTCHA on the login and user registration pages', 'wordfence-2fa'); ?></strong>
+						<strong id="wfls-enable-auth-captcha-label"><?php _e('Enable reCAPTCHA on the login and user registration pages', 'wordfence-ls'); ?></strong>
 					</li>
-					<li class="wfls-option-subtitle"><?php _e('Note: This feature requires a free site key and secret for the <a href="https://www.google.com/recaptcha/intro/v3.html" target="_blank" rel="noopener noreferrer">Google reCAPTCHA v3 Service</a>.', 'wordfence-2fa'); ?></li>
+					<li class="wfls-option-subtitle"><?php printf(__('reCAPTCHA v3 does not make users solve puzzles or click a checkbox like previous versions. The only visible part is the reCAPTCHA logo. If a visitor\'s browser fails the CAPTCHA, Wordfence will send an email to the user\'s address with a link they can click to verify that they are a user of your site. You can read further details <a href="%s" target="_blank" rel="noopener noreferrer">in our documentation</a>.', 'wordfence-ls'), \WordfenceLS\Controller_Support::esc_supportURL(\WordfenceLS\Controller_Support::ITEM_MODULE_LOGIN_SECURITY_CAPTCHA)); ?></li>
 				</ul>
 			</li>
 		</ul>
@@ -30,14 +30,22 @@ $secretValue = \WordfenceLS\Controller_Settings::shared()->get($secretOptionName
 			<li>
 				<table>
 					<tr class="wfls-option wfls-option-text" data-original-value="<?php echo esc_attr($siteKeyValue); ?>" data-text-option="<?php echo esc_attr($siteKeyOptionName); ?>">
-						<th id="wfls-enable-captcha-site-key-label" class="wfls-padding-add-bottom"><?php _e('reCAPTCHA v3 Site Key', 'wordfence'); ?></th>
+						<th id="wfls-enable-captcha-site-key-label" class="wfls-padding-add-bottom"><?php _e('reCAPTCHA v3 Site Key', 'wordfence-ls'); ?></th>
 						<td class="wfls-option-text wfls-padding-add-bottom"><input type="text" name="recaptchaSiteKey" id="input-recaptchaSiteKey" class="wfls-form-control" value="<?php echo esc_attr($siteKeyValue); ?>"<?php if (!$currentEnableValue) { echo ' disabled'; } ?>></td>
 					</tr>
 					<tr class="wfls-option wfls-option-text" data-original-value="<?php echo esc_attr($secretValue); ?>" data-text-option="<?php echo esc_attr($secretOptionName); ?>">
-						<th id="wfls-enable-captcha-secret-label"><?php _e('reCAPTCHA v3 Secret', 'wordfence'); ?></th>
+						<th id="wfls-enable-captcha-secret-label"><?php _e('reCAPTCHA v3 Secret', 'wordfence-ls'); ?></th>
 						<td class="wfls-option-text"><input type="text" name="recaptchaSecret" id="input-recaptchaSecret" class="wfls-form-control" value="<?php echo esc_attr($secretValue); ?>"<?php if (!$currentEnableValue) { echo ' disabled'; } ?>></td>
 					</tr>
 				</table>
+			</li>
+		</ul>
+		<ul class="wfls-option wfls-padding-no-top">
+			<li class="wfls-option-spacer"></li>
+			<li class="wfls-option-title">
+				<ul class="wfls-flex-vertical wfls-flex-align-left">
+					<li class="wfls-option-subtitle"><?php _e('Note: This feature requires a free site key and secret for the <a href="https://www.google.com/recaptcha/intro/v3.html" target="_blank" rel="noopener noreferrer">Google reCAPTCHA v3 Service</a>.', 'wordfence-ls'); ?></li>
+				</ul>
 			</li>
 		</ul>
 	</li>

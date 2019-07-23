@@ -87,6 +87,20 @@
     display     : block;
 }
 
+.metaboxes-tab .yith-plugin-fw-radio__row{
+    width: 100%;
+    min-height: 20px;
+}
+.metaboxes-tab .yith-plugin-fw-radio__row label,
+.metaboxes-tab .yith-toggle-elements label,
+.metaboxes-tab .yith-add-box label {
+    margin-left:0;
+    font-weight:normal;
+}
+.metaboxes-tab.yith-plugin-ui .yith-add-box,
+.metaboxes-tab.yith-plugin-ui .yith-toggle-row{
+    width : auto;
+}
 .metaboxes-tab .wp-picker-container label {
     font-weight : inherit;
     width       : auto;
@@ -187,7 +201,10 @@
     width     : 400px;
     max-width : 100%;
 }
-
+.metaboxes-tab.yith-plugin-ui input[type=number]{
+    width: auto;
+    min-width: 90px;
+}
 .metaboxes-tab .yith-plugin-fw-text-array-table input[type=text] {
     width : 100%;
 }

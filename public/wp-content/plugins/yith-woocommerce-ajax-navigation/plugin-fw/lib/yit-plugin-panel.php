@@ -102,6 +102,11 @@ if ( !class_exists( 'YIT_Plugin_Panel' ) ) {
             }
 
             add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+
+	        //yith-plugin-ui
+	        add_action('yith_plugin_fw_before_yith_panel', array($this, 'add_plugin_banner'), 10, 1 );
+	        add_action( 'wp_ajax_yith_plugin_fw_save_toggle_element', array( $this, 'save_toggle_element_options' ) );
+
         }
 
         /**
@@ -358,10 +363,16 @@ if ( !class_exists( 'YIT_Plugin_Panel' ) ) {
             $tabs        = '';
             $current_tab = $this->get_current_tab();
             $yit_options = $this->get_main_array_options();
-
+	        $premium_class = isset( $this->settings['class'] ) ? 'yith-premium' : 'premium';
+	        $wrap_class = isset( $this->settings['class'] ) ? $this->settings['class'] : '';
+        ?>
+        <div class="wrap <?php echo $wrap_class?>">
+            <?php
+             do_action('yith_plugin_fw_before_yith_panel', $this->settings[ 'page' ] );
             // tabs
             foreach ( $this->settings[ 'admin-tabs' ] as $tab => $tab_value ) {
                 $active_class = ( $current_tab == $tab ) ? ' nav-tab-active' : '';
+                $active_class .= 'premium' == $tab ? ' '.$premium_class: '';
                 $tabs         .= '<a class="nav-tab' . $active_class . '" href="?' . $this->settings[ 'parent_page' ] . '&page=' . $this->settings[ 'page' ] . '&tab=' . $tab . '">' . $tab_value . '</a>';
             }
             ?>
@@ -402,6 +413,7 @@ if ( !class_exists( 'YIT_Plugin_Panel' ) ) {
                     <?php endif ?>
                 </div>
             </div>
+        </div>
             <?php
         }
 
@@ -476,7 +488,7 @@ if ( !class_exists( 'YIT_Plugin_Panel' ) ) {
                 return;
             }
 
-            if ( !empty( $this->settings[ 'admin_tabs' ] ) ) {
+            if ( ! empty( $this->settings[ 'admin_tabs' ] ) ) {
                 foreach ( $this->settings[ 'admin-tabs' ] as $item => $title ) {
 
                     $wp_admin_bar->add_menu( array(
@@ -938,5 +950,97 @@ if ( !class_exists( 'YIT_Plugin_Panel' ) ) {
 
             return $menu;
         }
+
+        /**
+         * Check if inside the admin tab there's the premium tab to
+         * check if the plugin is a free or not
+         *
+         * @author Emanuela Castorina
+         */
+	    function is_free() {
+		    return  ( ! empty( $this->settings['admin-tabs'] ) && isset($this->settings['admin-tabs']['premium']));
+	    }
+
+	    /**
+	     * Add plugin banner
+	     */
+	    public function add_plugin_banner( $page ) {
+
+		    if ( $page != $this->settings['page'] || ! isset( $this->settings['class'] ) ) {
+			    return;
+		    }
+
+		    if( $this->is_free() && isset( $this->settings['plugin_slug'] ) ):
+			    $banners = apply_filters( 'yith_plugin_fw_banners_free', array(
+				    'upgrade' => array(
+					    'image'  => YIT_CORE_PLUGIN_URL. '/assets/images/upgrade_banner.png',
+					    'link' => 'https://yithemes.com/themes/plugins/'.$this->settings['plugin_slug'],
+				    ),
+				    'rate'    => array(
+					    'image'  => YIT_CORE_PLUGIN_URL. '/assets/images/rate_banner.png',
+					    'link' => 'https://wordpress.org/plugins/'.$this->settings['plugin_slug'].'/reviews/#new-post',
+				    ),
+			    ), $page );
+			    ?>
+                <h1 class="notice-container"></h1>
+                <div class="yith-plugin-fw-banner yith-plugin-fw-banner-free">
+                    <h1><?php echo esc_html( $this->settings['page_title'] ) ?></h1>
+				    <?php if( $banners ) : ?>
+                        <div class="yith-banners">
+                            <ul>
+							    <?php foreach ( $banners as $banner ): ?>
+                                    <li><a href="<?php echo esc_url( $banner['link'])?>" target="_blank"><img src="<?php echo esc_url( $banner['image'])?>"></a></li>
+							    <?php endforeach; ?>
+                            </ul>
+                        </div>
+
+				    <?php endif ?>
+                </div>
+		    <?php else: ?>
+                <h1 class="notice-container"></h1>
+                <div class="yith-plugin-fw-banner">
+                    <h1><?php echo esc_html( $this->settings['page_title'] ) ?>
+					    <?php if ( isset( $this->settings['plugin_description'] ) ): ?>
+                            <span><?php echo esc_html( $this->settings['plugin_description'] ) ?></span>
+					    <?php endif ?>
+                    </h1>
+                </div>
+
+		    <?php endif ?>
+		    <?php
+	    }
+
+	    /**
+	     * Add additional element after print the field.
+	     *
+	     *@since 3.2
+	     *@author Emanuela Castorina
+	     */
+	    public function add_yith_ui( $field ) {
+
+		    global $pagenow;
+
+		    if ( ! isset( $this->settings['class'] ) || empty( $this->settings['class'] ) || ! isset( $field['type'] ) ) {
+			    return;
+		    }
+		    if ( 'admin.php' === $pagenow && strpos( get_current_screen()->id, $this->settings['page'] ) !== false ) {
+			    switch ( $field['type'] ) {
+				    case 'datepicker':
+					    echo '<span class="yith-icon icon-calendar"></span>';
+					    break;
+				    default:
+					    break;
+			    }
+		    }
+	    }
+
+	    /**
+         *
+         */
+	    public function save_toggle_element_options(  ) {
+            return true;
+	    }
     }
+
+
 }

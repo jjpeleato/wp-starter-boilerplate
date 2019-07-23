@@ -55,11 +55,11 @@ abstract class Model_Crypto {
 				if (is_string($rand) && self::strlen($rand) === $bytes) {
 					return $rand;
 				}
-			} catch (Exception $e) {
+			} catch (\Exception $e) {
 				// Fall through
-			} catch (TypeError $e) {
+			} catch (\TypeError $e) {
 				// Fall through
-			} catch (Error $e) {
+			} catch (\Error $e) {
 				// Fall through
 			}
 		}
@@ -94,18 +94,18 @@ abstract class Model_Crypto {
 		if (function_exists('random_int')) {
 			try {
 				return random_int($min, $max);
-			} catch (Exception $e) {
+			} catch (\Exception $e) {
 				// Fall through
-			} catch (TypeError $e) {
+			} catch (\TypeError $e) {
 				// Fall through
-			} catch (Error $e) {
+			} catch (\Error $e) {
 				// Fall through
 			}
 		}
 		$diff = $max - $min;
 		$bytes = self::random_bytes(4);
 		if ($bytes === false || self::strlen($bytes) != 4) {
-			throw new RuntimeException("Unable to get 4 bytes");
+			throw new \RuntimeException("Unable to get 4 bytes");
 		}
 		$val = @unpack("Nint", $bytes);
 		$val = $val['int'] & 0x7FFFFFFF;

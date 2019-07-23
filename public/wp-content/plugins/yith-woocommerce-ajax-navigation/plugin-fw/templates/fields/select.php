@@ -15,7 +15,7 @@
 extract( $field );
 $multiple      = isset( $multiple ) && $multiple;
 $multiple_html = ( $multiple ) ? ' multiple' : '';
-
+$placeholder   = isset( $placeholder ) ? ' data-placeholder = "' . $placeholder .'" ': '';
 if ( $multiple && !is_array( $value ) )
     $value = array();
 
@@ -26,6 +26,7 @@ $class = isset( $class ) ? $class : 'yith-plugin-fw-select';
         name="<?php echo $name ?><?php if ( $multiple ) echo "[]" ?>" <?php if ( isset( $std ) ) : ?>
         data-std="<?php echo ( $multiple ) ? implode( ' ,', $std ) : $std ?>"<?php endif ?>
         class="<?php echo $class ?>"
+	    <?php echo $placeholder ?>
         <?php echo $custom_attributes ?>
         <?php if ( isset( $data ) ) echo yith_plugin_fw_html_data_to_string( $data ); ?>>
         <?php foreach ( $options as $key => $item ) : ?>

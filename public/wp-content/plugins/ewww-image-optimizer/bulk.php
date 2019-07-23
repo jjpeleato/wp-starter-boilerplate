@@ -383,6 +383,9 @@ function ewww_image_optimizer_bulk_script( $hook ) {
 	// Check the 'bulk resume' option.
 	$resume   = get_option( 'ewww_image_optimizer_bulk_resume' );
 	$scanning = get_option( 'ewww_image_optimizer_aux_resume' );
+	if ( 'scanning' !== $scanning && ! ewww_image_optimizer_get_option( 'ewww_image_optimizer_auto' ) ) {
+		$scanning = false;
+	}
 	if ( ! $resume && ! $scanning ) {
 		ewwwio_debug_message( 'not resuming/scanning, so clearing any pending images in both tables' );
 		ewww_image_optimizer_delete_queue_images();
@@ -437,11 +440,10 @@ function ewww_image_optimizer_bulk_script( $hook ) {
 		ewwwio_debug_message( 'loading attachments into queue table' );
 		ewww_image_optimizer_insert_unscanned( $attachments );
 		$attachment_count = count( $attachments );
-		/* update_option( 'ewww_image_optimizer_scanning_attachments', $attachments, false ); */
 	} else {
 		$attachment_count = ewww_image_optimizer_count_unscanned_attachments();
 	}
-	if ( empty( $attachment_count ) && ! ewww_image_optimizer_count_attachments() ) {
+	if ( empty( $attachment_count ) && ! ewww_image_optimizer_count_attachments() && ! ewww_image_optimizer_aux_images_table_count_pending() ) {
 		update_option( 'ewww_image_optimizer_bulk_resume', '' );
 		update_option( 'ewww_image_optimizer_aux_resume', '' );
 	}
@@ -804,26 +806,6 @@ function ewww_image_optimizer_media_scan( $hook = '' ) {
 				ewwwio_debug_message( "missing mime for $selected_id" );
 			}
 
-			if ( 'application/pdf' !== $mime // NOT a pdf...
-				&& ( // AND...
-					empty( $meta ) // metadata is empty...
-					|| ( is_string( $meta ) && 'processing' === $meta ) // OR the string 'processing'...
-					|| ( is_array( $meta ) && ! empty( $meta[0] ) && 'processing' === $meta[0] ) // OR array( 'processing' ).
-				)
-			) {
-				// Attempt to rebuild the metadata.
-				ewwwio_debug_message( "attempting to rebuild attachment meta for $selected_id" );
-				set_transient( 'ewww_image_optimizer_rebuilding_attachment', $selected_id, 5 * MINUTE_IN_SECONDS );
-				ewww_image_optimizer_debug_log();
-				$new_meta = ewww_image_optimizer_rebuild_meta( $selected_id );
-				delete_transient( 'ewww_image_optimizer_rebuilding_attachment' );
-				if ( is_array( $new_meta ) ) {
-					$meta = $new_meta;
-				} else {
-					$meta = array();
-				}
-			}
-
 			if ( ! in_array( $mime, $enabled_types, true ) ) {
 				$skipped_ids[] = $selected_id;
 				continue;
@@ -839,7 +821,14 @@ function ewww_image_optimizer_media_scan( $hook = '' ) {
 				ewww_image_optimizer_check_table_as3cf( $meta, $selected_id, $file_path );
 			}
 			ewww_image_optimizer_debug_log();
-			if ( ( ewww_image_optimizer_stream_wrapped( $file_path ) || ! is_file( $file_path ) ) && ( class_exists( 'WindowsAzureStorageUtil' ) || class_exists( 'Amazon_S3_And_CloudFront' ) ) ) {
+			if (
+				( ewww_image_optimizer_stream_wrapped( $file_path ) || ! is_file( $file_path ) ) &&
+				(
+					class_exists( 'WindowsAzureStorageUtil' ) ||
+					class_exists( 'Amazon_S3_And_CloudFront' ) ||
+					class_exists( 'wpCloud\StatelessMedia\EWWW' )
+				)
+			) {
 				// Construct a $file_path and proceed IF a supported CDN plugin is installed.
 				ewwwio_debug_message( 'Azure or S3 detected and no local file found' );
 				$file_path = get_attached_file( $selected_id );
@@ -1238,6 +1227,7 @@ function ewww_image_optimizer_bulk_quota_update() {
  * Called via AJAX to start the bulk operation and get the name of the first image in the queue.
  */
 function ewww_image_optimizer_bulk_initialize() {
+	ewwwio_debug_message( '<b>' . __FUNCTION__ . '()</b>' );
 	// Verify that an authorized user has made the request.
 	$permissions = apply_filters( 'ewww_image_optimizer_bulk_permissions', '' );
 	if ( ! wp_verify_nonce( $_REQUEST['ewww_wpnonce'], 'ewww-image-optimizer-bulk' ) || ! current_user_can( $permissions ) ) {
@@ -1249,7 +1239,6 @@ function ewww_image_optimizer_bulk_initialize() {
 
 	// Update the 'bulk resume' option to show that an operation is in progress.
 	update_option( 'ewww_image_optimizer_bulk_resume', 'true' );
-	// $attachment = (int) array_shift( $attachments );
 	list( $attachment ) = ewww_image_optimizer_get_queued_attachments( 'media', 1 );
 	ewwwio_debug_message( "first image: $attachment" );
 	$first_image = new EWWW_Image( $attachment, 'media' );
@@ -1509,15 +1498,13 @@ function ewww_image_optimizer_bulk_loop( $hook = '', $delay = 0 ) {
 				}
 			}
 		}
-		// If a resize is missing, see if it should (and can) be regenerated.
-		if ( $image->resize && 'full' !== $image->resize && ! is_file( $image->file ) ) {
-			// TODO: Make sure this is optional, because of CDN offloading: resized image does not exist, regenerate it.
-		}
 		$countermeasures = ewww_image_optimizer_bulk_counter_measures( $image );
 		if ( $countermeasures ) {
 			$batch_image_limit = 1;
 		}
 		set_transient( 'ewww_image_optimizer_bulk_current_image', $image->file, 600 );
+		global $ewww_image;
+		$ewww_image = $image;
 		if ( 'full' === $image->resize && ewww_image_optimizer_get_option( 'ewww_image_optimizer_resize_existing' ) && ! function_exists( 'imsanity_get_max_width_height' ) ) {
 			if ( ! $meta || ! is_array( $meta ) ) {
 				$meta = wp_get_attachment_metadata( $image->attachment_id );
@@ -1527,6 +1514,8 @@ function ewww_image_optimizer_bulk_loop( $hook = '', $delay = 0 ) {
 				$meta['width']  = $new_dimensions[0];
 				$meta['height'] = $new_dimensions[1];
 			}
+		} elseif ( empty( $image->resize ) && ewww_image_optimizer_should_resize_other_image( $image->file ) ) {
+			$new_dimensions = ewww_image_optimizer_resize_upload( $image->file );
 		}
 		list( $file, $msg, $converted, $original ) = ewww_image_optimizer( $image->file, 1, false, false, 'full' === $image->resize );
 		// Gotta make sure we don't delete a pending record if the license is exceeded, so the license check goes first.
@@ -1586,7 +1575,8 @@ function ewww_image_optimizer_bulk_loop( $hook = '', $delay = 0 ) {
 
 		// When we finish all the sizes, we want to fire off any filters for plugins that might need to take action when an image is updated.
 		if ( $attachment && (int) $attachment !== (int) $next_image->attachment_id ) {
-			$meta = apply_filters( 'wp_update_attachment_metadata', wp_get_attachment_metadata( $image->attachment_id ), $image->attachment_id );
+			wp_update_attachment_metadata( $image->attachment_id, wp_get_attachment_metadata( $image->attachment_id ) );
+			/* $meta = apply_filters( 'wp_update_attachment_metadata', wp_get_attachment_metadata( $image->attachment_id ), $image->attachment_id ); */
 		}
 		// When an image (attachment) is done, pull the next attachment ID off the stack.
 		if ( ( 'full' === $next_image->resize || empty( $next_image->resize ) ) && ! empty( $attachment ) && (int) $attachment !== (int) $next_image->attachment_id ) {

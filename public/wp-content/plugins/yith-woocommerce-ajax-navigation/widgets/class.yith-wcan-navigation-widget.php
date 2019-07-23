@@ -150,7 +150,7 @@ if ( ! class_exists( 'YITH_WCAN_Navigation_Widget' ) ) {
 
                     echo "</ul>";
                 }
-                elseif ( $display_type == 'select' ) {
+                elseif ( in_array( $display_type, apply_filters( 'yith_wcan_display_type_select', array( 'select' ) ) ) ) {
                     $dropdown_label = apply_filters( 'yith_wcan_dropdown_label', __( 'Filters:', 'yith-woocommerce-ajax-navigation' ), $this, $instance, $instance['attribute'] );
                     ?>
 
@@ -211,10 +211,9 @@ if ( ! class_exists( 'YITH_WCAN_Navigation_Widget' ) ) {
 
                         }
 
-                        $arg = 'filter_' . urldecode( sanitize_title( $instance['attribute'] ) );
+	                    $arg = apply_filters('yith_wcan_select_type_query_arg', 'filter_' . sanitize_title($instance['attribute']), $display_type, $term);
 
-                        $current_filter = ( isset( $_GET[$arg] ) ) ? explode( ',', $_GET[$arg] ) : array();
-
+	                    $current_filter = (isset($_GET[$arg])) ? explode(apply_filters('yith_wcan_select_filter_operator', ',', $display_type), apply_filters("yith_wcan_select_filter_query_{$arg}", $_GET[$arg] ) ) : array();
                         if ( ! is_array( $current_filter ) ) {
                             $current_filter = array();
                         }
@@ -327,7 +326,10 @@ if ( ! class_exists( 'YITH_WCAN_Navigation_Widget' ) ) {
                         }
 
                         // Current Filter = this widget
-                        if ( isset( $_chosen_attributes[$taxonomy] ) && is_array( $_chosen_attributes[$taxonomy]['terms'] ) && $in_array_function( $term->$filter_term_field, $_chosen_attributes[$taxonomy]['terms'] ) ) {
+	                    $term_param = apply_filters('yith_wcan_term_param_uri', $term->$filter_term_field, $display_type, $term);
+	                    $check_for_current_widget = isset( $_chosen_attributes[$taxonomy] ) && is_array( $_chosen_attributes[$taxonomy]['terms'] ) && $in_array_function( $term->$filter_term_field, $_chosen_attributes[$taxonomy]['terms'] );
+	                    $check_for_current_widget =  apply_filters('yith_wcan_select_type_current_widget_check', $check_for_current_widget, $current_filter, $display_type, $term_param );
+                        if ( $check_for_current_widget ) {
 
                             $class = ( $terms_type_list == 'hierarchical' && yit_term_is_child( $term ) ) ? "class='{$is_chosen_class}  {$is_child_class}'" : "class='{$is_chosen_class}'";
 
@@ -426,6 +428,9 @@ if ( ! class_exists( 'YITH_WCAN_Navigation_Widget' ) ) {
                                 $this->found = true;
                             }
 
+	                        if ( apply_filters( 'yith_wcan_skip_no_products_color', $count == 0 ) ){
+		                        continue;
+	                        }
                         }
 
                         $arg = 'filter_' . sanitize_title( $instance['attribute'] );

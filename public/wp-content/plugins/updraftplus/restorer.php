@@ -57,6 +57,10 @@ class Updraft_Restorer {
 	private $import_table_prefix = null;
 	
 	private $continuation_data;
+
+	private $current_index = 0;
+
+	private $current_type = '';
 	
 	// Constants for use with the move_backup_in method
 	// These can't be arbitrarily changed; there is legacy code doing bitwise operations and numerical comparisons, and possibly legacy code still using the values directly.
@@ -164,6 +168,8 @@ class Updraft_Restorer {
 		
 		global $updraftplus, $updraftplus_admin;
 		
+		$updraftplus->log_restore_update(array('type' => 'state', 'stage' => 'cleaning', 'data' => array()));
+
 		if (is_wp_error($successful)) {
 			foreach ($successful->get_error_codes() as $code) {
 				if ('already_exists' == $code) {
@@ -389,9 +395,13 @@ class Updraft_Restorer {
 		uksort($second_loop, array('UpdraftPlus_Manipulation_Functions', 'sort_restoration_entities'));
 
 		// If continuing, then prune those already done
-		if (is_array($this->continuation_data)) {
+		if (is_array($this->continuation_data) && isset($this->continuation_data['second_loop_entities'])) {
 			foreach ($second_loop as $type => $files) {
-				if (isset($this->continuation_data['second_loop_entities'][$type])) $second_loop[$type] = $this->continuation_data['second_loop_entities'][$type];
+				if (isset($this->continuation_data['second_loop_entities'][$type])) {
+					$second_loop[$type] = $this->continuation_data['second_loop_entities'][$type];
+				} else {
+					unset($second_loop[$type]);
+				}
 			}
 		}
 		
@@ -414,12 +424,15 @@ class Updraft_Restorer {
 		
 		global $updraftplus;
 		
+		$updraftplus->log_restore_update(array('type' => 'state', 'stage' => 'verifying', 'data' => implode(', ', array_flip($entities_to_restore))));
+
 		// Now log. We first remove any encryption passphrase from the log data.
 		$copy_restore_options = $restore_options;
 		if (!empty($copy_restore_options['updraft_encryptionphrase'])) $copy_restore_options['updraft_encryptionphrase'] = '***';
 		$updraftplus->log("Restore job started. Entities to restore: ".implode(', ', array_flip($entities_to_restore)).'. Restore options: '.json_encode($copy_restore_options));
 		
 		do_action('updraftplus_restoration_title', __('Final checks', 'updraftplus'));
+		add_action('updraftplus_unzip_progress_restore_info', array($this, 'unzip_progress_restore_info'), 10, 4);
 		
 		$backup_set = $this->ud_backup_set;
 		
@@ -460,6 +473,8 @@ class Updraft_Restorer {
 		// Now process the actual restoration of the entities
 		foreach ($second_loop as $type => $files) {
 
+			$this->current_type = $type;
+
 			// Types: uploads, themes, plugins, others, db
 			$info = isset($backupable_entities[$type]) ? $backupable_entities[$type] : array();
 
@@ -475,6 +490,7 @@ class Updraft_Restorer {
 			ksort($files);
 			
 			foreach ($files as $fkey => $file) {
+				$this->current_index = $fkey;
 				$last_one = (1 == count($second_loop) && 1 == count($files));
 				$last_entity = (1 == count($files));
 				try {
@@ -585,13 +601,6 @@ class Updraft_Restorer {
 		global $updraftplus;
 		static $logfile_handle;
 		static $opened_log_time;
-		static $last_buffer_flush;
-
-		// If more than 2 seconds has past then flush the buffer
-		if ($last_buffer_flush + 2 < time()) {
-			flush();
-			$last_buffer_flush = time();
-		}
 		
 		if (empty($logfile_handle)) {
 			$logfile_name = $updraftplus->backups_dir_location()."/log.$nonce-browser.txt";
@@ -620,7 +629,7 @@ class Updraft_Restorer {
 					break;
 			}
 		} else {
-			if ('warning' == $destination || 'error' == $destination || $uniq_id) {
+			if ('warning' == $level || 'error' == $level || $uniq_id) {
 				$line = '<strong>'.htmlspecialchars($line).'</strong>';
 			} else {
 				$line = htmlspecialchars($line);
@@ -652,6 +661,26 @@ class Updraft_Restorer {
 		$this->strings['read_manifest_failed'] = __('Failed to read the manifest file from backup.', 'updraftplus');
 		$this->strings['manifest_not_found'] = __('Failed to find a manifest file in the backup.', 'updraftplus');
 		$this->strings['read_working_dir_failed'] = __('Failed to read from the working directory.', 'updraftplus');
+	}
+
+	/**
+	 * This function will build the unzip progress restore info array ready to be output to the js
+	 *
+	 * @param string  $filepath     - the current file we are working on
+	 * @param integer $fileindex    - how far into the zip we got
+	 * @param Integer $size_written - net total number of bytes thus far
+	 * @param Integer $num_files    - the total number of files (i.e. one more than the the maximum value of $fileindex)
+	 *
+	 * @return void
+	 */
+	public function unzip_progress_restore_info($filepath, $fileindex, $size_written, $num_files) {
+
+		global $updraftplus;
+
+		$index = $this->current_index;
+		$file_type = $this->current_type;
+
+		$updraftplus->log_restore_update(array('type' => 'state', 'stage' => 'files', 'data' => array('entity' => $file_type, 'index' => $index, 'file' => basename($filepath), 'fileindex' => $fileindex, 'size_written' => $size_written, 'total_files' => $num_files)));
 	}
 
 	/**
@@ -1273,10 +1302,9 @@ class Updraft_Restorer {
 
 		$ret_val = true;
 		$updraft_dir = $updraftplus->backups_dir_location();
-
-		if (!is_array($this->continuation_data) && (('plugins' == $type || 'uploads' == $type || 'themes' == $type) && (!is_multisite() || 0 !== $this->ud_backup_is_multisite || ('uploads' != $type || empty($updraftplus_addons_migrator->new_blogid))))) {
+		if (isset($this->continuation_data['updraftplus_ajax_restore']) && 'continue_ajax_restore' != $this->continuation_data['updraftplus_ajax_restore'] && (('plugins' == $type || 'uploads' == $type || 'themes' == $type) && (!is_multisite() || 0 !== $this->ud_backup_is_multisite || ('uploads' != $type || empty($updraftplus_addons_migrator->new_blogid))))) {
 			if (file_exists($updraft_dir.'/'.basename($wp_filesystem_dir)."-old")) {
-				$ret_val = new WP_Error('already_exists', sprintf(__('Existing unremoved folders from a previous restore exist (please use the "Delete Old Directories" button to delete them before trying again): %s', 'updraftplus'), $wp_filesystem_dir.'-old'));
+				$ret_val = new WP_Error('already_exists', sprintf(__('Existing unremoved folders from a previous restore exist (please use the "Delete Old Directories" button to delete them before trying again): %s', 'updraftplus'), $updraft_dir.'/'.basename($wp_filesystem_dir)."-old"));
 			}
 		}
 
@@ -1379,7 +1407,7 @@ class Updraft_Restorer {
 			}
 			if (!empty($ud_version) && $this->can_version_ajax_restore($ud_version) && !empty($this->ud_backup_set['timestamp'])) {
 				$nonce = $updraftplus->nonce;
-				if (!function_exists('crypt_random_string')) $updraftplus->ensure_phpseclib('Crypt_Random', 'Crypt/Random');
+				if (!function_exists('crypt_random_string')) $updraftplus->ensure_phpseclib('Crypt_Random');
 				$this->ajax_restore_auth_code = bin2hex(crypt_random_string(32));
 // TODO: Delete this when done, to prevent abuse
 				update_site_option('updraft_ajax_restore_'.$nonce, $this->ajax_restore_auth_code.':'.time());
@@ -1422,8 +1450,10 @@ class Updraft_Restorer {
 		if (!$now_done) {
 		
 			if ('db' == $type) {
+				$updraftplus->log_restore_update(array('type' => 'state', 'stage' => 'database', 'data' => array('stage' => 'begun', 'table' => '')));
 				$rdb = $this->restore_backup_db($working_dir, $working_dir_localpath, $import_table_prefix);
 				if (false === $rdb || is_wp_error($rdb)) return $rdb;
+				$updraftplus->log_restore_update(array('type' => 'state', 'stage' => 'database', 'data' => array('stage' => 'finished', 'table' => '')));
 			} elseif ('others' == $type) {
 
 				$dirname = basename($info['path']);
@@ -1921,8 +1951,12 @@ ENDHERE;
 	public function clear_cache() {
 		// Functions called here need to not assume that the relevant plugin actually exists - they should check for any functions they intend to call, before calling them.
 		$this->clear_cache_wpsupercache();
-		// It should be harmless to just purge the standard directory anyway (it's not backed up by default)
-		if (is_dir(WP_CONTENT_DIR.'/cache')) UpdraftPlus_Filesystem_Functions::remove_local_directory(WP_CONTENT_DIR.'/cache', true);
+		// It should be harmless to just purge the standard directory anyway (it's not backed up by default), and any others from other plugins
+		$cache_sub_directories = array('cache', 'wphb-cache', 'endurance-page-cache');
+		foreach ($cache_sub_directories as $sub_dir) {
+			if (!is_dir(WP_CONTENT_DIR.'/'.$sub_dir)) continue;
+			UpdraftPlus_Filesystem_Functions::remove_local_directory(WP_CONTENT_DIR.'/'.$sub_dir, true);
+		}
 	}
 
 	/**
@@ -2088,6 +2122,18 @@ ENDHERE;
 	}
 
 	/**
+	 * Enter or leave maintenance mode
+	 *
+	 * @param Boolean $active - whether to activate, or de-activate, maintenance mode
+	 */
+	private function maintenance_mode($active) {
+		// This allows add-ons to do something different if they prefer
+		if (apply_filters('updraft_restore_maintenance_mode', true, $active, $this, $this->wp_upgrader)) {
+			$this->wp_upgrader->maintenance_mode($active);
+		}
+	}
+	
+	/**
 	 * Gets the table prefix to use, using the filter updraftplus_restore_set_import_table_prefix
 	 *
 	 * @param String $import_table_prefix - table prefix to act upon
@@ -2101,7 +2147,7 @@ ENDHERE;
 		$import_table_prefix = apply_filters('updraftplus_restore_set_table_prefix', $import_table_prefix, $this->ud_backup_is_multisite);
 
 		if (!is_string($import_table_prefix)) {
-			$this->wp_upgrader->maintenance_mode(false);
+			$this->maintenance_mode(false);
 			if (false === $import_table_prefix) {
 				$updraftplus->log(__('Please supply the requested information, and then continue.', 'updraftplus'), 'notice-restore');
 				return false;
@@ -2372,8 +2418,11 @@ ENDHERE;
 		$this->max_allowed_packet = $updraftplus->max_packet_size();
 
 		$updraftplus->log('Entering maintenance mode');
-		$this->wp_upgrader->maintenance_mode(true);
+		$this->maintenance_mode(true);
 
+		$delimiter = ';';
+		$delimiter_regex = ';';
+		
 		// N.B. There is no such function as bzeof() - we have to detect that another way
 		while (($is_plain && !feof($dbhandle)) || (!$is_plain && (($is_bz2) || (!$is_bz2 && !gzeof($dbhandle))))) {
 			// Up to 1Mb
@@ -2472,12 +2521,20 @@ ENDHERE;
 				$this->table_name = $matches[2];
 				$sql_type = 3;
 				$insert_prefix = $matches[1];
+			} elseif (preg_match('/^\s*delimiter (\S+)\s*$/i', $sql_line.$buffer, $matches)) {
+				// This also needs processing early so that the correct delimiter is used a few lines down
+				$sql_type = 10;
+				$delimiter = $matches[1];
+				// Obviously, what is supported here is quite limited
+				$delimiter_regex = str_replace(array('$', '#', '/'), array('\$', '\#', '\/'), $delimiter);
+			} elseif (preg_match('/^\s*create trigger /i', $sql_line)) {
+				$sql_type = 9;
 			}
 
 			// Deal with case where adding this line will take us over the MySQL max_allowed_packet limit - must split, if we can (if it looks like consecutive rows)
 			// Allow a 100-byte margin for error (including searching/replacing table prefix)
 			if (3 == $sql_type && $sql_line && strlen($sql_line.$buffer) > ($this->max_allowed_packet - 100) && preg_match('/,\s*$/', $sql_line) && preg_match('/^\s*\(/', $buffer)) {
-				// Remove the final comma; replace with semi-colon
+				// Remove the final comma; replace with delimiter
 				$sql_line = substr(rtrim($sql_line), 0, strlen($sql_line)-1).';';
 				if ('' != $this->old_table_prefix && $import_table_prefix != $this->old_table_prefix) $sql_line = UpdraftPlus_Manipulation_Functions::str_replace_once($this->old_table_prefix, $import_table_prefix, $sql_line);
 				// Run the SQL command; then set up for the next one.
@@ -2490,9 +2547,11 @@ ENDHERE;
 				$sql_line = $insert_prefix." ";
 			}
 
-			$sql_line .= $buffer;
+			$sql_line .= (9 == $sql_type && '' != $sql_line) ? ' '.$buffer : $buffer;
+			
 			// Do we have a complete line yet? We used to just test the final character for ';' here (up to 1.8.12), but that was too unsophisticated
-			if ((3 == $sql_type && !preg_match('/\)\s*;$/', substr($sql_line, -3, 3))) || (3 != $sql_type && ';' != substr($sql_line, -1, 1))) continue;
+			// From 1.16.16, we don't hard-code the delimiter here, and we also add the knowledge that CREATE TRIGGER statements finish with END
+			if ((3 == $sql_type && !preg_match('/\)\s*'.$delimiter_regex.'$/', substr($sql_line, -5, 5))) || (3 != $sql_type && 9 != $sql_type && 10 != $sql_type && substr($sql_line, -strlen($delimiter), strlen($delimiter)) != $delimiter) || (9 == $sql_type && !preg_match('/END\s*('.$delimiter_regex.')?\s*$/', $sql_line))) continue;
 
 			$this->line++;
 
@@ -2506,14 +2565,14 @@ ENDHERE;
 				// If this is the very first SQL line of the options table, we need to bail; it's essential
 				if (0 == $this->insert_statements_run && $restoring_table && $restoring_table == $import_table_prefix.'options') {
 					$updraftplus->log("Leaving maintenance mode");
-					$this->wp_upgrader->maintenance_mode(false);
+					$this->maintenance_mode(false);
 					return new WP_Error('initial_db_error', sprintf(__('An error occurred on the first %s command - aborting run', 'updraftplus'), 'INSERT (options)'));
 				}
 				continue;
 			}
 
 			// The timed overhead of this is negligible
-			if (preg_match('/^\s*drop table (if exists )?\`?([^\`]*)\`?\s*;/i', $sql_line, $matches)) {
+			if (preg_match('/^\s*drop table (if exists )?\`?([^\`]*)\`?\s*'.$delimiter_regex.'/i', $sql_line, $matches)) {
 				$sql_type = 1;
 
 				if (!isset($printed_new_table_prefix)) {
@@ -2549,6 +2608,8 @@ ENDHERE;
 				$sql_type = 2;
 				$this->insert_statements_run = 0;
 				$this->table_name = $matches[1];
+
+				$updraftplus->log_restore_update(array('type' => 'state', 'stage' => 'database', 'data' => array('stage' => 'table', 'table' => $this->table_name)));
 
 				// Legacy, less reliable - in case it was not caught before. We added it in here (CREATE) as well as in DROP because of SQL dumps which lack DROP statements.
 				if ('' == $this->old_table_prefix && preg_match('/^([a-z0-9]+)_.*$/i', $this->table_name, $tmatches)) {
@@ -2630,9 +2691,18 @@ ENDHERE;
 						}
 					}
 				}
+				// If the table prefix has changed and key constraints are found, make sure they are updated
+				$constraint_change_message = '';
+				if ($this->old_table_prefix != $import_table_prefix && (preg_match_all('/ FOREIGN KEY \([a-zA-z0-9_\', ]+\) REFERENCES \'?([a-zA-z0-9_]+)\'? /i', $sql_line, $constraint_matches))) {
+					foreach ($constraint_matches[0] as $constraint) {
+						$updated_constraint = str_replace($this->old_table_prefix, $import_table_prefix, $constraint);
+						$sql_line = str_replace($constraint, $updated_constraint, $sql_line);
+					}
+					$constraint_change_message = __('Found and replaced existing table foreign key constraints as the table prefix has changed.', 'updraftplus');
+				}
 				$collate_change_message = '';
 				$unsupported_collates_in_sql_line = array();
-				if (!empty($updraft_restorer_collate) && preg_match('/ COLLATE=([^\s]+)/i', $sql_line, $collate_match)) {
+				if (!empty($updraft_restorer_collate) && preg_match('/ COLLATE=([a-zA-Z0-9._-]+)/i', $sql_line, $collate_match)) {
 					$collate = $collate_match[1];
 					if (!isset($supported_collations[$collate])) {
 						$unsupported_collates_in_sql_line[] = $collate;
@@ -2690,12 +2760,14 @@ ENDHERE;
 				$updraftplus->log($print_line, 'notice-restore');
 				$restoring_table = $this->new_table_name;
 				if ($charset_change_message) $updraftplus->log($charset_change_message, 'notice-restore');
+				if ($constraint_change_message) $updraftplus->log($constraint_change_message, 'notice-restore');
 				if ($collate_change_message) $updraftplus->log($collate_change_message, 'notice-restore');
 				if ($engine_change_message) $updraftplus->log($engine_change_message, 'notice-restore');
 
 			} elseif (preg_match('/^\s*(insert into \`?([^\`]*)\`?\s+(values|\())/i', $sql_line, $matches)) {
 				$sql_type = 3;
 				$this->table_name = $matches[2];
+				$updraftplus->log_restore_update(array('type' => 'state', 'stage' => 'database', 'data' => array('stage' => 'table', 'table' => $this->table_name)));
 				if ('' != $this->old_table_prefix && $import_table_prefix != $this->old_table_prefix) $sql_line = UpdraftPlus_Manipulation_Functions::str_replace_once($this->old_table_prefix, $import_table_prefix, $sql_line);
 			} elseif (preg_match('/^\s*(\/\*\!40000 )?(alter|lock) tables? \`?([^\`\(]*)\`?\s+(write|disable|enable)/i', $sql_line, $matches)) {
 				// Only binary mysqldump produces this pattern (LOCK TABLES `table` WRITE, ALTER TABLE `table` (DISABLE|ENABLE) KEYS)
@@ -2726,19 +2798,26 @@ ENDHERE;
 				}
 			} elseif (preg_match('/^\s*create trigger /i', $sql_line)) {
 				$sql_type = 9;
+				// If the statement is not yet complete, then continue (to get the next line)
+				if (!preg_match('/END\s*('.$delimiter_regex.')?\s*$/', $sql_line)) continue;
+				$updraftplus->log_restore_update(array('type' => 'state', 'stage' => 'database', 'data' => array('stage' => 'trigger', 'table' => '')));
 				if ('' != $this->old_table_prefix && $import_table_prefix != $this->old_table_prefix) $sql_line = UpdraftPlus_Manipulation_Functions::str_replace_once($this->old_table_prefix, $import_table_prefix, $sql_line);
+				if (';' !== $delimiter) $sql_line = preg_replace('/END\s*'.$delimiter_regex.'\s*$/', 'END', $sql_line);
 				if ($this->triggers_forbidden) $updraftplus->log("Database user lacks permission to create triggers; statement will not be executed ($sql_line)");
+			} elseif (preg_match('/^\s*delimiter (\S+)\s*$/i', $sql_line, $matches)) {
+				// Nothing to do here - deliberate no-op (is processed earlier)
+				$sql_type = 10;
 			} else {
 				// Prevent the previous value of $sql_type being retained for an unknown type
 				$sql_type = 0;
 			}
 			
 			// Do not execute "USE" or "CREATE|DROP DATABASE" commands
-			if (6 != $sql_type && 7 != $sql_type && (9 != $sql_type || false == $this->triggers_forbidden)) {
+			if (6 != $sql_type && 7 != $sql_type && (9 != $sql_type || false == $this->triggers_forbidden) && 10 != $sql_type) {
 				$do_exec = $this->sql_exec($sql_line, $sql_type);
 				if (is_wp_error($do_exec)) return $do_exec;
 			} else {
-				$updraftplus->log("Skipped SQL statement (unwanted type=$sql_type): $sql_line");
+				$updraftplus->log("Skipped execution of SQL statement (unwanted or internally handled type=$sql_type): $sql_line");
 			}
 
 			// Reset
@@ -2761,7 +2840,7 @@ ENDHERE;
 			$updraftplus->log("Unlocking database and leaving maintenance mode");
 			$this->unlock_tables();
 		}
-		$this->wp_upgrader->maintenance_mode(false);
+		$this->maintenance_mode(false);
 
 		if ($restoring_table) $this->restored_table($restoring_table, $import_table_prefix, $this->old_table_prefix);
 
@@ -2981,7 +3060,7 @@ ENDHERE;
 				$this->errors++;
 				if (0 == $this->insert_statements_run && $this->new_table_name && $this->new_table_name == $import_table_prefix.'options') {
 					$updraftplus->log('Leaving maintenance mode');
-					$this->wp_upgrader->maintenance_mode(false);
+					$this->maintenance_mode(false);
 					return new WP_Error('initial_db_error', sprintf(__('An error occurred on the first %s command - aborting run', 'updraftplus'), 'INSERT (options)'));
 				}
 				return false;
@@ -3028,7 +3107,7 @@ ENDHERE;
 					$updraftplus->log_e("Create table failed - probably because there is no permission to drop tables and the table already exists; will continue");
 				} else {
 					$updraftplus->log("Leaving maintenance mode");
-					$this->wp_upgrader->maintenance_mode(false);
+					$this->maintenance_mode(false);
 					return new WP_Error('initial_db_error', sprintf(__('An error occurred on the first %s command - aborting run', 'updraftplus'), 'CREATE TABLE'));
 				}
 			} elseif (2 == $sql_type && 0 == $this->tables_created && $this->drop_forbidden) {
@@ -3036,7 +3115,7 @@ ENDHERE;
 				if (!$ignore_errors) $this->errors--;
 			} elseif (8 == $sql_type && 1 == $this->errors) {
 				$updraftplus->log("Aborted: SET NAMES ".$this->set_names." failed: leaving maintenance mode");
-				$this->wp_upgrader->maintenance_mode(false);
+				$this->maintenance_mode(false);
 				$extra_msg = '';
 				$dbv = $wpdb->db_version();
 				if ('utf8mb4' == strtolower($this->set_names) && $dbv && version_compare($dbv, '5.2.0', '<=')) {
@@ -3046,7 +3125,7 @@ ENDHERE;
 			}
 			
 			if ($this->errors > 49) {
-				$this->wp_upgrader->maintenance_mode(false);
+				$this->maintenance_mode(false);
 				return new WP_Error('too_many_db_errors', __('Too many database errors have occurred - aborting', 'updraftplus'));
 			}
 		} elseif (2 == $sql_type) {
@@ -3142,6 +3221,13 @@ ENDHERE;
 		return $updraftplus->option_filter_get('stylesheet_root');
 	}
 	
+	/**
+	 * Called when a table has been restored
+	 *
+	 * @param String $table				  - The full table name that has been restored
+	 * @param String $import_table_prefix - The table prefix being used to import
+	 * @param String $old_table_prefix	  - The table prefix in the backup file
+	 */
 	private function restored_table($table, $import_table_prefix, $old_table_prefix) {
 
 		$table_without_prefix = substr($table, strlen($import_table_prefix));
@@ -3159,6 +3245,8 @@ ENDHERE;
 		if (preg_match('/^([\d+]_)?options$/', substr($table, strlen($import_table_prefix)), $matches)) {
 			// The second prefix here used to have a '!$this->is_multisite' on it (i.e. 'options' table on non-multisite). However, the user_roles entry exists in the main options table on multisite too.
 			if (($this->is_multisite && !empty($matches[1])) || $table == $import_table_prefix.'options') {
+			
+				$updraftplus->wipe_state_data();
 			
 				$mprefix = empty($matches[1]) ? '' : $matches[1];
 

@@ -96,28 +96,28 @@ class URE_User_Other_Roles {
      * @param type $user WP_User from wp-includes/capabilities.php
      * @return array
      */
-    public function get_roles_array($user) {
+    public function get_roles_array( $user ) {
 
-        if (!is_array($user->roles) || count($user->roles) <= 1) {
+        if ( !is_array( $user->roles ) || count( $user->roles )<=1 ) {
             return array();
         }
 
         // get bbPress assigned user role
-        if (function_exists('bbp_filter_blog_editable_roles')) {
-            $bb_press_role = bbp_get_user_role($user->ID);
+        if ( function_exists( 'bbp_filter_blog_editable_roles' ) ) {
+            $bb_press_role = bbp_get_user_role( $user->ID );
         } else {
             $bb_press_role = '';
         }
 
         $roles = array();
-        foreach ($user->roles as $key => $value) {
-            if (!empty($bb_press_role) && $bb_press_role === $value) {
+        foreach ( $user->roles as $role) {
+            if (!empty($bb_press_role) && $bb_press_role === $role) {
                 // exclude bbPress assigned role
                 continue;
             }
-            $roles[] = $value;
+            $roles[] = $role;
         }
-        array_shift($roles); // exclude primary role which is shown by WordPress itself
+        array_shift( $roles ); // exclude primary role which is shown by WordPress itself
 
         return $roles;
     }
@@ -129,7 +129,8 @@ class URE_User_Other_Roles {
                 
         $user_roles = $user->roles;
         $primary_role = array_shift($user_roles);
-        $roles = apply_filters('editable_roles', $wp_roles->roles);    // exclude restricted roles if any        
+        $roles = apply_filters('editable_roles', $wp_roles->roles);    // exclude restricted roles if any   
+        $roles = array_reverse( $roles  );
         if (isset($roles[$primary_role])) { // exclude role assigned to the user as a primary role
             unset($roles[$primary_role]);
         }

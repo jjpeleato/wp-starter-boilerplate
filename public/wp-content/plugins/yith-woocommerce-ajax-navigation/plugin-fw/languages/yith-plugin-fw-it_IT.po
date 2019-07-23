@@ -5,14 +5,14 @@ msgstr ""
 "Project-Id-Version: YITH Plugin Starter 1.0.0 Plugin FW\n"
 "Report-Msgid-Bugs-To: Your Inspiration Themes <plugins@yithemes.com>\n"
 "POT-Creation-Date: 2019-02-04 16:06+0100\n"
-"PO-Revision-Date: 2019-02-04 16:07+0100\n"
+"PO-Revision-Date: 2019-05-29 22:44+0200\n"
 "Last-Translator: \n"
 "Language-Team: YIThemes <plugins@yithemes.com>\n"
 "Language: it_IT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.2.3\n"
 "X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
 "_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;"
 "esc_html_x:1,2c\n"
@@ -428,10 +428,15 @@ msgid ""
 "\">Downloads page</a>. This is the only way to be sure the version you are "
 "using is 100% malware-free."
 msgstr ""
+"<br/><b>Attenzione:</b> Stai utilizzando una versione superiore all'ultima "
+"disponibile. </em>Per favore assicurati di aver scaricato la versione più "
+"recente di <em>%1$s</em> dall'unico <a href=\"https://yithemes.com\" target="
+"\"_blank\">sito ufficiale YITH</a>, nello specifico dalla tua <a href="
+"\"https://yithemes.com/my-account/recent-downloads/\" target=\"_blank"
+"\">pagina Downloads</a>. Questo è l'unico modo per essere sicuri che la "
+"versione in uso sia al 100% priva di malware."
 
 #: lib/yit-upgrade.php:303
-#, fuzzy
-#| msgid "You have to activate the plugin to benefit from automatic updates."
 msgctxt "[Update Plugin Message: License not enabled]"
 msgid "You have to activate the plugin to benefit from automatic updates."
 msgstr "Devi attivare il plugin per usufruire degli update automatici."
@@ -509,6 +514,13 @@ msgid ""
 "\">Downloads page</a>. This is the only way to be sure the version you are "
 "using is 100%% malware-free."
 msgstr ""
+"<br/><b>Attenzione:</b> Stai utilizzando una versione superiore all'ultima "
+"disponibile. </em>Per favore assicurati di aver scaricato la versione più "
+"recente di <em>%1$s</em> dall'unico <a href=\"https://yithemes.com\" target="
+"\"_blank\">sito ufficiale YITH</a>, nello specifico dalla tua <a href="
+"\"https://yithemes.com/my-account/recent-downloads/\" target=\"_blank"
+"\">pagina Downloads</a>. Questo è l'unico modo per essere sicuri che la "
+"versione in uso sia al 100%% priva di malware."
 
 #: lib/yit-upgrade.php:635
 msgid "You can't update the plugins for this site."
@@ -527,16 +539,16 @@ msgstr "Aggiorna plugin"
 
 #: lib/yith-dashboard.php:40
 msgid "New YITH products"
-msgstr ""
+msgstr "Nuovi prodotti YITH"
 
 #: lib/yith-dashboard.php:41
 msgid "News from the YITH Blog"
-msgstr ""
+msgstr "Novità dal blog YITH"
 
 #: lib/yith-gutenberg.php:134
 msgctxt "[gutenberg]: Category Name"
 msgid "YITH"
-msgstr ""
+msgstr "YITH"
 
 #: licence/lib/yit-licence.php:180
 #, php-format
@@ -625,7 +637,7 @@ msgctxt ""
 "[Plugins List] which means you're missing out on updates and support. Enter "
 "your license key, please."
 msgid "Warning!"
-msgstr ""
+msgstr "Attenzione!"
 
 #: licence/lib/yit-plugin-licence.php:142
 msgctxt ""
@@ -633,7 +645,7 @@ msgctxt ""
 "[Plugins List] which means you're missing out on updates and support. Enter "
 "your license key, please."
 msgid "You didn't set license key for the following products"
-msgstr ""
+msgstr "Non hai impostato la chiave di licenza per i seguenti prodotti"
 
 #: licence/lib/yit-plugin-licence.php:145
 msgctxt ""
@@ -641,17 +653,15 @@ msgctxt ""
 "[Plugins List] which means you're missing out on updates and support. Enter "
 "your license key, please."
 msgid "which means you're missing out on updates and support"
-msgstr ""
+msgstr "il che significa che ti stai perdendo aggiornamenti e supporto"
 
 #: licence/lib/yit-plugin-licence.php:147
-#, fuzzy
-#| msgid "license key"
 msgctxt ""
 "[Part of]: Warning! You didn't set license key for the following products:"
 "[Plugins List] which means you're missing out on updates and support. Enter "
 "your license key, please."
 msgid "Enter your license key"
-msgstr "chiave di licenza"
+msgstr "Inserisci la tua chiave di licenza"
 
 #: licence/lib/yit-plugin-licence.php:148
 msgctxt ""
@@ -659,7 +669,7 @@ msgctxt ""
 "[Plugins List] which means you're missing out on updates and support. Enter "
 "your license key, please."
 msgid "please"
-msgstr ""
+msgstr "per favore"
 
 #: licence/lib/yit-theme-licence.php:117 licence/lib/yit-theme-licence.php:118
 #, php-format
@@ -703,10 +713,8 @@ msgid "YITH License Activation"
 msgstr "Attivazione licenza YITH"
 
 #: licence/templates/panel/activation/activation-panel.php:27
-#, fuzzy
-#| msgid "License key has expired"
 msgid "License expiry date"
-msgstr "La chiave di licenza è scaduta"
+msgstr "Data di scadenza della licenza"
 
 #: licence/templates/panel/activation/activation-panel.php:30
 msgid ""
@@ -714,10 +722,13 @@ msgid ""
 "appear up-to-date, please, click on the button <em>Check Expiry Date</em> "
 "below and it will update."
 msgstr ""
+"Se hai rinnovato la chiave di licenza del tuo prodotto e la data di scadenza "
+"non risulta aggiornata, ti invitiamo a fare clic sul pulsante <em>Check "
+"Expiry Date</em> in modo da aggiornarla."
 
 #: licence/templates/panel/activation/activation-panel.php:33
 msgid "Check expiry date"
-msgstr ""
+msgstr "Controlla la data di scadenza"
 
 #: licence/templates/panel/activation/activation-panel.php:47
 msgid "Product to activate"
@@ -727,11 +738,11 @@ msgstr[1] "Prodotti da attivare"
 
 #: licence/templates/panel/activation/activation-panel.php:50
 msgid "Are you having issues with the license activation?"
-msgstr ""
+msgstr "Stai riscontrando problemi con l'attivazione della licenza?"
 
 #: licence/templates/panel/activation/activation-panel.php:50
 msgid "Read this article"
-msgstr ""
+msgstr "Leggi questo articolo"
 
 #: licence/templates/panel/activation/activation-panel.php:70
 msgid "Activate"

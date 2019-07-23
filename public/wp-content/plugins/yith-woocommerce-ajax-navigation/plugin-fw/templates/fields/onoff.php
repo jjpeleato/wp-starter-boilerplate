@@ -17,7 +17,7 @@ extract( $field );
 
 <div class="yith-plugin-fw-onoff-container">
     <input type="checkbox" id="<?php echo $id ?>" name="<?php echo $name ?>" value="<?php echo esc_attr( $value ) ?>" <?php checked( yith_plugin_fw_is_true( $value ) ) ?> class="on_off" <?php if ( isset( $std ) ) : ?>data-std="<?php echo $std ?>"<?php endif ?> />
-    <span class="yith-plugin-fw-onoff">&nbsp;</span>
+    <span class="yith-plugin-fw-onoff"></span>
 </div>
 <?php
 if ( isset( $field[ 'desc-inline' ] ) ) {

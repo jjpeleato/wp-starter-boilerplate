@@ -91,9 +91,24 @@ $enabled = \WordfenceLS\Controller_Users::shared()->has_2fa_active($user);
  * Fires after the main content of the activation page has been output.
  */
 do_action('wfls_activation_page_footer');
+$time = time();
+$correctedTime = \WordfenceLS\Controller_Time::time($time);
+$tz = get_option('timezone_string');
+if (empty($tz)) {
+	$offset = get_option('gmt_offset');
+	$tz = 'UTC' . ($offset >= 0 ? '+' . $offset : $offset);
+}
 ?>
 <?php if (\WordfenceLS\Controller_Permissions::shared()->can_manage_settings()): ?>
-<p><?php _e('Server Time:', 'wordfence-2fa'); ?> <?php echo date('Y-m-d H:i:s', microtime(true)); ?><br>
-<?php if (\WordfenceLS\Controller_Settings::shared()->get_bool(\WordfenceLS\Controller_Settings::OPTION_USE_NTP)): _e('Corrected Time:', 'wordfence-2fa'); ?> <?php echo date('Y-m-d H:i:s', \WordfenceLS\Controller_Time::time()); ?><br><?php endif; ?>
+<p><?php _e('Server Time:', 'wordfence-2fa'); ?> <?php echo date('Y-m-d H:i:s', $time); ?> UTC (<?php echo \WordfenceLS\Controller_Time::format_local_time('Y-m-d H:i:s', $time) . ' ' . $tz; ?>)<br>
+	<?php _e('Browser Time:', 'wordfence-2fa'); ?> <script type="application/javascript">var date = new Date(); document.write(date.toUTCString() + ' (' + date.toString() + ')');</script><br>
+<?php
+if (\WordfenceLS\Controller_Settings::shared()->get_bool(\WordfenceLS\Controller_Settings::OPTION_USE_NTP)) {
+	echo __('Corrected Time (NTP):', 'wordfence-2fa') . ' ' . date('Y-m-d H:i:s', $correctedTime) . ' UTC (' . \WordfenceLS\Controller_Time::format_local_time('Y-m-d H:i:s', $correctedTime) . ' ' . $tz . ')<br>';
+}
+else if (WORDFENCE_LS_FROM_CORE && $correctedTime != $time) {
+	echo __('Corrected Time (WF):', 'wordfence-2fa') . ' ' . date('Y-m-d H:i:s', $correctedTime) . ' UTC (' . \WordfenceLS\Controller_Time::format_local_time('Y-m-d H:i:s', $correctedTime) . ' ' . $tz . ')<br>';
+}
+?>
 <?php _e('Detected IP:', 'wordfence-2fa'); ?> <?php echo \WordfenceLS\Text\Model_HTML::esc_html(\WordfenceLS\Model_Request::current()->ip()); if (\WordfenceLS\Controller_Whitelist::shared()->is_whitelisted(\WordfenceLS\Model_Request::current()->ip())) { echo ' (' . __('whitelisted', 'wordfence-2fa') . ')'; } ?></p>
 <?php endif; ?>

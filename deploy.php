@@ -21,16 +21,17 @@ define("DEPLOY_CONFIG", [
 		'shared_files' => [
 			'public/.htaccess',
 			'public/.htpasswd',
-			'public/wp-config.php',
-			'public/wp-content/advanced-cache.php'
+			'public/wp-config.php'
 		],
 		'shared_dirs' => [
 			'public/wp-content/uploads',
-			'public/wp-content/cache'
+			'public/wp-content/cache',
+			'public/wp-content/ewww'
 		],
 		'writable_dirs' => [
 			'public/wp-content/uploads',
-			'public/wp-content/cache'
+			'public/wp-content/cache',
+			'public/wp-content/ewww'
 		],
 		'clear_paths' => [
 			'deploy.php'

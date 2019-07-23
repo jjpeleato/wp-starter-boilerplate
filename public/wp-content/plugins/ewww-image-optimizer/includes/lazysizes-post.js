@@ -1,27 +1,55 @@
 lazysizesWebP('alpha', lazySizes.init);
-function constrainSrc(url,objectWidth,objectHeight){
+function constrainSrc(url,objectWidth,objectHeight,objectType){
+	if (url===null){
+		return url;
+	}
 	var regW      = /w=(\d+)/;
 	var regFit    = /fit=(\d+),(\d+)/;
 	var regResize = /resize=(\d+),(\d+)/;
+	var decUrl = decodeURIComponent(url);
 	if (url.search('\\?') > 0 && url.search(ewww_lazy_vars.exactdn_domain) > 0){
-		var resultResize = regResize.exec(url);
+		var resultResize = regResize.exec(decUrl);
 		if(resultResize && objectWidth < resultResize[1]){
-			return url.replace(regResize, 'resize=' + objectWidth + ',' + objectHeight);
+			return decUrl.replace(regResize, 'resize=' + objectWidth + ',' + objectHeight);
 		}
 		var resultW = regW.exec(url);
 		if(resultW && objectWidth <= resultW[1]){
-			return url.replace(regW, 'resize=' + objectWidth + ',' + objectHeight);
+			if('bg-cover'===objectType){
+				return url.replace(regW, 'resize=' + objectWidth + ',' + objectHeight );
+			}
+			return url.replace(regW, 'w=' + objectWidth);
 		}
-		var resultFit = regFit.exec(url);
+		var resultFit = regFit.exec(decUrl);
 		if(resultFit && objectWidth < resultFit[1]){
-			return url.replace(regFit, 'resize=' + objectWidth + ',' + objectHeight);
+			if('bg-cover'===objectType){
+				return url.replace(regW, 'resize=' + objectWidth + ',' + objectHeight );
+			}
+			return decUrl.replace(regFit, 'fit=' + objectWidth + ',' + objectHeight);
 		}
                 if(!resultW && !resultFit && !resultResize){
-			return url + '&resize=' + objectWidth + ',' + objectHeight;
+			if('img'===objectType){
+				return url + '&fit=' + objectWidth + ',' + objectHeight;
+			}
+			if('bg-cover'===objectType){
+				return url + '?resize=' + objectWidth + ',' + objectHeight;
+			}
+			if(objectHeight>objectWidth){
+				return url + '&h=' + objectHeight;
+			}
+			return url + '&w=' + objectWidth;
 		}
 	}
 	if (url.search('\\?') == -1 && url.search(ewww_lazy_vars.exactdn_domain) > 0){
-		return url + '?resize=' + objectWidth + ',' + objectHeight;
+		if('img'===objectType){
+			return url + '?fit=' + objectWidth + ',' + objectHeight;
+		}
+		if('bg-cover'===objectType){
+			return url + '?resize=' + objectWidth + ',' + objectHeight;
+		}
+		if(objectHeight>objectWidth){
+			return url + '?h=' + objectHeight;
+		}
+		return url + '?w=' + objectWidth;
 	}
 	return url;
 }
@@ -40,9 +68,10 @@ document.addEventListener('lazybeforeunveil', function(e){
 			var dPR = (window.devicePixelRatio || 1);
                 	var wrongWidth = (target.clientWidth * 1.25 < target.naturalWidth);
                 	var wrongHeight = (target.clientHeight * 1.25 < target.naturalHeight);
+			/*console.log(Math.round(target.clientWidth * dPR) + "x" + Math.round(target.clientHeight * dPR) + ", natural is " +
+				target.naturalWidth + "x" + target.naturalHeight + "!");
+			console.log( target.getAttribute('data-src') );*/
                 	if (wrongWidth || wrongHeight) {
-				//console.log(Math.round(target.clientWidth * dPR) + "x" + Math.round(target.clientHeight * dPR) + ", natural is " +
-				//	target.naturalWidth + "x" + target.naturalHeight + "!");
 				var targetWidth = Math.round(target.offsetWidth * dPR);
 				var targetHeight = Math.round(target.offsetHeight * dPR);
 
@@ -52,7 +81,7 @@ document.addEventListener('lazybeforeunveil', function(e){
 					//console.log('using data-src-webp');
 					src = webpsrc;
 				}
-				var newSrc = constrainSrc(src,targetWidth,targetHeight);
+				var newSrc = constrainSrc(src,targetWidth,targetHeight,'img');
 				if (newSrc && src != newSrc){
 					target.setAttribute('data-src', newSrc);
 				}

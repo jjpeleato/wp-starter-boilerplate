@@ -213,7 +213,7 @@ class URE_Lib extends URE_Base_Lib {
         }        
         
         if (is_array($roles) && count($roles) > 0) {
-            asort($roles);
+            ksort($roles);
         }
 
         return $roles;
@@ -225,7 +225,7 @@ class URE_Lib extends URE_Base_Lib {
      * Respect 'editable_roles' filter, when needed
      * @return array
      */
-    public function get_editable_user_roles($roles) {
+    public function get_editable_user_roles( $roles ) {
                 
         if (empty($roles)) {
             $roles = $this->get_user_roles();
@@ -238,6 +238,8 @@ class URE_Lib extends URE_Base_Lib {
         if ($bbpress->is_active()) {
             add_filter('editable_roles', 'bbp_filter_blog_editable_roles');
         }
+        
+        ksort( $roles );
         
         return $roles;
     }
@@ -535,8 +537,12 @@ class URE_Lib extends URE_Base_Lib {
      */    
     public function get_all_editable_roles() {
         
-        $roles = get_editable_roles();  // WordPress roles        
-        
+        $roles = get_editable_roles();  // WordPress roles
+        if ( has_filter( 'editable_roles', array( User_Role_Editor::get_instance(), 'sort_wp_roles_list') ) ) {
+            // to show roles in the accending order
+            $roles = array_reverse( $roles );
+        }
+
         return $roles;
     }
     // end of get_all_roles()

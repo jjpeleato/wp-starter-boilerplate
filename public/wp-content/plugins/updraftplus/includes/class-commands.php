@@ -949,13 +949,32 @@ class UpdraftPlus_Commands {
 
 			$content .= '</div>'; // end .updraftclone-main-row
 		}
-
-		$content .= '<p id="updraft_clone_progress">' . __('The creation of your data for creating the clone should now begin. N.B. You will be charged one token once the clone is ready. If the clone fails to boot, then no token will be taken.', 'updraftplus') . '<span class="updraftplus_spinner spinner">' . __('Processing', 'updraftplus') . '...</span></p>';
-		$content .= '<div id="updraft_clone_activejobsrow" style="display:none;"></div>';
+		if (isset($params['form_data']['install_info']['wp_only'])) {
+			$content .= '<p id="updraft_clone_progress">' . __('No backup will be started. The creation of your clone should now begin, and your WordPress username and password will be displayed below when ready.', 'updraftplus') . ' ' . __('N.B. You will be charged one token once the clone is ready. If the clone fails to boot, then no token will be taken.', 'updraftplus') . '<span class="updraftplus_spinner spinner">' . __('Processing', 'updraftplus') . '...</span></p>';
+		} else {
+			$content .= '<p id="updraft_clone_progress">' . __('The creation of your data for creating the clone should now begin.', 'updraftplus') . ' ' . __('N.B. You will be charged one token once the clone is ready. If the clone fails to boot, then no token will be taken.', 'updraftplus') . '<span class="updraftplus_spinner spinner">' . __('Processing', 'updraftplus') . '...</span></p>';
+			$content .= '<div id="updraft_clone_activejobsrow" style="display:none;"></div>';
+		}
 
 		$response['html'] = $content;
 		$response['url'] = $url;
 		$response['key'] = '';
+
+		return $response;
+	}
+
+	/**
+	 * This function will get the clone network and credential info
+	 *
+	 * @param array $params - the parameters for the call
+	 *
+	 * @return array|WP_Error - the response array that includes the credential info or a WP_Error
+	 */
+	public function process_updraftplus_clone_poll($params) {
+		if (false === ($updraftplus_admin = $this->_load_ud_admin()) || false === ($updraftplus = $this->_load_ud())) return new WP_Error('no_updraftplus');
+		if (!UpdraftPlus_Options::user_can_manage()) return new WP_Error('updraftplus_permission_denied');
+
+		$response = $updraftplus->get_updraftplus_clone()->clone_info_poll($params);
 
 		return $response;
 	}

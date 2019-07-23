@@ -55,10 +55,10 @@ class URE_Protect_Admin {
      * @param string $roles
      * @return array
      */
-    public function exclude_admin_role($roles) {
+    public function exclude_admin_role( $roles ) {
 
-        if ($this->is_protection_applicable() && isset($roles['administrator'])) {
-            unset($roles['administrator']);
+        if ( $this->is_protection_applicable() && isset( $roles['administrator'] ) ) {
+            unset( $roles['administrator'] );
         }
 
         return $roles;
