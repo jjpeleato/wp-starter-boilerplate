@@ -17,11 +17,12 @@ For your projects I recommend underscores theme. More information about:
 
 - You have to install **Lando**: https://docs.devwithlando.io/
 
-If Lando's tools does not work for you, there is another way. You must install the environment manually: XAMP, Node.JS, NPM or Yarn and Gulp CLI.
+If Lando's tools does not work for you, there is another way. You must install the environment manually: XAMP, Composer, Node.JS, NPM or Yarn and Gulp CLI.
 
 For more information visit:
 
 - XAMP: https://www.apachefriends.org/es/index.html
+- Composer: https://getcomposer.org/
 - Node and NPM: https://nodejs.org/es/
 - Yarn: https://yarnpkg.com/es-ES/
 - Gulp: https://gulpjs.com/
