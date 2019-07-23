@@ -24,3 +24,4 @@ $class = isset( $class ) ? $class : 'yith-plugin-fw-text-input';
     <?php echo $custom_attributes ?>
     <?php if ( isset( $data ) ) echo yith_plugin_fw_html_data_to_string( $data ); ?>/>
 
+

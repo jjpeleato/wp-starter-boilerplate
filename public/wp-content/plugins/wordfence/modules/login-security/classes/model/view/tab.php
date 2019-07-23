@@ -41,6 +41,6 @@ class Model_Tab {
 				return $this->_active;
 		}
 		
-		throw new OutOfBoundsException('Invalid key: ' . $name);
+		throw new \OutOfBoundsException('Invalid key: ' . $name);
 	}
 }

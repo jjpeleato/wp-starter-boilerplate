@@ -13,9 +13,11 @@ if ( !defined( 'ABSPATH' ) ) {
 } // Exit if accessed directly
 
 global $post;
+$classes = apply_filters('yith_plugin_fw_metabox_class', '', $post );
+$classes = yith_plugin_fw_remove_duplicate_classes( $classes );
 
 do_action( 'yit_before_metaboxes_tab' ) ?>
-<div class="yith-plugin-fw metaboxes-tab">
+<div class="yith-plugin-fw metaboxes-tab <?php echo  esc_attr($classes )?>">
     <?php do_action( 'yit_before_metaboxes_labels' ) ?>
     <ul class="metaboxes-tabs clearfix"<?php if ( count( $tabs ) <= 1 ) : ?> style="display:none;"<?php endif; ?>>
         <?php
@@ -81,12 +83,14 @@ do_action( 'yit_before_metaboxes_tab' ) ?>
                     if ( $field_template_path = yith_plugin_fw_get_field_template_path( $field ) ) {
                         $display_row                   = 'hidden' !== $field[ 'type' ];
                         $display_row                   = isset( $field[ 'yith-display-row' ] ) ? !!$field[ 'yith-display-row' ] : $display_row;
-                        $field[ 'display-field-only' ] = in_array( $field[ 'type' ], array( 'hidden', 'html', 'sep', 'simple-text', 'title' ) );
+                        $field[ 'display-field-only' ] = in_array( $field[ 'type' ], array( 'hidden', 'html', 'sep', 'simple-text', 'title') );
 
                         if ( $display_row ) {
+
                             $field_row_path = apply_filters( 'yith_plugin_fw_metabox_field_row_template_path', YIT_CORE_PLUGIN_TEMPLATE_PATH . '/metaboxes/field-row.php', $field );
                             file_exists( $field_row_path ) && include( $field_row_path );
                         } else {
+
                             yith_plugin_fw_get_field( $field, true );
                         }
                     } else {

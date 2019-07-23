@@ -577,7 +577,7 @@ class UpdraftPlus_Backup {
 
 		global $updraftplus, $wpdb;
 
-		if ($updraftplus->jobdata_get('remotesend_info') != '') {
+		if ('' != $updraftplus->jobdata_get('remotesend_info')) {
 			$updraftplus->log("Prune old backups from local store: skipping, as this was a remote send operation");
 			return;
 		}
@@ -1616,6 +1616,11 @@ class UpdraftPlus_Backup {
 				} else {
 					$total_tables--;
 					$updraftplus->log("Skipping table (lacks our prefix (".$this->table_prefix.")): $table");
+					if (empty($this->skipped_tables)) $this->skipped_tables = array();
+					// whichdb could be an int in which case to get the name of the database and the array key use the name from dbinfo
+					$key = ('wp' === $whichdb) ? 'wp' : $dbinfo['name'];
+					if (empty($this->skipped_tables[$key])) $this->skipped_tables[$key] = array();
+					$this->skipped_tables[$key][] = $table;
 				}
 				
 			}
@@ -1690,28 +1695,31 @@ class UpdraftPlus_Backup {
 
 		// DB triggers
 		if ($this->wpdb_obj->get_results("SHOW TRIGGERS")) {
+			// $this->stow("DELIMITER \$\$\n\n");
+error_log("ST:$table:".serialize($this->skipped_tables));
 			foreach ($all_tables as $ti) {
 				$table = $ti['name'];
 				if (!empty($this->skipped_tables)) {
 					if ('wp' == $this->whichdb) {
-						if (in_array($table, $this->skipped_tables[$this->whichdb])) continue;
+						if (in_array($table, $this->skipped_tables['wp'])) continue;
 					} elseif (isset($this->skipped_tables[$this->dbinfo['name']])) {
 						if (in_array($table, $this->skipped_tables[$this->dbinfo['name']])) continue;
 					}
 				}
 				$table_triggers = $this->wpdb_obj->get_results($wpdb->prepare("SHOW TRIGGERS LIKE %s", $table), ARRAY_A);
 				if ($table_triggers) {
-					$this->stow("\n\n# Triggers of $description ".UpdraftPlus_Manipulation_Functions::backquote($table)."\n\n");
+					$this->stow("\n\n# Triggers of  ".UpdraftPlus_Manipulation_Functions::backquote($table)."\n\n");
 					foreach ($table_triggers as $trigger) {
 						$trigger_name = UpdraftPlus_Manipulation_Functions::backquote($trigger['Trigger']);
 						$trigger_time = $trigger['Timing'];
 						$trigger_event = $trigger['Event'];
 						$trigger_statement = $trigger['Statement'];
 						$trigger_query = "CREATE TRIGGER $trigger_name $trigger_time $trigger_event ON ".UpdraftPlus_Manipulation_Functions::backquote($table)." FOR EACH ROW $trigger_statement";
-						$this->stow("$trigger_query;\n\n");
+						$this->stow("$trigger_query\n\n");
 					}
 				}
 			}
+			// $this->stow("DELIMITER ;\n\n");
 		}
 
 		$this->stow("/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;\n/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;\n/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;\n");
@@ -1744,7 +1752,7 @@ class UpdraftPlus_Backup {
 			
 			}
 			
-			$updraftplus->log("Total database tables backed up: $total_tables (".basename($backup_final_file_name).", size: ".filesize($backup_final_file_name).", $checksum)");
+			$updraftplus->log("Total database tables backed up: $total_tables (".basename($backup_final_file_name).", size: ".filesize($backup_final_file_name).", $checksum_description)");
 			
 			return basename($backup_final_file_name);
 		}

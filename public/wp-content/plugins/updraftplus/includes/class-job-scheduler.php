@@ -79,7 +79,10 @@ class UpdraftPlus_Job_Scheduler {
 				$last_call = time();
 				$clone_id = $updraftplus->jobdata_get('clone_id');
 				$secret_token = $updraftplus->jobdata_get('secret_token');
-				$response = $updraftplus->get_updraftplus_clone()->clone_checkin(array('clone_id' => $clone_id, 'secret_token' => $secret_token));
+				$log_data = $updraftplus->get_last_log_chunk($updraftplus->file_nonce);
+				$log_contents = isset($log_data['log_contents']) ? $log_data['log_contents'] : '';
+				$first_byte = isset($log_data['first_byte']) ? $log_data['first_byte'] : 0;
+				$response = $updraftplus->get_updraftplus_clone()->clone_checkin(array('clone_id' => $clone_id, 'secret_token' => $secret_token, 'first_byte' => $first_byte, 'log_contents' => $log_contents));
 				if (!isset($response['status']) || 'success' != $response['status']) {
 					$updraftplus->log("UpdraftClone backup check-in failed.");
 				} else {

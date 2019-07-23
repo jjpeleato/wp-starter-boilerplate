@@ -140,7 +140,7 @@ abstract class Dropbox_ConsumerAbstract
 		*/
 	    
 		global $updraftplus;
-		if (!function_exists('crypt_random_string')) $updraftplus->ensure_phpseclib('Crypt_Random', 'Crypt/Random');
+		if (!function_exists('crypt_random_string')) $updraftplus->ensure_phpseclib('Crypt_Random');
 
 		$CSRF = base64_encode(crypt_random_string(16));
         $this->storage->set($CSRF,'CSRF');
@@ -291,7 +291,8 @@ abstract class Dropbox_ConsumerAbstract
              */
 
             if (isset($additional['api_v2']) && $additional['api_v2'] == true) {
-                unset($additional['api_v2']);
+				unset($additional['api_v2']);
+				if (isset($additional['timeout'])) unset($additional['timeout']);
                 if (isset($additional['content_download']) && $additional['content_download'] == true) {
                     unset($additional['content_download']);
                     $extra_headers = array();

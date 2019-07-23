@@ -35,6 +35,6 @@ class Model_Title {
 				return $this->_helpLink;
 		}
 		
-		throw new OutOfBoundsException('Invalid key: ' . $name);
+		throw new \OutOfBoundsException('Invalid key: ' . $name);
 	}
 }

@@ -231,6 +231,7 @@ class wfConfig {
 	private static $wfCentralInternalConfig = array(
 		'wordfenceCentralUserSiteAuthGrant',
 		'wordfenceCentralConnected',
+		'wordfenceCentralPluginAlertingDisabled',
 	);
 
 	public static function setDefaults() {
@@ -989,9 +990,14 @@ class wfConfig {
 			$upret = $upgrader->upgrade(WORDFENCE_BASENAME);
 			if($upret){
 				$cont = file_get_contents(WORDFENCE_FCPATH);
-				if(wfConfig::get('alertOn_update') == '1' && preg_match('/Version: (\d+\.\d+\.\d+)/', $cont, $matches) ){
-					wordfence::alert("Wordfence Upgraded to version " . $matches[1], "Your Wordfence installation has been upgraded to version " . $matches[1], '127.0.0.1');
-				}
+				preg_match('/Version: (\d+\.\d+\.\d+)/', $cont, $matches);
+				$version = !empty($matches) ? $matches[1] : null;
+				$alertCallback = array(new wfAutoUpdatedAlert($version), 'send');
+				do_action('wordfence_security_event', 'autoUpdate', array(
+					'version' => $version,
+					'ip' => wfUtils::getIP(),
+				), $alertCallback);
+
 				wfConfig::set('autoUpdateAttempts', 0);
 			}
 			$output = @ob_get_contents();
@@ -1328,11 +1334,14 @@ Options -ExecCGI
 					$firewall->syncStatus(true);
 					
 					if ($value == wfFirewall::FIREWALL_MODE_DISABLED) {
-						if (wfConfig::get('alertOn_wafDeactivated')) {
-							$currentUser = wp_get_current_user();
-							$username = $currentUser->user_login;
-							wordfence::alert(__('Wordfence WAF Deactivated', 'wordfence'), sprintf(__('A user with username "%s" deactivated the Wordfence Web Application Firewall on your WordPress site.', 'wordfence'), $username), wfUtils::getIP());
-						}
+						$currentUser = wp_get_current_user();
+						$username = $currentUser->user_login;
+
+						$alertCallback = array(new wfWafDeactivatedAlert($username, wfUtils::getIP()), 'send');
+						do_action('wordfence_security_event', 'wafDeactivated', array(
+							'username' => $username,
+							'ip' => wfUtils::getIP(),
+						), $alertCallback);
 					}
 					
 					$saved = true;
@@ -1399,6 +1408,9 @@ Options -ExecCGI
 				case 'disableWAFBlacklistBlocking':
 				{
 					$wafConfig->setConfig($key, wfUtils::truthyToInt($value));
+					if (method_exists(wfWAF::getInstance()->getStorageEngine(), 'purgeIPBlocks')) {
+						wfWAF::getInstance()->getStorageEngine()->purgeIPBlocks(wfWAFStorageInterface::IP_BLOCKS_BLACKLIST);
+					}
 					$saved = true;
 					break;
 				}
@@ -1447,6 +1459,10 @@ Options -ExecCGI
 						wfConfig::set($key, '');
 					}
 					
+					if (method_exists(wfWAF::getInstance()->getStorageEngine(), 'purgeIPBlocks')) {
+						wfWAF::getInstance()->getStorageEngine()->purgeIPBlocks(wfWAFStorageInterface::IP_BLOCKS_BLACKLIST);
+					}
+					
 					$saved = true;
 					break;
 				}
@@ -1460,6 +1476,11 @@ Options -ExecCGI
 					}
 					
 					$wafConfig->setConfig('whitelistedServiceIPs', @json_encode(wfUtils::whitelistedServiceIPs()));
+					
+					if (method_exists(wfWAF::getInstance()->getStorageEngine(), 'purgeIPBlocks')) {
+						wfWAF::getInstance()->getStorageEngine()->purgeIPBlocks(wfWAFStorageInterface::IP_BLOCKS_BLACKLIST);
+					}
+					
 					$saved = true;
 					break;
 				}
@@ -1657,7 +1678,6 @@ Options -ExecCGI
 					wfConfig::set($key, $value);
 				}
 				else if (WFWAF_DEBUG) {
-					//TODO: remove me when done with QA
 					error_log("*** DEBUG: Config option '{$key}' missing save handler.");
 				}
 			}

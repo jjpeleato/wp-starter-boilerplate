@@ -1720,38 +1720,39 @@ class wfScanEngine {
 						unset($allPlugins[$slug]);
 					}
 				}
-				else if ($status !== false && is_wp_error($status) && isset($status->error_data['plugins_api_failed']) && $status->error_data['plugins_api_failed'] == 'N;') { //The plugin does not exist in the wp.org repo
+				else if ($status !== false && is_wp_error($status) && isset($status->errors['plugins_api_failed'])) { //The plugin does not exist in the wp.org repo
 					$knownFiles = $this->getKnownFilesLoader()->getKnownFiles();
-					$requestedPlugins = $this->getPlugins();
-					foreach ($requestedPlugins as $key => $data) {
-						$testKey = trailingslashit($data['FullDir']) . '.';
-						if ($data['ShortDir'] == $slug && isset($knownFiles['plugins'][$testKey])) { //It existed in the repo at some point and was removed
-							$pluginFile = wfUtils::getPluginBaseDir() . $key;
-							$pluginData = get_plugin_data($pluginFile);
-							$pluginData['wpRemoved'] = true;
-							$pluginData['vulnerable'] = false;
-							$vulnerable = $this->updateCheck->isPluginVulnerable($slug, $pluginData['Version']);
-							if ($vulnerable) {
-								$pluginData['vulnerable'] = true;
-								if (is_string($vulnerable)) {
-									$pluginData['vulnerabilityLink'] = $vulnerable;
+					if (isset($knownFiles['status']) && is_array($knownFiles['status']) && isset($knownFiles['status']['plugins']) && is_array($knownFiles['status']['plugins'])) {
+						$requestedPlugins = $this->getPlugins();
+						foreach ($requestedPlugins as $key => $data) {
+							if ($data['ShortDir'] == $slug && isset($knownFiles['status']['plugins'][$slug]) && $knownFiles['status']['plugins'][$slug] == 'r') { //It existed in the repo at some point and was removed
+								$pluginFile = wfUtils::getPluginBaseDir() . $key;
+								$pluginData = get_plugin_data($pluginFile);
+								$pluginData['wpRemoved'] = true;
+								$pluginData['vulnerable'] = false;
+								$vulnerable = $this->updateCheck->isPluginVulnerable($slug, $pluginData['Version']);
+								if ($vulnerable) {
+									$pluginData['vulnerable'] = true;
+									if (is_string($vulnerable)) {
+										$pluginData['vulnerabilityLink'] = $vulnerable;
+									}
 								}
+								
+								$key = "wfPluginRemoved {$slug} {$pluginData['Version']}";
+								$shortMsg = 'The Plugin "' . (empty($pluginData['Name']) ? $slug : $pluginData['Name']) . '" has been removed from wordpress.org.';
+								if ($pluginData['vulnerable']) {
+									$longMsg = 'It has unpatched security issues and may have compatibility problems with the current version of WordPress.';
+								}
+								else {
+									$longMsg = 'It may have compatibility problems with the current version of WordPress or unknown security issues.';
+								}
+								$longMsg .= ' <a href="' . wfSupportController::esc_supportURL(wfSupportController::ITEM_SCAN_RESULT_PLUGIN_REMOVED) . '" target="_blank" rel="noopener noreferrer">Get more information.</a>';
+								$added = $this->addIssue('wfPluginRemoved', wfIssues::SEVERITY_CRITICAL, $key, $key, $shortMsg, $longMsg, $pluginData);
+								if ($added == wfIssues::ISSUE_ADDED || $added == wfIssues::ISSUE_UPDATED) { $haveIssues = wfIssues::STATUS_PROBLEM; }
+								else if ($haveIssues != wfIssues::STATUS_PROBLEM && ($added == wfIssues::ISSUE_IGNOREP || $added == wfIssues::ISSUE_IGNOREC)) { $haveIssues = wfIssues::STATUS_IGNORED; }
+								
+								unset($allPlugins[$slug]);
 							}
-							
-							$key = "wfPluginRemoved {$slug} {$pluginData['Version']}";
-							$shortMsg = 'The Plugin "' . (empty($pluginData['Name']) ? $slug : $pluginData['Name']) . '" has been removed from wordpress.org.';
-							if ($pluginData['vulnerable']) {
-								$longMsg = 'It has unpatched security issues and may have compatibility problems with the current version of WordPress.';
-							}
-							else {
-								$longMsg = 'It may have compatibility problems with the current version of WordPress or unknown security issues.';
-							}
-							$longMsg .= ' <a href="' . wfSupportController::esc_supportURL(wfSupportController::ITEM_SCAN_RESULT_PLUGIN_REMOVED) . '" target="_blank" rel="noopener noreferrer">Get more information.</a>';
-							$added = $this->addIssue('wfPluginRemoved', wfIssues::SEVERITY_CRITICAL, $key, $key, $shortMsg, $longMsg, $pluginData);
-							if ($added == wfIssues::ISSUE_ADDED || $added == wfIssues::ISSUE_UPDATED) { $haveIssues = wfIssues::STATUS_PROBLEM; }
-							else if ($haveIssues != wfIssues::STATUS_PROBLEM && ($added == wfIssues::ISSUE_IGNOREP || $added == wfIssues::ISSUE_IGNOREC)) { $haveIssues = wfIssues::STATUS_IGNORED; }
-							
-							unset($allPlugins[$slug]);
 						}
 					}
 				}

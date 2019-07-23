@@ -3,7 +3,7 @@ Contributors: Backup with UpdraftPlus, DavidAnderson, DNutbourne, aporter, snigh
 Tags: backup, restore, database backup, wordpress backup, cloud backup, s3, dropbox, google drive, onedrive, ftp, backups
 Requires at least: 3.2
 Tested up to: 5.2
-Stable tag: 1.16.14
+Stable tag: 1.16.16
 Author URI: https://updraftplus.com
 Donate link: https://david.dw-perspective.org.uk/donate
 License: GPLv3 or later
@@ -166,7 +166,51 @@ Unfortunately not; since this is free software, there’s no warranty and no gua
 
 The <a href="https://updraftplus.com/news/">UpdraftPlus backup blog</a> is the best place to learn in more detail about any important changes.
 
-N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which is 1 higher in the first digit, and has an extra component on the end, but the changelog below still applies. i.e. changes listed for 1.16.14.x of the free version correspond to changes made in 2.16.14.x of the paid version.
+N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which is 1 higher in the first digit, and has an extra component on the end, but the changelog below still applies. i.e. changes listed for 1.16.16.x of the free version correspond to changes made in 2.16.16.x of the paid version.
+
+= 1.16.16 - 23/Jul/2019 =
+
+* FEATURE: Added the ability to launch a blank WordPress clone
+* FEATURE: Add --collate= parameter to WP-CLI (Premium) to allow substitution of locally unknown collations when restoring
+* FIX: Switched to wp_insert_site() from insert_blog() and install_blog() method when importing single-site into a multisite network on WP 5.1+. Fixes 'Already Installed' error when importing on newer WP versions
+* FIX: Issue where (rare) foreign key constraints aren't updated upon restore when table prefix changes
+* FIX: Improve parsing of backed-up triggers when restoring preventing possible unnecessary errors
+* FIX: If an upload to Google Drive starts to fail due to an OAuth token refresh error, the backup will re-bootstrap the Drive client and try again
+* FIX: JSON-reparser to prevent unwanted RINFO data being output to screen
+* FIX: Triggers were still included in a backup for tables that were excluded because of lack of WP prefix
+* FIX: Resuming restores could resume at an unnecessarily early stage
+* FIX: Issue with Dropbox account information call that could make it fail
+* TWEAK: In cases where there were duplicate Google Drive folders (which is possible if there are multiple network communications failures when looking up the folder), these are now detected and merged automatically
+* TWEAK: Add option to start 250GB Vault subscription as in-app purchase
+* TWEAK: Regression: backup checksums were not being recorded in the backup log file
+* TWEAK: Remove UpdraftClone when the backup is cancelled by the user
+* TWEAK: Send the backup log during the creation of UpdraftClone for easier support when a clone fails to recieve the backup
+* TWEAK: Detect OneDrive Graph token expiries and initiate swift resumption
+* TWEAK: Reduce the permissions requested for the UpdraftPlus Google Drive app (this now means that backups manually uploaded to Google Drive can not be deleted through the UpdraftPlus UI)
+
+= 1.16.15 - 31/May/2019 =
+
+* FEATURE: Added the ability to use already existing local backups with UpdraftClone
+* FIX: Prevent PHP fatal error (regression) when WP_Filesystem credentials were needed and wrong ones were supplied
+* FIX: Issue where you could not delete old directories from the restore progress page
+* FIX: Issue where restore would not run over AJAX if wrong credentials were entered when WordPress requested filesystem credentials
+* FIX: Fix incorrect refusal to accept valid email addresses in the UpdraftCentral wizard
+* TRANSLATION: The Italian translation is now complete and supplied from wordpress.org, so can be removed from the free plugin zip (saves 424KB disk space - if your mother tongue is not English and you want to improve UpdraftPlus, take a look at: https://translate.wordpress.org/projects/wp-plugins/updraftplus).
+* TWEAK: Update UpdraftCentral theme module handler to support themes without a name header
+* TWEAK: Prevent PHP log notice when fetching available theme updates via UpdraftCentral
+* TWEAK: Add more scheduling options to the built-in list (you can still further add whatever other arbitrary options you like: https://updraftplus.com/faqs/how-can-i-add-any-new-scheduling-interval-to-updraftplus/)
+* TWEAK: Abstract the code for handling maintenance mode to allow future improvements
+* TWEAK: Fix a potential wrong file path in an error message
+* TWEAK: If there is more than one Google Drive folder of the same name, now the selection is deterministic: the oldest one is always used
+* TWEAK: Infer phpseclib class path from the class name, instead of hard-coding it
+* TWEAK: Some lines that were meant to include HTML bold in the browser output had lost that effect
+* TWEAK: Add what entity caused the automatic backup to the logfile
+* TWEAK: Upon restoration, a couple of known plugin cache directories will be emptied to prevent serving up an intermediate page
+* TWEAK: Fix a bug in the "fail on resume" error-trapping logic which could cause it to resume too many times
+* TWEAK: Prevent a bogus error message being logged at the end of a successful direct site-to-site transfer
+* TWEAK: Add backup size information when hovering at the backup data buttons (excluding database button) 
+* TWEAK: Allow the plugin to connect to account and activate Premium licence if no more UpdraftCentral Cloud licences remain and the user enables the 'Add this website to UpdraftCentral' option in the Premium/Extensions tab
+* TWEAK: During a restore send structured data to the front end. This is preparing the way for future UX improvements.
 
 = 1.16.14 - 30/Apr/2019 =
 
@@ -194,7 +238,6 @@ N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which i
 * TWEAK: Add a timeout on Dropbox quota look-up operations during backup, in response to cases of faulty outgoing HTTP proxies
 * TWEAK: The backup_finish() method should not have been private; could cause a harmless PHP abort when manually stopping a backup
 * TWEAK: Wrong variable context could cause failure of SFTP progress recording
-* TWEAK: Update to the current series (4.6) of yahnis-elsts/plugin-update-checker (paid versions), thereby inheriting improvements including suppressing some unnecessary background updates checks
 
 = 1.16.10 - 23/Mar/2019 =
 
@@ -848,4 +891,4 @@ Furthermore, reliance upon any non-English translation is at your own risk. Updr
 We recognise and thank the following for code and/or libraries used and/or modified under the terms of their open source licences; see: https://updraftplus.com/acknowledgements/
 
 == Upgrade Notice ==
-* 1.16.14: Various small tweaks and improvements. A recommended update for all.
+* 1.16.16: Added the ability to launch a blank WordPress clone. Add --collate= parameter to WP-CLI (Premium) to allow substitution of locally unknown collations when restoring. A recommended update for all.

@@ -38,6 +38,7 @@ if ( !class_exists( 'YIT_Assets' ) ) {
          * @author     Leanza Francesco <leanzafrancesco@gmail.com>
          */
         private function __construct() {
+        	defined('YITH_PLUGIN_FW_VERSION') && $this->version = YITH_PLUGIN_FW_VERSION;
             add_action( 'admin_enqueue_scripts', array( $this, 'register_styles_and_scripts' ) );
         }
 
@@ -50,8 +51,8 @@ if ( !class_exists( 'YIT_Assets' ) ) {
             $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
             //scripts
-            wp_register_script( 'yith-plugin-fw-fields', YIT_CORE_PLUGIN_URL . '/assets/js/yith-fields' . $suffix . '.js', array( 'jquery', 'jquery-ui-datepicker', 'wp-color-picker', 'codemirror', 'codemirror-javascript', 'jquery-ui-slider' ), $this->version, true );
-            wp_register_script( 'yit-metabox', YIT_CORE_PLUGIN_URL . '/assets/js/metabox' . $suffix . '.js', array( 'jquery', 'wp-color-picker' ), '1.0.0', true );
+            wp_register_script( 'yith-plugin-fw-fields', YIT_CORE_PLUGIN_URL . '/assets/js/yith-fields' . $suffix . '.js', array( 'jquery', 'jquery-ui-datepicker', 'wp-color-picker', 'codemirror', 'codemirror-javascript', 'jquery-ui-slider','jquery-ui-sortable' ), $this->version, true );
+            wp_register_script( 'yit-metabox', YIT_CORE_PLUGIN_URL . '/assets/js/metabox' . $suffix . '.js', array( 'jquery', 'wp-color-picker' ), $this->version, true );
             wp_register_script( 'yit-plugin-panel', YIT_CORE_PLUGIN_URL . '/assets/js/yit-plugin-panel' . $suffix . '.js', array( 'jquery', 'wp-color-picker', 'jquery-ui-sortable' ), $this->version, true );
             wp_register_script( 'codemirror', YIT_CORE_PLUGIN_URL . '/assets/js/codemirror/codemirror.js', array( 'jquery' ), $this->version, true );
             wp_register_script( 'codemirror-javascript', YIT_CORE_PLUGIN_URL . '/assets/js/codemirror/javascript.js', array( 'jquery', 'codemirror' ), $this->version, true );
@@ -66,7 +67,7 @@ if ( !class_exists( 'YIT_Assets' ) ) {
             wp_register_style( 'yit-jquery-ui-style', '//code.jquery.com/ui/' . $jquery_version . '/themes/smoothness/jquery-ui.css', array(), $jquery_version );
             wp_register_style( 'colorbox', YIT_CORE_PLUGIN_URL . '/assets/css/colorbox.css', array(), $this->version );
             wp_register_style( 'yit-upgrade-to-pro', YIT_CORE_PLUGIN_URL . '/assets/css/yit-upgrade-to-pro.css', array( 'colorbox' ), $this->version );
-            wp_register_style( 'yit-plugin-metaboxes', YIT_CORE_PLUGIN_URL . '/assets/css/metaboxes.css' );
+            wp_register_style( 'yit-plugin-metaboxes', YIT_CORE_PLUGIN_URL . '/assets/css/metaboxes.css', array(), $this->version );
             wp_register_style( 'yith-plugin-fw-fields', YIT_CORE_PLUGIN_URL . '/assets/css/yith-fields.css', false, $this->version );
 
             $wc_version_suffix = '';
@@ -87,8 +88,11 @@ if ( !class_exists( 'YIT_Assets' ) ) {
                 'search_terms_nonce' => wp_create_nonce( 'search-terms' ),
             ) );
 
+            wp_localize_script('yith-plugin-fw-fields','yith_framework_fw_fields', array(
+	            'admin_url'                  => admin_url( 'admin.php' ),
+	            'ajax_url'                  => admin_url( 'admin-ajax.php' ),
+            ));
             wp_enqueue_style( 'yith-plugin-fw-admin', YIT_CORE_PLUGIN_URL . '/assets/css/admin.css', array(), $this->version );
-
         }
     }
 }

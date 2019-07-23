@@ -108,7 +108,7 @@ class wfUtils {
 		if ($minutes) {
 			$components[] = self::pluralize($minutes, 'minute');
 		}
-		if ($secs) {
+		if ($secs && $secs >= 1) {
 			$components[] = self::pluralize($secs, 'second');
 		}
 		

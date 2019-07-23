@@ -502,7 +502,7 @@ if ( ! function_exists( 'yit_get_filter_args' ) ) {
         }
 
         elseif( ! is_shop() && is_product_taxonomy() && $queried_object && ! isset( $filter_value['source_id'] ) && ! isset( $filter_value['source_tax'] )){
-            $filter_value['source_id']   = $queried_object->slug;
+            $filter_value['source_id']   = $queried_object->term_id;
             $filter_value['source_tax']  = $queried_object->taxonomy;
         }
 
@@ -566,7 +566,6 @@ if ( ! function_exists( 'yit_get_woocommerce_layered_nav_link' ) ) {
 
         else {
             $return = get_post_type_archive_link( 'product' );
-
             return apply_filters( 'yith_wcan_untrailingslashit', false ) && is_string( $return ) ? untrailingslashit( $return ) : $return;
         }
         

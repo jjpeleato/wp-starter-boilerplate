@@ -9,7 +9,7 @@ if (!defined('WORDFENCE_LS_VERSION')) { exit; }
 			</div>
 		</div>
 		<div class="wfls-block-header-action wfls-block-header-action-text wfls-nowrap wfls-padding-add-right-responsive">
-			<a href="#" id="wfls-cancel-changes" class="wfls-btn wfls-btn-sm wfls-btn-default wfls-disabled"><?php _e('Cancel Changes', 'wordfence-2fa'); ?></a>&nbsp;&nbsp;<a href="#" id="wfls-save-changes" class="wfls-btn wfls-btn-sm wfls-btn-primary wfls-disabled"><?php _e('Save Changes', 'wordfence-2fa'); ?></a>
+			<a href="#" id="wfls-cancel-changes" class="wfls-btn wfls-btn-sm wfls-btn-default wfls-disabled"><?php _e('Cancel<span class="wfls-visible-sm-inline"> Changes</span>', 'wordfence-2fa'); ?></a>&nbsp;&nbsp;<a href="#" id="wfls-save-changes" class="wfls-btn wfls-btn-sm wfls-btn-primary wfls-disabled"><?php _e('Save<span class="wfls-visible-sm-inline"> Changes</span>', 'wordfence-2fa'); ?></a>
 		</div>
 	</div>
 	<div class="wfls-block-content">
@@ -113,6 +113,24 @@ if (!defined('WORDFENCE_LS_VERSION')) { exit; }
 				))->render();
 				?>
 			</li>
+			<li>
+				<?php
+				echo \WordfenceLS\Model_View::create('options/option-captcha-threshold', array(
+				))->render();
+				?>
+			</li>
+			<li>
+				<?php
+				echo \WordfenceLS\Model_View::create('options/option-toggled', array(
+					'optionName' => \WordfenceLS\Controller_Settings::OPTION_CAPTCHA_TEST_MODE,
+					'enabledValue' => '1',
+					'disabledValue' => '0',
+					'value' => \WordfenceLS\Controller_Settings::shared()->get_bool(\WordfenceLS\Controller_Settings::OPTION_CAPTCHA_TEST_MODE) ? '1': '0',
+					'title' => new \WordfenceLS\Text\Model_HTML('<strong>' . __('Run reCAPTCHA in test mode', 'wordfence-2fa') . '</strong>'),
+					'subtitle' => __('While in test mode, reCAPTCHA will score login and registration requests but not actually block them. The scores will be recorded and can be used to select a human/bot threshold value.', 'wordfence-2fa'),
+				))->render();
+				?>
+			</li>
 			<?php if (!WORDFENCE_LS_FROM_CORE): ?>
 			<li>
 				<?php
@@ -120,6 +138,18 @@ if (!defined('WORDFENCE_LS_VERSION')) { exit; }
 				?>
 			</li>
 			<?php endif; ?>
+			<li>
+				<?php
+				echo \WordfenceLS\Model_View::create('options/option-toggled', array(
+					'optionName' => \WordfenceLS\Controller_Settings::OPTION_DELETE_ON_DEACTIVATION,
+					'enabledValue' => '1',
+					'disabledValue' => '0',
+					'value' => \WordfenceLS\Controller_Settings::shared()->get_bool(\WordfenceLS\Controller_Settings::OPTION_DELETE_ON_DEACTIVATION) ? '1': '0',
+					'title' => new \WordfenceLS\Text\Model_HTML('<strong>' . __('Delete Login Security tables and data on deactivation', 'wordfence-2fa') . '</strong>'),
+					'subtitle' => __('If enabled, all settings and 2FA records will be deleted on deactivation. If later reactivated, all users that previously had 2FA active will need to set it up again.', 'wordfence-2fa'),
+				))->render();
+				?>
+			</li>
 		</ul>
 	</div>
 </div>

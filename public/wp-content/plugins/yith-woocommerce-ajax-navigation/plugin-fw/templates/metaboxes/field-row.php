@@ -31,6 +31,7 @@ $default_field = array(
 $field         = wp_parse_args( $field, $default_field );
 
 $display_field_only = isset( $field[ 'display-field-only' ] ) ? $field[ 'display-field-only' ] : false;
+
 ?>
 <div id="<?php echo $field[ 'id' ] ?>-container" <?php echo yith_field_deps_data( $field ); ?> class="yith-plugin-fw-metabox-field-row">
     <?php if ( $display_field_only ) :

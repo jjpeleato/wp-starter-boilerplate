@@ -2657,11 +2657,15 @@ small.ud_massactions-tip {
 	clear: left;
 }
 
+.updraftplusmethod.updraftvault .vault-purchase-option-container {
+	text-align: center;
+}
+
 .updraftplusmethod.updraftvault .vault-purchase-option {
-	float: left;
-	width: 33%;
+	width: 40%;
 	text-align: center;
 	padding-top: 20px;
+	display: inline-block;
 }
 
 .updraftplusmethod.updraftvault .vault-purchase-option-size {

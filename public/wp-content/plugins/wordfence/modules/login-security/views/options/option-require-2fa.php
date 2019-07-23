@@ -53,8 +53,14 @@ else {
 				<div class="wfls-option-checkbox<?php echo $currentGracePeriodEnabledValue ? ' wfls-checked' : ''; ?><?php echo $currentRequireValue ? '' : ' wfls-disabled'; ?>" data-original-value="<?php echo $currentGracePeriodEnabledValue ? '1' : '0'; ?>"><i class="wfls-ion-ios-checkmark-empty" aria-hidden="true"></i></div>
 				<span id="wfls-require-2fa-grace-period-label" class="wfls-padding-add-left wfls-padding-add-right"><?php _e('Grace period to require 2FA', 'wordfence'); ?> </span>
 				<input type="text" name="require2FAGracePeriod" id="input-require2FAGracePeriod" class="wfls-datetime wfls-form-control" placeholder="Enabled on..." data-value="<?php echo $currentGracePeriodDateValue; ?>" data-original-value="<?php echo $currentGracePeriodDateValue; ?>"<?php echo $currentGracePeriodEnabledValue ? '' : ' disabled'; ?>>
-				<div class="wfls-padding-add-left"><a href="#" id="wfls-send-grace-period-notification" class="wfls-btn wfls-btn-sm wfls-btn-default<?php echo (\WordfenceLS\Controller_Settings::shared()->get_bool(\WordfenceLS\Controller_Settings::OPTION_REQUIRE_2FA_ADMIN) && \WordfenceLS\Controller_Settings::shared()->get_bool(\WordfenceLS\Controller_Settings::OPTION_REQUIRE_2FA_GRACE_PERIOD_ENABLED) && \WordfenceLS\Controller_Time::time() < \WordfenceLS\Controller_Settings::shared()->get_int(\WordfenceLS\Controller_Settings::OPTION_REQUIRE_2FA_GRACE_PERIOD)) ? '' : ' wfls-disabled'; ?>"><?php _e('Send Notification', 'wordfence-2fa'); ?></a></div>
 			</li>
+		</ul>
+	</li>
+	<li>
+		<ul class="wfls-option wfls-padding-no-top">
+			<li class="wfls-option-spacer"></li>
+			<li class="wfls-option-spacer"></li>
+			<li><a href="#" id="wfls-send-grace-period-notification" class="wfls-btn wfls-btn-sm wfls-btn-default<?php echo (\WordfenceLS\Controller_Settings::shared()->get_bool(\WordfenceLS\Controller_Settings::OPTION_REQUIRE_2FA_ADMIN) && \WordfenceLS\Controller_Settings::shared()->get_bool(\WordfenceLS\Controller_Settings::OPTION_REQUIRE_2FA_GRACE_PERIOD_ENABLED) && \WordfenceLS\Controller_Time::time() < \WordfenceLS\Controller_Settings::shared()->get_int(\WordfenceLS\Controller_Settings::OPTION_REQUIRE_2FA_GRACE_PERIOD)) ? '' : ' wfls-disabled'; ?>"><?php _e('Send Notification', 'wordfence-2fa'); ?></a></li>
 		</ul>
 	</li>
 </ul>

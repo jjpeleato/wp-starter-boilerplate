@@ -18,9 +18,11 @@ class Controller_Settings {
 	const OPTION_REMEMBER_DEVICE_DURATION = 'remember-device-duration';
 	const OPTION_ALLOW_XML_RPC = 'allow-xml-rpc';
 	const OPTION_ENABLE_AUTH_CAPTCHA = 'enable-auth-captcha';
+	const OPTION_CAPTCHA_TEST_MODE = 'recaptcha-test-mode';
 	const OPTION_RECAPTCHA_SITE_KEY = 'recaptcha-site-key';
 	const OPTION_RECAPTCHA_SECRET = 'recaptcha-secret';
 	const OPTION_RECAPTCHA_THRESHOLD = 'recaptcha-threshold';
+	const OPTION_DELETE_ON_DEACTIVATION = 'delete-deactivation';
 	
 	//Internal
 	const OPTION_GLOBAL_NOTICES = 'global-notices';
@@ -29,6 +31,8 @@ class Controller_Settings {
 	const OPTION_NTP_OFFSET = 'ntp-offset';
 	const OPTION_SHARED_HASH_SECRET_KEY = 'shared-hash-secret';
 	const OPTION_SHARED_SYMMETRIC_SECRET_KEY = 'shared-symmetric-secret';
+	const OPTION_DISMISSED_FRESH_INSTALL_MODAL = 'dismissed-fresh-install-modal';
+	const OPTION_CAPTCHA_STATS = 'captcha-stats';
 	
 	protected $_settingsStorage;
 	
@@ -65,8 +69,10 @@ class Controller_Settings {
 			self::OPTION_REMEMBER_DEVICE_DURATION => array('value' => (30 * 86400), 'autoload' => Model_Settings::AUTOLOAD_YES, 'allowOverwrite' => false),
 			self::OPTION_ALLOW_XML_RPC => array('value' => true, 'autoload' => Model_Settings::AUTOLOAD_YES, 'allowOverwrite' => false),
 			self::OPTION_ENABLE_AUTH_CAPTCHA => array('value' => false, 'autoload' => Model_Settings::AUTOLOAD_YES, 'allowOverwrite' => false),
+			self::OPTION_CAPTCHA_STATS => array('value' => '{"counts":[0,0,0,0,0,0,0,0,0,0,0],"avg":0}', 'autoload' => Model_Settings::AUTOLOAD_YES, 'allowOverwrite' => false),
 			self::OPTION_RECAPTCHA_THRESHOLD => array('value' => 0.5, 'autoload' => Model_Settings::AUTOLOAD_YES, 'allowOverwrite' => false),
 			self::OPTION_LAST_SECRET_REFRESH => array('value' => 0, 'autoload' => Model_Settings::AUTOLOAD_YES, 'allowOverwrite' => false),
+			self::OPTION_DELETE_ON_DEACTIVATION => array('value' => false, 'autoload' => Model_Settings::AUTOLOAD_YES, 'allowOverwrite' => false),
 		));
 	}
 	
@@ -128,6 +134,9 @@ class Controller_Settings {
 			case self::OPTION_REMEMBER_DEVICE_ENABLED:
 			case self::OPTION_ALLOW_XML_RPC:
 			case self::OPTION_ENABLE_AUTH_CAPTCHA:
+			case self::OPTION_CAPTCHA_TEST_MODE:
+			case self::OPTION_DISMISSED_FRESH_INSTALL_MODAL:
+			case self::OPTION_DELETE_ON_DEACTIVATION:
 				return true;
 				
 			//Int
@@ -136,6 +145,7 @@ class Controller_Settings {
 				
 			//Array
 			case self::OPTION_GLOBAL_NOTICES:
+			case self::OPTION_CAPTCHA_STATS:
 				return preg_match('/^\[.*\]$/', $value) || preg_match('/^\{.*\}$/', $value); //Only a rough JSON validation
 				
 			//Special
@@ -163,6 +173,26 @@ class Controller_Settings {
 				return is_numeric($value) && $value > 0;
 			case self::OPTION_RECAPTCHA_THRESHOLD:
 				return is_numeric($value) && $value >= 0 && $value <= 1;
+			case self::OPTION_RECAPTCHA_SITE_KEY:
+				if (empty($value)) {
+					return true;
+				}
+				
+				$response = wp_remote_get('https://www.google.com/recaptcha/api.js?render=' . urlencode($value));
+				
+				if (!is_wp_error($response)) {
+					$status = wp_remote_retrieve_response_code($response);
+					if ($status == 200) {
+						return true;
+					}
+					
+					$data = wp_remote_retrieve_body($response);
+					if (strpos($data, 'grecaptcha') === false) {
+						return __('Unable to validate the reCAPTCHA site key. Please check the key and try again.', 'wordfence-2fa');
+					}
+					return true;
+				}
+				return sprintf(__('An error was encountered while validating the reCAPTCHA site key: %s', 'wordfence-2fa'), $response->get_error_message());
 		}
 		return true;
 	}
@@ -197,6 +227,11 @@ class Controller_Settings {
 			case self::OPTION_REQUIRE_2FA_ADMIN:
 			case self::OPTION_REQUIRE_2FA_GRACE_PERIOD_ENABLED:
 			case self::OPTION_REMEMBER_DEVICE_ENABLED:
+			case self::OPTION_ALLOW_XML_RPC:
+			case self::OPTION_ENABLE_AUTH_CAPTCHA:
+			case self::OPTION_CAPTCHA_TEST_MODE:
+			case self::OPTION_DISMISSED_FRESH_INSTALL_MODAL:
+			case self::OPTION_DELETE_ON_DEACTIVATION:
 				return $this->_truthy_to_bool($value);
 				
 			//Int

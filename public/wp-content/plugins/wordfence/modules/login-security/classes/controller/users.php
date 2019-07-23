@@ -311,6 +311,28 @@ class Controller_Users {
 	}
 	
 	/**
+	 * Records the reCAPTCHA score for later display.
+	 * 
+	 * This is not atomic, which means this can miscount on hits that overlap, but the overhead of being atomic is not 
+	 * worth it for our use.
+	 * 
+	 * @param \WP_User $user|null
+	 * @param float $score
+	 */
+	public function record_captcha_score($user, $score) {
+		if (!Controller_CAPTCHA::shared()->enabled()) { return; }
+		if ($this->has_2fa_active($user)) { return; } //2FA activated users do not retrieve a score
+		
+		if ($user) { update_user_meta($user->ID, 'wfls-last-captcha-score', $score); }
+		$stats = Controller_Settings::shared()->get_array(Controller_Settings::OPTION_CAPTCHA_STATS);
+		$int_score = min(max((int) ($score * 10), 0), 10);
+		$count = array_sum($stats['counts']);
+		$stats['counts'][$int_score]++;
+		$stats['avg'] = ($stats['avg'] * $count + $int_score) / ($count + 1);
+		Controller_Settings::shared()->set_array(Controller_Settings::OPTION_CAPTCHA_STATS, $stats);
+	}
+	
+	/**
 	 * Returns the active and inactive user counts.
 	 * 
 	 * @return array

@@ -1,5 +1,7 @@
 <?php
 
+use WordfenceLS\Controller_Settings;
+
 require_once 'wfRESTBaseController.php';
 
 class wfRESTConfigController extends wfRESTBaseController {
@@ -77,6 +79,25 @@ class wfRESTConfigController extends wfRESTBaseController {
 			'subdirectoryInstall'            => $firewall->isSubDirectoryInstallation(),
 			'wafStatus'                      => $firewall->wafStatus(),
 		);
+		$lsFields = array(
+			Controller_Settings::OPTION_XMLRPC_ENABLED                   => Controller_Settings::shared()->get(Controller_Settings::OPTION_XMLRPC_ENABLED),
+			Controller_Settings::OPTION_2FA_WHITELISTED                  => Controller_Settings::shared()->get(Controller_Settings::OPTION_2FA_WHITELISTED),
+			Controller_Settings::OPTION_IP_SOURCE                        => Controller_Settings::shared()->get(Controller_Settings::OPTION_IP_SOURCE),
+			Controller_Settings::OPTION_IP_TRUSTED_PROXIES               => Controller_Settings::shared()->get(Controller_Settings::OPTION_IP_TRUSTED_PROXIES),
+			Controller_Settings::OPTION_REQUIRE_2FA_ADMIN                => Controller_Settings::shared()->get(Controller_Settings::OPTION_REQUIRE_2FA_ADMIN),
+			Controller_Settings::OPTION_REQUIRE_2FA_GRACE_PERIOD_ENABLED => Controller_Settings::shared()->get(Controller_Settings::OPTION_REQUIRE_2FA_GRACE_PERIOD_ENABLED),
+			Controller_Settings::OPTION_GLOBAL_NOTICES                   => Controller_Settings::shared()->get(Controller_Settings::OPTION_GLOBAL_NOTICES),
+			Controller_Settings::OPTION_REMEMBER_DEVICE_ENABLED          => Controller_Settings::shared()->get(Controller_Settings::OPTION_REMEMBER_DEVICE_ENABLED),
+			Controller_Settings::OPTION_REMEMBER_DEVICE_DURATION         => Controller_Settings::shared()->get(Controller_Settings::OPTION_REMEMBER_DEVICE_DURATION),
+			Controller_Settings::OPTION_ALLOW_XML_RPC                    => Controller_Settings::shared()->get(Controller_Settings::OPTION_ALLOW_XML_RPC),
+			Controller_Settings::OPTION_ENABLE_AUTH_CAPTCHA              => Controller_Settings::shared()->get(Controller_Settings::OPTION_ENABLE_AUTH_CAPTCHA),
+			Controller_Settings::OPTION_RECAPTCHA_THRESHOLD              => Controller_Settings::shared()->get(Controller_Settings::OPTION_RECAPTCHA_THRESHOLD),
+			Controller_Settings::OPTION_LAST_SECRET_REFRESH              => Controller_Settings::shared()->get(Controller_Settings::OPTION_LAST_SECRET_REFRESH),
+		);
+		// Convert the database strings to typed values.
+		foreach ($lsFields as $lsField => $value) {
+			$lsFields[$lsField] = Controller_Settings::shared()->clean($lsField, $value);
+		}
 
 		if (!$fields) {
 			foreach (wfConfig::$defaultConfig as $group => $groupOptions) {
@@ -87,6 +108,9 @@ class wfRESTConfigController extends wfRESTBaseController {
 			foreach ($wafFields as $wafField => $value) {
 				$fields[] = 'waf.' . $wafField;
 			}
+			foreach ($lsFields as $lsField => $value) {
+				$fields[] = 'wfls_settings_' . $lsField;
+			}
 		}
 
 		foreach ($fields as $field) {
@@ -94,6 +118,14 @@ class wfRESTConfigController extends wfRESTBaseController {
 				$wafField = substr($field, 4);
 				if (array_key_exists($wafField, $wafFields)) {
 					$config['waf'][$wafField] = $wafFields[$wafField];
+				}
+				continue;
+			}
+
+			if (strpos($field, 'wfls_settings_') === 0) {
+				$lsField = substr($field, 14);
+				if (array_key_exists($lsField, $lsFields)) {
+					$config['wfls_settings_' . $lsField] = $lsFields[$lsField];
 				}
 				continue;
 			}
@@ -160,8 +192,57 @@ class wfRESTConfigController extends wfRESTBaseController {
 	 * @return mixed|WP_REST_Response
 	 */
 	public function setConfig($request) {
+		wfCentral::preventConfigurationSync();
+
 		$fields = $request['fields'];
 		if (is_array($fields) && $fields) {
+			$loginSecurityConfig = array();
+			foreach ($fields as $key => $value) {
+				if (strpos($key, 'wfls_settings_') === 0) {
+					$lsField = substr($key, 14);
+					$loginSecurityConfig[$lsField] = $value;
+				}
+			}
+
+			if ($loginSecurityConfig) {
+				$errors = Controller_Settings::shared()->validate_multiple($loginSecurityConfig);
+
+				if ($errors !== true) {
+					if (count($errors) == 1) {
+						return new WP_Error('rest_set_config_error',
+							sprintf(__('An error occurred while saving the configuration: %s', 'wordfence'), $errors[0]['error']),
+							array('status' => 422));
+
+					} else if (count($errors) > 1) {
+						$compoundMessage = array();
+						foreach ($errors as $e) {
+							$compoundMessage[] = $e['error'];
+						}
+						return new WP_Error('rest_set_config_error',
+							sprintf(__('Errors occurred while saving the configuration: %s', 'wordfence'), implode(', ', $compoundMessage)),
+							array('status' => 422));
+					}
+
+					return new WP_Error('rest_set_config_error',
+						__('Errors occurred while saving the configuration.', 'wordfence'),
+						array('status' => 422));
+				}
+
+				try {
+					Controller_Settings::shared()->set_multiple($loginSecurityConfig);
+					foreach ($fields as $key => $value) {
+						if (strpos($key, 'wfls_settings_') === 0) {
+							unset($fields[$key]);
+						}
+					}
+
+				} catch (Exception $e) {
+					return new WP_Error('rest_save_config_error',
+						sprintf(__('A server error occurred while saving the configuration: %s', 'wordfence'), $e->getMessage()),
+						array('status' => 500));
+				}
+			}
+
 			$errors = wfConfig::validate($fields);
 			if ($errors !== true) {
 				if (count($errors) == 1) {
@@ -218,7 +299,7 @@ class wfRESTConfigController extends wfRESTBaseController {
 	 * @return mixed|WP_REST_Response
 	 */
 	public function premiumConnect($request) {
-		require_once WORDFENCE_PATH . '/vendor/paragonie/sodium_compat/autoload-fast.php';
+		require_once WORDFENCE_PATH . '/crypto/vendor/paragonie/sodium_compat/autoload-fast.php';
 
 		// Store values sent by Central.
 		$wordfenceCentralPK = $request['public-key'];

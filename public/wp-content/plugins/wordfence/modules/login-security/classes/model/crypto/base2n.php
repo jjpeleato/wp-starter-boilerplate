@@ -55,13 +55,13 @@ class Model_Base2n
 	{
 		// Ensure validity of $chars
 		if (!is_string($chars) || ($charLength = strlen($chars)) < 2) {
-			throw new InvalidArgumentException('$chars must be a string of at least two characters');
+			throw new \InvalidArgumentException('$chars must be a string of at least two characters');
 		}
 		
 		// Ensure validity of $padCharacter
 		if ($padFinalGroup) {
 			if (!is_string($padCharacter) || !isset($padCharacter[0])) {
-				throw new InvalidArgumentException('$padCharacter must be a string of one character');
+				throw new \InvalidArgumentException('$padCharacter must be a string of one character');
 			}
 			
 			if ($caseSensitive) {
@@ -71,18 +71,18 @@ class Model_Base2n
 			}
 			
 			if ($padCharFound !== FALSE) {
-				throw new InvalidArgumentException('$padCharacter can not be a member of $chars');
+				throw new \InvalidArgumentException('$padCharacter can not be a member of $chars');
 			}
 		}
 		
 		// Ensure validity of $bitsPerCharacter
 		if (!is_int($bitsPerCharacter)) {
-			throw new InvalidArgumentException('$bitsPerCharacter must be an integer');
+			throw new \InvalidArgumentException('$bitsPerCharacter must be an integer');
 		}
 		
 		if ($bitsPerCharacter < 1) {
 			// $bitsPerCharacter must be at least 1
-			throw new InvalidArgumentException('$bitsPerCharacter can not be less than 1');
+			throw new \InvalidArgumentException('$bitsPerCharacter can not be less than 1');
 			
 		} elseif ($charLength < 1 << $bitsPerCharacter) {
 			// Character length of $chars is too small for $bitsPerCharacter
@@ -95,14 +95,14 @@ class Model_Base2n
 			}
 			
 			$radix >>= 1;
-			throw new InvalidArgumentException(
+			throw new \InvalidArgumentException(
 				'$bitsPerCharacter can not be more than ' . $bitsPerCharacter
 				. ' given $chars length of ' . $charLength
 				. ' (max radix ' . $radix . ')');
 			
 		} elseif ($bitsPerCharacter > 8) {
 			// $bitsPerCharacter must not be greater than 8
-			throw new InvalidArgumentException('$bitsPerCharacter can not be greater than 8');
+			throw new \InvalidArgumentException('$bitsPerCharacter can not be greater than 8');
 			
 		} else {
 			$radix = 1 << $bitsPerCharacter;
