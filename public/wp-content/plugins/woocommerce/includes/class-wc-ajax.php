@@ -898,9 +898,14 @@ class WC_AJAX {
 				if ( ! $product ) {
 					throw new Exception( __( 'Invalid product ID', 'woocommerce' ) . ' ' . $product_id );
 				}
+				$validation_error = new WP_Error();
+				$validation_error = apply_filters( 'woocommerce_ajax_add_order_item_validation', $validation_error, $product, $order, $qty );
 
+				if ( $validation_error->get_error_code() ) {
+					throw new Exception( '<strong>' . __( 'Error:', 'woocommerce' ) . '</strong> ' . $validation_error->get_error_message() );
+				}
 				$item_id                 = $order->add_product( $product, $qty );
-				$item                    = apply_filters( 'woocommerce_ajax_order_item', $order->get_item( $item_id ), $item_id );
+				$item                    = apply_filters( 'woocommerce_ajax_order_item', $order->get_item( $item_id ), $item_id, $order, $product );
 				$added_items[ $item_id ] = $item;
 				$order_notes[ $item_id ] = $product->get_formatted_name();
 
@@ -1322,8 +1327,14 @@ class WC_AJAX {
 			$order_id = absint( $_POST['order_id'] );
 			$rate_id  = absint( $_POST['rate_id'] );
 
+			$order = wc_get_order( $order_id );
+			if ( ! $order->is_editable() ) {
+				throw new Exception( __( 'Order not editable', 'woocommerce' ) );
+			}
+
 			wc_delete_order_item( $rate_id );
 
+			// Need to load order again after deleting to have latest items before calculating.
 			$order = wc_get_order( $order_id );
 			$order->calculate_totals( false );
 
@@ -1814,7 +1825,6 @@ class WC_AJAX {
 
 		try {
 			$order       = wc_get_order( $order_id );
-			$order_items = $order->get_items();
 			$max_refund  = wc_format_decimal( $order->get_total() - $order->get_total_refunded(), wc_get_price_decimals() );
 
 			if ( ! $refund_amount || $max_refund < $refund_amount || 0 > $refund_amount ) {
@@ -2048,6 +2058,8 @@ class WC_AJAX {
 		);
 
 		if ( $variations ) {
+			wc_render_invalid_variation_notice( $product_object );
+
 			foreach ( $variations as $variation_object ) {
 				$variation_id   = $variation_object->get_id();
 				$variation      = get_post( $variation_id );

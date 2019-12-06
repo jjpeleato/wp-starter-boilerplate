@@ -1,5 +1,5 @@
 <?php
-require_once('wfDB.php');
+require_once(dirname(__FILE__) . '/wfDB.php');
 class wfSchema {
 	const TABLE_CASE_OPTION = 'wordfence_case'; //false is camel case, true is lower
 	

@@ -32,7 +32,8 @@ class URE_Role_View extends URE_View {
         if (!isset($roles) || !$roles) {
             // get roles data from database
             $roles = $this->lib->get_user_roles();
-        }
+        }        
+        ksort( $roles );
         
         $caps_access_restrict_for_simple_admin = $this->lib->get_option('caps_access_restrict_for_simple_admin', 0);
         $show_admin_role = $this->lib->show_admin_role_allowed();
@@ -61,31 +62,32 @@ class URE_Role_View extends URE_View {
     // end of role_default_prepare_html()
     
     
-    private function role_select_copy_prepare_html($select_width=200) {
+    private function role_select_copy_prepare_html( $select_width=200 ) {
         
         $current_user = wp_get_current_user();
         $key_capability = URE_Own_Capabilities::get_key_capability();
-        $user_is_ure_admin = current_user_can($key_capability);
-        $role_to_skip = ($user_is_ure_admin) ? '':$current_user->roles[0];
+        $user_is_ure_admin = current_user_can( $key_capability );
+        $role_to_skip = ( $user_is_ure_admin ) ? '' : $current_user->roles[0];
         
-        $caps_access_restrict_for_simple_admin = $this->lib->get_option('caps_access_restrict_for_simple_admin', 0);
+        $caps_access_restrict_for_simple_admin = $this->lib->get_option( 'caps_access_restrict_for_simple_admin', 0 );
         $show_admin_role = $this->lib->show_admin_role_allowed();
         $this->role_to_copy_html = '<select id="user_role_copy_from" name="user_role_copy_from" style="width: '. $select_width .'px">
             <option value="none" selected="selected">' . esc_html__('None', 'user-role-editor') . '</option>';
         $this->role_select_html = '<select id="user_role" name="user_role" onchange="ure_role_change(this.value);">';        
-        $current_role = $this->editor->get('current_role');
-        $all_roles = $this->editor->get('roles');
-        $roles = $this->lib->get_editable_user_roles($all_roles);
+        $current_role = $this->editor->get( 'current_role' );
+        $all_roles = $this->editor->get( 'roles' );
+        $roles = $this->lib->get_editable_user_roles( $all_roles );
+        ksort( $roles );
         foreach ($roles as $key => $value) {
-            if ($key===$role_to_skip) { //  skip role of current user if he does not have full access to URE
+            if ( $key===$role_to_skip ) { //  skip role of current user if he does not have full access to URE
                 continue;
             }            
-            $selected1 = selected($key, $current_role, false);
-            $disabled = ($key==='administrator' && $caps_access_restrict_for_simple_admin && !$this->lib->is_super_admin()) ? 'disabled' : '';
-            if ($show_admin_role || $key != 'administrator') {
-                $translated_name = esc_html__($value['name'], 'user-role-editor');  // get translation from URE language file, if exists
-                if ($translated_name === $value['name']) { // get WordPress internal translation
-                    $translated_name = translate_user_role($translated_name);
+            $selected1 = selected( $key, $current_role, false );
+            $disabled = ( $key==='administrator' && $caps_access_restrict_for_simple_admin && !$this->lib->is_super_admin()) ? 'disabled' : '';
+            if ( $show_admin_role || $key != 'administrator' ) {
+                $translated_name = esc_html__( $value['name'], 'user-role-editor' );  // get translation from URE language file, if exists
+                if ( $translated_name === $value['name'] ) { // get WordPress internal translation
+                    $translated_name = translate_user_role( $translated_name );
                 }
                 $translated_name .= ' (' . $key . ')';                
                 $this->role_select_html .= '<option value="' . $key . '" ' . $selected1 .' '. $disabled .'>' . $translated_name . '</option>';
@@ -102,6 +104,7 @@ class URE_Role_View extends URE_View {
         
         $roles_can_delete = $this->editor->get_roles_can_delete();
         if ( is_array( $roles_can_delete ) && count( $roles_can_delete ) > 0) {
+            ksort( $roles_can_delete );
             $this->role_delete_html = '<select id="del_user_role" name="del_user_role" width="200" style="width: 200px">';
             foreach ($roles_can_delete as $key => $value) {
                 $this->role_delete_html .= '<option value="' . $key . '">' . esc_html__($value, 'user-role-editor') . '</option>';
@@ -178,12 +181,12 @@ class URE_Role_View extends URE_View {
     // end of caps_to_remove_html()
 
     
-    public function role_edit_prepare_html($select_width=200) {
+    public function role_edit_prepare_html( $select_width=200 ) {
         
-        $this->role_select_copy_prepare_html($select_width);
-        $multisite = $this->lib->get('multisite');
-        if ($multisite && !is_network_admin()) {
-            $this->role_default_prepare_html($select_width);
+        $this->role_select_copy_prepare_html( $select_width );
+        $multisite = $this->lib->get( 'multisite' );
+        if ( $multisite && !is_network_admin() ) {
+            $this->role_default_prepare_html( $select_width );
         }        
         $this->role_delete_prepare_html();                
 

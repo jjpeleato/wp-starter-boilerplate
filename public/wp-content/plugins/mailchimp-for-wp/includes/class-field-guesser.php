@@ -6,122 +6,125 @@
  * @access private
  * @ignore
  */
-class MC4WP_Field_Guesser
-{
+class MC4WP_Field_Guesser {
 
-    /**
-     * @var MC4WP_Array_Bag
-     */
-    protected $fields;
 
-    /**
-     * @param array $fields
-     */
-    public function __construct(array $fields)
-    {
-        $fields = array_change_key_case($fields, CASE_UPPER);
-        $this->fields = new MC4WP_Array_Bag($fields);
-    }
+	/**
+	 * @var array
+	 */
+	protected $fields;
 
-    /**
-     * Get all data which is namespaced with a given namespace
-     *
-     * @param string $namespace
-     *
-     * @return array
-     */
-    public function namespaced($namespace = 'mc4wp-')
-    {
-        $namespace = strtoupper($namespace);
-        return $this->fields->all_with_prefix($namespace);
-    }
+	/**
+	 * @param array $fields
+	 */
+	public function __construct( array $fields ) {
+		$fields       = array_change_key_case( $fields, CASE_UPPER );
+		$this->fields = $fields;
+	}
 
-    /**
-     * Guess values for the following fields
-     *  - EMAIL
-     *  - NAME
-     *  - FNAME
-     *  - LNAME
-     *
-     * @return array
-     */
-    public function guessed()
-    {
-        $guessed = array();
+	/**
+	 * Get all data which is namespaced with a given namespace
+	 *
+	 * @param string $namespace
+	 *
+	 * @return array
+	 */
+	public function namespaced( $namespace = 'mc4wp-' ) {
+		$prefix = strtoupper( $namespace );
+		$return = array();
+		$length = strlen( $prefix );
 
-        $fields = $this->fields->all();
+		foreach ( $this->fields as $key => $value ) {
+			if ( strpos( $key, $prefix ) === 0 ) {
+				$new_key            = substr( $key, $length );
+				$return[ $new_key ] = $value;
+			}
+		}
 
-        foreach ($fields as $field => $value) {
+		return $return;
+	}
 
-            // transform value into array to support 1-level arrays
-            $sub_fields = is_array($value) ? $value : array( $value );
+	/**
+	 * Guess values for the following fields
+	 *  - EMAIL
+	 *  - NAME
+	 *  - FNAME
+	 *  - LNAME
+	 *
+	 * @return array
+	 */
+	public function guessed() {
+		$guessed = array();
 
-            foreach ($sub_fields as $sub_field_value) {
+		foreach ( $this->fields as $field => $value ) {
 
-                // poor man's urldecode, to get Enfold theme's contact element to work.
-                $sub_field_value = str_replace('%40', '@', $sub_field_value);
+			// transform value into array to support 1-level arrays
+			$sub_fields = is_array( $value ) ? $value : array( $value );
 
-                // is this an email value? if so, assume it's the EMAIL field
-                if (empty($guessed['EMAIL']) && is_string($sub_field_value) && is_email($sub_field_value)) {
-                    $guessed['EMAIL'] = $sub_field_value;
-                    continue 2;
-                }
+			foreach ( $sub_fields as $sub_field_value ) {
 
-                // remove special characters from field name
-                $simple_key = str_replace(array( '-', '_', ' ' ), '', $field);
+				// poor man's urldecode, to get Enfold theme's contact element to work.
+				$sub_field_value = str_replace( '%40', '@', $sub_field_value );
 
-                if (empty($guessed['FNAME']) && $this->string_contains($simple_key, array( 'FIRSTNAME', 'FNAME', 'GIVENNAME', 'FORENAME' ))) {
-                    // find first name field
-                    $guessed['FNAME'] = $sub_field_value;
-                } elseif (empty($guessed['LNAME']) && $this->string_contains($simple_key, array( 'LASTNAME', 'LNAME', 'SURNAME', 'FAMILYNAME' ))) {
-                    // find last name field
-                    $guessed['LNAME'] = $sub_field_value;
-                } elseif (empty($guessed['NAME']) && $this->string_contains($simple_key, 'NAME')) {
-                    // find name field
-                    $guessed['NAME'] = $sub_field_value;
-                }
-            }
-        }
+				// is this an email value? if so, assume it's the EMAIL field
+				if ( empty( $guessed['EMAIL'] ) && is_string( $sub_field_value ) && is_email( $sub_field_value ) ) {
+					$guessed['EMAIL'] = $sub_field_value;
+					continue 2;
+				}
 
-        return $guessed;
-    }
+				// remove special characters from field name
+				$simple_key = str_replace( array( '-', '_', ' ' ), '', $field );
 
-    /**
-     * @param $methods
-     *
-     * @return array
-     */
-    public function combine($methods)
-    {
-        $combined = array();
+				if ( empty( $guessed['FNAME'] ) && $this->string_contains( $simple_key, array( 'FIRSTNAME', 'FNAME', 'GIVENNAME', 'FORENAME' ) ) ) {
+					// find first name field
+					$guessed['FNAME'] = $sub_field_value;
+				} elseif ( empty( $guessed['LNAME'] ) && $this->string_contains( $simple_key, array( 'LASTNAME', 'LNAME', 'SURNAME', 'FAMILYNAME' ) ) ) {
+					// find last name field
+					$guessed['LNAME'] = $sub_field_value;
+				} elseif ( empty( $guessed['NAME'] ) && $this->string_contains( $simple_key, 'NAME' ) ) {
+					// find name field
+					$guessed['NAME'] = $sub_field_value;
+				}
+			}
+		}
 
-        foreach ($methods as $method) {
-            if (method_exists($this, $method)) {
-                $combined = array_merge($combined, call_user_func(array( $this, $method )));
-            }
-        }
+		return $guessed;
+	}
 
-        return $combined;
-    }
+	/**
+	 * @param $methods
+	 *
+	 * @return array
+	 */
+	public function combine( array $methods ) {
+		$combined = array();
 
-    /**
-     * @param $haystack
-     * @param $needles
-     *
-     * @return bool
-     */
-    private function string_contains($haystack, $needles)
-    {
-        if (! is_array($needles)) {
-            $needles = array( $needles );
-        }
+		foreach ( $methods as $method ) {
+			if ( method_exists( $this, $method ) ) {
+				$combined = array_merge( $combined, call_user_func( array( $this, $method ) ) );
+			}
+		}
 
-        foreach ($needles as $needle) {
-            if (strpos($haystack, $needle) !== false) {
-                return true;
-            }
-        }
+		return $combined;
+	}
 
-        return false;
-    }
+	/**
+	 * @param string $haystack
+	 * @param string|array $needles
+	 *
+	 * @return bool
+	 */
+	private function string_contains( $haystack, $needles ) {
+		if ( ! is_array( $needles ) ) {
+			$needles = array( $needles );
+		}
+
+		foreach ( $needles as $needle ) {
+			if ( strpos( $haystack, $needle ) !== false ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 }

@@ -41,6 +41,9 @@ if (!defined('WORDFENCE_VERSION')) { exit; }
 		catch (wfWAFStorageFileException $e) {
 			error_log($e->getMessage());
 		}
+		catch (wfWAFStorageEngineMySQLiException $e) {
+			error_log($e->getMessage());
+		}
 		if (!empty($lastUpdated)): ?>
 			var lastUpdated = <?php echo (int) $lastUpdated ?>;
 			WFAD.renderWAFRulesLastUpdated(new Date(lastUpdated * 1000));

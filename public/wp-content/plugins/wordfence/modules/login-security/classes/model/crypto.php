@@ -64,6 +64,7 @@ abstract class Model_Crypto {
 			}
 		}
 		if (function_exists('mcrypt_create_iv')) {
+			// phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.mcrypt_create_ivDeprecatedRemoved,PHPCompatibility.Extensions.RemovedExtensions.mcryptDeprecatedRemoved,PHPCompatibility.Constants.RemovedConstants.mcrypt_dev_urandomDeprecatedRemoved
 			$rand = @mcrypt_create_iv($bytes, MCRYPT_DEV_URANDOM);
 			if (is_string($rand) && self::strlen($rand) === $bytes) {
 				return $rand;
@@ -163,11 +164,12 @@ abstract class Model_Crypto {
 		static $encodings = array();
 		static $overloaded = null;
 		
-		if (is_null($overloaded))
+		if (is_null($overloaded)) {
+			// phpcs:ignore PHPCompatibility.IniDirectives.RemovedIniDirectives.mbstring_func_overloadDeprecated
 			$overloaded = function_exists('mb_internal_encoding') && (ini_get('mbstring.func_overload') & 2);
+		}
 		
-		if (false === $overloaded)
-			return;
+		if (false === $overloaded) { return; }
 		
 		if (!$reset) {
 			$encoding = mb_internal_encoding();

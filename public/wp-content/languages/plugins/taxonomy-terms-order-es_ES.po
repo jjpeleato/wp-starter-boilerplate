@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - Category Order and Taxonomy Terms Order - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2018-07-11 00:20:20+0000\n"
+"PO-Revision-Date: 2019-11-01 00:29:25+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11,24 +11,20 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: Plugins - Category Order and Taxonomy Terms Order - Stable (latest release)\n"
 
-#. Description of the plugin/theme
+#. Description of the plugin
 msgid "Order Categories and all custom taxonomies terms (hierarchically) and child terms using a Drag and Drop Sortable javascript capability."
 msgstr "Orden de categorías y todos los términos de personalización de taxonomías (jerarquizadas) usando la función de ordenar arrastra y suelta usando javascript"
 
-#. Author of the plugin/theme
+#. Author of the plugin
 msgid "Nsp-Code"
 msgstr "Nsp-Code"
 
-#. #-#-#-#-#  taxonomy-terms-order-code.pot (Category Order and Taxonomy Terms
-#. Order 1.5.5)  #-#-#-#-#
-#. Plugin URI of the plugin/theme
-#. #-#-#-#-#  taxonomy-terms-order-code.pot (Category Order and Taxonomy Terms
-#. Order 1.5.5)  #-#-#-#-#
-#. Author URI of the plugin/theme
+#. Plugin URI of the plugin
+#. Author URI of the plugin
 msgid "http://www.nsp-code.com"
 msgstr "http://www.nsp-code.com"
 
-#. Plugin Name of the plugin/theme
+#. Plugin Name of the plugin
 msgid "Category Order and Taxonomy Terms Order"
 msgstr "Orden en Taxonomías y Categorías"
 
@@ -86,7 +82,7 @@ msgstr "Autor"
 
 #: include/options.php:39
 msgid "Contributor"
-msgstr "Contribuidor"
+msgstr "Colaborador"
 
 #: include/options.php:38
 msgid "Subscriber"
@@ -132,8 +128,8 @@ msgstr "Taxonomías"
 msgid "This plugin can't work without javascript, because it's use drag and drop and AJAX."
 msgstr "Este plugin no puede funcionar sin JavaScript ya que utiliza AJAX y \"arrastrar y soltar\"."
 
-#: include/interface.php:38 taxonomy-terms-order.php:116
-#: taxonomy-terms-order.php:118 taxonomy-terms-order.php:120
+#: taxonomy-terms-order.php:116 taxonomy-terms-order.php:118
+#: taxonomy-terms-order.php:120 include/interface.php:38
 msgid "Taxonomy Order"
 msgstr "Orden de taxonomía"
 

@@ -400,7 +400,8 @@ class URE_Grant_Roles {
         </span><br>
 <?php        
         $show_admin_role = $this->lib->show_admin_role_allowed();        
-        $roles = $this->lib->get_all_editable_roles();        
+        $roles = $this->lib->get_all_editable_roles(); 
+        ksort( $roles );
         foreach ($roles as $role_id => $role) {
             if (!$show_admin_role && $role_id=='administrator') {
                 continue;

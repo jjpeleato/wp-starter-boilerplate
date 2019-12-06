@@ -25,10 +25,24 @@ class WPSEO_Post_Type_Sitemap_Provider implements WPSEO_Sitemap_Provider {
 	protected static $classifier;
 
 	/**
+	 * Determines whether images should be included in the XML sitemap.
+	 *
+	 * @var bool
+	 */
+	private $include_images;
+
+	/**
 	 * Set up object properties for data reuse.
 	 */
 	public function __construct() {
 		add_filter( 'save_post', array( $this, 'save_post' ) );
+
+		/**
+		 * Filter - Allows excluding images from the XML sitemap.
+		 *
+		 * @param bool unsigned True to include, false to exclude.
+		 */
+		$this->include_images = apply_filters( 'wpseo_xml_sitemap_include_images', true );
 	}
 
 	/**
@@ -70,6 +84,8 @@ class WPSEO_Post_Type_Sitemap_Provider implements WPSEO_Sitemap_Provider {
 	}
 
 	/**
+	 * Retrieves the sitemap links.
+	 *
 	 * @param int $max_entries Entries per sitemap.
 	 *
 	 * @return array
@@ -544,6 +560,8 @@ class WPSEO_Post_Type_Sitemap_Provider implements WPSEO_Sitemap_Provider {
 	}
 
 	/**
+	 * Constructs an SQL where clause for a given post type.
+	 *
 	 * @param string $post_type Post type slug.
 	 *
 	 * @return string
@@ -624,8 +642,11 @@ class WPSEO_Post_Type_Sitemap_Provider implements WPSEO_Sitemap_Provider {
 		}
 		unset( $canonical );
 
-		$url['pri']    = 1; // Deprecated, kept for backwards data compat. R.
-		$url['images'] = $this->get_image_parser()->get_images( $post );
+		$url['pri'] = 1; // Deprecated, kept for backwards data compat. R.
+
+		if ( $this->include_images ) {
+			$url['images'] = $this->get_image_parser()->get_images( $post );
+		}
 
 		return $url;
 	}

@@ -29,21 +29,21 @@
         "url": "git+https://github.com/jjpeleato/wp-starter-boilerplate.git"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-free": "^5.9.0",
-        "bootstrap": "^4.2.1",
+        "@fortawesome/fontawesome-free": "^5.11.2",
+        "bootstrap": "^4.4.1",
         "jquery": "^3.4.1",
         "lazyload": "^2.0.0-rc.2",
         "owl.carousel": "^2.3.4",
         "photoswipe": "^4.1.3",
-        "popper.js": "^1.15.0",
+        "popper.js": "^1.16.0",
         "skrollr": "^0.6.26",
         "wow.js": "^1.2.2"
     },
     "devDependencies": {
-        "@babel/core": "^7.5.5",
-        "@babel/preset-env": "^7.5.5",
-        "@babel/register": "^7.5.5",
-        "autoprefixer": "^9.6.1",
+        "@babel/core": "^7.7.5",
+        "@babel/preset-env": "^7.7.5",
+        "@babel/register": "^7.7.4",
+        "autoprefixer": "^9.7.3",
         "browser-sync": "^2.26.7",
         "del": "^3.0.0",
         "gulp": "^4.0.2",
@@ -59,9 +59,9 @@
         "gulp-terser": "^1.2.0",
         "gulp-uglifycss": "^1.1.0",
         "gulp-util": "^3.0.8",
-        "jshint": "^2.10.2",
+        "jshint": "^2.10.3",
         "stylelint": "^9.10.1",
         "stylelint-config-standard": "^18.3.0",
-        "stylelint-scss": "^3.9.2"
+        "stylelint-scss": "^3.13.0"
     }
 }

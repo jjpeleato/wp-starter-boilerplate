@@ -1,4 +1,5 @@
 <?php
+// phpcs:ignoreFile -- compatibility library for PHP 5-7.1
 
 if (class_exists('ParagonIE_Sodium_Core32_Curve25519_Ge_P1p1', false)) {
     return;

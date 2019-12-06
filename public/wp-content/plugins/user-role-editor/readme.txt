@@ -3,8 +3,8 @@ Contributors: shinephp
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=vladimir%40shinephp%2ecom&lc=RU&item_name=ShinePHP%2ecom&item_number=User%20Role%20Editor%20WordPress%20plugin&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
 Tags: user, role, editor, security, access, permission, capability
 Requires at least: 4.0
-Tested up to: 5.2.2
-Stable tag: 4.51.2
+Tested up to: 5.3
+Stable tag: 4.52.1
 Requires PHP: 5.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -81,33 +81,13 @@ https://translate.wordpress.org/projects/wp-plugins/user-role-editor/
 
 == Changelog =
 
-= [4.51.2] 15.07.2019 =
-* Fix: Dialog button labels inside User Role Editor ('Cancel' buttons especially) were shown with not correct translation or not translated at all. Thanks to @lucaboccianti for [this bug report](https://wordpress.org/support/topic/buttons-delete-role-cancel-dont-delete-role-inverted-functions-italian/).
-* Update: Roles inside WordPress roles dropdown lists are sorted by alphabet. 
+= [4.52.1] 11.11.2019 =
+* Update: URE requires PHP version 5.6.
+* ure_cpt_editor_roles filter was added. It takes 2 parameters: array $roles with 1 element 'administrator' by default and $post_type with post type name string. Add other role(s) to which you wish automatically add all user capabilities for custom post type $post_type. URE updates roles this way before opening "Users->User Role Editor" page.
+* New user capability 'ure_nav_menus_access' was added. It's used at the User Role Editor Pro only.
 
-= [4.51.1] 15.06.2019 =
-* Fix: Superadmin could not revoke capabilities from 'administrator' role under WordPress multisite.
-
-= [4.51] 21.05.2019 =
-* New: Bulk actions were added to the Users page: "Add Role", "Revoke Role". Select role from the related drop-down menu and add/revoke it to/from the list of pre-selected users.
-* Update: Bulk grant roles feature ("Grant roles" button at the "Users" page) and Bulk grant role to users without role ("Without role" button at the "Users" page) are protected by 'promote_users' capability instead of 'edit_users', exactly the same way as WordPress itself does for its "Change role to".
-* Update: 'load-users.php' action is used instead of 'admin_init' to load support code for "Without role" and "Grant roles" button at the "Users" page.
-* Update: URE ignores now a capability without ID in case it was added to the database somehow (other plugin bug, etc.). Such incorrect empty capability is removed from the capabilities list as a result after any role update.
-
-= [4.50.2] 01.04.2019 =
-* Fix: WordPress multisite: PHP Notice "wpmu_new_blog is deprecated since version 5.1.0! Use wp_insert_site instead." was removed. URE uses 'wp_initialize_site' action now instead of deprecated 'wpmu_new_blog'. This fix provides correct roles replication from the main blog/site to a new created blog/site.
-
-= [4.50.1] 16.03.2019 =
-* Fix: WP Multisite: Users->Capabilities->Update: "Fatal error: Uncaught Error: Call to undefined method URE_Editor::check_blog_user() in /wp-content/plugins/user-role-editor/includes/classes/editor.php on line 576" was fixed. 
-* Fix: WooCommerce group was not shown under "Custom capabilities" section.
-
-= [4.50] 03.03.2019 =
-* PHP version 5.5 was marked as required.
-* Update: General code restructure and optimization.
-* Update: URE_Base_Lib::get_blog_ids() returns null, if it's called under WordPress single site (not multisite).
-* Update: URE_Editor::prepare_capabilities_to_save() : "Invalid argument supplied for foreach()" warning was excluded in case there was no valid data structures initialization.
-* Update: 'administrator' role protection was enhanced. URE always does not allow to revoke capability from 'administrator' role. That was possible earlier after the 'administrator' role update.
-* Update: 2 new actions 'ure_settings_tools_show' and 'ure_settings_tools_exec' allows to extends the list of sections available at the Settings->User Role Editor->Tools tab.
+= [4.52] 07.10.2019 =
+* New:  Multisite: WordPress (tested up to version 5.2.3) shows "Change role to..." drop-down list at "Network Admin->Sites->selected site->Users tab" with roles filled from the main site, but should use roles list from the selected site. URE replaces this roles list with roles from the selected site and excludes error with message "Sorry, you are not allowed to give users that role.", when you try to grant to a user a role from the main site, which does not exist at the selected site.
 
 File changelog.txt contains the full list of changes.
 
@@ -119,10 +99,7 @@ I am ready to answer on your questions about plugin usage. Use [plugin page comm
 
 == Upgrade Notice ==
 
-= [4.51.1] 15.06.2019 =
-* Fix: Superadmin could not revoke capabilities from 'administrator' role under WordPress multisite.
-
-
-
-
-
+= [4.52.1] 11.11.2019 =
+* Update: URE requires PHP version 5.6.
+* ure_cpt_editor_roles filter was added. It takes 2 parameters: array $roles with 1 element 'administrator' by default and $post_type with post type name string. Add other role(s) to which you wish automatically add all user capabilities for custom post type $post_type. URE updates roles this way before opening "Users->User Role Editor" page.
+* New user capability 'ure_nav_menus_access' was added. It's used at the User Role Editor Pro only.

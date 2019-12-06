@@ -18,11 +18,15 @@ class WPSEO_Taxonomy {
 	private $taxonomy = '';
 
 	/**
+	 * Holds the metabox SEO analysis instance.
+	 *
 	 * @var WPSEO_Metabox_Analysis_SEO
 	 */
 	private $analysis_seo;
 
 	/**
+	 * Holds the metabox readability analysis instance.
+	 *
 	 * @var WPSEO_Metabox_Analysis_Readability
 	 */
 	private $analysis_readability;
@@ -67,11 +71,42 @@ class WPSEO_Taxonomy {
 	 * @param stdClass|WP_Term $term Term to show the edit boxes for.
 	 */
 	public function term_metabox( $term ) {
-		$tab = new WPSEO_Help_Center_Template_Variables_Tab();
-		$tab->register_hooks();
+		if ( WPSEO_Metabox::is_internet_explorer() ) {
+			$this->show_internet_explorer_notice();
+			return;
+		}
 
 		$metabox = new WPSEO_Taxonomy_Metabox( $this->taxonomy, $term );
 		$metabox->display();
+	}
+
+	/**
+	 * Renders the content for the internet explorer metabox.
+	 */
+	private function show_internet_explorer_notice() {
+		$product_title = 'Yoast SEO';
+		if ( file_exists( WPSEO_PATH . 'premium/' ) ) {
+			$product_title .= ' Premium';
+		}
+
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Reason: $product_title is hardcoded.
+		printf( '<div id="wpseo_meta" class="postbox yoast wpseo-taxonomy-metabox-postbox"><h2><span>%1$s</span></h2>', $product_title );
+
+		echo '<div class="inside">';
+		echo '<div class="yoast-alert-box yoast-alert-box__warning">';
+		echo '<span class="icon">';
+		echo '<svg xmlns="http://www.w3.org/2000/svg" fill="#674E00" height="14px" width="14px" viewBox="0 0 576 512" role="img" aria-hidden="true" focusable="false"><path d="M569.517 440.013C587.975 472.007 564.806 512 527.94 512H48.054c-36.937 0-59.999-40.055-41.577-71.987L246.423 23.985c18.467-32.009 64.72-31.951 83.154 0l239.94 416.028zM288 354c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"/></svg>';
+		echo '</span>';
+		echo '<div style="float: left">';
+		printf(
+			esc_html__( 'The browser you are currently using is unfortunately rather dated. Since we strive to give you the best experience possible, we no longer support this browser. Instead, please use %1$sFirefox%4$s, %2$sChrome%4$s or %3$sMicrosoft Edge%4$s.', 'wordpress-seo' ),
+			'<a href="https://www.mozilla.org/firefox/new/">',
+			'<a href="https://www.google.com/intl/nl/chrome/">',
+			'<a href="https://www.microsoft.com/windows/microsoft-edge">',
+			'</a>'
+		);
+		echo '</div></div>';
+		echo '</div></div>';
 	}
 
 	/**
@@ -80,6 +115,7 @@ class WPSEO_Taxonomy {
 	 * @since 1.5.0
 	 */
 	public function admin_enqueue_scripts() {
+
 		$pagenow = $GLOBALS['pagenow'];
 
 		if ( ! ( self::is_term_edit( $pagenow ) || self::is_term_overview( $pagenow ) ) ) {
@@ -88,9 +124,6 @@ class WPSEO_Taxonomy {
 
 		$asset_manager = new WPSEO_Admin_Asset_Manager();
 		$asset_manager->enqueue_style( 'scoring' );
-
-		$tab = new WPSEO_Help_Center_Template_Variables_Tab();
-		$tab->enqueue_assets();
 
 		$tag_id = filter_input( INPUT_GET, 'tag_ID' );
 		if (
@@ -103,6 +136,7 @@ class WPSEO_Taxonomy {
 			$asset_manager->enqueue_style( 'scoring' );
 			$asset_manager->enqueue_script( 'metabox' );
 			$asset_manager->enqueue_script( 'term-scraper' );
+			$asset_manager->enqueue_script( 'admin-script' );
 
 			wp_localize_script( WPSEO_Admin_Asset_Manager::PREFIX . 'term-scraper', 'wpseoTermScraperL10n', $this->localize_term_scraper_script() );
 			$yoast_components_l10n = new WPSEO_Admin_Asset_Yoast_Components_L10n();
@@ -161,6 +195,10 @@ class WPSEO_Taxonomy {
 	 * @param string $taxonomy The taxonomy the term belongs to.
 	 */
 	public function update_term( $term_id, $tt_id, $taxonomy ) {
+		if ( is_multisite() && ms_is_switched() ) {
+			return;
+		}
+
 		/* Create post array with only our values. */
 		$new_meta_data = array();
 		foreach ( WPSEO_Taxonomy_Meta::$defaults_per_term as $key => $default ) {
@@ -275,6 +313,8 @@ class WPSEO_Taxonomy {
 	}
 
 	/**
+	 * Determines if a given page is the term overview page.
+	 *
 	 * @param string $page The string to check for the term overview page.
 	 *
 	 * @return bool
@@ -284,6 +324,8 @@ class WPSEO_Taxonomy {
 	}
 
 	/**
+	 * Determines if a given page is the term edit page.
+	 *
 	 * @param string $page The string to check for the term edit page.
 	 *
 	 * @return bool

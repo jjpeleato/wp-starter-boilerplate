@@ -302,7 +302,7 @@ class UpdraftPlus_UpdraftCentral_Main {
 		
 		// Normally, key generation takes seconds, even on a slow machine. However, some Windows machines appear to have a setup in which it takes a minute or more. And then, if you're on a double-localhost setup on slow hardware - even worse. It doesn't hurt to just raise the maximum execution time.
 		
-		@set_time_limit(UPDRAFTPLUS_SET_TIME_LIMIT);
+		@set_time_limit(UPDRAFTPLUS_SET_TIME_LIMIT);// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
 		
 		$key_size = (empty($extra_info['key_size']) || !is_numeric($extra_info['key_size']) || $extra_info['key_size'] < 512) ? 2048 : (int) $extra_info['key_size'];
 
@@ -506,7 +506,7 @@ class UpdraftPlus_UpdraftCentral_Main {
 					<tr class="updraftcentral_wizard_stage1">
 						<td>
 							<div class="updraftcentral_wizard_mothership updraftcentral_wizard_option">
-								<label class="button-primary">
+								<label class="button-primary" tabindex="0">
 									<input checked="checked" type="radio" name="updraftcentral_mothership" id="updraftcentral_mothership_updraftpluscom" style="display: none;">
 									<?php _e('UpdraftPlus.Com', 'updraftplus');?>
 								</label><br>
@@ -514,7 +514,7 @@ class UpdraftPlus_UpdraftCentral_Main {
 
 							</div>
 							<div class="updraftcentral_wizard_self_hosted_stage1 updraftcentral_wizard_option">
-								<label class="button-primary">
+								<label class="button-primary" tabindex="0">
 									<input type="radio" name="updraftcentral_mothership" id="updraftcentral_mothership_other" style="display: none;">
 									<?php _e('Self-hosted dashboard', 'updraftplus');?>
 								</label><br>
