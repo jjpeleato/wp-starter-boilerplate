@@ -278,7 +278,7 @@ class URE_View {
     
     private function show_select_all() {
         $multisite = $this->lib->get('multisite');
-        $current_role = $this->lib->get('current_role');
+        $current_role = $this->editor->get('current_role');
         $show = true;
         if ($multisite) { 
             if ($current_role=='administrator' && !$this->lib->is_super_admin()) {

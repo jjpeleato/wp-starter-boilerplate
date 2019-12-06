@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the UpdraftPlus package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2019-02-27 16:20:58+0000\n"
+"PO-Revision-Date: 2019-11-02 00:53:44+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -87,43 +87,43 @@ msgstr ""
 
 #: src/addons/googlecloud.php:57
 msgid "Frankfurt"
-msgstr ""
+msgstr "フランクフルト"
 
 #: src/addons/googlecloud.php:56
 msgid "London"
-msgstr ""
+msgstr "ロンドン"
 
 #: src/addons/googlecloud.php:55
 msgid "Belgium"
-msgstr ""
+msgstr "ベルギー"
 
 #: src/addons/googlecloud.php:54
 msgid "Sydney"
-msgstr ""
+msgstr "シドニー"
 
 #: src/addons/googlecloud.php:53
 msgid "Singapore"
-msgstr ""
+msgstr "シンガポール"
 
 #: src/addons/googlecloud.php:52
 msgid "Tokyo"
-msgstr ""
+msgstr "東京"
 
 #: src/addons/googlecloud.php:51
 msgid "Taiwan"
-msgstr ""
+msgstr "台湾"
 
 #: src/addons/googlecloud.php:50
 msgid "Oregon"
-msgstr ""
+msgstr "オレゴン"
 
 #: src/addons/googlecloud.php:49
 msgid "North Virginia"
-msgstr ""
+msgstr "ノースバージニア"
 
 #: src/addons/googlecloud.php:48
 msgid "South Carolina"
-msgstr ""
+msgstr "サウスカロライナ"
 
 #: src/addons/googlecloud.php:47
 msgid "Iowa"
@@ -444,12 +444,12 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/temporary-clone.php:22
 msgid "A temporary clone is an instant copy of this website, running on our servers. Rather than test things on your live site, you can UpdraftClone it, and then throw away your clone when done."
-msgstr ""
+msgstr "一時的な複製とは、その時のこのサイトのコピーで我々のサーバーで実行されます。あなたの実際のサイトでテストするのではなく、UpdraftClone を使い、テスト完了後にその複製を破棄することができます。"
 
 #: src/templates/wp-admin/settings/temporary-clone.php:10,
 #: src/templates/wp-admin/settings/temporary-clone.php:39
 msgid "Create a temporary clone on our servers (UpdraftClone)"
-msgstr ""
+msgstr "我々のサーバー上にサイトの一時的な複製を生成する (UpdraftClone)"
 
 #: src/templates/wp-admin/settings/tab-addons.php:23
 msgid "WooCommerce plugins"
@@ -663,7 +663,7 @@ msgstr ""
 
 #: src/admin.php:2798
 msgid "Backup / Restore"
-msgstr ""
+msgstr "バックアップ / 復元"
 
 #: src/admin.php:663
 msgid "Backup"
@@ -739,7 +739,7 @@ msgstr ""
 
 #: src/admin.php:671, src/admin.php:2799
 msgid "Migrate / Clone"
-msgstr ""
+msgstr "移行 / 複製"
 
 #: src/admin.php:3036, src/admin.php:3961,
 #: src/templates/wp-admin/settings/existing-backups-table.php:73,
@@ -1900,7 +1900,7 @@ msgstr "UpdraftCentral の紹介"
 
 #: src/includes/updraftplus-notices.php:82
 msgid "Copy your site to another domain directly. Includes find-and-replace tool for database references."
-msgstr ""
+msgstr "サイトを直接違うドメインへとコピーできます。データベースを参照するための置換ツールが含まれています。"
 
 #: src/includes/updraftplus-notices.php:81
 msgid "easily migrate or clone your site in minutes"
@@ -2764,7 +2764,7 @@ msgstr "コンテナにアクセス出来ない"
 
 #: src/class-updraftplus.php:2992
 msgid "To complete your migration/clone, you should now log in to the remote site and restore the backup set."
-msgstr "移行/クローンを完了するには、あなたが今、リモートサイトにログインして、バックアップセットを復元する必要があります。"
+msgstr "移行/複製を完了するには、あなたが今、リモートサイトにログインして、バックアップセットを復元する必要があります。"
 
 #: src/backup.php:1792
 msgid "the options table was not found"
@@ -3841,7 +3841,7 @@ msgstr "データをバックアップする（クリックしてダウンロー
 #: src/templates/wp-admin/settings/existing-backups-table.php:17,
 #: src/templates/wp-admin/settings/existing-backups-table.php:64
 msgid "Backup date"
-msgstr "バックアップ日付"
+msgstr "バックアップ日時"
 
 #: src/templates/wp-admin/settings/form-contents.php:42,
 #: src/templates/wp-admin/settings/form-contents.php:75
@@ -5183,7 +5183,7 @@ msgstr "（明示的にマルチサイトの互換性のためにコードされ
 
 #: src/options.php:208
 msgid "Without upgrading, UpdraftPlus allows <strong>every</strong> blog admin who can modify plugin settings to backup (and hence access the data, including passwords, from) and restore (including with customized modifications, e.g. changed passwords) <strong>the entire network</strong>."
-msgstr ""
+msgstr "アップグレードすることなく、UpdraftPlus allows <strong>すべての</strong> ブログの管理者が<strong>ネットワーク全体</strong>のバックアップのためのプラグインの設定 (故にパスワードや対象ファイルなどの情報へのアクセス) 、また復元 (パスワードの変更などカスタマイズを含む) を変更できます。"
 
 #: src/options.php:208
 msgid "WordPress Multisite is supported, with extra features, by UpdraftPlus Premium, or the Multisite add-on."

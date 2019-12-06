@@ -87,26 +87,45 @@
     display     : block;
 }
 
-.metaboxes-tab .yith-plugin-fw-radio__row{
-    width: 100%;
-    min-height: 20px;
+.metaboxes-tab .yith-plugin-fw-radio__row {
+    width      : 100%;
+    min-height : 20px;
 }
+
 .metaboxes-tab .yith-plugin-fw-radio__row label,
 .metaboxes-tab .yith-toggle-elements label,
 .metaboxes-tab .yith-add-box label {
-    margin-left:0;
-    font-weight:normal;
+    margin-left : 0;
+    font-weight : normal;
 }
+
+.metaboxes-tab.yith-plugin-ui h3 {
+    color          : #2a8db0;
+    font-size      : 15px;
+    text-transform : uppercase;
+    padding        : 5px 20px;
+    margin         : 0 0 0 -4px;
+    width          : auto;
+    background     : transparent;
+}
+
 .metaboxes-tab.yith-plugin-ui .yith-add-box,
-.metaboxes-tab.yith-plugin-ui .yith-toggle-row{
+.metaboxes-tab.yith-plugin-ui .yith-toggle-row {
     width : auto;
 }
+
 .metaboxes-tab .wp-picker-container label {
     font-weight : inherit;
     width       : auto;
     float       : none;
     line-height : inherit;
     margin-left : 0;
+}
+
+.metaboxes-tab.yith-plugin-ui .yith-plugin-fw-radio__row label {
+    width       : auto !important;
+    display     : inline-block;
+    font-weight : normal;
 }
 
 .metaboxes-tab input[type="checkbox"] {
@@ -167,6 +186,38 @@
     padding : 15px 0;
 }
 
+.metaboxes-tab.yith-plugin-ui ul.metaboxes-tabs {
+    background    : transparent;
+    border-bottom : 1px solid #d8d8d8;
+    padding       : 10px 0 0 0;
+    margin        : 0 10px
+}
+
+
+.metaboxes-tab.yith-plugin-ui ul.metaboxes-tabs li {
+    background   : #fff;
+    border-top   : 1px solid #d8d8d8;
+    border-left  : 1px solid #d8d8d8;
+    border-right : 1px solid #d8d8d8;
+    margin       : 0 0 -1px -1px;
+}
+
+.metaboxes-tab.yith-plugin-ui ul.metaboxes-tabs li.tabs {
+    border-bottom : 1px solid #fff;
+}
+
+.metaboxes-tab.yith-plugin-ui ul.metaboxes-tabs li a {
+    color          : #336374;
+    padding        : 10px 18px;
+    text-transform : uppercase;
+    font-weight    : 600;
+    display        : inline-block;
+}
+
+.metaboxes-tab.yith-plugin-ui ul.metaboxes-tabs li.tabs a {
+    color : #2a8db0;
+}
+
 /* sortable table posts */
 
 #the-list.ui-sortable tr:hover {
@@ -201,18 +252,41 @@
     width     : 400px;
     max-width : 100%;
 }
-.metaboxes-tab.yith-plugin-ui input[type=number]{
-    width: auto;
-    min-width: 90px;
+
+.metaboxes-tab.yith-plugin-ui input[type=number] {
+    width     : auto;
+    min-width : 90px;
 }
+
+.metaboxes-tab.yith-plugin-ui p {
+    font-size : 14px;
+}
+
+.metaboxes-tab.yith-plugin-ui p.section-description {
+
+    margin : 0 20px 40px 18px;
+}
+
 .metaboxes-tab .yith-plugin-fw-text-array-table input[type=text] {
     width : 100%;
+}
+
+.metaboxes-tab.yith-plugin-ui .yith-add-box h3 {
+    padding     : 0 0 30px 0;
+    font-weight : 600;
+    margin      : 0;
+}
+
+.metaboxes-tab.yith-plugin-ui .select2-container--default .select2-selection--single {
+    border : 0;
+    margin : 0;
 }
 
 /* wp editor */
 .the-metabox.textarea-editor .mceIframeContainer {
     background : #fff;
 }
+
 
 .the-metabox.textarea-editor label {
     margin-top : 24px;
@@ -667,4 +741,12 @@
     position    : static;
     z-index     : 1;
     font-family : inherit;
+}
+
+.the-metabox.checkbox.checkboxgroup-start.clearfix {
+    margin : 40px 0 0 264px;
+}
+
+.the-metabox.checkbox.checkboxgroup.clearfix {
+    margin : 0 0 0 264px;
 }

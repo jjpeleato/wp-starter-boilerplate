@@ -174,6 +174,9 @@ $payload = "-----BEGIN REPORT-----\n" . implode("\n", str_split($message, 60)) .
 	</style>
 </head>
 <body>
+<?php
+if (!empty($errorNonce)) { echo '<!-- WFWAF NONCE: ' . htmlentities($errorNonce) . ' -->'; }
+?>
 
 <h1>403 Forbidden</h1>
 

@@ -33,7 +33,7 @@ class WPSEO_Replacevar_Editor {
 	/**
 	 * Constructs the object.
 	 *
-	 * @param Yoast_Form $yform                 Yoast forms.
+	 * @param Yoast_Form $yform     Yoast forms.
 	 * @param array      $arguments {
 	 *      The arguments that can be given.
 	 *
@@ -92,6 +92,8 @@ class WPSEO_Replacevar_Editor {
 	}
 
 	/**
+	 * Validates the replacement variable editor arguments.
+	 *
 	 * @param array $arguments The arguments to validate.
 	 *
 	 * @throws InvalidArgumentException Thrown when not all required arguments are present.

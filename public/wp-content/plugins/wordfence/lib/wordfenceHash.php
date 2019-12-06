@@ -1,5 +1,5 @@
 <?php
-require_once('wordfenceClass.php');
+require_once(dirname(__FILE__) . '/wordfenceClass.php');
 class wordfenceHash {
 	private $engine = false;
 	private $db = false;
@@ -32,6 +32,7 @@ class wordfenceHash {
 	private $indexed = false;
 	private $indexSize = 0;
 	private $currentIndex = 0;
+	private $coalescingIssues = array();
 
 	/**
 	 * @param string $striplen
@@ -153,7 +154,7 @@ class wordfenceHash {
 		if ($options['scansEnabled_fileContentsGSB']) { $this->engine->scanController()->startStage(wfScanner::STAGE_CONTENT_SAFETY); }
 		
 		if ($this->coreUnknownEnabled && !$this->alertedOnUnknownWordPressVersion && empty($this->knownFiles['core'])) {
-			require(ABSPATH . 'wp-includes/version.php'); //defines $wp_version
+			require(ABSPATH . 'wp-includes/version.php'); /* @var string $wp_version */
 			$this->alertedOnUnknownWordPressVersion = true;
 			$added = $this->engine->addIssue(
 				'coreUnknown',
@@ -170,7 +171,7 @@ class wordfenceHash {
 		}
 	}
 	public function __sleep(){
-		return array('striplen', 'totalFiles', 'totalDirs', 'totalData', 'stoppedOnFile', 'coreEnabled', 'pluginsEnabled', 'themesEnabled', 'malwareEnabled', 'coreUnknownEnabled', 'knownFiles', 'haveIssues', 'status', 'possibleMalware', 'path', 'only', 'totalForks', 'alertedOnUnknownWordPressVersion', 'foldersProcessed', 'suspectedFiles', 'indexed', 'indexSize', 'currentIndex', 'foldersEntered');
+		return array('striplen', 'totalFiles', 'totalDirs', 'totalData', 'stoppedOnFile', 'coreEnabled', 'pluginsEnabled', 'themesEnabled', 'malwareEnabled', 'coreUnknownEnabled', 'knownFiles', 'haveIssues', 'status', 'possibleMalware', 'path', 'only', 'totalForks', 'alertedOnUnknownWordPressVersion', 'foldersProcessed', 'suspectedFiles', 'indexed', 'indexSize', 'currentIndex', 'foldersEntered', 'coalescingIssues');
 	}
 	public function __wakeup(){
 		$this->db = new wfDB();
@@ -358,6 +359,8 @@ class wordfenceHash {
 			$payload = $indexedFiles;
 			$indexedFiles = array();
 		}
+		
+		$payload = array_filter($payload); //Strip empty strings -- these are symlinks to files outside of the site root (ABSPATH)
 		
 		if (count($payload) > 0) {
 			global $wpdb;
@@ -598,14 +601,34 @@ class wordfenceHash {
 									)
 								);
 							}
+							else if (preg_match('#/php\.ini$#', $file)) {
+								$this->engine->addPendingIssue(
+									'knownfile',
+									wfIssues::SEVERITY_HIGH,
+									'coreUnknown' . $file,
+									'coreUnknown' . $file . $md5,
+									sprintf(__('Unknown file in WordPress core: %s', 'wordfence'), $file),
+									__('This file is in a WordPress core location but is not distributed with this version of WordPress. This scan often includes files left over from a previous WordPress version, but it may also find files added by another plugin, files added by your host, or malicious files added by an attacker.', 'wordfence'),
+									array(
+										'file' => $file,
+										'cType' => 'core',
+										'canDiff' => false,
+										'canFix' => false,
+										'canDelete' => true,
+										'coalesce' => 'php.ini',
+										'learnMore' => wfSupportController::supportURL(wfSupportController::ITEM_SCAN_RESULT_UNKNOWN_FILE_CORE),
+										'haveIssues' => 'coreUnknown',
+									)
+								);
+							}
 							else {
 								$added = $this->engine->addIssue(
 									'knownfile',
 									wfIssues::SEVERITY_HIGH,
 									'coreUnknown' . $file,
 									'coreUnknown' . $file . $md5,
-									'Unknown file in WordPress core: ' . $file,
-									"This file is in a WordPress core location but is not distributed with this version of WordPress. This is usually due to it being left over from a previous WordPress update, but it may also have been added by another plugin or a malicious file added by an attacker.",
+									sprintf(__('Unknown file in WordPress core: %s', 'wordfence'), $file),
+									sprintf(__('This file is in a WordPress core location but is not distributed with this version of WordPress. This scan often includes files left over from a previous WordPress version, but it may also find files added by another plugin, files added by your host, or malicious files added by an attacker. <a href="%s" target="_blank" rel="noopener noreferrer">Learn More</a>', 'wordfence'), wfSupportController::esc_supportURL(wfSupportController::ITEM_SCAN_RESULT_UNKNOWN_FILE_CORE)),
 									array(
 										'file' => $file,
 										'cType' => 'core',
@@ -667,22 +690,30 @@ class wordfenceHash {
 				$safeFiles = $this->isSafeFile($hashesToCheck);
 			}
 			
-			//Migrate non-safe file issues to official issues
+			//Migrate non-safe file issues to official issues and begin coalescing tagged issues
 			foreach ($issues as &$i) {
 				if (!in_array($i['shac'], $safeFiles)) {
 					$haveIssuesType = $i['data']['haveIssues'];
-					$added = $this->engine->addIssue(
-						$i['type'],
-						$i['severity'],
-						$i['ignoreP'],
-						$i['ignoreC'],
-						$i['shortMsg'],
-						$i['longMsg'],
-						$i['data'],
-						true //Prevent ignoreP and ignoreC from being hashed again
-					);
-					if ($added == wfIssues::ISSUE_ADDED || $added == wfIssues::ISSUE_UPDATED) { $this->haveIssues[$haveIssuesType] = wfIssues::STATUS_PROBLEM; }
-					else if ($this->haveIssues[$haveIssuesType] != wfIssues::STATUS_PROBLEM && ($added == wfIssues::ISSUE_IGNOREP || $added == wfIssues::ISSUE_IGNOREC)) { $this->haveIssues[$haveIssuesType] = wfIssues::STATUS_IGNORED; }
+					if (isset($i['data']['coalesce'])) {
+						$key = $i['data']['coalesce'];
+						if (!isset($this->coalescingIssues[$key])) { $this->coalescingIssues[$key] = array('count' => 0, 'issue' => $i); }
+						$this->coalescingIssues[$key]['count']++;
+					}
+					else {
+						$added = $this->engine->addIssue(
+							$i['type'],
+							$i['severity'],
+							$i['ignoreP'],
+							$i['ignoreC'],
+							$i['shortMsg'],
+							$i['longMsg'],
+							$i['data'],
+							true //Prevent ignoreP and ignoreC from being hashed again
+						);
+						if ($added == wfIssues::ISSUE_ADDED || $added == wfIssues::ISSUE_UPDATED) { $this->haveIssues[$haveIssuesType] = wfIssues::STATUS_PROBLEM; }
+						else if ($this->haveIssues[$haveIssuesType] != wfIssues::STATUS_PROBLEM && ($added == wfIssues::ISSUE_IGNOREP || $added == wfIssues::ISSUE_IGNOREC)) { $this->haveIssues[$haveIssuesType] = wfIssues::STATUS_IGNORED; }
+					}
+					
 					$this->db->queryWrite("UPDATE {$fileModsTable} SET isSafeFile = '0' WHERE SHAC = UNHEX('%s')", $i['shac']);
 				}
 				else {
@@ -692,6 +723,25 @@ class wordfenceHash {
 			
 			$offset += count($issues);
 			$this->engine->checkForKill();
+		}
+		
+		//Insert the coalesced issues (currently just multiple php.ini in system directories)
+		foreach ($this->coalescingIssues as $c) {
+			$count = $c['count'];
+			$i = $c['issue'];
+			$haveIssuesType = $i['data']['haveIssues'];
+			$added = $this->engine->addIssue(
+				$i['type'],
+				$i['severity'],
+				$i['ignoreP'],
+				$i['ignoreC'],
+				$i['shortMsg'] . ($count > 1 ? ' ' . sprintf(__('(+ %d more)', 'wordfence'), $count - 1) : ''),
+				$i['longMsg'] . ($count > 1 ? ' ' . ($count > 2 ? sprintf(__('%d more similar files were found.', 'wordfence'), $count - 1) : __('1 more similar file was found.', 'wordfence')) : '') . (isset($i['data']['learnMore']) ? ' ' . sprintf(__('<a href="%s" target="_blank" rel="noopener noreferrer">Learn More</a>', 'wordfence'), esc_attr($i['data']['learnMore'])) : ''),
+				$i['data'],
+				true //Prevent ignoreP and ignoreC from being hashed again
+			);
+			if ($added == wfIssues::ISSUE_ADDED || $added == wfIssues::ISSUE_UPDATED) { $this->haveIssues[$haveIssuesType] = wfIssues::STATUS_PROBLEM; }
+			else if ($this->haveIssues[$haveIssuesType] != wfIssues::STATUS_PROBLEM && ($added == wfIssues::ISSUE_IGNOREP || $added == wfIssues::ISSUE_IGNOREC)) { $this->haveIssues[$haveIssuesType] = wfIssues::STATUS_IGNORED; }
 		}
 	}
 	public static function hashFile($file) {

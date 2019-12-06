@@ -1590,8 +1590,9 @@ class YIT_CPT_Unlimited {
      * @author Antonino Scarfi' <antonino.scarfi@yithemes.com>
      */
     public function admin_assets() {
+	    $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
         wp_enqueue_media();
-        wp_enqueue_script( 'yit-cptu', YIT_CORE_PLUGIN_URL . '/assets/js/yit-cpt-unlimited.js', array('jquery'), '', true );
+        wp_enqueue_script( 'yit-cptu', YIT_CORE_PLUGIN_URL . '/assets/js/yit-cpt-unlimited' . $suffix . '.js', array('jquery'), '', true );
     }
 
     /**
@@ -1619,6 +1620,7 @@ class YIT_CPT_Unlimited {
         if ( $cptu != $this->_name || ! $this->_is_valid( $post_type ) ) {
             return;
         }
+
         ?>
         <script>
             (function($) {
@@ -1629,7 +1631,8 @@ class YIT_CPT_Unlimited {
                     href: '#',
                     class: 'multi-uploader add-new-h2',
                     'data-uploader_title': '<?php printf( __( 'Add %s from images', 'yith-plugin-fw' ), $label_plural ) ?>',
-                    'data-uploader_button_text': '<?php printf( __( 'Add %s', 'yith-plugin-fw' ), $label_plural ) ?>'
+                    'data-uploader_button_text': '<?php printf( __( 'Add %s', 'yith-plugin-fw' ), $label_plural ) ?>',
+                    'data-nonce': '<?php echo wp_create_nonce( 'cpt-unlimited-multiuploader' ); ?>'
                 }).text('<?php _e( 'Upload multiple files', 'yith-plugin-fw' ) ?>');
 
                 var spinner = $('<span />', {
@@ -1652,6 +1655,9 @@ class YIT_CPT_Unlimited {
      * @author Antonino Scarfi' <antonino.scarfi@yithemes.com>
      */
     public function post_multiuploader() {
+
+        check_ajax_referer( 'cpt-unlimited-multiuploader' );
+
         if ( ! isset( $_REQUEST['images'] ) || ! isset( $_REQUEST['post_type'] ) && $this->_is_valid( $_REQUEST['post_type'] ) ) {
             return;
         }

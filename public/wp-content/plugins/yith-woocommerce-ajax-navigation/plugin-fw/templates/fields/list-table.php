@@ -17,7 +17,7 @@ if ( isset( $add_new_button ) && isset( $post_type ) ) {
 	$show_button         = true;
 	$admin_url           = admin_url( 'post-new.php' );
 	$params['post_type'] = $post_type;
-	$add_new_url         = esc_url( add_query_arg( $params, $admin_url ) );
+	$add_new_url         = apply_filters( 'yith_plugin_fw_add_new_post_url', esc_url( add_query_arg( $params, $admin_url ) ), $params, isset( $args ) ? $args : false  );
 }
 
 if ( isset( $list_table_class ) && ! class_exists( $list_table_class ) && isset( $list_table_class_dir ) ) {
@@ -25,7 +25,7 @@ if ( isset( $list_table_class ) && ! class_exists( $list_table_class ) && isset(
 }
 
 if ( class_exists( $list_table_class ) ):
-	$list_table = new $list_table_class();
+	$list_table = isset( $args ) ? new $list_table_class( $args ) : new $list_table_class() ;
 ?>
 
 <div id="<?php echo $id ?>" class="yith-plugin-fw-list-table <?php echo $class ?>">
@@ -49,6 +49,9 @@ if ( class_exists( $list_table_class ) ):
 			$list_table->views();
 			?>
             <form method="post">
+	            <?php if( isset( $search_form ) ) {
+	                $list_table->search_box( $search_form['text'], $search_form['input_id'] );
+                } ?>
 				<?php
 				$list_table->display();
 				?>

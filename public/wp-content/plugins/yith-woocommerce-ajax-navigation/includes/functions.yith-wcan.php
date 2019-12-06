@@ -396,6 +396,11 @@ if ( ! function_exists( 'yit_term_has_child' ) ) {
         $child_terms = yith_wcan_wp_get_terms( array( 'taxonomy' => $taxonomy, 'child_of' => $term->term_id ) );
 
         if( ! is_wp_error( $child_terms ) ){
+
+            if( apply_filters( 'yith_wcan_skip_check_on_product_in_term',false, $child_terms ) ){
+                return true;
+            }
+
             foreach ( $child_terms as $child_term ) {
                 $_products_in_term = get_objects_in_term( $child_term->term_id, $taxonomy );
                 $count += sizeof( array_intersect( $_products_in_term, YITH_WCAN()->frontend->layered_nav_product_ids ) );
@@ -789,8 +794,16 @@ if( ! function_exists( 'yith_wcan_wp_get_terms' ) ) {
      */
     function yith_wcan_wp_get_terms( $args ) {
         global $wp_version;
-        
-        if( version_compare( $wp_version, '4.6', '<' ) ){
+
+        $pre_terms = apply_filters( 'pre_yith_wcan_wp_get_terms', false, $args );
+
+        if( false !== $pre_terms ){
+        	return $pre_terms;
+        }
+
+	    $terms = array();
+
+	    if( version_compare( $wp_version, '4.6', '<' ) ){
 	        $terms = get_terms( $args['taxonomy'], $args );
         }
         

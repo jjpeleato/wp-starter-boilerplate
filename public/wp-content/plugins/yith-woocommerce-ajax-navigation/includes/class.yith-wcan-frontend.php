@@ -401,7 +401,8 @@ if ( ! class_exists( 'YITH_WCAN_Frontend' ) ) {
 
                 $args = yit_product_visibility_meta( $args );
 
-                $queried_object = is_object( get_queried_object() ) ? get_queried_object() : false;
+                global $wp_query;
+                $queried_object = function_exists( 'get_queried_object' ) && is_callable( array( $wp_query, 'get_queried_object' ) ) ? get_queried_object() : false;
 
                 $taxonomy   = $queried_object && property_exists( $queried_object, 'taxonomy' ) ? $queried_object->taxonomy : false;
                 $slug       = $queried_object && property_exists( $queried_object, 'slug' ) ? $queried_object->slug : false;

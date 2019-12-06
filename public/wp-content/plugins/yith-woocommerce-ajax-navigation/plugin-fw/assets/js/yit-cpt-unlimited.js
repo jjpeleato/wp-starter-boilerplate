@@ -51,12 +51,13 @@
                 // Do something with attachment.id and/or attachment.url here
                 images.push( { id: attachment.id, url: attachment.url, title: attachment.title } );
             });
-
+console.log( button.data('nonce') );
             // make AJAX request
             $.post( ajaxurl, {
                 images: images,
                 post_type: typenow,
-                action: 'yit_cptu_multiuploader'
+                action: 'yit_cptu_multiuploader',
+                _ajax_nonce: button.data('nonce')
             }, function( data ){
                 location.reload();
             });

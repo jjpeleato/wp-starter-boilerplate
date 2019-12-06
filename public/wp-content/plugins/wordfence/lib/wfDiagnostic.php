@@ -59,6 +59,7 @@ class wfDiagnostic
 				'tests' => array(
 					'wfVersion' => __('Wordfence Version', 'wordfence'),
 					'geoIPVersion' => __('GeoIP Version', 'wordfence'),
+					'cronStatus' => __('Cron Status', 'wordfence'),
 				),
 			),
 			'Filesystem' => array(
@@ -81,6 +82,7 @@ class wfDiagnostic
 				'description' => __('Current WAF configuration.', 'wordfence'),
 				'tests' => array(
 					'wafAutoPrepend' => __('WAF auto prepend active', 'wordfence'),
+					'wafStorageEngine' => __('WAF storage engine (WFWAF_STORAGE_ENGINE)', 'wordfence'),
 					'wafLogPath' => __('WAF log path', 'wordfence'),
 					'wafSubdirectoryInstall' => __('WAF subdirectory installation', 'wordfence'),
 					'wafAutoPrependFilePath' => __('wordfence-waf.php path', 'wordfence'),
@@ -179,6 +181,22 @@ class wfDiagnostic
 		return array('test' => true, 'infoOnly' => true, 'message' => wfUtils::geoIPVersion());
 	}
 	
+	public function cronStatus() {
+		$cron = _get_cron_array();
+		$overdue = 0;
+		foreach ($cron as $timestamp => $values) {
+			if (is_array($values)) {
+				foreach ($values as $cron_job => $v) {
+					if (is_numeric($timestamp)) {
+						if ((time() - 1800) > $timestamp) { $overdue++; }
+					}
+				}
+			}
+		}
+		
+		return array('test' => true, 'infoOnly' => true, 'message' => $overdue ? ($overdue == 1 ? __('1 Job Overdue', 'wordfence') : sprintf(__('%d Jobs Overdue', 'wordfence'), $overdue)) : __('Normal', 'wordfence'));
+	}
+	
 	public function geoIPError() {
 		$error = wfUtils::last_error('geoip');
 		return array('test' => true, 'infoOnly' => true, 'message' => $error ? $error : __('None', 'wordfence'));
@@ -194,6 +212,10 @@ class wfDiagnostic
 	
 	public function isWAFReadable() {
 		if (!is_readable(WFWAF_LOG_PATH)) {
+			if (defined('WFWAF_STORAGE_ENGINE') && WFWAF_STORAGE_ENGINE == 'mysqli') {
+				return array('test' => false, 'infoOnly' => true, 'message' => __('No files readable', 'wordfence'));
+			}
+			
 			return array('test' => false, 'message' => __('No files readable', 'wordfence'));
 		}
 		
@@ -214,6 +236,10 @@ class wfDiagnostic
 		}
 		
 		if (count($unreadable) > 0) {
+			if (defined('WFWAF_STORAGE_ENGINE') && WFWAF_STORAGE_ENGINE == 'mysqli') {
+				return array('test' => false, 'infoOnly' => true, 'message' => implode(', ', $unreadable));
+			}
+			
 			return array('test' => false, 'message' => implode(', ', $unreadable));
 		}
 		
@@ -222,6 +248,10 @@ class wfDiagnostic
 	
 	public function isWAFWritable() {
 		if (!is_writable(WFWAF_LOG_PATH)) {
+			if (defined('WFWAF_STORAGE_ENGINE') && WFWAF_STORAGE_ENGINE == 'mysqli') {
+				return array('test' => false, 'infoOnly' => true, 'message' => __('No files writable', 'wordfence'));
+			}
+			
 			return array('test' => false, 'message' => __('No files writable', 'wordfence'));
 		}
 		
@@ -242,6 +272,10 @@ class wfDiagnostic
 		}
 		
 		if (count($unwritable) > 0) {
+			if (defined('WFWAF_STORAGE_ENGINE') && WFWAF_STORAGE_ENGINE == 'mysqli') {
+				return array('test' => false, 'infoOnly' => true, 'message' => implode(', ', $unwritable));
+			}
+			
 			return array('test' => false, 'message' => implode(', ', $unwritable));
 		}
 		
@@ -321,6 +355,9 @@ class wfDiagnostic
 
 	public function wafAutoPrepend() {
 		return array('test' => true, 'infoOnly' => true, 'message' => (defined('WFWAF_AUTO_PREPEND') && WFWAF_AUTO_PREPEND ? __('Yes', 'wordfence') : __('No', 'wordfence')));
+	}
+	public function wafStorageEngine() {
+		return array('test' => true, 'infoOnly' => true, 'message' => (defined('WFWAF_STORAGE_ENGINE') ? WFWAF_STORAGE_ENGINE : __('(default)', 'wordfence')));
 	}
 	public function wafLogPath() {
 		$logPath = __('(not set)', 'wordfence');

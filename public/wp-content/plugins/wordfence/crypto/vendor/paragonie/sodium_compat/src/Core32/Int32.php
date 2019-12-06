@@ -1,4 +1,5 @@
 <?php
+// phpcs:ignoreFile -- compatibility library for PHP 5-7.1
 
 /**
  * Class ParagonIE_Sodium_Core32_Int32

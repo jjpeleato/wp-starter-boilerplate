@@ -10,6 +10,7 @@ if (!defined('WORDFENCE_CENTRAL_API_URL_SEC')) { define('WORDFENCE_CENTRAL_API_U
 if (!defined('WORDFENCE_CENTRAL_PUBLIC_KEY')) { define('WORDFENCE_CENTRAL_PUBLIC_KEY', "\xb6\x33\x81\x05\xdf\xdf\xec\xcf\xf3\xe3\x36\xc6\xf0\x99\xc6\xf7\xca\x05\x36\xca\x87\x54\x53\x43\x31\xf2\xc6\x0d\xe1\x3d\x55\x0f"); }
 define('WORDFENCE_MAX_SCAN_LOCK_TIME', 86400); //Increased this from 10 mins to 1 day because very big scans run for a long time. Users can use kill.
 define('WORDFENCE_DEFAULT_MAX_SCAN_TIME', 10800);
+if (!defined('WORDFENCE_SCAN_ISSUES_MAX_REPORT')) { define('WORDFENCE_SCAN_ISSUES_MAX_REPORT', 1500); }
 define('WORDFENCE_TRANSIENTS_TIMEOUT', 3600); //how long are items cached in seconds e.g. files downloaded for diffing
 define('WORDFENCE_MAX_IPLOC_AGE', 86400); //1 day
 define('WORDFENCE_CRAWLER_VERIFY_CACHE_TIME', 604800); 
