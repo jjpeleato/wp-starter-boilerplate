@@ -943,7 +943,7 @@ class URE_Editor {
                 $roles_can_delete[$key] = $role['name'] . ' (' . $key . ')';
             }
         }
-
+        
         return $roles_can_delete;
     }
     // end of get_roles_can_delete()
@@ -1184,8 +1184,9 @@ class URE_Editor {
     protected function get_last_role_id() {
         
         // get the key of the last element in roles array
-        $keys = array_keys($this->roles);
-        $last_role_id = array_pop($keys);
+        $keys = array_keys( $this->roles );
+        asort( $keys );
+        $last_role_id = array_pop( $keys );
         
         return $last_role_id;
     }

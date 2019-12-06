@@ -890,7 +890,9 @@ function wc_get_related_products( $product_id, $limit = 5, $exclude_ids = array(
 		)
 	);
 
-	shuffle( $related_posts );
+	if ( apply_filters( 'woocommerce_product_related_posts_shuffle', true ) ) {
+		shuffle( $related_posts );
+	}
 
 	return array_slice( $related_posts, 0, $limit );
 }
@@ -1161,6 +1163,8 @@ function wc_products_array_orderby( $products, $orderby = 'date', $order = 'desc
 		case 'menu_order':
 		case 'price':
 			usort( $products, 'wc_products_array_orderby_' . $orderby );
+			break;
+		case 'none':
 			break;
 		default:
 			shuffle( $products );
@@ -1448,15 +1452,18 @@ function wc_update_product_lookup_tables_column( $column ) {
 		case 'downloadable':
 		case 'virtual':
 			$column = esc_sql( $column );
-
+			$meta_key = '_' . $column;
 			$wpdb->query(
-				"
-				UPDATE
-					{$wpdb->wc_product_meta_lookup} lookup_table
-					LEFT JOIN {$wpdb->postmeta} meta1 ON lookup_table.product_id = meta1.post_id AND meta1.meta_key = '_virtual'
-				SET
-					lookup_table.`{$column}` = IF ( meta1.meta_value = 'yes', 1, 0 )
-				"
+				$wpdb->prepare(
+					"
+					UPDATE
+						{$wpdb->wc_product_meta_lookup} lookup_table
+						LEFT JOIN {$wpdb->postmeta} meta1 ON lookup_table.product_id = meta1.post_id AND meta1.meta_key = %s
+					SET
+						lookup_table.`{$column}` = IF ( meta1.meta_value = 'yes', 1, 0 )
+					",
+					$meta_key
+				)
 			);
 			break;
 		case 'onsale':

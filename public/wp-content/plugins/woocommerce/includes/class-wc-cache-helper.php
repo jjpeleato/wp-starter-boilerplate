@@ -34,14 +34,14 @@ class WC_Cache_Helper {
 	}
 
 	/**
-	 * Set additonal nocache headers.
+	 * Set additional nocache headers.
 	 *
 	 * @param array $headers Header names and field values.
 	 * @since 3.6.0
 	 */
 	public static function additional_nocache_headers( $headers ) {
-		// Opt-out of Google weblight if page is dynamic e.g. cart/checkout. https://support.google.com/webmasters/answer/6211428?hl=en.
-		$headers['Cache-Control'] = 'no-transform, no-cache, must-revalidate, max-age=0';
+		// no-transform: Opt-out of Google weblight if page is dynamic e.g. cart/checkout. https://support.google.com/webmasters/answer/6211428?hl=en.
+		$headers['Cache-Control'] = 'no-transform, no-cache, no-store, must-revalidate';
 		return $headers;
 	}
 

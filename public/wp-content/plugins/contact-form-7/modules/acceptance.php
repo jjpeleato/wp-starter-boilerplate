@@ -65,9 +65,21 @@ function wpcf7_acceptance_form_tag_handler( $tag ) {
 	$content = trim( $content );
 
 	if ( $content ) {
+		if ( $tag->has_option( 'label_first' ) ) {
+			$html = sprintf(
+				'<span class="wpcf7-list-item-label">%2$s</span><input %1$s />',
+				$item_atts, $content );
+		} else {
+			$html = sprintf(
+				'<input %1$s /><span class="wpcf7-list-item-label">%2$s</span>',
+				$item_atts, $content );
+		}
+
 		$html = sprintf(
-			'<span class="wpcf7-list-item"><label><input %1$s /><span class="wpcf7-list-item-label">%2$s</span></label></span>',
-			$item_atts, $content );
+			'<span class="wpcf7-list-item"><label>%s</label></span>',
+			$html
+		);
+
 	} else {
 		$html = sprintf(
 			'<span class="wpcf7-list-item"><input %1$s /></span>',
@@ -199,12 +211,13 @@ function wpcf7_acceptance_mail_tag( $replaced, $submitted, $html, $mail_tag ) {
 	$content = trim( $content );
 
 	if ( $content ) {
-		/* translators: 1: 'Consented' or 'Not consented', 2: conditions */
 		$replaced = sprintf(
+			/* translators: 1: 'Consented' or 'Not consented', 2: conditions */
 			_x( '%1$s: %2$s', 'mail output for acceptance checkboxes',
 				'contact-form-7' ),
 			$replaced,
-			$content );
+			$content
+		);
 	}
 
 	return $replaced;

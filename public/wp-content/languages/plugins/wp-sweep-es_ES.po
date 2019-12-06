@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WP-Sweep - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2019-01-17 22:30:31+0000\n"
+"PO-Revision-Date: 2019-11-16 17:46:55+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -55,10 +55,6 @@ msgstr "Lester 'GaMerZ' Chan"
 #. Author URI of the plugin
 msgid "https://lesterchan.net"
 msgstr "https://lesterchan.net"
-
-#. Description of the plugin
-msgid "WP-Sweep allows you to clean up unused, orphaned and duplicated data in your WordPress. It cleans up revisions, auto drafts, unapproved comments, spam comments, trashed comments, orphan post meta, orphan comment meta, orphan user meta, orphan term relationships, unused terms, duplicated post meta, duplicated comment meta, duplicated user meta and transient options. It also optimizes your database tables."
-msgstr "WP-Sweep te permite limpiar datos no utilizados, huérfanos y duplicados en tu WordPress. Limpia revisions, borradores automáticos, comentarios sin aprobar, comentarios spam, comentarios en la papelera, meta de entradas huérfanos, meta de comentarios huérfanos, meta de usuarios huérfanos, relaciones de términos huérfanos, términos sin utilizar, meta de entradas duplicados, meta de comentarios duplicados, meta de usuarios duplicados y opciones de datos transitorios. También optimiza las tablas de tu base de datos."
 
 #. Plugin URI of the plugin
 msgid "https://lesterchan.net/portfolio/programming/php/"
@@ -135,7 +131,7 @@ msgstr "%s revisiones procesadas"
 msgid "Note that some unused terms might belong to draft posts that have not been published yet. Only sweep all when you do not have any draft posts."
 msgstr "Date cuenta de que algunos términos sin utilizar podría pertenecer a entradas en borrador que no se hayan publicado aún. Solo bárrelos si no tienes ninguna entrada en borrador."
 
-#: wp-sweep.php:166 admin.php:575 admin.php:579
+#: admin.php:575 admin.php:579 wp-sweep.php:166
 msgid "Sweep All"
 msgstr "Barrer todo"
 
@@ -277,22 +273,26 @@ msgstr "Entradas borradas"
 msgid "Auto Drafts"
 msgstr "Borradores automáticos"
 
+#. Description of the plugin
+msgid "WP-Sweep allows you to clean up unused, orphaned and duplicated data in your WordPress. It cleans up revisions, auto drafts, unapproved comments, spam comments, trashed comments, orphan post meta, orphan comment meta, orphan user meta, orphan term relationships, unused terms, duplicated post meta, duplicated comment meta, duplicated user meta and transient options. It also optimizes your database tables."
+msgstr "WP-Sweep te permite limpiar datos no utilizados, huérfanos y duplicados en tu WordPress. Limpia revisiones, borradores automáticos, comentarios sin aprobar, comentarios spam, comentarios en la papelera, meta de entradas huérfanos, meta de comentarios huérfanos, meta de usuarios huérfanos, relaciones de términos huérfanos, términos sin utilizar, meta de entradas duplicados, meta de comentarios duplicados, meta de usuarios duplicados y opciones de datos transitorios. También optimiza las tablas de tu base de datos."
+
 #: admin.php:102
 msgid "Revisions"
 msgstr "Revisiones"
 
-#: wp-sweep.php:168 admin.php:116 admin.php:136 admin.php:156 admin.php:176
-#: admin.php:196 admin.php:216 admin.php:254 admin.php:274 admin.php:294
-#: admin.php:314 admin.php:334 admin.php:372 admin.php:392 admin.php:430
-#: admin.php:450 admin.php:470 admin.php:491 admin.php:529 admin.php:560
-#: admin.php:567
+#: admin.php:116 admin.php:136 admin.php:156 admin.php:176 admin.php:196
+#: admin.php:216 admin.php:254 admin.php:274 admin.php:294 admin.php:314
+#: admin.php:334 admin.php:372 admin.php:392 admin.php:430 admin.php:450
+#: admin.php:470 admin.php:491 admin.php:529 admin.php:560 admin.php:567
+#: wp-sweep.php:168
 msgid "N/A"
 msgstr "N/D"
 
-#: wp-sweep.php:165 admin.php:113 admin.php:133 admin.php:153 admin.php:173
-#: admin.php:193 admin.php:213 admin.php:251 admin.php:271 admin.php:291
-#: admin.php:311 admin.php:331 admin.php:369 admin.php:389 admin.php:427
-#: admin.php:447 admin.php:467 admin.php:488 admin.php:526 admin.php:564
+#: admin.php:113 admin.php:133 admin.php:153 admin.php:173 admin.php:193
+#: admin.php:213 admin.php:251 admin.php:271 admin.php:291 admin.php:311
+#: admin.php:331 admin.php:369 admin.php:389 admin.php:427 admin.php:447
+#: admin.php:467 admin.php:488 admin.php:526 admin.php:564 wp-sweep.php:165
 msgid "Sweep"
 msgstr "Barrer"
 

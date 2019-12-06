@@ -3,8 +3,8 @@
 Contributors: yithemes
 Tags: woocommerce ajax product filter download, woocommerce, widget, ajax, ajax filtered nav, ajax navigation, ajax filtered navigation, woocommerce layered navigation, woocommerce layered nav, product filter, product filters, ajax product filter, woocommerce ajax product filter, woocommerce filters, sidebar filter, sidebar ajax filter, ajax price filter, price filter, product sorting, woocommerce filter, taxonomy filter, attribute filter, attributes filter, woocommerce product sort, ajax sort, woocommerce ajax product filter, advanced product filters, ajax product filters, filters, woocommerce ajax product filters, woocommerce product filters, woocommerce product filters, category filter, attribute filters, woocommerce products filter, woocommerce price filter, yit, yith, yithemes
 Requires at least: 4.0
-Tested up to: 5.2
-Stable tag: 3.6.6
+Tested up to: 5.3
+Stable tag: 3.8.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -158,6 +158,33 @@ If you want to see a demonstration version of the premium plugin, you can see it
 10. Admin: YIT Plugins -> Ajax Product Filter -> Custom Style
 
 == Changelog ==
+
+= 3.8.1 - Released on 28 November 2019  =
+
+* Update: plugin framework
+* Update: Notice handler
+
+= 3.8.1 - Released on 04 November 2019  =
+
+* Update: plugin framework
+* Fix: Undefined variable message on frontend
+
+= 3.8.0 - Released on 30 October 2019  =
+
+* New: Support for WordPress 5.3
+* New: Support for WooCommerce 3.8
+* Update: plugin framework
+* Fix: Call get_query_object() on null
+* Dev: New filter 'yith_wcan_skip_check_on_product_in_term'
+
+= 3.7.1 - Released on 27th August, 2019  =
+
+* Fix: curl_init() doesn't exist
+
+= 3.7.0 - Released on 07th August, 2019  =
+
+* New: Support for WooCommerce 3.7
+* Fix: Style issues with Storefront theme
 
 = 3.6.6 - Released on 12nd June, 2019 =
 

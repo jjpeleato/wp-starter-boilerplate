@@ -91,7 +91,6 @@ class URE_Capability {
         
         $cap_id = $data['cap_id'];                
         $lib = URE_Lib::get_instance();
-        $lib->get_user_roles();
         $full_capabilities = $lib->init_full_capabilities( $ure_object );
         if (!isset($full_capabilities[$cap_id])) {
             $admin_role = $lib->get_admin_role();            

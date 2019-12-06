@@ -176,7 +176,7 @@ END
 		$_runInstallCalled = true;
 		
 		if (function_exists('ignore_user_abort')) {
-			ignore_user_abort(true);
+			@ignore_user_abort(true);
 		}
 		
 		if (!defined('DONOTCACHEDB')) { define('DONOTCACHEDB', true); }

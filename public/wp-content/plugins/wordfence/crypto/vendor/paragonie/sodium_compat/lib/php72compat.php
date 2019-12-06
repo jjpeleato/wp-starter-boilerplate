@@ -1,4 +1,5 @@
 <?php
+// phpcs:ignoreFile -- compatibility library for PHP 5-7.1
 
 /**
  * This file will monkey patch the pure-PHP implementation in place of the

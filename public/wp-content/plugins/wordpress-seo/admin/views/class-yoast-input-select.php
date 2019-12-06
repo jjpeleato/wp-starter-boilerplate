@@ -11,16 +11,22 @@
 class Yoast_Input_Select {
 
 	/**
+	 * The id attribute value.
+	 *
 	 * @var string
 	 */
 	private $select_id;
 
 	/**
+	 * The name attribute value.
+	 *
 	 * @var string
 	 */
 	private $select_name;
 
 	/**
+	 * Additional select attributes.
+	 *
 	 * @var array
 	 */
 	private $select_attributes = array();
@@ -128,7 +134,7 @@ class Yoast_Input_Select {
 	 * @param string $value     The value of the attribute.
 	 * @param string $attribute The attribute to look for.
 	 */
-	private function parse_attribute( & $value, $attribute ) {
-		$value = sprintf( '%s="%s"', esc_html( $attribute ), esc_attr( $value ) );
+	private function parse_attribute( &$value, $attribute ) {
+		$value = sprintf( '%s="%s"', sanitize_key( $attribute ), esc_attr( $value ) );
 	}
 }

@@ -461,7 +461,7 @@ SQL
 	public function getCountryNameByCode($code) {
 		static $wfBulkCountries;
 		if (!isset($wfBulkCountries)) {
-			include 'wfBulkCountries.php';
+			include(dirname(__FILE__) . '/wfBulkCountries.php');
 		}
 		return array_key_exists($code, $wfBulkCountries) ? $wfBulkCountries[$code] : "";
 	}

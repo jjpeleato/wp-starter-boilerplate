@@ -7,21 +7,24 @@ function constrainSrc(url,objectWidth,objectHeight,objectType){
 	var regFit    = /fit=(\d+),(\d+)/;
 	var regResize = /resize=(\d+),(\d+)/;
 	var decUrl = decodeURIComponent(url);
-	if (url.search('\\?') > 0 && url.search(ewww_lazy_vars.exactdn_domain) > 0){
+	if (typeof eio_lazy_vars === 'undefined'){
+		var eio_lazy_vars = {"exactdn_domain":".exactdn.com"};
+	}
+	if (url.search('\\?') > 0 && url.search(eio_lazy_vars.exactdn_domain) > 0){
 		var resultResize = regResize.exec(decUrl);
 		if(resultResize && objectWidth < resultResize[1]){
 			return decUrl.replace(regResize, 'resize=' + objectWidth + ',' + objectHeight);
 		}
 		var resultW = regW.exec(url);
 		if(resultW && objectWidth <= resultW[1]){
-			if('bg-cover'===objectType){
+			if('bg-cover'===objectType || 'img-scale'===objectType){
 				return url.replace(regW, 'resize=' + objectWidth + ',' + objectHeight );
 			}
 			return url.replace(regW, 'w=' + objectWidth);
 		}
 		var resultFit = regFit.exec(decUrl);
 		if(resultFit && objectWidth < resultFit[1]){
-			if('bg-cover'===objectType){
+			if('bg-cover'===objectType || 'img-scale'===objectType){
 				return url.replace(regW, 'resize=' + objectWidth + ',' + objectHeight );
 			}
 			return decUrl.replace(regFit, 'fit=' + objectWidth + ',' + objectHeight);
@@ -30,7 +33,7 @@ function constrainSrc(url,objectWidth,objectHeight,objectType){
 			if('img'===objectType){
 				return url + '&fit=' + objectWidth + ',' + objectHeight;
 			}
-			if('bg-cover'===objectType){
+			if('bg-cover'===objectType || 'img-scale'===objectType){
 				return url + '?resize=' + objectWidth + ',' + objectHeight;
 			}
 			if(objectHeight>objectWidth){
@@ -39,11 +42,11 @@ function constrainSrc(url,objectWidth,objectHeight,objectType){
 			return url + '&w=' + objectWidth;
 		}
 	}
-	if (url.search('\\?') == -1 && url.search(ewww_lazy_vars.exactdn_domain) > 0){
+	if (url.search('\\?') == -1 && url.search(eio_lazy_vars.exactdn_domain) > 0){
 		if('img'===objectType){
 			return url + '?fit=' + objectWidth + ',' + objectHeight;
 		}
-		if('bg-cover'===objectType){
+		if('bg-cover'===objectType || 'img-scale'===objectType){
 			return url + '?resize=' + objectWidth + ',' + objectHeight;
 		}
 		if(objectHeight>objectWidth){
@@ -81,7 +84,11 @@ document.addEventListener('lazybeforeunveil', function(e){
 					//console.log('using data-src-webp');
 					src = webpsrc;
 				}
-				var newSrc = constrainSrc(src,targetWidth,targetHeight,'img');
+				if (window.lazySizes.hC(target,'et_pb_jt_filterable_grid_item_image')) {
+					var newSrc = constrainSrc(src,targetWidth,targetHeight,'img-scale');
+				} else {
+					var newSrc = constrainSrc(src,targetWidth,targetHeight,'img');
+				}
 				if (newSrc && src != newSrc){
 					target.setAttribute('data-src', newSrc);
 				}

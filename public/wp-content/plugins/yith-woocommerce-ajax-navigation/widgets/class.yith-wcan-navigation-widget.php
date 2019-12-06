@@ -32,7 +32,7 @@ if ( ! class_exists( 'YITH_WCAN_Navigation_Widget' ) ) {
 
         function __construct() {
             $classname = 'yith-woocommerce-ajax-product-filter yith-woo-ajax-navigation woocommerce widget_layered_nav';
-            $classname .= 'checkboxes' == yith_wcan_get_option( 'yith_wcan_ajax_shop_filter_style', 'standard' ) ? ' with-checkbox' : '';
+            $classname .= defined( 'YITH_WCAN_PREMIUM' ) && 'checkboxes' == yith_wcan_get_option( 'yith_wcan_ajax_shop_filter_style', 'standard' ) ? ' with-checkbox' : '';
             $widget_ops  = array( 'classname' => $classname, 'description' => __( 'Filter the list of products without reloading the page', 'yith-woocommerce-ajax-navigation' ) );
             $control_ops = array( 'width' => 400, 'height' => 350 );
             add_action('wp_ajax_yith_wcan_select_type', array( $this, 'ajax_print_terms') );
@@ -687,8 +687,10 @@ if ( ! class_exists( 'YITH_WCAN_Navigation_Widget' ) ) {
 
                                     // Exclude query arg for current term archive term
                                     while ( $in_array_function( $term->slug, $data['terms'] ) ) {
-                                        $key = array_search( $current_term, $data );
-                                        unset( $data['terms'][$key] );
+                                        if( ! empty( $current_term ) ){
+	                                        $key = array_search( $current_term, $data );
+	                                        unset( $data['terms'][$key] );
+                                        }
                                     }
 
                                     // Remove pa_ and sanitize
@@ -1083,7 +1085,7 @@ if ( ! class_exists( 'YITH_WCAN_Navigation_Widget' ) ) {
                         $this->found = true;
                     }
                     
-                    $arg = apply_filters('yith_wcan_list_type_query_arg', 'filter_' . sanitize_title($instance['attribute']), $display_type, $term);
+                    $arg = apply_filters('yith_wcan_list_type_query_arg', 'filter_' . sanitize_title($instance['attribute']), $display_type, $term, $instance['attribute']);
 
                     $current_filter = (isset($_GET[$arg])) ? explode(apply_filters('yith_wcan_list_filter_operator', ',', $display_type), apply_filters("yith_wcan_list_filter_query_{$arg}", $_GET[$arg] ) ) : array();
 
@@ -1201,13 +1203,12 @@ if ( ! class_exists( 'YITH_WCAN_Navigation_Widget' ) ) {
                     // Current Filter = this widget
                     if ( apply_filters('yith_wcan_list_type_current_widget_check', $check_for_current_widget, $current_filter, $display_type, $term_param ) ) {
                         if (($terms_type_list == 'hierarchical' || ($terms_type_list == 'tags' && $instance['display'] == 'hierarchical'))) {
-                            $level_class = 'level-' . $level;
                             if (yit_term_is_child($term)) {
-                                $class = "class='{$is_chosen_class}  {$is_child_class} {$level_class}'";
+                                $class = "class='{$is_chosen_class}  {$is_child_class}'";
                             }
 
                             elseif (yit_term_is_parent($term)) {
-                                $class = "class='{$is_chosen_class}  {$is_parent_class} {$level_class}'";
+                                $class = "class='{$is_chosen_class}  {$is_parent_class}'";
                             }
                         }
 
@@ -1216,6 +1217,7 @@ if ( ! class_exists( 'YITH_WCAN_Navigation_Widget' ) ) {
                         }
 
                         // Remove this term is $current_filter has more than 1 term filtered
+
                         if (sizeof($current_filter) > 1) {
                             $current_filter_without_this = array_diff($current_filter, array($term_param));
                             $link = add_query_arg($arg, implode(apply_filters('yith_wcan_list_filter_operator', ',', $display_type), $current_filter_without_this), $link);
@@ -1225,14 +1227,13 @@ if ( ! class_exists( 'YITH_WCAN_Navigation_Widget' ) ) {
                     else {
 
                         if (($terms_type_list == 'hierarchical' || $terms_type_list == 'tags')) {
-                            $level_class = 'level-' . $level;
                             if (yit_term_is_child($term)) {
 
-                                $class = "class='{$is_child_class} {$level_class}'";
+                                $class = "class='{$is_child_class}'";
                             }
 
                             elseif (yit_term_is_parent($term)) {
-                                $class = "class='{$is_parent_class} {$level_class}'";
+                                $class = "class='{$is_parent_class}'";
                             }
                         }
 
@@ -1272,8 +1273,10 @@ if ( ! class_exists( 'YITH_WCAN_Navigation_Widget' ) ) {
                         $to_print = apply_filters( 'yith_wcan_show_no_products_attributes', ( ! $filter_by_tags_hierarchical && $query_type != 'and' ), $count, $term );
                         $class = apply_filters( 'yith_wcan_list_type_empty_filter_class', $class );
 
-                        $to_print && printf( '<li %s><span>%s</span>', $class, $term->name );
-                        $li_printed = true;
+                        if( $to_print ){
+                            printf( '<li %s><span>%s</span>', $class, $term->name );
+                            $li_printed = true;
+                        }
                     }
 
                     $show_count = $count != 0 && ! empty( $instance['show_count'] ) && ! $instance['show_count'];
@@ -1291,9 +1294,11 @@ if ( ! class_exists( 'YITH_WCAN_Navigation_Widget' ) ) {
                 }
 
                 if( ! empty( $term_ids ) && is_array( $term_ids ) ){
+	                echo '<ul class="yith-child-terms level-' . $level . '">';
                     $temp_level = $level;
                     $temp_level++;
                     $this->get_list_html( $term_ids, $taxonomy, $query_type, $display_type, $instance, $terms_type_list, $current_term, $args, $is_child_class, $is_parent_class, $is_chosen_class, $temp_level, $filter_term_field, $rel_nofollow );
+	                echo '</ul>';
                 }
             }
         }

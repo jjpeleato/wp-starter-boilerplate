@@ -15,15 +15,19 @@ class WordPress_Module extends Red_Module {
 	}
 
 	public function start() {
+		// Only run redirect rules if we're not disabled
+		if ( ! red_is_disabled() ) {
+			add_action( 'init', [ $this, 'init' ] );
+			add_action( 'send_headers', [ $this, 'send_headers' ] );
+			add_action( 'init', [ $this, 'force_https' ] );
+			add_filter( 'wp_redirect', [ $this, 'wp_redirect' ], 1, 2 );
+		}
+
 		// Setup the various filters and actions that allow Redirection to happen
-		add_action( 'init', array( $this, 'init' ) );
-		add_action( 'init', array( $this, 'force_https' ) );
-		add_action( 'send_headers', array( $this, 'send_headers' ) );
-		add_filter( 'wp_redirect', array( $this, 'wp_redirect' ), 1, 2 );
-		add_action( 'redirection_visit', array( $this, 'redirection_visit' ), 10, 3 );
-		add_action( 'redirection_do_nothing', array( $this, 'redirection_do_nothing' ) );
-		add_filter( 'redirect_canonical', array( $this, 'redirect_canonical' ), 10, 2 );
-		add_action( 'template_redirect', array( $this, 'template_redirect' ) );
+		add_action( 'redirection_visit', [ $this, 'redirection_visit' ], 10, 3 );
+		add_action( 'redirection_do_nothing', [ $this, 'redirection_do_nothing' ] );
+		add_filter( 'redirect_canonical', [ $this, 'redirect_canonical' ], 10, 2 );
+		add_action( 'template_redirect', [ $this, 'template_redirect' ] );
 
 		// Remove WordPress 2.3 redirection
 		remove_action( 'template_redirect', 'wp_old_slug_redirect' );
@@ -63,12 +67,16 @@ class WordPress_Module extends Red_Module {
 			return false;
 		}
 
-		$page_type = array_values( array_filter( $this->redirects, array( $this, 'only_404' ) ) );
+		$page_types = array_values( array_filter( $this->redirects, [ $this, 'only_404' ] ) );
 
-		if ( count( $page_type ) > 0 ) {
+		if ( count( $page_types ) > 0 ) {
 			$url = apply_filters( 'redirection_url_source', Redirection_Request::get_request_url() );
-			$first = $page_type[0];
-			return $first->is_match( $url );
+
+			foreach ( $page_types as $page_type ) {
+				if ( $page_type->is_match( $url ) ) {
+					return true;
+				}
+			}
 		}
 
 		return false;
@@ -93,9 +101,14 @@ class WordPress_Module extends Red_Module {
 
 		if ( $options['https'] && ! is_ssl() ) {
 			$target = rtrim( parse_url( home_url(), PHP_URL_HOST ), '/' ) . esc_url_raw( Redirection_Request::get_request_url() );
+			add_filter( 'x_redirect_by', [ $this, 'x_redirect_by' ] );
 			wp_safe_redirect( 'https://' . $target, 301 );
 			die();
 		}
+	}
+
+	public function x_redirect_by() {
+		return 'redirection';
 	}
 
 	/**
@@ -103,7 +116,8 @@ class WordPress_Module extends Red_Module {
 	 */
 	public function init() {
 		$url = Redirection_Request::get_request_url();
-		$url = apply_filters( 'redirection_url_source', urldecode( $url ) );
+		$url = apply_filters( 'redirection_url_source', $url );
+		$url = rawurldecode( $url );
 
 		// Make sure we don't try and redirect something essential
 		if ( $url && ! $this->protected_url( $url ) && $this->matched === false ) {
@@ -155,16 +169,25 @@ class WordPress_Module extends Red_Module {
 
 	public function send_headers( $obj ) {
 		if ( ! empty( $this->matched ) && $this->matched->action->get_code() === 410 ) {
-			add_filter( 'status_header', array( $this, 'set_header_410' ) );
+			add_filter( 'status_header', [ $this, 'set_header_410' ] );
 		}
+
+		// Add any custom headers
+		$options = red_get_options();
+		$headers = new Red_Http_Headers( $options['headers'] );
+		$headers->run( $headers->get_site_headers() );
 	}
 
 	public function set_header_410() {
 		return 'HTTP/1.1 410 Gone';
 	}
 
-	public function wp_redirect( $url, $status ) {
+	public function wp_redirect( $url, $status = 302 ) {
 		global $wp_version, $is_IIS;
+
+		$options = red_get_options();
+		$headers = new Red_Http_Headers( $options['headers'] );
+		$headers->run( $headers->get_redirect_headers() );
 
 		if ( $is_IIS ) {
 			header( "Refresh: 0;url=$url" );
@@ -172,7 +195,7 @@ class WordPress_Module extends Red_Module {
 		}
 
 		if ( $status === 301 && php_sapi_name() === 'cgi-fcgi' ) {
-			$servers_to_check = array( 'lighttpd', 'nginx' );
+			$servers_to_check = [ 'lighttpd', 'nginx' ];
 
 			foreach ( $servers_to_check as $name ) {
 				if ( isset( $_SERVER['SERVER_SOFTWARE'] ) && stripos( $_SERVER['SERVER_SOFTWARE'], $name ) !== false ) {

@@ -1,14 +1,14 @@
 === EWWW Image Optimizer ===
 Contributors: nosilver4u
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MKMQKCBFFG3WW
-Tags: image, compress, resize, optimize, optimization, lossless, lossy, seo, webp, wp-cli, scale, tinypng, tinyjpg
+Tags: optimize, image, convert, webp, resize, compress, lazy load, optimization, lossless, lossy, seo, scale
 Requires at least: 5.0
-Tested up to: 5.2
+Tested up to: 5.3
 Requires PHP: 5.6
-Stable tag: 4.8.1
+Stable tag: 5.1.3
 License: GPLv3
 
-Speed up your website and improve your visitors' experience by automatically compressing and resizing images and PDFs. Boost SEO and improve sales.
+Speed up your website to better connect with your visitors. Properly compress and size/scale images. Includes lazy load and WebP convert.
 
 == Description ==
 
@@ -22,7 +22,7 @@ EWWW I.O. will optimize images uploaded and created by any plugin, and features 
 1. **Smooth Handling** with pixel-perfect optimization using industry-leading tools and progressive rendering.
 1. **High Torque** as we bring you the best compression/quality ratio available with our lossy options for JPG, PNG, and PDF files.
 1. **Adaptive Steering** with intelligent conversion options to get the right image format for the job (JPG, PNG, or GIF).
-1. **Free Parking** The core plugin is free and always will be. Additionally, if you choose the API, you never pay for an image we can’t compress, you are never billed for a month you do not use the API, and pre-paid credits never expire. Plus, get WebP image generation at no extra cost: any JPG or PNG can be converted to Google’s next-generation image format.
+1. **Free Parking** The core plugin is free and always will be. However, our paid services offer up to 80% compression, and a [host of other features](https://ewww.io/plans/)!
 1. **Comprehensive Coverage:** no image gets left behind, optimize everything on your site, beyond just the WordPress Media Library.
 1. **Safety First:** all communications are secured with top SSL encryption.
 1. **Roadside Assistance:** top-notch support is in our DNA. While API customers get top priority, we answer [every single support question with care](https://ewww.io/contact-us/).
@@ -32,9 +32,9 @@ Images can be optimized using tools on your own server for free (jpegtran, optip
 
 If you need a version of this plugin for API use only, see [EWWW Image Optimizer Cloud](https://wordpress.org/plugins/ewww-image-optimizer-cloud/). It is much more compact as it does not contain any binaries or any mention of the exec() function.
 
-= Automatic Resizing =
+= Automatic Everything =
 
-With ExactDN support, images will be automatically resized to fit the page and device size. ExactDN also enables basic retina support and automatic compression.
+With Easy IO, images are automatically compressed, scaled to fit the page and device size, lazy loaded, and converted to the next-gen WebP format.
 
 = Support =
 
@@ -59,7 +59,7 @@ All images created by the built-in WP_Image_Editor class will be automatically o
 
 = WebP Images =
 
-Automatic WebP conversion with ExactDN, no additional configuration. Otherwise, can generate WebP versions of your images, and enables you to serve even smaller images to supported browsers. Several methods are available for serving WebP images, including Apache-compatible rewrite rules and our JS WebP Rewriting option compatible with caches and CDNs. Also works with the WebP option in the Cache Enabler plugin from KeyCDN.
+Automatic WebP conversion with Easy IO, no additional configuration. Otherwise, can generate WebP versions of your images, and enables you to serve even smaller images to supported browsers. Several methods are available for serving WebP images, including Apache-compatible rewrite rules and our JS WebP Rewriting option compatible with caches and CDNs. Also works with the WebP option in the Cache Enabler plugin from KeyCDN.
 
 = WP-CLI =
 
@@ -159,9 +159,8 @@ Using the command *gifsicle -b -O3 --careful original file*. This is particularl
 
 = I want to know more about image optimization, and why you chose these options/tools. =
 
-That's not a question, but since I made it up, I'll answer it. See these resources:
-https://developers.google.com/speed/docs/insights/OptimizeImages
-http://developer.yahoo.com/performance/rules.html#opt_images
+That's not a question, but since I made it up, I'll answer it. See this resource:
+https://developers.google.com/web/tools/lighthouse/audits/optimize-images
 
 == Screenshots ==
 
@@ -174,35 +173,58 @@ http://developer.yahoo.com/performance/rules.html#opt_images
 * Feature requests can be viewed and submitted at https://github.com/nosilver4u/ewww-image-optimizer/labels/enhancement
 * If you would like to help translate this plugin in your language, get started here: https://translate.wordpress.org/projects/wp-plugins/ewww-image-optimizer/
 
-= 4.8.1 =
-* added: Lazy Load background image support added for span elements
-* changed: constrain by height for background images that are taller than they are wide
-* changed: debug.log moved to more suitable location
-* fix: Lazy Load breaks when an image has an empty class attribute
-* fix: regression that caused jpegtran and pngout tests to fail on Windows
-* fix: writing to debug.log causes errors
+= 5.1.3 =
+* added: better compatibility with Divi filterable grid images and parallax backgrounds
+* added: cleanup .webp and database records when using Enable Media Replace
+* fixed: Divi builder will not load with Easy IO and Include All Resources active
+* fixed: image cover block with fixed width scaled too much
+* fixed: PNG placeholders could use more memory than available
+* removed: Lazy Load CSS gradient for blank placeholders
 
-= 4.8.0 =
-* added: ability to resize images outside media library via scheduled or bulk optimization
-* added: compatibility with WP Stateless for GSC
-* added: use ewww_image_optimizer_autoconvert_threshold filter to modify conversion threshold (default of 300kb)
-* changed: Lazy Load without ExactDN uses blank PNG placeholders for better srcset auto-sizing
-* changed: API backups taken prior to resizing/scaling rather than just before compression
-* changed: ExactDN + Lazy Load uses scaling rather than cropping by default
-* changed: prevent NextGEN backup images from being optimized
-* fixed: bulk optimizer not resuming when non-media library images remain in queue
-* fixed: notices when a user-selected admin theme is unavailable
-* fixed: privacy policy function triggers notices in WP-CLI
-* fixed: background-image attributes with single-quotes now supported by ExactDN, Lazy Load, and JS WebP
-* fixed: background-image attributes getting extra arguments with lazy load
-* fixed: On multi-site installs, site admins could add folders to optimize outside of the uploads folder
-* fixed: LQIP with SVG files results in duplicate requests
-* fixed: image optimization results in media library report file missing when using WP Stateless
-* fixed: plugin checking for 'nice' on Windows servers
+= 5.1.2 =
+* added: disable native lazy-load attributes with EWWWIO_DISABLE_NATIVE_LAZY
+* added: ability to choose LQIP or blank placeholders for lazy load
+* changed: renaming ExactDN as Easy IO
+* changed: default to blank placeholders with Easy IO
+* changed: regenerated images are automatically re-optimized after running Image Regenerate & Select Crop plugin
+* fixed: low-quality placeholders sometimes had larger dimensions than necessary
+* fixed: database records and .webp images are not removed when Image Regenerate & Select Crop plugin deletes a thumbnail
+* fixed: path traversal protection preventing normal files from optimizing
+* fixed: Slider Revolution dummy.png not properly handled by Easy IO
+
+= 5.1.1 =
+* fixed: no optimization when escapeshellarg() is disabled
+* fixed: warning thrown by implode() when JS WebP is enabled with no WebP URLs
+
+= 5.1.0 =
+* added: WebP-only mode for Bulk Optimizer
+* added: JS WebP Rewriting for pull-mode CDNs via WebP URLS without Force WebP
+* added: JS WebP Rewriting zero-conf for WP Offload Media
+* added: force lossy PNG to WebP conversion with EWWW_IMAGE_OPTIMIZER_LOSSY_PNG2WEBP override (set to true)
+* changed: bulk optimizer runs wp_update_attachment_metadata() in separate request to avoid timeouts
+* fixed: WebP warning regarding missing modules displayed even if green WebP test image is working
+* fixed: Nextgen bulk actions not working
+* fixed: unable to regenerate existing thumbnails with Image Regenerate & Select Crop plugin
+* updated: WebP (cwebp) binary to version 1.0.3
+* updated: Pngquant binary to version 2.12.5
+* updated: cwebp requires Mac OS X 10.14
+* updated: FreeBSD 10 is EOL, version 11 is the supported/tested version
+
+= 5.0.0 =
+* added: use native lazy load attributes to supplement lazy loader and make placeholders more efficient
+* added: GCS sub-folder rewriting with ExactDN for cleaner URLs
+* added: option to optimize original versions of scaled images for WP 5.3
+* added: ability to erase optimization history from Tools page
+* changed: define EWWWIO_WPLR_AUTO (any value) to enable auto-optimize on images from WP/LR Sync
+* changed: thumbnails could be converted even if original was not
+* changed: Show Optimized Images table moved to Tools menu
+* fixed: full-size image optimization not deferred if scaled by WP 5.3
+* fixed: data-width and data-height attributes missing when JS WebP active
+* security: rewrote escapeshellarg() wrapper to be more secure
 
 = Earlier versions =
 Please refer to the separate changelog.txt file.
 
 == Contact and Credits ==
 
-Written by [Shane Bishop](https://ewww.io). Based upon CW Image Optimizer, which was written by [Jacob Allred](http://www.jacoballred.com/) at [Corban Works, LLC](http://www.corbanworks.com/). CW Image Optimizer was based on WP Smush.it. Jpegtran is the work of the Independent JPEG Group. PEL is the work of Martin Geisler, Lars Olesen, and Erik Oskam. ExactDN and HTML parsing classes based upon the Photon module from Jetpack.
+Written by [Shane Bishop](https://ewww.io) with special thanks to my [Lord and Savior](https://www.iamsecond.com/). Based upon CW Image Optimizer, which was written by [Jacob Allred](http://www.jacoballred.com/) at [Corban Works, LLC](http://www.corbanworks.com/). CW Image Optimizer was based on WP Smush.it. Jpegtran is the work of the Independent JPEG Group. PEL is the work of Martin Geisler, Lars Olesen, and Erik Oskam. Easy IO and HTML parsing classes based upon the Photon module from Jetpack.

@@ -1,6 +1,6 @@
 <?php
 
-require_once 'wfRESTBaseController.php';
+require_once(dirname(__FILE__) . '/wfRESTBaseController.php');
 
 class wfRESTScanController extends wfRESTBaseController {
 

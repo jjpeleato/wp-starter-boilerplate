@@ -1,7 +1,7 @@
 <?php
-require_once('wfDB.php');
-require_once('wfUtils.php');
-require_once('wfBrowscap.php');
+require_once(dirname(__FILE__) . '/wfDB.php');
+require_once(dirname(__FILE__) . '/wfUtils.php');
+require_once(dirname(__FILE__) . '/wfBrowscap.php');
 class wfLog {
 	public $canLogHit = true;
 	private $effectiveUserID = 0;
@@ -702,7 +702,7 @@ class wfLog {
 			header('Retry-After: ' . $secsToGo);
 		}
 		$customText = wpautop(wp_strip_all_tags(wfConfig::get('blockCustomText', '')));
-		require_once('wf503.php');
+		require_once(dirname(__FILE__) . '/wf503.php');
 		exit();
 	}
 	private function redirect($URL){
@@ -1061,7 +1061,7 @@ class wfAdminUserMonitor {
 		$enabled = $options['scansEnabled_suspiciousAdminUsers'];
 		if ($enabled && is_multisite()) {
 			if (!function_exists('wp_is_large_network')) {
-				require_once ABSPATH . WPINC . '/ms-functions.php';
+				require_once(ABSPATH . WPINC . '/ms-functions.php');
 			}
 			$enabled = !wp_is_large_network('sites') && !wp_is_large_network('users');
 		}
@@ -1138,7 +1138,7 @@ class wfAdminUserMonitor {
 	 * @return array
 	 */
 	public function getCurrentAdmins() {
-		require_once ABSPATH . WPINC . '/user.php';
+		require_once(ABSPATH . WPINC . '/user.php');
 		if (is_multisite()) {
 			if (function_exists("get_sites")) {
 				$sites = get_sites(array(

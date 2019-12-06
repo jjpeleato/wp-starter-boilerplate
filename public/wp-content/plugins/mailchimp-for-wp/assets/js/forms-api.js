@@ -13,20 +13,11 @@ var forms = require('./forms/forms.js');
 
 var config = window.mc4wp_forms_config || {};
 
-var scrollToElement = require('scroll-to-element');
-
-// funcs
-function scrollToForm(form) {
-  var animate = config.auto_scroll === 'animated';
-  scrollToElement(form.element, {
-    duration: animate ? 800 : 1,
-    alignment: 'middle'
-  });
-}
+var scrollToElement = require('./misc/scroll-to-element.js');
 
 function handleFormRequest(form, eventName, errors, data) {
   var timeStart = Date.now();
-  var pageHeight = document.body.clientHeight; // re-populate form
+  var pageHeight = document.body.clientHeight; // re-populate form if an error occurred
 
   if (errors) {
     form.setData(data);
@@ -34,7 +25,7 @@ function handleFormRequest(form, eventName, errors, data) {
 
 
   if (window.scrollY <= 10 && config.auto_scroll) {
-    scrollToForm(form);
+    scrollToElement(form.element);
   } // trigger events on window.load so all other scripts have loaded
 
 
@@ -65,13 +56,14 @@ function handleFormRequest(form, eventName, errors, data) {
     var timeElapsed = Date.now() - timeStart;
 
     if (config.auto_scroll && timeElapsed > 1000 && timeElapsed < 2000 && document.body.clientHeight !== pageHeight) {
-      scrollToForm(form);
+      scrollToElement(form.element);
     }
   });
 } // Bind browser events to form events (using delegation)
 
 
-Gator(document.body).on('submit', '.mc4wp-form', function (event) {
+var gator = Gator(document.body);
+gator.on('submit', '.mc4wp-form', function (event) {
   var form = forms.getByElement(event.target || event.srcElement);
 
   if (!event.defaultPrevented) {
@@ -82,7 +74,7 @@ Gator(document.body).on('submit', '.mc4wp-form', function (event) {
     forms.trigger('submit', [form, event]);
   }
 });
-Gator(document.body).on('focus', '.mc4wp-form', function (event) {
+gator.on('focus', '.mc4wp-form', function (event) {
   var form = forms.getByElement(event.target || event.srcElement);
 
   if (!form.started) {
@@ -91,7 +83,7 @@ Gator(document.body).on('focus', '.mc4wp-form', function (event) {
     form.started = true;
   }
 });
-Gator(document.body).on('change', '.mc4wp-form', function (event) {
+gator.on('change', '.mc4wp-form', function (event) {
   var form = forms.getByElement(event.target || event.srcElement);
   forms.trigger('change', [form, event]);
   forms.trigger(form.id + '.change', [form, event]);
@@ -124,7 +116,7 @@ if (config.submitted_form) {
 
 window.mc4wp = mc4wp;
 
-},{"./forms/conditional-elements.js":2,"./forms/forms.js":4,"gator":6,"scroll-to-element":13}],2:[function(require,module,exports){
+},{"./forms/conditional-elements.js":2,"./forms/forms.js":4,"./misc/scroll-to-element.js":5,"gator":7}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -284,17 +276,35 @@ Form.prototype.reset = function () {
 
 module.exports = Form;
 
-},{"form-serialize":5,"populate.js":8}],4:[function(require,module,exports){
+},{"form-serialize":6,"populate.js":8}],4:[function(require,module,exports){
 'use strict'; // deps
-
-var EventEmitter = require('wolfy87-eventemitter');
 
 var Form = require('./form.js'); // variables
 
 
-var events = new EventEmitter();
-var forms = []; // get form by its id
+var forms = [];
+var listeners = {};
+
+function emit(event, args) {
+  listeners[event] = listeners[event] || [];
+  listeners[event].forEach(function (f) {
+    return f.apply(null, args);
+  });
+}
+
+function on(event, func) {
+  listeners[event] = listeners[event] || [];
+  listeners[event].push(func);
+}
+
+function off(event, func) {
+  listeners[event] = listeners[event] || [];
+  listeners[event] = listeners[event].filter(function (f) {
+    return f !== func;
+  });
+} // get form by its id
 // please note that this will get the FIRST occurence of the form with that ID on the page
+
 
 function get(formId) {
   formId = parseInt(formId); // do we have form for this one already?
@@ -337,12 +347,12 @@ function all() {
 
 function triggerEvent(eventName, eventArgs) {
   if (eventName === 'submit' || eventName.indexOf('.submit') > 0) {
-    // don't spin up new thread for submit event as we want to preventDefault()... 
-    events.trigger(eventName, eventArgs);
+    // don't spin up new thread for submit event as we want to preventDefault()...
+    emit(eventName, eventArgs);
   } else {
     // process in separate thread to prevent errors from breaking core functionality
     window.setTimeout(function () {
-      events.trigger(eventName, eventArgs);
+      emit(eventName, eventArgs);
     }, 1);
   }
 }
@@ -351,12 +361,34 @@ module.exports = {
   "all": all,
   "get": get,
   "getByElement": getByElement,
-  "on": events.on.bind(events),
-  "trigger": triggerEvent,
-  "off": events.off.bind(events)
+  "on": on,
+  "off": off,
+  "trigger": triggerEvent
 };
 
-},{"./form.js":3,"wolfy87-eventemitter":16}],5:[function(require,module,exports){
+},{"./form.js":3}],5:[function(require,module,exports){
+'use strict';
+
+function scrollTo(element) {
+  var x = window.pageXOffset || document.documentElement.scrollLeft;
+  var y = calculateScrollOffset(element);
+  window.scrollTo(x, y);
+}
+
+function calculateScrollOffset(elem) {
+  var body = document.body,
+      html = document.documentElement;
+  var elemRect = elem.getBoundingClientRect();
+  var clientHeight = html.clientHeight;
+  var documentHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+  var scrollPosition = elemRect.bottom - clientHeight / 2 - elemRect.height / 2;
+  var maxScrollPosition = documentHeight - clientHeight;
+  return Math.min(scrollPosition + window.pageYOffset, maxScrollPosition);
+}
+
+module.exports = scrollTo;
+
+},{}],6:[function(require,module,exports){
 // get successful control from form and assemble into object
 // http://www.w3.org/TR/html401/interact/forms.html#h-17.13.2
 
@@ -618,7 +650,7 @@ function str_serialize(result, key, value) {
 
 module.exports = serialize;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /**
  * Copyright 2014 Craig Campbell
  *
@@ -986,47 +1018,7 @@ module.exports = serialize;
     window.Gator = Gator;
 }) ();
 
-},{}],7:[function(require,module,exports){
-(function (process){
-// Generated by CoffeeScript 1.12.2
-(function() {
-  var getNanoSeconds, hrtime, loadTime, moduleLoadTime, nodeLoadTime, upTime;
-
-  if ((typeof performance !== "undefined" && performance !== null) && performance.now) {
-    module.exports = function() {
-      return performance.now();
-    };
-  } else if ((typeof process !== "undefined" && process !== null) && process.hrtime) {
-    module.exports = function() {
-      return (getNanoSeconds() - nodeLoadTime) / 1e6;
-    };
-    hrtime = process.hrtime;
-    getNanoSeconds = function() {
-      var hr;
-      hr = hrtime();
-      return hr[0] * 1e9 + hr[1];
-    };
-    moduleLoadTime = getNanoSeconds();
-    upTime = process.uptime() * 1e9;
-    nodeLoadTime = moduleLoadTime - upTime;
-  } else if (Date.now) {
-    module.exports = function() {
-      return Date.now() - loadTime;
-    };
-    loadTime = Date.now();
-  } else {
-    module.exports = function() {
-      return new Date().getTime() - loadTime;
-    };
-    loadTime = new Date().getTime();
-  }
-
-}).call(this);
-
-
-
-}).call(this,require('_process'))
-},{"_process":9}],8:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /*! populate.js v1.0.2 by @dannyvankooten | MIT license */
 ;(function(root) {
 
@@ -1121,1240 +1113,6 @@ module.exports = serialize;
 	}
 
 }(this));
-
-},{}],9:[function(require,module,exports){
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-},{}],10:[function(require,module,exports){
-(function (global){
-var now = require('performance-now')
-  , root = typeof window === 'undefined' ? global : window
-  , vendors = ['moz', 'webkit']
-  , suffix = 'AnimationFrame'
-  , raf = root['request' + suffix]
-  , caf = root['cancel' + suffix] || root['cancelRequest' + suffix]
-
-for(var i = 0; !raf && i < vendors.length; i++) {
-  raf = root[vendors[i] + 'Request' + suffix]
-  caf = root[vendors[i] + 'Cancel' + suffix]
-      || root[vendors[i] + 'CancelRequest' + suffix]
-}
-
-// Some versions of FF have rAF but not cAF
-if(!raf || !caf) {
-  var last = 0
-    , id = 0
-    , queue = []
-    , frameDuration = 1000 / 60
-
-  raf = function(callback) {
-    if(queue.length === 0) {
-      var _now = now()
-        , next = Math.max(0, frameDuration - (_now - last))
-      last = next + _now
-      setTimeout(function() {
-        var cp = queue.slice(0)
-        // Clear queue here to prevent
-        // callbacks from appending listeners
-        // to the current frame's queue
-        queue.length = 0
-        for(var i = 0; i < cp.length; i++) {
-          if(!cp[i].cancelled) {
-            try{
-              cp[i].callback(last)
-            } catch(e) {
-              setTimeout(function() { throw e }, 0)
-            }
-          }
-        }
-      }, Math.round(next))
-    }
-    queue.push({
-      handle: ++id,
-      callback: callback,
-      cancelled: false
-    })
-    return id
-  }
-
-  caf = function(handle) {
-    for(var i = 0; i < queue.length; i++) {
-      if(queue[i].handle === handle) {
-        queue[i].cancelled = true
-      }
-    }
-  }
-}
-
-module.exports = function(fn) {
-  // Wrap in a new function to prevent
-  // `cancel` potentially being assigned
-  // to the native rAF function
-  return raf.call(root, fn)
-}
-module.exports.cancel = function() {
-  caf.apply(root, arguments)
-}
-module.exports.polyfill = function(object) {
-  if (!object) {
-    object = root;
-  }
-  object.requestAnimationFrame = raf
-  object.cancelAnimationFrame = caf
-}
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"performance-now":7}],11:[function(require,module,exports){
-// easing functions from "Tween.js"
-exports.linear = function(n){
-  return n;
-};
-
-exports.inQuad = function(n){
-  return n * n;
-};
-
-exports.outQuad = function(n){
-  return n * (2 - n);
-};
-
-exports.inOutQuad = function(n){
-  n *= 2;
-  if (n < 1) return 0.5 * n * n;
-  return - 0.5 * (--n * (n - 2) - 1);
-};
-
-exports.inCube = function(n){
-  return n * n * n;
-};
-
-exports.outCube = function(n){
-  return --n * n * n + 1;
-};
-
-exports.inOutCube = function(n){
-  n *= 2;
-  if (n < 1) return 0.5 * n * n * n;
-  return 0.5 * ((n -= 2 ) * n * n + 2);
-};
-
-exports.inQuart = function(n){
-  return n * n * n * n;
-};
-
-exports.outQuart = function(n){
-  return 1 - (--n * n * n * n);
-};
-
-exports.inOutQuart = function(n){
-  n *= 2;
-  if (n < 1) return 0.5 * n * n * n * n;
-  return -0.5 * ((n -= 2) * n * n * n - 2);
-};
-
-exports.inQuint = function(n){
-  return n * n * n * n * n;
-}
-
-exports.outQuint = function(n){
-  return --n * n * n * n * n + 1;
-}
-
-exports.inOutQuint = function(n){
-  n *= 2;
-  if (n < 1) return 0.5 * n * n * n * n * n;
-  return 0.5 * ((n -= 2) * n * n * n * n + 2);
-};
-
-exports.inSine = function(n){
-  return 1 - Math.cos(n * Math.PI / 2 );
-};
-
-exports.outSine = function(n){
-  return Math.sin(n * Math.PI / 2);
-};
-
-exports.inOutSine = function(n){
-  return .5 * (1 - Math.cos(Math.PI * n));
-};
-
-exports.inExpo = function(n){
-  return 0 == n ? 0 : Math.pow(1024, n - 1);
-};
-
-exports.outExpo = function(n){
-  return 1 == n ? n : 1 - Math.pow(2, -10 * n);
-};
-
-exports.inOutExpo = function(n){
-  if (0 == n) return 0;
-  if (1 == n) return 1;
-  if ((n *= 2) < 1) return .5 * Math.pow(1024, n - 1);
-  return .5 * (-Math.pow(2, -10 * (n - 1)) + 2);
-};
-
-exports.inCirc = function(n){
-  return 1 - Math.sqrt(1 - n * n);
-};
-
-exports.outCirc = function(n){
-  return Math.sqrt(1 - (--n * n));
-};
-
-exports.inOutCirc = function(n){
-  n *= 2
-  if (n < 1) return -0.5 * (Math.sqrt(1 - n * n) - 1);
-  return 0.5 * (Math.sqrt(1 - (n -= 2) * n) + 1);
-};
-
-exports.inBack = function(n){
-  var s = 1.70158;
-  return n * n * (( s + 1 ) * n - s);
-};
-
-exports.outBack = function(n){
-  var s = 1.70158;
-  return --n * n * ((s + 1) * n + s) + 1;
-};
-
-exports.inOutBack = function(n){
-  var s = 1.70158 * 1.525;
-  if ( ( n *= 2 ) < 1 ) return 0.5 * ( n * n * ( ( s + 1 ) * n - s ) );
-  return 0.5 * ( ( n -= 2 ) * n * ( ( s + 1 ) * n + s ) + 2 );
-};
-
-exports.inBounce = function(n){
-  return 1 - exports.outBounce(1 - n);
-};
-
-exports.outBounce = function(n){
-  if ( n < ( 1 / 2.75 ) ) {
-    return 7.5625 * n * n;
-  } else if ( n < ( 2 / 2.75 ) ) {
-    return 7.5625 * ( n -= ( 1.5 / 2.75 ) ) * n + 0.75;
-  } else if ( n < ( 2.5 / 2.75 ) ) {
-    return 7.5625 * ( n -= ( 2.25 / 2.75 ) ) * n + 0.9375;
-  } else {
-    return 7.5625 * ( n -= ( 2.625 / 2.75 ) ) * n + 0.984375;
-  }
-};
-
-exports.inOutBounce = function(n){
-  if (n < .5) return exports.inBounce(n * 2) * .5;
-  return exports.outBounce(n * 2 - 1) * .5 + .5;
-};
-
-exports.inElastic = function(n){
-  var s, a = 0.1, p = 0.4;
-  if ( n === 0 ) return 0;
-  if ( n === 1 ) return 1;
-  if ( !a || a < 1 ) { a = 1; s = p / 4; }
-  else s = p * Math.asin( 1 / a ) / ( 2 * Math.PI );
-  return - ( a * Math.pow( 2, 10 * ( n -= 1 ) ) * Math.sin( ( n - s ) * ( 2 * Math.PI ) / p ) );
-};
-
-exports.outElastic = function(n){
-  var s, a = 0.1, p = 0.4;
-  if ( n === 0 ) return 0;
-  if ( n === 1 ) return 1;
-  if ( !a || a < 1 ) { a = 1; s = p / 4; }
-  else s = p * Math.asin( 1 / a ) / ( 2 * Math.PI );
-  return ( a * Math.pow( 2, - 10 * n) * Math.sin( ( n - s ) * ( 2 * Math.PI ) / p ) + 1 );
-};
-
-exports.inOutElastic = function(n){
-  var s, a = 0.1, p = 0.4;
-  if ( n === 0 ) return 0;
-  if ( n === 1 ) return 1;
-  if ( !a || a < 1 ) { a = 1; s = p / 4; }
-  else s = p * Math.asin( 1 / a ) / ( 2 * Math.PI );
-  if ( ( n *= 2 ) < 1 ) return - 0.5 * ( a * Math.pow( 2, 10 * ( n -= 1 ) ) * Math.sin( ( n - s ) * ( 2 * Math.PI ) / p ) );
-  return a * Math.pow( 2, -10 * ( n -= 1 ) ) * Math.sin( ( n - s ) * ( 2 * Math.PI ) / p ) * 0.5 + 1;
-};
-
-// aliases
-exports['in-quad'] = exports.inQuad;
-exports['out-quad'] = exports.outQuad;
-exports['in-out-quad'] = exports.inOutQuad;
-exports['in-cube'] = exports.inCube;
-exports['out-cube'] = exports.outCube;
-exports['in-out-cube'] = exports.inOutCube;
-exports['in-quart'] = exports.inQuart;
-exports['out-quart'] = exports.outQuart;
-exports['in-out-quart'] = exports.inOutQuart;
-exports['in-quint'] = exports.inQuint;
-exports['out-quint'] = exports.outQuint;
-exports['in-out-quint'] = exports.inOutQuint;
-exports['in-sine'] = exports.inSine;
-exports['out-sine'] = exports.outSine;
-exports['in-out-sine'] = exports.inOutSine;
-exports['in-expo'] = exports.inExpo;
-exports['out-expo'] = exports.outExpo;
-exports['in-out-expo'] = exports.inOutExpo;
-exports['in-circ'] = exports.inCirc;
-exports['out-circ'] = exports.outCirc;
-exports['in-out-circ'] = exports.inOutCirc;
-exports['in-back'] = exports.inBack;
-exports['out-back'] = exports.outBack;
-exports['in-out-back'] = exports.inOutBack;
-exports['in-bounce'] = exports.inBounce;
-exports['out-bounce'] = exports.outBounce;
-exports['in-out-bounce'] = exports.inOutBounce;
-exports['in-elastic'] = exports.inElastic;
-exports['out-elastic'] = exports.outElastic;
-exports['in-out-elastic'] = exports.inOutElastic;
-
-},{}],12:[function(require,module,exports){
-function Emitter(obj) {
-  if (obj) return mixin(obj);
-};
-
-function mixin(obj) {
-  for (var key in Emitter.prototype) {
-    obj[key] = Emitter.prototype[key];
-  }
-  return obj;
-}
-
-Emitter.prototype.on =
-Emitter.prototype.addEventListener = function(event, fn){
-  this._callbacks = this._callbacks || {};
-  (this._callbacks['$' + event] = this._callbacks['$' + event] || [])
-    .push(fn);
-  return this;
-};
-
-Emitter.prototype.once = function(event, fn){
-  function on() {
-    this.off(event, on);
-    fn.apply(this, arguments);
-  }
-
-  on.fn = fn;
-  this.on(event, on);
-  return this;
-};
-
-Emitter.prototype.off =
-Emitter.prototype.removeListener =
-Emitter.prototype.removeAllListeners =
-Emitter.prototype.removeEventListener = function(event, fn){
-  this._callbacks = this._callbacks || {};
-
-  // all
-  if (0 == arguments.length) {
-    this._callbacks = {};
-    return this;
-  }
-
-  // specific event
-  var callbacks = this._callbacks['$' + event];
-  if (!callbacks) return this;
-
-  // remove all handlers
-  if (1 == arguments.length) {
-    delete this._callbacks['$' + event];
-    return this;
-  }
-
-  // remove specific handler
-  var cb;
-  for (var i = 0; i < callbacks.length; i++) {
-    cb = callbacks[i];
-    if (cb === fn || cb.fn === fn) {
-      callbacks.splice(i, 1);
-      break;
-    }
-  }
-
-  // Remove event specific arrays for event types that no
-  // one is subscribed for to avoid memory leak.
-  if (callbacks.length === 0) {
-    delete this._callbacks['$' + event];
-  }
-
-  return this;
-};
-
-Emitter.prototype.emit = function(event){
-  this._callbacks = this._callbacks || {};
-  var args = [].slice.call(arguments, 1)
-    , callbacks = this._callbacks['$' + event];
-
-  if (callbacks) {
-    callbacks = callbacks.slice(0);
-    for (var i = 0, len = callbacks.length; i < len; ++i) {
-      callbacks[i].apply(this, args);
-    }
-  }
-
-  return this;
-};
-
-Emitter.prototype.listeners = function(event){
-  this._callbacks = this._callbacks || {};
-  return this._callbacks['$' + event] || [];
-};
-
-Emitter.prototype.hasListeners = function(event){
-  return !! this.listeners(event).length;
-};
-
-if (typeof module !== 'undefined') {
-  module.exports = Emitter;
-}
-
-},{}],13:[function(require,module,exports){
-var scroll = require('./scroll-to');
-
-function calculateScrollOffset(elem, additionalOffset, alignment) {
-  var body = document.body,
-      html = document.documentElement;
-
-  var elemRect = elem.getBoundingClientRect();
-  var clientHeight = html.clientHeight;
-  var documentHeight = Math.max( body.scrollHeight, body.offsetHeight,
-                                 html.clientHeight, html.scrollHeight, html.offsetHeight );
-
-  additionalOffset = additionalOffset || 0;
-
-  var scrollPosition;
-  if (alignment === 'bottom') {
-    scrollPosition = elemRect.bottom - clientHeight;
-  } else if (alignment === 'middle') {
-    scrollPosition = elemRect.bottom - clientHeight / 2 - elemRect.height / 2;
-  } else { // top and default
-    scrollPosition = elemRect.top;
-  }
-
-  var maxScrollPosition = documentHeight - clientHeight;
-  return Math.min(scrollPosition + additionalOffset + window.pageYOffset,
-                  maxScrollPosition);
-}
-
-module.exports = function (elem, options) {
-  options = options || {};
-  if (typeof elem === 'string') elem = document.querySelector(elem);
-  if (elem) return scroll(0, calculateScrollOffset(elem, options.offset, options.align), options);
-};
-
-},{"./scroll-to":14}],14:[function(require,module,exports){
-var Tween = require('./tween');
-var raf = require('raf');
-
-function scroll() {
-  var y = window.pageYOffset || document.documentElement.scrollTop;
-  var x = window.pageXOffset || document.documentElement.scrollLeft;
-  return { top: y, left: x };
-}
-
-function scrollTo(x, y, options) {
-  options = options || {};
-
-  // start position
-  var start = scroll();
-
-  // setup tween
-  var tween = Tween(start)
-    .ease(options.ease || 'out-circ')
-    .to({ top: y, left: x })
-    .duration(options.duration || 1000);
-
-  // scroll
-  tween.update(function(o){
-    window.scrollTo(o.left | 0, o.top | 0);
-  });
-
-  // handle end
-  tween.on('end', function(){
-    animate = function(){};
-  });
-
-  // animate
-  function animate() {
-    raf(animate);
-    tween.update();
-  }
-
-  animate();
-
-  return tween;
-}
-
-module.exports = scrollTo;
-
-},{"./tween":15,"raf":10}],15:[function(require,module,exports){
-var ease = require('./ease');
-var Emitter = require('./emitter');
-
-function extend(obj, src) {
-  for (var key in src) {
-    if (src.hasOwnProperty(key)) obj[key] = src[key];
-  }
-  return obj;
-}
-
-function Tween(obj) {
-  if (!(this instanceof Tween)) return new Tween(obj);
-  this._from = obj;
-  this.ease('linear');
-  this.duration(500);
-}
-
-Emitter(Tween.prototype);
-
-Tween.prototype.reset = function(){
-  this.isArray = Object.prototype.toString.call(this._from) === '[object Array]';
-  this._curr = extend({}, this._from);
-  this._done = false;
-  this._start = Date.now();
-  return this;
-};
-
-Tween.prototype.to = function(obj){
-  this.reset();
-  this._to = obj;
-  return this;
-};
-
-Tween.prototype.duration = function(ms){
-  this._duration = ms;
-  return this;
-};
-
-Tween.prototype.ease = function(fn){
-  fn = 'function' == typeof fn ? fn : ease[fn];
-  if (!fn) throw new TypeError('invalid easing function');
-  this._ease = fn;
-  return this;
-};
-
-Tween.prototype.stop = function(){
-  this.stopped = true;
-  this._done = true;
-  this.emit('stop');
-  this.emit('end');
-  return this;
-};
-
-Tween.prototype.step = function(){
-  if (this._done) return;
-
-  var duration = this._duration;
-  var now = Date.now();
-  var delta = now - this._start;
-  var done = delta >= duration;
-
-  if (done) {
-    this._from = this._to;
-    this._update(this._to);
-    this._done = true;
-    this.emit('end');
-    return this;
-  }
-
-  var from = this._from;
-  var to = this._to;
-  var curr = this._curr;
-  var fn = this._ease;
-  var p = (now - this._start) / duration;
-  var n = fn(p);
-
-  if (this.isArray) {
-    for (var i = 0; i < from.length; ++i) {
-      curr[i] = from[i] + (to[i] - from[i]) * n;
-    }
-
-    this._update(curr);
-    return this;
-  }
-
-  for (var k in from) {
-    curr[k] = from[k] + (to[k] - from[k]) * n;
-  }
-
-  this._update(curr);
-  return this;
-};
-
-Tween.prototype.update = function(fn){
-  if (0 == arguments.length) return this.step();
-  this._update = fn;
-  return this;
-};
-
-module.exports = Tween;
-
-},{"./ease":11,"./emitter":12}],16:[function(require,module,exports){
-/*!
- * EventEmitter v5.2.6 - git.io/ee
- * Unlicense - http://unlicense.org/
- * Oliver Caldwell - https://oli.me.uk/
- * @preserve
- */
-
-;(function (exports) {
-    'use strict';
-
-    /**
-     * Class for managing events.
-     * Can be extended to provide event functionality in other classes.
-     *
-     * @class EventEmitter Manages event registering and emitting.
-     */
-    function EventEmitter() {}
-
-    // Shortcuts to improve speed and size
-    var proto = EventEmitter.prototype;
-    var originalGlobalValue = exports.EventEmitter;
-
-    /**
-     * Finds the index of the listener for the event in its storage array.
-     *
-     * @param {Function[]} listeners Array of listeners to search through.
-     * @param {Function} listener Method to look for.
-     * @return {Number} Index of the specified listener, -1 if not found
-     * @api private
-     */
-    function indexOfListener(listeners, listener) {
-        var i = listeners.length;
-        while (i--) {
-            if (listeners[i].listener === listener) {
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
-    /**
-     * Alias a method while keeping the context correct, to allow for overwriting of target method.
-     *
-     * @param {String} name The name of the target method.
-     * @return {Function} The aliased method
-     * @api private
-     */
-    function alias(name) {
-        return function aliasClosure() {
-            return this[name].apply(this, arguments);
-        };
-    }
-
-    /**
-     * Returns the listener array for the specified event.
-     * Will initialise the event object and listener arrays if required.
-     * Will return an object if you use a regex search. The object contains keys for each matched event. So /ba[rz]/ might return an object containing bar and baz. But only if you have either defined them with defineEvent or added some listeners to them.
-     * Each property in the object response is an array of listener functions.
-     *
-     * @param {String|RegExp} evt Name of the event to return the listeners from.
-     * @return {Function[]|Object} All listener functions for the event.
-     */
-    proto.getListeners = function getListeners(evt) {
-        var events = this._getEvents();
-        var response;
-        var key;
-
-        // Return a concatenated array of all matching events if
-        // the selector is a regular expression.
-        if (evt instanceof RegExp) {
-            response = {};
-            for (key in events) {
-                if (events.hasOwnProperty(key) && evt.test(key)) {
-                    response[key] = events[key];
-                }
-            }
-        }
-        else {
-            response = events[evt] || (events[evt] = []);
-        }
-
-        return response;
-    };
-
-    /**
-     * Takes a list of listener objects and flattens it into a list of listener functions.
-     *
-     * @param {Object[]} listeners Raw listener objects.
-     * @return {Function[]} Just the listener functions.
-     */
-    proto.flattenListeners = function flattenListeners(listeners) {
-        var flatListeners = [];
-        var i;
-
-        for (i = 0; i < listeners.length; i += 1) {
-            flatListeners.push(listeners[i].listener);
-        }
-
-        return flatListeners;
-    };
-
-    /**
-     * Fetches the requested listeners via getListeners but will always return the results inside an object. This is mainly for internal use but others may find it useful.
-     *
-     * @param {String|RegExp} evt Name of the event to return the listeners from.
-     * @return {Object} All listener functions for an event in an object.
-     */
-    proto.getListenersAsObject = function getListenersAsObject(evt) {
-        var listeners = this.getListeners(evt);
-        var response;
-
-        if (listeners instanceof Array) {
-            response = {};
-            response[evt] = listeners;
-        }
-
-        return response || listeners;
-    };
-
-    function isValidListener (listener) {
-        if (typeof listener === 'function' || listener instanceof RegExp) {
-            return true
-        } else if (listener && typeof listener === 'object') {
-            return isValidListener(listener.listener)
-        } else {
-            return false
-        }
-    }
-
-    /**
-     * Adds a listener function to the specified event.
-     * The listener will not be added if it is a duplicate.
-     * If the listener returns true then it will be removed after it is called.
-     * If you pass a regular expression as the event name then the listener will be added to all events that match it.
-     *
-     * @param {String|RegExp} evt Name of the event to attach the listener to.
-     * @param {Function} listener Method to be called when the event is emitted. If the function returns true then it will be removed after calling.
-     * @return {Object} Current instance of EventEmitter for chaining.
-     */
-    proto.addListener = function addListener(evt, listener) {
-        if (!isValidListener(listener)) {
-            throw new TypeError('listener must be a function');
-        }
-
-        var listeners = this.getListenersAsObject(evt);
-        var listenerIsWrapped = typeof listener === 'object';
-        var key;
-
-        for (key in listeners) {
-            if (listeners.hasOwnProperty(key) && indexOfListener(listeners[key], listener) === -1) {
-                listeners[key].push(listenerIsWrapped ? listener : {
-                    listener: listener,
-                    once: false
-                });
-            }
-        }
-
-        return this;
-    };
-
-    /**
-     * Alias of addListener
-     */
-    proto.on = alias('addListener');
-
-    /**
-     * Semi-alias of addListener. It will add a listener that will be
-     * automatically removed after its first execution.
-     *
-     * @param {String|RegExp} evt Name of the event to attach the listener to.
-     * @param {Function} listener Method to be called when the event is emitted. If the function returns true then it will be removed after calling.
-     * @return {Object} Current instance of EventEmitter for chaining.
-     */
-    proto.addOnceListener = function addOnceListener(evt, listener) {
-        return this.addListener(evt, {
-            listener: listener,
-            once: true
-        });
-    };
-
-    /**
-     * Alias of addOnceListener.
-     */
-    proto.once = alias('addOnceListener');
-
-    /**
-     * Defines an event name. This is required if you want to use a regex to add a listener to multiple events at once. If you don't do this then how do you expect it to know what event to add to? Should it just add to every possible match for a regex? No. That is scary and bad.
-     * You need to tell it what event names should be matched by a regex.
-     *
-     * @param {String} evt Name of the event to create.
-     * @return {Object} Current instance of EventEmitter for chaining.
-     */
-    proto.defineEvent = function defineEvent(evt) {
-        this.getListeners(evt);
-        return this;
-    };
-
-    /**
-     * Uses defineEvent to define multiple events.
-     *
-     * @param {String[]} evts An array of event names to define.
-     * @return {Object} Current instance of EventEmitter for chaining.
-     */
-    proto.defineEvents = function defineEvents(evts) {
-        for (var i = 0; i < evts.length; i += 1) {
-            this.defineEvent(evts[i]);
-        }
-        return this;
-    };
-
-    /**
-     * Removes a listener function from the specified event.
-     * When passed a regular expression as the event name, it will remove the listener from all events that match it.
-     *
-     * @param {String|RegExp} evt Name of the event to remove the listener from.
-     * @param {Function} listener Method to remove from the event.
-     * @return {Object} Current instance of EventEmitter for chaining.
-     */
-    proto.removeListener = function removeListener(evt, listener) {
-        var listeners = this.getListenersAsObject(evt);
-        var index;
-        var key;
-
-        for (key in listeners) {
-            if (listeners.hasOwnProperty(key)) {
-                index = indexOfListener(listeners[key], listener);
-
-                if (index !== -1) {
-                    listeners[key].splice(index, 1);
-                }
-            }
-        }
-
-        return this;
-    };
-
-    /**
-     * Alias of removeListener
-     */
-    proto.off = alias('removeListener');
-
-    /**
-     * Adds listeners in bulk using the manipulateListeners method.
-     * If you pass an object as the first argument you can add to multiple events at once. The object should contain key value pairs of events and listeners or listener arrays. You can also pass it an event name and an array of listeners to be added.
-     * You can also pass it a regular expression to add the array of listeners to all events that match it.
-     * Yeah, this function does quite a bit. That's probably a bad thing.
-     *
-     * @param {String|Object|RegExp} evt An event name if you will pass an array of listeners next. An object if you wish to add to multiple events at once.
-     * @param {Function[]} [listeners] An optional array of listener functions to add.
-     * @return {Object} Current instance of EventEmitter for chaining.
-     */
-    proto.addListeners = function addListeners(evt, listeners) {
-        // Pass through to manipulateListeners
-        return this.manipulateListeners(false, evt, listeners);
-    };
-
-    /**
-     * Removes listeners in bulk using the manipulateListeners method.
-     * If you pass an object as the first argument you can remove from multiple events at once. The object should contain key value pairs of events and listeners or listener arrays.
-     * You can also pass it an event name and an array of listeners to be removed.
-     * You can also pass it a regular expression to remove the listeners from all events that match it.
-     *
-     * @param {String|Object|RegExp} evt An event name if you will pass an array of listeners next. An object if you wish to remove from multiple events at once.
-     * @param {Function[]} [listeners] An optional array of listener functions to remove.
-     * @return {Object} Current instance of EventEmitter for chaining.
-     */
-    proto.removeListeners = function removeListeners(evt, listeners) {
-        // Pass through to manipulateListeners
-        return this.manipulateListeners(true, evt, listeners);
-    };
-
-    /**
-     * Edits listeners in bulk. The addListeners and removeListeners methods both use this to do their job. You should really use those instead, this is a little lower level.
-     * The first argument will determine if the listeners are removed (true) or added (false).
-     * If you pass an object as the second argument you can add/remove from multiple events at once. The object should contain key value pairs of events and listeners or listener arrays.
-     * You can also pass it an event name and an array of listeners to be added/removed.
-     * You can also pass it a regular expression to manipulate the listeners of all events that match it.
-     *
-     * @param {Boolean} remove True if you want to remove listeners, false if you want to add.
-     * @param {String|Object|RegExp} evt An event name if you will pass an array of listeners next. An object if you wish to add/remove from multiple events at once.
-     * @param {Function[]} [listeners] An optional array of listener functions to add/remove.
-     * @return {Object} Current instance of EventEmitter for chaining.
-     */
-    proto.manipulateListeners = function manipulateListeners(remove, evt, listeners) {
-        var i;
-        var value;
-        var single = remove ? this.removeListener : this.addListener;
-        var multiple = remove ? this.removeListeners : this.addListeners;
-
-        // If evt is an object then pass each of its properties to this method
-        if (typeof evt === 'object' && !(evt instanceof RegExp)) {
-            for (i in evt) {
-                if (evt.hasOwnProperty(i) && (value = evt[i])) {
-                    // Pass the single listener straight through to the singular method
-                    if (typeof value === 'function') {
-                        single.call(this, i, value);
-                    }
-                    else {
-                        // Otherwise pass back to the multiple function
-                        multiple.call(this, i, value);
-                    }
-                }
-            }
-        }
-        else {
-            // So evt must be a string
-            // And listeners must be an array of listeners
-            // Loop over it and pass each one to the multiple method
-            i = listeners.length;
-            while (i--) {
-                single.call(this, evt, listeners[i]);
-            }
-        }
-
-        return this;
-    };
-
-    /**
-     * Removes all listeners from a specified event.
-     * If you do not specify an event then all listeners will be removed.
-     * That means every event will be emptied.
-     * You can also pass a regex to remove all events that match it.
-     *
-     * @param {String|RegExp} [evt] Optional name of the event to remove all listeners for. Will remove from every event if not passed.
-     * @return {Object} Current instance of EventEmitter for chaining.
-     */
-    proto.removeEvent = function removeEvent(evt) {
-        var type = typeof evt;
-        var events = this._getEvents();
-        var key;
-
-        // Remove different things depending on the state of evt
-        if (type === 'string') {
-            // Remove all listeners for the specified event
-            delete events[evt];
-        }
-        else if (evt instanceof RegExp) {
-            // Remove all events matching the regex.
-            for (key in events) {
-                if (events.hasOwnProperty(key) && evt.test(key)) {
-                    delete events[key];
-                }
-            }
-        }
-        else {
-            // Remove all listeners in all events
-            delete this._events;
-        }
-
-        return this;
-    };
-
-    /**
-     * Alias of removeEvent.
-     *
-     * Added to mirror the node API.
-     */
-    proto.removeAllListeners = alias('removeEvent');
-
-    /**
-     * Emits an event of your choice.
-     * When emitted, every listener attached to that event will be executed.
-     * If you pass the optional argument array then those arguments will be passed to every listener upon execution.
-     * Because it uses `apply`, your array of arguments will be passed as if you wrote them out separately.
-     * So they will not arrive within the array on the other side, they will be separate.
-     * You can also pass a regular expression to emit to all events that match it.
-     *
-     * @param {String|RegExp} evt Name of the event to emit and execute listeners for.
-     * @param {Array} [args] Optional array of arguments to be passed to each listener.
-     * @return {Object} Current instance of EventEmitter for chaining.
-     */
-    proto.emitEvent = function emitEvent(evt, args) {
-        var listenersMap = this.getListenersAsObject(evt);
-        var listeners;
-        var listener;
-        var i;
-        var key;
-        var response;
-
-        for (key in listenersMap) {
-            if (listenersMap.hasOwnProperty(key)) {
-                listeners = listenersMap[key].slice(0);
-
-                for (i = 0; i < listeners.length; i++) {
-                    // If the listener returns true then it shall be removed from the event
-                    // The function is executed either with a basic call or an apply if there is an args array
-                    listener = listeners[i];
-
-                    if (listener.once === true) {
-                        this.removeListener(evt, listener.listener);
-                    }
-
-                    response = listener.listener.apply(this, args || []);
-
-                    if (response === this._getOnceReturnValue()) {
-                        this.removeListener(evt, listener.listener);
-                    }
-                }
-            }
-        }
-
-        return this;
-    };
-
-    /**
-     * Alias of emitEvent
-     */
-    proto.trigger = alias('emitEvent');
-
-    /**
-     * Subtly different from emitEvent in that it will pass its arguments on to the listeners, as opposed to taking a single array of arguments to pass on.
-     * As with emitEvent, you can pass a regex in place of the event name to emit to all events that match it.
-     *
-     * @param {String|RegExp} evt Name of the event to emit and execute listeners for.
-     * @param {...*} Optional additional arguments to be passed to each listener.
-     * @return {Object} Current instance of EventEmitter for chaining.
-     */
-    proto.emit = function emit(evt) {
-        var args = Array.prototype.slice.call(arguments, 1);
-        return this.emitEvent(evt, args);
-    };
-
-    /**
-     * Sets the current value to check against when executing listeners. If a
-     * listeners return value matches the one set here then it will be removed
-     * after execution. This value defaults to true.
-     *
-     * @param {*} value The new value to check for when executing listeners.
-     * @return {Object} Current instance of EventEmitter for chaining.
-     */
-    proto.setOnceReturnValue = function setOnceReturnValue(value) {
-        this._onceReturnValue = value;
-        return this;
-    };
-
-    /**
-     * Fetches the current value to check against when executing listeners. If
-     * the listeners return value matches this one then it should be removed
-     * automatically. It will return true by default.
-     *
-     * @return {*|Boolean} The current value to check for or the default, true.
-     * @api private
-     */
-    proto._getOnceReturnValue = function _getOnceReturnValue() {
-        if (this.hasOwnProperty('_onceReturnValue')) {
-            return this._onceReturnValue;
-        }
-        else {
-            return true;
-        }
-    };
-
-    /**
-     * Fetches the events object and creates one if required.
-     *
-     * @return {Object} The events storage object.
-     * @api private
-     */
-    proto._getEvents = function _getEvents() {
-        return this._events || (this._events = {});
-    };
-
-    /**
-     * Reverts the global {@link EventEmitter} to its previous value and returns a reference to this version.
-     *
-     * @return {Function} Non conflicting EventEmitter class.
-     */
-    EventEmitter.noConflict = function noConflict() {
-        exports.EventEmitter = originalGlobalValue;
-        return EventEmitter;
-    };
-
-    // Expose the class either via AMD, CommonJS or the global object
-    if (typeof define === 'function' && define.amd) {
-        define(function () {
-            return EventEmitter;
-        });
-    }
-    else if (typeof module === 'object' && module.exports){
-        module.exports = EventEmitter;
-    }
-    else {
-        exports.EventEmitter = EventEmitter;
-    }
-}(typeof window !== 'undefined' ? window : this || {}));
 
 },{}]},{},[1]);
  })();

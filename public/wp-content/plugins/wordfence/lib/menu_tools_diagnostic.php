@@ -566,9 +566,10 @@ if (!isset($sendingDiagnosticEmail)) {
 						if (is_array($values)) {
 							foreach ($values as $cron_job => $v) {
 								if (is_numeric($timestamp)) {
+									$overdue = ((time() - 1800) > $timestamp);
 									?>
-									<tr>
-										<td><?php echo esc_html(date('r', $timestamp)) ?></td>
+									<tr<?php echo $overdue ? ' class="wf-overdue-cron"' : ''; ?>>
+										<td><?php echo esc_html(date('r', $timestamp)) . ($overdue ? ' <strong>(' . __('Overdue', 'wordfence') . ')</strong>' : '') ?></td>
 										<td><?php echo esc_html($cron_job) ?></td>
 									</tr>
 									<?php

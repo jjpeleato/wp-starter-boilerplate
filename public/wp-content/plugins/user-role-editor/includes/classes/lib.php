@@ -212,10 +212,6 @@ class URE_Lib extends URE_Base_Lib {
             $roles = $wp_roles->roles;
         }        
         
-        if (is_array($roles) && count($roles) > 0) {
-            ksort($roles);
-        }
-
         return $roles;
     }
     // end of get_user_roles()
@@ -238,9 +234,7 @@ class URE_Lib extends URE_Base_Lib {
         if ($bbpress->is_active()) {
             add_filter('editable_roles', 'bbp_filter_blog_editable_roles');
         }
-        
-        ksort( $roles );
-        
+                
         return $roles;
     }
     // end of get_editable_user_roles()                 

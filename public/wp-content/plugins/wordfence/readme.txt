@@ -3,8 +3,8 @@ Contributors: mmaunder, wfryan, wfmatt, wfmattr
 Tags: security, firewall, malware scanner, web application firewall, two factor authentication, block hackers, country blocking, clean hacked site, blacklist, waf, login security
 Requires at least: 3.9
 Requires PHP: 5.3
-Tested up to: 5.2
-Stable tag: 7.3.5
+Tested up to: 5.3
+Stable tag: 7.4.2
 
 Secure your website with the most comprehensive WordPress security plugin. Firewall, malware scan, blocking, live traffic, login security & more.
 
@@ -104,7 +104,6 @@ We offer a Premium API key that gives you real-time updates to the Threat Defens
 * See all your traffic in real-time, including robots, humans, 404 errors, logins and logouts and who is consuming most of your content. Enhances your situational awareness of which security threats your site is facing.
 * A real-time view of all traffic including automated bots that often constitute security threats that Javascript analytics packages never show you.
 * Real-time traffic includes reverse DNS and city-level geolocation. Know which geographic area security threats originate from.
-* Monitor your DNS security for unauthorized DNS changes.
 * Monitors disk space which is related to security because many DDoS attacks attempt to consume all disk space to create denial of service.
 
 = What login security features are included =
@@ -112,7 +111,6 @@ We offer a Premium API key that gives you real-time updates to the Threat Defens
 * See all your traffic in real-time, including robots, humans, 404 errors, logins and logouts and who is consuming most of your content. Enhances your situational awareness of which security threats your site is facing.
 * A real-time view of all traffic including automated bots that often constitute security threats that Javascript analytics packages never show you.
 * Real-time traffic includes reverse DNS and city-level geolocation. Know which geographic area security threats originate from.
-* Monitor your DNS security for unauthorized DNS changes.
 * Monitors disk space which is related to security because many DDoS attacks attempt to consume all disk space to create denial of service.
 
 = How will I be alerted if my site has a security problem? =
@@ -184,6 +182,44 @@ Secure your website with Wordfence.
 9. Logging in is easy with Wordfence 2FA.
 
 == Changelog ==
+
+= 7.4.2 - December 3, 2019 =
+* Improvement: Increased performance of IP CIDR range comparisons.
+* Improvement: Added parameter signature to remote scanning for better validation during forking.
+* Change: Removed duplicate browser label in Live Traffic.
+* Fix: Added compensation for PHP 7.4 deprecation notice with get_magic_quotes_gpc.
+* Fix: Fixed potential notice in dashboard widget when no updates are found.
+* Fix: Updated JS hashing library to compensate for a variable name collision that could occur.
+* Fix: Fixed an issue where certain symlinks could cause a scan to erroneously skip files.
+* Fix: Fixed PHP memory test for newer PHP versions whose optimizations prevented it from allocating memory as desired.
+
+= 7.4.1 - November 6, 2019 =
+* Improvement: Updated the bundled GeoIP database.
+* Improvement: Minor changes to ensure compatibility with PHP 7.4.
+* Improvement: Updated the WHOIS lookup for better reliability.
+* Improvement: Added better diagnostic data when the WAF MySQL storage engine is active.
+* Improvement: Improved the messaging when switching between premium and free licenses.
+* Change: Deprecated DNS changes scan.
+* Change: The plugin will no longer email alerts when Central is managing them.
+* Fix: Added error suppression to ignore_user_abort calls to silence it on hosts with it disabled.
+* Fix: Improved path generation to better avoid outputting extra slashes in URLs.
+* Fix: Applied a length limit to malware reporting to avoid failures due to large content size.
+
+= 7.4.0 - August 22, 2019 =
+* Improvement: Added a MySQL-based configuration and data storage for the WAF to expand the number of hosting environments supported. For more detail, see: https://www.wordfence.com/help/firewall/mysqli-storage-engine/
+* Improvement: Updated bundled GeoIP database.
+* Fix: Fixed several console notices when running via the CLI.
+
+= 7.3.6 - July 31, 2019 =
+* Improvement: Multiple "php.ini file in core directory" issues are now consolidated into a single issue for clearer scan results.
+* Improvement: The AJAX error detection for false positive WAF blocks now better detects and processes the response for presenting the whitelisting prompt.
+* Improvement: Added overdue cron detection and highlighting to diagnostics to help identify issues.
+* Improvement: Added the necessary directives to exclude backwards compatibility code from creating warnings with phpcs for future compatibility with WP Tide.
+* Improvement: Normalized all PHP require/include calls to use full paths for better code quality.
+* Change: Removed deprecated high sensitivity scan option since current signatures are more accurate.
+* Fix: Fixed the status circle tooltips not showing.
+* Fix: IP detection at the WAF level better mirrors the main plugin exactly when using the automatic setting.
+* Fix: Fixed a currently-unused code path in email address verification for the strict check.
 
 = 7.3.5 - July 16, 2019 =
 * Improvement: Improved tagging of the login endpoint for brute force protection.

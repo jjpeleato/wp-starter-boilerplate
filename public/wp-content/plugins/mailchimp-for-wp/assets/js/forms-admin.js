@@ -1,221 +1,248 @@
 (function () { var require = undefined; var define = undefined; (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 'use strict';
 
-var rows = function rows(m, i18n) {
-  var r = {};
+var i18n = window.mc4wp_forms_i18n;
 
-  r.showType = function (config) {
-    // ucfirst
-    var fieldType = config.type();
-    fieldType = fieldType.charAt(0).toUpperCase() + fieldType.slice(1);
-    return m('div', [m("label", i18n.fieldType), m('span', fieldType)]);
-  };
+var m = require('mithril');
 
-  r.label = function (config) {
-    // label row
-    return m("div", [m("label", i18n.fieldLabel), m("input.widefat", {
-      type: "text",
-      value: config.label(),
-      onchange: m.withAttr('value', config.label),
-      placeholder: config.title()
-    })]);
-  };
+var r = {};
 
-  r.value = function (config) {
-    var isHidden = config.type() === 'hidden';
-    return m("div", [m("label", [isHidden ? i18n.value : i18n.initialValue, " ", isHidden ? '' : m('small', {
-      "style": "float: right; font-weight: normal;"
-    }, i18n.optional)]), m("input.widefat", {
-      type: "text",
-      value: config.value(),
-      onchange: m.withAttr('value', config.value)
-    }), isHidden ? '' : m('p.help', i18n.valueHelp)]);
-  };
-
-  r.numberMinMax = function (config) {
-    return m('div', [m('div.row', [m('div.col.col-3', [m('label', i18n.min), m('input', {
-      type: 'number',
-      onchange: m.withAttr('value', config.min)
-    })]), m('div.col.col-3', [m('label', i18n.max), m('input', {
-      type: 'number',
-      onchange: m.withAttr('value', config.max)
-    })])])]);
-  };
-
-  r.isRequired = function (config) {
-    var inputAtts = {
-      type: 'checkbox',
-      checked: config.required(),
-      onchange: m.withAttr('checked', config.required)
-    };
-    var desc;
-
-    if (config.forceRequired()) {
-      inputAtts.required = true;
-      inputAtts.disabled = true;
-      desc = m('p.help', i18n.forceRequired);
-    }
-
-    return m('div', [m('label.cb-wrap', [m('input', inputAtts), i18n.isFieldRequired]), desc]);
-  };
-
-  r.placeholder = function (config) {
-    return m("div", [m("label", [i18n.placeholder, " ", m('small', {
-      "style": "float: right; font-weight: normal;"
-    }, i18n.optional)]), m("input.widefat", {
-      type: "text",
-      value: config.placeholder(),
-      onchange: m.withAttr('value', config.placeholder),
-      placeholder: ""
-    }), m("p.help", i18n.placeholderHelp)]);
-  };
-
-  r.useParagraphs = function (config) {
-    return m('div', [m('label.cb-wrap', [m('input', {
-      type: 'checkbox',
-      checked: config.wrap(),
-      onchange: m.withAttr('checked', config.wrap)
-    }), i18n.wrapInParagraphTags])]);
-  };
-
-  r.choiceType = function (config) {
-    var options = [m('option', {
-      value: 'select',
-      selected: config.type() === 'select' ? 'selected' : false
-    }, i18n.dropdown), m('option', {
-      value: 'radio',
-      selected: config.type() === 'radio' ? 'selected' : false
-    }, i18n.radioButtons)]; // only add checkbox choice if field accepts multiple values
-
-    if (config.acceptsMultipleValues) {
-      options.push(m('option', {
-        value: 'checkbox',
-        selected: config.type() === 'checkbox' ? 'selected' : false
-      }, i18n.checkboxes));
-    }
-
-    return m('div', [m('label', i18n.choiceType), m('select', {
-      value: config.type(),
-      onchange: m.withAttr('value', config.type)
-    }, options)]);
-  };
-
-  r.choices = function (config) {
-    var html = [];
-    html.push(m('div', [m('label', i18n.choices), m('div.limit-height', [m("table", [// table body
-    config.choices().map(function (choice, index) {
-      return m('tr', {
-        'data-id': index
-      }, [m('td.cb', m('input', {
-        name: 'selected',
-        type: config.type() === 'checkbox' ? 'checkbox' : 'radio',
-        onchange: m.withAttr('value', config.selectChoice.bind(config)),
-        checked: choice.selected(),
-        value: choice.value(),
-        title: i18n.preselect
-      })), m('td.stretch', m('input.widefat', {
-        type: 'text',
-        value: choice.label(),
-        placeholder: choice.title(),
-        onchange: m.withAttr('value', choice.label)
-      })), m('td', m('span', {
-        "title": i18n.remove,
-        "class": 'dashicons dashicons-no-alt hover-activated',
-        "onclick": function (key) {
-          this.choices().splice(key, 1);
-        }.bind(config, index)
-      }, ''))]);
-    })]) // end of table
-    ]) // end of limit-height div
-    ]));
-    return html;
-  };
-
-  r.linkToTerms = function (config) {
-    // label row
-    return m("div", [m("label", i18n.agreeToTermsLink), m("input.widefat", {
-      type: "text",
-      value: config.link,
-      onchange: m.withAttr('value', config.link),
-      placeholder: 'https://...'
-    })]);
-  };
-
-  return r;
+r.showType = function (config) {
+  // ucfirst
+  var fieldType = config.type;
+  fieldType = fieldType.charAt(0).toUpperCase() + fieldType.slice(1);
+  return m('div', [m("label", i18n.fieldType), m('span', fieldType)]);
 };
 
-module.exports = rows;
+r.label = function (config) {
+  // label row
+  return m("div", [m("label", i18n.fieldLabel), m("input.widefat", {
+    type: "text",
+    value: config.label,
+    onchange: function onchange(evt) {
+      return config.label = evt.target.value;
+    },
+    placeholder: config.title
+  })]);
+};
 
-},{}],2:[function(require,module,exports){
-"use strict";
-
-var forms = function forms(m, i18n) {
-  var forms = {};
-
-  var rows = require('./field-forms-rows.js')(m, i18n); // route to one of the other form configs, default to "text"
-
-
-  forms.render = function (config) {
-    var type = config.type();
-
-    if (typeof forms[type] === "function") {
-      return forms[type](config);
+r.value = function (config) {
+  var isHidden = config.type === 'hidden';
+  return m("div", [m("label", [isHidden ? i18n.value : i18n.initialValue, " ", isHidden ? '' : m('small', {
+    "style": "float: right; font-weight: normal;"
+  }, i18n.optional)]), m("input.widefat", {
+    type: "text",
+    value: config.value,
+    onchange: function onchange(evt) {
+      return config.value = evt.target.value;
     }
+  }), isHidden ? '' : m('p.help', i18n.valueHelp)]);
+};
 
-    switch (type) {
-      case 'select':
-      case 'radio':
-      case 'checkbox':
-        return forms.choice(config);
-        break;
-    } // fallback to good old text field
-
-
-    return forms.text(config);
-  };
-
-  forms.text = function (config) {
-    return [rows.label(config), rows.placeholder(config), rows.value(config), rows.isRequired(config), rows.useParagraphs(config)];
-  };
-
-  forms.choice = function (config) {
-    var visibleRows = [rows.label(config), rows.choiceType(config), rows.choices(config)];
-
-    if (config.type() === 'select') {
-      visibleRows.push(rows.placeholder(config));
+r.numberMinMax = function (config) {
+  return m('div', [m('div.row', [m('div.col.col-3', [m('label', i18n.min), m('input', {
+    type: 'number',
+    onchange: function onchange(evt) {
+      return config.min = evt.target.value;
     }
-
-    visibleRows.push(rows.useParagraphs(config));
-
-    if (config.type() === 'select' || config.type() === 'radio') {
-      visibleRows.push(rows.isRequired(config));
+  })]), m('div.col.col-3', [m('label', i18n.max), m('input', {
+    type: 'number',
+    onchange: function onchange(evt) {
+      return config.max = evt.target.value;
     }
+  })])])]);
+};
 
-    return visibleRows;
+r.isRequired = function (config) {
+  var inputAtts = {
+    type: 'checkbox',
+    checked: config.required,
+    onchange: function onchange(evt) {
+      return config.required = evt.target.checked;
+    }
   };
+  var desc;
 
-  forms.hidden = function (config) {
-    config.placeholder('');
-    config.label('');
-    config.wrap(false);
-    return [rows.showType(config), rows.value(config)];
-  };
+  if (config.forceRequired) {
+    inputAtts.required = true;
+    inputAtts.disabled = true;
+    desc = m('p.help', i18n.forceRequired);
+  }
 
-  forms.submit = function (config) {
-    config.label('');
-    config.placeholder('');
-    return [rows.value(config), rows.useParagraphs(config)];
-  };
+  return m('div', [m('label.cb-wrap', [m('input', inputAtts), i18n.isFieldRequired]), desc]);
+};
 
-  forms['terms-checkbox'] = function (config) {
-    return [rows.label(config), rows.linkToTerms(config), rows.isRequired(config), rows.useParagraphs(config)];
-  };
+r.placeholder = function (config) {
+  return m("div", [m("label", [i18n.placeholder, " ", m('small', {
+    "style": "float: right; font-weight: normal;"
+  }, i18n.optional)]), m("input.widefat", {
+    type: "text",
+    value: config.placeholder,
+    onchange: function onchange(evt) {
+      return config.placeholder = evt.target.value;
+    },
+    placeholder: ""
+  }), m("p.help", i18n.placeholderHelp)]);
+};
 
-  forms.number = function (config) {
-    return [forms.text(config), rows.numberMinMax(config)];
-  };
+r.useParagraphs = function (config) {
+  return m('div', [m('label.cb-wrap', [m('input', {
+    type: 'checkbox',
+    checked: config.wrap,
+    onchange: function onchange(evt) {
+      return config.wrap = evt.target.checked;
+    }
+  }), i18n.wrapInParagraphTags])]);
+};
 
-  return forms;
+r.choiceType = function (config) {
+  var options = [m('option', {
+    value: 'select',
+    selected: config.type === 'select' ? 'selected' : false
+  }, i18n.dropdown), m('option', {
+    value: 'radio',
+    selected: config.type === 'radio' ? 'selected' : false
+  }, i18n.radioButtons)]; // only add checkbox choice if field accepts multiple values
+
+  if (config.acceptsMultipleValues) {
+    options.push(m('option', {
+      value: 'checkbox',
+      selected: config.type === 'checkbox' ? 'selected' : false
+    }, i18n.checkboxes));
+  }
+
+  return m('div', [m('label', i18n.choiceType), m('select', {
+    value: config.type,
+    onchange: function onchange(evt) {
+      return config.type = evt.target.value;
+    }
+  }, options)]);
+};
+
+r.choices = function (config) {
+  var html = [];
+  html.push(m('div', [m('label', i18n.choices), m('div.limit-height', [m("table", config.choices.map(function (choice, index) {
+    return m('tr', {
+      'data-id': index
+    }, [m('td.cb', m('input', {
+      name: 'selected',
+      type: config.type === 'checkbox' ? 'checkbox' : 'radio',
+      onchange: function onchange(evt) {
+        config.choices = config.choices.map(function (choice) {
+          if (choice.value === evt.target.value) {
+            choice.selected = !choice.selected;
+          } else {
+            // only checkboxes allow for multiple selections
+            if (config.type !== 'checkbox') {
+              choice.selected = false;
+            }
+          }
+
+          return choice;
+        });
+      },
+      checked: choice.selected,
+      value: choice.value,
+      title: i18n.preselect
+    })), m('td.stretch', m('input.widefat', {
+      type: 'text',
+      value: choice.label,
+      placeholder: choice.title,
+      onchange: function onchange(evt) {
+        return choice.label = evt.target.value;
+      }
+    })), m('td', m('span', {
+      "title": i18n.remove,
+      "class": 'dashicons dashicons-no-alt hover-activated',
+      "onclick": function (key) {
+        this.choices().splice(key, 1);
+      }.bind(config, index)
+    }, ''))]);
+  })) // end of table
+  ]) // end of limit-height div
+  ]));
+  return html;
+};
+
+r.linkToTerms = function (config) {
+  // label row
+  return m("div", [m("label", i18n.agreeToTermsLink), m("input.widefat", {
+    type: "text",
+    value: config.link,
+    onchange: function onchange(evt) {
+      return config.link = evt.target.value;
+    },
+    placeholder: 'https://...'
+  })]);
+};
+
+module.exports = r;
+
+},{"mithril":28}],2:[function(require,module,exports){
+'use strict';
+
+var forms = {};
+
+var rows = require('./field-forms-rows.js'); // route to one of the other form configs, default to "text"
+
+
+forms.render = function (config) {
+  var type = config.type;
+
+  if (typeof forms[type] === "function") {
+    return forms[type](config);
+  }
+
+  switch (type) {
+    case 'select':
+    case 'radio':
+    case 'checkbox':
+      return forms.choice(config);
+  } // fallback to good old text field
+
+
+  return forms.text(config);
+};
+
+forms.text = function (config) {
+  return [rows.label(config), rows.placeholder(config), rows.value(config), rows.isRequired(config), rows.useParagraphs(config)];
+};
+
+forms.choice = function (config) {
+  var visibleRows = [rows.label(config), rows.choiceType(config), rows.choices(config)];
+
+  if (config.type === 'select') {
+    visibleRows.push(rows.placeholder(config));
+  }
+
+  visibleRows.push(rows.useParagraphs(config));
+
+  if (config.type === 'select' || config.type === 'radio') {
+    visibleRows.push(rows.isRequired(config));
+  }
+
+  return visibleRows;
+};
+
+forms.hidden = function (config) {
+  config.placeholder = '';
+  config.label = '';
+  config.wrap = false;
+  return [rows.showType(config), rows.value(config)];
+};
+
+forms.submit = function (config) {
+  config.label = '';
+  config.placeholder = '';
+  return [rows.value(config), rows.useParagraphs(config)];
+};
+
+forms['terms-checkbox'] = function (config) {
+  return [rows.label(config), rows.linkToTerms(config), rows.isRequired(config), rows.useParagraphs(config)];
+};
+
+forms.number = function (config) {
+  return [forms.text(config), rows.numberMinMax(config)];
 };
 
 module.exports = forms;
@@ -224,6 +251,8 @@ module.exports = forms;
 'use strict';
 
 var htmlutil = require('html');
+
+var m = require('mithril');
 
 var setAttributes = function setAttributes(vnode) {
   if (vnode.dom.checked) {
@@ -239,742 +268,744 @@ var setAttributes = function setAttributes(vnode) {
   }
 };
 
-var g = function g(m) {
-  var generators = {};
-  /**
-   * Generates a <select> field
-   * @param config
-   * @returns {*}
-   */
+var generators = {};
+/**
+ * Generates a <select> field
+ * @param config
+ * @returns {*}
+ */
 
-  generators.select = function (config) {
-    var attributes = {
-      name: config.name(),
-      required: config.required()
-    };
-    var hasSelection = false;
-    var options = config.choices().map(function (choice) {
-      if (choice.selected()) {
-        hasSelection = true;
-      }
-
-      return m('option', {
-        value: choice.value() !== choice.label() ? choice.value() : undefined,
-        "selected": choice.selected(),
-        oncreate: setAttributes
-      }, choice.label());
-    });
-    var placeholder = config.placeholder();
-
-    if (placeholder.length > 0) {
-      options.unshift(m('option', {
-        'disabled': true,
-        'value': '',
-        'selected': !hasSelection,
-        oncreate: setAttributes
-      }, placeholder));
-    }
-
-    return m('select', attributes, options);
+generators['select'] = function (config) {
+  var attributes = {
+    name: config.name,
+    required: config.required
   };
-
-  generators['terms-checkbox'] = function (config) {
-    var label;
-
-    if (config.link().length > 0) {
-      label = m('a', {
-        href: config.link(),
-        target: "_blank"
-      }, config.label());
-    } else {
-      label = config.label();
+  var hasSelection = false;
+  var options = config.choices.map(function (choice) {
+    if (choice.selected) {
+      hasSelection = true;
     }
 
+    return m('option', {
+      value: choice.value !== choice.label ? choice.value : undefined,
+      "selected": choice.selected,
+      oncreate: setAttributes
+    }, choice.label);
+  });
+  var placeholder = config.placeholder;
+
+  if (placeholder.length > 0) {
+    options.unshift(m('option', {
+      'disabled': true,
+      'value': '',
+      'selected': !hasSelection,
+      oncreate: setAttributes
+    }, placeholder));
+  }
+
+  return m('select', attributes, options);
+};
+
+generators['terms-checkbox'] = function (config) {
+  var label;
+
+  if (config.link.length > 0) {
+    label = m('a', {
+      href: config.link,
+      target: "_blank"
+    }, config.label);
+  } else {
+    label = config.label;
+  }
+
+  return m('label', [m('input', {
+    name: config.name,
+    type: 'checkbox',
+    value: config.value,
+    required: config.required
+  }), ' ', label]);
+};
+/**
+ * Generates a checkbox or radio type input field.
+ *
+ * @param config
+ * @returns {*}
+ */
+
+
+generators['checkbox'] = function (config) {
+  return config.choices.map(function (choice) {
+    var name = config.name + (config.type === 'checkbox' ? '[]' : '');
+    var required = config.required && config.type === 'radio';
     return m('label', [m('input', {
-      name: config.name(),
-      type: 'checkbox',
-      value: config.value(),
-      required: config.required()
-    }), ' ', label]);
-  };
-  /**
-   * Generates a checkbox or radio type input field.
-   *
-   * @param config
-   * @returns {*}
-   */
-
-
-  generators.checkbox = function (config) {
-    var fields = config.choices().map(function (choice) {
-      var name = config.name() + (config.type() === 'checkbox' ? '[]' : '');
-      var required = config.required() && config.type() === 'radio';
-      return m('label', [m('input', {
-        name: name,
-        type: config.type(),
-        value: choice.value(),
-        checked: choice.selected(),
-        required: required,
-        oncreate: setAttributes
-      }), ' ', m('span', choice.label())]);
-    });
-    return fields;
-  };
-
-  generators.radio = generators.checkbox;
-  /**
-   * Generates a default field
-   *
-   * - text, url, number, email, date
-   *
-   * @param config
-   * @returns {*}
-   */
-
-  generators['default'] = function (config) {
-    var attributes = {
-      type: config.type()
-    };
-
-    if (config.name()) {
-      attributes.name = config.name();
-    }
-
-    if (config.min()) {
-      attributes.min = config.min();
-    }
-
-    if (config.max()) {
-      attributes.max = config.max();
-    }
-
-    if (config.value().length > 0) {
-      attributes.value = config.value();
-    }
-
-    if (config.placeholder().length > 0) {
-      attributes.placeholder = config.placeholder();
-    }
-
-    attributes.required = config.required();
-    attributes.oncreate = setAttributes;
-    return m('input', attributes);
-  };
-  /**
-   * Generates an HTML string based on a field (config) object
-   *
-   * @param config
-   * @returns {*}
-   */
-
-
-  function generate(config) {
-    var label,
-        field,
-        htmlTemplate,
-        html,
-        vdom = document.createElement('div');
-    label = config.label().length > 0 && config.showLabel() ? m("label", {}, config.label()) : '';
-    field = typeof generators[config.type()] === "function" ? generators[config.type()](config) : generators['default'](config);
-    htmlTemplate = config.wrap() ? m('p', [label, field]) : [label, field]; // render in vdom
-
-    m.render(vdom, htmlTemplate); // prettify html
-
-    html = htmlutil.prettyPrint(vdom.innerHTML);
-    return html + "\n";
-  }
-
-  return generate;
+      name: name,
+      type: config.type,
+      value: choice.value,
+      checked: choice.selected,
+      required: required,
+      oncreate: setAttributes
+    }), ' ', m('span', choice.label)]);
+  });
 };
 
-module.exports = g;
+generators['radio'] = generators['checkbox'];
+/**
+ * Generates a default field
+ *
+ * - text, url, number, email, date
+ *
+ * @param config
+ * @returns {*}
+ */
 
-},{"html":22}],4:[function(require,module,exports){
-"use strict";
-
-var FieldHelper = function FieldHelper(m, tabs, editor, fields, events, i18n) {
-  'use strict';
-
-  var generate = require('./field-generator.js')(m);
-
-  var overlay = require('../overlay.js')(m, i18n);
-
-  var forms = require('./field-forms.js')(m, i18n);
-
-  var fieldConfig;
-  editor.on('blur', m.redraw);
-  /**
-   * Choose a field to open the helper form for
-   *
-   * @param index
-   * @returns {*}
-   */
-
-  function setActiveField(index) {
-    fieldConfig = fields.get(index); // if this hidden field has choices (hidden groups), glue them together by their label.
-
-    if (fieldConfig && fieldConfig.choices().length > 0) {
-      fieldConfig.value(fieldConfig.choices().map(function (c) {
-        return c.label();
-      }).join('|'));
-    }
-
-    m.redraw();
-  }
-  /**
-   * Controller
-   */
-
-
-  function controller() {}
-  /**
-   * Create HTML based on current config object
-   */
-
-
-  function createFieldHTMLAndAddToForm() {
-    // generate html
-    var html = generate(fieldConfig); // add to editor
-
-    editor.insert(html); // reset field form
-
-    setActiveField(''); // redraw
-
-    m.redraw();
-  }
-  /**
-   * View
-   * @returns {*}
-   */
-
-
-  function view() {
-    // build DOM for fields choice
-    var fieldCategories = fields.getCategories();
-    var availableFields = fields.getAll();
-    var fieldsChoice = m("div.available-fields.small-margin", [m("h4", i18n.chooseField), fieldCategories.map(function (category) {
-      var categoryFields = availableFields.filter(function (f) {
-        return f.category === category;
-      });
-
-      if (!categoryFields.length) {
-        return;
-      }
-
-      return m("div.tiny-margin", [m("strong", category), // render fields
-      categoryFields.map(function (field) {
-        var className = "button";
-
-        if (field.forceRequired()) {
-          className += " is-required";
-        }
-
-        var inForm = field.inFormContent();
-
-        if (inForm !== null) {
-          className += " " + (inForm ? 'in-form' : 'not-in-form');
-        }
-
-        return m("button", {
-          className: className,
-          type: 'button',
-          onclick: m.withAttr("value", setActiveField),
-          value: field.index
-        }, field.title());
-      })]);
-    })]); // build DOM for overlay
-
-    var form = null;
-
-    if (fieldConfig) {
-      form = m(overlay( // field wizard
-      m("div.field-wizard", [//heading
-      m("h3", [fieldConfig.title(), fieldConfig.forceRequired() ? m('span.red', '*') : '', fieldConfig.name().length ? m("code", fieldConfig.name()) : '']), // help text
-      fieldConfig.help().length ? m('p', m.trust(fieldConfig.help())) : '', // actual form
-      forms.render(fieldConfig), // add to form button
-      m("p", [m("button", {
-        "class": "button-primary",
-        type: "button",
-        onkeydown: function onkeydown(e) {
-          e = e || window.event;
-
-          if (e.keyCode == 13) {
-            createFieldHTMLAndAddToForm();
-          }
-        },
-        onclick: createFieldHTMLAndAddToForm
-      }, i18n.addToForm)])]), setActiveField));
-    }
-
-    return [fieldsChoice, form];
-  } // expose some variables
-
-
-  return {
-    view: view,
-    controller: controller
+generators['default'] = function (config) {
+  var attributes = {
+    type: config.type
   };
+
+  if (config.name) {
+    attributes.name = config.name;
+  }
+
+  if (config.min) {
+    attributes.min = config.min;
+  }
+
+  if (config.max) {
+    attributes.max = config.max;
+  }
+
+  if (config.value.length > 0) {
+    attributes.value = config.value;
+  }
+
+  if (config.placeholder.length > 0) {
+    attributes.placeholder = config.placeholder;
+  }
+
+  attributes.required = config.required;
+  attributes.oncreate = setAttributes;
+  return m('input', attributes);
 };
-
-module.exports = FieldHelper;
-
-},{"../overlay.js":10,"./field-forms.js":2,"./field-generator.js":3}],5:[function(require,module,exports){
-"use strict";
-
-var FieldFactory = function FieldFactory(fields, i18n) {
-  'use strict';
-  /**
-   * Array of registered fields
-   *
-   * @type {Array}
-   */
-
-  var registeredFields = [];
-  /**
-   * Reset all previously registered fields
-   */
-
-  function reset() {
-    // clear all of our fields
-    registeredFields.forEach(fields.deregister);
-  }
-  /**
-   * Helper function to quickly register a field and store it in local scope
-   *
-   * @param {object} data
-   * @param {boolean} sticky
-   */
+/**
+ * Generates an HTML string based on a field (config) object
+ *
+ * @param config
+ * @returns {*}
+ */
 
 
-  function register(category, data, sticky) {
-    var field = fields.register(category, data);
+function generate(config) {
+  var labelAtts = {};
+  var label = config.label.length > 0 && config.showLabel ? m("label", labelAtts, config.label) : '';
+  var field = typeof generators[config.type] === "function" ? generators[config.type](config) : generators['default'](config);
+  var htmlTemplate = config.wrap ? m('p', [label, field]) : [label, field]; // render in vdom
 
-    if (!sticky) {
-      registeredFields.push(field);
-    }
-  }
-  /**
-   * Normalizes the field type which is passed by Mailchimp
-   *
-   * @param type
-   * @returns {*}
-   */
+  var vdom = document.createElement('div');
+  m.render(vdom, htmlTemplate); // prettify html
 
+  var html = htmlutil.prettyPrint(vdom.innerHTML);
+  return html + "\n";
+}
 
-  function getFieldType(type) {
-    var map = {
-      'phone': 'tel',
-      'dropdown': 'select',
-      'checkboxes': 'checkbox',
-      'birthday': 'text'
-    };
-    return typeof map[type] !== "undefined" ? map[type] : type;
-  }
-  /**
-   * Register the various fields for a merge var
-   *
-   * @param mergeField
-   * @returns {boolean}
-   */
+module.exports = generate;
 
-
-  function registerMergeField(mergeField) {
-    var category = i18n.listFields;
-    var fieldType = getFieldType(mergeField.field_type); // name, type, title, value, required, label, placeholder, choices, wrap
-
-    var data = {
-      name: mergeField.tag,
-      title: mergeField.name,
-      required: mergeField.required,
-      forceRequired: mergeField.required,
-      type: fieldType,
-      choices: mergeField.choices,
-      acceptsMultipleValues: false // merge fields never accept multiple values.
-
-    };
-
-    if (data.type !== 'address') {
-      register(category, data, false);
-    } else {
-      register(category, {
-        name: data.name + '[addr1]',
-        type: 'text',
-        mailchimpType: 'address',
-        title: i18n.streetAddress
-      });
-      register(category, {
-        name: data.name + '[city]',
-        type: 'text',
-        mailchimpType: 'address',
-        title: i18n.city
-      });
-      register(category, {
-        name: data.name + '[state]',
-        type: 'text',
-        mailchimpType: 'address',
-        title: i18n.state
-      });
-      register(category, {
-        name: data.name + '[zip]',
-        type: 'text',
-        mailchimpType: 'address',
-        title: i18n.zip
-      });
-      register(category, {
-        name: data.name + '[country]',
-        type: 'select',
-        mailchimpType: 'address',
-        title: i18n.country,
-        choices: mc4wp_vars.countries
-      });
-    }
-
-    return true;
-  }
-  /**
-   * Register a field for a Mailchimp grouping
-   *
-   * @param interestCategory
-   */
-
-
-  function registerInterestCategory(interestCategory) {
-    var category = i18n.interestCategories;
-    var fieldType = getFieldType(interestCategory.field_type);
-    var data = {
-      title: interestCategory.name,
-      name: 'INTERESTS[' + interestCategory.id + ']',
-      type: fieldType,
-      choices: interestCategory.interests,
-      acceptsMultipleValues: fieldType === 'checkbox'
-    };
-    register(category, data, false);
-  }
-  /**
-   * Register all fields belonging to a list
-   *
-   * @param list
-   */
-
-
-  function registerListFields(list) {
-    // make sure EMAIL && public fields come first
-    list.merge_fields = list.merge_fields.sort(function (a, b) {
-      if (a.tag === 'EMAIL' || a["public"] && !b["public"]) {
-        return -1;
-      }
-
-      if (!a["public"] && b["public"]) {
-        return 1;
-      }
-
-      return 0;
-    }); // loop through merge vars
-
-    list.merge_fields.forEach(registerMergeField); // loop through groupings
-
-    list.interest_categories.forEach(registerInterestCategory);
-  }
-  /**
-   * Register all lists fields
-   *
-   * @param lists
-   */
-
-
-  function registerListsFields(lists) {
-    reset();
-    lists.forEach(registerListFields);
-  }
-
-  function registerCustomFields(lists) {
-    var choices,
-        category = i18n.formFields; // register submit button
-
-    register(category, {
-      name: '',
-      value: i18n.subscribe,
-      type: "submit",
-      title: i18n.submitButton
-    }, true); // register lists choice field
-
-    choices = {};
-
-    for (var key in lists) {
-      choices[lists[key].id] = lists[key].name;
-    }
-
-    register(category, {
-      name: '_mc4wp_lists',
-      type: 'checkbox',
-      title: i18n.listChoice,
-      choices: choices,
-      help: i18n.listChoiceDescription,
-      acceptsMultipleValues: true
-    }, true);
-    choices = {
-      'subscribe': "Subscribe",
-      'unsubscribe': "Unsubscribe"
-    };
-    register(category, {
-      name: '_mc4wp_action',
-      type: 'radio',
-      title: i18n.formAction,
-      choices: choices,
-      value: 'subscribe',
-      help: i18n.formActionDescription
-    }, true);
-    register(category, {
-      name: 'AGREE_TO_TERMS',
-      value: 1,
-      type: "terms-checkbox",
-      label: i18n.agreeToTerms,
-      title: i18n.agreeToTermsShort,
-      showLabel: false,
-      required: true
-    }, true);
-  }
-  /**
-   * Expose some methods
-   */
-
-
-  return {
-    'registerCustomFields': registerCustomFields,
-    'registerListFields': registerListFields,
-    'registerListsFields': registerListsFields
-  };
-};
-
-module.exports = FieldFactory;
-
-},{}],6:[function(require,module,exports){
+},{"html":24,"mithril":28}],4:[function(require,module,exports){
 'use strict';
 
-var prop = require("mithril/stream");
+var m = require('mithril');
 
-module.exports = function (m, events) {
-  var timeout;
-  var fields = [];
-  var categories = [];
-  /**
-   * @internal
-   *
-   *
-   * @param data
-   * @constructor
-   */
+var editor = require('./form-editor.js');
 
-  var Field = function Field(data) {
-    this.name = prop(data.name);
-    this.title = prop(data.title || data.name);
-    this.type = prop(data.type);
-    this.mailchimpType = prop(data.mailchimpType || '');
-    this.label = prop(data.label || data.title || '');
-    this.showLabel = prop(data.showLabel !== undefined ? data.showLabel : true);
-    this.value = prop(data.value || '');
-    this.placeholder = prop(data.placeholder || '');
-    this.required = prop(data.required || false);
-    this.forceRequired = prop(data.forceRequired || false);
-    this.wrap = prop(data.wrap !== undefined ? data.wrap : true);
-    this.min = prop(data.min || null);
-    this.max = prop(data.max || null);
-    this.help = prop(data.help || '');
-    this.choices = prop(data.choices || []);
-    this.inFormContent = prop(null);
-    this.acceptsMultipleValues = data.acceptsMultipleValues;
-    this.link = prop(data.link || '');
+var fields = require('./fields.js');
 
-    this.selectChoice = function (value) {
-      var field = this;
-      this.choices(this.choices().map(function (choice) {
-        if (choice.value() === value) {
-          choice.selected(true);
-        } else {
-          // only checkboxes allow for multiple selections
-          if (field.type() !== 'checkbox') {
-            choice.selected(false);
-          }
+var i18n = window.mc4wp_forms_i18n;
+
+var generate = require('./field-generator.js');
+
+var Overlay = require('../overlay.js');
+
+var forms = require('./field-forms.js');
+
+var fieldConfig;
+editor.on('blur', m.redraw);
+/**
+ * Choose a field to open the helper form for
+ *
+ * @param index
+ * @returns {*}
+ */
+
+function setActiveField(index) {
+  fieldConfig = fields.get(index); // if this hidden field has choices (hidden groups), glue them together by their label.
+
+  if (fieldConfig && fieldConfig.type === 'hidden' && fieldConfig.choices.length > 0) {
+    fieldConfig.value = fieldConfig.choices.map(function (c) {
+      return c.label;
+    }).join('|');
+  }
+
+  m.redraw();
+}
+/**
+ * Create HTML based on current config object
+ */
+
+
+function createFieldHTMLAndAddToForm() {
+  // generate html
+  var html = generate(fieldConfig); // add to editor
+
+  editor.insert(html); // reset field form
+
+  setActiveField(''); // redraw
+
+  m.redraw();
+}
+/**
+ * View
+ * @returns {*}
+ */
+
+
+function view() {
+  // build DOM for fields choice
+  var fieldCategories = fields.getCategories();
+  var availableFields = fields.getAll();
+  var fieldsChoice = m("div.available-fields.small-margin", [m("h4", i18n.chooseField), fieldCategories.map(function (category) {
+    var categoryFields = availableFields.filter(function (f) {
+      return f.category === category;
+    });
+
+    if (!categoryFields.length) {
+      return;
+    }
+
+    return m("div.tiny-margin", [m("strong", category), // render fields
+    categoryFields.map(function (field) {
+      var className = "button";
+
+      if (field.forceRequired) {
+        className += " is-required";
+      }
+
+      var inForm = field.inFormContent;
+
+      if (inForm !== null) {
+        className += " " + (inForm ? 'in-form' : 'not-in-form');
+      }
+
+      return m("button", {
+        className: className,
+        type: 'button',
+        onclick: function onclick(evt) {
+          return setActiveField(evt.target.value);
+        },
+        value: field.index
+      }, field.title);
+    })]);
+  })]); // build DOM for overlay
+
+  var form = null;
+
+  if (fieldConfig) {
+    form = m(Overlay, {
+      onClose: setActiveField
+    }, // field wizard
+    m("div.field-wizard", [//heading
+    m("h3", [fieldConfig.title, fieldConfig.forceRequired ? m('span.red', '*') : '', fieldConfig.name.length ? m("code", fieldConfig.name) : '']), // help text
+    fieldConfig.help.length ? m('p', m.trust(fieldConfig.help)) : '', // actual form
+    forms.render(fieldConfig), // add to form button
+    m("p", [m("button", {
+      "class": "button-primary",
+      type: "button",
+      onkeydown: function onkeydown(evt) {
+        if (evt.keyCode === 13) {
+          createFieldHTMLAndAddToForm();
+        }
+      },
+      onclick: createFieldHTMLAndAddToForm
+    }, i18n.addToForm)])]));
+  }
+
+  return [fieldsChoice, form];
+}
+
+var fieldHelperRootElement = document.getElementById('mc4wp-field-wizard');
+
+if (fieldHelperRootElement) {
+  m.mount(fieldHelperRootElement, {
+    view: view
+  });
+}
+
+},{"../overlay.js":11,"./field-forms.js":2,"./field-generator.js":3,"./fields.js":6,"./form-editor.js":7,"mithril":28}],5:[function(require,module,exports){
+'use strict';
+
+var m = require('mithril');
+
+var fields = require('./fields.js');
+
+var settings = window.mc4wp.settings;
+var ajaxurl = window.mc4wp_vars.ajaxurl;
+var i18n = window.mc4wp_forms_i18n;
+var mailchimp = window.mc4wp_vars.mailchimp;
+/**
+ * Array of registered fields
+ *
+ * @type {Array}
+ */
+
+var registeredFields = [];
+/**
+ * Reset all previously registered fields
+ */
+
+function reset() {
+  // clear all of our fields
+  registeredFields.forEach(fields.deregister);
+}
+/**
+ * Helper function to quickly register a field and store it in local scope
+ *
+ * @param {string} category
+ * @param {object} data
+ * @param {boolean} sticky
+ */
+
+
+function register(category, data, sticky) {
+  var field = fields.register(category, data);
+
+  if (!sticky) {
+    registeredFields.push(field);
+  }
+}
+/**
+ * Normalizes the field type which is passed by Mailchimp
+ *
+ * @param type
+ * @returns {*}
+ */
+
+
+function getFieldType(type) {
+  var map = {
+    'phone': 'tel',
+    'dropdown': 'select',
+    'checkboxes': 'checkbox',
+    'birthday': 'text'
+  };
+  return typeof map[type] !== "undefined" ? map[type] : type;
+}
+/**
+ * Register the various fields for a merge var
+ *
+ * @param mergeField
+ * @returns {boolean}
+ */
+
+
+function registerMergeField(mergeField) {
+  var category = i18n.listFields;
+  var fieldType = getFieldType(mergeField.type); // name, type, title, value, required, label, placeholder, choices, wrap
+
+  var data = {
+    name: mergeField.tag,
+    title: mergeField.name,
+    required: mergeField.required,
+    forceRequired: mergeField.required,
+    type: fieldType,
+    choices: mergeField.options.choices,
+    acceptsMultipleValues: false // merge fields never accept multiple values.
+
+  };
+
+  if (data.type !== 'address') {
+    register(category, data, false);
+  } else {
+    register(category, {
+      name: data.name + '[addr1]',
+      type: 'text',
+      mailchimpType: 'address',
+      title: i18n.streetAddress
+    }, false);
+    register(category, {
+      name: data.name + '[city]',
+      type: 'text',
+      mailchimpType: 'address',
+      title: i18n.city
+    }, false);
+    register(category, {
+      name: data.name + '[state]',
+      type: 'text',
+      mailchimpType: 'address',
+      title: i18n.state
+    }, false);
+    register(category, {
+      name: data.name + '[zip]',
+      type: 'text',
+      mailchimpType: 'address',
+      title: i18n.zip
+    }, false);
+    register(category, {
+      name: data.name + '[country]',
+      type: 'select',
+      mailchimpType: 'address',
+      title: i18n.country,
+      choices: mc4wp_vars.countries
+    }, false);
+  }
+
+  return true;
+}
+/**
+ * Register a field for a Mailchimp grouping
+ *
+ * @param interestCategory
+ */
+
+
+function registerInterestCategory(interestCategory) {
+  var category = i18n.interestCategories;
+  var fieldType = getFieldType(interestCategory.type);
+  var data = {
+    title: interestCategory.title,
+    name: 'INTERESTS[' + interestCategory.id + ']',
+    type: fieldType,
+    choices: interestCategory.interests,
+    acceptsMultipleValues: fieldType === 'checkbox'
+  };
+  register(category, data, false);
+}
+/**
+ * Register all fields belonging to a list
+ *
+ * @param list
+ */
+
+
+function registerListFields(list) {
+  // make sure EMAIL && public fields come first
+  list.merge_fields = list.merge_fields.sort(function (a, b) {
+    if (a.tag === 'EMAIL' || a["public"] && !b["public"]) {
+      return -1;
+    }
+
+    if (!a["public"] && b["public"]) {
+      return 1;
+    }
+
+    return 0;
+  }); // loop through merge vars
+
+  list.merge_fields.forEach(registerMergeField); // loop through groupings
+
+  list.interest_categories.forEach(registerInterestCategory);
+}
+/**
+ * Register all lists fields
+ *
+ * @param lists
+ */
+
+
+function registerListsFields(lists) {
+  var url = ajaxurl + "?action=mc4wp_get_list_details&ids=" + lists.map(function (l) {
+    return l.id;
+  }).join(',');
+  m.request({
+    url: url,
+    method: "GET"
+  }).then(function (lists) {
+    reset();
+    lists.forEach(registerListFields);
+  });
+}
+
+function registerCustomFields(lists) {
+  var choices;
+  var category = i18n.formFields;
+  register(i18n.listFields, {
+    name: 'EMAIL',
+    title: i18n.emailAddress,
+    required: true,
+    forceRequired: true,
+    type: 'email'
+  }, true); // register submit button
+
+  register(category, {
+    name: '',
+    value: i18n.subscribe,
+    type: "submit",
+    title: i18n.submitButton
+  }, true); // register lists choice field
+
+  choices = {};
+
+  for (var key in lists) {
+    choices[lists[key].id] = lists[key].name;
+  }
+
+  register(category, {
+    name: '_mc4wp_lists',
+    type: 'checkbox',
+    title: i18n.listChoice,
+    choices: choices,
+    help: i18n.listChoiceDescription,
+    acceptsMultipleValues: true
+  }, true);
+  choices = {
+    'subscribe': "Subscribe",
+    'unsubscribe': "Unsubscribe"
+  };
+  register(category, {
+    name: '_mc4wp_action',
+    type: 'radio',
+    title: i18n.formAction,
+    choices: choices,
+    value: 'subscribe',
+    help: i18n.formActionDescription
+  }, true);
+  register(category, {
+    name: 'AGREE_TO_TERMS',
+    value: 1,
+    type: "terms-checkbox",
+    label: i18n.agreeToTerms,
+    title: i18n.agreeToTermsShort,
+    showLabel: false,
+    required: true
+  }, true);
+}
+/**
+ * Init
+ */
+
+
+settings.on('selectedLists.change', registerListsFields);
+registerListsFields(settings.getSelectedLists());
+registerCustomFields(mailchimp.lists);
+
+},{"./fields.js":6,"mithril":28}],6:[function(require,module,exports){
+'use strict';
+
+var m = require('mithril');
+
+var timeout;
+var fields = [];
+var categories = [];
+var listeners = {};
+
+var Field = function Field(data) {
+  return {
+    name: data.name,
+    title: data.title || data.name,
+    type: data.type,
+    mailchimpType: data.mailchimpType || null,
+    label: data.label || data.title || '',
+    showLabel: typeof data.showLabel === "boolean" ? data.showLabel : true,
+    value: data.value || '',
+    placeholder: data.placeholder || '',
+    required: typeof data.required === "boolean" ? data.required : false,
+    forceRequired: typeof data.forceRequired === "boolean" ? data.forceRequired : false,
+    wrap: typeof data.wrap === "boolean" ? data.wrap : true,
+    min: data.min,
+    max: data.max,
+    help: data.help || '',
+    choices: data.choices || [],
+    inFormContent: null,
+    acceptsMultipleValues: data.acceptsMultipleValues,
+    link: data.link || ''
+  };
+};
+/**
+ * @internal
+ *
+ * @param data
+ * @constructor
+ */
+
+
+var FieldChoice = function FieldChoice(data) {
+  return {
+    title: data.title || data.label,
+    selected: data.selected || false,
+    value: data.value || data.label,
+    label: data.label
+  };
+};
+/**
+ * Creates FieldChoice objects from an (associative) array of data objects
+ *
+ * @param data
+ * @returns {Array}
+ */
+
+
+function createChoices(data) {
+  var choices = [];
+
+  if (typeof data.map === "function") {
+    choices = data.map(function (choiceLabel) {
+      return new FieldChoice({
+        label: choiceLabel
+      });
+    });
+  } else {
+    choices = Object.keys(data).map(function (key) {
+      var choiceLabel = data[key];
+      return new FieldChoice({
+        label: choiceLabel,
+        value: key
+      });
+    });
+  }
+
+  return choices;
+}
+/**
+ * Factory method
+ *
+ * @returns {Field}
+ */
+
+
+function register(category, data) {
+  var field;
+  var existingField = getAllWhere('name', data.name).shift(); // a field with the same "name" already exists
+
+  if (existingField) {
+    // update "required" status
+    if (!existingField.forceRequired && data.forceRequired) {
+      existingField.forceRequired = true;
+    } // bail
+
+
+    return undefined;
+  } // array of choices given? convert to FieldChoice objects
+
+
+  if (data.choices) {
+    data.choices = createChoices(data.choices);
+
+    if (data.value) {
+      data.choices = data.choices.map(function (choice) {
+        if (choice.value === data.value) {
+          choice.selected = true;
         }
 
         return choice;
-      }));
-    };
-  };
-  /**
-   * @internal
-   *
-   * @param data
-   * @constructor
-   */
-
-
-  var FieldChoice = function FieldChoice(data) {
-    this.label = prop(data.label);
-    this.title = prop(data.title || data.label);
-    this.selected = prop(data.selected || false);
-    this.value = prop(data.value || data.label);
-  };
-  /**
-   * Creates FieldChoice objects from an (associative) array of data objects
-   *
-   * @param data
-   * @returns {Array}
-   */
-
-
-  function createChoices(data) {
-    var choices = [];
-
-    if (typeof data.map === "function") {
-      choices = data.map(function (choiceLabel) {
-        return new FieldChoice({
-          label: choiceLabel
-        });
-      });
-    } else {
-      choices = Object.keys(data).map(function (key) {
-        var choiceLabel = data[key];
-        return new FieldChoice({
-          label: choiceLabel,
-          value: key
-        });
       });
     }
+  } // register category
 
-    return choices;
+
+  if (categories.indexOf(category) < 0) {
+    categories.push(category);
+  } // create Field object
+
+
+  field = new Field(data);
+  field.category = category; // add to array
+
+  fields.push(field); // redraw view
+  // TODO: Move this out
+
+  timeout && window.clearTimeout(timeout);
+  timeout = window.setTimeout(m.redraw, 200); // trigger event
+
+  emit('change');
+  return field;
+}
+
+function emit(event, args) {
+  listeners[event] = listeners[event] || [];
+  listeners[event].forEach(function (f) {
+    return f.apply(null, args);
+  });
+}
+
+function on(event, func) {
+  listeners[event] = listeners[event] || [];
+  listeners[event].push(func);
+}
+/**
+ * @api
+ *
+ * @param field
+ */
+
+
+function deregister(field) {
+  var index = fields.indexOf(field);
+
+  if (index > -1) {
+    delete fields[index];
+    m.redraw();
   }
-  /**
-   * Factory method
-   *
-   * @api
-   *
-   * @param data
-   * @returns {Field}
-   */
+}
+/**
+ * Get a field config object
+ *
+ * @param name
+ * @returns {*}
+ */
 
 
-  function register(category, data) {
-    var field;
-    var existingField = getAllWhere('name', data.name).shift(); // a field with the same "name" already exists
-
-    if (existingField) {
-      // update "required" status
-      if (!existingField.forceRequired() && data.forceRequired) {
-        existingField.forceRequired(true);
-      } // bail
-
-
-      return undefined;
-    } // array of choices given? convert to FieldChoice objects
+function get(name) {
+  return fields[name];
+}
+/**
+ * Get all field config objects
+ *
+ * @returns {Array|*}
+ */
 
 
-    if (data.choices) {
-      data.choices = createChoices(data.choices);
+function getAll() {
+  // rebuild index property on all fields
+  fields = fields.map(function (f, i) {
+    f.index = i;
+    return f;
+  });
+  return fields;
+}
 
-      if (data.value) {
-        data.choices = data.choices.map(function (choice) {
-          if (choice.value() === data.value) {
-            choice.selected(true);
-          }
-
-          return choice;
-        });
-      }
-    } // register category
-
-
-    if (categories.indexOf(category) < 0) {
-      categories.push(category);
-    } // create Field object
-
-
-    field = new Field(data);
-    field.category = category; // add to array
-
-    fields.push(field); // redraw view
-
-    timeout && window.clearTimeout(timeout);
-    timeout = window.setTimeout(m.redraw, 200); // trigger event
-
-    events.trigger('fields.change');
-    return field;
-  }
-  /**
-   * @api
-   *
-   * @param field
-   */
+function getCategories() {
+  return categories.sort(function (a, b) {
+    return a !== "Form fields" ? -1 : 1;
+  });
+}
+/**
+ * Get all fields where a property matches the given value
+ *
+ * @param searchKey
+ * @param searchValue
+ * @returns {Array|*}
+ */
 
 
-  function deregister(field) {
-    var index = fields.indexOf(field);
-
-    if (index > -1) {
-      delete fields[index];
-      m.redraw();
-    }
-  }
-  /**
-   * Get a field config object
-   *
-   * @param name
-   * @returns {*}
-   */
+function getAllWhere(searchKey, searchValue) {
+  return fields.filter(function (field) {
+    return field[searchKey] === searchValue;
+  });
+}
+/**
+ * Exposed methods
+ */
 
 
-  function get(name) {
-    return fields[name];
-  }
-  /**
-   * Get all field config objects
-   *
-   * @returns {Array|*}
-   */
-
-
-  function getAll() {
-    // rebuild index property on all fields
-    fields = fields.map(function (f, i) {
-      f.index = i;
-      return f;
-    });
-    return fields;
-  }
-
-  function getCategories() {
-    return categories;
-  }
-  /**
-   * Get all fields where a property matches the given value
-   *
-   * @param searchKey
-   * @param searchValue
-   * @returns {Array|*}
-   */
-
-
-  function getAllWhere(searchKey, searchValue) {
-    return fields.filter(function (field) {
-      return field[searchKey]() === searchValue;
-    });
-  }
-  /**
-   * Exposed methods
-   */
-
-
-  return {
-    'get': get,
-    'getAll': getAll,
-    'getCategories': getCategories,
-    'deregister': deregister,
-    'register': register,
-    'getAllWhere': getAllWhere
-  };
+module.exports = {
+  'get': get,
+  'getAll': getAll,
+  'getCategories': getCategories,
+  'deregister': deregister,
+  'register': register,
+  'getAllWhere': getAllWhere,
+  on: on
 };
 
-},{"mithril/stream":23}],7:[function(require,module,exports){
+},{"mithril":28}],7:[function(require,module,exports){
 'use strict'; // load CodeMirror & plugins
 
 var CodeMirror = require('codemirror');
@@ -1029,15 +1060,6 @@ function updatePreview() {
   previewDom.dispatchEvent(new Event('mc4wp-refresh'));
 }
 
-window.addEventListener('load', function () {
-  CodeMirror.signal(editor, "change");
-}); // set domDirty to true everytime the "change" event fires (a lot..)
-
-element.addEventListener('change', function () {
-  domDirty = true;
-  updatePreview();
-});
-
 function dom() {
   if (domDirty) {
     _dom.innerHTML = FormEditor.getValue().toLowerCase();
@@ -1084,120 +1106,159 @@ FormEditor.refresh = function () {
 /* bootstrap */
 
 
-_dom.innerHTML = element.value.toLowerCase();
+if (element) {
+  window.addEventListener('load', function () {
+    CodeMirror.signal(editor, "change");
+  }); // set domDirty to true everytime the "change" event fires (a lot..)
 
-if (CodeMirror) {
-  editor = CodeMirror.fromTextArea(element, {
-    selectionPointer: true,
-    mode: "htmlmixed",
-    htmlMode: true,
-    autoCloseTags: true,
-    autoRefresh: true,
-    styleActiveLine: true,
-    matchBrackets: true,
-    matchTags: {
-      bothTags: true
-    }
-  }); // dispatch regular "change" on element event every time editor changes (IE9+ only)
-
-  window.dispatchEvent && editor.on('change', function () {
-    if (typeof Event === "function") {
-      // Create a new 'change' event
-      var event = new Event('change', {
-        bubbles: true
-      });
-      element.dispatchEvent(event);
-    }
+  element.addEventListener('change', function () {
+    domDirty = true;
+    updatePreview();
   });
+  _dom.innerHTML = element.value.toLowerCase();
+
+  if (CodeMirror) {
+    editor = CodeMirror.fromTextArea(element, {
+      selectionPointer: true,
+      mode: "htmlmixed",
+      htmlMode: true,
+      autoCloseTags: true,
+      autoRefresh: true,
+      styleActiveLine: true,
+      matchBrackets: true,
+      matchTags: {
+        bothTags: true
+      }
+    }); // dispatch regular "change" on element event every time editor changes (IE9+ only)
+
+    window.dispatchEvent && editor.on('change', function () {
+      if (typeof Event === "function") {
+        // Create a new 'change' event
+        var event = new Event('change', {
+          bubbles: true
+        });
+        element.dispatchEvent(event);
+      }
+    });
+  }
 }
 
-previewFrame.addEventListener('load', setPreviewDom);
-setPreviewDom.call();
-/* exports */
+if (previewFrame) {
+  previewFrame.addEventListener('load', setPreviewDom);
+  setPreviewDom.call();
+}
 
 module.exports = FormEditor;
 
-},{"codemirror":17,"codemirror/addon/edit/closetag.js":12,"codemirror/addon/edit/matchbrackets.js":13,"codemirror/addon/edit/matchtags.js":14,"codemirror/addon/fold/xml-fold.js":15,"codemirror/addon/selection/active-line.js":16,"codemirror/mode/css/css":18,"codemirror/mode/htmlmixed/htmlmixed":19,"codemirror/mode/javascript/javascript":20,"codemirror/mode/xml/xml":21}],8:[function(require,module,exports){
-"use strict";
+},{"codemirror":19,"codemirror/addon/edit/closetag.js":14,"codemirror/addon/edit/matchbrackets.js":15,"codemirror/addon/edit/matchtags.js":16,"codemirror/addon/fold/xml-fold.js":17,"codemirror/addon/selection/active-line.js":18,"codemirror/mode/css/css":20,"codemirror/mode/htmlmixed/htmlmixed":21,"codemirror/mode/javascript/javascript":22,"codemirror/mode/xml/xml":23}],8:[function(require,module,exports){
+'use strict';
 
-var FormWatcher = function FormWatcher(m, editor, settings, fields, events, helpers) {
-  'use strict';
+var m = require('mithril');
 
-  var requiredFieldsInput = document.getElementById('required-fields');
+var helpers = require('../helpers.js');
 
-  function updateFields() {
-    fields.getAll().forEach(function (field) {
-      // don't run for empty field names
-      if (field.name().length <= 0) return;
-      var fieldName = field.name();
+var editor = require('./form-editor.js');
 
-      if (field.type() === 'checkbox') {
-        fieldName += '[]';
+var fields = require('./fields.js');
+
+var requiredFieldsInput = document.getElementById('required-fields');
+
+function updateFields() {
+  fields.getAll().forEach(function (field) {
+    // don't run for empty field names
+    if (field.name.length <= 0) return;
+    var fieldName = field.name;
+
+    if (field.type === 'checkbox') {
+      fieldName += '[]';
+    }
+
+    field.inFormContent = editor.containsField(fieldName); // if form contains 1 address field of group, mark all fields in this group as "required"
+
+    if (field.mailchimpType === 'address') {
+      if (field.originalRequiredValue === undefined) {
+        field.originalRequiredValue = field.forceRequired;
+      } // query other fields for this address group
+
+
+      var nameGroup = field.name.replace(/\[(\w+)\]/g, '');
+
+      if (editor.query('[name^="' + nameGroup + '"]').length > 0) {
+        field.forceRequired = true;
+      } else {
+        field.forceRequired = field.originalRequiredValue;
       }
+    }
+  });
+  findRequiredFields();
+  m.redraw();
+}
 
-      var inForm = editor.containsField(fieldName);
-      field.inFormContent(inForm); // if form contains 1 address field of group, mark all fields in this group as "required"
+function findRequiredFields() {
+  // query fields required by Mailchimp
+  var requiredFields = fields.getAllWhere('forceRequired', true).map(function (f) {
+    return f.name.toUpperCase().replace(/\[(\w+)\]/g, '.$1');
+  }); // query fields in form with [required] attribute
 
-      if (field.mailchimpType() === 'address') {
-        field.originalRequiredValue = field.originalRequiredValue === undefined ? field.forceRequired() : field.originalRequiredValue; // query other fields for this address group
+  var requiredFieldElements = editor.query('[required]');
+  [].forEach.call(requiredFieldElements, function (el) {
+    var name = el.name; // bail if name attr empty or starts with underscore
 
-        var nameGroup = field.name().replace(/\[(\w+)\]/g, '');
-
-        if (editor.query('[name^="' + nameGroup + '"]').length > 0) {
-          if (field.originalRequiredValue === undefined) {
-            field.originalRequiredValue = field.forceRequired();
-          }
-
-          field.forceRequired(true);
-        } else {
-          field.forceRequired(field.originalRequiredValue);
-        }
-      }
-    });
-    findRequiredFields();
-    m.redraw();
-  }
-
-  function findRequiredFields() {
-    // query fields required by Mailchimp
-    var requiredFields = fields.getAllWhere('forceRequired', true).map(function (f) {
-      return f.name().toUpperCase().replace(/\[(\w+)\]/g, '.$1');
-    }); // query fields in form with [required] attribute
-
-    var requiredFieldElements = editor.query('[required]');
-    Array.prototype.forEach.call(requiredFieldElements, function (el) {
-      var name = el.name; // bail if name attr empty or starts with underscore
-
-      if (!name || name.length < 0 || name[0] === '_') {
-        return;
-      } // replace array brackets with dot style notation
+    if (!name || name.length < 0 || name[0] === '_') {
+      return;
+    } // replace array brackets with dot style notation
 
 
-      name = name.replace(/\[(\w+)\]/g, '.$1'); // replace array-style fields
+    name = name.replace(/\[(\w+)\]/g, '.$1'); // replace array-style fields
 
-      name = name.replace(/\[\]$/, ''); // uppercase everything before the .
+    name = name.replace(/\[\]$/, ''); // uppercase everything before the .
 
-      var pos = name.indexOf('.');
-      pos = pos > 0 ? pos : name.length;
-      name = name.substr(0, pos).toUpperCase() + name.substr(pos); // only add field if it's not already in it
+    var pos = name.indexOf('.');
+    pos = pos > 0 ? pos : name.length;
+    name = name.substr(0, pos).toUpperCase() + name.substr(pos); // only add field if it's not already in it
 
-      if (requiredFields.indexOf(name) === -1) {
-        requiredFields.push(name);
-      }
-    }); // update meta
+    if (requiredFields.indexOf(name) === -1) {
+      requiredFields.push(name);
+    }
+  }); // update meta
 
-    requiredFieldsInput.value = requiredFields.join(',');
-  } // events
+  requiredFieldsInput.value = requiredFields.join(',');
+} // events
 
 
-  editor.on('change', helpers.debounce(updateFields, 500));
-  events.on('fields.change', helpers.debounce(updateFields, 500));
+editor.on('change', helpers.debounce(updateFields, 500));
+fields.on('change', helpers.debounce(updateFields, 500));
+
+},{"../helpers.js":9,"./fields.js":6,"./form-editor.js":7,"mithril":28}],9:[function(require,module,exports){
+'use strict';
+
+var helpers = {}; // polling
+
+helpers.debounce = function (func, wait, immediate) {
+  var timeout;
+  return function () {
+    var context = this,
+        args = arguments;
+    var callNow = immediate && !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(function () {
+      timeout = null;
+      if (!immediate) func.apply(context, args);
+    }, wait);
+    if (callNow) func.apply(context, args);
+  };
 };
 
-module.exports = FormWatcher;
+module.exports = helpers;
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
+
+var editor = require('./form-editor/form-editor.js');
+
+var fields = require('./form-editor/fields.js');
+
+var settings = require('./settings');
 
 var notices = {};
 
@@ -1230,170 +1291,203 @@ function render() {
   container.innerHTML = html;
 }
 
-function init(editor, fields, settings) {
-  var groupingsNotice = function groupingsNotice() {
-    var text = "Your form contains deprecated <code>GROUPINGS</code> fields. <br /><br />Please remove these fields from your form and then re-add them through the available field buttons to make sure your data is getting through to Mailchimp correctly.";
-    var formCode = editor.getValue().toLowerCase();
-    formCode.indexOf('name="groupings') > -1 ? show('deprecated_groupings', text) : hide('deprecated_groupings');
-  };
-
-  var requiredFieldsNotice = function requiredFieldsNotice() {
-    var requiredFields = fields.getAllWhere('forceRequired', true);
-    var missingFields = requiredFields.filter(function (f) {
-      return !editor.containsField(f.name().toUpperCase());
-    });
-    var text = '<strong>Heads up!</strong> Your form is missing list fields that are required in Mailchimp. Either add these fields to your form or mark them as optional in Mailchimp.';
-    text += "<br /><ul class=\"ul-square\" style=\"margin-bottom: 0;\"><li>" + missingFields.map(function (f) {
-      return f.title();
-    }).join('</li><li>') + '</li></ul>';
-    missingFields.length > 0 ? show('required_fields_missing', text) : hide('required_fields_missing');
-  };
-
-  var mailchimpListsNotice = function mailchimpListsNotice() {
-    var text = '<strong>Heads up!</strong> You have not yet selected a Mailchimp list to subscribe people to. Please select at least one list from the <a href="javascript:void(0)" data-tab="settings" class="tab-link">settings tab</a>.';
-
-    if (settings.getSelectedLists().length > 0) {
-      hide('no_lists_selected');
-    } else {
-      show('no_lists_selected', text);
-    }
-  }; // old groupings
-
-
-  groupingsNotice();
-  editor.on('focus', groupingsNotice);
-  editor.on('blur', groupingsNotice); // missing required fields
-
-  requiredFieldsNotice();
-  editor.on('blur', requiredFieldsNotice);
-  editor.on('focus', requiredFieldsNotice);
-  document.body.addEventListener('change', mailchimpListsNotice);
-}
-
-module.exports = {
-  "init": init
+var groupingsNotice = function groupingsNotice() {
+  var text = "Your form contains deprecated <code>GROUPINGS</code> fields. <br /><br />Please remove these fields from your form and then re-add them through the available field buttons to make sure your data is getting through to Mailchimp correctly.";
+  var formCode = editor.getValue().toLowerCase();
+  formCode.indexOf('name="groupings') > -1 ? show('deprecated_groupings', text) : hide('deprecated_groupings');
 };
 
-},{}],10:[function(require,module,exports){
-"use strict";
+var requiredFieldsNotice = function requiredFieldsNotice() {
+  var requiredFields = fields.getAllWhere('forceRequired', true);
+  var missingFields = requiredFields.filter(function (f) {
+    return !editor.containsField(f.name.toUpperCase());
+  });
+  var text = '<strong>Heads up!</strong> Your form is missing list fields that are required in Mailchimp. Either add these fields to your form or mark them as optional in Mailchimp.';
+  text += "<br /><ul class=\"ul-square\" style=\"margin-bottom: 0;\"><li>" + missingFields.map(function (f) {
+    return f.title;
+  }).join('</li><li>') + '</li></ul>';
+  missingFields.length > 0 ? show('required_fields_missing', text) : hide('required_fields_missing');
+};
 
-var overlay = function overlay(m, i18n) {
-  'use strict';
+var mailchimpListsNotice = function mailchimpListsNotice() {
+  var text = '<strong>Heads up!</strong> You have not yet selected a Mailchimp list to subscribe people to. Please select at least one list from the <a href="javascript:void(0)" data-tab="settings" class="tab-link">settings tab</a>.';
 
-  var _element, _onCloseCallback;
+  if (settings.getSelectedLists().length > 0) {
+    hide('no_lists_selected');
+  } else {
+    show('no_lists_selected', text);
+  }
+}; // old groupings
 
-  function close() {
-    document.removeEventListener('keydown', onKeyDown);
-    window.removeEventListener('resize', position);
 
-    _onCloseCallback();
+groupingsNotice();
+editor.on('focus', groupingsNotice);
+editor.on('blur', groupingsNotice); // missing required fields
+
+requiredFieldsNotice();
+editor.on('blur', requiredFieldsNotice);
+editor.on('focus', requiredFieldsNotice);
+document.body.addEventListener('change', mailchimpListsNotice);
+
+},{"./form-editor/fields.js":6,"./form-editor/form-editor.js":7,"./settings":12}],11:[function(require,module,exports){
+'use strict';
+
+var m = require('mithril');
+
+var i18n = window.mc4wp_forms_i18n;
+
+function Overlay(vnode) {
+  var element;
+  var onclose = vnode.attrs.onClose;
+
+  function oncreate() {
+    document.addEventListener('keydown', onKeyDown);
+    window.addEventListener('resize', onWindowResize);
   }
 
-  function onKeyDown(e) {
-    e = e || window.event; // close overlay when pressing ESC
+  function onremove() {
+    document.removeEventListener('keydown', onKeyDown);
+    window.removeEventListener('resize', onWindowResize);
+  }
 
-    if (e.keyCode == 27) {
+  function close() {
+    onclose.apply(null);
+  }
+
+  function onKeyDown(evt) {
+    // close overlay when pressing ESC
+    if (evt.keyCode === 27) {
       close();
     } // prevent ENTER
 
 
-    if (e.keyCode == 13) {
-      e.preventDefault();
+    if (evt.keyCode === 13) {
+      evt.preventDefault();
     }
   }
 
-  function position() {
-    if (!_element) return; // fix for window width in IE8
-
+  function onWindowResize() {
+    // fix for window width in IE8
     var windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
     var windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-    var marginLeft = (windowWidth - _element.clientWidth - 40) / 2;
-    var marginTop = (windowHeight - _element.clientHeight - 40) / 2;
-    _element.style.left = (marginLeft > 0 ? marginLeft : 0) + "px";
-    _element.style.top = (marginTop > 0 ? marginTop : 0) + "px";
+    var marginLeft = (windowWidth - element.clientWidth - 40) / 2;
+    var marginTop = (windowHeight - element.clientHeight - 40) / 2;
+    element.style.left = (marginLeft > 0 ? marginLeft : 0) + "px";
+    element.style.top = (marginTop > 0 ? marginTop : 0) + "px";
   }
 
-  function storeElementReference(vnode) {
-    _element = vnode.dom;
-    position();
-  }
-
-  return function (content, onCloseCallback) {
-    _onCloseCallback = onCloseCallback;
-    return {
-      oncreate: function oncreate() {
-        document.addEventListener('keydown', onKeyDown);
-        window.addEventListener('resize', position);
-      },
-      onremove: function onremove() {
-        document.removeEventListener('keydown', onKeyDown);
-        window.removeEventListener('resize', position);
-      },
-      view: function view() {
-        return [m('div.overlay-wrap', m("div.overlay", {
-          oncreate: storeElementReference
-        }, [// close icon
-        m('span', {
-          "class": 'close dashicons dashicons-no',
-          title: i18n.close,
-          onclick: close
-        }), content])), m('div.overlay-background', {
-          title: i18n.close,
-          onclick: close
-        })];
+  function view(vnode) {
+    return [m('div.overlay-wrap', m("div.overlay", {
+      oncreate: function oncreate(vnode) {
+        element = vnode.dom;
+        onWindowResize();
       }
-    };
+    }, [// close icon
+    m('span', {
+      "class": 'close dashicons dashicons-no',
+      title: i18n.close,
+      onclick: close
+    }), vnode.children])), m('div.overlay-background', {
+      title: i18n.close,
+      onclick: close
+    })];
+  }
+
+  return {
+    oncreate: oncreate,
+    onremove: onremove,
+    view: view
   };
+}
+
+module.exports = Overlay;
+
+},{"mithril":28}],12:[function(require,module,exports){
+'use strict';
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+var context = document.getElementById('mc4wp-admin');
+var listInputs = context.querySelectorAll('.mc4wp-list-input');
+var lists = window.mc4wp_vars.mailchimp.lists;
+var selectedLists = [];
+var listeners = {}; // functions
+
+function getSelectedListsWhere(searchKey, searchValue) {
+  return selectedLists.filter(function (el) {
+    return el[searchKey] === searchValue;
+  });
+}
+
+function getSelectedLists() {
+  return selectedLists;
+}
+
+function updateSelectedLists() {
+  selectedLists = [];
+  [].forEach.call(listInputs, function (input) {
+    // skip unchecked checkboxes
+    if (typeof input.checked === "boolean" && !input.checked) {
+      return;
+    }
+
+    if (_typeof(lists[input.value]) === "object") {
+      selectedLists.push(lists[input.value]);
+    }
+  });
+  toggleVisibleLists();
+  emit('selectedLists.change', [selectedLists]);
+  return selectedLists;
+}
+
+function toggleVisibleLists() {
+  var rows = document.querySelectorAll('.lists--only-selected > *');
+  [].forEach.call(rows, function (el) {
+    var listId = el.getAttribute('data-list-id');
+    var isSelected = getSelectedListsWhere('id', listId).length > 0;
+    el.style.display = isSelected ? '' : 'none';
+  });
+}
+
+function emit(event, args) {
+  listeners[event] = listeners[event] || [];
+  listeners[event].forEach(function (f) {
+    return f.apply(null, args);
+  });
+}
+
+function on(event, func) {
+  listeners[event] = listeners[event] || [];
+  listeners[event].push(func);
+}
+
+[].forEach.call(listInputs, function (el) {
+  el.addEventListener('change', updateSelectedLists);
+});
+updateSelectedLists();
+module.exports = {
+  getSelectedLists: getSelectedLists,
+  on: on
 };
 
-module.exports = overlay;
+},{}],13:[function(require,module,exports){
+'use strict';
 
-},{}],11:[function(require,module,exports){
-'use strict'; // deps
+var editor = require('./admin/form-editor/form-editor.js');
 
-var i18n = window.mc4wp_forms_i18n;
-var m = window.mc4wp.deps.mithril;
-var events = mc4wp.events;
-var settings = mc4wp.settings;
-var helpers = mc4wp.helpers;
-var tabs = mc4wp.tabs;
+require('./admin/form-editor/form-watcher.js');
 
-var FormWatcher = require('./admin/form-editor/form-watcher.js');
+require('./admin/form-editor/field-helper.js');
 
-var FormEditor = require('./admin/form-editor/form-editor.js');
+require('./admin/form-editor/field-manager.js');
 
-var FieldHelper = require('./admin/form-editor/field-helper.js');
-
-var FieldsFactory = require('./admin/form-editor/fields-factory.js');
-
-var fields = require('./admin/form-editor/fields.js')(m, events); // vars
+require('./admin/notices.js'); // expose to global script
 
 
-var editor = window.formEditor = FormEditor;
-var watcher = new FormWatcher(m, formEditor, settings, fields, events, helpers);
-var fieldHelper = new FieldHelper(m, tabs, formEditor, fields, events, i18n);
-
-var notices = require('./admin/notices'); // mount field helper on element
-
-
-m.mount(document.getElementById('mc4wp-field-wizard'), fieldHelper); // register fields and redraw screen in 2 seconds (fixes IE8 bug)
-
-var fieldsFactory = new FieldsFactory(fields, i18n);
-events.on('selectedLists.change', fieldsFactory.registerListsFields);
-fieldsFactory.registerListsFields(settings.getSelectedLists());
-fieldsFactory.registerCustomFields(mc4wp_vars.mailchimp.lists);
-window.setTimeout(function () {
-  m.redraw();
-}, 2000); // init notices
-
-notices.init(editor, fields, settings); // expose some methods
-
-window.mc4wp = window.mc4wp || {};
 window.mc4wp.forms = window.mc4wp.forms || {};
 window.mc4wp.forms.editor = editor;
-window.mc4wp.forms.fields = fields;
 
-},{"./admin/form-editor/field-helper.js":4,"./admin/form-editor/fields-factory.js":5,"./admin/form-editor/fields.js":6,"./admin/form-editor/form-editor.js":7,"./admin/form-editor/form-watcher.js":8,"./admin/notices":9}],12:[function(require,module,exports){
+},{"./admin/form-editor/field-helper.js":4,"./admin/form-editor/field-manager.js":5,"./admin/form-editor/form-editor.js":7,"./admin/form-editor/form-watcher.js":8,"./admin/notices.js":10}],14:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: https://codemirror.net/LICENSE
 
@@ -1456,22 +1550,23 @@ window.mc4wp.forms.fields = fields;
       if (!ranges[i].empty()) return CodeMirror.Pass;
       var pos = ranges[i].head, tok = cm.getTokenAt(pos);
       var inner = CodeMirror.innerMode(cm.getMode(), tok.state), state = inner.state;
-      if (inner.mode.name != "xml" || !state.tagName) return CodeMirror.Pass;
+      var tagInfo = inner.mode.xmlCurrentTag && inner.mode.xmlCurrentTag(state)
+      var tagName = tagInfo && tagInfo.name
+      if (!tagName) return CodeMirror.Pass
 
       var html = inner.mode.configuration == "html";
       var dontCloseTags = (typeof opt == "object" && opt.dontCloseTags) || (html && htmlDontClose);
       var indentTags = (typeof opt == "object" && opt.indentTags) || (html && htmlIndent);
 
-      var tagName = state.tagName;
       if (tok.end > pos.ch) tagName = tagName.slice(0, tagName.length - tok.end + pos.ch);
       var lowerTagName = tagName.toLowerCase();
       // Don't process the '>' at the end of an end-tag or self-closing tag
       if (!tagName ||
           tok.type == "string" && (tok.end != pos.ch || !/[\"\']/.test(tok.string.charAt(tok.string.length - 1)) || tok.string.length == 1) ||
-          tok.type == "tag" && state.type == "closeTag" ||
+          tok.type == "tag" && tagInfo.close ||
           tok.string.indexOf("/") == (tok.string.length - 1) || // match something like <someTagName />
           dontCloseTags && indexOf(dontCloseTags, lowerTagName) > -1 ||
-          closingTagExists(cm, tagName, pos, state, true))
+          closingTagExists(cm, inner.mode.xmlCurrentContext && inner.mode.xmlCurrentContext(state) || [], tagName, pos, true))
         return CodeMirror.Pass;
 
       var emptyTags = typeof opt == "object" && opt.emptyTags;
@@ -1516,19 +1611,16 @@ window.mc4wp.forms.fields = fields;
       // when completing in JS/CSS snippet in htmlmixed mode. Does not
       // work for other XML embedded languages (there is no general
       // way to go from a mixed mode to its current XML state).
-      var replacement;
-      if (inner.mode.name != "xml") {
-        if (cm.getMode().name == "htmlmixed" && inner.mode.name == "javascript")
-          replacement = head + "script";
-        else if (cm.getMode().name == "htmlmixed" && inner.mode.name == "css")
-          replacement = head + "style";
-        else
-          return CodeMirror.Pass;
+      var replacement, mixed = inner.mode.name != "xml" && cm.getMode().name == "htmlmixed"
+      if (mixed && inner.mode.name == "javascript") {
+        replacement = head + "script";
+      } else if (mixed && inner.mode.name == "css") {
+        replacement = head + "style";
       } else {
-        if (!state.context || !state.context.tagName ||
-            closingTagExists(cm, state.context.tagName, pos, state))
+        var context = inner.mode.xmlCurrentContext && inner.mode.xmlCurrentContext(state)
+        if (!context || (context.length && closingTagExists(cm, context, context[context.length - 1], pos)))
           return CodeMirror.Pass;
-        replacement = head + state.context.tagName;
+        replacement = head + context[context.length - 1]
       }
       if (cm.getLine(pos.line).charAt(tok.end) != ">") replacement += ">";
       replacements[i] = replacement;
@@ -1558,16 +1650,19 @@ window.mc4wp.forms.fields = fields;
 
   // If xml-fold is loaded, we use its functionality to try and verify
   // whether a given tag is actually unclosed.
-  function closingTagExists(cm, tagName, pos, state, newTag) {
+  function closingTagExists(cm, context, tagName, pos, newTag) {
     if (!CodeMirror.scanForClosingTag) return false;
     var end = Math.min(cm.lastLine() + 1, pos.line + 500);
     var nextClose = CodeMirror.scanForClosingTag(cm, pos, null, end);
     if (!nextClose || nextClose.tag != tagName) return false;
-    var cx = state.context;
     // If the immediate wrapping context contains onCx instances of
     // the same tag, a closing tag only exists if there are at least
     // that many closing tags of that type following.
-    for (var onCx = newTag ? 1 : 0; cx && cx.tagName == tagName; cx = cx.prev) ++onCx;
+    var onCx = newTag ? 1 : 0
+    for (var i = context.length - 1; i >= 0; i--) {
+      if (context[i] == tagName) ++onCx
+      else break
+    }
     pos = nextClose.to;
     for (var i = 1; i < onCx; i++) {
       var next = CodeMirror.scanForClosingTag(cm, pos, null, end);
@@ -1578,7 +1673,7 @@ window.mc4wp.forms.fields = fields;
   }
 });
 
-},{"../../lib/codemirror":17,"../fold/xml-fold":15}],13:[function(require,module,exports){
+},{"../../lib/codemirror":19,"../fold/xml-fold":17}],15:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: https://codemirror.net/LICENSE
 
@@ -1730,7 +1825,7 @@ window.mc4wp.forms.fields = fields;
   });
 });
 
-},{"../../lib/codemirror":17}],14:[function(require,module,exports){
+},{"../../lib/codemirror":19}],16:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: https://codemirror.net/LICENSE
 
@@ -1798,7 +1893,7 @@ window.mc4wp.forms.fields = fields;
   };
 });
 
-},{"../../lib/codemirror":17,"../fold/xml-fold":15}],15:[function(require,module,exports){
+},{"../../lib/codemirror":19,"../fold/xml-fold":17}],17:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: https://codemirror.net/LICENSE
 
@@ -1984,7 +2079,7 @@ window.mc4wp.forms.fields = fields;
   };
 });
 
-},{"../../lib/codemirror":17}],16:[function(require,module,exports){
+},{"../../lib/codemirror":19}],18:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: https://codemirror.net/LICENSE
 
@@ -2058,7 +2153,7 @@ window.mc4wp.forms.fields = fields;
   }
 });
 
-},{"../../lib/codemirror":17}],17:[function(require,module,exports){
+},{"../../lib/codemirror":19}],19:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: https://codemirror.net/LICENSE
 
@@ -4345,7 +4440,7 @@ window.mc4wp.forms.fields = fields;
   function paddingVert(display) {return display.mover.offsetHeight - display.lineSpace.offsetHeight}
   function paddingH(display) {
     if (display.cachedPaddingH) { return display.cachedPaddingH }
-    var e = removeChildrenAndAdd(display.measure, elt("pre", "x"));
+    var e = removeChildrenAndAdd(display.measure, elt("pre", "x", "CodeMirror-line-like"));
     var style = window.getComputedStyle ? window.getComputedStyle(e) : e.currentStyle;
     var data = {left: parseInt(style.paddingLeft), right: parseInt(style.paddingRight)};
     if (!isNaN(data.left) && !isNaN(data.right)) { display.cachedPaddingH = data; }
@@ -4739,7 +4834,7 @@ window.mc4wp.forms.fields = fields;
   function PosWithInfo(line, ch, sticky, outside, xRel) {
     var pos = Pos(line, ch, sticky);
     pos.xRel = xRel;
-    if (outside) { pos.outside = true; }
+    if (outside) { pos.outside = outside; }
     return pos
   }
 
@@ -4748,16 +4843,16 @@ window.mc4wp.forms.fields = fields;
   function coordsChar(cm, x, y) {
     var doc = cm.doc;
     y += cm.display.viewOffset;
-    if (y < 0) { return PosWithInfo(doc.first, 0, null, true, -1) }
+    if (y < 0) { return PosWithInfo(doc.first, 0, null, -1, -1) }
     var lineN = lineAtHeight(doc, y), last = doc.first + doc.size - 1;
     if (lineN > last)
-      { return PosWithInfo(doc.first + doc.size - 1, getLine(doc, last).text.length, null, true, 1) }
+      { return PosWithInfo(doc.first + doc.size - 1, getLine(doc, last).text.length, null, 1, 1) }
     if (x < 0) { x = 0; }
 
     var lineObj = getLine(doc, lineN);
     for (;;) {
       var found = coordsCharInner(cm, lineObj, lineN, x, y);
-      var collapsed = collapsedSpanAround(lineObj, found.ch + (found.xRel > 0 ? 1 : 0));
+      var collapsed = collapsedSpanAround(lineObj, found.ch + (found.xRel > 0 || found.outside > 0 ? 1 : 0));
       if (!collapsed) { return found }
       var rangeEnd = collapsed.find(1);
       if (rangeEnd.line == lineN) { return rangeEnd }
@@ -4845,7 +4940,7 @@ window.mc4wp.forms.fields = fields;
       // base X position
       var coords = cursorCoords(cm, Pos(lineNo$$1, ch, sticky), "line", lineObj, preparedMeasure);
       baseX = coords.left;
-      outside = y < coords.top || y >= coords.bottom;
+      outside = y < coords.top ? -1 : y >= coords.bottom ? 1 : 0;
     }
 
     ch = skipExtendingChars(lineObj.text, ch, 1);
@@ -4914,7 +5009,7 @@ window.mc4wp.forms.fields = fields;
   function textHeight(display) {
     if (display.cachedTextHeight != null) { return display.cachedTextHeight }
     if (measureText == null) {
-      measureText = elt("pre");
+      measureText = elt("pre", null, "CodeMirror-line-like");
       // Measure a bunch of lines, for browsers that compute
       // fractional heights.
       for (var i = 0; i < 49; ++i) {
@@ -4934,7 +5029,7 @@ window.mc4wp.forms.fields = fields;
   function charWidth(display) {
     if (display.cachedCharWidth != null) { return display.cachedCharWidth }
     var anchor = elt("span", "xxxxxxxxxx");
-    var pre = elt("pre", [anchor]);
+    var pre = elt("pre", [anchor], "CodeMirror-line-like");
     removeChildrenAndAdd(display.measure, pre);
     var rect = anchor.getBoundingClientRect(), width = (rect.right - rect.left) / 10;
     if (width > 2) { display.cachedCharWidth = width; }
@@ -7464,6 +7559,9 @@ window.mc4wp.forms.fields = fields;
     if (doc.cm) { makeChangeSingleDocInEditor(doc.cm, change, spans); }
     else { updateDoc(doc, change, spans); }
     setSelectionNoUndo(doc, selAfter, sel_dontScroll);
+
+    if (doc.cantEdit && skipAtomic(doc, Pos(doc.firstLine(), 0)))
+      { doc.cantEdit = false; }
   }
 
   // Handle the interaction of a change to a document with the editor
@@ -11717,7 +11815,7 @@ window.mc4wp.forms.fields = fields;
         textarea.style.display = "";
         if (textarea.form) {
           off(textarea.form, "submit", save);
-          if (typeof textarea.form.submit == "function")
+          if (!options.leaveSubmitMethodAlone && typeof textarea.form.submit == "function")
             { textarea.form.submit = realSubmit; }
         }
       };
@@ -11816,13 +11914,13 @@ window.mc4wp.forms.fields = fields;
 
   addLegacyProps(CodeMirror);
 
-  CodeMirror.version = "5.48.2";
+  CodeMirror.version = "5.49.0";
 
   return CodeMirror;
 
 })));
 
-},{}],18:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: https://codemirror.net/LICENSE
 
@@ -12655,7 +12753,7 @@ CodeMirror.defineMode("css", function(config, parserConfig) {
 
 });
 
-},{"../../lib/codemirror":17}],19:[function(require,module,exports){
+},{"../../lib/codemirror":19}],21:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: https://codemirror.net/LICENSE
 
@@ -12809,7 +12907,7 @@ CodeMirror.defineMode("css", function(config, parserConfig) {
   CodeMirror.defineMIME("text/html", "htmlmixed");
 });
 
-},{"../../lib/codemirror":17,"../css/css":18,"../javascript/javascript":20,"../xml/xml":21}],20:[function(require,module,exports){
+},{"../../lib/codemirror":19,"../css/css":20,"../javascript/javascript":22,"../xml/xml":23}],22:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: https://codemirror.net/LICENSE
 
@@ -12913,6 +13011,9 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     } else if (ch == "#") {
       stream.skipToEnd();
       return ret("error", "error");
+    } else if (ch == "<" && stream.match("!--") || ch == "-" && stream.match("->")) {
+      stream.skipToEnd()
+      return ret("comment", "comment")
     } else if (isOperatorChar.test(ch)) {
       if (ch != ">" || !state.lexical || state.lexical.type != ">") {
         if (stream.eat("=")) {
@@ -13738,7 +13839,7 @@ CodeMirror.defineMIME("application/typescript", { name: "javascript", typescript
 
 });
 
-},{"../../lib/codemirror":17}],21:[function(require,module,exports){
+},{"../../lib/codemirror":19}],23:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: https://codemirror.net/LICENSE
 
@@ -14131,6 +14232,17 @@ CodeMirror.defineMode("xml", function(editorConf, config_) {
     skipAttribute: function(state) {
       if (state.state == attrValueState)
         state.state = attrState
+    },
+
+    xmlCurrentTag: function(state) {
+      return state.tagName ? {name: state.tagName, close: state.type == "closeTag"} : null
+    },
+
+    xmlCurrentContext: function(state) {
+      var context = []
+      for (var cx = state.context; cx; cx = cx.prev)
+        if (cx.tagName) context.push(cx.tagName)
+      return context.reverse()
     }
   };
 });
@@ -14142,7 +14254,7 @@ if (!CodeMirror.mimeModes.hasOwnProperty("text/html"))
 
 });
 
-},{"../../lib/codemirror":17}],22:[function(require,module,exports){
+},{"../../lib/codemirror":19}],24:[function(require,module,exports){
 /*
 
  Style HTML
@@ -14679,173 +14791,2374 @@ function style_html(html_source, options) {
 module.exports = {
   prettyPrint: style_html
 };
-},{}],23:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 "use strict"
 
-module.exports = require("./stream/stream")
+var Vnode = require("../render/vnode")
 
-},{"./stream/stream":24}],24:[function(require,module,exports){
-/* eslint-disable */
-;(function() {
-"use strict"
-/* eslint-enable */
+module.exports = function(render, schedule, console) {
+	var subscriptions = []
+	var rendering = false
+	var pending = false
 
-var guid = 0, HALT = {}
-function createStream() {
-	function stream() {
-		if (arguments.length > 0 && arguments[0] !== HALT) updateStream(stream, arguments[0])
-		return stream._state.value
+	function sync() {
+		if (rendering) throw new Error("Nested m.redraw.sync() call")
+		rendering = true
+		for (var i = 0; i < subscriptions.length; i += 2) {
+			try { render(subscriptions[i], Vnode(subscriptions[i + 1]), redraw) }
+			catch (e) { console.error(e) }
+		}
+		rendering = false
 	}
-	initStream(stream)
 
-	if (arguments.length > 0 && arguments[0] !== HALT) updateStream(stream, arguments[0])
+	function redraw() {
+		if (!pending) {
+			pending = true
+			schedule(function() {
+				pending = false
+				sync()
+			})
+		}
+	}
 
-	return stream
+	redraw.sync = sync
+
+	function mount(root, component) {
+		if (component != null && component.view == null && typeof component !== "function") {
+			throw new TypeError("m.mount(element, component) expects a component, not a vnode")
+		}
+
+		var index = subscriptions.indexOf(root)
+		if (index >= 0) {
+			subscriptions.splice(index, 2)
+			render(root, [], redraw)
+		}
+
+		if (component != null) {
+			subscriptions.push(root, component)
+			render(root, Vnode(component), redraw)
+		}
+	}
+
+	return {mount: mount, redraw: redraw}
 }
-function initStream(stream) {
-	stream.constructor = createStream
-	stream._state = {id: guid++, value: undefined, state: 0, derive: undefined, recover: undefined, deps: {}, parents: [], endStream: undefined, unregister: undefined}
-	stream.map = stream["fantasy-land/map"] = map, stream["fantasy-land/ap"] = ap, stream["fantasy-land/of"] = createStream
-	stream.valueOf = valueOf, stream.toJSON = toJSON, stream.toString = valueOf
 
-	Object.defineProperties(stream, {
-		end: {get: function() {
-			if (!stream._state.endStream) {
-				var endStream = createStream()
-				endStream.map(function(value) {
-					if (value === true) {
-						unregisterStream(stream)
-						endStream._state.unregister = function(){unregisterStream(endStream)}
-					}
-					return value
-				})
-				stream._state.endStream = endStream
+},{"../render/vnode":44}],26:[function(require,module,exports){
+(function (setImmediate){
+"use strict"
+
+var Vnode = require("../render/vnode")
+var m = require("../render/hyperscript")
+var Promise = require("../promise/promise")
+
+var buildPathname = require("../pathname/build")
+var parsePathname = require("../pathname/parse")
+var compileTemplate = require("../pathname/compileTemplate")
+var assign = require("../pathname/assign")
+
+var sentinel = {}
+
+module.exports = function($window, mountRedraw) {
+	var fireAsync
+
+	function setPath(path, data, options) {
+		path = buildPathname(path, data)
+		if (fireAsync != null) {
+			fireAsync()
+			var state = options ? options.state : null
+			var title = options ? options.title : null
+			if (options && options.replace) $window.history.replaceState(state, title, route.prefix + path)
+			else $window.history.pushState(state, title, route.prefix + path)
+		}
+		else {
+			$window.location.href = route.prefix + path
+		}
+	}
+
+	var currentResolver = sentinel, component, attrs, currentPath, lastUpdate
+
+	var SKIP = route.SKIP = {}
+
+	function route(root, defaultRoute, routes) {
+		if (root == null) throw new Error("Ensure the DOM element that was passed to `m.route` is not undefined")
+		// 0 = start
+		// 1 = init
+		// 2 = ready
+		var state = 0
+
+		var compiled = Object.keys(routes).map(function(route) {
+			if (route[0] !== "/") throw new SyntaxError("Routes must start with a `/`")
+			if ((/:([^\/\.-]+)(\.{3})?:/).test(route)) {
+				throw new SyntaxError("Route parameter names must be separated with either `/`, `.`, or `-`")
 			}
-			return stream._state.endStream
-		}}
-	})
-}
-function updateStream(stream, value) {
-	updateState(stream, value)
-	for (var id in stream._state.deps) updateDependency(stream._state.deps[id], false)
-	if (stream._state.unregister != null) stream._state.unregister()
-	finalize(stream)
-}
-function updateState(stream, value) {
-	stream._state.value = value
-	stream._state.changed = true
-	if (stream._state.state !== 2) stream._state.state = 1
-}
-function updateDependency(stream, mustSync) {
-	var state = stream._state, parents = state.parents
-	if (parents.length > 0 && parents.every(active) && (mustSync || parents.some(changed))) {
-		var value = stream._state.derive()
-		if (value === HALT) return false
-		updateState(stream, value)
-	}
-}
-function finalize(stream) {
-	stream._state.changed = false
-	for (var id in stream._state.deps) stream._state.deps[id]._state.changed = false
-}
-
-function combine(fn, streams) {
-	if (!streams.every(valid)) throw new Error("Ensure that each item passed to stream.combine/stream.merge is a stream")
-	return initDependency(createStream(), streams, function() {
-		return fn.apply(this, streams.concat([streams.filter(changed)]))
-	})
-}
-
-function initDependency(dep, streams, derive) {
-	var state = dep._state
-	state.derive = derive
-	state.parents = streams.filter(notEnded)
-
-	registerDependency(dep, state.parents)
-	updateDependency(dep, true)
-
-	return dep
-}
-function registerDependency(stream, parents) {
-	for (var i = 0; i < parents.length; i++) {
-		parents[i]._state.deps[stream._state.id] = stream
-		registerDependency(stream, parents[i]._state.parents)
-	}
-}
-function unregisterStream(stream) {
-	for (var i = 0; i < stream._state.parents.length; i++) {
-		var parent = stream._state.parents[i]
-		delete parent._state.deps[stream._state.id]
-	}
-	for (var id in stream._state.deps) {
-		var dependent = stream._state.deps[id]
-		var index = dependent._state.parents.indexOf(stream)
-		if (index > -1) dependent._state.parents.splice(index, 1)
-	}
-	stream._state.state = 2 //ended
-	stream._state.deps = {}
-}
-
-function map(fn) {return combine(function(stream) {return fn(stream())}, [this])}
-function ap(stream) {return combine(function(s1, s2) {return s1()(s2())}, [stream, this])}
-function valueOf() {return this._state.value}
-function toJSON() {return this._state.value != null && typeof this._state.value.toJSON === "function" ? this._state.value.toJSON() : this._state.value}
-
-function valid(stream) {return stream._state }
-function active(stream) {return stream._state.state === 1}
-function changed(stream) {return stream._state.changed}
-function notEnded(stream) {return stream._state.state !== 2}
-
-function merge(streams) {
-	return combine(function() {
-		return streams.map(function(s) {return s()})
-	}, streams)
-}
-
-function scan(reducer, seed, stream) {
-	var newStream = combine(function (s) {
-		return seed = reducer(seed, s._state.value)
-	}, [stream])
-
-	if (newStream._state.state === 0) newStream(seed)
-
-	return newStream
-}
-
-function scanMerge(tuples, seed) {
-	var streams = tuples.map(function(tuple) {
-		var stream = tuple[0]
-		if (stream._state.state === 0) stream(undefined)
-		return stream
-	})
-
-	var newStream = combine(function() {
-		var changed = arguments[arguments.length - 1]
-
-		streams.forEach(function(stream, idx) {
-			if (changed.indexOf(stream) > -1) {
-				seed = tuples[idx][1](seed, stream._state.value)
+			return {
+				route: route,
+				component: routes[route],
+				check: compileTemplate(route),
 			}
 		})
+		var callAsync = typeof setImmediate === "function" ? setImmediate : setTimeout
+		var p = Promise.resolve()
+		var scheduled = false
+		var onremove
 
-		return seed
-	}, streams)
+		fireAsync = null
 
-	return newStream
+		if (defaultRoute != null) {
+			var defaultData = parsePathname(defaultRoute)
+
+			if (!compiled.some(function (i) { return i.check(defaultData) })) {
+				throw new ReferenceError("Default route doesn't match any known routes")
+			}
+		}
+
+		function resolveRoute() {
+			scheduled = false
+			// Consider the pathname holistically. The prefix might even be invalid,
+			// but that's not our problem.
+			var prefix = $window.location.hash
+			if (route.prefix[0] !== "#") {
+				prefix = $window.location.search + prefix
+				if (route.prefix[0] !== "?") {
+					prefix = $window.location.pathname + prefix
+					if (prefix[0] !== "/") prefix = "/" + prefix
+				}
+			}
+			// This seemingly useless `.concat()` speeds up the tests quite a bit,
+			// since the representation is consistently a relatively poorly
+			// optimized cons string.
+			var path = prefix.concat()
+				.replace(/(?:%[a-f89][a-f0-9])+/gim, decodeURIComponent)
+				.slice(route.prefix.length)
+			var data = parsePathname(path)
+
+			assign(data.params, $window.history.state)
+
+			function fail() {
+				if (path === defaultRoute) throw new Error("Could not resolve default route " + defaultRoute)
+				setPath(defaultRoute, null, {replace: true})
+			}
+
+			loop(0)
+			function loop(i) {
+				// 0 = init
+				// 1 = scheduled
+				// 2 = done
+				for (; i < compiled.length; i++) {
+					if (compiled[i].check(data)) {
+						var payload = compiled[i].component
+						var matchedRoute = compiled[i].route
+						var localComp = payload
+						var update = lastUpdate = function(comp) {
+							if (update !== lastUpdate) return
+							if (comp === SKIP) return loop(i + 1)
+							component = comp != null && (typeof comp.view === "function" || typeof comp === "function")? comp : "div"
+							attrs = data.params, currentPath = path, lastUpdate = null
+							currentResolver = payload.render ? payload : null
+							if (state === 2) mountRedraw.redraw()
+							else {
+								state = 2
+								mountRedraw.redraw.sync()
+							}
+						}
+						// There's no understating how much I *wish* I could
+						// use `async`/`await` here...
+						if (payload.view || typeof payload === "function") {
+							payload = {}
+							update(localComp)
+						}
+						else if (payload.onmatch) {
+							p.then(function () {
+								return payload.onmatch(data.params, path, matchedRoute)
+							}).then(update, fail)
+						}
+						else update("div")
+						return
+					}
+				}
+				fail()
+			}
+		}
+
+		// Set it unconditionally so `m.route.set` and `m.route.Link` both work,
+		// even if neither `pushState` nor `hashchange` are supported. It's
+		// cleared if `hashchange` is used, since that makes it automatically
+		// async.
+		fireAsync = function() {
+			if (!scheduled) {
+				scheduled = true
+				callAsync(resolveRoute)
+			}
+		}
+
+		if (typeof $window.history.pushState === "function") {
+			onremove = function() {
+				$window.removeEventListener("popstate", fireAsync, false)
+			}
+			$window.addEventListener("popstate", fireAsync, false)
+		} else if (route.prefix[0] === "#") {
+			fireAsync = null
+			onremove = function() {
+				$window.removeEventListener("hashchange", resolveRoute, false)
+			}
+			$window.addEventListener("hashchange", resolveRoute, false)
+		}
+
+		return mountRedraw.mount(root, {
+			onbeforeupdate: function() {
+				state = state ? 2 : 1
+				return !(!state || sentinel === currentResolver)
+			},
+			oncreate: resolveRoute,
+			onremove: onremove,
+			view: function() {
+				if (!state || sentinel === currentResolver) return
+				// Wrap in a fragment to preserve existing key semantics
+				var vnode = [Vnode(component, attrs.key, attrs)]
+				if (currentResolver) vnode = currentResolver.render(vnode[0])
+				return vnode
+			},
+		})
+	}
+	route.set = function(path, data, options) {
+		if (lastUpdate != null) {
+			options = options || {}
+			options.replace = true
+		}
+		lastUpdate = null
+		setPath(path, data, options)
+	}
+	route.get = function() {return currentPath}
+	route.prefix = "#!"
+	route.Link = {
+		view: function(vnode) {
+			var options = vnode.attrs.options
+			// Remove these so they don't get overwritten
+			var attrs = {}, onclick, href
+			assign(attrs, vnode.attrs)
+			// The first two are internal, but the rest are magic attributes
+			// that need censored to not screw up rendering.
+			attrs.selector = attrs.options = attrs.key = attrs.oninit =
+			attrs.oncreate = attrs.onbeforeupdate = attrs.onupdate =
+			attrs.onbeforeremove = attrs.onremove = null
+
+			// Do this now so we can get the most current `href` and `disabled`.
+			// Those attributes may also be specified in the selector, and we
+			// should honor that.
+			var child = m(vnode.attrs.selector || "a", attrs, vnode.children)
+
+			// Let's provide a *right* way to disable a route link, rather than
+			// letting people screw up accessibility on accident.
+			//
+			// The attribute is coerced so users don't get surprised over
+			// `disabled: 0` resulting in a button that's somehow routable
+			// despite being visibly disabled.
+			if (child.attrs.disabled = Boolean(child.attrs.disabled)) {
+				child.attrs.href = null
+				child.attrs["aria-disabled"] = "true"
+				// If you *really* do want to do this on a disabled link, use
+				// an `oncreate` hook to add it.
+				child.attrs.onclick = null
+			} else {
+				onclick = child.attrs.onclick
+				href = child.attrs.href
+				child.attrs.href = route.prefix + href
+				child.attrs.onclick = function(e) {
+					var result
+					if (typeof onclick === "function") {
+						result = onclick.call(e.currentTarget, e)
+					} else if (onclick == null || typeof onclick !== "object") {
+						// do nothing
+					} else if (typeof onclick.handleEvent === "function") {
+						onclick.handleEvent(e)
+					}
+
+					// Adapted from React Router's implementation:
+					// https://github.com/ReactTraining/react-router/blob/520a0acd48ae1b066eb0b07d6d4d1790a1d02482/packages/react-router-dom/modules/Link.js
+					//
+					// Try to be flexible and intuitive in how we handle links.
+					// Fun fact: links aren't as obvious to get right as you
+					// would expect. There's a lot more valid ways to click a
+					// link than this, and one might want to not simply click a
+					// link, but right click or command-click it to copy the
+					// link target, etc. Nope, this isn't just for blind people.
+					if (
+						// Skip if `onclick` prevented default
+						result !== false && !e.defaultPrevented &&
+						// Ignore everything but left clicks
+						(e.button === 0 || e.which === 0 || e.which === 1) &&
+						// Let the browser handle `target=_blank`, etc.
+						(!e.currentTarget.target || e.currentTarget.target === "_self") &&
+						// No modifier keys
+						!e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey
+					) {
+						e.preventDefault()
+						e.redraw = false
+						route.set(href, null, options)
+					}
+				}
+			}
+			return child
+		},
+	}
+	route.param = function(key) {
+		return attrs && key != null ? attrs[key] : attrs
+	}
+
+	return route
 }
 
-createStream["fantasy-land/of"] = createStream
-createStream.merge = merge
-createStream.combine = combine
-createStream.scan = scan
-createStream.scanMerge = scanMerge
-createStream.HALT = HALT
+}).call(this,require("timers").setImmediate)
+},{"../pathname/assign":30,"../pathname/build":31,"../pathname/compileTemplate":32,"../pathname/parse":33,"../promise/promise":35,"../render/hyperscript":40,"../render/vnode":44,"timers":49}],27:[function(require,module,exports){
+"use strict"
 
-if (typeof module !== "undefined") module["exports"] = createStream
-else if (typeof window.m === "function" && !("stream" in window.m)) window.m.stream = createStream
-else window.m = {stream : createStream}
+var hyperscript = require("./render/hyperscript")
 
-}());
+hyperscript.trust = require("./render/trust")
+hyperscript.fragment = require("./render/fragment")
 
-},{}]},{},[11]);
+module.exports = hyperscript
+
+},{"./render/fragment":39,"./render/hyperscript":40,"./render/trust":43}],28:[function(require,module,exports){
+"use strict"
+
+var hyperscript = require("./hyperscript")
+var request = require("./request")
+var mountRedraw = require("./mount-redraw")
+
+var m = function m() { return hyperscript.apply(this, arguments) }
+m.m = hyperscript
+m.trust = hyperscript.trust
+m.fragment = hyperscript.fragment
+m.mount = mountRedraw.mount
+m.route = require("./route")
+m.render = require("./render")
+m.redraw = mountRedraw.redraw
+m.request = request.request
+m.jsonp = request.jsonp
+m.parseQueryString = require("./querystring/parse")
+m.buildQueryString = require("./querystring/build")
+m.parsePathname = require("./pathname/parse")
+m.buildPathname = require("./pathname/build")
+m.vnode = require("./render/vnode")
+m.PromisePolyfill = require("./promise/polyfill")
+
+module.exports = m
+
+},{"./hyperscript":27,"./mount-redraw":29,"./pathname/build":31,"./pathname/parse":33,"./promise/polyfill":34,"./querystring/build":36,"./querystring/parse":37,"./render":38,"./render/vnode":44,"./request":45,"./route":47}],29:[function(require,module,exports){
+"use strict"
+
+var render = require("./render")
+
+module.exports = require("./api/mount-redraw")(render, requestAnimationFrame, console)
+
+},{"./api/mount-redraw":25,"./render":38}],30:[function(require,module,exports){
+"use strict"
+
+module.exports = Object.assign || function(target, source) {
+	if(source) Object.keys(source).forEach(function(key) { target[key] = source[key] })
+}
+
+},{}],31:[function(require,module,exports){
+"use strict"
+
+var buildQueryString = require("../querystring/build")
+var assign = require("./assign")
+
+// Returns `path` from `template` + `params`
+module.exports = function(template, params) {
+	if ((/:([^\/\.-]+)(\.{3})?:/).test(template)) {
+		throw new SyntaxError("Template parameter names *must* be separated")
+	}
+	if (params == null) return template
+	var queryIndex = template.indexOf("?")
+	var hashIndex = template.indexOf("#")
+	var queryEnd = hashIndex < 0 ? template.length : hashIndex
+	var pathEnd = queryIndex < 0 ? queryEnd : queryIndex
+	var path = template.slice(0, pathEnd)
+	var query = {}
+
+	assign(query, params)
+
+	var resolved = path.replace(/:([^\/\.-]+)(\.{3})?/g, function(m, key, variadic) {
+		delete query[key]
+		// If no such parameter exists, don't interpolate it.
+		if (params[key] == null) return m
+		// Escape normal parameters, but not variadic ones.
+		return variadic ? params[key] : encodeURIComponent(String(params[key]))
+	})
+
+	// In case the template substitution adds new query/hash parameters.
+	var newQueryIndex = resolved.indexOf("?")
+	var newHashIndex = resolved.indexOf("#")
+	var newQueryEnd = newHashIndex < 0 ? resolved.length : newHashIndex
+	var newPathEnd = newQueryIndex < 0 ? newQueryEnd : newQueryIndex
+	var result = resolved.slice(0, newPathEnd)
+
+	if (queryIndex >= 0) result += template.slice(queryIndex, queryEnd)
+	if (newQueryIndex >= 0) result += (queryIndex < 0 ? "?" : "&") + resolved.slice(newQueryIndex, newQueryEnd)
+	var querystring = buildQueryString(query)
+	if (querystring) result += (queryIndex < 0 && newQueryIndex < 0 ? "?" : "&") + querystring
+	if (hashIndex >= 0) result += template.slice(hashIndex)
+	if (newHashIndex >= 0) result += (hashIndex < 0 ? "" : "&") + resolved.slice(newHashIndex)
+	return result
+}
+
+},{"../querystring/build":36,"./assign":30}],32:[function(require,module,exports){
+"use strict"
+
+var parsePathname = require("./parse")
+
+// Compiles a template into a function that takes a resolved path (without query
+// strings) and returns an object containing the template parameters with their
+// parsed values. This expects the input of the compiled template to be the
+// output of `parsePathname`. Note that it does *not* remove query parameters
+// specified in the template.
+module.exports = function(template) {
+	var templateData = parsePathname(template)
+	var templateKeys = Object.keys(templateData.params)
+	var keys = []
+	var regexp = new RegExp("^" + templateData.path.replace(
+		// I escape literal text so people can use things like `:file.:ext` or
+		// `:lang-:locale` in routes. This is all merged into one pass so I
+		// don't also accidentally escape `-` and make it harder to detect it to
+		// ban it from template parameters.
+		/:([^\/.-]+)(\.{3}|\.(?!\.)|-)?|[\\^$*+.()|\[\]{}]/g,
+		function(m, key, extra) {
+			if (key == null) return "\\" + m
+			keys.push({k: key, r: extra === "..."})
+			if (extra === "...") return "(.*)"
+			if (extra === ".") return "([^/]+)\\."
+			return "([^/]+)" + (extra || "")
+		}
+	) + "$")
+	return function(data) {
+		// First, check the params. Usually, there isn't any, and it's just
+		// checking a static set.
+		for (var i = 0; i < templateKeys.length; i++) {
+			if (templateData.params[templateKeys[i]] !== data.params[templateKeys[i]]) return false
+		}
+		// If no interpolations exist, let's skip all the ceremony
+		if (!keys.length) return regexp.test(data.path)
+		var values = regexp.exec(data.path)
+		if (values == null) return false
+		for (var i = 0; i < keys.length; i++) {
+			data.params[keys[i].k] = keys[i].r ? values[i + 1] : decodeURIComponent(values[i + 1])
+		}
+		return true
+	}
+}
+
+},{"./parse":33}],33:[function(require,module,exports){
+"use strict"
+
+var parseQueryString = require("../querystring/parse")
+
+// Returns `{path, params}` from `url`
+module.exports = function(url) {
+	var queryIndex = url.indexOf("?")
+	var hashIndex = url.indexOf("#")
+	var queryEnd = hashIndex < 0 ? url.length : hashIndex
+	var pathEnd = queryIndex < 0 ? queryEnd : queryIndex
+	var path = url.slice(0, pathEnd).replace(/\/{2,}/g, "/")
+
+	if (!path) path = "/"
+	else {
+		if (path[0] !== "/") path = "/" + path
+		if (path.length > 1 && path[path.length - 1] === "/") path = path.slice(0, -1)
+	}
+	return {
+		path: path,
+		params: queryIndex < 0
+			? {}
+			: parseQueryString(url.slice(queryIndex + 1, queryEnd)),
+	}
+}
+
+},{"../querystring/parse":37}],34:[function(require,module,exports){
+(function (setImmediate){
+"use strict"
+/** @constructor */
+var PromisePolyfill = function(executor) {
+	if (!(this instanceof PromisePolyfill)) throw new Error("Promise must be called with `new`")
+	if (typeof executor !== "function") throw new TypeError("executor must be a function")
+
+	var self = this, resolvers = [], rejectors = [], resolveCurrent = handler(resolvers, true), rejectCurrent = handler(rejectors, false)
+	var instance = self._instance = {resolvers: resolvers, rejectors: rejectors}
+	var callAsync = typeof setImmediate === "function" ? setImmediate : setTimeout
+	function handler(list, shouldAbsorb) {
+		return function execute(value) {
+			var then
+			try {
+				if (shouldAbsorb && value != null && (typeof value === "object" || typeof value === "function") && typeof (then = value.then) === "function") {
+					if (value === self) throw new TypeError("Promise can't be resolved w/ itself")
+					executeOnce(then.bind(value))
+				}
+				else {
+					callAsync(function() {
+						if (!shouldAbsorb && list.length === 0) console.error("Possible unhandled promise rejection:", value)
+						for (var i = 0; i < list.length; i++) list[i](value)
+						resolvers.length = 0, rejectors.length = 0
+						instance.state = shouldAbsorb
+						instance.retry = function() {execute(value)}
+					})
+				}
+			}
+			catch (e) {
+				rejectCurrent(e)
+			}
+		}
+	}
+	function executeOnce(then) {
+		var runs = 0
+		function run(fn) {
+			return function(value) {
+				if (runs++ > 0) return
+				fn(value)
+			}
+		}
+		var onerror = run(rejectCurrent)
+		try {then(run(resolveCurrent), onerror)} catch (e) {onerror(e)}
+	}
+
+	executeOnce(executor)
+}
+PromisePolyfill.prototype.then = function(onFulfilled, onRejection) {
+	var self = this, instance = self._instance
+	function handle(callback, list, next, state) {
+		list.push(function(value) {
+			if (typeof callback !== "function") next(value)
+			else try {resolveNext(callback(value))} catch (e) {if (rejectNext) rejectNext(e)}
+		})
+		if (typeof instance.retry === "function" && state === instance.state) instance.retry()
+	}
+	var resolveNext, rejectNext
+	var promise = new PromisePolyfill(function(resolve, reject) {resolveNext = resolve, rejectNext = reject})
+	handle(onFulfilled, instance.resolvers, resolveNext, true), handle(onRejection, instance.rejectors, rejectNext, false)
+	return promise
+}
+PromisePolyfill.prototype.catch = function(onRejection) {
+	return this.then(null, onRejection)
+}
+PromisePolyfill.prototype.finally = function(callback) {
+	return this.then(
+		function(value) {
+			return PromisePolyfill.resolve(callback()).then(function() {
+				return value
+			})
+		},
+		function(reason) {
+			return PromisePolyfill.resolve(callback()).then(function() {
+				return PromisePolyfill.reject(reason);
+			})
+		}
+	)
+}
+PromisePolyfill.resolve = function(value) {
+	if (value instanceof PromisePolyfill) return value
+	return new PromisePolyfill(function(resolve) {resolve(value)})
+}
+PromisePolyfill.reject = function(value) {
+	return new PromisePolyfill(function(resolve, reject) {reject(value)})
+}
+PromisePolyfill.all = function(list) {
+	return new PromisePolyfill(function(resolve, reject) {
+		var total = list.length, count = 0, values = []
+		if (list.length === 0) resolve([])
+		else for (var i = 0; i < list.length; i++) {
+			(function(i) {
+				function consume(value) {
+					count++
+					values[i] = value
+					if (count === total) resolve(values)
+				}
+				if (list[i] != null && (typeof list[i] === "object" || typeof list[i] === "function") && typeof list[i].then === "function") {
+					list[i].then(consume, reject)
+				}
+				else consume(list[i])
+			})(i)
+		}
+	})
+}
+PromisePolyfill.race = function(list) {
+	return new PromisePolyfill(function(resolve, reject) {
+		for (var i = 0; i < list.length; i++) {
+			list[i].then(resolve, reject)
+		}
+	})
+}
+
+module.exports = PromisePolyfill
+
+}).call(this,require("timers").setImmediate)
+},{"timers":49}],35:[function(require,module,exports){
+(function (global){
+"use strict"
+
+var PromisePolyfill = require("./polyfill")
+
+if (typeof window !== "undefined") {
+	if (typeof window.Promise === "undefined") {
+		window.Promise = PromisePolyfill
+	} else if (!window.Promise.prototype.finally) {
+		window.Promise.prototype.finally = PromisePolyfill.prototype.finally
+	}
+	module.exports = window.Promise
+} else if (typeof global !== "undefined") {
+	if (typeof global.Promise === "undefined") {
+		global.Promise = PromisePolyfill
+	} else if (!global.Promise.prototype.finally) {
+		global.Promise.prototype.finally = PromisePolyfill.prototype.finally
+	}
+	module.exports = global.Promise
+} else {
+	module.exports = PromisePolyfill
+}
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./polyfill":34}],36:[function(require,module,exports){
+"use strict"
+
+module.exports = function(object) {
+	if (Object.prototype.toString.call(object) !== "[object Object]") return ""
+
+	var args = []
+	for (var key in object) {
+		destructure(key, object[key])
+	}
+
+	return args.join("&")
+
+	function destructure(key, value) {
+		if (Array.isArray(value)) {
+			for (var i = 0; i < value.length; i++) {
+				destructure(key + "[" + i + "]", value[i])
+			}
+		}
+		else if (Object.prototype.toString.call(value) === "[object Object]") {
+			for (var i in value) {
+				destructure(key + "[" + i + "]", value[i])
+			}
+		}
+		else args.push(encodeURIComponent(key) + (value != null && value !== "" ? "=" + encodeURIComponent(value) : ""))
+	}
+}
+
+},{}],37:[function(require,module,exports){
+"use strict"
+
+module.exports = function(string) {
+	if (string === "" || string == null) return {}
+	if (string.charAt(0) === "?") string = string.slice(1)
+
+	var entries = string.split("&"), counters = {}, data = {}
+	for (var i = 0; i < entries.length; i++) {
+		var entry = entries[i].split("=")
+		var key = decodeURIComponent(entry[0])
+		var value = entry.length === 2 ? decodeURIComponent(entry[1]) : ""
+
+		if (value === "true") value = true
+		else if (value === "false") value = false
+
+		var levels = key.split(/\]\[?|\[/)
+		var cursor = data
+		if (key.indexOf("[") > -1) levels.pop()
+		for (var j = 0; j < levels.length; j++) {
+			var level = levels[j], nextLevel = levels[j + 1]
+			var isNumber = nextLevel == "" || !isNaN(parseInt(nextLevel, 10))
+			if (level === "") {
+				var key = levels.slice(0, j).join()
+				if (counters[key] == null) {
+					counters[key] = Array.isArray(cursor) ? cursor.length : 0
+				}
+				level = counters[key]++
+			}
+			// Disallow direct prototype pollution
+			else if (level === "__proto__") break
+			if (j === levels.length - 1) cursor[level] = value
+			else {
+				// Read own properties exclusively to disallow indirect
+				// prototype pollution
+				var desc = Object.getOwnPropertyDescriptor(cursor, level)
+				if (desc != null) desc = desc.value
+				if (desc == null) cursor[level] = desc = isNumber ? [] : {}
+				cursor = desc
+			}
+		}
+	}
+	return data
+}
+
+},{}],38:[function(require,module,exports){
+"use strict"
+
+module.exports = require("./render/render")(window)
+
+},{"./render/render":42}],39:[function(require,module,exports){
+"use strict"
+
+var Vnode = require("../render/vnode")
+var hyperscriptVnode = require("./hyperscriptVnode")
+
+module.exports = function() {
+	var vnode = hyperscriptVnode.apply(0, arguments)
+
+	vnode.tag = "["
+	vnode.children = Vnode.normalizeChildren(vnode.children)
+	return vnode
+}
+
+},{"../render/vnode":44,"./hyperscriptVnode":41}],40:[function(require,module,exports){
+"use strict"
+
+var Vnode = require("../render/vnode")
+var hyperscriptVnode = require("./hyperscriptVnode")
+
+var selectorParser = /(?:(^|#|\.)([^#\.\[\]]+))|(\[(.+?)(?:\s*=\s*("|'|)((?:\\["'\]]|.)*?)\5)?\])/g
+var selectorCache = {}
+var hasOwn = {}.hasOwnProperty
+
+function isEmpty(object) {
+	for (var key in object) if (hasOwn.call(object, key)) return false
+	return true
+}
+
+function compileSelector(selector) {
+	var match, tag = "div", classes = [], attrs = {}
+	while (match = selectorParser.exec(selector)) {
+		var type = match[1], value = match[2]
+		if (type === "" && value !== "") tag = value
+		else if (type === "#") attrs.id = value
+		else if (type === ".") classes.push(value)
+		else if (match[3][0] === "[") {
+			var attrValue = match[6]
+			if (attrValue) attrValue = attrValue.replace(/\\(["'])/g, "$1").replace(/\\\\/g, "\\")
+			if (match[4] === "class") classes.push(attrValue)
+			else attrs[match[4]] = attrValue === "" ? attrValue : attrValue || true
+		}
+	}
+	if (classes.length > 0) attrs.className = classes.join(" ")
+	return selectorCache[selector] = {tag: tag, attrs: attrs}
+}
+
+function execSelector(state, vnode) {
+	var attrs = vnode.attrs
+	var children = Vnode.normalizeChildren(vnode.children)
+	var hasClass = hasOwn.call(attrs, "class")
+	var className = hasClass ? attrs.class : attrs.className
+
+	vnode.tag = state.tag
+	vnode.attrs = null
+	vnode.children = undefined
+
+	if (!isEmpty(state.attrs) && !isEmpty(attrs)) {
+		var newAttrs = {}
+
+		for (var key in attrs) {
+			if (hasOwn.call(attrs, key)) newAttrs[key] = attrs[key]
+		}
+
+		attrs = newAttrs
+	}
+
+	for (var key in state.attrs) {
+		if (hasOwn.call(state.attrs, key) && key !== "className" && !hasOwn.call(attrs, key)){
+			attrs[key] = state.attrs[key]
+		}
+	}
+	if (className != null || state.attrs.className != null) attrs.className =
+		className != null
+			? state.attrs.className != null
+				? String(state.attrs.className) + " " + String(className)
+				: className
+			: state.attrs.className != null
+				? state.attrs.className
+				: null
+
+	if (hasClass) attrs.class = null
+
+	for (var key in attrs) {
+		if (hasOwn.call(attrs, key) && key !== "key") {
+			vnode.attrs = attrs
+			break
+		}
+	}
+
+	if (Array.isArray(children) && children.length === 1 && children[0] != null && children[0].tag === "#") {
+		vnode.text = children[0].children
+	} else {
+		vnode.children = children
+	}
+
+	return vnode
+}
+
+function hyperscript(selector) {
+	if (selector == null || typeof selector !== "string" && typeof selector !== "function" && typeof selector.view !== "function") {
+		throw Error("The selector must be either a string or a component.");
+	}
+
+	var vnode = hyperscriptVnode.apply(1, arguments)
+
+	if (typeof selector === "string") {
+		vnode.children = Vnode.normalizeChildren(vnode.children)
+		if (selector !== "[") return execSelector(selectorCache[selector] || compileSelector(selector), vnode)
+	}
+
+	vnode.tag = selector
+	return vnode
+}
+
+module.exports = hyperscript
+
+},{"../render/vnode":44,"./hyperscriptVnode":41}],41:[function(require,module,exports){
+"use strict"
+
+var Vnode = require("../render/vnode")
+
+// Call via `hyperscriptVnode.apply(startOffset, arguments)`
+//
+// The reason I do it this way, forwarding the arguments and passing the start
+// offset in `this`, is so I don't have to create a temporary array in a
+// performance-critical path.
+//
+// In native ES6, I'd instead add a final `...args` parameter to the
+// `hyperscript` and `fragment` factories and define this as
+// `hyperscriptVnode(...args)`, since modern engines do optimize that away. But
+// ES5 (what Mithril requires thanks to IE support) doesn't give me that luxury,
+// and engines aren't nearly intelligent enough to do either of these:
+//
+// 1. Elide the allocation for `[].slice.call(arguments, 1)` when it's passed to
+//    another function only to be indexed.
+// 2. Elide an `arguments` allocation when it's passed to any function other
+//    than `Function.prototype.apply` or `Reflect.apply`.
+//
+// In ES6, it'd probably look closer to this (I'd need to profile it, though):
+// module.exports = function(attrs, ...children) {
+//     if (attrs == null || typeof attrs === "object" && attrs.tag == null && !Array.isArray(attrs)) {
+//         if (children.length === 1 && Array.isArray(children[0])) children = children[0]
+//     } else {
+//         children = children.length === 0 && Array.isArray(attrs) ? attrs : [attrs, ...children]
+//         attrs = undefined
+//     }
+//
+//     if (attrs == null) attrs = {}
+//     return Vnode("", attrs.key, attrs, children)
+// }
+module.exports = function() {
+	var attrs = arguments[this], start = this + 1, children
+
+	if (attrs == null) {
+		attrs = {}
+	} else if (typeof attrs !== "object" || attrs.tag != null || Array.isArray(attrs)) {
+		attrs = {}
+		start = this
+	}
+
+	if (arguments.length === start + 1) {
+		children = arguments[start]
+		if (!Array.isArray(children)) children = [children]
+	} else {
+		children = []
+		while (start < arguments.length) children.push(arguments[start++])
+	}
+
+	return Vnode("", attrs.key, attrs, children)
+}
+
+},{"../render/vnode":44}],42:[function(require,module,exports){
+"use strict"
+
+var Vnode = require("../render/vnode")
+
+module.exports = function($window) {
+	var $doc = $window && $window.document
+	var currentRedraw
+
+	var nameSpace = {
+		svg: "http://www.w3.org/2000/svg",
+		math: "http://www.w3.org/1998/Math/MathML"
+	}
+
+	function getNameSpace(vnode) {
+		return vnode.attrs && vnode.attrs.xmlns || nameSpace[vnode.tag]
+	}
+
+	//sanity check to discourage people from doing `vnode.state = ...`
+	function checkState(vnode, original) {
+		if (vnode.state !== original) throw new Error("`vnode.state` must not be modified")
+	}
+
+	//Note: the hook is passed as the `this` argument to allow proxying the
+	//arguments without requiring a full array allocation to do so. It also
+	//takes advantage of the fact the current `vnode` is the first argument in
+	//all lifecycle methods.
+	function callHook(vnode) {
+		var original = vnode.state
+		try {
+			return this.apply(original, arguments)
+		} finally {
+			checkState(vnode, original)
+		}
+	}
+
+	// IE11 (at least) throws an UnspecifiedError when accessing document.activeElement when
+	// inside an iframe. Catch and swallow this error, and heavy-handidly return null.
+	function activeElement() {
+		try {
+			return $doc.activeElement
+		} catch (e) {
+			return null
+		}
+	}
+	//create
+	function createNodes(parent, vnodes, start, end, hooks, nextSibling, ns) {
+		for (var i = start; i < end; i++) {
+			var vnode = vnodes[i]
+			if (vnode != null) {
+				createNode(parent, vnode, hooks, ns, nextSibling)
+			}
+		}
+	}
+	function createNode(parent, vnode, hooks, ns, nextSibling) {
+		var tag = vnode.tag
+		if (typeof tag === "string") {
+			vnode.state = {}
+			if (vnode.attrs != null) initLifecycle(vnode.attrs, vnode, hooks)
+			switch (tag) {
+				case "#": createText(parent, vnode, nextSibling); break
+				case "<": createHTML(parent, vnode, ns, nextSibling); break
+				case "[": createFragment(parent, vnode, hooks, ns, nextSibling); break
+				default: createElement(parent, vnode, hooks, ns, nextSibling)
+			}
+		}
+		else createComponent(parent, vnode, hooks, ns, nextSibling)
+	}
+	function createText(parent, vnode, nextSibling) {
+		vnode.dom = $doc.createTextNode(vnode.children)
+		insertNode(parent, vnode.dom, nextSibling)
+	}
+	var possibleParents = {caption: "table", thead: "table", tbody: "table", tfoot: "table", tr: "tbody", th: "tr", td: "tr", colgroup: "table", col: "colgroup"}
+	function createHTML(parent, vnode, ns, nextSibling) {
+		var match = vnode.children.match(/^\s*?<(\w+)/im) || []
+		// not using the proper parent makes the child element(s) vanish.
+		//     var div = document.createElement("div")
+		//     div.innerHTML = "<td>i</td><td>j</td>"
+		//     console.log(div.innerHTML)
+		// --> "ij", no <td> in sight.
+		var temp = $doc.createElement(possibleParents[match[1]] || "div")
+		if (ns === "http://www.w3.org/2000/svg") {
+			temp.innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\">" + vnode.children + "</svg>"
+			temp = temp.firstChild
+		} else {
+			temp.innerHTML = vnode.children
+		}
+		vnode.dom = temp.firstChild
+		vnode.domSize = temp.childNodes.length
+		// Capture nodes to remove, so we don't confuse them.
+		vnode.instance = []
+		var fragment = $doc.createDocumentFragment()
+		var child
+		while (child = temp.firstChild) {
+			vnode.instance.push(child)
+			fragment.appendChild(child)
+		}
+		insertNode(parent, fragment, nextSibling)
+	}
+	function createFragment(parent, vnode, hooks, ns, nextSibling) {
+		var fragment = $doc.createDocumentFragment()
+		if (vnode.children != null) {
+			var children = vnode.children
+			createNodes(fragment, children, 0, children.length, hooks, null, ns)
+		}
+		vnode.dom = fragment.firstChild
+		vnode.domSize = fragment.childNodes.length
+		insertNode(parent, fragment, nextSibling)
+	}
+	function createElement(parent, vnode, hooks, ns, nextSibling) {
+		var tag = vnode.tag
+		var attrs = vnode.attrs
+		var is = attrs && attrs.is
+
+		ns = getNameSpace(vnode) || ns
+
+		var element = ns ?
+			is ? $doc.createElementNS(ns, tag, {is: is}) : $doc.createElementNS(ns, tag) :
+			is ? $doc.createElement(tag, {is: is}) : $doc.createElement(tag)
+		vnode.dom = element
+
+		if (attrs != null) {
+			setAttrs(vnode, attrs, ns)
+		}
+
+		insertNode(parent, element, nextSibling)
+
+		if (!maybeSetContentEditable(vnode)) {
+			if (vnode.text != null) {
+				if (vnode.text !== "") element.textContent = vnode.text
+				else vnode.children = [Vnode("#", undefined, undefined, vnode.text, undefined, undefined)]
+			}
+			if (vnode.children != null) {
+				var children = vnode.children
+				createNodes(element, children, 0, children.length, hooks, null, ns)
+				if (vnode.tag === "select" && attrs != null) setLateSelectAttrs(vnode, attrs)
+			}
+		}
+	}
+	function initComponent(vnode, hooks) {
+		var sentinel
+		if (typeof vnode.tag.view === "function") {
+			vnode.state = Object.create(vnode.tag)
+			sentinel = vnode.state.view
+			if (sentinel.$$reentrantLock$$ != null) return
+			sentinel.$$reentrantLock$$ = true
+		} else {
+			vnode.state = void 0
+			sentinel = vnode.tag
+			if (sentinel.$$reentrantLock$$ != null) return
+			sentinel.$$reentrantLock$$ = true
+			vnode.state = (vnode.tag.prototype != null && typeof vnode.tag.prototype.view === "function") ? new vnode.tag(vnode) : vnode.tag(vnode)
+		}
+		initLifecycle(vnode.state, vnode, hooks)
+		if (vnode.attrs != null) initLifecycle(vnode.attrs, vnode, hooks)
+		vnode.instance = Vnode.normalize(callHook.call(vnode.state.view, vnode))
+		if (vnode.instance === vnode) throw Error("A view cannot return the vnode it received as argument")
+		sentinel.$$reentrantLock$$ = null
+	}
+	function createComponent(parent, vnode, hooks, ns, nextSibling) {
+		initComponent(vnode, hooks)
+		if (vnode.instance != null) {
+			createNode(parent, vnode.instance, hooks, ns, nextSibling)
+			vnode.dom = vnode.instance.dom
+			vnode.domSize = vnode.dom != null ? vnode.instance.domSize : 0
+		}
+		else {
+			vnode.domSize = 0
+		}
+	}
+
+	//update
+	/**
+	 * @param {Element|Fragment} parent - the parent element
+	 * @param {Vnode[] | null} old - the list of vnodes of the last `render()` call for
+	 *                               this part of the tree
+	 * @param {Vnode[] | null} vnodes - as above, but for the current `render()` call.
+	 * @param {Function[]} hooks - an accumulator of post-render hooks (oncreate/onupdate)
+	 * @param {Element | null} nextSibling - the next DOM node if we're dealing with a
+	 *                                       fragment that is not the last item in its
+	 *                                       parent
+	 * @param {'svg' | 'math' | String | null} ns) - the current XML namespace, if any
+	 * @returns void
+	 */
+	// This function diffs and patches lists of vnodes, both keyed and unkeyed.
+	//
+	// We will:
+	//
+	// 1. describe its general structure
+	// 2. focus on the diff algorithm optimizations
+	// 3. discuss DOM node operations.
+
+	// ## Overview:
+	//
+	// The updateNodes() function:
+	// - deals with trivial cases
+	// - determines whether the lists are keyed or unkeyed based on the first non-null node
+	//   of each list.
+	// - diffs them and patches the DOM if needed (that's the brunt of the code)
+	// - manages the leftovers: after diffing, are there:
+	//   - old nodes left to remove?
+	// 	 - new nodes to insert?
+	// 	 deal with them!
+	//
+	// The lists are only iterated over once, with an exception for the nodes in `old` that
+	// are visited in the fourth part of the diff and in the `removeNodes` loop.
+
+	// ## Diffing
+	//
+	// Reading https://github.com/localvoid/ivi/blob/ddc09d06abaef45248e6133f7040d00d3c6be853/packages/ivi/src/vdom/implementation.ts#L617-L837
+	// may be good for context on longest increasing subsequence-based logic for moving nodes.
+	//
+	// In order to diff keyed lists, one has to
+	//
+	// 1) match nodes in both lists, per key, and update them accordingly
+	// 2) create the nodes present in the new list, but absent in the old one
+	// 3) remove the nodes present in the old list, but absent in the new one
+	// 4) figure out what nodes in 1) to move in order to minimize the DOM operations.
+	//
+	// To achieve 1) one can create a dictionary of keys => index (for the old list), then iterate
+	// over the new list and for each new vnode, find the corresponding vnode in the old list using
+	// the map.
+	// 2) is achieved in the same step: if a new node has no corresponding entry in the map, it is new
+	// and must be created.
+	// For the removals, we actually remove the nodes that have been updated from the old list.
+	// The nodes that remain in that list after 1) and 2) have been performed can be safely removed.
+	// The fourth step is a bit more complex and relies on the longest increasing subsequence (LIS)
+	// algorithm.
+	//
+	// the longest increasing subsequence is the list of nodes that can remain in place. Imagine going
+	// from `1,2,3,4,5` to `4,5,1,2,3` where the numbers are not necessarily the keys, but the indices
+	// corresponding to the keyed nodes in the old list (keyed nodes `e,d,c,b,a` => `b,a,e,d,c` would
+	//  match the above lists, for example).
+	//
+	// In there are two increasing subsequences: `4,5` and `1,2,3`, the latter being the longest. We
+	// can update those nodes without moving them, and only call `insertNode` on `4` and `5`.
+	//
+	// @localvoid adapted the algo to also support node deletions and insertions (the `lis` is actually
+	// the longest increasing subsequence *of old nodes still present in the new list*).
+	//
+	// It is a general algorithm that is fireproof in all circumstances, but it requires the allocation
+	// and the construction of a `key => oldIndex` map, and three arrays (one with `newIndex => oldIndex`,
+	// the `LIS` and a temporary one to create the LIS).
+	//
+	// So we cheat where we can: if the tails of the lists are identical, they are guaranteed to be part of
+	// the LIS and can be updated without moving them.
+	//
+	// If two nodes are swapped, they are guaranteed not to be part of the LIS, and must be moved (with
+	// the exception of the last node if the list is fully reversed).
+	//
+	// ## Finding the next sibling.
+	//
+	// `updateNode()` and `createNode()` expect a nextSibling parameter to perform DOM operations.
+	// When the list is being traversed top-down, at any index, the DOM nodes up to the previous
+	// vnode reflect the content of the new list, whereas the rest of the DOM nodes reflect the old
+	// list. The next sibling must be looked for in the old list using `getNextSibling(... oldStart + 1 ...)`.
+	//
+	// In the other scenarios (swaps, upwards traversal, map-based diff),
+	// the new vnodes list is traversed upwards. The DOM nodes at the bottom of the list reflect the
+	// bottom part of the new vnodes list, and we can use the `v.dom`  value of the previous node
+	// as the next sibling (cached in the `nextSibling` variable).
+
+
+	// ## DOM node moves
+	//
+	// In most scenarios `updateNode()` and `createNode()` perform the DOM operations. However,
+	// this is not the case if the node moved (second and fourth part of the diff algo). We move
+	// the old DOM nodes before updateNode runs because it enables us to use the cached `nextSibling`
+	// variable rather than fetching it using `getNextSibling()`.
+	//
+	// The fourth part of the diff currently inserts nodes unconditionally, leading to issues
+	// like #1791 and #1999. We need to be smarter about those situations where adjascent old
+	// nodes remain together in the new list in a way that isn't covered by parts one and
+	// three of the diff algo.
+
+	function updateNodes(parent, old, vnodes, hooks, nextSibling, ns) {
+		if (old === vnodes || old == null && vnodes == null) return
+		else if (old == null || old.length === 0) createNodes(parent, vnodes, 0, vnodes.length, hooks, nextSibling, ns)
+		else if (vnodes == null || vnodes.length === 0) removeNodes(parent, old, 0, old.length)
+		else {
+			var isOldKeyed = old[0] != null && old[0].key != null
+			var isKeyed = vnodes[0] != null && vnodes[0].key != null
+			var start = 0, oldStart = 0
+			if (!isOldKeyed) while (oldStart < old.length && old[oldStart] == null) oldStart++
+			if (!isKeyed) while (start < vnodes.length && vnodes[start] == null) start++
+			if (isKeyed === null && isOldKeyed == null) return // both lists are full of nulls
+			if (isOldKeyed !== isKeyed) {
+				removeNodes(parent, old, oldStart, old.length)
+				createNodes(parent, vnodes, start, vnodes.length, hooks, nextSibling, ns)
+			} else if (!isKeyed) {
+				// Don't index past the end of either list (causes deopts).
+				var commonLength = old.length < vnodes.length ? old.length : vnodes.length
+				// Rewind if necessary to the first non-null index on either side.
+				// We could alternatively either explicitly create or remove nodes when `start !== oldStart`
+				// but that would be optimizing for sparse lists which are more rare than dense ones.
+				start = start < oldStart ? start : oldStart
+				for (; start < commonLength; start++) {
+					o = old[start]
+					v = vnodes[start]
+					if (o === v || o == null && v == null) continue
+					else if (o == null) createNode(parent, v, hooks, ns, getNextSibling(old, start + 1, nextSibling))
+					else if (v == null) removeNode(parent, o)
+					else updateNode(parent, o, v, hooks, getNextSibling(old, start + 1, nextSibling), ns)
+				}
+				if (old.length > commonLength) removeNodes(parent, old, start, old.length)
+				if (vnodes.length > commonLength) createNodes(parent, vnodes, start, vnodes.length, hooks, nextSibling, ns)
+			} else {
+				// keyed diff
+				var oldEnd = old.length - 1, end = vnodes.length - 1, map, o, v, oe, ve, topSibling
+
+				// bottom-up
+				while (oldEnd >= oldStart && end >= start) {
+					oe = old[oldEnd]
+					ve = vnodes[end]
+					if (oe.key !== ve.key) break
+					if (oe !== ve) updateNode(parent, oe, ve, hooks, nextSibling, ns)
+					if (ve.dom != null) nextSibling = ve.dom
+					oldEnd--, end--
+				}
+				// top-down
+				while (oldEnd >= oldStart && end >= start) {
+					o = old[oldStart]
+					v = vnodes[start]
+					if (o.key !== v.key) break
+					oldStart++, start++
+					if (o !== v) updateNode(parent, o, v, hooks, getNextSibling(old, oldStart, nextSibling), ns)
+				}
+				// swaps and list reversals
+				while (oldEnd >= oldStart && end >= start) {
+					if (start === end) break
+					if (o.key !== ve.key || oe.key !== v.key) break
+					topSibling = getNextSibling(old, oldStart, nextSibling)
+					moveNodes(parent, oe, topSibling)
+					if (oe !== v) updateNode(parent, oe, v, hooks, topSibling, ns)
+					if (++start <= --end) moveNodes(parent, o, nextSibling)
+					if (o !== ve) updateNode(parent, o, ve, hooks, nextSibling, ns)
+					if (ve.dom != null) nextSibling = ve.dom
+					oldStart++; oldEnd--
+					oe = old[oldEnd]
+					ve = vnodes[end]
+					o = old[oldStart]
+					v = vnodes[start]
+				}
+				// bottom up once again
+				while (oldEnd >= oldStart && end >= start) {
+					if (oe.key !== ve.key) break
+					if (oe !== ve) updateNode(parent, oe, ve, hooks, nextSibling, ns)
+					if (ve.dom != null) nextSibling = ve.dom
+					oldEnd--, end--
+					oe = old[oldEnd]
+					ve = vnodes[end]
+				}
+				if (start > end) removeNodes(parent, old, oldStart, oldEnd + 1)
+				else if (oldStart > oldEnd) createNodes(parent, vnodes, start, end + 1, hooks, nextSibling, ns)
+				else {
+					// inspired by ivi https://github.com/ivijs/ivi/ by Boris Kaul
+					var originalNextSibling = nextSibling, vnodesLength = end - start + 1, oldIndices = new Array(vnodesLength), li=0, i=0, pos = 2147483647, matched = 0, map, lisIndices
+					for (i = 0; i < vnodesLength; i++) oldIndices[i] = -1
+					for (i = end; i >= start; i--) {
+						if (map == null) map = getKeyMap(old, oldStart, oldEnd + 1)
+						ve = vnodes[i]
+						var oldIndex = map[ve.key]
+						if (oldIndex != null) {
+							pos = (oldIndex < pos) ? oldIndex : -1 // becomes -1 if nodes were re-ordered
+							oldIndices[i-start] = oldIndex
+							oe = old[oldIndex]
+							old[oldIndex] = null
+							if (oe !== ve) updateNode(parent, oe, ve, hooks, nextSibling, ns)
+							if (ve.dom != null) nextSibling = ve.dom
+							matched++
+						}
+					}
+					nextSibling = originalNextSibling
+					if (matched !== oldEnd - oldStart + 1) removeNodes(parent, old, oldStart, oldEnd + 1)
+					if (matched === 0) createNodes(parent, vnodes, start, end + 1, hooks, nextSibling, ns)
+					else {
+						if (pos === -1) {
+							// the indices of the indices of the items that are part of the
+							// longest increasing subsequence in the oldIndices list
+							lisIndices = makeLisIndices(oldIndices)
+							li = lisIndices.length - 1
+							for (i = end; i >= start; i--) {
+								v = vnodes[i]
+								if (oldIndices[i-start] === -1) createNode(parent, v, hooks, ns, nextSibling)
+								else {
+									if (lisIndices[li] === i - start) li--
+									else moveNodes(parent, v, nextSibling)
+								}
+								if (v.dom != null) nextSibling = vnodes[i].dom
+							}
+						} else {
+							for (i = end; i >= start; i--) {
+								v = vnodes[i]
+								if (oldIndices[i-start] === -1) createNode(parent, v, hooks, ns, nextSibling)
+								if (v.dom != null) nextSibling = vnodes[i].dom
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	function updateNode(parent, old, vnode, hooks, nextSibling, ns) {
+		var oldTag = old.tag, tag = vnode.tag
+		if (oldTag === tag) {
+			vnode.state = old.state
+			vnode.events = old.events
+			if (shouldNotUpdate(vnode, old)) return
+			if (typeof oldTag === "string") {
+				if (vnode.attrs != null) {
+					updateLifecycle(vnode.attrs, vnode, hooks)
+				}
+				switch (oldTag) {
+					case "#": updateText(old, vnode); break
+					case "<": updateHTML(parent, old, vnode, ns, nextSibling); break
+					case "[": updateFragment(parent, old, vnode, hooks, nextSibling, ns); break
+					default: updateElement(old, vnode, hooks, ns)
+				}
+			}
+			else updateComponent(parent, old, vnode, hooks, nextSibling, ns)
+		}
+		else {
+			removeNode(parent, old)
+			createNode(parent, vnode, hooks, ns, nextSibling)
+		}
+	}
+	function updateText(old, vnode) {
+		if (old.children.toString() !== vnode.children.toString()) {
+			old.dom.nodeValue = vnode.children
+		}
+		vnode.dom = old.dom
+	}
+	function updateHTML(parent, old, vnode, ns, nextSibling) {
+		if (old.children !== vnode.children) {
+			removeHTML(parent, old)
+			createHTML(parent, vnode, ns, nextSibling)
+		}
+		else {
+			vnode.dom = old.dom
+			vnode.domSize = old.domSize
+			vnode.instance = old.instance
+		}
+	}
+	function updateFragment(parent, old, vnode, hooks, nextSibling, ns) {
+		updateNodes(parent, old.children, vnode.children, hooks, nextSibling, ns)
+		var domSize = 0, children = vnode.children
+		vnode.dom = null
+		if (children != null) {
+			for (var i = 0; i < children.length; i++) {
+				var child = children[i]
+				if (child != null && child.dom != null) {
+					if (vnode.dom == null) vnode.dom = child.dom
+					domSize += child.domSize || 1
+				}
+			}
+			if (domSize !== 1) vnode.domSize = domSize
+		}
+	}
+	function updateElement(old, vnode, hooks, ns) {
+		var element = vnode.dom = old.dom
+		ns = getNameSpace(vnode) || ns
+
+		if (vnode.tag === "textarea") {
+			if (vnode.attrs == null) vnode.attrs = {}
+			if (vnode.text != null) {
+				vnode.attrs.value = vnode.text //FIXME handle multiple children
+				vnode.text = undefined
+			}
+		}
+		updateAttrs(vnode, old.attrs, vnode.attrs, ns)
+		if (!maybeSetContentEditable(vnode)) {
+			if (old.text != null && vnode.text != null && vnode.text !== "") {
+				if (old.text.toString() !== vnode.text.toString()) old.dom.firstChild.nodeValue = vnode.text
+			}
+			else {
+				if (old.text != null) old.children = [Vnode("#", undefined, undefined, old.text, undefined, old.dom.firstChild)]
+				if (vnode.text != null) vnode.children = [Vnode("#", undefined, undefined, vnode.text, undefined, undefined)]
+				updateNodes(element, old.children, vnode.children, hooks, null, ns)
+			}
+		}
+	}
+	function updateComponent(parent, old, vnode, hooks, nextSibling, ns) {
+		vnode.instance = Vnode.normalize(callHook.call(vnode.state.view, vnode))
+		if (vnode.instance === vnode) throw Error("A view cannot return the vnode it received as argument")
+		updateLifecycle(vnode.state, vnode, hooks)
+		if (vnode.attrs != null) updateLifecycle(vnode.attrs, vnode, hooks)
+		if (vnode.instance != null) {
+			if (old.instance == null) createNode(parent, vnode.instance, hooks, ns, nextSibling)
+			else updateNode(parent, old.instance, vnode.instance, hooks, nextSibling, ns)
+			vnode.dom = vnode.instance.dom
+			vnode.domSize = vnode.instance.domSize
+		}
+		else if (old.instance != null) {
+			removeNode(parent, old.instance)
+			vnode.dom = undefined
+			vnode.domSize = 0
+		}
+		else {
+			vnode.dom = old.dom
+			vnode.domSize = old.domSize
+		}
+	}
+	function getKeyMap(vnodes, start, end) {
+		var map = Object.create(null)
+		for (; start < end; start++) {
+			var vnode = vnodes[start]
+			if (vnode != null) {
+				var key = vnode.key
+				if (key != null) map[key] = start
+			}
+		}
+		return map
+	}
+	// Lifted from ivi https://github.com/ivijs/ivi/
+	// takes a list of unique numbers (-1 is special and can
+	// occur multiple times) and returns an array with the indices
+	// of the items that are part of the longest increasing
+	// subsequece
+	var lisTemp = []
+	function makeLisIndices(a) {
+		var result = [0]
+		var u = 0, v = 0, i = 0
+		var il = lisTemp.length = a.length
+		for (var i = 0; i < il; i++) lisTemp[i] = a[i]
+		for (var i = 0; i < il; ++i) {
+			if (a[i] === -1) continue
+			var j = result[result.length - 1]
+			if (a[j] < a[i]) {
+				lisTemp[i] = j
+				result.push(i)
+				continue
+			}
+			u = 0
+			v = result.length - 1
+			while (u < v) {
+				// Fast integer average without overflow.
+				// eslint-disable-next-line no-bitwise
+				var c = (u >>> 1) + (v >>> 1) + (u & v & 1)
+				if (a[result[c]] < a[i]) {
+					u = c + 1
+				}
+				else {
+					v = c
+				}
+			}
+			if (a[i] < a[result[u]]) {
+				if (u > 0) lisTemp[i] = result[u - 1]
+				result[u] = i
+			}
+		}
+		u = result.length
+		v = result[u - 1]
+		while (u-- > 0) {
+			result[u] = v
+			v = lisTemp[v]
+		}
+		lisTemp.length = 0
+		return result
+	}
+
+	function getNextSibling(vnodes, i, nextSibling) {
+		for (; i < vnodes.length; i++) {
+			if (vnodes[i] != null && vnodes[i].dom != null) return vnodes[i].dom
+		}
+		return nextSibling
+	}
+
+	// This covers a really specific edge case:
+	// - Parent node is keyed and contains child
+	// - Child is removed, returns unresolved promise in `onbeforeremove`
+	// - Parent node is moved in keyed diff
+	// - Remaining children still need moved appropriately
+	//
+	// Ideally, I'd track removed nodes as well, but that introduces a lot more
+	// complexity and I'm not exactly interested in doing that.
+	function moveNodes(parent, vnode, nextSibling) {
+		var frag = $doc.createDocumentFragment()
+		moveChildToFrag(parent, frag, vnode)
+		insertNode(parent, frag, nextSibling)
+	}
+	function moveChildToFrag(parent, frag, vnode) {
+		// Dodge the recursion overhead in a few of the most common cases.
+		while (vnode.dom != null && vnode.dom.parentNode === parent) {
+			if (typeof vnode.tag !== "string") {
+				vnode = vnode.instance
+				if (vnode != null) continue
+			} else if (vnode.tag === "<") {
+				for (var i = 0; i < vnode.instance.length; i++) {
+					frag.appendChild(vnode.instance[i])
+				}
+			} else if (vnode.tag !== "[") {
+				// Don't recurse for text nodes *or* elements, just fragments
+				frag.appendChild(vnode.dom)
+			} else if (vnode.children.length === 1) {
+				vnode = vnode.children[0]
+				if (vnode != null) continue
+			} else {
+				for (var i = 0; i < vnode.children.length; i++) {
+					var child = vnode.children[i]
+					if (child != null) moveChildToFrag(parent, frag, child)
+				}
+			}
+			break
+		}
+	}
+
+	function insertNode(parent, dom, nextSibling) {
+		if (nextSibling != null) parent.insertBefore(dom, nextSibling)
+		else parent.appendChild(dom)
+	}
+
+	function maybeSetContentEditable(vnode) {
+		if (vnode.attrs == null || (
+			vnode.attrs.contenteditable == null && // attribute
+			vnode.attrs.contentEditable == null // property
+		)) return false
+		var children = vnode.children
+		if (children != null && children.length === 1 && children[0].tag === "<") {
+			var content = children[0].children
+			if (vnode.dom.innerHTML !== content) vnode.dom.innerHTML = content
+		}
+		else if (vnode.text != null || children != null && children.length !== 0) throw new Error("Child node of a contenteditable must be trusted")
+		return true
+	}
+
+	//remove
+	function removeNodes(parent, vnodes, start, end) {
+		for (var i = start; i < end; i++) {
+			var vnode = vnodes[i]
+			if (vnode != null) removeNode(parent, vnode)
+		}
+	}
+	function removeNode(parent, vnode) {
+		var mask = 0
+		var original = vnode.state
+		var stateResult, attrsResult
+		if (typeof vnode.tag !== "string" && typeof vnode.state.onbeforeremove === "function") {
+			var result = callHook.call(vnode.state.onbeforeremove, vnode)
+			if (result != null && typeof result.then === "function") {
+				mask = 1
+				stateResult = result
+			}
+		}
+		if (vnode.attrs && typeof vnode.attrs.onbeforeremove === "function") {
+			var result = callHook.call(vnode.attrs.onbeforeremove, vnode)
+			if (result != null && typeof result.then === "function") {
+				// eslint-disable-next-line no-bitwise
+				mask |= 2
+				attrsResult = result
+			}
+		}
+		checkState(vnode, original)
+
+		// If we can, try to fast-path it and avoid all the overhead of awaiting
+		if (!mask) {
+			onremove(vnode)
+			removeChild(parent, vnode)
+		} else {
+			if (stateResult != null) {
+				var next = function () {
+					// eslint-disable-next-line no-bitwise
+					if (mask & 1) { mask &= 2; if (!mask) reallyRemove() }
+				}
+				stateResult.then(next, next)
+			}
+			if (attrsResult != null) {
+				var next = function () {
+					// eslint-disable-next-line no-bitwise
+					if (mask & 2) { mask &= 1; if (!mask) reallyRemove() }
+				}
+				attrsResult.then(next, next)
+			}
+		}
+
+		function reallyRemove() {
+			checkState(vnode, original)
+			onremove(vnode)
+			removeChild(parent, vnode)
+		}
+	}
+	function removeHTML(parent, vnode) {
+		for (var i = 0; i < vnode.instance.length; i++) {
+			parent.removeChild(vnode.instance[i])
+		}
+	}
+	function removeChild(parent, vnode) {
+		// Dodge the recursion overhead in a few of the most common cases.
+		while (vnode.dom != null && vnode.dom.parentNode === parent) {
+			if (typeof vnode.tag !== "string") {
+				vnode = vnode.instance
+				if (vnode != null) continue
+			} else if (vnode.tag === "<") {
+				removeHTML(parent, vnode)
+			} else {
+				if (vnode.tag !== "[") {
+					parent.removeChild(vnode.dom)
+					if (!Array.isArray(vnode.children)) break
+				}
+				if (vnode.children.length === 1) {
+					vnode = vnode.children[0]
+					if (vnode != null) continue
+				} else {
+					for (var i = 0; i < vnode.children.length; i++) {
+						var child = vnode.children[i]
+						if (child != null) removeChild(parent, child)
+					}
+				}
+			}
+			break
+		}
+	}
+	function onremove(vnode) {
+		if (typeof vnode.tag !== "string" && typeof vnode.state.onremove === "function") callHook.call(vnode.state.onremove, vnode)
+		if (vnode.attrs && typeof vnode.attrs.onremove === "function") callHook.call(vnode.attrs.onremove, vnode)
+		if (typeof vnode.tag !== "string") {
+			if (vnode.instance != null) onremove(vnode.instance)
+		} else {
+			var children = vnode.children
+			if (Array.isArray(children)) {
+				for (var i = 0; i < children.length; i++) {
+					var child = children[i]
+					if (child != null) onremove(child)
+				}
+			}
+		}
+	}
+
+	//attrs
+	function setAttrs(vnode, attrs, ns) {
+		for (var key in attrs) {
+			setAttr(vnode, key, null, attrs[key], ns)
+		}
+	}
+	function setAttr(vnode, key, old, value, ns) {
+		if (key === "key" || key === "is" || value == null || isLifecycleMethod(key) || (old === value && !isFormAttribute(vnode, key)) && typeof value !== "object") return
+		if (key[0] === "o" && key[1] === "n") return updateEvent(vnode, key, value)
+		if (key.slice(0, 6) === "xlink:") vnode.dom.setAttributeNS("http://www.w3.org/1999/xlink", key.slice(6), value)
+		else if (key === "style") updateStyle(vnode.dom, old, value)
+		else if (hasPropertyKey(vnode, key, ns)) {
+			if (key === "value") {
+				// Only do the coercion if we're actually going to check the value.
+				/* eslint-disable no-implicit-coercion */
+				//setting input[value] to same value by typing on focused element moves cursor to end in Chrome
+				if ((vnode.tag === "input" || vnode.tag === "textarea") && vnode.dom.value === "" + value && vnode.dom === activeElement()) return
+				//setting select[value] to same value while having select open blinks select dropdown in Chrome
+				if (vnode.tag === "select" && old !== null && vnode.dom.value === "" + value) return
+				//setting option[value] to same value while having select open blinks select dropdown in Chrome
+				if (vnode.tag === "option" && old !== null && vnode.dom.value === "" + value) return
+				/* eslint-enable no-implicit-coercion */
+			}
+			// If you assign an input type that is not supported by IE 11 with an assignment expression, an error will occur.
+			if (vnode.tag === "input" && key === "type") vnode.dom.setAttribute(key, value)
+			else vnode.dom[key] = value
+		} else {
+			if (typeof value === "boolean") {
+				if (value) vnode.dom.setAttribute(key, "")
+				else vnode.dom.removeAttribute(key)
+			}
+			else vnode.dom.setAttribute(key === "className" ? "class" : key, value)
+		}
+	}
+	function removeAttr(vnode, key, old, ns) {
+		if (key === "key" || key === "is" || old == null || isLifecycleMethod(key)) return
+		if (key[0] === "o" && key[1] === "n" && !isLifecycleMethod(key)) updateEvent(vnode, key, undefined)
+		else if (key === "style") updateStyle(vnode.dom, old, null)
+		else if (
+			hasPropertyKey(vnode, key, ns)
+			&& key !== "className"
+			&& !(key === "value" && (
+				vnode.tag === "option"
+				|| vnode.tag === "select" && vnode.dom.selectedIndex === -1 && vnode.dom === activeElement()
+			))
+			&& !(vnode.tag === "input" && key === "type")
+		) {
+			vnode.dom[key] = null
+		} else {
+			var nsLastIndex = key.indexOf(":")
+			if (nsLastIndex !== -1) key = key.slice(nsLastIndex + 1)
+			if (old !== false) vnode.dom.removeAttribute(key === "className" ? "class" : key)
+		}
+	}
+	function setLateSelectAttrs(vnode, attrs) {
+		if ("value" in attrs) {
+			if(attrs.value === null) {
+				if (vnode.dom.selectedIndex !== -1) vnode.dom.value = null
+			} else {
+				var normalized = "" + attrs.value // eslint-disable-line no-implicit-coercion
+				if (vnode.dom.value !== normalized || vnode.dom.selectedIndex === -1) {
+					vnode.dom.value = normalized
+				}
+			}
+		}
+		if ("selectedIndex" in attrs) setAttr(vnode, "selectedIndex", null, attrs.selectedIndex, undefined)
+	}
+	function updateAttrs(vnode, old, attrs, ns) {
+		if (attrs != null) {
+			for (var key in attrs) {
+				setAttr(vnode, key, old && old[key], attrs[key], ns)
+			}
+		}
+		var val
+		if (old != null) {
+			for (var key in old) {
+				if (((val = old[key]) != null) && (attrs == null || attrs[key] == null)) {
+					removeAttr(vnode, key, val, ns)
+				}
+			}
+		}
+	}
+	function isFormAttribute(vnode, attr) {
+		return attr === "value" || attr === "checked" || attr === "selectedIndex" || attr === "selected" && vnode.dom === activeElement() || vnode.tag === "option" && vnode.dom.parentNode === $doc.activeElement
+	}
+	function isLifecycleMethod(attr) {
+		return attr === "oninit" || attr === "oncreate" || attr === "onupdate" || attr === "onremove" || attr === "onbeforeremove" || attr === "onbeforeupdate"
+	}
+	function hasPropertyKey(vnode, key, ns) {
+		// Filter out namespaced keys
+		return ns === undefined && (
+			// If it's a custom element, just keep it.
+			vnode.tag.indexOf("-") > -1 || vnode.attrs != null && vnode.attrs.is ||
+			// If it's a normal element, let's try to avoid a few browser bugs.
+			key !== "href" && key !== "list" && key !== "form" && key !== "width" && key !== "height"// && key !== "type"
+			// Defer the property check until *after* we check everything.
+		) && key in vnode.dom
+	}
+
+	//style
+	var uppercaseRegex = /[A-Z]/g
+	function toLowerCase(capital) { return "-" + capital.toLowerCase() }
+	function normalizeKey(key) {
+		return key[0] === "-" && key[1] === "-" ? key :
+			key === "cssFloat" ? "float" :
+				key.replace(uppercaseRegex, toLowerCase)
+	}
+	function updateStyle(element, old, style) {
+		if (old === style) {
+			// Styles are equivalent, do nothing.
+		} else if (style == null) {
+			// New style is missing, just clear it.
+			element.style.cssText = ""
+		} else if (typeof style !== "object") {
+			// New style is a string, let engine deal with patching.
+			element.style.cssText = style
+		} else if (old == null || typeof old !== "object") {
+			// `old` is missing or a string, `style` is an object.
+			element.style.cssText = ""
+			// Add new style properties
+			for (var key in style) {
+				var value = style[key]
+				if (value != null) element.style.setProperty(normalizeKey(key), String(value))
+			}
+		} else {
+			// Both old & new are (different) objects.
+			// Update style properties that have changed
+			for (var key in style) {
+				var value = style[key]
+				if (value != null && (value = String(value)) !== String(old[key])) {
+					element.style.setProperty(normalizeKey(key), value)
+				}
+			}
+			// Remove style properties that no longer exist
+			for (var key in old) {
+				if (old[key] != null && style[key] == null) {
+					element.style.removeProperty(normalizeKey(key))
+				}
+			}
+		}
+	}
+
+	// Here's an explanation of how this works:
+	// 1. The event names are always (by design) prefixed by `on`.
+	// 2. The EventListener interface accepts either a function or an object
+	//    with a `handleEvent` method.
+	// 3. The object does not inherit from `Object.prototype`, to avoid
+	//    any potential interference with that (e.g. setters).
+	// 4. The event name is remapped to the handler before calling it.
+	// 5. In function-based event handlers, `ev.target === this`. We replicate
+	//    that below.
+	// 6. In function-based event handlers, `return false` prevents the default
+	//    action and stops event propagation. We replicate that below.
+	function EventDict() {
+		// Save this, so the current redraw is correctly tracked.
+		this._ = currentRedraw
+	}
+	EventDict.prototype = Object.create(null)
+	EventDict.prototype.handleEvent = function (ev) {
+		var handler = this["on" + ev.type]
+		var result
+		if (typeof handler === "function") result = handler.call(ev.currentTarget, ev)
+		else if (typeof handler.handleEvent === "function") handler.handleEvent(ev)
+		if (this._ && ev.redraw !== false) (0, this._)()
+		if (result === false) {
+			ev.preventDefault()
+			ev.stopPropagation()
+		}
+	}
+
+	//event
+	function updateEvent(vnode, key, value) {
+		if (vnode.events != null) {
+			if (vnode.events[key] === value) return
+			if (value != null && (typeof value === "function" || typeof value === "object")) {
+				if (vnode.events[key] == null) vnode.dom.addEventListener(key.slice(2), vnode.events, false)
+				vnode.events[key] = value
+			} else {
+				if (vnode.events[key] != null) vnode.dom.removeEventListener(key.slice(2), vnode.events, false)
+				vnode.events[key] = undefined
+			}
+		} else if (value != null && (typeof value === "function" || typeof value === "object")) {
+			vnode.events = new EventDict()
+			vnode.dom.addEventListener(key.slice(2), vnode.events, false)
+			vnode.events[key] = value
+		}
+	}
+
+	//lifecycle
+	function initLifecycle(source, vnode, hooks) {
+		if (typeof source.oninit === "function") callHook.call(source.oninit, vnode)
+		if (typeof source.oncreate === "function") hooks.push(callHook.bind(source.oncreate, vnode))
+	}
+	function updateLifecycle(source, vnode, hooks) {
+		if (typeof source.onupdate === "function") hooks.push(callHook.bind(source.onupdate, vnode))
+	}
+	function shouldNotUpdate(vnode, old) {
+		do {
+			if (vnode.attrs != null && typeof vnode.attrs.onbeforeupdate === "function") {
+				var force = callHook.call(vnode.attrs.onbeforeupdate, vnode, old)
+				if (force !== undefined && !force) break
+			}
+			if (typeof vnode.tag !== "string" && typeof vnode.state.onbeforeupdate === "function") {
+				var force = callHook.call(vnode.state.onbeforeupdate, vnode, old)
+				if (force !== undefined && !force) break
+			}
+			return false
+		} while (false); // eslint-disable-line no-constant-condition
+		vnode.dom = old.dom
+		vnode.domSize = old.domSize
+		vnode.instance = old.instance
+		// One would think having the actual latest attributes would be ideal,
+		// but it doesn't let us properly diff based on our current internal
+		// representation. We have to save not only the old DOM info, but also
+		// the attributes used to create it, as we diff *that*, not against the
+		// DOM directly (with a few exceptions in `setAttr`). And, of course, we
+		// need to save the children and text as they are conceptually not
+		// unlike special "attributes" internally.
+		vnode.attrs = old.attrs
+		vnode.children = old.children
+		vnode.text = old.text
+		return true
+	}
+
+	return function(dom, vnodes, redraw) {
+		if (!dom) throw new TypeError("Ensure the DOM element being passed to m.route/m.mount/m.render is not undefined.")
+		var hooks = []
+		var active = activeElement()
+		var namespace = dom.namespaceURI
+
+		// First time rendering into a node clears it out
+		if (dom.vnodes == null) dom.textContent = ""
+
+		vnodes = Vnode.normalizeChildren(Array.isArray(vnodes) ? vnodes : [vnodes])
+		var prevRedraw = currentRedraw
+		try {
+			currentRedraw = typeof redraw === "function" ? redraw : undefined
+			updateNodes(dom, dom.vnodes, vnodes, hooks, null, namespace === "http://www.w3.org/1999/xhtml" ? undefined : namespace)
+		} finally {
+			currentRedraw = prevRedraw
+		}
+		dom.vnodes = vnodes
+		// `document.activeElement` can return null: https://html.spec.whatwg.org/multipage/interaction.html#dom-document-activeelement
+		if (active != null && activeElement() !== active && typeof active.focus === "function") active.focus()
+		for (var i = 0; i < hooks.length; i++) hooks[i]()
+	}
+}
+
+},{"../render/vnode":44}],43:[function(require,module,exports){
+"use strict"
+
+var Vnode = require("../render/vnode")
+
+module.exports = function(html) {
+	if (html == null) html = ""
+	return Vnode("<", undefined, undefined, html, undefined, undefined)
+}
+
+},{"../render/vnode":44}],44:[function(require,module,exports){
+"use strict"
+
+function Vnode(tag, key, attrs, children, text, dom) {
+	return {tag: tag, key: key, attrs: attrs, children: children, text: text, dom: dom, domSize: undefined, state: undefined, events: undefined, instance: undefined}
+}
+Vnode.normalize = function(node) {
+	if (Array.isArray(node)) return Vnode("[", undefined, undefined, Vnode.normalizeChildren(node), undefined, undefined)
+	if (node == null || typeof node === "boolean") return null
+	if (typeof node === "object") return node
+	return Vnode("#", undefined, undefined, String(node), undefined, undefined)
+}
+Vnode.normalizeChildren = function(input) {
+	var children = []
+	if (input.length) {
+		var isKeyed = input[0] != null && input[0].key != null
+		// Note: this is a *very* perf-sensitive check.
+		// Fun fact: merging the loop like this is somehow faster than splitting
+		// it, noticeably so.
+		for (var i = 1; i < input.length; i++) {
+			if ((input[i] != null && input[i].key != null) !== isKeyed) {
+				throw new TypeError("Vnodes must either always have keys or never have keys!")
+			}
+		}
+		for (var i = 0; i < input.length; i++) {
+			children[i] = Vnode.normalize(input[i])
+		}
+	}
+	return children
+}
+
+module.exports = Vnode
+
+},{}],45:[function(require,module,exports){
+"use strict"
+
+var PromisePolyfill = require("./promise/promise")
+var mountRedraw = require("./mount-redraw")
+
+module.exports = require("./request/request")(window, PromisePolyfill, mountRedraw.redraw)
+
+},{"./mount-redraw":29,"./promise/promise":35,"./request/request":46}],46:[function(require,module,exports){
+"use strict"
+
+var buildPathname = require("../pathname/build")
+
+module.exports = function($window, Promise, oncompletion) {
+	var callbackCount = 0
+
+	function PromiseProxy(executor) {
+		return new Promise(executor)
+	}
+
+	// In case the global Promise is some userland library's where they rely on
+	// `foo instanceof this.constructor`, `this.constructor.resolve(value)`, or
+	// similar. Let's *not* break them.
+	PromiseProxy.prototype = Promise.prototype
+	PromiseProxy.__proto__ = Promise // eslint-disable-line no-proto
+
+	function makeRequest(factory) {
+		return function(url, args) {
+			if (typeof url !== "string") { args = url; url = url.url }
+			else if (args == null) args = {}
+			var promise = new Promise(function(resolve, reject) {
+				factory(buildPathname(url, args.params), args, function (data) {
+					if (typeof args.type === "function") {
+						if (Array.isArray(data)) {
+							for (var i = 0; i < data.length; i++) {
+								data[i] = new args.type(data[i])
+							}
+						}
+						else data = new args.type(data)
+					}
+					resolve(data)
+				}, reject)
+			})
+			if (args.background === true) return promise
+			var count = 0
+			function complete() {
+				if (--count === 0 && typeof oncompletion === "function") oncompletion()
+			}
+
+			return wrap(promise)
+
+			function wrap(promise) {
+				var then = promise.then
+				// Set the constructor, so engines know to not await or resolve
+				// this as a native promise. At the time of writing, this is
+				// only necessary for V8, but their behavior is the correct
+				// behavior per spec. See this spec issue for more details:
+				// https://github.com/tc39/ecma262/issues/1577. Also, see the
+				// corresponding comment in `request/tests/test-request.js` for
+				// a bit more background on the issue at hand.
+				promise.constructor = PromiseProxy
+				promise.then = function() {
+					count++
+					var next = then.apply(promise, arguments)
+					next.then(complete, function(e) {
+						complete()
+						if (count === 0) throw e
+					})
+					return wrap(next)
+				}
+				return promise
+			}
+		}
+	}
+
+	function hasHeader(args, name) {
+		for (var key in args.headers) {
+			if ({}.hasOwnProperty.call(args.headers, key) && name.test(key)) return true
+		}
+		return false
+	}
+
+	return {
+		request: makeRequest(function(url, args, resolve, reject) {
+			var method = args.method != null ? args.method.toUpperCase() : "GET"
+			var body = args.body
+			var assumeJSON = (args.serialize == null || args.serialize === JSON.serialize) && !(body instanceof $window.FormData)
+			var responseType = args.responseType || (typeof args.extract === "function" ? "" : "json")
+
+			var xhr = new $window.XMLHttpRequest(), aborted = false
+			var original = xhr, replacedAbort
+			var abort = xhr.abort
+
+			xhr.abort = function() {
+				aborted = true
+				abort.call(this)
+			}
+
+			xhr.open(method, url, args.async !== false, typeof args.user === "string" ? args.user : undefined, typeof args.password === "string" ? args.password : undefined)
+
+			if (assumeJSON && body != null && !hasHeader(args, /^content-type$/i)) {
+				xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8")
+			}
+			if (typeof args.deserialize !== "function" && !hasHeader(args, /^accept$/i)) {
+				xhr.setRequestHeader("Accept", "application/json, text/*")
+			}
+			if (args.withCredentials) xhr.withCredentials = args.withCredentials
+			if (args.timeout) xhr.timeout = args.timeout
+			xhr.responseType = responseType
+
+			for (var key in args.headers) {
+				if ({}.hasOwnProperty.call(args.headers, key)) {
+					xhr.setRequestHeader(key, args.headers[key])
+				}
+			}
+
+			xhr.onreadystatechange = function(ev) {
+				// Don't throw errors on xhr.abort().
+				if (aborted) return
+
+				if (ev.target.readyState === 4) {
+					try {
+						var success = (ev.target.status >= 200 && ev.target.status < 300) || ev.target.status === 304 || (/^file:\/\//i).test(url)
+						// When the response type isn't "" or "text",
+						// `xhr.responseText` is the wrong thing to use.
+						// Browsers do the right thing and throw here, and we
+						// should honor that and do the right thing by
+						// preferring `xhr.response` where possible/practical.
+						var response = ev.target.response, message
+
+						if (responseType === "json") {
+							// For IE and Edge, which don't implement
+							// `responseType: "json"`.
+							if (!ev.target.responseType && typeof args.extract !== "function") response = JSON.parse(ev.target.responseText)
+						} else if (!responseType || responseType === "text") {
+							// Only use this default if it's text. If a parsed
+							// document is needed on old IE and friends (all
+							// unsupported), the user should use a custom
+							// `config` instead. They're already using this at
+							// their own risk.
+							if (response == null) response = ev.target.responseText
+						}
+
+						if (typeof args.extract === "function") {
+							response = args.extract(ev.target, args)
+							success = true
+						} else if (typeof args.deserialize === "function") {
+							response = args.deserialize(response)
+						}
+						if (success) resolve(response)
+						else {
+							try { message = ev.target.responseText }
+							catch (e) { message = response }
+							var error = new Error(message)
+							error.code = ev.target.status
+							error.response = response
+							reject(error)
+						}
+					}
+					catch (e) {
+						reject(e)
+					}
+				}
+			}
+
+			if (typeof args.config === "function") {
+				xhr = args.config(xhr, args, url) || xhr
+
+				// Propagate the `abort` to any replacement XHR as well.
+				if (xhr !== original) {
+					replacedAbort = xhr.abort
+					xhr.abort = function() {
+						aborted = true
+						replacedAbort.call(this)
+					}
+				}
+			}
+
+			if (body == null) xhr.send()
+			else if (typeof args.serialize === "function") xhr.send(args.serialize(body))
+			else if (body instanceof $window.FormData) xhr.send(body)
+			else xhr.send(JSON.stringify(body))
+		}),
+		jsonp: makeRequest(function(url, args, resolve, reject) {
+			var callbackName = args.callbackName || "_mithril_" + Math.round(Math.random() * 1e16) + "_" + callbackCount++
+			var script = $window.document.createElement("script")
+			$window[callbackName] = function(data) {
+				delete $window[callbackName]
+				script.parentNode.removeChild(script)
+				resolve(data)
+			}
+			script.onerror = function() {
+				delete $window[callbackName]
+				script.parentNode.removeChild(script)
+				reject(new Error("JSONP request failed"))
+			}
+			script.src = url + (url.indexOf("?") < 0 ? "?" : "&") +
+				encodeURIComponent(args.callbackKey || "callback") + "=" +
+				encodeURIComponent(callbackName)
+			$window.document.documentElement.appendChild(script)
+		}),
+	}
+}
+
+},{"../pathname/build":31}],47:[function(require,module,exports){
+"use strict"
+
+var mountRedraw = require("./mount-redraw")
+
+module.exports = require("./api/router")(window, mountRedraw)
+
+},{"./api/router":26,"./mount-redraw":29}],48:[function(require,module,exports){
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+},{}],49:[function(require,module,exports){
+(function (setImmediate,clearImmediate){
+var nextTick = require('process/browser.js').nextTick;
+var apply = Function.prototype.apply;
+var slice = Array.prototype.slice;
+var immediateIds = {};
+var nextImmediateId = 0;
+
+// DOM APIs, for completeness
+
+exports.setTimeout = function() {
+  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
+};
+exports.setInterval = function() {
+  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
+};
+exports.clearTimeout =
+exports.clearInterval = function(timeout) { timeout.close(); };
+
+function Timeout(id, clearFn) {
+  this._id = id;
+  this._clearFn = clearFn;
+}
+Timeout.prototype.unref = Timeout.prototype.ref = function() {};
+Timeout.prototype.close = function() {
+  this._clearFn.call(window, this._id);
+};
+
+// Does not start the time, just sets up the members needed.
+exports.enroll = function(item, msecs) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = msecs;
+};
+
+exports.unenroll = function(item) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = -1;
+};
+
+exports._unrefActive = exports.active = function(item) {
+  clearTimeout(item._idleTimeoutId);
+
+  var msecs = item._idleTimeout;
+  if (msecs >= 0) {
+    item._idleTimeoutId = setTimeout(function onTimeout() {
+      if (item._onTimeout)
+        item._onTimeout();
+    }, msecs);
+  }
+};
+
+// That's not how node.js implements it but the exposed api is the same.
+exports.setImmediate = typeof setImmediate === "function" ? setImmediate : function(fn) {
+  var id = nextImmediateId++;
+  var args = arguments.length < 2 ? false : slice.call(arguments, 1);
+
+  immediateIds[id] = true;
+
+  nextTick(function onNextTick() {
+    if (immediateIds[id]) {
+      // fn.call() is faster so we optimize for the common use-case
+      // @see http://jsperf.com/call-apply-segu
+      if (args) {
+        fn.apply(null, args);
+      } else {
+        fn.call(null);
+      }
+      // Prevent ids from leaking
+      exports.clearImmediate(id);
+    }
+  });
+
+  return id;
+};
+
+exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
+  delete immediateIds[id];
+};
+}).call(this,require("timers").setImmediate,require("timers").clearImmediate)
+},{"process/browser.js":48,"timers":49}]},{},[13]);
  })();

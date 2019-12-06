@@ -1,7 +1,7 @@
 <?php
-require_once('wordfenceConstants.php');
-require_once('wordfenceClass.php');
-require_once('wordfenceURLHoover.php');
+require_once(dirname(__FILE__) . '/wordfenceConstants.php');
+require_once(dirname(__FILE__) . '/wordfenceClass.php');
+require_once(dirname(__FILE__) . '/wordfenceURLHoover.php');
 class wordfenceScanner {
 	/*
 	 * Mask to return all patterns in the exclusion list.
@@ -422,7 +422,7 @@ class wordfenceScanner {
 										));
 									}
 									$regexMatched = true;
-									$this->scanEngine->recordMetric('malwareSignature', $rule[0], array('file' => $file, 'match' => $matchString, 'before' => $beforeString, 'after' => $afterString, 'md5' => $record->newMD5, 'shac' => $record->SHAC), false);
+									$this->scanEngine->recordMetric('malwareSignature', $rule[0], array('file' => substr($file, 0, 255), 'match' => substr($matchString, 0, 65535), 'before' => $beforeString, 'after' => $afterString, 'md5' => $record->newMD5, 'shac' => $record->SHAC), false);
 									break;
 								}
 								

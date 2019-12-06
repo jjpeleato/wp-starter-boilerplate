@@ -76,7 +76,7 @@ class EWWWIO_Convert_Tests extends WP_UnitTestCase {
 		$_REQUEST['ewww_force'] = 1;
 		$filename = $original . ".jpg";
 		copy( $original, $filename );
-		$results = ewww_image_optimizer( $filename, 1 );
+		$results = ewww_image_optimizer( $filename, 1, false, false, true );
 		return $results;
 	}
 
@@ -92,7 +92,7 @@ class EWWWIO_Convert_Tests extends WP_UnitTestCase {
 		$_REQUEST['ewww_force'] = 1;
 		$filename = $original . ".png";
 		copy( $original, $filename );
-		$results = ewww_image_optimizer( $filename, 1 );
+		$results = ewww_image_optimizer( $filename, 1, false, false, true );
 		return $results;
 	}
 
@@ -108,7 +108,7 @@ class EWWWIO_Convert_Tests extends WP_UnitTestCase {
 		$_REQUEST['ewww_force'] = 1;
 		$filename = $original . ".gif";
 		copy( $original, $filename );
-		$results = ewww_image_optimizer( $filename, 1 );
+		$results = ewww_image_optimizer( $filename, 1, false, false, true );
 		return $results;
 	}
 
@@ -328,13 +328,13 @@ class EWWWIO_Convert_Tests extends WP_UnitTestCase {
 	 * Cleans up the temp images.
 	 */
 	public static function tearDownAfterClass() {
-		if ( is_file( self::$test_jpg ) ) {
+		if ( ewwwio_is_file( self::$test_jpg ) ) {
 			unlink( self::$test_jpg );
 		}
-		if ( is_file( self::$test_png ) ) {
+		if ( ewwwio_is_file( self::$test_png ) ) {
 			unlink( self::$test_png );
 		}
-		if ( is_file( self::$test_gif ) ) {
+		if ( ewwwio_is_file( self::$test_gif ) ) {
 			unlink( self::$test_gif );
 		}
 		ewww_image_optimizer_remove_binaries();

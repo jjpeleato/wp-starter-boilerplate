@@ -1,4 +1,5 @@
 <?php
+// phpcs:ignoreFile -- compatibility library for PHP 5-7.1
 
 if (PHP_VERSION_ID < 50300) {
     return;
