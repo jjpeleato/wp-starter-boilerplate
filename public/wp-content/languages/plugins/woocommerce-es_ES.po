@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2019-12-05 17:11:12+0000\n"
+"PO-Revision-Date: 2019-12-18 16:32:07+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -5426,11 +5426,6 @@ msgstr "WooCommerce PayFast Gateway"
 msgid "WooCommerce eWAY Gateway"
 msgstr "WooCommerce eWAY Gateway"
 
-#: includes/admin/class-wc-admin-api-keys.php:98
-#: includes/admin/settings/class-wc-settings-advanced.php:41
-msgid "REST API"
-msgstr "REST API"
-
 #: i18n/states.php:1160
 msgid "Yasothon"
 msgstr "Yasothon"
@@ -5880,6 +5875,11 @@ msgstr "Pedidos de la red WooCommerce"
 #: includes/admin/class-wc-admin-setup-wizard.php:518
 msgid "%1$s (%2$s %3$s)"
 msgstr "%1$s (%2$s %3$s)"
+
+#: includes/admin/class-wc-admin-api-keys.php:98
+#: includes/admin/settings/class-wc-settings-advanced.php:41
+msgid "REST API"
+msgstr "API REST"
 
 #: includes/admin/meta-boxes/class-wc-meta-box-order-data.php:283
 msgid "Profile &rarr;"
