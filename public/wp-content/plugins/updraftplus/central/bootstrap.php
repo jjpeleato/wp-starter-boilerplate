@@ -13,6 +13,9 @@ if (!class_exists('UpdraftPlus_UpdraftCentral_Listener')) require_once('listener
 
 class UpdraftPlus_UpdraftCentral_Main {
 
+	/**
+	 * Class constructor
+	 */
 	public function __construct() {
 
 		// Add the section to the 'advanced tools' page
@@ -31,7 +34,8 @@ class UpdraftPlus_UpdraftCentral_Main {
 			'analytics' => 'UpdraftCentral_Analytics_Commands',
 			'plugin' => 'UpdraftCentral_Plugin_Commands',
 			'theme' => 'UpdraftCentral_Theme_Commands',
-			'posts' => 'UpdraftCentral_Posts_Commands'
+			'posts' => 'UpdraftCentral_Posts_Commands',
+			'media' => 'UpdraftCentral_Media_Commands'
 		));
 	
 		// If nothing was sent, then there is no incoming message, so no need to set up a listener (or CORS request, etc.). This avoids a DB SELECT query on the option below in the case where it didn't get autoloaded, which is the case when there are no keys.
@@ -46,6 +50,9 @@ class UpdraftPlus_UpdraftCentral_Main {
 
 	}
 	
+	/**
+	 * Receive a new public key in $_GET, and echo a response. Will die() if called.
+	 */
 	public function wp_ajax_updraftcentral_receivepublickey() {
 	
 		// The actual nonce check is done in the method below
@@ -57,12 +64,12 @@ class UpdraftPlus_UpdraftCentral_Main {
 		echo '<html><head><title>UpdraftCentral</title></head><body><h1>'.__('UpdraftCentral Connection', 'updraftplus').'</h1><h2>'.htmlspecialchars(network_site_url()).'</h2><p>';
 		
 		if ('ok' == $result['responsetype']) {
-			echo __('An UpdraftCentral connection has been made successfully.', 'updraftplus');
+			_e('An UpdraftCentral connection has been made successfully.', 'updraftplus');
 		} else {
 			echo '<strong>'.__('A new UpdraftCentral connection has not been made.', 'updraftplus').'</strong><br>';
 			switch ($result['code']) {
 				case 'unknown_key':
-					echo __('The key referred to was unknown.', 'updraftplus');
+					_e('The key referred to was unknown.', 'updraftplus');
 					break;
 				case 'not_logged_in':
 					echo __('You are not logged into this WordPress site in your web browser.', 'updraftplus').' '.__('You must visit this URL in the same browser and login session as you created the key in.', 'updraftplus');
@@ -72,7 +79,7 @@ class UpdraftPlus_UpdraftCentral_Main {
 					_e('You must visit this link in the same browser and login session as you created the key in.', 'updraftplus');
 					break;
 				case 'already_have':
-					echo __('This connection appears to already have been made.', 'updraftplus');
+					_e('This connection appears to already have been made.', 'updraftplus');
 					break;
 				default:
 					echo htmlspecialchars(print_r($result, true));
@@ -262,6 +269,13 @@ class UpdraftPlus_UpdraftCentral_Main {
 		return $created;
 	}
 
+	/**
+	 * Given an index, return the indicator name
+	 *
+	 * @param String $index
+	 *
+	 * @return String
+	 */
 	private function indicator_name_from_index($index) {
 		return $index.'.central.updraftplus.com';
 	}
@@ -401,8 +415,6 @@ class UpdraftPlus_UpdraftCentral_Main {
 			return array(
 				'bundle' => $local_bundle,
 				'r' => __('Key created successfully.', 'updraftplus').' '.__('You must copy and paste this key now - it cannot be shown again.', 'updraftplus'),
-// 'selector' => $this->get_remotesites_selector(array()),
-// 'ourkeys' => $this->list_our_keys($our_keys),
 			);
 		}
 
@@ -410,6 +422,11 @@ class UpdraftPlus_UpdraftCentral_Main {
 
 	}
 	
+	/**
+	 * Get the HTML for the keys table
+	 *
+	 * @return String
+	 */
 	public function get_keys_table() {
 	
 		$ret = '';
@@ -577,7 +594,12 @@ class UpdraftPlus_UpdraftCentral_Main {
 		return ob_get_clean();
 	}
 
-	private function create_log_markup() {
+	/**
+	 * Get log event viewer mark-up
+	 *
+	 * @return String - the HTML
+	 */
+	private function get_log_markup() {
 		ob_start();
 		?>
 			<div id="updraftcentral_view_log_container" style="margin: 10px 0;">
@@ -589,6 +611,9 @@ class UpdraftPlus_UpdraftCentral_Main {
 		return ob_get_clean();
 	}
 	
+	/**
+	 * Echo the debug-tools dashboard HTML. Called by the WP action updraftplus_debugtools_dashboard.
+	 */
 	public function debugtools_dashboard() {
 	?>
 		<div class="advanced_tools updraft_central">
@@ -600,7 +625,7 @@ class UpdraftPlus_UpdraftCentral_Main {
 				<?php echo $this->create_key_markup(); ?>
 				<?php echo $this->get_keys_table(); ?>
 				<button style="display: none;" type="button" class="button button-primary" id="updraftcentral_wizard_go"><?php _e('Create another key', 'updraftplus'); ?></button>
-				<?php echo $this->create_log_markup(); ?>
+				<?php echo $this->get_log_markup(); ?>
 			</div>
 		</div>
 	<?php

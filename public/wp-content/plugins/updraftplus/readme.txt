@@ -3,7 +3,7 @@ Contributors: Backup with UpdraftPlus, DavidAnderson, DNutbourne, aporter, snigh
 Tags: backup, restore, database backup, wordpress backup, cloud backup, s3, dropbox, google drive, onedrive, ftp, backups
 Requires at least: 3.2
 Tested up to: 5.3
-Stable tag: 1.16.20
+Stable tag: 1.16.21
 Author URI: https://updraftplus.com
 Donate link: https://david.dw-perspective.org.uk/donate
 License: GPLv3 or later
@@ -168,6 +168,23 @@ The <a href="https://updraftplus.com/news/">UpdraftPlus backup blog</a> is the b
 
 N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which is 1 higher in the first digit, and has an extra component on the end, but the changelog below still applies. i.e. changes listed for 1.16.17.x of the free version correspond to changes made in 2.16.17.x of the paid version.
 
+= 1.16.21 - 10/Dec/2019 =
+
+* FIX: Correctly search and replace database views when importing on a site with a different table prefix
+* FIX: A bug that prevented the restore modal opening on the migrate/clone tab
+* FIX: Dropbox cURL issues on connection are resolved for PHP 7.4
+* TWEAK: Change the way the "Disabled Cron" warning appears on the administrative settings page
+* TWEAK: Improvements to error messages return for UpdraftCentral's plugin and theme installation process
+* TWEAK: Updates to credentials validation for UpdraftCentral's plugin and theme modules
+* TWEAK: Add media request handler for UpdraftCentral media module
+* TWEAK: On paid versions, again possibly adjust the daily update check time to further favour overnight hours
+* TWEAK: Mask classified information in WebDav URL settings
+* TWEAK: Add multiple range selection on certain backup using ctrl and shift buttons
+* TWEAK: Hide incremental backup link if the backup directory is not writable
+* TWEAK: Make Updraft_Restorer_Skin compatible with WP 5.3
+* TWEAK: Added Linode object storage link to list of supported S3 providers and updated existing links
+* TWEAK: Ensure some variables are defined to prevent unwanted warnings
+
 = 1.16.20 - 04/Nov/2019 =
 
 * FEATURE: Add support for PHP 7.4 in UpdraftClone
@@ -184,6 +201,7 @@ N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which i
 * TWEAK: Get UpdraftClone supported WordPress versions during authentication
 * TWEAK: Added the ability to use backups stored in remote storage for UpdraftClone
 * TWEAK: Small PHP 7.4 deprecation tweaks in the Google and legacy AWS SDKs
+* FIX: Prevent trying to download files that have no remote storage and don't exist locally
 
 = 1.16.19 - 04/Oct/2019 =
 
@@ -959,4 +977,4 @@ Furthermore, reliance upon any non-English translation is at your own risk. Updr
 We recognise and thank the following for code and/or libraries used and/or modified under the terms of their open source licences; see: https://updraftplus.com/acknowledgements/
 
 == Upgrade Notice ==
-* 1.16.20: Added support for latest WP + PHP versions in UpdraftClone; support for OneDrive Germany in OneDrive module; ability in versions that can backup non-WP files to also restore them; various tweaks and small improvements - a recommended update for all.
+* 1.16.21: Correctly search and replace database views when importing on a site with a different table prefix. Fix a bug that prevented the restore modal opening on the migrate/clone tab. Various other small tweaks and improvements. A recommended update for all.

@@ -493,6 +493,10 @@ if ( ! function_exists( 'yit_get_filter_args' ) ) {
             $filter_value['product_tag'] = urlencode( $_GET['product_tag'] );
         }
 
+        elseif( is_product_tag() && $queried_object ){
+	        $filter_value['product_tag'] = $queried_object->slug;
+        }
+
         if (isset($_GET['product_cat'])) {
             $filter_value['product_cat'] = urlencode( $_GET['product_cat'] );
         }

@@ -353,7 +353,6 @@ class UpdraftPlus_Backup {
 			}
 			if (class_exists($objname)) {
 				$remote_obj = new $objname;
-				$pass_to_prune = null;
 				$prune_services[$service]['all'] = array($remote_obj, null);
 			} else {
 				$updraftplus->log("Could not prune from service $service: remote method not found");
@@ -623,8 +622,6 @@ class UpdraftPlus_Backup {
 
 		// Returns an array, most recent first, of backup sets
 		$backup_history = UpdraftPlus_Backup_History::get_history();
-		$db_backups_found = 0;
-		$file_backups_found = 0;
 		
 		$ignored_because_imported = array();
 		
@@ -654,8 +651,6 @@ class UpdraftPlus_Backup {
 		}
 		$updraftplus->log("Number of backup sets in history: ".count($backup_history)."; groups (db): ".count($backup_db_groups));
 
-		$started_main_prune_loop_at = time();
-		
 		foreach ($backup_db_groups as $group_id => $group) {
 			
 			// N.B. The array returned by UpdraftPlus_Backup_History::get_history() is already sorted, with most-recent first
@@ -1270,16 +1265,13 @@ class UpdraftPlus_Backup {
 				// Add the final part of the array
 				if ($index > 0) {
 					$zip_file = (isset($this->backup_files_array[$youwhat]) && isset($this->backup_files_array[$youwhat][$index])) ? $this->backup_files_array[$youwhat][$index] : $backup_file_basename.'-'.$youwhat.($index+1).'.zip';
-
-					// $fbase = $backup_file_basename.'-'.$youwhat.($index+1).'.zip';
 					$z = $this->updraft_dir.'/'.$zip_file;
 					$fs_key = $youwhat.$index.'-size';
+					$backup_array[$youwhat][$index] = $zip_file;
 					if (file_exists($z)) {
-						$backup_array[$youwhat][$index] = $fbase;
 						$backup_array[$fs_key] = filesize($z);
 					} elseif (isset($this->backup_files_array[$fs_key])) {
-						$backup_array[$youwhat][$index] = $fbase;
-						$backup_array[$fs_key] = $this->backup_files_array[$fskey];
+						$backup_array[$fs_key] = $this->backup_files_array[$fs_key];
 					}
 				} else {
 					$zip_file = (isset($this->backup_files_array[$youwhat]) && isset($this->backup_files_array[$youwhat][0])) ? $this->backup_files_array[$youwhat][0] : $backup_file_basename.'-'.$youwhat.'.zip';
@@ -3009,7 +3001,7 @@ class UpdraftPlus_Backup {
 				$zipfiles_added_thisbatch++;
 
 				if (method_exists($zip, 'setCompressionName') && $this->file_should_be_stored_without_compression($add_as)) {
-					if (false == ($set_compress = $zip->setCompressionName($add_as, ZipArchive::CM_STORE))) {
+					if (false == ($set_compress = $zip->setCompressionName($add_as, ZipArchive::CM_STORE))) {// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 						$updraftplus->log("Zip: setCompressionName failed on: $add_as");
 					}
 				}
@@ -3141,7 +3133,7 @@ class UpdraftPlus_Backup {
 							if ($updraftplus->current_resumption >= 1) {
 								$time_passed = $updraftplus->jobdata_get('run_times');
 								if (!is_array($time_passed)) $time_passed = array();
-								list($max_time, $timings_string, $run_times_known) = UpdraftPlus_Manipulation_Functions::max_time_passed($time_passed, $updraftplus->current_resumption-1, $this->first_run);
+								list($max_time, $timings_string, $run_times_known) = UpdraftPlus_Manipulation_Functions::max_time_passed($time_passed, $updraftplus->current_resumption-1, $this->first_run);// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 							} else {
 								// $run_times_known = 0;
 								// $max_time = -1;
