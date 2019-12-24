@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Themes - Twenty Twenty package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2019-11-12 22:56:20+0000\n"
+"PO-Revision-Date: 2019-12-13 10:36:35+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,6 +19,10 @@ msgstr "Nuestro tema por defecto para 2020 está diseñado para aprovechar al m�
 msgid "Twenty Twenty"
 msgstr "Twenty Twenty"
 
+#: classes/class-twentytwenty-customize.php:246
+msgid "Show author bio"
+msgstr "Mostrar la biografía del autor"
+
 #: template-parts/entry-author-bio.php:29
 msgid "View Archive <span aria-hidden=\"true\">&rarr;</span>"
 msgstr "Ver el archivo <span aria-hidden=\"true\">&rarr;</span>"
@@ -28,7 +32,7 @@ msgctxt "Theme starter content"
 msgid "The New UMoMA Opens its Doors"
 msgstr "El nuevo UMoMA abre sus puertas"
 
-#: inc/template-tags.php:387
+#: inc/template-tags.php:393
 msgctxt "A string that is output before one or more categories"
 msgid "In"
 msgstr "En"
@@ -74,27 +78,27 @@ msgstr "1 de Agosto -- 1 de Diciembre"
 msgid "The New UMoMA Opens its Doors"
 msgstr "El nuevo UMoMA abre sus puertas"
 
-#: classes/class-twentytwenty-customize.php:374
+#: classes/class-twentytwenty-customize.php:395
 msgid "Overlay Opacity"
 msgstr "Opacidad de la superposición"
 
-#: classes/class-twentytwenty-customize.php:354
+#: classes/class-twentytwenty-customize.php:375
 msgid "The color used for the text in the overlay."
 msgstr "El color usado por el texto en la superposición."
 
-#: classes/class-twentytwenty-customize.php:353
+#: classes/class-twentytwenty-customize.php:374
 msgid "Overlay Text Color"
 msgstr "Color del texto en la superposición"
 
-#: classes/class-twentytwenty-customize.php:332
+#: classes/class-twentytwenty-customize.php:353
 msgid "The color used for the overlay. Defaults to the accent color."
 msgstr "El color usado para la superposición. Por defecto es el color de énfasis."
 
-#: classes/class-twentytwenty-customize.php:331
+#: classes/class-twentytwenty-customize.php:352
 msgid "Overlay Background Color"
 msgstr "Color de fondo de la superposición"
 
-#: classes/class-twentytwenty-customize.php:262
+#: classes/class-twentytwenty-customize.php:283
 msgid "Settings for the \"Cover Template\" page template. Add a featured image to use as background."
 msgstr "Ajustes para la plantilla de portada. Añade una imagen destacada para usarla como fondo."
 
@@ -134,7 +138,7 @@ msgstr "Desde Signac a Matisse"
 msgid "The premier destination for modern art in Northern Sweden. Open from 10 AM to 6 PM every day during the summer months."
 msgstr "El principal destino para el arte moderno en el norte de Suecia. Abierto de 10:00 a 18:00 h. todos los días durante los meses de verano."
 
-#: searchform.php:24 template-parts/modal-search.php:20
+#: template-parts/modal-search.php:20 searchform.php:24
 msgid "Search for:"
 msgstr "Buscar:"
 
@@ -190,7 +194,7 @@ msgstr "Deja un comentario"
 msgid "Comments"
 msgstr "Comentarios"
 
-#: inc/starter-content.php:176 inc/starter-content.php:186 functions.php:491
+#: functions.php:491 inc/starter-content.php:176 inc/starter-content.php:186
 msgid "Primary"
 msgstr "Principal"
 
@@ -256,7 +260,7 @@ msgid "Social links"
 msgstr "Enlaces sociales"
 
 #. translators: %s: Author name
-#: template-parts/entry-author-bio.php:20 inc/template-tags.php:348
+#: template-parts/entry-author-bio.php:20 inc/template-tags.php:354
 msgid "By %s"
 msgstr "Por %s"
 
@@ -274,20 +278,20 @@ msgstr "Buscar &hellip;"
 msgid "Search:"
 msgstr "Buscar:"
 
-#: inc/template-tags.php:439
+#: inc/template-tags.php:445
 msgid "Sticky post"
 msgstr "Entrada fija"
 
-#: inc/template-tags.php:401
+#: inc/template-tags.php:407
 msgid "Tags"
 msgstr "Etiquetas"
 
-#: template-parts/entry-header.php:36 template-parts/content-cover.php:70
-#: inc/template-tags.php:383
+#: template-parts/content-cover.php:70 template-parts/entry-header.php:36
+#: inc/template-tags.php:389
 msgid "Categories"
 msgstr "Categorías"
 
-#: inc/template-tags.php:341
+#: inc/template-tags.php:347
 msgid "Post author"
 msgstr "Autor de la entrada"
 
@@ -411,24 +415,24 @@ msgstr "Escala el logotipo a la mitad del tamaño en el que ha sido subido, haci
 msgid "Theme Options"
 msgstr "Opciones del tema"
 
-#: classes/class-twentytwenty-customize.php:284
+#: classes/class-twentytwenty-customize.php:305
 msgid "Fixed Background Image"
 msgstr "Imagen de fondo fija"
 
 #. Template Name of the theme
-#: classes/class-twentytwenty-customize.php:260
+#: classes/class-twentytwenty-customize.php:281
 msgid "Cover Template"
 msgstr "Plantilla de portada"
 
-#: classes/class-twentytwenty-customize.php:249
+#: classes/class-twentytwenty-customize.php:270
 msgid "Summary"
 msgstr "Resumen"
 
-#: classes/class-twentytwenty-customize.php:248
+#: classes/class-twentytwenty-customize.php:269
 msgid "Full text"
 msgstr "Texto completo"
 
-#: classes/class-twentytwenty-customize.php:246
+#: classes/class-twentytwenty-customize.php:267
 msgid "On archive pages, posts show:"
 msgstr "En las páginas de archivo, las entradas muestran:"
 
@@ -444,7 +448,7 @@ msgstr "No hemos encontrado resultados para tu búsqueda. Puedes volver a intent
 msgid "By Post Author"
 msgstr "Por el autor de la entrada"
 
-#: classes/class-twentytwenty-customize.php:375
+#: classes/class-twentytwenty-customize.php:396
 msgid "Make sure that the contrast is high enough so that the text is readable."
 msgstr "Asegúrate de que el contraste sea suficientemente alto para que el texto sea legible."
 
@@ -473,11 +477,11 @@ msgstr "Menú ampliado del escritorio"
 msgid "Desktop Horizontal Menu"
 msgstr "Menú horizontal del escritorio"
 
-#: classes/class-twentytwenty-walker-page.php:134 inc/template-tags.php:545
+#: classes/class-twentytwenty-walker-page.php:134 inc/template-tags.php:555
 msgid "Show sub menu"
 msgstr "Mostrar el submenú"
 
-#: classes/class-twentytwenty-customize.php:285
+#: classes/class-twentytwenty-customize.php:306
 msgid "Creates a parallax effect when the visitor scrolls."
 msgstr "Crea un efecto Parallax cuando el visitante hace scroll."
 
@@ -507,7 +511,7 @@ msgctxt "comments title"
 msgid "One reply on &ldquo;%s&rdquo;"
 msgstr "Una respuesta a «%s»"
 
-#: inc/template-tags.php:365
+#: inc/template-tags.php:371
 msgid "Post date"
 msgstr "Fecha de la entrada"
 
