@@ -104,9 +104,6 @@ $generated_i18n_strings = array(
 	// Reference: node_modules/yoast-components/composites/Plugin/CornerstoneContent/components/CornerstoneToggle.js:26
 	__( 'Mark as cornerstone content', 'wordpress-seo' ),
 
-	// Reference: node_modules/yoast-components/composites/Plugin/HelpCenter/HelpCenter.js:78
-	__( 'Need help?', 'wordpress-seo' ),
-
 	// Reference: node_modules/yoast-components/composites/Plugin/Shared/components/KeywordInput.js:146
 	__( 'Are you trying to use multiple keyphrases? You should add them separately below.', 'wordpress-seo' ),
 

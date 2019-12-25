@@ -848,10 +848,11 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 					echo '<p>';
 					_e('Examples of S3-compatible storage providers:');
 					echo ' <a href="https://updraftplus.com/use-updraftplus-digital-ocean-spaces/" target="_blank">DigitalOcean Spaces</a>, ';
+					echo '<a href="https://www.linode.com/products/object-storage/" target="_blank">Linode Object Storage</a>, ';
 					echo '<a href="https://www.cloudian.com" target="_blank">Cloudian</a>, ';
 					echo '<a href="https://www.mh.connectria.com/rp/order/cloud_storage_index" target="_blank">Connectria</a>, ';
 					echo '<a href="https://www.constant.com/cloud/storage/" target="_blank">Constant</a>, ';
-					echo '<a href="http://www.eucalyptus.com/eucalyptus-cloud/iaas" target="_blank">Eucalyptus</a>, ';
+					echo '<a href="https://www.eucalyptus.cloud/" target="_blank">Eucalyptus</a>, ';
 					echo '<a href="http://cloud.nifty.com/storage/" target="_blank">Nifty</a>, ';
 					echo '<a href="http://www.ntt.com/business/services/cloud/iaas/cloudn.html" target="_blank">Cloudn</a>';
 					echo ''.__('... and many more!', 'updraftplus').'<br>';

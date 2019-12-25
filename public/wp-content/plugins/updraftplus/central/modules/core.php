@@ -136,28 +136,15 @@ class UpdraftCentral_Core_Commands extends UpdraftCentral_Commands {
 
 			// Check if credentials are valid and have sufficient
 			// privileges to create and delete (e.g. write)
+			ob_start();
 			$credentials = request_filesystem_credentials($url, '', false, $directory);
-			if (WP_Filesystem($credentials, $directory)) {
-				
-				global $wp_filesystem;
-				$path = $entity_directories[$entity].'/.updraftcentral';
-				
-				if (!$wp_filesystem->put_contents($path, '', 0644)) {
-					// Add useful error details to help with any future debugging. Usually, if the user
-					// gets to this area then that would mean that the user does not have "write" permission
-					// to the target folder (plugins, themes, etc.). Probably, some added restrictions were
-					// implemented by his or her hosting.
-					$errors = array();
-					if (isset($wp_filesystem->errors) && is_wp_error($wp_filesystem->errors)) {
-						$errors = $wp_filesystem->errors->errors;
-					}
+			ob_end_clean();
 
-					$result = array('error' => true, 'message' => 'failed_credentials', 'values' => array('errors' => $errors));
-				} else {
-					$wp_filesystem->delete($path);
-					$result = array('error' => false, 'message' => 'credentials_ok', 'values' => array());
-				}
-				
+			// The "WP_Filesystem" will suffice in validating the inputted credentials
+			// from UpdraftCentral, as it is already attempting to connect to the filesystem
+			// using the chosen transport (e.g. ssh, ftp, etc.)
+			if (WP_Filesystem($credentials, $directory)) {
+				$result = array('error' => false, 'message' => 'credentials_ok', 'values' => array());
 			} else {
 				// We're adding some useful error information to help troubleshooting any problems
 				// that may arise in the future. If the user submitted a wrong password or username

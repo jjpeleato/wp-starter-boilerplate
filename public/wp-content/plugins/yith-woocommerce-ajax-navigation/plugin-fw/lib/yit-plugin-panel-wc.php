@@ -549,6 +549,12 @@ if ( !class_exists( 'YIT_Plugin_Panel_WooCommerce' ) ) {
 
                     if ( $value && isset( $option[ 'elements' ] ) && !empty( $option[ 'elements' ] ) ) {
 
+                    	$value = maybe_unserialize( $value );
+
+                    	if( isset( $value['box_id'] ) ){
+                    		unset( $value['box_id'] );
+	                    }
+
                         foreach ( $value as $index => $single_toggle ) {
 
                             if ( $value && isset( $option[ 'onoff_field' ] ) && !empty( $option[ 'onoff_field' ] ) ) {
@@ -561,7 +567,8 @@ if ( !class_exists( 'YIT_Plugin_Panel_WooCommerce' ) ) {
                             }
 
                             foreach ( $option[ 'elements' ] as $element ) {
-                                $value[ $index ][ $element[ 'id' ] ] = self::sanitize_option( $value[ $index ][ $element[ 'id' ] ], $element, $value[ $index ][ $element[ 'id' ] ] );
+                            	$element_value = isset( $value[ $index ][ $element[ 'id' ] ] ) ? $value[ $index ][ $element[ 'id' ] ] : false;
+                                $value[ $index ][ $element[ 'id' ] ] = self::sanitize_option( $element_value, $element, $element_value );
                             }
                         }
                     }
