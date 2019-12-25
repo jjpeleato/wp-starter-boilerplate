@@ -496,7 +496,7 @@ if ( !class_exists( 'YIT_Plugin_Panel' ) ) {
                 $url = admin_url( "admin.php{$url}" );
             }
 
-            return $url;
+            return apply_filters( 'yith_plugin_fw_panel_url', $url, $page, $tab, $sub_tab, $parent_page );
         }
 
         /**

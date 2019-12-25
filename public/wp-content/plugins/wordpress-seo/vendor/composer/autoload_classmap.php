@@ -683,6 +683,4 @@ return array(
     'Yoast_Update_Manager' => $vendorDir . '/yoast/license-manager/class-update-manager.php',
     'Yoast_View_Utils' => $baseDir . '/admin/views/class-view-utils.php',
     'iYoast_License_Manager' => $vendorDir . '/yoast/license-manager/class-license-manager.php',
-    'xrstf\\Composer52\\AutoloadGenerator' => $vendorDir . '/xrstf/composer-php52/lib/xrstf/Composer52/AutoloadGenerator.php',
-    'xrstf\\Composer52\\Generator' => $vendorDir . '/xrstf/composer-php52/lib/xrstf/Composer52/Generator.php',
 );

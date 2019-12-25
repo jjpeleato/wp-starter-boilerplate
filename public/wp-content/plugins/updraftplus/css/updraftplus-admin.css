@@ -3432,6 +3432,10 @@ span#updraftplus_ajax_restore_last_activity {
 		margin-left: 250px;
 	}
 
+	#updraft-navtab-backups-content .updraft_existing_backups .updraft_existing_backups_row.range-selection:not(.backuprowselected) .updraft_existingbackup_date .backup_date_label {
+		color: #FFF;
+	}
+
 }
 
 @media only screen and (min-width: 782px) and (max-width: 960px) {
@@ -3746,6 +3750,10 @@ span#updraftplus_ajax_restore_last_activity {
 
 	.addon-activation-notice {
 		left: 20em;
+	}
+
+	.existing-backups-table tbody tr.range-selection:hover, .existing-backups-table tbody tr.range-selection {
+		background: #0572AA; /* #2b7fd9 */
 	}
 
 	.existing-backups-table tbody tr:hover {

@@ -138,8 +138,10 @@ function updraft_remote_storage_tab_activation(the_method){
  */
 function updraft_check_overduecrons() {
 	updraft_send_command('check_overdue_crons', null, function(response) {
-		if (response && response.hasOwnProperty('m')) {
-			jQuery('#updraft-insert-admin-warning').html(response.m);
+		if (response && response.hasOwnProperty('m') && Array.isArray(response.m)) {
+			for (var i in response.m) {
+				jQuery('#updraft-insert-admin-warning').append(response.m[i]);
+			}
 		}
 	}, { alert_on_error: false });
 }
@@ -273,7 +275,7 @@ function updraft_remote_storage_test(method, result_callback, instance_id) {
 		var value = null;
 		if ('checkbox' == input_type) {
 			value = jQuery(item).is(':checked') ? 1 : 0;
-		} else if ('text' == input_type || 'password' == input_type) {
+		} else if ('text' == input_type || 'password' == input_type || 'hidden' == input_type) {
 			value = jQuery(item).val();
 		} else {
 			console.log("UpdraftPlus: settings test input item with unrecognised type ("+input_type+") found");
@@ -657,6 +659,55 @@ var updraft_backups_selection = {};
 		} else {
 			$('#ud_massactions').show();
 		}
+	}
+
+	/**
+	 * Multiple range selection
+	 *
+	 * @param {HTMLDomElement|jQuery} el - row element
+	 */
+	updraft_backups_selection.selectAllInBetween = function(el) {
+		var idx_start = this.firstMultipleSelectionIndex, idx_end = el.rowIndex-1;
+		if (this.firstMultipleSelectionIndex > el.rowIndex-1) {
+			idx_start = el.rowIndex-1; idx_end = this.firstMultipleSelectionIndex;
+		}
+		for (i=idx_start; i<=idx_end; i++) {
+			this.select($('#updraft-navtab-backups-content .updraft_existing_backups .updraft_existing_backups_row').eq(i));
+		}
+	}
+
+	/**
+	 * Multiple range selection event handler that gets executed when hovering the mouse over the row of existing backups. This function highlights the rows with color
+	 */
+	updraft_backups_selection.hightlight_backup_rows = function() {
+		if ("undefined" === typeof updraft_backups_selection.firstMultipleSelectionIndex) return;
+		if (!$(this).hasClass('range-selection') && !$(this).hasClass('backuprowselected')) $(this).addClass('range-selection');
+		$(this).siblings().removeClass('range-selection');
+		if (updraft_backups_selection.firstMultipleSelectionIndex+1 > this.rowIndex) {
+			$(this).nextUntil('.updraft_existing_backups_row.range-selection-start').addClass('range-selection');
+		} else if (updraft_backups_selection.firstMultipleSelectionIndex+1 < this.rowIndex) {
+			$(this).prevUntil('.updraft_existing_backups_row.range-selection-start').addClass('range-selection');
+		}
+	}
+
+	/**
+	 * Multiple range selection event handler that gets executed when the user releases the ctrl+shift button, it also gets executed when the mouse pointer is moved out from the browser page
+	 * This function clears all the highlighted rows and removes hover and mouseleave event handlers
+	 */
+	updraft_backups_selection.unregister_highlight_mode = function() {
+		if ("undefined" === typeof updraft_backups_selection.firstMultipleSelectionIndex) return;
+		delete updraft_backups_selection.firstMultipleSelectionIndex;
+		$('#updraft-navtab-backups-content .updraft_existing_backups .updraft_existing_backups_row').removeClass('range-selection range-selection-start');
+		$('#updraft-navtab-backups-content').off('hover', '.updraft_existing_backups .updraft_existing_backups_row', this.hightlight_backup_rows);
+		$(document).off('mouseleave', this.unregister_highlight_mode);
+	}
+
+	/**
+	 * Register mouseleave and hover event handlers for highlighting purposes
+	 */
+	updraft_backups_selection.register_highlight_mode = function() {
+		$(document).on('mouseleave', updraft_backups_selection.unregister_highlight_mode);
+		$('#updraft-navtab-backups-content').on('hover', '.updraft_existing_backups .updraft_existing_backups_row', updraft_backups_selection.hightlight_backup_rows);
 	}
 })(jQuery);
 // @codingStandardsIgnoreEnd
@@ -1884,8 +1935,9 @@ jQuery(document).ready(function($) {
 			}
 			
 			updraft_webdav_url = updraft_webdav_settings[instance_id]['webdav'] + updraft_webdav_settings[instance_id]['user'] + colon + updraft_webdav_settings[instance_id]['pass'] + host +encodeURIComponent(updraft_webdav_settings[instance_id]['host']) + colon_port + updraft_webdav_settings[instance_id]['port'] + slash + updraft_webdav_settings[instance_id]['path'];
-			
+			masked_webdav_url = updraft_webdav_settings[instance_id]['webdav'] + updraft_webdav_settings[instance_id]['user'] + colon + updraft_webdav_settings[instance_id]['pass'].replace(/./gi,'*') + host +encodeURIComponent(updraft_webdav_settings[instance_id]['host']) + colon_port + updraft_webdav_settings[instance_id]['port'] + slash + updraft_webdav_settings[instance_id]['path'];
 			$('#updraft_webdav_url_' + instance_id).val(updraft_webdav_url);
+			$('#updraft_webdav_masked_url_' + instance_id).val(masked_webdav_url);
 		}
 	});
 	
@@ -1920,7 +1972,28 @@ jQuery(document).ready(function($) {
 	
 	$('#updraft-navtab-backups-content').on('click', '.updraft_existing_backups .updraft_existing_backups_row', function(e) {
 		if (!e.ctrlKey && !e.metaKey) return;
-		updraft_backups_selection.toggle(this);
+		if (e.shiftKey) {
+			// it's multiple range selection, it requires the user to hold shift+ctrl buttons during the range selection, the initial and the new starting index is saved in firstMultipleSelectionIndex variable
+			if ("undefined" == typeof updraft_backups_selection.firstMultipleSelectionIndex) {
+				// if all the above conditions are fulfilled then we need to set up the keyup event handler only for range selection operation. By doing it, we also ignore the Apple Command (metaKey) keycode checking which varies among the browser https://unixpapa.com/js/key.html
+				$(document).on('keyup.MultipleSelection', function(e) {
+					// multiple range selection operation requires the user to hold ctrl/cmd + shift buttons all the time during the selections, the range selection operation will be canceled if the user releases one of the held buttons (shitf or ctrl/cmd) and if that happens the highlight mode will stop working
+					updraft_backups_selection.unregister_highlight_mode();
+					// once this event handler has been triggered and the highlight mode has been turned off, this event handler needs to be removed by using its namespace .MultipleSelection
+					$(document).off('.MultipleSelection');
+				});
+				updraft_backups_selection.select(this);
+				$(this).addClass('range-selection-start');
+				updraft_backups_selection.register_highlight_mode();
+			} else {
+				updraft_backups_selection.selectAllInBetween(this);
+				jQuery('#updraft-navtab-backups-content .updraft_existing_backups .updraft_existing_backups_row').removeClass('range-selection');
+			}
+			// set the new starting index to the ending range index
+			updraft_backups_selection.firstMultipleSelectionIndex = this.rowIndex - 1;
+		} else {
+			updraft_backups_selection.toggle(this);
+		}
 	});
 
 	updraft_backups_selection.checkSelectionStatus();
@@ -4351,6 +4424,26 @@ jQuery(document).ready(function($) {
 		} else {
 			return opts.inverse(this);
 		}
+	});
+
+	/*
+		* Handlebars helper function to replace all password chars into asterisk char
+		*
+		* @param {string} password Required. The plain-text password
+		*
+		* @return {string}
+	*/
+	Handlebars.registerHelper('maskPassword', function(password) {
+		return password.replace(/./gi,'*');
+	});
+
+	/*
+		 * Handlebars helper function that wraps javascript encodeURIComponent so that it could encode the following characters: , / ? : @ & = + $ #
+		 *
+		 * @param {string} uri Required. The URI to be encoded
+	 */
+	Handlebars.registerHelper('encodeURIComponent', function(uri) {
+		return encodeURIComponent(uri);
 	});
 
 	// Add remote methods html using handlebarjs

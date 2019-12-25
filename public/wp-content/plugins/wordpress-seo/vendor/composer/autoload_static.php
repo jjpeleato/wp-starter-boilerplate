@@ -20,16 +20,6 @@ class ComposerStaticInitf7309e5dcd4e2843e8a5c77b6db497d4
         ),
     );
 
-    public static $prefixesPsr0 = array (
-        'x' => 
-        array (
-            'xrstf\\Composer52' => 
-            array (
-                0 => __DIR__ . '/..' . '/xrstf/composer-php52/lib',
-            ),
-        ),
-    );
-
     public static $classMap = array (
         'Composer\\Installers\\AglInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/AglInstaller.php',
         'Composer\\Installers\\AimeosInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/AimeosInstaller.php',
@@ -708,8 +698,6 @@ class ComposerStaticInitf7309e5dcd4e2843e8a5c77b6db497d4
         'Yoast_Update_Manager' => __DIR__ . '/..' . '/yoast/license-manager/class-update-manager.php',
         'Yoast_View_Utils' => __DIR__ . '/../..' . '/admin/views/class-view-utils.php',
         'iYoast_License_Manager' => __DIR__ . '/..' . '/yoast/license-manager/class-license-manager.php',
-        'xrstf\\Composer52\\AutoloadGenerator' => __DIR__ . '/..' . '/xrstf/composer-php52/lib/xrstf/Composer52/AutoloadGenerator.php',
-        'xrstf\\Composer52\\Generator' => __DIR__ . '/..' . '/xrstf/composer-php52/lib/xrstf/Composer52/Generator.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
@@ -717,7 +705,6 @@ class ComposerStaticInitf7309e5dcd4e2843e8a5c77b6db497d4
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitf7309e5dcd4e2843e8a5c77b6db497d4::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitf7309e5dcd4e2843e8a5c77b6db497d4::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitf7309e5dcd4e2843e8a5c77b6db497d4::$prefixesPsr0;
             $loader->classMap = ComposerStaticInitf7309e5dcd4e2843e8a5c77b6db497d4::$classMap;
 
         }, null, ClassLoader::class);

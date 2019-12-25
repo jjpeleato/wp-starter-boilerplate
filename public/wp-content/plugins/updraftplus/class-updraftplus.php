@@ -210,22 +210,18 @@ class UpdraftPlus {
 	/**
 	 * WordPress filter itsec_scheduled_external_backup - from iThemes Security
 	 *
-	 * @param Boolean $x - whether a backup is scheduled
-	 *
 	 * @return Boolean - filtered value
 	 */
-	public function itsec_scheduled_external_backup($x) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Filter use
+	public function itsec_scheduled_external_backup() {
 		return wp_next_scheduled('updraft_backup') ? true : false;
 	}
 	
 	/**
 	 * WordPress filter itsec_external_backup_link - from iThemes security
 	 *
-	 * @param String $x - link
-	 *
 	 * @return String - filtered value
 	 */
-	public function itsec_external_backup_link($x) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Filter use
+	public function itsec_external_backup_link() {
 			return UpdraftPlus_Options::admin_page_url().'?page=updraftplus';
 	}
 
@@ -428,7 +424,7 @@ class UpdraftPlus {
 
 		if (isset($_GET['wpnonce']) && isset($_GET['page']) && isset($_GET['action']) && 'updraftplus' == $_GET['page'] && 'downloadlatestmodlog' == $_GET['action'] && wp_verify_nonce($_GET['wpnonce'], 'updraftplus_download')) {
 
-			list ($mod_time, $log_file, $nonce) = $this->last_modified_log();
+			list($mod_time, $log_file, $nonce) = $this->last_modified_log();// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 
 			if ($mod_time >0) {
 				if (is_readable($log_file)) {
@@ -1685,7 +1681,6 @@ class UpdraftPlus {
 					if (function_exists('gzopen')) {
 						if (!class_exists('PclZip')) include_once(ABSPATH.'/wp-admin/includes/class-pclzip.php');
 						$zip = new PclZip($updraft_dir.'/binziptest/test.zip');
-						$foundit = 0;
 						if (($list = $zip->listContent()) != 0) {
 							foreach ($list as $obj) {
 								if ($obj['filename'] && !empty($obj['stored_filename']) && 'binziptest/subdir1/subdir2/test.html' == $obj['stored_filename'] && 131 == $obj['size']) $found_first=true;
@@ -2742,29 +2737,53 @@ class UpdraftPlus {
 		return $file_backups;
 	}
 
+	/**
+	 * Start a files backup (used by WP cron)
+	 */
 	public function backup_files() {
 		// Note that the "false" for database gets over-ridden automatically if they turn out to have the same schedules
 		$this->boot_backup(true, false);
 	}
 	
+	/**
+	 * Start a database backup (used by WP cron)
+	 */
 	public function backup_database() {
 		// Note that nothing will happen if the file backup had the same schedule
 		$this->boot_backup(false, true);
 	}
 
+	/**
+	 * Start a files + database backup (used by WP cron and 'Backup Now')
+	 *
+	 * @param array $options
+	 * @return Boolean|Void - as for UpdraftPlus::boot_backup()
+	 */
 	public function backup_all($options) {
 		$skip_cloud = empty($options['nocloud']) ? false : true;
-		$this->boot_backup(1, 1, false, false, ($skip_cloud) ? 'none' : false, $options);
+		return $this->boot_backup(1, 1, false, false, ($skip_cloud) ? 'none' : false, $options);
 	}
 	
+	/**
+	 * Start a files backup
+	 *
+	 * @param array $options
+	 * @return Boolean|Void - as for UpdraftPlus::boot_backup()
+	 */
 	public function backupnow_files($options) {
 		$skip_cloud = empty($options['nocloud']) ? false : true;
-		$this->boot_backup(1, 0, false, false, ($skip_cloud) ? 'none' : false, $options);
+		return $this->boot_backup(1, 0, false, false, ($skip_cloud) ? 'none' : false, $options);
 	}
 	
+	/**
+	 * Start a files backup
+	 *
+	 * @param array $options
+	 * @return Boolean|Void - as for UpdraftPlus::boot_backup()
+	 */
 	public function backupnow_database($options) {
 		$skip_cloud = empty($options['nocloud']) ? false : true;
-		$this->boot_backup(0, 1, false, false, ($skip_cloud) ? 'none' : false, $options);
+		return $this->boot_backup(0, 1, false, false, ($skip_cloud) ? 'none' : false, $options);
 	}
 
 	/**
@@ -2876,7 +2895,8 @@ class UpdraftPlus {
 	 * @param  Boolean				$one_shot
 	 * @param  Boolean|Array|String	$service
 	 * @param  Array				$options
-	 * @return Boolean|Void - not currently well specified (though false indicates definite failure)
+	 *
+	 * @return Boolean|Void - false indicates definite failure; true indicates a job was started and ran through as far as possible on this resumption. Note that you should not expect this method to return at all, depending on how long the backup takes, and available PHP run time, etc. In case of failure, currently there may or may not be information logged, and it may or may not be logged at the 'error' level. If more precise feedback is needed, then this can be improved. Void is currently used if no backup was started because none was needed.
 	 */
 	public function boot_backup($backup_files, $backup_database, $restrict_files_to_override = false, $one_shot = false, $service = false, $options = array()) {
 
@@ -3004,10 +3024,14 @@ class UpdraftPlus {
 			if (!UpdraftPlus_Options::get_updraft_option('updraft_debug_mode') && !empty($this->logfile_name) && file_exists($this->logfile_name)) {
 				unlink($this->logfile_name);
 			}
+			// Currently backup_finish() appears to have a void return. We don't want to return false, as that indicates failure. But neither was it really a success. Void seems fine for now, given that nothing is currently using it.
 			return $ret;
 		}
 
-		if (!$this->get_semaphore_lock($backup_files, $backup_database)) return;
+		if (!$this->get_semaphore_lock($backup_files, $backup_database)) {
+			// get_semaphore_lock() already does some of its own logging (though not currently (Nov 2019) at 'error' level)
+			return false;
+		}
 		
 		// Allow the resume interval to be more than 300 if last time we know we went beyond that - but never more than 600
 		if (defined('UPDRAFTPLUS_INITIAL_RESUME_INTERVAL') && is_numeric(UPDRAFTPLUS_INITIAL_RESUME_INTERVAL)) {
@@ -3102,6 +3126,8 @@ class UpdraftPlus {
 
 		if ($one_shot) delete_site_option('updraft_oneshotnonce');
 
+		return true;
+		
 	}
 
 	/**
@@ -4174,7 +4200,6 @@ class UpdraftPlus {
 		// Don't enable this line - it causes 500 HTTP errors in some cases/hosts on some large files, for unknown reason
 		// @ini_set('display_errors', '0');
 	
-		$spooled = false;
 		if (UpdraftPlus_Encryption::is_file_encrypted($fullpath)) {
 			if (ob_get_level()) {
 				$flush_max = min(5, (int) ob_get_level());
@@ -4717,7 +4742,7 @@ class UpdraftPlus {
 							$option_other_attr[] = 'style="display:none;"';
 						}
 					}
-					$collate_select_html .= '<option value="'.esc_attr($collate).'" '.selected($collate, $similar_type_collate, $echo = false).' '.implode(' ', $option_other_attr).'>'.esc_html($collate).'</option>';
+					$collate_select_html .= '<option value="'.esc_attr($collate).'" '.selected($collate, $similar_type_collate, false).' '.implode(' ', $option_other_attr).'>'.esc_html($collate).'</option>';
 				}
 				
 				if (count($db_charsets_found_unique) > 1 && !$db_charset_forbidden) {
@@ -5014,21 +5039,14 @@ class UpdraftPlus {
 
 		foreach ($dbsinfo as $key => $value) {
 			if ('wp' == $key) {
-				// The table prefix after being filtered - i.e. what filters what we'll actually backup
-				$table_prefix = $this->get_table_prefix(true);
 				// The unfiltered table prefix - i.e. the real prefix that things are relative to
 				$table_prefix_raw = $this->get_table_prefix(false);
-				$dbinfo['host'] = DB_HOST;
-				$dbinfo['name'] = DB_NAME;
-				$dbinfo['user'] = DB_USER;
-				$dbinfo['pass'] = DB_PASSWORD;
 				$dbhandle = $wpdb;
 			} else {
 				$dbhandle = new UpdraftPlus_WPDB_OtherDB_Utility($dbsinfo[$key]['user'], $dbsinfo[$key]['pass'], $dbsinfo[$key]['name'], $dbsinfo[$key]['host']);
 				if (!empty($dbhandle->error)) {
 					return $this->log_wp_error($dbhandle->error);
 				}
-				$table_prefix = $dbsinfo[$key]['prefix'];
 				$table_prefix_raw = $dbsinfo[$key]['prefix'];
 			}
 
@@ -5211,6 +5229,7 @@ class UpdraftPlus {
 	 * @return void|array There is a possibility if there is no restore in progress this can return a void.  However, in every other case, it will return an array.
 	 */
 	public function check_restore_progress($job_time_greater_than = 120) {
+		$restore_progress = array();
 		$restore_progress['status'] = false;
 		$restore_in_progress = get_site_option('updraft_restore_in_progress');
 		if (empty($restore_in_progress)) return;

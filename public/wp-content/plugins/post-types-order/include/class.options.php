@@ -115,7 +115,7 @@
                                         <tr valign="top">
                                             <th scope="row" style="text-align: right;"><label for="autosort"><?php esc_html_e('Auto Sort', 'post-types-order') ?></label></th>
                                             <td>
-                                                <p><input type="checkbox" <?php checked( '1', $options['autosort'] ); ?> id="autosort" value="1" name="autosort"> <?php esc_html_e("If checked, the plug-in automatically update the WordPress queries to use the new order (<b>No code update is necessarily</b>)", 'post-types-order'); ?></p>
+                                                <p><input type="checkbox" <?php checked( '1', $options['autosort'] ); ?> id="autosort" value="1" name="autosort"> <?php esc_html_e("If checked, the plug-in automatically update the WordPress queries to use the new order", 'post-types-order'); ?> ( <b><?php esc_html_e("No code update is necessarily", 'post-types-order'); ?></b> )</p>
                                                 <p class="description"><?php esc_html_e("If only certain queries need to use the custom sort, keep this unchecked and include 'orderby' => 'menu_order' into query parameters", 'post-types-order') ?>.
                                                 <br />
                                                 <a href="http://www.nsp-code.com/sample-code-on-how-to-apply-the-sort-for-post-types-order-plugin/" target="_blank"><?php esc_html_e('Additional Description and Examples', 'post-types-order') ?></a></p>

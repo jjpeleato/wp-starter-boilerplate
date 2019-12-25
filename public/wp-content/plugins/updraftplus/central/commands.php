@@ -16,6 +16,11 @@ abstract class UpdraftCentral_Commands {
 
 	protected $installed_data;
 
+	/**
+	 * Class constructor
+	 *
+	 * @param string $rc
+	 */
 	public function __construct($rc) {
 		$this->rc = $rc;
 		global $updraftplus;
@@ -23,6 +28,9 @@ abstract class UpdraftCentral_Commands {
 		$this->installed_data = array();
 	}
 
+	/**
+	 * Include a file or files from wp-admin/includes
+	 */
 	final protected function _admin_include() {
 		$files = func_get_args();
 		foreach ($files as $file) {
@@ -30,6 +38,9 @@ abstract class UpdraftCentral_Commands {
 		}
 	}
 	
+	/**
+	 * Include a file or files from wp-includes
+	 */
 	final protected function _frontend_include() {
 		$files = func_get_args();
 		foreach ($files as $file) {

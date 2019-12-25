@@ -90,8 +90,6 @@ class Updraft_Restorer {
 	 */
 	public function __construct($skin = null, $backup_set = null, $short_init = false, $restore_options = array(), $continuation_data = null) {
 
-		global $wpdb, $updraftplus;
-		
 		$this->our_siteurl = untrailingslashit(site_url());
 		
 		$this->continuation_data = $continuation_data;
@@ -212,8 +210,9 @@ class Updraft_Restorer {
 					$pdata = is_string($data) ? $data : serialize($data);
 					$updraftplus->log(__('Error data:', 'updraftplus').' '.$pdata, 'warning-restore');
 					if (false !== strpos($pdata, 'PCLZIP_ERR_BAD_FORMAT (-10)')) {
+						$url = apply_filters('updraftplus_com_link', 'https://updraftplus.com/faqs/error-message-pclzip_err_bad_format-10-invalid-archive-structure-mean/');
 						if ($browser_context) {
-							echo '<a href="'.apply_filters('updraftplus_com_link', 'https://updraftplus.com/faqs/error-message-pclzip_err_bad_format-10-invalid-archive-structure-mean/').'" target="_blank"><strong>'.__('Follow this link for more information', 'updraftplus').'</strong></a><br>';
+							echo '<a href="'.$url.'" target="_blank"><strong>'.__('Follow this link for more information', 'updraftplus').'</strong></a><br>';
 						} else {
 							$updraftplus->log(__('Follow this link for more information', 'updraftplus').': '.$url);
 						}
@@ -241,7 +240,6 @@ class Updraft_Restorer {
 			if (!empty($template) && WP_DEFAULT_THEME != $template && strtolower($template) != $template) {
 
 				$theme_root = get_theme_root($template);
-				$theme_root2 = get_theme_root(strtolower($template));
 
 				if (!file_exists("$theme_root/$template/style.css") && file_exists("$theme_root/".strtolower($template)."/style.css")) {
 					$updraftplus->log_e("Theme directory (%s) not found, but lower-case version exists; updating database option accordingly", $template);
@@ -316,6 +314,7 @@ class Updraft_Restorer {
 		
 		$backup_set = $this->ud_backup_set;
 		$timestamp = $backup_set['timestamp'];
+		$second_loop = array();
 		
 		$updraft_dir = $updraftplus->backups_dir_location();
 		$foreign_known = apply_filters('updraftplus_accept_archivename', array());
@@ -463,8 +462,6 @@ class Updraft_Restorer {
 		$backup_set = $this->ud_backup_set;
 		
 		$services = isset($backup_set['service']) ? $updraftplus->get_canonical_service_list($backup_set['service']) : array();
-		
-		$foreign_known = apply_filters('updraftplus_accept_archivename', array());
 
 		$entities_to_download = $this->get_entities_to_download($entities_to_restore);
 		
@@ -629,7 +626,6 @@ class Updraft_Restorer {
 		
 		global $updraftplus;
 		static $logfile_handle;
-		static $opened_log_time;
 		
 		if (empty($logfile_handle)) {
 			$logfile_name = $updraftplus->backups_dir_location()."/log.$nonce-browser.txt";
@@ -813,7 +809,7 @@ class Updraft_Restorer {
 				$updraft_dir = $updraftplus->backups_dir_location();
 				if (!UpdraftPlus_Filesystem_Functions::really_is_writable($updraft_dir)) {
 					$updraftplus->log_e("Backup directory (%s) is not writable, or does not exist.", $updraft_dir);
-					$result = new WP_Error('unpack_failed', $this->strings['unpack_failed'], $tar->extract);
+					$result = new WP_Error('unpack_failed', $this->strings['unpack_failed']);
 				} else {
 					$extract_dir = $updraft_dir.'/'.basename($working_dir).'-old';
 					if (file_exists($extract_dir)) UpdraftPlus_Filesystem_Functions::remove_local_directory($extract_dir);
@@ -1186,7 +1182,7 @@ class Updraft_Restorer {
 					// Make sure permissions are at least as great as those of the parent
 					if ($is_dir) {
 						// This method is broken due to https://core.trac.wordpress.org/ticket/26598
-						if (empty($chmod)) $chmod = octdec(sprintf("%04d", $this->get_current_chmod($dest_dir, $wpfs)));
+						if (empty($chmod)) $chmod = octdec(sprintf("%04d", $this->get_current_chmod($dest_dir, $wpfs)));// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 						if (!empty($chmod)) $this->chmod_if_needed($dest_dir.$file, $chmod, false, $wpfs);
 					}
 				} else {
@@ -1310,7 +1306,7 @@ class Updraft_Restorer {
 		// Check upgrade directory is writable (instead of having non-obvious messages when we try to write)
 		// In theory, this is redundant (since we already checked for access to WP_CONTENT_DIR); but in practice, this extra check has been needed
 
-		global $wp_filesystem, $updraftplus, $updraftplus_admin, $updraftplus_addons_migrator;
+		global $wp_filesystem, $updraftplus, $updraftplus_addons_migrator;
 
 		if (empty($this->pre_restore_updatedir_writable)) {
 			$upgrade_folder = $wp_filesystem->wp_content_dir() . 'upgrade/';
@@ -1396,7 +1392,7 @@ class Updraft_Restorer {
 	 */
 	private function restore_backup($backup_file, $type, $info, $last_one = false, $last_entity = false) {
 
-		global $wp_filesystem, $updraftplus_addons_migrator, $updraftplus;
+		global $wp_filesystem, $updraftplus;
 
 		$updraftplus->log("restore_backup(backup_file=$backup_file, type=$type, info=".serialize($info).", last_one=$last_one)");
 
@@ -1441,8 +1437,6 @@ class Updraft_Restorer {
 				if (false === $rdb || is_wp_error($rdb)) return $rdb;
 				$updraftplus->log_restore_update(array('type' => 'state', 'stage' => 'db', 'data' => array('stage' => 'finished', 'table' => '')));
 			} elseif ('others' == $type) {
-
-				$dirname = basename($path);
 
 				// For foreign 'Simple Backup', we need to keep going down until we find wp-content
 				if (empty($this->ud_foreign)) {
@@ -2167,7 +2161,6 @@ class Updraft_Restorer {
 
 		$this->start_time = microtime(true);
 
-		$old_wpversion = '';
 		$this->old_siteurl = '';
 		$this->old_home = '';
 		$this->old_content = '';
@@ -2297,11 +2290,11 @@ class Updraft_Restorer {
 			if ($is_plain) {
 				$buffer = rtrim(fgets($dbhandle, 1048576));
 			} elseif ($is_bz2) {
-				if (!isset($bz2_buffer)) $bz2_buffer = '';
+				if (!isset($bz2_buffer)) $bz2_buffer = '';// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 				$buffer = '';
 				if (strlen($bz2_buffer) < 524288) $bz2_buffer .= bzread($dbhandle, 1048576);
 				if (bzerrno($dbhandle) !== 0) {
-					$updraftplus->log("bz2 error: ".bzerrstr($dbhandle)." (code: ".bzerrno($bzhandle).")");
+					$updraftplus->log("bz2 error: ".bzerrstr($dbhandle)." (code: ".bzerrno($dbhandle).")");
 					break;
 				}
 				if (false !== $bz2_buffer && '' !== $bz2_buffer) {
@@ -2358,7 +2351,6 @@ class Updraft_Restorer {
 					$updraftplus->log(__('Old table prefix:', 'updraftplus').' '.$this->old_table_prefix, 'notice-restore', 'old-table-prefix');
 					$updraftplus->log("Old table prefix: ".$this->old_table_prefix);
 				} elseif (preg_match('/^\# Skipped tables: (.*)$/', $buffer, $matches)) {
-					$skipped_tables = explode(',', $matches[1]);
 					$updraftplus->log(__('Skipped tables:', 'updraftplus').' '.$matches[1], 'notice-restore', 'skipped-tables');
 					$updraftplus->log("Skipped tables: ".$matches[1]);
 				} elseif ($gathering_siteinfo && preg_match('/^\# Site info: (\S+)$/', $buffer, $matches)) {
@@ -2454,7 +2446,7 @@ class Updraft_Restorer {
 			if (preg_match('/^\s*drop table (if exists )?\`?([^\`]*)\`?\s*'.$delimiter_regex.'/i', $sql_line, $matches)) {
 				$sql_type = 1;
 
-				if (!isset($printed_new_table_prefix)) {
+				if (!isset($printed_new_table_prefix)) {// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 					$import_table_prefix = $this->pre_sql_actions($import_table_prefix);
 					if (false === $import_table_prefix || is_wp_error($import_table_prefix)) return $import_table_prefix;
 					$printed_new_table_prefix = true;
@@ -2705,6 +2697,17 @@ class Updraft_Restorer {
 			} elseif (preg_match('/^\s*delimiter (\S+)\s*$/i', $sql_line, $matches)) {
 				// Nothing to do here - deliberate no-op (is processed earlier)
 				$sql_type = 10;
+			} elseif (preg_match('/^CREATE(\s+ALGORITHM=\S+)?(\s+DEFINER=\S+)?(\s+SQL SECURITY (\S+))?\s+VIEW/i', $sql_line, $matches)) {
+				$sql_type = 11;
+				if ($this->old_table_prefix) {
+					foreach (array_keys($this->restore_this_table) as $table_name) {
+						// Code for a view can contain pretty much anything. As such, we want to be minimise the risks of unwanted matches.
+						if (false !== strpos($sql_line, $table_name)) {
+							$new_table_name = UpdraftPlus_Manipulation_Functions::str_replace_once($this->old_table_prefix, $import_table_prefix, $table_name);
+							$sql_line = str_replace($table_name, $new_table_name, $sql_line);
+						}
+					}
+				}
 			} else {
 				// Prevent the previous value of $sql_type being retained for an unknown type
 				$sql_type = 0;
@@ -2802,11 +2805,11 @@ class Updraft_Restorer {
 		// Not yet working
 		return true;
 	
-		global $updraftplus;
+		global $updraftplus;// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- Function isnt being used yet
 		$table = UpdraftPlus_Manipulation_Functions::backquote($table);
 		
 		if ($this->use_wpdb()) {
-			$req = $wpdb->query("LOCK TABLES $table WRITE;");
+			$req = $wpdb->query("LOCK TABLES $table WRITE;");// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable -- Function isnt being used yet
 		} else {
 			if ($this->use_mysqli) {
 				$req = mysqli_query($this->mysql_dbh, "LOCK TABLES $table WRITE;");
@@ -2830,9 +2833,9 @@ class Updraft_Restorer {
 		return;
 		// Not yet working
 		if ($this->use_wpdb()) {
-			$wpdb->query("UNLOCK TABLES;");
+			$wpdb->query("UNLOCK TABLES;");// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable -- Function isnt being used yet
 		} elseif ($this->use_mysqli) {
-			$req = mysqli_query($this->mysql_dbh, "UNLOCK TABLES;");
+			$req = mysqli_query($this->mysql_dbh, "UNLOCK TABLES;");// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		} else {
 			// @codingStandardsIgnoreLine
 			$req = mysql_unbuffered_query("UNLOCK TABLES;");

@@ -23,6 +23,12 @@ class UpdraftPlus_UpdraftCentral_Listener {
 
 	private $command_classes;
 
+	/**
+	 * Class constructor
+	 *
+	 * @param Array $keys			 - keys to set up listeners for
+	 * @param Array $command_classes - commands
+	 */
 	public function __construct($keys = array(), $command_classes = array()) {
 		global $updraftplus;
 		$this->ud = $updraftplus;

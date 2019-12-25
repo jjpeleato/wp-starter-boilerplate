@@ -388,13 +388,19 @@ class UpdraftPlus_WPAdmin_Commands extends UpdraftPlus_Commands {
 	}
 	
 	/**
-	 * Return a message if there are more than 4 overdue cron jobs
+	 * Return messages if there are more than 4 overdue cron jobs
 	 *
-	 * @return Array - the message, if there is one,  is in the key 'm'
+	 * @return Array - the messages are stored in an associative array and are indexed with key 'm'
 	 */
 	public function check_overdue_crons() {
+		$messages = array();
 		$how_many_overdue = $this->_updraftplus_admin->howmany_overdue_crons();
-		return ($how_many_overdue >= 4) ? array('m' => $this->_updraftplus_admin->show_admin_warning_overdue_crons($how_many_overdue)) : array();
+		if ($how_many_overdue >= 4) {
+			$messages['m'] = array();
+			$messages['m'][] = $this->_updraftplus_admin->show_admin_warning_overdue_crons($how_many_overdue);
+			if (defined('DISABLE_WP_CRON') && DISABLE_WP_CRON && (!defined('UPDRAFTPLUS_DISABLE_WP_CRON_NOTICE') || !UPDRAFTPLUS_DISABLE_WP_CRON_NOTICE)) $messages['m'][] = $this->_updraftplus_admin->show_admin_warning_disabledcron();
+		}
+		return $messages;
 	}
 	
 	public function whichdownloadsneeded($params) {
