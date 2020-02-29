@@ -10,6 +10,8 @@ jQuery(document).ready(function($) {
 	var previous_stage;
 	var current_stage;
 	var logged_out = false;
+	var auto_resume_count = 0;
+	var server_500_count = 0;
 
 	updraft_restore_command(job_id, action);
 
@@ -236,7 +238,12 @@ jQuery(document).ready(function($) {
 		updraft_send_command('get_restore_resume_notice', { job_id: job_id }, function(response) {
 			if (response.hasOwnProperty('status') && 'success' == response.status && response.hasOwnProperty('html')) {
 				if (updraft_restore_update_timer) clearInterval(updraft_restore_update_timer);
-				$('.updraft_restore_main--components').prepend(response.html);
+				if ('plugins' != current_stage && 'db' != current_stage && 5 > auto_resume_count) {
+					auto_resume_count++;
+					updraft_restore_command(job_id, 'updraft_ajaxrestore_continue');
+				} else {
+					$('.updraft_restore_main--components').prepend(response.html);
+				}
 			} else if (response.hasOwnProperty('error_code') && response.hasOwnProperty('error_message')) {
 				if (updraft_restore_update_timer) clearInterval(updraft_restore_update_timer);
 				alert(response.error_code + ': ' + response.error_message);
@@ -244,9 +251,16 @@ jQuery(document).ready(function($) {
 			}
 		}, {
 			error_callback: function (response, status, error_code, resp) {
-				var error_message = "updraft_send_command: error: " + status + " (" + error_code + ")";
-				console.log(error_message);
-				console.log(response);
+				if (500 == response.status && 3 > server_500_count) {
+					server_500_count++;
+					updraft_restore_command(job_id, 'updraft_ajaxrestore_continue');
+				} else {
+					updraft_restore_process_data({stage: 'finished', type: 'state_change'})
+					var error_message = "updraft_send_command: error: " + status + " (" + error_code + ")";
+					alert(error_message);
+					console.log(error_message);
+					console.log(response);
+				}
 			}
 		});
 	}

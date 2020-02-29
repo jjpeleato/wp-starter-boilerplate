@@ -73,7 +73,7 @@ class URE_Role_View extends URE_View {
         $show_admin_role = $this->lib->show_admin_role_allowed();
         $this->role_to_copy_html = '<select id="user_role_copy_from" name="user_role_copy_from" style="width: '. $select_width .'px">
             <option value="none" selected="selected">' . esc_html__('None', 'user-role-editor') . '</option>';
-        $this->role_select_html = '<select id="user_role" name="user_role" onchange="ure_role_change(this.value);">';        
+        $this->role_select_html = '<select id="user_role" name="user_role" onchange="ure_main.role_change( this.value );">';        
         $current_role = $this->editor->get( 'current_role' );
         $all_roles = $this->editor->get( 'roles' );
         $roles = $this->lib->get_editable_user_roles( $all_roles );
@@ -105,7 +105,7 @@ class URE_Role_View extends URE_View {
         $roles_can_delete = $this->editor->get_roles_can_delete();
         if ( is_array( $roles_can_delete ) && count( $roles_can_delete ) > 0) {
             ksort( $roles_can_delete );
-            $this->role_delete_html = '<select id="del_user_role" name="del_user_role" width="200" style="width: 200px">';
+            $this->role_delete_html = '<select id="del_user_role" name="del_user_role" width="250" style="width: 250px">';
             foreach ($roles_can_delete as $key => $value) {
                 $this->role_delete_html .= '<option value="' . $key . '">' . esc_html__($value, 'user-role-editor') . '</option>';
             }
@@ -392,7 +392,7 @@ if ($multisite && !is_network_admin()) {
 ?>
             <div style="float: right; margin-left:10px; margin-right: 20px; <?php echo $fontColor; ?>" id="ure_apply_to_all_div">
                 <input type="checkbox" name="ure_apply_to_all" id="ure_apply_to_all" value="1" 
-                       <?php echo $checked; ?> title="<?php echo $hint; ?>" onclick="ure_apply_to_all_on_click(this)"/>
+                       <?php echo $checked; ?> title="<?php echo $hint; ?>" onclick="ure_main.apply_to_all_on_click(this)"/>
                 <label for="ure_apply_to_all" title="<?php echo $hint; ?>"><?php esc_html_e('Apply to All Sites', 'user-role-editor'); ?></label>
             </div>
 <?php

@@ -327,7 +327,7 @@ if ( ! class_exists( 'YITH_WCAN_Frontend' ) ) {
                                         'terms' 	=> $value,
                                         'field' 	=> YITH_WCAN()->filter_term_field
                                     )
-                                )
+                                ),
                             );
 
                             $args = yit_product_visibility_meta( $args );
@@ -394,11 +394,23 @@ if ( ! class_exists( 'YITH_WCAN_Frontend' ) ) {
                     'fields'           => 'ids',
                     'no_found_rows'    => true,
                     'suppress_filters' => true,
-                    'tax_query'        => array()
+                    'tax_query'        => array(),
+                    'meta_query' => array()
                 );
 
                 if( $is_product_taxonomy ){
                     $args['tax_query'][] = $is_product_taxonomy;
+                }
+
+                if( isset( $_GET['min_price'] ) && isset( $_GET['max_price'] ) ){
+                	$min_price = sanitize_text_field( $_GET['min_price'] );
+                	$max_price = sanitize_text_field( $_GET['max_price'] );
+                	$args['meta_query'][] =  array(
+		                'key' => '_price',
+		                'value' => array($min_price, $max_price),
+		                'compare' => 'BETWEEN',
+		                'type' => 'NUMERIC'
+	                );
                 }
 
                 $args = yit_product_visibility_meta( $args );

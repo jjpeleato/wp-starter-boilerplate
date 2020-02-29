@@ -298,12 +298,11 @@ class UpdraftPlus_Notices extends Updraft_Notices {
 		wp_enqueue_style('updraftplus-notices-css',  UPDRAFTPLUS_URL.'/css/updraftplus-notices'.$min_or_not.'.css', array(), $enqueue_version);
 	}
 
-	protected function translation_needed($plugin_base_dir = null, $product_name = null) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Filter use
+	protected function translation_needed($plugin_base_dir = null, $product_name = null) {// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable, Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Filter use
 		return parent::translation_needed(UPDRAFTPLUS_DIR, 'updraftplus');
 	}
 	
 	protected function wp_optimize_installed($plugin_base_dir = null, $product_name = null) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Filter use
-		$wp_optimize_file = false;
 		if (!function_exists('get_plugins')) include_once(ABSPATH.'wp-admin/includes/plugin.php');
 		$plugins = get_plugins();
 

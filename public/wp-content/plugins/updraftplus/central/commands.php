@@ -174,6 +174,17 @@ abstract class UpdraftCentral_Commands {
 			return $this->_generic_error_response('upload_dir_not_available');
 		}
 
+		// Preloads the submitted credentials to the global $_POST variable
+		if (!empty($params) && isset($params['filesystem_credentials'])) {
+			parse_str($params['filesystem_credentials'], $filesystem_credentials);
+			if (is_array($filesystem_credentials)) {
+				foreach ($filesystem_credentials as $key => $value) {
+					// Put them into $_POST, which is where request_filesystem_credentials() checks for them.
+					$_POST[$key] = $value;
+				}
+			}
+		}
+
 		// Save uploaded file
 		$filename = $params['filename'];
 		$is_chunked = false;

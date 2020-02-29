@@ -125,29 +125,29 @@ class URE_View {
     // end of get_full_capabilities()
     
     
-    /**
-     * output HTML-code for capabilities list
+    /*
+     * Output HTML-code for capabilities list
+     * Used build output for response to AJAX request
      * @param boolean $for_role - if true, it is role capabilities list, else - user specific capabilities list
      * @param boolean $edit_mode - if false, capabilities checkboxes are shown as disable - readonly mode
      */
-    public function show_capabilities($for_role = true, $edit_mode=true) {
-        
+    public function _show_capabilities( $for_role = true, $edit_mode=true ) {
         $onclick_for_admin = '';
-        $multisite = $this->lib->get('multisite');
-        $current_role = $this->editor->get('current_role');        
-        $user_to_edit = $this->editor->get('user_to_edit');
-        $roles = $this->editor->get('roles');
+        $multisite = $this->lib->get( 'multisite' );
+        $current_role = $this->editor->get( 'current_role' );
+        $user_to_edit = $this->editor->get( 'user_to_edit' );
+        $roles = $this->editor->get( 'roles' );
         $full_capabilities = $this->get_full_capabilities();
         $built_in_wp_caps = $this->lib->get_built_in_wp_caps();        
-        $caps_readable = $this->editor->get('caps_readable');
+        $caps_readable = $this->editor->get( 'caps_readable' );
         $caps_groups_manager = URE_Capabilities_Groups_Manager::get_instance();
         
         $key_capability = URE_Own_Capabilities::get_key_capability();
-        $user_is_ure_admin = current_user_can($key_capability);
+        $user_is_ure_admin = current_user_can( $key_capability );
         $ure_caps = URE_Own_Capabilities::get_caps();
         
-        $output = '<div id="ure_caps_list_container">'
-                . '<div id="ure_caps_list">';
+        $output = '';
+        
         foreach ($full_capabilities as $capability) {    
             $cap_id = $capability['inner'];
             if (!$user_is_ure_admin) { 
@@ -212,6 +212,23 @@ class URE_View {
             
             $output .= $cap_html;
         }
+        
+        return $output;
+    }
+    // end of _show_capabilities()
+    
+    
+    /**
+     * Output HTML-code for capabilities list
+     * Used to built full page output for usual HTTP request
+     * @param boolean $for_role - if true, it is role capabilities list, else - user specific capabilities list
+     * @param boolean $edit_mode - if false, capabilities checkboxes are shown as disable - readonly mode
+     */
+    public function show_capabilities( $for_role = true, $edit_mode=true ) {                
+        
+        $output = '<div id="ure_caps_list_container">'
+                . '<div id="ure_caps_list">';
+        $output .= $this->_show_capabilities( $for_role, $edit_mode );        
         $output .= '</div></div>' ;
 
         echo $output;
@@ -320,7 +337,7 @@ class URE_View {
                     </div>                    
                     <div class="ure-table-cell ure-caps-option nowrap">
                         <?php esc_html_e('Columns:', 'user-role-editor');?>
-                        <select id="caps_columns_quant" name="caps_columns_quant" onchange="ure_change_caps_columns_quant();">
+                        <select id="caps_columns_quant" name="caps_columns_quant" onchange="ure_main.change_caps_columns_quant();">
                             <option value="1" <?php selected(1, $caps_columns_quant);?> >1</option>
                             <option value="2" <?php selected(2, $caps_columns_quant);?> >2</option>
                             <option value="3" <?php selected(3, $caps_columns_quant);?> >3</option>

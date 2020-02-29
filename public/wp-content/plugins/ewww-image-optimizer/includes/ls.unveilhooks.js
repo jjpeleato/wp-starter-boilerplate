@@ -77,23 +77,30 @@ For background images, use data-bg attribute:
 				bg = e.target.getAttribute('data-bg');
 				if (bg) {
         				if(ewww_webp_supported) {
+						console.log('checking for data-bg-webp');
 						bgWebP = e.target.getAttribute('data-bg-webp');
 						if (bgWebP) {
+							console.log('replacing data-bg with data-bg-webp');
 							bg = bgWebP;
 						}
 					}
 					var dPR = (window.devicePixelRatio || 1);
 					var targetWidth  = Math.round(e.target.offsetWidth * dPR);
 					var targetHeight = Math.round(e.target.offsetHeight * dPR);
-					if (window.lazySizes.hC(e.target,'wp-block-cover')) {
+					if (!shouldAutoScale(e.target)||!shouldAutoScale(e.target.parentNode)){
+					} else if (window.lazySizes.hC(e.target,'wp-block-cover')) {
+						console.log('found wp-block-cover with data-bg');
 						if (window.lazySizes.hC(e.target,'has-parallax')) {
+							console.log('also has-parallax with data-bg');
 							targetWidth  = Math.round(window.screen.width * dPR);
 							targetHeight = Math.round(window.screen.height * dPR);
 						}
 						bg = constrainSrc(bg,targetWidth,targetHeight,'bg-cover');
 					} else if (window.lazySizes.hC(e.target,'elementor-bg')){
+						console.log('found elementor-bg with data-bg');
 						bg = constrainSrc(bg,targetWidth,targetHeight,'bg-cover');
 					} else {
+						console.log('found other data-bg');
 						bg = constrainSrc(bg,targetWidth,targetHeight,'bg');
 					}
 					e.detail.firesLoad = true;
@@ -122,23 +129,5 @@ For background images, use data-bg attribute:
 			}
 		}, false);
 
-	}
-
-	function addStyleScript(src, style){
-		if(uniqueUrls[src]){
-			return;
-		}
-		var elem = document.createElement(style ? 'link' : 'script');
-		var insertElem = document.getElementsByTagName('script')[0];
-
-		if(style){
-			elem.rel = 'stylesheet';
-			elem.href = src;
-		} else {
-			elem.src = src;
-		}
-		uniqueUrls[src] = true;
-		uniqueUrls[elem.src || elem.href] = true;
-		insertElem.parentNode.insertBefore(elem, insertElem);
 	}
 }));

@@ -137,7 +137,7 @@ abstract class Updraft_Notices {
 		return $available_notices[0];
 	}
 
-	protected function skip_seasonal_notices($notice_data) {
+	protected function skip_seasonal_notices($notice_data) {// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		return false;
 	}
 

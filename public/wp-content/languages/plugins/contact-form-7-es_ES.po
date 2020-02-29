@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - Contact Form 7 - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2019-11-19 15:54:43+0000\n"
+"PO-Revision-Date: 2020-01-08 12:55:32+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -29,7 +29,7 @@ msgstr "El token de respuesta de reCAPTCHA está vacío."
 
 #: includes/submission.php:326
 msgid "Blacklisted words are used."
-msgstr "Se utilizan las palabras en la lista negra."
+msgstr "Se utilizan las palabras de la lista negra."
 
 #: includes/submission.php:317
 msgid "Submitted nonce is invalid."
@@ -45,7 +45,7 @@ msgstr "La puntuación de reCAPTCHA (%1$.2f) es inferior al umbral (%2$.2f)."
 
 #: modules/akismet.php:58
 msgid "Akismet returns a spam response."
-msgstr "Akismet  devuelve una respuesta de spam."
+msgstr "Akismet devuelve una respuesta de spam."
 
 #: modules/constant-contact.php:588
 msgid "Select lists to which newly added contacts are to belong."
@@ -64,7 +64,7 @@ msgstr "Listas de contactos"
 #: modules/constant-contact.php:565
 msgctxt "API keys"
 msgid "Reset Keys"
-msgstr "Restablecer claves"
+msgstr "Restablecer las claves"
 
 #: modules/constant-contact.php:494
 msgid "This site is connected to the Constant Contact API."
@@ -89,11 +89,11 @@ msgstr "Respuesta HTTP: %1$s %2$s %3$s desde %4$s"
 
 #: modules/recaptcha.php:570
 msgid "Save Changes"
-msgstr "Guardar cambios"
+msgstr "Guardar los cambios"
 
 #: modules/recaptcha.php:489
 msgid "reCAPTCHA protects you against spam and other types of automated abuse. With Contact Form 7&#8217;s reCAPTCHA integration module, you can block abusive form submissions by spam bots. For details, see %s."
-msgstr "reCapTCHA protege contra el Spam y otros tipos de abuso automatizados. Con el módulo de integración de reCAPTCHA, puedes bloquear envíos de forma abusiva por bots de Spam. Para más detalles, consulta %s."
+msgstr "reCapTCHA protege contra el spam y otros tipos de abuso automatizados. Con el módulo de integración de reCAPTCHA, puedes bloquear envíos de forma abusiva por bots de spam. Para más detalles, consulta %s."
 
 #: modules/recaptcha.php:234 modules/recaptcha.php:492
 msgid "reCAPTCHA (v3)"
@@ -105,12 +105,12 @@ msgstr "Las claves de API para reCAPTCHA v3 son diferentes a las de v2; las clav
 
 #: modules/constant-contact.php:570
 msgid "Connect to the Constant Contact API"
-msgstr "Conecta con la API de Constant Contact"
+msgstr "Conectar con la API de Constant Contact"
 
 #: modules/recaptcha.php:565
 msgctxt "API keys"
 msgid "Remove Keys"
-msgstr "Eliminar claves"
+msgstr "Eliminar las claves"
 
 #: modules/constant-contact.php:557
 msgid "Set this URL as the redirect URI."
@@ -130,7 +130,7 @@ msgstr "Clave API"
 
 #: modules/constant-contact.php:504 modules/recaptcha.php:509
 msgid "Setup Integration"
-msgstr "Integración de la instalación"
+msgstr "Configurar la integración"
 
 #: modules/constant-contact.php:487
 msgid "Constant Contact Integration"
@@ -154,11 +154,11 @@ msgstr "Marketing por correo electrónico"
 
 #: includes/config-validator.php:649
 msgid "It is not allowed to use files outside the wp-content directory."
-msgstr "No está permitido utilizar archivos que no estén en el directorio wp-content."
+msgstr "No está permitido utilizar archivos que estén fuera del directorio «wp-content»."
 
 #: modules/acceptance.php:267
 msgid "Make this checkbox optional"
-msgstr "Hacer opcional esta casilla de selección"
+msgstr "Hacer opcional esta casilla de verificación"
 
 #: admin/edit-contact-form.php:206
 msgid "Professional Services"
@@ -179,7 +179,7 @@ msgstr "https://wordpress.org/support/plugin/contact-form-7/"
 #. translators: 1: FAQ, 2: Docs ("FAQ & Docs")
 #: admin/edit-contact-form.php:190
 msgid "%1$s &#38; %2$s"
-msgstr "%1$s &#38; %2$s"
+msgstr "%1$s y %2$s"
 
 #: admin/edit-contact-form.php:186
 msgid "Here are some available options to help solve your problems."
@@ -201,15 +201,15 @@ msgstr "%1$s: %2$s"
 
 #: modules/acceptance.php:200
 msgid "Not consented"
-msgstr "Sin consentimiento"
+msgstr "No aceptado"
 
 #: modules/acceptance.php:198
 msgid "Consented"
-msgstr "Consentido"
+msgstr "Aceptado"
 
 #: includes/submission.php:206
 msgid "Sending mail has been aborted."
-msgstr "El envío de correo electrónico se canceló."
+msgstr "El envío de correo electrónico ha sido cancelado."
 
 #: admin/includes/editor.php:211
 msgid "You can edit messages used in various situations here. For details, see %s."
@@ -914,7 +914,7 @@ msgstr "Una opción por línea."
 #: modules/number.php:173 modules/checkbox.php:295 modules/textarea.php:155
 #: modules/select.php:177
 msgid "Required field"
-msgstr "Campo requerido"
+msgstr "Campo obligatorio"
 
 #: modules/text.php:244 modules/text.php:247 modules/file.php:205
 #: modules/file.php:208 modules/date.php:161 modules/date.php:164
@@ -1119,7 +1119,7 @@ msgstr "Tu correo electrónico"
 
 #: includes/contact-form-template.php:37
 msgid "(required)"
-msgstr "(requerido)"
+msgstr "(obligatorio)"
 
 #: includes/contact-form-template.php:38
 msgid "Your Name"

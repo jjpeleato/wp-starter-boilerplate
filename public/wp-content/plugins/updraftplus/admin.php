@@ -1650,9 +1650,6 @@ class UpdraftPlus_Admin {
 				));
 				die;
 			}
-		} else {
-			// These can be removed after a few releases
-			include(UPDRAFTPLUS_DIR.'/includes/deprecated-actions.php');
 		}
 		
 		die;
@@ -2139,11 +2136,11 @@ class UpdraftPlus_Admin {
 
 		if (!empty($request['incremental']) && !$incremental) {
 			$msg = array(
-				'error' => __('No suitable backup set (that already contains a full backup of all the requested file component types) was found, to add increments to. Aborting this backup.', 'updaftplus')
+				'error' => __('No suitable backup set (that already contains a full backup of all the requested file component types) was found, to add increments to. Aborting this backup.', 'updraftplus')
 			);
 			$abort_before_booting = true;
 		}
-		
+
 		if ($close_connection_callable && is_callable($close_connection_callable)) {
 			call_user_func($close_connection_callable, $msg);
 		} else {
@@ -3287,8 +3284,13 @@ class UpdraftPlus_Admin {
 		if (false !== $this_job_only && !$ret) {
 			$ret = $this->print_active_job($this_job_only);
 			if ('' == $ret) {
-				// The presence of the exact ID matters to the front-end - indicates that the backup job has at least begun
-				$ret = '<div class="active-jobs updraft_finished" id="updraft-jobid-'.$this_job_only.'"><em>'.__('The backup has finished running', 'updraftplus').'</em> - <a class="updraft-log-link" data-jobid="'.$this_job_only.'">'.__('View Log', 'updraftplus').'</a></div>';
+				global $updraftplus;
+				$log_file = $updraftplus->get_logfile_name($this_job_only);
+				// if the file exists, the backup was booted. Check if the information about completion is found in the log, or if it was modified at least 2 minutes ago.
+				if (file_exists($log_file) && ($updraftplus->found_backup_complete_in_logfile($this_job_only) || (time() - filemtime($log_file)) > 120)) {
+					// The presence of the exact ID matters to the front-end - indicates that the backup job has at least begun
+					$ret = '<div class="active-jobs updraft_finished" id="updraft-jobid-'.$this_job_only.'"><em>'.__('The backup has finished running', 'updraftplus').'</em> - <a class="updraft-log-link" data-jobid="'.$this_job_only.'">'.__('View Log', 'updraftplus').'</a></div>';
+				}
 			}
 		}
 
@@ -5599,10 +5601,11 @@ ENDHERE;
 	 *
 	 * @param boolean $is_admin_user         - a boolean to indicate if the user who requested the clone has clone management permissions
 	 * @param array   $supported_wp_versions - an array of supported WordPress versions
+	 * @param array   $supported_packages    - an array of supported clone packages
 	 *
 	 * @return string - the clone UI widget
 	 */
-	public function updraftplus_clone_ui_widget($is_admin_user = false, $supported_wp_versions) {
+	public function updraftplus_clone_ui_widget($is_admin_user = false, $supported_wp_versions, $supported_packages) {
 		$output = '<p class="updraftplus-option updraftplus-option-inline php-version">';
 		$output .= '<span class="updraftplus-option-label">'.sprintf(__('%s version:', 'updraftplus'), 'PHP').'</span> ';
 		$output .= $this->output_select_data($this->php_versions, 'php');
@@ -5615,7 +5618,7 @@ ENDHERE;
 		$output .= ' <span class="updraftplus-option-label">'.__('Clone region:', 'updraftplus').'</span> ';
 		$output .= $this->output_select_data($this->regions, 'region');
 		$output .= '</p>';
-				
+		
 		$backup_history = UpdraftPlus_Backup_History::get_history();
 		
 		foreach ($backup_history as $key => $backup) {
@@ -5642,6 +5645,10 @@ ENDHERE;
 		$output .= '</p>';
 
 		if ((defined('UPDRAFTPLUS_UPDRAFTCLONE_DEVELOPMENT') && UPDRAFTPLUS_UPDRAFTCLONE_DEVELOPMENT) || $is_admin_user) {
+			$output .= '<p class="updraftplus-option updraftplus-option-inline package">';
+			$output .= ' <span class="updraftplus-option-label">'.__('Clone package:', 'updraftplus').'</span> ';
+			$output .= $this->output_select_data($supported_packages, 'package', 'starter');
+			$output .= '</p>';
 			$output .= '<p class="updraftplus-option updraftplus-option-inline updraftclone-branch">';
 			$output .= ' <span class="updraftplus-option-label">UpdraftClone Branch:</span> ';
 			$output .= '<input id="updraftplus_clone_updraftclone_branch" type="text" size="36" name="updraftplus_clone_updraftclone_branch" value="">';
@@ -5662,14 +5669,15 @@ ENDHERE;
 	/**
 	 * This function will output a select input using the passed in values.
 	 *
-	 * @param array  $data - the keys and values for the select
-	 * @param string $name - the name of the items in the select input
+	 * @param array  $data     - the keys and values for the select
+	 * @param string $name     - the name of the items in the select input
+	 * @param string $selected - the value we want selected by default
 	 *
-	 * @return string      - the output of the select input
+	 * @return string          - the output of the select input
 	 */
-	public function output_select_data($data, $name) {
+	public function output_select_data($data, $name, $selected = '') {
 		
-		$name_version = $this->get_current_version($name);
+		$name_version = empty($selected) ? $this->get_current_version($name) : $selected;
 		
 		$output = '<select id="updraftplus_clone_'.$name.'_options" name="updraftplus_clone_'.$name.'_options" data-'.$name.'_version="'.$name_version.'">';
 

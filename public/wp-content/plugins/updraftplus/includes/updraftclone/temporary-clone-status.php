@@ -360,8 +360,6 @@ class UpdraftPlus_Temporary_Clone_Status {
 	 * @return string - the clone status description
 	 */
 	public function get_status_description() {
-		global $updraftplus;
-
 		$description = "";
 
 		switch ($this->current_status) {

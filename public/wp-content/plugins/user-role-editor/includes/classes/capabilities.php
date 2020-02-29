@@ -167,8 +167,7 @@ class URE_Capabilities {
                 
         foreach ( array_keys( $this->built_in_wp_caps ) as $cap ) {
             $this->add_capability_to_full_caps_list( $cap, $full_list );
-        }        
-        
+        }                
     }
     // end of add_wordpress_caps()
 
@@ -189,6 +188,10 @@ class URE_Capabilities {
     
     public static function add_cap_to_roles( $roles, $cap ) {
         global $wp_roles;
+        
+        if ( !is_array( $roles ) || count( $roles )==0 ) {
+            return;
+        }
         
         foreach( $roles as $role ) {
             if ( isset( $wp_roles->role_objects[$role] ) && 
@@ -215,8 +218,7 @@ class URE_Capabilities {
         if ( $attachment_post_type->cap->edit_posts!=='edit_posts' ) {
             $post_types['attachment'] = $attachment_post_type;
         }
-        
-        
+                
         foreach( $post_types as $post_type ) {
             if ( !isset( $_post_types[$post_type->name] ) ) {
                 continue;
@@ -224,16 +226,13 @@ class URE_Capabilities {
             if ( !isset($post_type->cap) ) {
                 continue;
             }
-            $cpt_editor_roles = apply_filters( 'ure_cpt_editor_roles', $cpt_editor_roles0, $post_type->name );
-            if ( empty( $cpt_editor_roles ) || count( $cpt_editor_roles )==0 ) {
-                continue;
-            }
+            $cpt_editor_roles = apply_filters( 'ure_cpt_editor_roles', $cpt_editor_roles0, $post_type->name );            
             foreach( $capabilities as $capability ) {
                 if ( !isset( $post_type->cap->$capability ) ) {
                     continue;                    
                 }    
                 $cap_to_check = $post_type->cap->$capability;
-                $this->add_capability_to_full_caps_list( $cap_to_check, $full_list );
+                $this->add_capability_to_full_caps_list( $cap_to_check, $full_list );                
                 self::add_cap_to_roles( $cpt_editor_roles, $cap_to_check );
             }                        
         }

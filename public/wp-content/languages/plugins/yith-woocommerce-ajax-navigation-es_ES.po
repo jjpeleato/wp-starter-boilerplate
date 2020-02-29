@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - YITH WooCommerce Ajax Product Filter - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2019-11-29 09:51:57+0000\n"
+"PO-Revision-Date: 2020-02-17 08:51:15+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -10,6 +10,22 @@ msgstr ""
 "X-Generator: GlotPress/2.4.0-alpha\n"
 "Language: es\n"
 "Project-Id-Version: Plugins - YITH WooCommerce Ajax Product Filter - Stable (latest release)\n"
+
+#: plugin-fw/lib/yit-plugin-panel.php:1237
+msgid ":) Thanks!"
+msgstr ":) ¡Gracias!"
+
+#: plugin-fw/lib/yit-plugin-panel.php:1236
+msgid "help us by leaving a five-star rating"
+msgstr "ayúdanos dejando una valoración de cinco estrellas"
+
+#: plugin-fw/lib/yit-plugin-panel.php:1234
+msgid "to keep updating and improving the plugin. Please,"
+msgstr "para seguir actualizando y mejorando el plugin. Por favor,"
+
+#: plugin-fw/lib/yit-plugin-panel.php:1233
+msgid "We need your support"
+msgstr "Necesitamos tu apoyo"
 
 #: plugin-fw/templates/sysinfo/system-information-panel.php:46
 msgid "Output IP Address"
@@ -250,11 +266,11 @@ msgctxt "[Plugin Name] Admin: Widget Title"
 msgid "YITH Ajax Product Filter"
 msgstr "YITH Ajax Product Filter"
 
-#: plugin-fw/yit-plugin.php:193
+#: plugin-fw/yit-plugin.php:194
 msgid "License"
 msgstr "Licencia"
 
-#: plugin-fw/yit-plugin.php:189
+#: plugin-fw/yit-plugin.php:190
 msgctxt "Action links"
 msgid "Settings"
 msgstr "Ajustes"
@@ -422,7 +438,7 @@ msgstr "Aprovecha la versión premium del plugin para editar el comportamiento p
 msgid "Frontend Settings"
 msgstr "Ajustes de portada"
 
-#: plugin-fw/templates/fields/upload.php:29 templates/admin/premium.php:413
+#: templates/admin/premium.php:413 plugin-fw/templates/fields/upload.php:29
 msgid "Reset"
 msgstr "Reestablecer"
 
@@ -482,8 +498,8 @@ msgstr "Tipo de petición:"
 msgid "Type:"
 msgstr "Tipo:"
 
-#: widgets/class.yith-wcan-reset-navigation-widget.php:126
 #: widgets/class.yith-wcan-navigation-widget.php:884
+#: widgets/class.yith-wcan-reset-navigation-widget.php:126
 msgid "Title"
 msgstr "Título"
 
@@ -696,8 +712,8 @@ msgstr "Cerrar todo"
 msgid "Image preview"
 msgstr "Vista previa de la imagen"
 
-#: plugin-fw/templates/panel/woocommerce/woocommerce-upload.php:40
 #: plugin-fw/templates/fields/upload.php:27
+#: plugin-fw/templates/panel/woocommerce/woocommerce-upload.php:40
 #: plugin-fw/templates/metaboxes/types/icon-list.php:70
 msgid "Upload"
 msgstr "Subir"
@@ -743,66 +759,66 @@ msgstr ""
 msgid "Plugins Activated"
 msgstr "Plugins activados"
 
-#: plugin-fw/lib/yit-plugin-panel.php:784
+#: plugin-fw/lib/yit-plugin-panel.php:785
 msgid "Sorting successful."
 msgstr "Ordenado con éxito."
 
-#: plugin-fw/lib/yit-plugin-panel.php:783
+#: plugin-fw/lib/yit-plugin-panel.php:784
 msgid "Sorry, import is disabled."
 msgstr "Lo siento, la importación está desactivada."
 
-#: plugin-fw/lib/yit-plugin-panel.php:782
+#: plugin-fw/lib/yit-plugin-panel.php:783
 msgid "The added file is not valid."
 msgstr "El archivo añadido es no válido."
 
-#: plugin-fw/lib/yit-plugin-panel.php:781
+#: plugin-fw/lib/yit-plugin-panel.php:782
 msgid "An error has occurred during import. Please try again."
 msgstr "Ha ocurrido un error durante la importación. Por favor, inténtalo de nuevo."
 
-#: plugin-fw/lib/yit-plugin-panel.php:780
+#: plugin-fw/lib/yit-plugin-panel.php:781
 msgid "Database imported correctly."
 msgstr "Base de datos importada correctamente."
 
-#: plugin-fw/lib/yit-plugin-panel.php:778
 #: plugin-fw/lib/yit-plugin-panel.php:779
+#: plugin-fw/lib/yit-plugin-panel.php:780
 msgid "Element updated correctly."
 msgstr "Elemento actualizado correctamente."
 
-#: plugin-fw/lib/yit-plugin-panel.php:777
+#: plugin-fw/lib/yit-plugin-panel.php:778
 msgid "Element deleted correctly."
 msgstr "Elemento eliminado correctamente."
 
-#: plugin-fw/lib/yit-plugin-panel.php:776
+#: plugin-fw/lib/yit-plugin-panel.php:777
 msgid "Settings reset"
 msgstr "Restablecer ajustes"
 
-#: plugin-fw/lib/yit-plugin-panel.php:775
+#: plugin-fw/lib/yit-plugin-panel.php:776
 msgid "Settings saved"
 msgstr "Ajustes guardados"
 
-#: plugin-fw/lib/yit-plugin-panel.php:774
+#: plugin-fw/lib/yit-plugin-panel.php:775
 msgid "The element you have entered already exists. Please, enter another name."
 msgstr "El elemento que has introducido ya existe.Por favor, introduce otro nombre."
 
+#: plugin-fw/lib/yit-plugin-panel.php:577
 #: plugin-fw/lib/yit-plugin-subpanel.php:157
-#: plugin-fw/lib/yit-plugin-panel.php:576
 #: plugin-fw/templates/panel/woocommerce/woocommerce-form.php:21
 msgid "Are you sure?"
 msgstr "¿Estás seguro?"
 
+#: plugin-fw/lib/yit-plugin-panel.php:576
 #: plugin-fw/lib/yit-plugin-subpanel.php:156
-#: plugin-fw/lib/yit-plugin-panel.php:575
 msgid "Reset to default"
 msgstr "Restablecer a por defecto"
 
+#: plugin-fw/lib/yit-plugin-panel.php:574
 #: plugin-fw/lib/yit-plugin-subpanel.php:154
-#: plugin-fw/lib/yit-plugin-panel.php:573
 #: plugin-fw/templates/panel/woocommerce/woocommerce-form.php:17
 msgid "If you continue with this action, you will reset all options in this page."
 msgstr "Si continúas con esta opción, restablecerás todas las opciones en esta página."
 
+#: plugin-fw/lib/yit-plugin-panel.php:571
 #: plugin-fw/lib/yit-plugin-subpanel.php:151
-#: plugin-fw/lib/yit-plugin-panel.php:570
 #: plugin-fw/templates/panel/woocommerce/woocommerce-form.php:14
 msgid "Save Changes"
 msgstr "Guadar cambios"
@@ -819,199 +835,199 @@ msgstr "Ajustes del plugin"
 msgid "The changes you have made will be lost if you leave this page."
 msgstr "Los cambios que has hecho se perderán si abandonas esta página."
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:1636
+#: plugin-fw/lib/yit-cpt-unlimited.php:1638
 msgid "Upload multiple files"
 msgstr "Subir varios archivos"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:1633
+#: plugin-fw/lib/yit-cpt-unlimited.php:1635
 msgid "Add %s from images"
 msgstr "Añadir %s desde imágenes"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:1482
+#: plugin-fw/lib/yit-cpt-unlimited.php:1484
 #: plugin-fw/templates/fields/customtabs.php:46
 #: plugin-fw/templates/fields/customtabs.php:89
 msgid "Name"
 msgstr "Nombre"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:1475
+#: plugin-fw/lib/yit-cpt-unlimited.php:1477
 msgid "Show frontend of the %s"
 msgstr "Mostrar portada del %s"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:1222
-#: plugin-fw/lib/yit-cpt-unlimited.php:1235
+#: plugin-fw/lib/yit-cpt-unlimited.php:1224
+#: plugin-fw/lib/yit-cpt-unlimited.php:1237
 msgid "Quick links"
 msgstr "Enlaces rápidos"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:1130
+#: plugin-fw/lib/yit-cpt-unlimited.php:1132
 msgid "layout settings"
 msgstr "Ajustes de diseño"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:1089
+#: plugin-fw/lib/yit-cpt-unlimited.php:1091
 msgid "Layout for single page of this portfolio"
 msgstr "Diseño para página individual de este porfolio"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:1088
+#: plugin-fw/lib/yit-cpt-unlimited.php:1090
 msgid "Single layout"
 msgstr "Diseño infividual"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:1083
+#: plugin-fw/lib/yit-cpt-unlimited.php:1085
 msgid "Set univocal name for each category page URL."
 msgstr "Establece un nombre para cada URL de categoría de página."
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:1082
+#: plugin-fw/lib/yit-cpt-unlimited.php:1084
 msgid "Taxonomy Rewrite"
 msgstr "Sobreescribir taxonomía"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:1077
+#: plugin-fw/lib/yit-cpt-unlimited.php:1079
 msgid "If you want to use categories in the portfolio, set a name for taxonomy. Name should be a slug (must not contain capital letters nor spaces) and must not be more than 32 characters long (database structure restriction)."
 msgstr "Si quieres usar categorías en el porfolio, establece un nombre para la taxonomía. El nombre debe ser un slug (no debe contener mayúsculas ni espacios) y n debe tener más de 32 de caracteres de longitud (restriccion de estructura de base de datos)."
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:1076
+#: plugin-fw/lib/yit-cpt-unlimited.php:1078
 msgid "Taxonomy"
 msgstr "Taxonomía"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:1071
+#: plugin-fw/lib/yit-cpt-unlimited.php:1073
 msgid "Set a label in plural (title of portfolio if empty)"
 msgstr "Establecer una etiqueta en plural (título del porfolio si está vacío)"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:1070
+#: plugin-fw/lib/yit-cpt-unlimited.php:1072
 msgid "Label in Plural"
 msgstr "Etiqueta en plural"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:1065
+#: plugin-fw/lib/yit-cpt-unlimited.php:1067
 msgid "Set a label in singular (title of portfolio if empty)"
 msgstr "Establecer una etiqueta en singular (título del porfolio si está vacío)"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:1064
+#: plugin-fw/lib/yit-cpt-unlimited.php:1066
 msgid "Label in Singular"
 msgstr "Etiqueta en singular"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:1059
+#: plugin-fw/lib/yit-cpt-unlimited.php:1061
 msgid "Univocal identification name in the URL for each product (slug from post if empty)"
 msgstr "Nombre unívoco de identificación en la URL para cada producto (slug de la publicación si está vacío)"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:1058
+#: plugin-fw/lib/yit-cpt-unlimited.php:1060
 msgid "Rewrite"
 msgstr "Sobreescribir"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:1052
+#: plugin-fw/lib/yit-cpt-unlimited.php:1054
 msgid "Layout for this %s"
 msgstr "Diseño para este %s"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:1051
+#: plugin-fw/lib/yit-cpt-unlimited.php:1053
 msgid "Type"
 msgstr "Tipo"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:1048
-#: plugin-fw/lib/yit-cpt-unlimited.php:1196
-#: plugin-fw/lib/yit-cpt-unlimited.php:1202
 #: plugin-fw/lib/yit-plugin-panel.php:80
+#: plugin-fw/lib/yit-cpt-unlimited.php:1050
+#: plugin-fw/lib/yit-cpt-unlimited.php:1198
+#: plugin-fw/lib/yit-cpt-unlimited.php:1204
 msgid "Settings"
 msgstr "Ajustes"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:1042
+#: plugin-fw/lib/yit-cpt-unlimited.php:1044
 msgid "%s Settings"
 msgstr "%s Ajustes"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:724
+#: plugin-fw/lib/yit-cpt-unlimited.php:726
 msgid "Categories"
 msgstr "Categorías"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:635
+#: plugin-fw/lib/yit-cpt-unlimited.php:637
 msgid "Category"
-msgstr "Categoria"
+msgstr "Categoría"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:634
+#: plugin-fw/lib/yit-cpt-unlimited.php:636
 msgid "New Category Name"
 msgstr "Nuevo nombre de categoría"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:633
+#: plugin-fw/lib/yit-cpt-unlimited.php:635
 msgid "Add New Category"
 msgstr "Añadir nueva categoría"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:632
+#: plugin-fw/lib/yit-cpt-unlimited.php:634
 msgid "Update Category"
 msgstr "Actualizar categoría"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:631
+#: plugin-fw/lib/yit-cpt-unlimited.php:633
 msgid "Edit Category"
 msgstr "Editar categoría"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:630
+#: plugin-fw/lib/yit-cpt-unlimited.php:632
 msgid "Parent Category:"
 msgstr "Categoría superior:"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:629
+#: plugin-fw/lib/yit-cpt-unlimited.php:631
 msgid "Parent Category"
 msgstr "Categoría superior"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:628
+#: plugin-fw/lib/yit-cpt-unlimited.php:630
 msgid "All Categories"
 msgstr "Todas las categorías"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:627
+#: plugin-fw/lib/yit-cpt-unlimited.php:629
 #: plugin-fw/templates/fields/ajax-terms.php:56
 msgid "Search Categories"
 msgstr "Buscar categorías"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:626
+#: plugin-fw/lib/yit-cpt-unlimited.php:628
 msgctxt "taxonomy singular name"
 msgid "Category"
 msgstr "Categoría"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:625
+#: plugin-fw/lib/yit-cpt-unlimited.php:627
 msgctxt "taxonomy general name"
 msgid "%s Categories"
 msgstr "%s categorías"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:468
-#: plugin-fw/lib/yit-cpt-unlimited.php:582
+#: plugin-fw/lib/yit-cpt-unlimited.php:470
+#: plugin-fw/lib/yit-cpt-unlimited.php:584
 msgid "No %s found in Trash"
 msgstr "No se encontró %s en la papelera"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:467
-#: plugin-fw/lib/yit-cpt-unlimited.php:581
+#: plugin-fw/lib/yit-cpt-unlimited.php:469
+#: plugin-fw/lib/yit-cpt-unlimited.php:583
 msgid "No %s found"
 msgstr "No %s encontrado"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:466
-#: plugin-fw/lib/yit-cpt-unlimited.php:580
+#: plugin-fw/lib/yit-cpt-unlimited.php:468
+#: plugin-fw/lib/yit-cpt-unlimited.php:582
 msgid "Search %s"
 msgstr "Buscar %s"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:465
-#: plugin-fw/lib/yit-cpt-unlimited.php:579
-#: plugin-fw/lib/yit-cpt-unlimited.php:1251
-#: plugin-fw/lib/yit-cpt-unlimited.php:1305
+#: plugin-fw/lib/yit-cpt-unlimited.php:467
+#: plugin-fw/lib/yit-cpt-unlimited.php:581
+#: plugin-fw/lib/yit-cpt-unlimited.php:1253
+#: plugin-fw/lib/yit-cpt-unlimited.php:1307
 msgid "View %s"
 msgstr "Ver %s"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:464
-#: plugin-fw/lib/yit-cpt-unlimited.php:578
+#: plugin-fw/lib/yit-cpt-unlimited.php:466
+#: plugin-fw/lib/yit-cpt-unlimited.php:580
 msgid "All %s"
 msgstr "Todo %s"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:463
-#: plugin-fw/lib/yit-cpt-unlimited.php:577
+#: plugin-fw/lib/yit-cpt-unlimited.php:465
+#: plugin-fw/lib/yit-cpt-unlimited.php:579
 msgid "New %s"
 msgstr "Nuevo %s"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:462
-#: plugin-fw/lib/yit-cpt-unlimited.php:576
-#: plugin-fw/lib/yit-cpt-unlimited.php:1267
-#: plugin-fw/lib/yit-cpt-unlimited.php:1304
+#: plugin-fw/lib/yit-cpt-unlimited.php:464
+#: plugin-fw/lib/yit-cpt-unlimited.php:578
+#: plugin-fw/lib/yit-cpt-unlimited.php:1269
+#: plugin-fw/lib/yit-cpt-unlimited.php:1306
 msgid "Edit %s"
 msgstr "Editar %s"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:461
-#: plugin-fw/lib/yit-cpt-unlimited.php:575
+#: plugin-fw/lib/yit-cpt-unlimited.php:463
+#: plugin-fw/lib/yit-cpt-unlimited.php:577
 msgid "Add New %s"
 msgstr "Añadir nuevo %s"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:460
-#: plugin-fw/lib/yit-cpt-unlimited.php:574
-#: plugin-fw/lib/yit-cpt-unlimited.php:719
-#: plugin-fw/lib/yit-cpt-unlimited.php:1634
+#: plugin-fw/lib/yit-cpt-unlimited.php:462
+#: plugin-fw/lib/yit-cpt-unlimited.php:576
+#: plugin-fw/lib/yit-cpt-unlimited.php:721
+#: plugin-fw/lib/yit-cpt-unlimited.php:1636
 msgid "Add %s"
 msgstr "Añadir %s"
 
@@ -1033,8 +1049,8 @@ msgctxt "For multicolor: I.E. white and red T-Shirt"
 msgid "Color 1"
 msgstr "Color 1"
 
-#: widgets/class.yith-wcan-navigation-widget.php:875
 #: includes/functions.yith-wcan.php:88
+#: widgets/class.yith-wcan-navigation-widget.php:875
 msgid "Color"
 msgstr "Color"
 

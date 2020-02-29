@@ -195,7 +195,7 @@ class URE_Editor {
     // end of hide_pro_banner()
     
     
-    protected function init_current_role_name() {
+    public function init_current_role_name() {
 
         $this->current_role = '';
         $this->current_role_name = '';
@@ -811,47 +811,53 @@ class URE_Editor {
      * @return string   - message about operation result
      * 
      */
-    protected function add_new_role() {
+    public function add_new_role() {
 
-        if (!current_user_can('ure_create_roles')) {
-            return esc_html__('Insufficient permissions to work with User Role Editor','user-role-editor');
+        $response = array('result'=>'error', 'role_id'=>'', 'role_name'=>'', 'message'=>'');
+        if ( !current_user_can( 'ure_create_roles' ) ) {
+            $response['message'] = esc_html__( 'Insufficient permissions to work with User Role Editor','user-role-editor' );
+            return $response;
         }
         
         $result = $this->get_role_id_from_post();
         if ( !empty( $result['message'] ) ) {
-            return $result['message'];
+            $response['message'] = $result['message'];
+            return $response;
         }
         
         $role_id = $result['role_id']; 
         $wp_roles = wp_roles();        
         if ( isset( $wp_roles->roles[$role_id] ) ) {
-            $message =  sprintf( 'Error! ' . esc_html__('Role %s exists already', 'user-role-editor' ), $role_id);
-            return $message;
+            $response['message'] = sprintf( 'Error! ' . esc_html__( 'Role %s exists already', 'user-role-editor' ), $role_id );
+            return $response;
         }
 
-        $role_name = isset( $_POST['user_role_name'] ) ? $_POST['user_role_name'] : false;
-        if ( !empty( $role_name ) ) {
-            $role_name = sanitize_text_field( $role_name );
-        } else {
+        $role_name = $this->lib->get_request_var( 'user_role_name', 'post' );
+        if ( empty( $role_name ) ) {
             $role_name = $role_id;  // as user role name is empty, use user role ID instead as a default value
         }
         $this->current_role = $role_id;
-        $role_copy_from = isset($_POST['user_role_copy_from']) ? $_POST['user_role_copy_from'] : false;
-        if ( !empty( $role_copy_from ) && $role_copy_from !== 'none' && $wp_roles->is_role( $role_copy_from ) ) {
+        $role_copy_from = $this->lib->get_request_var( 'user_role_copy_from', 'post' );
+        if ( !empty( $role_copy_from ) && $role_copy_from!=='none' && $wp_roles->is_role( $role_copy_from ) ) {
             $role = $wp_roles->get_role($role_copy_from);
             $capabilities = $this->remove_caps_not_allowed_for_single_admin( $role->capabilities );
         } else {
-            $capabilities = array('read' => true, 'level_0' => true);   // User subscriber role permissions as a default value
+            $capabilities = array('read' => true, 'level_0' => true);   // Use subscriber role permissions as a default value
         }        
         // add new role to the roles array      
-        $result = add_role($role_id, $role_name, $capabilities);
+        $result = add_role( $role_id, $role_name, $capabilities );
         if ( !isset( $result ) || empty( $result ) ) {
-            $message = 'Error! ' . esc_html__('Error is encountered during new role create operation', 'user-role-editor' );
-        } else {
-            $message = sprintf(esc_html__('Role %s is created successfully', 'user-role-editor'), $role_name );
-        }        
+            $response['message'] = 'Error! ' . esc_html__('Error is encountered during new role create operation', 'user-role-editor' );
+            return $response;
+        }
         
-        return $message;
+        $response['result'] = 'success';
+        $response['role_id'] = $role_id;
+        $response['role_name'] = $role_name;
+        $response['message'] = sprintf(esc_html__('Role %s is created successfully', 'user-role-editor'), $role_name );
+                
+        
+        return $response;
     }
     // end of add_new_role()    
     
@@ -864,28 +870,31 @@ class URE_Editor {
      * @return string   - message about operation result
      * 
      */
-    protected function rename_role() {
+    public function rename_role() {
         global $wp_roles;
 
-        if ( !current_user_can('ure_edit_roles') ) {
-            return esc_html__('Insufficient permissions to work with User Role Editor','user-role-editor');
+        $response = array('result'=>'error', 'message'=>'', 'role_id'=>'', 'role_name'=>'');
+        if ( !current_user_can( 'ure_edit_roles' ) ) {
+            $response['message'] = esc_html__( 'Insufficient permissions to work with User Role Editor','user-role-editor' );
+            return $response;
         }
         
         $result = $this->get_role_id_from_post();
         if ( !empty( $result['message'] ) ) {
-            return $result['message'];
+            $response['message'] = $result['message'];
+            return $response;
         }        
         
         $new_role_name = $this->lib->get_request_var('user_role_name', 'post' );        
-        if ( empty( $new_role_name ) ) {
-            $message = esc_html__( 'Error: Empty role display name is not allowed.', 'user-role-editor' );
-            return $message;
+        if ( empty( $new_role_name ) ) {            
+            $response['message']  = esc_html__( 'Error: Empty role display name is not allowed.', 'user-role-editor' );
+            return $response;
         }        
         
         $role_id = $result['role_id'];
         $wp_roles = wp_roles();
         if ( !isset( $wp_roles->roles[$role_id] ) ) {
-            $message = sprintf('Error! ' . esc_html__('Role %s does not exists', 'user-role-editor'), $role_id);
+            $response['message'] = sprintf('Error! ' . esc_html__('Role %s does not exists', 'user-role-editor'), $role_id);
             return $message;
         }
         
@@ -897,9 +906,12 @@ class URE_Editor {
         $wp_roles->roles[$role_id]['name'] = $new_role_name;
         update_option( $wp_roles->role_key, $wp_roles->roles );
         
-        $message = sprintf( esc_html__('Role %s is renamed to %s successfully', 'user-role-editor'), $old_role_name, $new_role_name );
+        $response['result'] = 'success';
+        $response['message'] = sprintf( esc_html__('Role %s is renamed to %s successfully', 'user-role-editor'), $old_role_name, $new_role_name );
+        $response['role_id'] = $role_id;
+        $response['role_name'] = $new_role_name;
         
-        return $message;
+        return $response;
     }
     // end of rename_role()        
     
@@ -955,36 +967,27 @@ class URE_Editor {
     protected function delete_wp_roles( $roles_to_del ) {
         global $wp_roles;
 
-        if ( !current_user_can('ure_delete_roles') ) {
-            $message = esc_html__('Insufficient permissions to work with User Role Editor','user-role-editor');
-            return $message;
-        }
-
-        if ( empty($roles_to_del) || !is_array($roles_to_del) ) {
-            $message = esc_html__('Empty or not valid list of roles for deletion','user-role-editor');
-            return $message;
-        }
-        
+        $result = array('result'=>false, 'deleted_roles'=>array(), 'message'=>'');        
         $roles_can_delete = $this->get_roles_can_delete();
         $wp_roles = wp_roles();
-        $result = false;
         foreach($roles_to_del as $role_id) {
             if ( !isset( $wp_roles->roles[$role_id] ) ) {
-                $message = esc_html__('Role does not exist','user-role-editor') .' - '.$role_id;
-                return $message;
+                $result['message'] = esc_html__('Role does not exist','user-role-editor') .' - '. $role_id;
+                return $result;
             }
             if ( !isset( $roles_can_delete[$role_id]) ) {
-                $message = esc_html__('You can not delete role','user-role-editor') .' - '.$role_id;
-                return $message;
+                $result['message'] = esc_html__( 'You can not delete role', 'user-role-editor' ) .' - '.$role_id;
+                return $result;
             }                                                        
             
             unset( $wp_roles->role_objects[$role_id] );
             unset( $wp_roles->role_names[$role_id] );
             unset( $wp_roles->roles[$role_id] );
-            $result = true;
+            $result['deleted_roles'][] = $role_id;
+            $result['result'] = true;
         }   // foreach()
-        if ( $result ) {
-            update_option( $wp_roles->role_key, $wp_roles->roles );
+        if ( $result['result'] ) {
+            update_option( $wp_roles->role_key, $wp_roles->roles );            
         }
         
         return $result;
@@ -995,8 +998,15 @@ class URE_Editor {
     protected function delete_all_unused_roles() {        
         
         $roles_to_del = array_keys( $this->get_roles_can_delete() );  
+        if ( empty( $roles_to_del ) || !is_array( $roles_to_del ) ) {
+            $result = array(
+                'result'=>false, 
+                'deleted_roles'=>array(), 
+                'message'=>esc_html__( 'There are no roles for deletion','user-role-editor' ));
+            return $result;
+        }
+        
         $result = $this->delete_wp_roles( $roles_to_del );
-        $this->roles = null;    // to force roles refresh in User Role Editor
         
         return $result;        
     }
@@ -1007,35 +1017,40 @@ class URE_Editor {
      * Process user request for user role deletion
      * @return string
      */
-    protected function delete_role() {        
-
+    public function delete_role() {        
+        
+        $response = array('result'=>'error', 'message'=>'', 'deleted_roles'=>array());
         if ( !current_user_can('ure_delete_roles') ) {
-            $message = esc_html__('Insufficient permissions to work with User Role Editor','user-role-editor');
-            return $message;
+            $response['message'] = esc_html__('Insufficient permissions to work with User Role Editor','user-role-editor');
+            return $response;
         }
 
         $role_id = $this->lib->get_request_var( 'user_role_id', 'post');
         if ( $role_id==-1 ) { // delete all unused roles
             $result = $this->delete_all_unused_roles();
         } else {
+            if ( empty( $role_id ) ) {
+                $response['message'] = esc_html__( 'Wrong role ID','user-role-editor');
+                return $response;
+            }
             $result = $this->delete_wp_roles( array( $role_id ) );
         }
-        if ($result===true) {
+        if ( $result['result']===true ) {
+            $response['result'] = 'success';
+            $response['deleted_roles'] = $result['deleted_roles'];
             if ( $role_id==-1 ) {
-                $message = esc_html__( 'Unused roles are deleted successfully', 'user-role-editor' );
+                $response['message'] = esc_html__( 'Unused roles are deleted successfully', 'user-role-editor' );
             } else {
-                $message = sprintf( esc_html__( 'Role %s is deleted successfully', 'user-role-editor' ), $role_id );
+                $response['message'] = sprintf( esc_html__( 'Role %s is deleted successfully', 'user-role-editor' ), $role_id );
             }
-        } elseif ( empty($result) ) {
-            $message = 'Error! '. esc_html__( 'Error encountered during role delete operation', 'user-role-editor' );
         } else {
-            $message = $result;
+            $response['message'] = $result['message'];
         }
         if ( isset( $_POST['user_role_id'] ) ) {            
             unset( $_POST['user_role_id'] );
         }
 
-        return $message;
+        return $response;
     }
     // end of delete_role()
     
@@ -1109,20 +1124,6 @@ class URE_Editor {
                 $this->reset_user_roles();
                 exit;            
             }
-            case 'add-new-role': {
-                // process new role create request
-                $this->notification = $this->add_new_role();
-                break;
-            }
-            case 'rename-role': {
-                // process rename role request
-                $this->notification = $this->rename_role();
-                break;
-            }
-            case 'delete-role': {
-                $this->notification = $this->delete_role();
-                break;
-            }
             case 'change-default-role': {
                 $this->notification = $this->change_default_role();
                 break;
@@ -1139,16 +1140,8 @@ class URE_Editor {
                 $this->hide_pro_banner();
                 break;
             }
-            case 'add-new-capability': {
-                $this->notification = URE_Capability::add( $this->ure_object );
-                break;
-            }
-            case 'delete-user-capability': {
-                $this->notification = URE_Capability::delete();
-                break;
-            }
             case 'roles_restore_note': {
-                $this->notification = esc_html__('User Roles are restored to WordPress default values. ', 'user-role-editor');
+                $this->notification = esc_html__( 'User Roles are restored to WordPress default values. ', 'user-role-editor' );
                 break;
             }
             case 'update': {
@@ -1156,7 +1149,7 @@ class URE_Editor {
                 break;
             }
             default: {
-                do_action('ure_process_user_request');
+                do_action( 'ure_process_user_request' );
             }
         }   // switch ( $action ) ....
               
@@ -1165,7 +1158,7 @@ class URE_Editor {
     // end of process_user_request()
     
     
-    protected function init1() {
+    public function init1() {
 
         $this->roles = $this->lib->get_user_roles();
         $this->full_capabilities = $this->lib->init_full_capabilities( $this->ure_object );

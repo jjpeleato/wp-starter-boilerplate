@@ -30,16 +30,16 @@ class UpdraftPlus_BackupModule_openstack extends UpdraftPlus_BackupModule_openst
 
 		if (null === $disablesslverify) $disablesslverify = UpdraftPlus_Options::get_updraft_option('updraft_ssl_disableverify');
 
-		if (empty($user) || empty($password) || empty($authurl)) throw new Exception(__('Authorisation failed (check your credentials)', 'updraftplus'));
+		if (empty($user) || empty($password) || empty($authurl)) throw new Exception(__('Authorisation failed (check your credentials)', 'updraftplus'));// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable -- $user, $password and $authurl being extracted in extract() line 29
 
 		include_once(UPDRAFTPLUS_DIR.'/vendor/autoload.php');
 		global $updraftplus;
-		$updraftplus->log("OpenStack authentication URL: ".$authurl);
+		$updraftplus->log("OpenStack authentication URL: ".$authurl);// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable -- $authurl being extracted in extract() line 29
 
-		$client = new OpenStack($authurl, array(
-			'username' => $user,
-			'password' => $password,
-			'tenantName' => $tenant
+		$client = new OpenStack($authurl, array(// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable -- $authurl being extracted in extract() line 29
+			'username' => $user,// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable -- $user being extracted in extract() line 29
+			'password' => $password,// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable -- $password being extracted in extract() line 29
+			'tenantName' => $tenant// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable -- $tenant being extracted in extract() line 29
 		));
 		$this->client = $client;
 
@@ -55,7 +55,7 @@ class UpdraftPlus_BackupModule_openstack extends UpdraftPlus_BackupModule_openst
 
 		$client->authenticate();
 
-		if (empty($region)) {
+		if (empty($region)) {// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 			$catalog = $client->getCatalog();
 			if (!empty($catalog)) {
 				$items = $catalog->getItems();

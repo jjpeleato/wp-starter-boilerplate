@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WPS Hide Login - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2019-10-23 20:50:34+0000\n"
+"PO-Revision-Date: 2020-01-26 20:16:59+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -33,10 +33,6 @@ msgstr "https://github.com/Tabrisrp/wps-hide-login"
 msgid "WPS Hide Login"
 msgstr "WPS Hide Login"
 
-#. Author URI of the plugin/theme
-msgid "http://profiles.wordpress.org/tabrisrp/"
-msgstr "http://profiles.wordpress.org/tabrisrp/"
-
 #: wps-hide-login.php:345 wps-hide-login.php:349
 msgid "Settings"
 msgstr "Ajustes"
@@ -65,10 +61,6 @@ msgstr "¿Necesitas ayuda? Inténtalo en los <a href=\"%1$s\" target=\"_blank\">
 msgid "WPS Hide Login could not be activated because you already have Rename wp-login.php active. Please uninstall rename wp-login.php to use WPS Hide Login"
 msgstr "WPS Hide Login no se ha podido activar debido a que ya tienes activo el plugin Rename wp-login.php. Por favor, desinstala Rename wp-login.php para poder usar WPS Hide Login"
 
-#: wps-hide-login.php:365
-msgid "This feature is not enabled."
-msgstr "Esta función no está activada."
-
 #: wps-hide-login.php:301
 msgid "To set a networkwide default, go to <a href=\"%s\">Network Settings</a>."
 msgstr "Para configurar los ajustes por defecto en toda la red, ve a los <a href=\"%s\">Ajustes de red</a>."
@@ -76,3 +68,11 @@ msgstr "Para configurar los ajustes por defecto en toda la red, ve a los <a href
 #: wps-hide-login.php:216
 msgid "This option allows you to set a networkwide default, which can be overridden by individual sites. Simply go to to the site’s permalink settings to change the url."
 msgstr "Esta opción te permite establecer un valor por defecto para toda la red, que puede ser reemplazado para sitios concretos. Simplemente, ve a los ajustes de los enlaces permanentes del sitio para cambiar la URL."
+
+#. Author URI of the plugin/theme
+msgid "http://profiles.wordpress.org/tabrisrp/"
+msgstr "https://profiles.wordpress.org/tabrisrp/"
+
+#: wps-hide-login.php:365
+msgid "This feature is not enabled."
+msgstr "Esta característica no está activada."

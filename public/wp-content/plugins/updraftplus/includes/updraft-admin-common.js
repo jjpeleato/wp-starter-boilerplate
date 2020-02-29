@@ -2171,6 +2171,7 @@ jQuery(document).ready(function($) {
 		var php_version = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content #updraftplus_clone_php_options').val();
 		var wp_version = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content #updraftplus_clone_wp_options').val();
 		var region = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content #updraftplus_clone_region_options').val();
+		var package = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content #updraftplus_clone_package_options').val();
 		var updraftclone_branch = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content #updraftplus_clone_updraftclone_branch').val();
 		var updraftplus_branch = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content #updraftplus_clone_updraftplus_branch').val();
 		var admin_only = $('.updraftplus_clone_admin_login_options').is(':checked');
@@ -2192,6 +2193,7 @@ jQuery(document).ready(function($) {
 					php_version: php_version,
 					wp_version: wp_version,
 					region: region,
+					package: package,
 					admin_only: admin_only,
 					updraftclone_branch: ('undefined' === typeof updraftclone_branch) ? '' : updraftclone_branch,
 					updraftplus_branch: ('undefined' === typeof updraftplus_branch) ? '' : updraftplus_branch
@@ -5308,8 +5310,9 @@ function updraft_process_status_check(resp, response_raw, original_parameters) {
 					original_parameters.thisjobonly = autobackup_nonce;
 					console.log('UpdraftPlus: the start of the requested backup job has been detected; id: '+autobackup_nonce);
 				}
-			} else if (updraft_inpage_hasbegun == 1 && jQuery('#updraft-jobid-'+original_parameters.thisjobonly+'.updraft_finished').length) {
-				// This block used to be a straightforward 'if'... switching to 'else if' ensures that it cannot fire on the same run. (If the backup hasn't started, it may be detected as finished before to it began, on an overloaded server if there's a race).
+			}
+
+			if (updraft_inpage_hasbegun == 1 && jQuery('#updraft-jobid-'+original_parameters.thisjobonly+'.updraft_finished').length) {
 				// Don't reset to 0 - this will cause the 'began' event to be detected again
 				updraft_inpage_hasbegun = 2;
 

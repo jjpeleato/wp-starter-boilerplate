@@ -3,7 +3,7 @@ Contributors: Backup with UpdraftPlus, DavidAnderson, DNutbourne, aporter, snigh
 Tags: backup, restore, database backup, wordpress backup, cloud backup, s3, dropbox, google drive, onedrive, ftp, backups
 Requires at least: 3.2
 Tested up to: 5.3
-Stable tag: 1.16.21
+Stable tag: 1.16.22
 Author URI: https://updraftplus.com
 Donate link: https://david.dw-perspective.org.uk/donate
 License: GPLv3 or later
@@ -167,6 +167,21 @@ Unfortunately not; since this is free software, there’s no warranty and no gua
 The <a href="https://updraftplus.com/news/">UpdraftPlus backup blog</a> is the best place to learn in more detail about any important changes.
 
 N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which is 1 higher in the first digit, and has an extra component on the end, but the changelog below still applies. i.e. changes listed for 1.16.17.x of the free version correspond to changes made in 2.16.17.x of the paid version.
+
+= 1.16.22 - 17/Feb/2020 =
+
+* FIX: Fix a regression with some S3-compatible providers caused by a previous switch to virtual-hosted style bucket referencing
+* TWEAK: Integrate input credentials from UpdraftCentral's zip install feature
+* TWEAK: Add information to the log file about what type of addresses (sub-domain/sub-folder) the multisite is configured to use
+* TWEAK: Fix potential race condition affecting settings page notifications on very fast or very slow sites
+* TWEAK: Some PHP notices that could be output during a restore
+* TWEAK: Automatically resume a timed-out restore operation during the uploads stage
+* TWEAK: If the database connection dies during a restore operation, try to reopen it
+* TWEAK: Adjust the UpdraftClone dashboard notice text
+* TWEAK: If the Google Drive revoke call fails try again once
+* TWEAK: The incremental backups label showed the incorrect time for different timezones
+* TWEAK: Update the WP-Optimize notice
+* TWEAK: Extend the auto resume restore to themes, others and more file backups
 
 = 1.16.21 - 10/Dec/2019 =
 
@@ -977,4 +992,4 @@ Furthermore, reliance upon any non-English translation is at your own risk. Updr
 We recognise and thank the following for code and/or libraries used and/or modified under the terms of their open source licences; see: https://updraftplus.com/acknowledgements/
 
 == Upgrade Notice ==
-* 1.16.21: Correctly search and replace database views when importing on a site with a different table prefix. Fix a bug that prevented the restore modal opening on the migrate/clone tab. Various other small tweaks and improvements. A recommended update for all.
+* 1.16.22: Fix a regression with some S3-compatible providers caused by a previous switch to virtual-hosted style bucket referencing. Various other small tweaks and improvements. A recommended update for all.

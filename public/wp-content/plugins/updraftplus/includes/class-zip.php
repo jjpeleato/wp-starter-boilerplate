@@ -403,9 +403,6 @@ class UpdraftPlus_BinZip extends UpdraftPlus_PclZip {
 		}
 
 		global $updraftplus, $updraftplus_backup;
-		$updraft_dir = $updraftplus->backups_dir_location();
-
-		$activity = false;
 
 		// BinZip does not like zero-sized zip files
 		if (file_exists($this->path) && 0 == filesize($this->path)) @unlink($this->path);// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
@@ -461,7 +458,7 @@ class UpdraftPlus_BinZip extends UpdraftPlus_PclZip {
 				$write = array($pipes[0]);
 			}
 
-			while ((!feof($pipes[1]) || !feof($pipes[2]) || (is_array($files) && count($files)>0)) && false !== ($changes = @stream_select($read, $write, $except, 0, 200000))) {// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+			while ((!feof($pipes[1]) || !feof($pipes[2]) || (is_array($files) && count($files)>0)) && false !== ($changes = @stream_select($read, $write, $except, 0, 200000))) {// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged, VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 
 				if (is_array($write) && in_array($pipes[0], $write) && is_array($files) && count($files)>0) {
 					$file = array_pop($files);

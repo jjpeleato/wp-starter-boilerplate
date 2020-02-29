@@ -94,19 +94,7 @@ class Updraft_Restorer {
 		
 		$this->continuation_data = $continuation_data;
 
-		// Line up a wpdb-like object
-		if (!$this->use_wpdb()) {
-			// We have our own extension which drops lots of the overhead on the query
-			$wpdb_obj = new UpdraftPlus_WPDB(DB_USER, DB_PASSWORD, DB_NAME, DB_HOST);
-			// Was that successful?
-			if (!$wpdb_obj->is_mysql || !$wpdb_obj->ready) {
-				$this->use_wpdb = true;
-			} else {
-				$this->wpdb_obj = $wpdb_obj;
-				$this->mysql_dbh = $wpdb_obj->updraftplus_get_database_handle();
-				$this->use_mysqli = $wpdb_obj->updraftplus_use_mysqli();
-			}
-		}
+		$this->setup_database_objects();
 		
 		if ($short_init) return;
 		
@@ -170,6 +158,54 @@ class Updraft_Restorer {
 		$this->skin = $skin;
 		$this->wp_upgrader = new WP_Upgrader($skin);
 		$this->wp_upgrader->init();
+	}
+
+	/**
+	 * This function will check if we are using wpdb, if we are not then it will setup our wpdb-like objects
+	 *
+	 * @param boolean $reconnect_wpdb - if we should include and create a new instance of wpdb
+	 *
+	 * @return void
+	 */
+	private function setup_database_objects($reconnect_wpdb = false) {
+		global $wpdb;
+
+		if ($reconnect_wpdb) {
+			$wpdb->db_connect(true);
+		}
+
+		// Line up a wpdb-like object
+		if (!$this->use_wpdb()) {
+			// We have our own extension which drops lots of the overhead on the query
+			$wpdb_obj = new UpdraftPlus_WPDB(DB_USER, DB_PASSWORD, DB_NAME, DB_HOST);
+			// Was that successful?
+			if (!$wpdb_obj->is_mysql || !$wpdb_obj->ready) {
+				$this->use_wpdb = true;
+			} else {
+				$this->wpdb_obj = $wpdb_obj;
+				$this->mysql_dbh = $wpdb_obj->updraftplus_get_database_handle();
+				$this->use_mysqli = $wpdb_obj->updraftplus_use_mysqli();
+			}
+		}
+	}
+
+	/**
+	 * This function will try to restore the database connection, if it succeeds then it returns true otherwise false
+	 *
+	 * @return boolean - true if the connection is restored, otherwise false
+	 */
+	private function restore_database_connection() {
+		global $updraftplus, $wpdb;
+
+		$wpdb_connected = $updraftplus->check_db_connection($wpdb, false, false, true);
+
+		if (false === $wpdb_connected || -1 === $wpdb_connected) {
+			sleep(10);
+			$this->setup_database_objects(true);
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -1396,9 +1432,15 @@ class Updraft_Restorer {
 
 		$updraftplus->log("restore_backup(backup_file=$backup_file, type=$type, info=".serialize($info).", last_one=$last_one)");
 
-		$path = apply_filters('updraftplus_restore_path', $info['path'], $backup_file, $this->ud_backup_set, $type);
+		if ('db' == $type) {
+			$get_dir = '';
+		} else {
+			$entity_path = isset($info['path']) ? $info['path'] : '';
 
-		$get_dir = empty($path) ? '' : $path;
+			$path = apply_filters('updraftplus_restore_path', $entity_path, $backup_file, $this->ud_backup_set, $type);
+
+			$get_dir = empty($path) ? '' : $path;
+		}
 
 		if (false === ($wp_filesystem_dir = $this->get_wp_filesystem_dir($get_dir))) return false;
 
@@ -3032,6 +3074,26 @@ class Updraft_Restorer {
 			$print_err = (strlen($sql_line) > 100) ? substr($sql_line, 0, 100).' ...' : $sql_line;
 			$updraftplus->log(sprintf(_x('An error (%s) occurred:', 'The user is being told the number of times an error has happened, e.g. An error (27) occurred', 'updraftplus'), $this->errors)." - ".$this->last_error." - ".__('the database query being run was:', 'updraftplus').' '.$print_err, 'notice-restore');
 			$updraftplus->log("An error (".$this->errors.") occurred: ".$this->last_error." - SQL query was (type=$sql_type): ".substr($sql_line, 0, 65536));
+
+			if ('MySQL server has gone away' == $this->last_error || 'Connection was killed' == $this->last_error) {
+				
+				$restored = false;
+
+				for ($i = 0; $i < 3; $i++) {
+					 if ($this->restore_database_connection()) {
+						$restored = true;
+						break;
+					 }
+				}
+
+				if (!$restored) {
+					$updraftplus->log("The Database connection has been closed and cannot be reopened.");
+					$updraftplus->log("Leaving maintenance mode");
+					$this->maintenance_mode(false);
+					return new WP_Error('db_connection_closed', __('The Database connection has been closed and cannot be reopened.', 'updraftplus'));
+				}
+				return $this->sql_exec($sql_line, $sql_type, $import_table_prefix, $check_skipping);
+			}
 
 			// First command is expected to be DROP TABLE
 			if (1 == $this->errors && 2 == $sql_type && 0 == $this->tables_created) {
