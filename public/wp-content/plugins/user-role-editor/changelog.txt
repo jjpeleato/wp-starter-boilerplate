@@ -1,6 +1,10 @@
 CHANGES LOG (full version).
 ===========================
 
+= [4.52.2] 26.12.2019 =
+* Fix: Custom capabilities for custom post types was not created by URE automatically since version 4.52.1.
+* Fix: 'administrator' role protection did not show to power users roles with 'administrator' word inside, like 'shop_administrator', etc.
+
 = [4.52.1] 11.11.2019 =
 * Update: URE requires PHP version 5.6.
 * ure_cpt_editor_roles filter was added. It takes 2 parameters: array $roles with 1 element 'administrator' by default and $post_type with post type name string. Add other role(s) to which you wish automatically add all user capabilities for custom post type $post_type. URE updates roles this way before opening "Users->User Role Editor" page.

@@ -98,8 +98,6 @@ class UpdraftPlus_BackupModule_remotesend extends UpdraftPlus_RemoteStorage_Addo
 
 		if (empty($this->default_chunk_size)) {
 		
-			$clone_would_like = $updraftplus->verify_free_memory(4194304*2) ? 4194304 : 2097152;
-		
 			// Default is 2MB. After being b64-encoded twice, this is ~ 3.7MB = 113 seconds on 32KB/s uplink
 			$default_chunk_size = $updraftplus->jobdata_get('clone_job') ? 4194304 : 2097152;
 			
@@ -167,8 +165,6 @@ class UpdraftPlus_BackupModule_remotesend extends UpdraftPlus_RemoteStorage_Addo
 
 		global $updraftplus;
 
-		$storage = $this->get_storage();
-		
 		$chunk = fread($fp, $upload_size);
 
 		if (false === $chunk) {
@@ -247,7 +243,6 @@ class UpdraftPlus_BackupModule_remotesend extends UpdraftPlus_RemoteStorage_Addo
 			// Could interpret the codes to get more interesting messages directly to the user
 			// The textual prefixes here were added after 1.12.5 - hence optional when parsing
 			if (preg_match('/^invalid_start_too_big:(start=)?(\d+),(existing_size=)?(\d+)/', $msg, $matches)) {
-				$attempted_start = $matches[1];
 				$existing_size = $matches[2];
 				if ($existing_size < $this->remotesend_uploaded_size) {
 					// The file on the remote system seems to have shrunk. Could be some load-balancing system with a distributed filesystem that is only eventually consistent.
@@ -265,7 +260,6 @@ class UpdraftPlus_BackupModule_remotesend extends UpdraftPlus_RemoteStorage_Addo
 			return false;
 		} else {
 			$remote_size = (int) $put_chunk['data']['size'];
-			$remote_status = $put_chunk['data']['status'];
 			$this->remotesend_uploaded_size = $remote_size;
 		}
 
@@ -452,7 +446,7 @@ class UpdraftPlus_BackupModule_remotesend extends UpdraftPlus_RemoteStorage_Addo
 	
 		// Don't call self::log() - this then requests options (to get the label), causing an infinite loop.
 	
-		global $updraftplus;
+		global $updraftplus, $updraftplus_admin;
 		if (empty($updraftplus_admin)) include_once(UPDRAFTPLUS_DIR.'/admin.php');
 		
 		$clone_job = $updraftplus->jobdata_get('clone_job');

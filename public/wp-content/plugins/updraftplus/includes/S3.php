@@ -55,7 +55,7 @@ class UpdraftPlus_S3 {
 	public $proxy = null;
 
 	// Added to cope with a particular situation where the user had no permission to check the bucket location, which necessitated using DNS-based endpoints.
-	public $use_dns_bucket_name = true;
+	public $use_dns_bucket_name = false;
 
 	public $useSSL = false;
 	public $useSSLValidation = true;

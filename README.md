@@ -66,15 +66,31 @@ For more information visit:
 
 ### Installing
 
-1. Open the `lando.yml` and rename the project and proxy name.
-2. Download and install the main theme. I recommend: https://underscores.me/
-3. Open the `gulp/config.js` and rename the `theme` const according theme path.
-4. Cut (don't copy) the `./assets/functions.php` file into root directory of theme and include the following code: `require_once ('core/functions.php');` on end of `[theme]/functions.php` document. **Note: The logic custom programming write to `core/functions.php`.**
-5. Open your terminal and browse to the root location of your project.
-6. Run `$lando start`.
+1. Open the `README.md` and rename the name of client, name of project and description.
+2. Open the `lando.yml` and rename the project and proxy name.
+3. Download and install the main theme. Recommended: https://underscores.me/
+4. Add the following path `public/wp-content/themes/[theme]/assets` into `.gitignore` file.
+5. Open the `gulp/config.js` and rename the `theme` const according theme path.
+6. Copy the `public/wp-config-sample.php` to `public/wp-config.php`.
+    - Add the following code:
+    ```php
+    define('WP_MEMORY_LIMIT', '256M');
+    define('WP_ENVIRONMENT', 'dev');
+    define('WP_CACHE', false);
+    define('DISALLOW_FILE_EDIT', true);
+    ...
+    define( 'WP_DEBUG', true );
+    define( 'WP_DEBUG_LOG', true );
+    define( 'WP_DEBUG_DISPLAY', true );
+    ...
+    ```
+7. Copy the `assets/.htaccess.dist` to `public/.htaccess`.
+8. Open your terminal and browse to the root location of your project.
+9. Run `$lando start`.
 	- The project has a .lando.yml file with all the environment settings.
 	- The command starts the installation process when it finishes, you can see all the URLs to access.
-7. End. Happy developing.
+10. End. Happy developing.
+
 
 ### Developing with NPM or Yarn, Gulp. PHP_CodeSniffer and Deployer
 

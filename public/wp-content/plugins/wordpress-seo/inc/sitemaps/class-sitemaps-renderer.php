@@ -39,11 +39,11 @@ class WPSEO_Sitemaps_Renderer {
 	protected $needs_conversion = false;
 
 	/**
-	 * Timezone.
+	 * The date helper.
 	 *
-	 * @var WPSEO_Sitemap_Timezone
+	 * @var WPSEO_Date_Helper
 	 */
-	protected $timezone;
+	protected $date;
 
 	/**
 	 * Set up object properties.
@@ -53,10 +53,10 @@ class WPSEO_Sitemaps_Renderer {
 		$this->stylesheet     = '<?xml-stylesheet type="text/xsl" href="' . esc_url( $stylesheet_url ) . '"?>';
 		$this->charset        = get_bloginfo( 'charset' );
 		$this->output_charset = $this->charset;
-		$this->timezone       = new WPSEO_Sitemap_Timezone();
+		$this->date           = new WPSEO_Date_Helper();
 
 		if (
-			'UTF-8' !== $this->charset
+			$this->charset !== 'UTF-8'
 			&& function_exists( 'mb_list_encodings' )
 			&& in_array( $this->charset, mb_list_encodings(), true )
 		) {
@@ -193,7 +193,7 @@ class WPSEO_Sitemaps_Renderer {
 		$date = null;
 
 		if ( ! empty( $url['lastmod'] ) ) {
-			$date = $this->timezone->format_date( $url['lastmod'] );
+			$date = $this->date->format( $url['lastmod'] );
 		}
 
 		$url['loc'] = htmlspecialchars( $url['loc'], ENT_COMPAT, $this->output_charset, false );
@@ -222,7 +222,7 @@ class WPSEO_Sitemaps_Renderer {
 
 		if ( ! empty( $url['mod'] ) ) {
 			// Create a DateTime object date in the correct timezone.
-			$date = $this->timezone->format_date( $url['mod'] );
+			$date = $this->date->format( $url['mod'] );
 		}
 
 		$url['loc'] = htmlspecialchars( $url['loc'], ENT_COMPAT, $this->output_charset, false );
@@ -299,7 +299,7 @@ class WPSEO_Sitemaps_Renderer {
 
 		$path = wp_parse_url( $url, PHP_URL_PATH );
 
-		if ( ! empty( $path ) && '/' !== $path ) {
+		if ( ! empty( $path ) && $path !== '/' ) {
 			$encoded_path = explode( '/', $path );
 
 			// First decode the path, to prevent double encoding.
@@ -307,7 +307,6 @@ class WPSEO_Sitemaps_Renderer {
 
 			$encoded_path = array_map( 'rawurlencode', $encoded_path );
 			$encoded_path = implode( '/', $encoded_path );
-			$encoded_path = str_replace( '%7E', '~', $encoded_path ); // PHP < 5.3.
 
 			$url = str_replace( $path, $encoded_path, $url );
 		}
@@ -318,14 +317,7 @@ class WPSEO_Sitemaps_Renderer {
 
 			parse_str( $query, $parsed_query );
 
-			if ( defined( 'PHP_QUERY_RFC3986' ) ) { // PHP 5.4+.
-				$parsed_query = http_build_query( $parsed_query, null, '&amp;', PHP_QUERY_RFC3986 );
-			}
-			else {
-				$parsed_query = http_build_query( $parsed_query, null, '&amp;' );
-				$parsed_query = str_replace( '+', '%20', $parsed_query );
-				$parsed_query = str_replace( '%7E', '~', $parsed_query );
-			}
+			$parsed_query = http_build_query( $parsed_query, null, '&amp;', PHP_QUERY_RFC3986 );
 
 			$url = str_replace( $query, $parsed_query, $url );
 		}

@@ -107,6 +107,7 @@ class UpdraftPlus_Clone extends UpdraftPlus_Login {
 		if (empty($data['label'])) $data['label'] = sprintf(__('Clone of %s', 'updraftplus'), trailingslashit(network_site_url()));
 		if (empty($data['install_info']['table_prefix'])) $data['install_info']['table_prefix'] = $table_prefix;
 		$subdirectory = parse_url(network_site_url(), PHP_URL_PATH);
+		if (empty($data['install_info']['package'])) $data['install_info']['package'] = 'starter';
 		if (empty($data['install_info']['subdirectory'])) $data['install_info']['subdirectory'] = !empty($subdirectory) ? $subdirectory : '/';
 		if (empty($data['install_info']['locale'])) $data['install_info']['locale'] = get_locale();
 		if (empty($data['install_info']['owner_id']) && empty($data['install_info']['owner_login'])) {

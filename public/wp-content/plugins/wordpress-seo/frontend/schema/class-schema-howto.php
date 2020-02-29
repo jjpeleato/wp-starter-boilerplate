@@ -6,7 +6,7 @@
  */
 
 /**
- * Returns schema FAQ data.
+ * Returns schema HowTo data.
  *
  * @since 11.5
  */
@@ -22,7 +22,7 @@ class WPSEO_Schema_HowTo implements WPSEO_Graph_Piece {
 	private $is_needed = false;
 
 	/**
-	 * The FAQ blocks count on the current page.
+	 * The HowTo blocks count on the current page.
 	 *
 	 * @var int
 	 */
@@ -43,7 +43,7 @@ class WPSEO_Schema_HowTo implements WPSEO_Graph_Piece {
 	private $allowed_json_text_tags = '<h1><h2><h3><h4><h5><h6><br><ol><ul><li><a><p><b><strong><i><em>';
 
 	/**
-	 * WPSEO_Schema_FAQ constructor.
+	 * WPSEO_Schema_HowTo constructor.
 	 *
 	 * @param WPSEO_Schema_Context $context A value object with context variables.
 	 *
@@ -78,7 +78,7 @@ class WPSEO_Schema_HowTo implements WPSEO_Graph_Piece {
 		$data = [
 			'@type'            => 'HowTo',
 			'@id'              => $this->context->canonical . '#howto-' . $this->counter,
-			'name'             => $this->context->title,
+			'name'             => WPSEO_Schema_Utils::get_post_title_with_fallback( $this->context->id ),
 			'mainEntityOfPage' => [ '@id' => $this->get_main_schema_id() ],
 			'description'      => '',
 		];
@@ -91,6 +91,7 @@ class WPSEO_Schema_HowTo implements WPSEO_Graph_Piece {
 
 		$this->add_duration( $data, $block['attrs'] );
 		$this->add_steps( $data, $block['attrs']['steps'] );
+		$data = WPSEO_Schema_Utils::add_piece_language( $data );
 
 		$graph[] = $data;
 

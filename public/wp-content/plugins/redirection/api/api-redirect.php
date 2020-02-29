@@ -72,13 +72,6 @@
  * @apiUse 401Error
  * @apiUse 404Error
  * @apiUse 400MissingError
- * @apiError (Error 400) redirect_invalid_items Invalid array of items
- * @apiErrorExample {json} 404 Error Response:
- *     HTTP/1.1 400 Bad Request
- *     {
- *       "code": "redirect_invalid_items",
- *       "message": "Invalid array of items"
- *     }
  */
 
 /**
@@ -169,7 +162,7 @@
  * @apiParam (Query Parameter) {String="asc","desc"} direction Direction to order the results by (ascending or descending)
  * @apiParam (Query Parameter) {Integer{1...200}} per_page Number of results per request
  * @apiParam (Query Parameter) {Integer} page Current page of results
-  */
+ */
 class Redirection_Api_Redirect extends Redirection_Api_Filter_Route {
 	public function __construct( $namespace ) {
 		$orders = [ 'url', 'last_count', 'last_access', 'position', 'id' ];
@@ -177,15 +170,42 @@ class Redirection_Api_Redirect extends Redirection_Api_Filter_Route {
 
 		register_rest_route( $namespace, '/redirect', array(
 			'args' => $this->get_filter_args( $orders, $filters ),
-			$this->get_route( WP_REST_Server::READABLE, 'route_list' ),
-			$this->get_route( WP_REST_Server::EDITABLE, 'route_create' ),
+			$this->get_route( WP_REST_Server::READABLE, 'route_list', [ $this, 'permission_callback_manage' ] ),
+			$this->get_route( WP_REST_Server::EDITABLE, 'route_create', [ $this, 'permission_callback_add' ] ),
 		) );
 
 		register_rest_route( $namespace, '/redirect/(?P<id>[\d]+)', array(
-			$this->get_route( WP_REST_Server::EDITABLE, 'route_update' ),
+			$this->get_route( WP_REST_Server::EDITABLE, 'route_update', [ $this, 'permission_callback_add' ] ),
 		) );
 
-		$this->register_bulk( $namespace, '/bulk/redirect/(?P<bulk>delete|enable|disable|reset)', $orders, 'route_bulk' );
+		register_rest_route( $namespace, '/redirect/post', array(
+			$this->get_route( WP_REST_Server::READABLE, 'route_match_post', [ $this, 'permission_callback_manage' ] ),
+			'args' => [
+				'text' => [
+					'description' => 'Text to match',
+					'type' => 'string',
+					'required' => true,
+				],
+			],
+		) );
+
+		$this->register_bulk( $namespace, '/bulk/redirect/(?P<bulk>delete|enable|disable|reset)', $orders, 'route_bulk', [ $this, 'permission_callback_bulk' ] );
+	}
+
+	public function permission_callback_manage( WP_REST_Request $request ) {
+		return Redirection_Capabilities::has_access( Redirection_Capabilities::CAP_REDIRECT_MANAGE );
+	}
+
+	public function permission_callback_bulk( WP_REST_Request $request ) {
+		if ( $request['bulk'] === 'delete' ) {
+			return Redirection_Capabilities::has_access( Redirection_Capabilities::CAP_REDIRECT_DELETE );
+		}
+
+		return $this->permission_callback_add( $request );
+	}
+
+	public function permission_callback_add( WP_REST_Request $request ) {
+		return Redirection_Capabilities::has_access( Redirection_Capabilities::CAP_REDIRECT_ADD );
 	}
 
 	public function route_list( WP_REST_Request $request ) {
@@ -227,7 +247,7 @@ class Redirection_Api_Redirect extends Redirection_Api_Filter_Route {
 				return $this->add_error_details( $result, __LINE__ );
 			}
 
-			return array( 'item' => $redirect->to_json() );
+			return [ 'item' => $redirect->to_json() ];
 		}
 
 		return $this->add_error_details( new WP_Error( 'redirect_update_failed', 'Invalid redirect details' ), __LINE__ );
@@ -235,28 +255,50 @@ class Redirection_Api_Redirect extends Redirection_Api_Filter_Route {
 
 	public function route_bulk( WP_REST_Request $request ) {
 		$action = $request['bulk'];
-		$items = explode( ',', $request['items'] );
+		$items = $request['items'];
 
-		if ( is_array( $items ) ) {
-			foreach ( $items as $item ) {
-				$redirect = Red_Item::get_by_id( intval( $item, 10 ) );
+		foreach ( $items as $item ) {
+			$redirect = Red_Item::get_by_id( intval( $item, 10 ) );
 
-				if ( $redirect ) {
-					if ( $action === 'delete' ) {
-						$redirect->delete();
-					} elseif ( $action === 'disable' ) {
-						$redirect->disable();
-					} elseif ( $action === 'enable' ) {
-						$redirect->enable();
-					} elseif ( $action === 'reset' ) {
-						$redirect->reset();
-					}
+			if ( $redirect ) {
+				if ( $action === 'delete' ) {
+					$redirect->delete();
+				} elseif ( $action === 'disable' ) {
+					$redirect->disable();
+				} elseif ( $action === 'enable' ) {
+					$redirect->enable();
+				} elseif ( $action === 'reset' ) {
+					$redirect->reset();
 				}
 			}
-
-			return $this->route_list( $request );
 		}
 
-		return $this->add_error_details( new WP_Error( 'redirect_invalid_items', 'Invalid array of items' ), __LINE__ );
+		return $this->route_list( $request );
+	}
+
+	public function route_match_post( WP_REST_Request $request ) {
+		global $wpdb;
+
+		$params = $request->get_params();
+		$search = $params['text'];
+		$results = [];
+
+		$posts = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT ID,post_title,post_name FROM $wpdb->posts WHERE post_status='publish' AND (post_title LIKE %s OR post_name LIKE %s) " .
+				"AND post_type NOT IN ('nav_menu_item','wp_block','oembed_cache')",
+				'%' . $wpdb->esc_like( $search ) . '%', '%' . $wpdb->esc_like( $search ) . '%'
+			)
+		);
+
+		foreach ( (array) $posts as $post ) {
+			$results[] = [
+				'title' => $post->post_title,
+				'slug' => $post->post_name,
+				'url' => get_permalink( $post->ID ),
+			];
+		}
+
+		return $results;
 	}
 }

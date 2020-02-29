@@ -5,6 +5,8 @@
  * @package WPSEO\Frontend
  */
 
+use Yoast\WP\SEO\Helpers\Author_Archive_Helper;
+
 /**
  * Main frontend class for Yoast SEO, responsible for the SEO output as well as removing
  * default WordPress output.
@@ -21,7 +23,7 @@ class WPSEO_Frontend {
 	/**
 	 * Toggle indicating whether output buffering has been started.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	private $ob_started = false;
 
@@ -733,8 +735,10 @@ class WPSEO_Frontend {
 				if ( WPSEO_Options::get( 'noindex-author-wpseo', false ) ) {
 					$robots['index'] = 'noindex';
 				}
-				$curauth = $wp_query->get_queried_object();
-				if ( WPSEO_Options::get( 'noindex-author-noposts-wpseo', false ) && count_user_posts( $curauth->ID, 'any' ) === 0 ) {
+				$curauth        = $wp_query->get_queried_object();
+				$author_archive = new Author_Archive_Helper();
+				$user_has_posts = ( (int) count_user_posts( $curauth->ID, $author_archive->get_author_archive_post_types(), true ) ) > 0;
+				if ( WPSEO_Options::get( 'noindex-author-noposts-wpseo', false ) && ! $user_has_posts ) {
 					$robots['index'] = 'noindex';
 				}
 				if ( get_user_meta( $curauth->ID, 'wpseo_noindex_author', true ) === 'on' ) {
@@ -1337,7 +1341,6 @@ class WPSEO_Frontend {
 
 			$redir = $this->get_seo_meta_value( 'redirect', $post->ID );
 			if ( $redir !== '' ) {
-				header( 'X-Redirect-By: Yoast SEO' );
 				wp_redirect( $redir, 301, 'Yoast SEO' );
 				exit;
 			}
@@ -1445,7 +1448,6 @@ class WPSEO_Frontend {
 	 * @return void
 	 */
 	public function do_attachment_redirect( $attachment_url ) {
-		header( 'X-Redirect-By: Yoast SEO' );
 		wp_redirect( $attachment_url, 301, 'Yoast SEO' );
 		exit;
 	}
@@ -1570,23 +1572,26 @@ class WPSEO_Frontend {
 			return false;
 		}
 
-		$content = ob_get_clean();
+		$content  = ob_get_clean();
+		$head_end = stripos( $content, '/head>' );
 
 		$old_wp_query = $wp_query;
 
 		wp_reset_query();
 
 		// Only replace the debug marker when it is hooked.
-		if ( $this->show_debug_marker() ) {
+		if ( $head_end && $this->show_debug_marker() ) {
 			$title      = $this->title( '' );
 			$debug_mark = $this->get_debug_mark();
 
 			/*
-			 * Find all titles, strip them out and add the new one in within the debug marker,
+			 * Find all titles in the head, strip them out and add the new one in within the debug marker,
 			 * so it's easily identified whether a site uses force rewrite.
 			 */
-			$content = preg_replace( '/<title.*?\/title>/i', '', $content );
-			$content = str_replace( $debug_mark, $debug_mark . "\n" . '<title>' . esc_html( $title ) . '</title>', $content );
+			$head = preg_replace( '/<title.*?\/title>/si', '', substr( $content, 0, $head_end ) );
+			$head = str_replace( $debug_mark, $debug_mark . PHP_EOL . '<title>' . esc_html( $title ) . '</title>', $head );
+
+			$content = $head . substr( $content, $head_end );
 		}
 
 		$GLOBALS['wp_query'] = $old_wp_query;
@@ -1656,7 +1661,6 @@ class WPSEO_Frontend {
 	 * @param int    $status   Status code to use.
 	 */
 	public function redirect( $location, $status = 302 ) {
-		header( 'X-Redirect-By: Yoast SEO' );
 		wp_safe_redirect( $location, $status, 'Yoast SEO' );
 		exit;
 	}

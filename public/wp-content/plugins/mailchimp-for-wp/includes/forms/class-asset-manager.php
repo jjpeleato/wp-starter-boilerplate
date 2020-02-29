@@ -8,56 +8,19 @@
 */
 class MC4WP_Form_Asset_Manager {
 
-
 	/**
 	 * @var bool
 	 */
 	protected $load_scripts = false;
 
 	/**
-	 * @var string
-	 */
-	protected $filename_suffix = '';
-
-	/**
-	 * MC4WP_Form_Asset_Manager constructor.
-	 */
-	public function __construct() {
-		$this->filename_suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-	}
-
-	/**
 	 * Add hooks
 	 */
-	public function hook() {
-		// load checkbox css if necessary
-		add_action( 'wp_enqueue_scripts', array( $this, 'load_stylesheets' ) );
+	public function add_hooks() {
 		add_action( 'mc4wp_output_form', array( $this, 'before_output_form' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'load_stylesheets' ) );
 		add_action( 'wp_footer', array( $this, 'load_scripts' ) );
-
-		$this->register_assets();
 	}
-
-	/**
-	 * Register the various JS files used by the plugin
-	 */
-	public function register_assets() {
-		$suffix = $this->filename_suffix;
-
-		wp_register_script( 'mc4wp-forms-api', MC4WP_PLUGIN_URL . 'assets/js/forms-api' . $this->filename_suffix . '.js', array(), MC4WP_VERSION, true );
-
-		/**
-		 * Runs right after all assets (scripts & stylesheets) for forms have been registered
-		 *
-		 * @since 3.0
-		 * @deprecated 3.1.9
-		 *
-		 * @param string $suffix The suffix to add to the filename, before the file extension. Is usually set to ".min".
-		 * @ignore
-		 */
-		do_action( 'mc4wp_register_form_assets', $suffix );
-	}
-
 
 	/**
 	 * @param string $stylesheet
@@ -89,8 +52,7 @@ class MC4WP_Form_Asset_Manager {
 			return '';
 		}
 
-		$suffix = $this->filename_suffix;
-		return MC4WP_PLUGIN_URL . 'assets/css/form-' . $stylesheet . $suffix . '.css';
+		return MC4WP_PLUGIN_URL . 'assets/css/form-' . $stylesheet . '.min.css';
 	}
 
 	/**
@@ -141,30 +103,27 @@ class MC4WP_Form_Asset_Manager {
 	}
 
 	/**
-	 * Get configuration object for client-side use.
+	 * Get data object for client-side use for after a form is submitted over HTTP POST (not AJAX).
 	 *
 	 * @return array
 	 */
-	public function get_javascript_config() {
+	public function get_submitted_form_data() {
 		$submitted_form = mc4wp_get_submitted_form();
 		if ( ! $submitted_form instanceof MC4WP_Form ) {
-			return array();
+			return null;
 		}
 
-		$config = array(
-			'submitted_form' => array(
-				'id'         => $submitted_form->ID,
-				'event'      => $submitted_form->last_event,
-				'data'       => $submitted_form->get_data(),
-				'element_id' => $submitted_form->config['element_id'],
-			),
+		$data = array(
+			'id'         => $submitted_form->ID,
+			'event'      => $submitted_form->last_event,
+			'data'       => $submitted_form->get_data(),
+			'element_id' => $submitted_form->config['element_id'],
+			'auto_scroll' => true,
 		);
 
 		if ( $submitted_form->has_errors() ) {
-			$config['submitted_form']['errors'] = $submitted_form->errors;
+			$data['errors'] = $submitted_form->errors;
 		}
-
-		$auto_scroll = true;
 
 		/**
 		 * Filters the `auto_scroll` setting for when a form is submitted.
@@ -173,9 +132,9 @@ class MC4WP_Form_Asset_Manager {
 		 * @param boolean $auto_scroll
 		 * @since 3.0
 		 */
-		$config['auto_scroll'] = apply_filters( 'mc4wp_form_auto_scroll', $auto_scroll );
+		$data['auto_scroll'] = apply_filters( 'mc4wp_form_auto_scroll', $data['auto_scroll'] );
 
-		return $config;
+		return $data;
 	}
 
 	/**
@@ -185,7 +144,7 @@ class MC4WP_Form_Asset_Manager {
 		// print dummy JS
 		$this->print_dummy_javascript();
 
-		// set flags
+		// set flag to load JS files in wp_footer
 		$this->load_scripts = true;
 	}
 
@@ -211,22 +170,22 @@ class MC4WP_Form_Asset_Manager {
 			return;
 		}
 
-		global $wp_scripts;
+		$filename_suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
-		// make sure scripts are loaded
-		wp_enqueue_script( 'mc4wp-forms-api' );
-		wp_localize_script( 'mc4wp-forms-api', 'mc4wp_forms_config', $this->get_javascript_config() );
+		// load general client-side form API
+		wp_enqueue_script( 'mc4wp-forms-api', MC4WP_PLUGIN_URL . 'assets/js/forms' . $filename_suffix . '.js', array(), MC4WP_VERSION, true );
 
-		// load placeholder polyfill if browser is Internet Explorer
-		wp_enqueue_script( 'mc4wp-forms-placeholders', MC4WP_PLUGIN_URL . 'assets/js/third-party/placeholders.min.js', array(), MC4WP_VERSION, true );
-		$wp_scripts->add_data( 'mc4wp-forms-placeholders', 'conditional', 'lte IE 9' );
+		// maybe load JS file for when a form was submitted over HTTP POST
+		$submitted_form_data = $this->get_submitted_form_data();
+		if ( $submitted_form_data !== null ) {
+			wp_enqueue_script( 'mc4wp-forms-submitted', MC4WP_PLUGIN_URL . 'assets/js/forms-submitted' . $filename_suffix . '.js', array( 'mc4wp-forms-api' ), MC4WP_VERSION, true );
+			wp_localize_script( 'mc4wp-forms-submitted', 'mc4wp_submitted_form', $submitted_form_data );
+		}
 
-		// print inline scripts depending on printed fields
+		// print inline scripts
 		echo '<script>';
 		echo '(function() {';
-		include dirname( __FILE__ ) . '/views/js/general-form-enhancements.js';
 		include dirname( __FILE__ ) . '/views/js/url-fields.js';
-		include dirname( __FILE__ ) . '/views/js/date-fields.js';
 		echo '})();';
 		echo '</script>';
 
