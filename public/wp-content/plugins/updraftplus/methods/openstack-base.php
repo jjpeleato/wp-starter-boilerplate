@@ -77,8 +77,8 @@ class UpdraftPlus_BackupModule_openstack_base extends UpdraftPlus_BackupModule {
 							throw new Exception('uploadObject failed: fopen failed');
 						}
 					} catch (Exception $e) {
-						$this->log("$logname regular upload: failed ($file) (".$e->getMessage().")");
-						$this->log("$file: ".sprintf(__('%s Error: Failed to upload', 'updraftplus'), $logname), 'error');
+						$this->log("regular upload: failed ($file) (".$e->getMessage().")");
+						$this->log("$file: ".sprintf(__('Error: Failed to upload', 'updraftplus')), 'error');
 					}
 				}
 			} catch (Exception $e) {
@@ -113,7 +113,6 @@ class UpdraftPlus_BackupModule_openstack_base extends UpdraftPlus_BackupModule {
 	public function listfiles($match = 'backup_') {
 		$opts = $this->get_options();
 		$container = $opts['path'];
-		$path = $container;
 
 		if (empty($opts['user']) || (empty($opts['apikey']) && empty($opts['password']))) return new WP_Error('no_settings', __('No settings were found', 'updraftplus'));
 
@@ -340,11 +339,9 @@ class UpdraftPlus_BackupModule_openstack_base extends UpdraftPlus_BackupModule {
 		if (is_array($data)) {
 			$container_object = $data['object'];
 			$container = $data['container'];
-			$path = $data['orig_path'];
 		} else {
 			$opts = $this->get_options();
 			$container = $opts['path'];
-			$path = $container;
 			try {
 				$storage = $this->get_openstack_service($opts, UpdraftPlus_Options::get_updraft_option('updraft_ssl_useservercerts'), UpdraftPlus_Options::get_updraft_option('updraft_ssl_disableverify'));
 			} catch (AuthenticationError $e) {
@@ -587,7 +584,6 @@ class UpdraftPlus_BackupModule_openstack_base extends UpdraftPlus_BackupModule {
 	 */
 	public function get_configuration_template() {
 		ob_start();
-		$classes = $this->get_css_classes();
 		$template_str = ob_get_clean();
 		$template_str .= $this->get_configuration_middlesection_template();
 		$template_str .= $this->get_test_button_html($this->desc);

@@ -71,11 +71,7 @@ class MC4WP_Gravity_Forms_Integration extends MC4WP_Integration {
 	public function editor_js() {
 		?>
 		<script type="text/javascript">
-			/*
-			* When the field settings are initialized, populate
-			* the custom field setting.
-			*/
-			jQuery(document).on('gform_load_field_settings', function(ev, field) {
+			jQuery(document).on('gform_load_field_settings', function(evt, field) {
 				jQuery('#field_mailchimp_list').val(field.mailchimp_list || '');
 				jQuery('#field_mailchimp_double_optin').val(field.mailchimp_double_optin || "1");
 				jQuery('#field_mailchimp_precheck').val(field.mailchimp_precheck || "0");
@@ -132,7 +128,7 @@ class MC4WP_Gravity_Forms_Integration extends MC4WP_Integration {
 				<?php
 				_e( 'Select "yes" if the checkbox should be pre-checked.', 'mailchimp-for-wp' );
 				echo '<br />';
-				printf( __( '<strong>Warning: </strong> enabling this may affect your <a href="%s">GDPR compliance</a>.', 'mailchimp-for-wp' ), 'https://kb.mc4wp.com/gdpr-compliance/#utm_source=wp-plugin&utm_medium=mailchimp-for-wp&utm_campaign=integrations-page' );
+				printf( __( '<strong>Warning: </strong> enabling this may affect your <a href="%s">GDPR compliance</a>.', 'mailchimp-for-wp' ), 'https://www.mc4wp.com/kb/gdpr-compliance/#utm_source=wp-plugin&utm_medium=mailchimp-for-wp&utm_campaign=integrations-page' );
 				?>
 			</p>
 		</li>

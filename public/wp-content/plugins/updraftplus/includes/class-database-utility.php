@@ -207,6 +207,308 @@ class UpdraftPlus_Database_Utility {
 			$updraftplus->log("SQL compatibility mode".((false === $res) ? " not" : "")." successfully changed".(isset($initial_modes_str) ? " from $initial_modes_str" : "")." to $modes_str");
 		}
 	}
+
+	/**
+	 * Parse the SQL "create table" statement (non validating) and check whether it contains at least one generated column syntax and retrieve its all columns definitions and columns options
+	 *
+	 * @see https://dev.mysql.com/doc/refman/8.0/en/create-table.html
+	 * @see https://mariadb.com/kb/en/create-table/
+	 *
+	 * @param String $create_statement the SQL "CREATE TABLE" statement in which potential generated columns need to be identified
+	 * @return Array|False an array of generated column fragments (column definition, column name, generated column type, etc); false otherwise
+	 *
+	 * Example input:
+	 *
+	 *     $create_statement = "CREATE TABLE contacts (
+	 *         id INT AUTO_INCREMENT PRIMARY KEY,
+	 *         first_name VARCHAR(50) NOT NULL,
+	 *         last_name VARCHAR(50) NOT NULL,
+	 *         // the field below (fullname_virtual) is a virtual type of the generated columns
+	 *         fullname_virtual varchar(101) GENERATED ALWAYS AS (CONCAT(first_name,' ',last_name)) VIRTUAL,
+	 *         // and the one below (fullname_stored) is a stored type of the generated columns
+	 *         fullname_stored varchar(101) GENERATED ALWAYS AS (CONCAT(first_name,' ',last_name)) STORED,
+	 *         email VARCHAR(100) NOT NULL"
+	 *     );
+	 *
+	 * Corresponding result:
+	 *
+	 *     [
+	 *         "columns" => [
+	 *             [
+	 *                 "column_definition" => "fullname varchar(101) GENERATED ALWAYS AS (CONCAT(first_name,' ',last_name)) VIRTUAL NOT NULL COMMENT 'this is the comment',",
+	 *                 "column_name" => "fullname",
+	 *                 "column_data_type_definition" => [
+	 *                     [
+	 *                        "GENERATED ALWAYS AS (CONCAT(first_name,' ',last_name))",
+	 *                        90
+	 *                     ],
+	 *                     [
+	 *                        "VIRTUAL NOT NULL",
+	 *                        123      // string position
+	 *                     ],
+	 *                     [
+	 *                        "COLUMN_FORMAT DEFAULT",
+	 *                        345      // string position
+	 *                     ]
+	 *                 ],
+	 *                 "is_virtual" => true
+	 *             ],
+	 *             [
+	 *                 etc...
+	 *             ]
+	 *         ],
+	 *         "column_names" => [
+	 *             [
+	 *                 "fullname_virtual",
+	 *                 "fullname_stored"
+	 *             ]
+	 *         ],
+	 *         "virtual_columns_exist" => true,
+	 *         "create_statement" => ["
+	 *             CREATE TABLE contacts (
+	 *             id INT AUTO_INCREMENT PRIMARY KEY,
+	 *             first_name VARCHAR(50) NOT NULL,
+	 *             last_name VARCHAR(50) NOT NULL,
+	 *             // the field below (fullname) is a virtual generated columns type
+	 *             fullname varchar(101) GENERATED ALWAYS AS (CONCAT(first_name,' ',last_name)) VIRTUAL,
+	 *             email VARCHAR(100) NOT NULL
+	 *         "]
+	 *     ]
+	 */
+	public static function get_generated_column_info($create_statement) {
+
+		// check whether the create table statement contains one or more generated columns, if so then get all the columns definition
+		// https://regex101.com/r/Fy2Bkd/9
+		if (preg_match_all('/(?:,|\(|\s)\s*\`(.+)\`(.+?)(?:((?:GENERATED\s*ALWAYS\s*)?AS\s*\(.+\))([\w\s]*)(COMMENT\s*\'.*\')([\w\s]*)|((?:GENERATED\s*ALWAYS\s*)?AS\s*\(.+\))([\w\s]*))/i', $create_statement, $column_definitions, PREG_SET_ORDER | PREG_OFFSET_CAPTURE)) {
+
+			if (empty($column_definitions)) return false;
+
+			/**
+			 * If the above preg_match_all function succeed, it returns an array with the following format:
+			 *
+			 *	Array(3) {
+			 *	[0]=> // 1st set of the matched/captured string
+			 *	array(6) {
+			 *		[0]=> // 1st index represents a full column definition
+			 *		array(2) {
+			 *			[0]=> string(131) ", `full_name` char(41) GENERATED ALWAYS AS (concat(`firstname`,'()`)(()',`lastname`)) VIRTUAL NOT NULL COMMENT 'fu(ll)'_name'' COLUMN_FORMAT DEFAULT"
+			 *			[1]=> int(541)
+			 *		}
+			 *		[1]=> // 2nd index represents a column name
+			 *		array(2) {
+			 *			[0]=> string(9) "full_name"
+			 *			[1]=> int(547)
+			 *		}
+			 *		[2]=> // 3rd index represents data type option that is captured before "generated always as"
+			 *		array(2) {
+			 *			[0]=> string(18) " char(41) "
+			 *			[1]=> int(555)
+			 *		}
+			 *		[3]=> // 4rd index represents data type option which is specific for "generated always as"
+			 *		array(2) {
+			 *			[0]=> string(18) "GENERATED ALWAYS AS (concat(`firstname`,'()`)(()',`lastname`))"
+			 *			[1]=> int(629) // this is the position or starting offset of the captured data type's option, this can later be used to help with the unsupported keyword replacement stuff among db server
+			 *		}
+			 *		[4]=> // 5th index represents data type option that is captured before COMMENT keyword and after "generated alwasy as"
+			 *		array(2) {
+			 *			[0]=> string(13) " VIRTUAL NOT NULL " // this is the comment string that could be filled with any word even the reserved keyword (e.g. not null, virtual, stored, etc..)
+			 *			[1]=> int(656) // this is the position or starting offset of the captured data type's option, this can later be used to help with the unsupported keyword replacement stuff among db server
+			 *		}
+			 *		[5]=> // 6th index represents the comment
+			 *		array(2) {
+			 *			[0]=> string(2) "COMMENT 'fu(ll)'_name''"
+			 *			[1]=> int(670) // this is the position or starting offset of the captured comment's string
+			 *		}
+			 *		[6]=> // 7th index represents data type option that is captured after the COMMENT keyword
+			 *		array(2) {
+			 *			[0]=> string(2) "COLUMN_FORMAT DEFAULT"
+			 *			[1]=> int(670)
+			 *		}
+			 *	}
+			 *	array(8) { // 2nd set
+			 *		[0]=>
+			 *		array(2) {
+			 *			[0]=> string(95) ", `full_name6` char(41) GENERATED ALWAYS AS (concat(`firstname`,' ',`lastname2`))STORED NULL"
+			 *			[1]=> int(1121)
+			 *		}
+			 *		[1]=>
+			 *		array(2) {
+			 *			[0]=> string(10) "full_name6"
+			 *			[1]=> int(1127)
+			 *		}
+			 *		[2]=>
+			 *		array(2) {
+			 *			[0]=> string(0) " char(41) "
+			 *			[1]=> int(1139)
+			 *		}
+			 *		[3]=>
+			 *		array(2) {
+			 *			[0]=> string(0) ""
+			 *			[1]=> int(-1)
+			 *		}
+			 *		[4]=>
+			 *		array(2) {
+			 *			[0]=> string(0) ""
+			 *			[1]=> int(-1)
+			 *		}
+			 *		[5]=>
+			 *		array(2) {
+			 *			[0]=> string(0) "" // an empty string of this captured token indicates that the column definition doesn't have COMMENT keyword
+			 *			[1]=> int(-1)
+			 *		}
+			 *		[6]=>
+			 *		array(2) {
+			 *			[0]=> string(0) ""
+			 *			[1]=> int(-1)
+			 *		}
+			 *		[7]=> // 8th index will appear if there's no COMMENT keyword found in the column definition and it represents data type option that is specific for "generated always as"
+			 *		array(2) {
+			 *			[0]=> string(11) "GENERATED ALWAYS AS (concat(`firstname`,' ',`lastname2`))"
+			 *			[1]=> int(1205)
+			 *		}
+			 *		[8]=> // 9th index will appear if there's no COMMENT keyword found in the column definition and it represents the captured data type options
+			 *		array(2) {
+			 *			[0]=> string(11) "STORED NULL"
+			 *			[1]=> int(1270)
+			 *		}
+			 *	}
+			 *  }
+			 */
+
+			$column_fragments = array();
+			$virtual_columns_exist = false;
+
+			foreach ($column_definitions as $key => $column_definition) {
+				if (empty($column_definition)) continue;
+				$data_type_definition = (!empty($column_definition[4][0]) ? $column_definition[4][0] : '').(!empty($column_definition[6][0]) ? $column_definition[6][0] : '').(!empty($column_definition[8][0]) ? $column_definition[8][0] : '');
+				// if no virtual, stored or persistent option is specified then it's virtual by default. It's not possible having two generated columns type in the column definition e.g fullname varchar(101) GENERATED ALWAYS AS (CONCAT(first_name,' ',last_name)) VIRTUAL STORED NOT NULL COMMENT 'comment text', both MySQL and MariaDB will produces an error
+				$is_virtual = preg_match('/\bvirtual\b/i', $data_type_definition) || (!preg_match('/\bstored\b/i', $data_type_definition) && !preg_match('/\bpersistent\b/i', $data_type_definition));
+				if ($is_virtual) $virtual_columns_exist = true;
+				$fragment = array(
+					// full syntax of the column definition
+					"column_definition" => $column_definition[0][0],
+					// the extracted column name
+					"column_name" => $column_definition[1][0],
+					'column_data_type_definition' => array_fill(0, 6, array()),
+					"is_virtual" => $is_virtual,
+				);
+				if (!empty($column_definition[2][0])) $fragment['column_data_type_definition'][0] = $column_definition[2];
+				if (!empty($column_definition[3][0])) $fragment['column_data_type_definition'][1] = $column_definition[3];
+				if (empty($fragment['column_data_type_definition'][1]) && !empty($column_definition[7][0])) $fragment['column_data_type_definition'][1] = $column_definition[7];
+				if (!empty($column_definition[4][0])) $fragment['column_data_type_definition'][2] = $column_definition[4];
+				if (!empty($column_definition[5][0])) $fragment['column_data_type_definition'][3] = $column_definition[5];
+				if (!empty($column_definition[6][0])) $fragment['column_data_type_definition'][4] = $column_definition[6];
+				if (!empty($column_definition[8][0])) $fragment['column_data_type_definition'][5] = $column_definition[8];
+				$column_fragments['columns'][] = $fragment;
+				$column_fragments['column_names'][] = $fragment['column_name'];
+			}
+			if ($virtual_columns_exist) $column_fragments['virtual_columns_exist'] = true;
+			$column_fragments['create_statement'] = $create_statement;
+
+		}
+		return isset($column_fragments) ? $column_fragments : false;
+	}
+
+	/**
+	 * Retrieve information concerning whether the currently running database server supports generated columns (VIRTUAL, STORED, PERSISTENT)
+	 *
+	 * @param String $engine Optional. If specified, it should either a well-known database engine like InnoDB, MyISAM, etc or an empty string to instead use database default storage engine; e.g. 'MyISAM'
+	 * @return Array|Boolean an array of supported generated column syntax options (whether or not persistent type, not null, virtual index are supported) or false if generated column isn't supported
+	 *
+	 * The return value is structured thus:
+	 *
+	 *     [
+	 *         // InnoDB supports PERSISTENT generated columns type, whereas MyISAM does not
+	 *         "is_persistent_supported" => false,
+	 *         // InnoDB supports NOT NULL constraint, whereas MyISAM does not
+	 *         "is_not_null_supported" => true,
+	 *         // if it's on MariaDB, you can use insert ignore statement to prevent generated columns errors but not on MySQL
+	 *         "can_insert_ignore_to_generated_column" => true,
+	 *         // No matter what the database engine you use, MySQL doesn't yet support indexing on generated columns
+	 *         "is_virtual_index_supported" => false
+	 *     ]
+	 */
+	public static function is_generated_column_supported($engine = '') {
+
+		global $table_prefix, $wpdb;
+
+		$random_table_name = $table_prefix.'updraft_tmp_'.rand(0, 9999999).md5(microtime(true));
+		
+		$drop_statement = "DROP TABLE IF EXISTS `$random_table_name`;";
+
+		// both mysql and mariadb support generated column, virtual is the default type and the other option type is called stored, mariadb has an alias for stored type which is called persistent, whereas mysql doesn't have such thing.
+		// MySQL supports NULL and NOT NULL constraints. On the other hand, MariaDB doesn't support it.
+		$sql = array(
+			"CREATE TABLE `$random_table_name` (`virtual_column` varchar(17) GENERATED ALWAYS AS ('virtual_column') VIRTUAL COMMENT 'virtual_column')".(!empty($engine) ? " ENGINE=$engine" : "").";",
+			"ALTER TABLE `$random_table_name` ADD `persistent_column` VARCHAR(17) AS ('persistent_column') PERSISTENT COMMENT 'generated_column';",
+			"ALTER TABLE `$random_table_name` ADD `virtual_column_not_null` VARCHAR(17) AS ('virtual_column_not_null') VIRTUAL NOT NULL COMMENT 'virtual_column_not_null';",
+			// check if we can get through this: Error Code: 3105. The value specified for generated column 'generated_column' in table 'wp_generated_column_test' is not allowed.
+			// DEFAULT is the only allowed value for virtual and stored type (i.e INSERT IGNORE INTO `wp_generated_column_test` (`virtual_column`) VALUES(DEFAULT)), other than that will produce an error, luckily insert ignore works fine on MariaDB but not on MySQL
+			"INSERT IGNORE INTO `$random_table_name` (`virtual_column`) VALUES('virtual_column');",
+			// MySQL does not support the create option 'Index on virtual generated column' on MyISAM storage engine
+			"CREATE INDEX `idx_wp_udp_generated_column_test_generated_column` ON `$random_table_name` (virtual_column) COMMENT 'virtual_column' ALGORITHM DEFAULT LOCK DEFAULT;",
+		);
+
+		$old_val = $wpdb->suppress_errors();
+		$wpdb->query($drop_statement);
+		$is_generated_column_supported = $wpdb->query($sql[0]);
+		if ($is_generated_column_supported) {
+			$is_generated_column_supported = array(
+				'is_persistent_supported' => $wpdb->query($sql[1]),
+				'is_not_null_supported' => $wpdb->query($sql[2]),
+				'can_insert_ignore_to_generated_column' => (bool) $wpdb->query($sql[3]),
+				'is_virtual_index_supported' => $wpdb->query($sql[4])
+			);
+		} else {
+			$is_generated_column_supported = false;
+		}
+		$wpdb->query($drop_statement);
+		$wpdb->suppress_errors($old_val);
+		
+		return $is_generated_column_supported;
+	}
+
+	/**
+	 * Parse the "insert into" statement, capture the column names (if any) and check whether one of the captured columns matches the given list of the "$generated_columns"
+	 *
+	 * @see https://regex101.com/r/JZiJqH/2
+	 *
+	 * @param String $insert_statement  the insert statement in which the generated columns will be checked
+	 * @param Array  $generated_columns the list of the available "generated columns"
+	 * @return Boolean|Null True if "generated columns" exist in the "insert into" statement, false otherwise, null on empty or unmatched insert statement
+	 */
+	public static function generated_columns_exist_in_the_statement($insert_statement, $generated_columns) {
+
+		$exist = null;
+		if (preg_match('/\s*insert.+?into(?:\s*`(?:[^`]|`)+?`|[^\(]+)(?:\s*\((.+?)\))?\s*values.+/i', $insert_statement, $matches)) {
+			/**
+			 * the reqex above will search for matches of either the insert statement gives data based on the specified column names (i.e INSERT INTO `table_name`(`col1`,'col2`,`virtual_column`,`stored_column`,`col5`) values('1','2','3','4','5')) or not (i.e INSERT INTO `table_name` values('1',',2','3','4','5')), and if the above preg_match function succeed, it returns an array with the following format:
+			 *
+			 *	Array(2) {
+			 *		[0]=> "INSERT INTO `table_name`(`col1`,'col2`,`virtual_column`,`stored_column`,`col5`) values('1','2','3','4','5')"
+			*		[1]=> "`col1`,`col2`,`virtual_column`,`col4`,`stored_column`"
+			*	}
+			*	OR
+			*	Array(1) {
+			*		[0]=> "INSERT INTO `table_name` values('1','2','3','4','5')"
+			*	}
+			*/
+			$columns = isset($matches[1]) ? preg_split('/\`\s*,\s*\`/', preg_replace('/\`((?:[^\`]|\`)+)\`/', "$1", trim($matches[1]))) : array();
+			/**
+			*	the preg_replace is used to remove the leading and trailing backtick, so that the string becomes: col1`,`col2`,`virtual_column`,`col4`,`stored_column
+			*	the preg_split is used to split all strings that match `,` pattern
+			*	Array(5) {
+			*		[0]=> string(5) "col1"
+			*		[1]=> string(4) "col2"
+			*		[2]=> string(14) "virtual_column"
+			*		[3]=> string(4) "col4"
+			*		[4]=> string(14) "stored_column"
+			*	}
+			*/
+			$exist = (false == $columns) || (true == array_intersect($generated_columns, $columns));
+		}
+		return $exist;
+	}
 }
 
 class UpdraftPlus_WPDB_OtherDB_Utility extends wpdb {

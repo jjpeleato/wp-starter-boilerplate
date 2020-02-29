@@ -59,7 +59,7 @@ if (!class_exists('UpdraftPlus_Remote_Communications')) :
 class UpdraftPlus_Remote_Communications {
 
 	// Version numbers relate to versions of this PHP library only (i.e. it's not a protocol support number, and version numbers of other compatible libraries (e.g. JavaScript) are not comparable)
-	public $version = '1.4.19';
+	public $version = '1.4.20';
 
 	private $key_name_indicator;
 
@@ -609,6 +609,7 @@ class UpdraftPlus_Remote_Communications {
 	 * @return array
 	 */
 	public function http_post($post_options) {
+		global $wp_version;
 		// @codingStandardsIgnoreLine
 		@include ABSPATH.WPINC.'/version.php';
 		$http_credentials = $this->http_credentials;
@@ -1001,7 +1002,7 @@ class UpdraftPlus_Remote_Communications {
 			}
 
 			// Allow reset
-			if ($current_sequence_id > PHP_INT_MAX - 10) {
+			if ($message_sequence_id > PHP_INT_MAX - 10) {
 				$recently_seen_sequences_ids_as_array = array(0);
 			}
 
@@ -1029,7 +1030,6 @@ class UpdraftPlus_Remote_Communications {
 			$response = array('response' => 'pong', 'data' => null);
 		} else {
 			if (has_filter('udrpc_command_'.$command)) {
-				$command_action_hooked = true;
 				$response = apply_filters('udrpc_command_'.$command, null, $data, $this->key_name_indicator);
 			} else {
 				$response = array('response' => 'rpcerror', 'data' => array('code' => 'unknown_rpc_command', 'data' => $command));

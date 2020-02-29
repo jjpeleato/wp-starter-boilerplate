@@ -130,8 +130,6 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 			return new WP_Error('no_settings', get_class($this).': '.__('No settings were found - please go to the Settings tab and check your settings', 'updraftplus'));
 		}
 
-		global $updraftplus;
-
 		$use_s3_class = $this->indicate_s3_class();
 
 		if (!class_exists('WP_HTTP_Proxy')) include_once(ABSPATH.WPINC.'/class-http.php');
@@ -139,6 +137,7 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 
 		$use_ssl = true;
 		$ssl_ca = false;
+		$config = $this->get_config();
 		if (!$nossl) {
 			$curl_version = function_exists('curl_version') ? curl_version() : array('features' => null);
 			$curl_ssl_supported = ($curl_version['features'] && defined('CURL_VERSION_SSL') && CURL_VERSION_SSL);
@@ -165,6 +164,11 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 
 		try {
 			$storage = new $use_s3_class($key, $secret, $use_ssl, $ssl_ca, $endpoint, $session_token);
+
+			// The use of calling use_dns_bucket_name method here is to switch the storage from using path-style to dns style.
+			// regardless of what the $storage object is instantiated from (UpdraftPlus_S3_Compat class (S3compat.php) or UpdraftPlus_S3 class (S3.php)), the method doesn't use the bucket name for any purpose so it's not needed to pass it
+			if ('s3' === $config['key']) $this->use_dns_bucket_name($storage, '');
+
 			$signature_version = empty($this->use_v4) ? 'v2' : 'v4';
 			$signature_version = apply_filters('updraftplus_s3_signature_version', $signature_version, $this->use_v4, $this);
 			if (!is_a($storage, 'UpdraftPlus_S3_Compat')) {
@@ -187,6 +191,9 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 		if (!empty($try_again)) {
 			try {
 				$storage = new $use_s3_class($key, $secret, $use_ssl, $ssl_ca, $endpoint, $session_token);
+				// The use of calling use_dns_bucket_name method here is to switch the storage from using path-style to dns style.
+				// regardless of what the $storage object is instantiated from (UpdraftPlus_S3_Compat class (S3compat.php) or UpdraftPlus_S3 class (S3.php)), the method doesn't use the bucket name for any purpose so it's not needed to pass it
+				if ('s3' === $config['key']) $this->use_dns_bucket_name($storage, '');
 			} catch (Exception $e) {
 				$this->log(__('Error: Failed to initialise', 'updraftplus').": ".$e->getMessage().' (line: '.$e->getLine().', file: '.$e->getFile().')');
 				$this->log(__('Error: Failed to initialise', 'updraftplus'));
@@ -218,7 +225,6 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 	}
 
 	protected function set_region($obj, $region, $bucket_name = '') {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
-		global $updraftplus;
 		switch ($region) {
 			case 'EU':
 			case 'eu-west-1':
@@ -341,7 +347,7 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 				$orig_file_size = filesize($fullpath);
 				
 				if (!file_exists($fullpath)) {
-					$this->log("File not found: $file: $whoweare: ".$e->getMessage().' (line: '.$e->getLine().', file: '.$e->getFile());
+					$this->log("File not found: $file: $whoweare: ");
 					$this->log("$file: ".sprintf(__('Error: %s', 'updraftplus'), __('File not found', 'updraftplus')), 'error');
 					continue;
 				}
@@ -496,6 +502,13 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 	}
 	
 	protected function possibly_wait_for_bucket_or_user($config, $storage) {
+
+		$bucket_name = untrailingslashit($config['path']);
+
+		if (preg_match("#^([^/]+)/(.*)$#", $bucket_name, $bmatches)) {
+			$bucket_name = $bmatches[1];
+		}
+
 		if (!empty($config['is_new_bucket'])) {
 			if (method_exists($storage, 'waitForBucket')) {
 				$storage->setExceptions(true);
@@ -522,6 +535,8 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 				} else {
 					if (empty($config['sessiontoken'])) $config['sessiontoken'] = null;
 					sleep($attempt_flag*1.5 + 1);
+
+					$sse = !empty($config['server_side_encryption']);
 					
 					// Get the bucket object again... because, for some reason, the AWS PHP SDK (at least on the current version we're using, March 2016) calculates an incorrect signature on subsequent attempts
 					$this->set_storage(null);
@@ -567,10 +582,6 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 
 		$config = $this->get_config();
 		
-		global $updraftplus;
-		
-		$whoweare = $config['whoweare'];
-		$whoweare_key = $config['key'];
 		$sse = empty($config['server_side_encryption']) ? false : true;
 		if (empty($config['sessiontoken'])) $config['sessiontoken'] = null; // ***//
 		
@@ -591,9 +602,12 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 		$storage = $this->possibly_wait_for_bucket_or_user($config, $storage);
 		if (!is_a($storage, 'UpdraftPlus_S3') && !is_a($storage, 'UpdraftPlus_S3_Compat')) return $storage;
 		
-		list($storage, $config, $bucket_exists, $region) = $this->get_bucket_access($storage, $config, $bucket_name, $bucket_path);
+		list($storage, $config, $bucket_exists, $region) = $this->get_bucket_access($storage, $config, $bucket_name, $bucket_path);// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- The value is passed back from get_bucket_access
 
 		/*
+		global $updraftplus;
+		$whoweare = $config['whoweare'];
+		$whoweare_key = $config['key'];
 		$region = ($config['key'] == 'dreamobjects' || $config['key'] == 's3generic') ? 'n/a' : @$storage->getBucketLocation($bucket_name);
 		if (!empty($region)) {
 			$this->set_region($storage, $region, $bucket_name);
@@ -641,7 +655,6 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 
 		$config = $this->get_config();
 		$sse = (empty($config['server_side_encryption'])) ? false : true;
-		$whoweare = $config['whoweare'];
 		if (empty($config['sessiontoken'])) $config['sessiontoken'] = null;
 
 		if ($s3arr) {
@@ -671,7 +684,7 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 				$bucket_path = '';
 			}
 			
-			list($storage, $config, $bucket_exists, $region) = $this->get_bucket_access($storage, $config, $bucket_name, $bucket_path);
+			list($storage, $config, $bucket_exists, $region) = $this->get_bucket_access($storage, $config, $bucket_name, $bucket_path);// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- The value is passed back from get_bucket_access
 
 			if (!$bucket_exists) {
 				$this->log("Error: Failed to access bucket $bucket_name. Check your permissions and credentials.");
@@ -719,7 +732,6 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 		global $updraftplus;
 
 		$config = $this->get_config();
-		$whoweare = $config['whoweare'];
 		$sse = empty($config['server_side_encryption']) ? false : true;
 		if (empty($config['sessiontoken'])) $config['sessiontoken'] = null;
 		
@@ -744,12 +756,10 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 		}
 
 		
-		list($storage, $config, $bucket_exists, $region) = $this->get_bucket_access($storage, $config, $bucket_name, $bucket_path);
+		list($storage, $config, $bucket_exists, $region) = $this->get_bucket_access($storage, $config, $bucket_name, $bucket_path);// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- The value is passed back from get_bucket_access
 
 		if ($bucket_exists) {
 
-			$fullpath = $updraftplus->backups_dir_location().'/'.$file;
-			
 			$file_info = $this->listfiles($file);
 			
 			if (is_array($file_info)) {
@@ -771,6 +781,8 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 			
 			/*
 			// The code before we switched to chunked downloads. Unfortunately the version of the AWS SDK we have to use for PHP 5.3 compatibility doesn't have callbacks, which makes it possible for multiple downloaders to start at once and over-write each-other.
+			$whoweare = $config['whoweare'];
+			$fullpath = $updraftplus->backups_dir_location().'/'.$file;
 			if (!$storage->getObject($bucket_name, $bucket_path.$file, $fullpath, true)) {
 				$updraftplus->log("$whoweare Error: Failed to download $file. Check your permissions and credentials.");
 				$updraftplus->log(sprintf(__('%s Error: Failed to download %s. Check your permissions and credentials.','updraftplus'),$whoweare, $file), 'error');
@@ -789,12 +801,8 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 	
 	public function chunked_download($file, $headers, $storage, $fh) {
 
-		global $updraftplus;
-	
 		$resume = false;
 		$config = $this->get_config();
-		$whoweare = $config['whoweare'];
-		
 		$bucket_name = untrailingslashit($config['path']);
 		$bucket_path = "";
 
@@ -1029,8 +1037,6 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 			
 				// On this 'first try', we trap this particular condition. So, whatever S3 network call it happens on, we'll eventually get it here on the resumption.
 				if (false !== strpos($e->getMessage(), 'The provided token has expired')) {
-				
-					global $updraftplus;
 				
 					$this->log($e->getMessage().": Requesting new credentials");
 							

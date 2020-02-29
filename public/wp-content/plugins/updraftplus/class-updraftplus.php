@@ -785,26 +785,9 @@ class UpdraftPlus {
 	 */
 	public function logfile_open($nonce) {
 
-		$updraft_dir = $this->backups_dir_location();
-		$this->logfile_name = $updraft_dir."/log.$nonce.txt";
+		$this->logfile_name = $this->get_logfile_name($nonce);
 
-		if (file_exists($this->logfile_name)) {
-			$seek_to = max((filesize($this->logfile_name) - 340), 1);
-			$handle = fopen($this->logfile_name, 'r');
-			if (is_resource($handle)) {
-				// Returns 0 on success
-				if (0 === @fseek($handle, $seek_to)) {// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
-					$bytes_back = filesize($this->logfile_name) - $seek_to;
-					// Return to the end of the file
-					$read_recent = fread($handle, $bytes_back);
-					// Move to end of file - ought to be redundant
-					if (false !== strpos($read_recent, ') The backup apparently succeeded') && false !== strpos($read_recent, 'and is now complete')) {
-						$this->backup_is_already_complete = true;
-					}
-				}
-				fclose($handle);
-			}
-		}
+		$this->backup_is_already_complete = $this->found_backup_complete_in_logfile($nonce, false);
 
 		$this->logfile_handle = fopen($this->logfile_name, 'a');
 
@@ -813,7 +796,58 @@ class UpdraftPlus {
 		$this->write_log_header(array($this, 'log'));
 		
 	}
-	
+
+	/**
+	 * Opens the log file, and finds if backup_is_already_complete
+	 *
+	 * @param string  $nonce               - Used in the log file name to distinguish it from other log files. Should be the job nonce.
+	 * @param boolean $use_existing_result - Whether to use any existing result or not
+	 *
+	 * @return boolean - returns true if the backup is complete otherwise returns false
+	 */
+	public function found_backup_complete_in_logfile($nonce, $use_existing_result = true) {
+
+		static $checked_files = array();
+
+		if (isset($checked_files[$nonce]) && $use_existing_result) return $checked_files[$nonce];
+		$logfile_name = $this->get_logfile_name($nonce);
+
+		if (!file_exists($logfile_name)) return false;
+
+		$backup_is_already_complete = false;
+
+		$seek_to = max((filesize($logfile_name) - 340), 1);
+		$handle = fopen($logfile_name, 'r');
+		if (is_resource($handle)) {
+			// Returns 0 on success
+			if (0 === @fseek($handle, $seek_to)) {// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+				$bytes_back = filesize($logfile_name) - $seek_to;
+				// Return to the end of the file
+				$read_recent = fread($handle, $bytes_back);
+				// Move to end of file - ought to be redundant
+				if (false !== strpos($read_recent, ') The backup apparently succeeded') && false !== strpos($read_recent, 'and is now complete')) {
+					$backup_is_already_complete = true;
+				}
+			}
+			fclose($handle);
+		}
+
+		$checked_files[$nonce] = $backup_is_already_complete;
+
+		return $backup_is_already_complete;
+	}
+
+	/**
+	 * Returns the logfile name for a given job
+	 *
+	 * @param string $nonce - Used in the log file name to distinguish it from other log files. Should be the job nonce.
+	 * @return string
+	 */
+	public function get_logfile_name($nonce) {
+		$updraft_dir = $this->backups_dir_location();
+		return $updraft_dir."/log.$nonce.txt";
+	}
+
 	/**
 	 * Writes a standardised header to the log file, using the specified logging function, which needs to be compatible with (or to be) UpdraftPlus::log()
 	 *
@@ -840,7 +874,7 @@ class UpdraftPlus {
 		@set_time_limit(UPDRAFTPLUS_SET_TIME_LIMIT);// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
 		$max_execution_time = (int) @ini_get("max_execution_time");// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
 
-		$logline = "UpdraftPlus WordPress backup plugin (https://updraftplus.com): ".$this->version." WP: ".$wp_version." PHP: ".phpversion()." (".PHP_SAPI.", ".@php_uname().") MySQL: $mysql_version WPLANG: ".get_locale()." Server: ".$_SERVER["SERVER_SOFTWARE"]." safe_mode: $safe_mode max_execution_time: $max_execution_time memory_limit: $memory_limit (used: ${memory_usage}M | ${memory_usage2}M) multisite: ".(is_multisite() ? 'Y' : 'N')." openssl: ".(defined('OPENSSL_VERSION_TEXT') ? OPENSSL_VERSION_TEXT : 'N')." mcrypt: ".(function_exists('mcrypt_encrypt') ? 'Y' : 'N')." LANG: ".getenv('LANG')." ZipArchive::addFile: ";// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+		$logline = "UpdraftPlus WordPress backup plugin (https://updraftplus.com): ".$this->version." WP: ".$wp_version." PHP: ".phpversion()." (".PHP_SAPI.", ".@php_uname().") MySQL: $mysql_version WPLANG: ".get_locale()." Server: ".$_SERVER["SERVER_SOFTWARE"]." safe_mode: $safe_mode max_execution_time: $max_execution_time memory_limit: $memory_limit (used: ${memory_usage}M | ${memory_usage2}M) multisite: ".(is_multisite() ? (is_subdomain_install() ? 'Y (sub-domain)' : 'Y (sub-folder)') : 'N')." openssl: ".(defined('OPENSSL_VERSION_TEXT') ? OPENSSL_VERSION_TEXT : 'N')." mcrypt: ".(function_exists('mcrypt_encrypt') ? 'Y' : 'N')." LANG: ".getenv('LANG')." ZipArchive::addFile: ";// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
 
 		// method_exists causes some faulty PHP installations to segfault, leading to support requests
 		if (version_compare(phpversion(), '5.2.0', '>=') && extension_loaded('zip')) {
@@ -895,8 +929,7 @@ class UpdraftPlus {
 	 */
 	public function get_last_log_chunk($nonce) {
 		
-		$updraft_dir = $this->backups_dir_location();
-		$this->logfile_name = $updraft_dir."/log.$nonce.txt";
+		$this->logfile_name = $this->get_logfile_name($nonce);
 
 		if (file_exists($this->logfile_name)) {
 			$contents = '';
@@ -3567,9 +3600,10 @@ class UpdraftPlus {
 	 * @param  Resource|Boolean|Object $handle
 	 * @param  Boolean				   $log_it	   - whether to log information about the check
 	 * @param  Boolean				   $reschedule - whether to schedule a resumption if checking fails
+	 * @param  Boolean				   $allow_bail - whether to allow the connection to fail or throw an error
 	 * @return Boolean|Integer - whether the check succeeded, or -1 for an unknown result
 	 */
-	public function check_db_connection($handle = false, $log_it = false, $reschedule = false) {
+	public function check_db_connection($handle = false, $log_it = false, $reschedule = false, $allow_bail = false) {
 
 		$type = false;
 		if (false === $handle || is_a($handle, 'wpdb')) {
@@ -3601,7 +3635,7 @@ class UpdraftPlus {
 				$handle = $wpdb;
 			}
 			if (method_exists($handle, 'check_connection') && (!defined('UPDRAFTPLUS_SUPPRESS_CONNECTION_CHECKS') || !UPDRAFTPLUS_SUPPRESS_CONNECTION_CHECKS)) {
-				if (!$handle->check_connection(false)) {
+				if (!$handle->check_connection($allow_bail)) {
 					if ($log_it) $this->log("The database went away, and could not be reconnected to");
 					// Almost certainly a no-op
 					if ($reschedule) UpdraftPlus_Job_Scheduler::reschedule(60);

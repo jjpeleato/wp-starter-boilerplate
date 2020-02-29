@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @api {get} /redirection/v1/setting Get settings
  * @apiName GetSettings
@@ -51,6 +50,9 @@
  * @apiSuccess {String} settings.https
  * @apiSuccess {String} settings.headers
  * @apiSuccess {String} settings.database
+ * @apiSuccess {String} settings.relcoate Relocate this site to the specified domain (and path)
+ * @apiSuccess {String="www","nowww",""} settings.preferred_domain Preferred canonical domain
+ * @apiSuccess {String[]} settings.aliases Array of domains that will be redirected to the current WordPress site
  * @apiSuccess {Object[]} groups An array of groups
  * @apiSuccess {String} groups.label Name of the group
  * @apiSuccess {Integer} groups.value Group ID
@@ -80,8 +82,8 @@
 class Redirection_Api_Settings extends Redirection_Api_Route {
 	public function __construct( $namespace ) {
 		register_rest_route( $namespace, '/setting', array(
-			$this->get_route( WP_REST_Server::READABLE, 'route_settings' ),
-			$this->get_route( WP_REST_Server::EDITABLE, 'route_save_settings' ),
+			$this->get_route( WP_REST_Server::READABLE, 'route_settings', [ $this, 'permission_callback_manage' ] ),
+			$this->get_route( WP_REST_Server::EDITABLE, 'route_save_settings', [ $this, 'permission_callback_manage' ] ),
 		) );
 	}
 
@@ -97,6 +99,10 @@ class Redirection_Api_Settings extends Redirection_Api_Route {
 			'canDelete' => ! is_multisite(),
 			'post_types' => red_get_post_types(),
 		];
+	}
+
+	public function permission_callback_manage( WP_REST_Request $request ) {
+		return Redirection_Capabilities::has_access( Redirection_Capabilities::CAP_OPTION_MANAGE ) || Redirection_Capabilities::has_access( Redirection_Capabilities::CAP_SITE_MANAGE );
 	}
 
 	public function route_save_settings( WP_REST_Request $request ) {

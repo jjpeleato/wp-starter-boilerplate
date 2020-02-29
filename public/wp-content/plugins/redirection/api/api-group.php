@@ -77,13 +77,6 @@
  * @apiUse 401Error
  * @apiUse 404Error
  * @apiUse 400MissingError
- * @apiError (Error 400) redirect_group_invalid_items Invalid array of items
- * @apiErrorExample {json} 404 Error Response:
- *     HTTP/1.1 400 Bad Request
- *     {
- *       "code": "redirect_group_invalid_items",
- *       "message": "Invalid array of items"
- *     }
  */
 
 /**
@@ -140,19 +133,36 @@ class Redirection_Api_Group extends Redirection_Api_Filter_Route {
 
 		register_rest_route( $namespace, '/group', array(
 			'args' => $this->get_filter_args( $orders, $filters ),
-			$this->get_route( WP_REST_Server::READABLE, 'route_list' ),
+			$this->get_route( WP_REST_Server::READABLE, 'route_list', [ $this, 'permission_callback_manage' ] ),
 			array_merge(
-				$this->get_route( WP_REST_Server::EDITABLE, 'route_create' ),
+				$this->get_route( WP_REST_Server::EDITABLE, 'route_create', [ $this, 'permission_callback_add' ] ),
 				array( 'args' => $this->get_group_args() )
 			),
 		) );
 
 		register_rest_route( $namespace, '/group/(?P<id>[\d]+)', array(
 			'args' => $this->get_group_args(),
-			$this->get_route( WP_REST_Server::EDITABLE, 'route_update' ),
+			$this->get_route( WP_REST_Server::EDITABLE, 'route_update', [ $this, 'permission_callback_add' ] ),
 		) );
 
-		$this->register_bulk( $namespace, '/bulk/group/(?P<bulk>delete|enable|disable)', $orders, 'route_bulk' );
+		$this->register_bulk( $namespace, '/bulk/group/(?P<bulk>delete|enable|disable)', $orders, 'route_bulk', [ $this, 'permission_callback_bulk' ] );
+	}
+
+	// Access to group data is required by the CAP_GROUP_MANAGE and CAP_REDIRECT_MANAGE caps
+	public function permission_callback_manage( WP_REST_Request $request ) {
+		return Redirection_Capabilities::has_access( Redirection_Capabilities::CAP_GROUP_MANAGE ) || Redirection_Capabilities::has_access( Redirection_Capabilities::CAP_REDIRECT_MANAGE );
+	}
+
+	public function permission_callback_bulk( WP_REST_Request $request ) {
+		if ( $request['bulk'] === 'delete' ) {
+			return Redirection_Capabilities::has_access( Redirection_Capabilities::CAP_GROUP_DELETE );
+		}
+
+		return $this->permission_callback_add( $request );
+	}
+
+	public function permission_callback_add( WP_REST_Request $request ) {
+		return Redirection_Capabilities::has_access( Redirection_Capabilities::CAP_GROUP_ADD );
 	}
 
 	private function get_group_args() {
@@ -204,26 +214,22 @@ class Redirection_Api_Group extends Redirection_Api_Filter_Route {
 
 	public function route_bulk( WP_REST_Request $request ) {
 		$action = $request['bulk'];
-		$items = explode( ',', $request['items'] );
+		$items = $request['items'];
 
-		if ( is_array( $items ) ) {
-			foreach ( $items as $item ) {
-				$group = Red_Group::get( intval( $item, 10 ) );
+		foreach ( $items as $item ) {
+			$group = Red_Group::get( intval( $item, 10 ) );
 
-				if ( $group ) {
-					if ( $action === 'delete' ) {
-						$group->delete();
-					} elseif ( $action === 'disable' ) {
-						$group->disable();
-					} elseif ( $action === 'enable' ) {
-						$group->enable();
-					}
+			if ( $group ) {
+				if ( $action === 'delete' ) {
+					$group->delete();
+				} elseif ( $action === 'disable' ) {
+					$group->disable();
+				} elseif ( $action === 'enable' ) {
+					$group->enable();
 				}
 			}
-
-			return $this->route_list( $request );
 		}
 
-		return $this->add_error_details( new WP_Error( 'redirect_group_invalid_items', 'Invalid array of items' ), __LINE__ );
+		return $this->route_list( $request );
 	}
 }

@@ -556,7 +556,7 @@ class UpdraftPlus_Backup_History {
 					if (isset($only_add_this_file['label'])) $backup_history[$btime]['label'] = $only_add_this_file['label'];
 					$backup_history[$btime]['native'] = false;
 				} elseif ('db' == $type && !$accepted_foreign) {
-					list ($mess, $warn, $err, $info) = $updraftplus->analyse_db_file(false, array(), $updraft_dir.'/'.$entry, true);
+					list ($mess, $warn, $err, $info) = $updraftplus->analyse_db_file(false, array(), $updraft_dir.'/'.$entry, true);// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 					if (!empty($info['label'])) {
 						$backup_history[$btime]['label'] = $info['label'];
 					}
@@ -647,7 +647,7 @@ class UpdraftPlus_Backup_History {
 				if (!isset($backup_history[$btime]['service']) || (is_array($backup_history[$btime]['service']) && $backup_history[$btime]['service'] !== $services) || (is_string($backup_history[$btime]['service']) && (1 != count($services) || $services[0] !== $backup_history[$btime]['service']))) {
 					$changes = true;
 					if (isset($backup_history[$btime]['service'])) {
-						$existing_services = is_array($backup_history[$btime]['service']) ? $backup_history[$btime]['service'] : array($existing_services);
+						$existing_services = is_array($backup_history[$btime]['service']) ? $backup_history[$btime]['service'] : array($backup_history[$btime]['service']);
 						$backup_history[$btime]['service'] = array_unique(array_merge($services, $existing_services));
 						foreach ($backup_history[$btime]['service'] as $k => $v) {
 							if ('none' === $v || '' == $v) unset($backup_history[$btime]['service'][$k]);
@@ -805,7 +805,6 @@ class UpdraftPlus_Backup_History {
 	 * @param Array	  $backup_array - the backup
 	 */
 	public static function save_backup($backup_time, $backup_array) {
-		global $updraftplus;
 		$backup_history = self::get_history();
 
 		$backup_history[$backup_time] = isset($backup_history[$backup_time]) ? apply_filters('updraftplus_merge_backup_history', $backup_array, $backup_history[$backup_time]) : $backup_array;

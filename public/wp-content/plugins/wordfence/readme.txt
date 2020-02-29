@@ -4,7 +4,7 @@ Tags: security, firewall, malware scanner, web application firewall, two factor 
 Requires at least: 3.9
 Requires PHP: 5.3
 Tested up to: 5.3
-Stable tag: 7.4.2
+Stable tag: 7.4.6
 
 Secure your website with the most comprehensive WordPress security plugin. Firewall, malware scan, blocking, live traffic, login security & more.
 
@@ -182,6 +182,33 @@ Secure your website with Wordfence.
 9. Logging in is easy with Wordfence 2FA.
 
 == Changelog ==
+
+= 7.4.6 - February 12, 2020 =
+* Improvement: Enhanced the detection ability of the WAF for SQLi attacks.
+* Improvement: Updated the bundled GeoIP database.
+* Improvement: Modified some country names in the block configuration to align with those shown in Live Traffic.
+* Change: Moved the skipped files scan check to the Server State category.
+* Fix: Fixed an issue where after scrolling on the Live Traffic page, updates would no longer automatically load.
+* Fix: Modified the number of login records kept to align better with Live Traffic so they're trimmed around the same time.
+
+= 7.4.5 - January 15, 2020 =
+* Improvement: Improved WAF coverage for an Infinite WP authentication bypass vulnerability.
+
+= 7.4.4 - January 14, 2020 =
+* Fix: Fixed a UI issue where the scan summary status marker for malware didn't always match the findings.
+
+= 7.4.3 - January 13, 2020 =
+* Improvement: Added WAF coverage for an Infinite WP authentication bypass vulnerability.
+* Improvement: The malicious URL scan now includes protocol-relative URLs (e.g., //example.com)
+* Improvement: Malware signatures are now better applied to large files read in multiple passes.
+* Improvement: Added a scan issue that will appear when one or more paths are skipped due to scan settings excluding them.
+* Changed: AJAX endpoints now send the application/json Content-Type header.
+* Changed: Updated text on scan issues for plugins removed from wordpress.org to better indicate possible reasons.
+* Changed: Added compatibility messaging for reCAPTCHA when WooCommerce is active.
+* Fixed: Added missing $wp_query->set_404() call when outputting a 404 page on a custom action.
+* Fixed: Fixed the logout username display in Live Traffic broken by a change in WordPress 5.3.
+* Fixed: Improved the response callback used for the WAF status check during extended protection installation.
+* Fixed: The "Require 2FA for all administrators" notice is now automatically dismissed if an administrator sets up 2FA.
 
 = 7.4.2 - December 3, 2019 =
 * Improvement: Increased performance of IP CIDR range comparisons.

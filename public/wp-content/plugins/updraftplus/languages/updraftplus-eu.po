@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the UpdraftPlus package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2019-01-15 15:25:22+0000\n"
+"PO-Revision-Date: 2019-12-15 21:51:41+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -47,219 +47,219 @@ msgstr "Edo erabili UpdraftClone giltza bat"
 
 #: src/restorer.php:2493
 msgid "Found SET NAMES %s, but changing to %s as suggested by WPDB::determine_charset()."
-msgstr ""
+msgstr "SET NAMES %s aurkitu dira, baina %s-ra aldatzen, honako honek hala iradokita: WPDB::determine_charset()."
 
 #: src/admin.php:953
 msgid "UpdraftClone key is required."
-msgstr ""
+msgstr "UpdraftClone gakoa behar da."
 
 #: src/admin.php:944
 msgid "The preparation of the clone data has been aborted."
-msgstr ""
+msgstr "Abortatu da klon-datuen prestaketa."
 
 #: src/addons/azure.php:646
 msgid "Azure Government"
-msgstr ""
+msgstr "Azure gobernua"
 
 #: src/templates/wp-admin/settings/form-contents.php:350
 msgid "Ask WordPress to automatically update UpdraftPlus when it finds an available update."
-msgstr ""
+msgstr "Eskatu WordPress-i automatikoki eguneratzeko UpdraftPlus eguneraketa erabilgarri bat aurkitzen duenean."
 
 #: src/templates/wp-admin/settings/form-contents.php:349
 msgid "Automatic updates"
-msgstr ""
+msgstr "Eguneraketa automatikoak"
 
 #: src/restorer.php:2092, src/restorer.php:2134
 msgid "Your database user does not have permission to drop tables"
-msgstr ""
+msgstr "Zure datu-baseko erabiltzaileak ez du baimenik taulak eraisteko"
 
 #: src/admin.php:2962
 msgid "Ask WordPress to update UpdraftPlus automatically when an update is available"
-msgstr ""
+msgstr "Eskatu WordPress-i automatikoki eguneratzeko UpdraftPlus eguneraketa bat erabilgarri dagoenean"
 
 #: src/addons/googlecloud.php:997
 msgid "You must add the following as the authorized redirect URI (under \"More Options\") when asked"
-msgstr ""
+msgstr "Eskatzen zaizunean, ondokoa gehitu behar duzu baimendutako berbideratze-URI gisa  (\"Aukera gehiago\" atalean)"
 
 #: src/addons/googlecloud.php:991
 msgid "%s does not allow authorization of sites hosted on direct IP addresses. You will need to change your site's address (%s) before you can use %s for storage."
-msgstr ""
+msgstr "%s-(e)k ez du uzten zuzeneko IP helbideetan ostataturiko guneak baimentzen. Zure gunearen helbidea (%s) aldatu beharko duzu %s biltegiratzeko erabili ahal izan aurretik."
 
 #: src/addons/googlecloud.php:57
 msgid "Frankfurt"
-msgstr ""
+msgstr "Frankfurt"
 
 #: src/addons/googlecloud.php:56
 msgid "London"
-msgstr ""
+msgstr "Londres"
 
 #: src/addons/googlecloud.php:55
 msgid "Belgium"
-msgstr ""
+msgstr "Belgika"
 
 #: src/addons/googlecloud.php:54
 msgid "Sydney"
-msgstr ""
+msgstr "Sydney"
 
 #: src/addons/googlecloud.php:53
 msgid "Singapore"
-msgstr ""
+msgstr "Singapur"
 
 #: src/addons/googlecloud.php:52
 msgid "Tokyo"
-msgstr ""
+msgstr "Tokio"
 
 #: src/addons/googlecloud.php:51
 msgid "Taiwan"
-msgstr ""
+msgstr "Taiwan"
 
 #: src/addons/googlecloud.php:50
 msgid "Oregon"
-msgstr ""
+msgstr "Oregon"
 
 #: src/addons/googlecloud.php:49
 msgid "North Virginia"
-msgstr ""
+msgstr "Ipar Virginia"
 
 #: src/addons/googlecloud.php:48
 msgid "South Carolina"
-msgstr ""
+msgstr "Hego Carolina"
 
 #: src/addons/googlecloud.php:47
 msgid "Iowa"
-msgstr ""
+msgstr "Iowa"
 
 #: src/includes/class-commands.php:949
 msgid "The creation of your data for creating the clone should now begin. N.B. You will be charged one token once the clone is ready. If the clone fails to boot, then no token will be taken."
-msgstr ""
+msgstr "Zure datuak sortuko dira orain klona sortzeko. Oharra: token bat ordainaraziko zaizu klona prest dagoenean. Klonak abioa huts eginez gero, ez zaizu tokenik hartuko."
 
 #: src/templates/wp-admin/settings/file-backup-exclude.php:11
 msgid "Confirm change"
-msgstr ""
+msgstr "Berretsi aldaketa"
 
 #: src/templates/wp-admin/settings/exclude-settings-modal/exclude-panel-submit.php:3,
 #: src/templates/wp-admin/settings/file-backup-exclude.php:18
 msgid "Add an exclusion rule"
-msgstr ""
+msgstr "Gehitu kanpoan uzteko arau bat"
 
 #: src/templates/wp-admin/settings/exclude-modal.php:59
 msgid "Type a file prefix"
-msgstr ""
+msgstr "Idatzi fitxategi-aurrizki bat"
 
 #: src/templates/wp-admin/settings/exclude-modal.php:56,
 #: src/templates/wp-admin/settings/exclude-modal.php:58
 msgid "All files beginning with these characters"
-msgstr ""
+msgstr "Karaktere horiekin hasten diren fitxategi guztiak"
 
 #: src/templates/wp-admin/settings/exclude-modal.php:47
 msgid "Type an extension like zip"
-msgstr ""
+msgstr "Idatzi luzapen bat, hala nola zip"
 
 #: src/templates/wp-admin/settings/exclude-modal.php:28
 msgid "Select a file/folder which you would like to exclude"
-msgstr ""
+msgstr "Hautetu fitxategi/karpeta bat zeina kanpoan utzi nahi zenukeen"
 
 #: src/templates/wp-admin/settings/exclude-modal.php:15
 msgid "All files beginning with given characters"
-msgstr ""
+msgstr "Emandako karaktereekin hasten diren fitxategi guztiak"
 
 #: src/templates/wp-admin/settings/exclude-modal.php:12,
 #: src/templates/wp-admin/settings/exclude-modal.php:44,
 #: src/templates/wp-admin/settings/exclude-modal.php:46
 msgid "All files with this extension"
-msgstr ""
+msgstr "Luzapen hori duten fitxategi guztiak"
 
 #: src/templates/wp-admin/settings/exclude-modal.php:9,
 #: src/templates/wp-admin/settings/exclude-modal.php:22
 msgid "File/directory"
-msgstr ""
+msgstr "Fitxategia/direktorioa"
 
 #: src/templates/wp-admin/settings/exclude-modal.php:6
 msgid "Select a way to exclude files or directories from the backup"
-msgstr ""
+msgstr "Hautatu era bat fitxategiak edo direktorioak babeskopitik kanpo uzteko"
 
 #: src/templates/wp-admin/settings/exclude-modal.php:2
 msgid "Exclude files/directories"
-msgstr ""
+msgstr "Utzi kanpoan fitxategiak/direktorioak"
 
 #: src/includes/updraftclone/temporary-clone-status.php:422
 msgid "To read FAQs/documentation about UpdraftClone, go here."
-msgstr ""
+msgstr "UpdraftClone-ri buruzko FAQ/dokumentazioa irakurtzeko, joan hona."
 
 #: src/includes/updraftclone/temporary-clone-status.php:421
 msgid "your UpdraftPlus.com account"
-msgstr ""
+msgstr "zure UpdraftPlus.com kontua"
 
 #: src/includes/updraftclone/temporary-clone-status.php:421
 msgid "You can check the progress here or in %s"
-msgstr ""
+msgstr "Progresioa egiaztatu ahal duzu hemen edo %s-(e)n"
 
 #: src/includes/updraftclone/temporary-clone-status.php:421
 msgid "Your UpdraftClone is still setting up."
-msgstr ""
+msgstr "Zure UpdraftClone oraindik ari da konfiguratzen."
 
 #: src/includes/updraftclone/temporary-clone-status.php:378
 msgid "%s archives remain"
-msgstr ""
+msgstr "%s fitxategi geratzen dira"
 
 #: src/includes/updraftclone/temporary-clone-status.php:378
 msgid "The site data has all been received, and its import has begun."
-msgstr ""
+msgstr "Guneko datu guztiak jaso dira, eta haien inportazioa hasi da."
 
 #: src/includes/updraftclone/temporary-clone-status.php:373
 msgid "The sending of the site data has begun. So far %s data archives totalling %s have been received"
-msgstr ""
+msgstr "Guneko datuen bidalketa hasi da. Orain arte, guztira %s egiten duten %s datu-fitxategi jaso dira"
 
 #: src/includes/updraftclone/temporary-clone-status.php:369
 msgid "WordPress installed; now awaiting the site data to be sent."
-msgstr ""
+msgstr "WordPress instalatu da; orain itxaroten noiz bidaliko diren guneko datuak."
 
 #: src/includes/updraftclone/temporary-clone-status.php:94
 msgid "Clone ready"
-msgstr ""
+msgstr "Klona prest"
 
 #: src/includes/updraftclone/temporary-clone-status.php:86
 msgid "Site data has been deployed"
-msgstr ""
+msgstr "Guneko datuak desplegatu dira"
 
 #: src/includes/updraftclone/temporary-clone-status.php:84,
 #: src/includes/updraftclone/temporary-clone-status.php:347
 msgid "Deploying site data"
-msgstr ""
+msgstr "Guneko datuak desplegatzen"
 
 #: src/includes/updraftclone/temporary-clone-status.php:75
 msgid "Site data received"
-msgstr ""
+msgstr "Guneko datuak jaso dira"
 
 #: src/includes/updraftclone/temporary-clone-status.php:73,
 #: src/includes/updraftclone/temporary-clone-status.php:344
 msgid "Receiving site data"
-msgstr ""
+msgstr "Guneko datak jasotzen"
 
 #: src/includes/updraftclone/temporary-clone-status.php:66,
 #: src/includes/updraftclone/temporary-clone-status.php:341
 msgid "WordPress installed"
-msgstr ""
+msgstr "WordPress instalatu da"
 
 #: src/admin.php:5428
 msgid "Your clone has started, network information is not yet available but will be displayed here and at your updraftplus.com account once it is ready."
-msgstr ""
+msgstr "Zure klona hasi da; sareko informazioa oraindik ez dago erabilgarri, baina prest dagoenean ikusgai egongo da hemen eta updraftplus.com-en duzun kontuan."
 
 #: src/admin.php:3828
 msgid "Exclude these from"
-msgstr ""
+msgstr "Utzi horiek hemendik kanpo"
 
 #: src/admin.php:952
 msgid "The exclusion rule which you are trying to add already exists"
-msgstr ""
+msgstr "Gehitu nahi duzun kanpoan uzteko araua dagoeneko existitzen da"
 
 #: src/admin.php:951
 msgid "Please enter a valid file name prefix"
-msgstr ""
+msgstr "Idatzi fitxategi-izenaren baliozko aurrizki bat"
 
 #: src/admin.php:950
 msgid "Please enter characters that begin the filename which you would like to exclude"
-msgstr ""
+msgstr "Kanpoan utzi nahi duzun fitxategi-izena zein karakterez hasten den, eta horiexek idatzi"
 
 #: src/admin.php:949
 msgid "Please enter a valid file extension"
@@ -1172,7 +1172,7 @@ msgstr "Une honetan UpdraftPlus-en doako bertsioa erabiltzen ari zara."
 
 #: src/templates/wp-admin/settings/tab-addons.php:26
 msgid "Get it here"
-msgstr ""
+msgstr "Eskuratu hemen"
 
 #: src/methods/stream-base.php:323
 msgid "Download chunk size successfully changed to %d"

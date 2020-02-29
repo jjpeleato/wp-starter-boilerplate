@@ -49,7 +49,6 @@ class UpdraftPlus_WPAdmin_Commands extends UpdraftPlus_Commands {
 			return array('r' => false);
 		} else {
 			$this->_updraftplus->log("Forcing resumption: job id=$job_id, resumption=$resumption");
-			$time = $get_cron[0];
 			wp_clear_scheduled_hook('updraft_backup_resume', array($resumption, $job_id));
 			$this->_updraftplus->close_browser_connection(json_encode(array('r' => true)));
 			$this->_updraftplus->jobdata_set_from_array($get_cron[1]);
@@ -70,7 +69,7 @@ class UpdraftPlus_WPAdmin_Commands extends UpdraftPlus_Commands {
 
 		if (empty($data['wpaction'])) return new WP_Error('error', '', 'no command sent');
 		
-		$response = $this->_updraftplus_admin->call_wp_action($data, array($this->_uc_helper, '_updraftplus_background_operation_started'));
+		$response = $this->_updraftplus_admin->call_wp_action($data, array($this->_uc_helper, '_updraftplus_background_operation_started'));// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 
 		die;
 
@@ -176,7 +175,7 @@ class UpdraftPlus_WPAdmin_Commands extends UpdraftPlus_Commands {
 				$outof = false;
 				foreach ($whatwegot as $index => $file) {
 					if (preg_match('/\d+of(\d+)\.zip/', $file, $omatch)) {
-						$outof = max($matches[1], 1);
+						$outof = max($omatch[1], 1);
 					}
 					while ($expected_index < $index) {
 						$missing .= ('' == $missing) ? (1+$expected_index) : ",".(1+$expected_index);
@@ -730,7 +729,6 @@ class UpdraftPlus_WPAdmin_Commands extends UpdraftPlus_Commands {
 	 * elem_val - Dropdown element value which should be selected for other drodown
 	 */
 	public function collate_change_on_charset_selection($params) {
-		global $updraftplus;
 		$collate_change_on_charset_selection_data = json_decode(UpdraftPlus_Manipulation_Functions::wp_unslash($params['collate_change_on_charset_selection_data']), true);
 		$updraft_restorer_collate = $params['updraft_restorer_collate'];
 		$updraft_restorer_charset = $params['updraft_restorer_charset'];
@@ -748,7 +746,7 @@ class UpdraftPlus_WPAdmin_Commands extends UpdraftPlus_Commands {
 		}
 		$similar_type_collate = $this->_updraftplus->get_similar_collate_related_to_charset($db_supported_collations, $db_unsupported_collate_unique, $updraft_restorer_charset);
 		if (empty($similar_type_collate)) {
-			$similar_type_collate = $this->_updraftplus->get_similar_collate_based_on_ocuurence_count($db_collates_found, $db_supported_collations, $db_supported_charsets_related_to_unsupported_collations = array($updraft_restorer_collate));
+			$similar_type_collate = $this->_updraftplus->get_similar_collate_based_on_ocuurence_count($db_collates_found, $db_supported_collations, $updraft_restorer_collate);
 		}
 		// Default collation for changed charcter set
 		if (empty($similar_type_collate)) {

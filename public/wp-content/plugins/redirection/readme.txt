@@ -3,9 +3,9 @@ Contributors: johnny5
 Donate link: https://redirection.me/donation/
 Tags: redirect, htaccess, 301, 404, seo, permalink, apache, nginx, post, admin
 Requires at least: 4.9
-Tested up to: 5.3
-Stable tag: 4.5.1
-Requires PHP: 5.4
+Tested up to: 5.3.2
+Stable tag: 4.7
+Requires PHP: 5.6
 License: GPLv3
 
 Manage 301 redirections, keep track of 404 errors, and improve your site, with no knowledge of Apache or Nginx needed.
@@ -20,7 +20,7 @@ It has been a WordPress plugin for over 10 years and has been recommended countl
 
 Full documentation can be found at [https://redirection.me](https://redirection.me)
 
-Redirection is compatible with PHP from 5.4 and upwards (including 7.2).
+Redirection is compatible with PHP from 5.6 and upwards (including 7.4).
 
 = Redirect manager =
 
@@ -74,6 +74,10 @@ You can match query parameters exactly, ignore them, and even pass them through 
 By default Redirection will manage all redirects using WordPress. However you can configure it so redirects are automatically saved to a .htaccess file and handled by Apache itself.
 
 If you use Nginx then you can export redirects to an Nginx rewrite rules file.
+
+= Fine-grained permissions =
+
+Fine-grained permissions are available so you can customise the plugin for different users. This makes it particularly suitable for client sites where you may want to prevent certain actions, and remove functionality.
 
 = Import & Export =
 
@@ -156,7 +160,32 @@ The plugin works in a similar manner to how WordPress handles permalinks and sho
 = 4.0 =
 * Alters database to support case insensitivity, trailing slashes, and query params. Please backup your data
 
+= 4.7 =
+* Requires minimum PHP 5.6+. Do not upgrade if you are still using PHP < 5.6
+
 == Changelog ==
+
+An x.1 version increase introduces new or updated features and can be considered to contain 'breaking' changes. A x.x.1 increase is
+purely a bug fix and introduces no new features, and can be considered as containing no breaking changes.
+
+= 4.7 - 15th February 2020 =
+* Relocate entire site to another domain, with exceptions
+* Site aliases to map another site to current site
+* Canonical settings for www/no-www
+* Change content-type for API requests to help with mod_security
+
+= 4.6.2 - 6th January 2020 =
+* Fix 404 log export button
+* Fix HTTPS option not appearing enabled
+* Fix another PHP compat issue
+
+= 4.6.1 - 30th December 2019 =
+* Back-compatibility fix for old PHP versions
+
+= 4.6 - 27th December 2019 =
+* Add fine-grained permissions allowing greater customisation of the plugin, and removal of functionality
+* Add an import step to the install wizard
+* Remove overriding of default WordPress 'old slugs'
 
 = 4.5.1 - 23rd November 2019 =
 * Fix broken canonical redirects

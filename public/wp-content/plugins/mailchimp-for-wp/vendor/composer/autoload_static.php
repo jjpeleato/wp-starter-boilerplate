@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit982a28eab8420855eb099ba24fa8d700
+class ComposerStaticInit240449e079f81eb74119b90ac782c2b0
 {
     public static $files = array (
         'fca581ae5268210490253d58378748c5' => __DIR__ . '/../..' . '/includes/functions.php',
@@ -52,6 +52,7 @@ class ComposerStaticInit982a28eab8420855eb099ba24fa8d700
         'MC4WP_Field_Formatter' => __DIR__ . '/../..' . '/includes/class-field-formatter.php',
         'MC4WP_Field_Guesser' => __DIR__ . '/../..' . '/includes/class-field-guesser.php',
         'MC4WP_Form' => __DIR__ . '/../..' . '/includes/forms/class-form.php',
+        'MC4WP_Form_AMP' => __DIR__ . '/../..' . '/includes/forms/class-form-amp.php',
         'MC4WP_Form_Asset_Manager' => __DIR__ . '/../..' . '/includes/forms/class-asset-manager.php',
         'MC4WP_Form_Element' => __DIR__ . '/../..' . '/includes/forms/class-form-element.php',
         'MC4WP_Form_Listener' => __DIR__ . '/../..' . '/includes/forms/class-form-listener.php',
@@ -98,8 +99,8 @@ class ComposerStaticInit982a28eab8420855eb099ba24fa8d700
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixesPsr0 = ComposerStaticInit982a28eab8420855eb099ba24fa8d700::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit982a28eab8420855eb099ba24fa8d700::$classMap;
+            $loader->prefixesPsr0 = ComposerStaticInit240449e079f81eb74119b90ac782c2b0::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit240449e079f81eb74119b90ac782c2b0::$classMap;
 
         }, null, ClassLoader::class);
     }

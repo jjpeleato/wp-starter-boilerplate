@@ -310,11 +310,6 @@ class UpdraftPlus_BackupModule_updraftvault extends UpdraftPlus_BackupModule_s3 
 		// Used to decide whether we can afford HTTP calls or not, or would prefer to rely on cached data
 		$this->vault_in_config_print = true;
 
-		$shop_url_base = $this->get_url();
-		$get_more_quota = $this->get_url('get_more_quota');
-
-		$vault_settings = $this->get_options();
-		$connected = (!empty($vault_settings['token']) && !empty($vault_settings['email'])) ? true : false;
 		$classes = $this->get_css_classes();
 		$template_str = '
 			<tr class="'.$classes.'">
@@ -497,7 +492,6 @@ class UpdraftPlus_BackupModule_updraftvault extends UpdraftPlus_BackupModule_s3 
 	}
 
 	protected function s3_out_of_quota($total, $used, $needed) {
-		global $updraftplus;
 		$this->log("Error: Quota exhausted (used=$used, total=$total, needed=$needed)");
 		$this->log(sprintf(__('Error: you have insufficient storage quota available (%s) to upload this archive (%s).', 'updraftplus'), round(($total-$used)/1048576, 2).' MB', round($needed/1048576, 2).' MB').' '.__('You can get more quota here', 'updraftplus').': '.$this->get_url('get_more_quota'), 'error');
 	}
@@ -544,7 +538,7 @@ class UpdraftPlus_BackupModule_updraftvault extends UpdraftPlus_BackupModule_s3 
 
 			if (!empty($this->vault_in_config_print) && 'text' == $format) {
 				$quota_via_transient = get_transient('updraftvault_quota_text');
-				if (is_string($quota) && $quota) return $quota;
+				if (is_string($quota_via_transient) && $quota_via_transient) return $quota_via_transient;
 			}
 
 			try {
@@ -559,7 +553,6 @@ class UpdraftPlus_BackupModule_updraftvault extends UpdraftPlus_BackupModule_s3 
 				}
 
 			} catch (Exception $e) {
-				global $updraftplus;
 				$this->log("Listfiles failed during quota calculation: ".$e->getMessage());
 				$current_files = new WP_Error('listfiles_exception', $e->getMessage().' ('.get_class($e).')');
 			}
