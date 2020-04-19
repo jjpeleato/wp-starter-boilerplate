@@ -8,25 +8,17 @@ if ( ! function_exists( 'blc_get_db_schema' ) ) {
 		//Use the character set and collation that's configured for WP tables
 		$charset_collate = '';
 		if ( ! empty( $wpdb->charset ) ) {
+
 			//Some German installs use "utf-8" (invalid) instead of "utf8" (valid). None of
 			//the charset ids supported by MySQL contain dashes, so we can safely strip them.
 			//See http://dev.mysql.com/doc/refman/5.0/en/charset-charsets.html
 			$charset = str_replace( '-', '', $wpdb->charset );
 
+			//set charset
 			$charset_collate = "DEFAULT CHARACTER SET {$charset}";
 		}
 
-		//Sometimes when WP is installed from Cpanel ( checked on GoDaddy ) uses different
-		//collation for tables. Instead of using default collations which can cause problem when
-		//the plugin uses SQL join.
-		//TODO: USE alterative for JOIN statements and remove this as a whole
-		$posts_collate_sql = "SELECT TABLE_COLLATION FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME ='{$wpdb->posts}';";
-		$posts_collate = $wpdb->get_row( $posts_collate_sql ); //phpcs:ignore
-
-		//by default use the same collation that the posts table is using.
-		if ( ! empty( $posts_collate ) ) {
-			$charset_collate .= " COLLATE {$posts_collate->TABLE_COLLATION}";
-		} elseif ( ! empty( $wpdb->collate ) ) {
+		if ( ! empty( $wpdb->collate ) ) {
 			$charset_collate .= " COLLATE {$wpdb->collate}";
 		}
 

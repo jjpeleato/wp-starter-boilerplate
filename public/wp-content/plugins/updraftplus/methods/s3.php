@@ -647,7 +647,15 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 		return $results;
 
 	}
-
+	
+	/**
+	 * Delete a single file from the service using S3
+	 *
+	 * @param Array|String $files    - array of file names to delete
+	 * @param Array        $s3arr    - s3 service object and container details
+	 * @param Array        $sizeinfo - size of files to delete, used for quota calculation
+	 * @return Boolean|String - either a boolean true or an error code string
+	 */
 	public function delete($files, $s3arr = false, $sizeinfo = array()) {
 
 		global $updraftplus;
@@ -689,7 +697,7 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 			if (!$bucket_exists) {
 				$this->log("Error: Failed to access bucket $bucket_name. Check your permissions and credentials.");
 				$this->log(sprintf(__('Error: Failed to access bucket %s. Check your permissions and credentials.', 'updraftplus'), $bucket_name), 'error');
-				return false;
+				return 'container_access_error';
 			}
 		}
 
@@ -717,7 +725,7 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 			} catch (Exception $e) {
 				$this->log("delete failed (".get_class($e)."): ".$e->getMessage().' (line: '.$e->getLine().', file: '.$e->getFile().')');
 				$storage->setExceptions(false);
-				$ret = false;
+				$ret = 'file_delete_error';
 			}
 			$storage->setExceptions(false);
 

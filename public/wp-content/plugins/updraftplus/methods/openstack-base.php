@@ -330,7 +330,15 @@ class UpdraftPlus_BackupModule_openstack_base extends UpdraftPlus_BackupModule {
 		
 		return true;
 	}
-
+	
+	/**
+	 * Delete a single file from the service using OpenStack API
+	 *
+	 * @param Array|String $files    - array of file names to delete
+	 * @param Array        $data     - service object and container details
+	 * @param Array        $sizeinfo - unused here
+	 * @return Boolean|String - either a boolean true or an error code string
+	 */
 	public function delete($files, $data = false, $sizeinfo = array()) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 
 		global $updraftplus;
@@ -347,11 +355,11 @@ class UpdraftPlus_BackupModule_openstack_base extends UpdraftPlus_BackupModule {
 			} catch (AuthenticationError $e) {
 				$updraftplus->log($this->desc.' authentication failed ('.$e->getMessage().')');
 				$updraftplus->log(sprintf(__('%s authentication failed', 'updraftplus'), $this->desc).' ('.$e->getMessage().')', 'error');
-				return false;
+				return 'authentication_fail';
 			} catch (Exception $e) {
 				$updraftplus->log($this->desc.' error - failed to access the container ('.$e->getMessage().')');
 				$updraftplus->log(sprintf(__('%s error - failed to access the container', 'updraftplus'), $this->desc).' ('.$e->getMessage().')', 'error');
-				return false;
+				return 'service_unavailable';
 			}
 			// Get the container
 			try {
@@ -359,7 +367,7 @@ class UpdraftPlus_BackupModule_openstack_base extends UpdraftPlus_BackupModule {
 			} catch (Exception $e) {
 				$updraftplus->log('Could not access '.$this->desc.' container ('.get_class($e).', '.$e->getMessage().')');
 				$updraftplus->log(sprintf(__('Could not access %s container', 'updraftplus'), $this->desc).' ('.get_class($e).', '.$e->getMessage().')', 'error');
-				return false;
+				return 'container_access_error';
 			}
 
 		}
@@ -395,7 +403,7 @@ class UpdraftPlus_BackupModule_openstack_base extends UpdraftPlus_BackupModule {
 				$updraftplus->log($this->desc.': Deleted: '.$file);
 			} catch (Exception $e) {
 				$updraftplus->log($this->desc.' delete failed: '.$e->getMessage());
-				$ret = false;
+				$ret = 'file_delete_error';
 			}
 		}
 		return $ret;

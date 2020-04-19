@@ -37,7 +37,7 @@ class UpdraftCentral_Media_Commands extends UpdraftCentral_Commands {
 	 *
 	 * link to udrpc_action main function in class UpdraftPlus_UpdraftCentral_Listener
 	 */
-	public function _post_action($command, $data, $extra_info) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
+	public function _post_action($command, $data, $extra_info) {// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		// Here, we're restoring to the current (default) blog before we switched
 		if ($this->switched) restore_current_blog();
 	}
@@ -80,7 +80,6 @@ class UpdraftCentral_Media_Commands extends UpdraftCentral_Commands {
 		}
 
 		if (!empty($params['date'])) {
-			$date = $params['date'];
 			list($monthnum, $year) = explode(':', $params['date']);
 
 			$args['monthnum'] = $monthnum;

@@ -2,9 +2,9 @@
 Contributors: managewp, wpmudev
 Donate link:
 Tags: links, broken, maintenance, blogroll, custom fields, admin, comments, posts
-Requires at least: 3.2
-Tested up to: 5.3.2
-Stable tag: 1.11.11
+Requires at least: 4.6
+Tested up to: 5.4
+Stable tag: 1.11.12
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -67,6 +67,14 @@ To upgrade your installation
 1. Reactivate the plugin. Your settings will be retained from the previous version.
 
 == Changelog ==
+= 1.11.12 =
+* Added an interface to use personal YouTube API Key
+* Fixed database errors on installation for some hosts.
+* Fixed link editor not working with elementor.
+* Fixed custom field key with multiple keys not rendering.
+* Fixed compatibility issues with Business Directory plugin.
+* Fixed bulk actions not working properly for some actions.
+* Updated the owner on repository.
 
 = 1.11.11 =
 * Fixed SQL errors caused on some hosts.

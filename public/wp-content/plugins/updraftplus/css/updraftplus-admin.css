@@ -2098,6 +2098,11 @@ small.ud_massactions-tip {
 	padding: 0px;
 }
 
+.updraftplus_restore_tables_options_container {
+	max-height: 250px;
+	overflow: auto;
+}
+
 .updraft_debugrow th {
 	vertical-align: top;
 	padding-top: 6px;
@@ -2690,7 +2695,6 @@ small.ud_massactions-tip {
 
 .updraftplusmethod.updraftvault #updraftvault_settings_default .button-primary, .updraftplusmethod.updraftvault #updraftvault_settings_showoptions .button-primary {
 	font-size: 18px !important;
-	padding-bottom: 20px;
 }
 
 .updraftplusmethod.updraftvault #updraftvault_showoptions, .updraftplusmethod.updraftvault #updraftvault_connect {

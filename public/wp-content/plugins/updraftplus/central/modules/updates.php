@@ -32,7 +32,6 @@ class UpdraftCentral_Updates_Commands extends UpdraftCentral_Commands {
 		$plugins = empty($updates['plugins']) ? array() : $updates['plugins'];
 		$plugin_updates = array();
 		foreach ($plugins as $plugin_info) {
-			$plugin_file = $plugin_info['plugin'];
 			$plugin_updates[] = $this->_update_plugin($plugin_info['plugin'], $plugin_info['slug']);
 		}
 
@@ -235,9 +234,10 @@ class UpdraftCentral_Updates_Commands extends UpdraftCentral_Commands {
 			'newVersion' => '',
 		);
 
+		// THis is included so we can get $wp_version
 		include(ABSPATH.WPINC.'/version.php');
 		
-		$status['oldVersion'] = $wp_version;
+		$status['oldVersion'] = $wp_version;// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 		
 		if (!current_user_can('update_core')) {
 			$status['error'] = 'updates_permission_denied';
@@ -248,17 +248,18 @@ class UpdraftCentral_Updates_Commands extends UpdraftCentral_Commands {
 
 		wp_version_check();
 		
-		$locale = get_locale();
+		$locale = get_locale();// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		
 		$core_update_key = false;
 		$core_update_latest_version = false;
 		
 		$get_core_updates = get_core_updates();
 		
+		// THis is included so we can get $wp_version
 		@include(ABSPATH.WPINC.'/version.php');// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
 		
 		foreach ($get_core_updates as $k => $core_update) {
-			if (isset($core_update->version) && version_compare($core_update->version, $wp_version, '>') && version_compare($core_update->version, $core_update_latest_version, '>')) {
+			if (isset($core_update->version) && version_compare($core_update->version, $wp_version, '>') && version_compare($core_update->version, $core_update_latest_version, '>')) {// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 				$core_update_latest_version = $core_update->version;
 				$core_update_key = $k;
 			}
@@ -415,6 +416,8 @@ class UpdraftCentral_Updates_Commands extends UpdraftCentral_Commands {
 	 */
 	private function _update_translation() {
 		global $wp_filesystem;
+
+		$status = array();
 
 		include_once(ABSPATH . 'wp-admin/includes/class-wp-upgrader.php');
 		if (!class_exists('Automatic_Upgrader_Skin')) include_once(UPDRAFTCENTRAL_CLIENT_DIR.'/classes/class-automatic-upgrader-skin.php');
@@ -767,10 +770,11 @@ class UpdraftCentral_Updates_Commands extends UpdraftCentral_Commands {
 				$core_update_key = false;
 				$core_update_latest_version = false;
 				
+				// THis is included so we can get $wp_version
 				@include(ABSPATH.WPINC.'/version.php');// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
 				
 				foreach ($get_core_updates as $k => $core_update) {
-					if (isset($core_update->version) && version_compare($core_update->version, $wp_version, '>') && version_compare($core_update->version, $core_update_latest_version, '>')) {
+					if (isset($core_update->version) && version_compare($core_update->version, $wp_version, '>') && version_compare($core_update->version, $core_update_latest_version, '>')) {// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 						$core_update_latest_version = $core_update->version;
 						$core_update_key = $k;
 					}
@@ -788,14 +792,14 @@ class UpdraftCentral_Updates_Commands extends UpdraftCentral_Commands {
 					
 					// We're making sure here to only return those items for update that has new
 					// versions greater than the currently installed version.
-					if (version_compare($wp_version, $update->version, '<')) {
+					if (version_compare($wp_version, $update->version, '<')) {// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 						$core_updates[] = array(
 							'download' => $update->download,
 							'version' => $update->version,
 							'php_version' => $update->php_version,
 							'mysql_version' => $update->mysql_version,
 							'installed' => array(
-								'version' => $wp_version,
+								'version' => $wp_version,// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 								'mysql' => $mysql_version,
 								'php' => PHP_VERSION,
 								'is_mysql' => $is_mysql,

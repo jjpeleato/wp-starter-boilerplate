@@ -1,5 +1,5 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-'use strict';
+"use strict";
 
 var i18n = window.mc4wp_forms_i18n;
 
@@ -8,7 +8,6 @@ var m = require('mithril');
 var r = {};
 
 r.showType = function (config) {
-  // ucfirst
   var fieldType = config.type;
   fieldType = fieldType.charAt(0).toUpperCase() + fieldType.slice(1);
   return m('div', [m('label', i18n.fieldType), m('span', fieldType)]);
@@ -155,7 +154,7 @@ r.choices = function (config) {
       title: i18n.remove,
       "class": 'dashicons dashicons-no-alt hover-activated',
       onclick: function (key) {
-        this.choices().splice(key, 1);
+        this.choices.splice(key, 1);
       }.bind(config, index)
     }, ''))]);
   })) // end of table
@@ -179,7 +178,7 @@ r.linkToTerms = function (config) {
 module.exports = r;
 
 },{"mithril":28}],2:[function(require,module,exports){
-'use strict';
+"use strict";
 
 var forms = {};
 
@@ -193,11 +192,8 @@ forms.render = function (config) {
     return forms[type](config);
   }
 
-  switch (type) {
-    case 'select':
-    case 'radio':
-    case 'checkbox':
-      return forms.choice(config);
+  if (['select', 'radio', 'checkbox'].indexOf(type) > -1) {
+    return forms.choice(config);
   } // fallback to good old text field
 
 
@@ -248,7 +244,7 @@ forms.number = function (config) {
 module.exports = forms;
 
 },{"./field-forms-rows.js":1}],3:[function(require,module,exports){
-'use strict';
+"use strict";
 
 var htmlutil = require('html');
 
@@ -411,7 +407,7 @@ function generate(config) {
 module.exports = generate;
 
 },{"html":24,"mithril":28}],4:[function(require,module,exports){
-'use strict';
+"use strict";
 
 var m = require('mithril');
 
@@ -431,13 +427,10 @@ var fieldConfig;
 editor.on('blur', m.redraw);
 /**
  * Choose a field to open the helper form for
- *
- * @param index
- * @returns {*}
- */
+*/
 
-function setActiveField(index) {
-  fieldConfig = fields.get(index); // if this hidden field has choices (hidden groups), glue them together by their label.
+function setActiveField(name) {
+  fieldConfig = name !== null ? fields.get(name) : null; // if this hidden field has choices (hidden groups), glue them together by their label.
 
   if (fieldConfig && fieldConfig.type === 'hidden' && fieldConfig.choices.length > 0) {
     fieldConfig.value = fieldConfig.choices.map(function (c) {
@@ -458,9 +451,7 @@ function createFieldHTMLAndAddToForm() {
 
   editor.insert(html); // reset field form
 
-  setActiveField(''); // redraw
-
-  m.redraw();
+  setActiveField(null);
 }
 /**
  * View
@@ -470,9 +461,8 @@ function createFieldHTMLAndAddToForm() {
 
 function view() {
   // build DOM for fields choice
-  var fieldCategories = fields.getCategories();
   var availableFields = fields.getAll();
-  var fieldsChoice = m('div.available-fields.small-margin', [m('h4', i18n.chooseField), fieldCategories.map(function (category) {
+  var fieldsChoice = m('div.available-fields.small-margin', [m('h4', i18n.chooseField), [i18n.listFields, i18n.interestCategories, i18n.formFields].map(function (category) {
     var categoryFields = availableFields.filter(function (f) {
       return f.category === category;
     });
@@ -501,7 +491,7 @@ function view() {
         onclick: function onclick(evt) {
           return setActiveField(evt.target.value);
         },
-        value: field.index
+        value: field.name
       }, field.title);
     })]);
   })]); // build DOM for overlay
@@ -510,7 +500,9 @@ function view() {
 
   if (fieldConfig) {
     form = m(Overlay, {
-      onClose: setActiveField
+      onClose: function onClose() {
+        return setActiveField(null);
+      }
     }, // field wizard
     m('div.field-wizard', [// heading
     m('h3', [fieldConfig.title, fieldConfig.forceRequired ? m('span.red', '*') : '', fieldConfig.name.length ? m('code', fieldConfig.name) : '']), // help text
@@ -540,7 +532,7 @@ if (fieldHelperRootElement) {
 }
 
 },{"../overlay.js":11,"./field-forms.js":2,"./field-generator.js":3,"./fields.js":6,"./form-editor.js":7,"mithril":28}],5:[function(require,module,exports){
-'use strict';
+"use strict";
 
 var m = require('mithril');
 
@@ -551,12 +543,6 @@ var ajaxurl = window.mc4wp_vars.ajaxurl;
 var i18n = window.mc4wp_forms_i18n;
 var mailchimp = window.mc4wp_vars.mailchimp;
 var countries = window.mc4wp_vars.countries;
-/**
- * Array of registered fields
- *
- * @type {Array}
- */
-
 var registeredFields = [];
 /**
  * Reset all previously registered fields
@@ -565,6 +551,7 @@ var registeredFields = [];
 function reset() {
   // clear all of our fields
   registeredFields.forEach(fields.deregister);
+  m.redraw();
 }
 /**
  * Helper function to quickly register a field and store it in local scope
@@ -668,7 +655,6 @@ function registerMergeField(mergeField) {
 
 
 function registerInterestCategory(interestCategory) {
-  var category = i18n.interestCategories;
   var fieldType = getFieldType(interestCategory.type);
   var data = {
     title: interestCategory.title,
@@ -677,7 +663,7 @@ function registerInterestCategory(interestCategory) {
     choices: interestCategory.interests,
     acceptsMultipleValues: fieldType === 'checkbox'
   };
-  register(category, data, false);
+  register(i18n.interestCategories, data, false);
 }
 /**
  * Register all fields belonging to a list
@@ -703,6 +689,7 @@ function registerListFields(list) {
   list.merge_fields.forEach(registerMergeField); // loop through groupings
 
   list.interest_categories.forEach(registerInterestCategory);
+  m.redraw();
 }
 /**
  * Register all lists fields
@@ -726,7 +713,6 @@ function registerListsFields(lists) {
 
 function registerCustomFields(lists) {
   var choices;
-  var category = i18n.formFields;
   register(i18n.listFields, {
     name: 'EMAIL',
     title: i18n.emailAddress,
@@ -735,7 +721,7 @@ function registerCustomFields(lists) {
     type: 'email'
   }, true); // register submit button
 
-  register(category, {
+  register(i18n.formFields, {
     name: '',
     value: i18n.subscribe,
     type: 'submit',
@@ -748,7 +734,7 @@ function registerCustomFields(lists) {
     choices[lists[key].id] = lists[key].name;
   }
 
-  register(category, {
+  register(i18n.formFields, {
     name: '_mc4wp_lists',
     type: 'checkbox',
     title: i18n.listChoice,
@@ -760,7 +746,7 @@ function registerCustomFields(lists) {
     subscribe: 'Subscribe',
     unsubscribe: 'Unsubscribe'
   };
-  register(category, {
+  register(i18n.formFields, {
     name: '_mc4wp_action',
     type: 'radio',
     title: i18n.formAction,
@@ -768,7 +754,7 @@ function registerCustomFields(lists) {
     value: 'subscribe',
     help: i18n.formActionDescription
   }, true);
-  register(category, {
+  register(i18n.formFields, {
     name: 'AGREE_TO_TERMS',
     value: 1,
     type: 'terms-checkbox',
@@ -788,16 +774,12 @@ registerListsFields(settings.getSelectedLists());
 registerCustomFields(mailchimp.lists);
 
 },{"./fields.js":6,"mithril":28}],6:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var m = require('mithril');
-
-var timeout;
-var fields = [];
-var categories = [];
+var fields = {};
 var listeners = {};
 
-var Field = function Field(data) {
+function Field(data) {
   return {
     name: data.name,
     title: data.title || data.name,
@@ -818,33 +800,19 @@ var Field = function Field(data) {
     acceptsMultipleValues: data.acceptsMultipleValues,
     link: data.link || ''
   };
-};
-/**
- * @internal
- *
- * @param data
- * @constructor
- */
+}
 
-
-var FieldChoice = function FieldChoice(data) {
+function FieldChoice(data) {
   return {
     title: data.title || data.label,
     selected: data.selected || false,
     value: data.value || data.label,
     label: data.label
   };
-};
-/**
- * Creates FieldChoice objects from an (associative) array of data objects
- *
- * @param data
- * @returns {Array}
- */
-
+}
 
 function createChoices(data) {
-  var choices = [];
+  var choices;
 
   if (typeof data.map === 'function') {
     choices = data.map(function (choiceLabel) {
@@ -864,24 +832,18 @@ function createChoices(data) {
 
   return choices;
 }
-/**
- * Factory method
- *
- * @returns {Field}
- */
-
 
 function register(category, data) {
-  var existingField = getAllWhere('name', data.name).shift(); // a field with the same "name" already exists
+  // if a field with the exact same name already exists,
+  // update its forceRequired property
+  var existingField = fields[data.name];
 
   if (existingField) {
-    // update "required" status
     if (!existingField.forceRequired && data.forceRequired) {
       existingField.forceRequired = true;
-    } // bail
+    }
 
-
-    return undefined;
+    return existingField;
   } // array of choices given? convert to FieldChoice objects
 
 
@@ -897,21 +859,13 @@ function register(category, data) {
         return choice;
       });
     }
-  } // register category
-
-
-  if (categories.indexOf(category) < 0) {
-    categories.push(category);
   } // create Field object
 
 
   var field = new Field(data);
   field.category = category; // add to array
 
-  fields.push(field); // redraw view
-
-  timeout && window.clearTimeout(timeout);
-  timeout = window.setTimeout(m.redraw, 600); // trigger event
+  fields[data.name] = field; // trigger event
 
   emit('change');
   return field;
@@ -928,85 +882,38 @@ function on(event, func) {
   listeners[event] = listeners[event] || [];
   listeners[event].push(func);
 }
-/**
- * @api
- *
- * @param field
- */
-
 
 function deregister(field) {
-  var index = fields.indexOf(field);
-
-  if (index > -1) {
-    delete fields[index];
-    m.redraw();
-  }
+  delete fields[field.name];
 }
-/**
- * Get a field config object
- *
- * @param name
- * @returns {*}
- */
-
 
 function get(name) {
   return fields[name];
 }
-/**
- * Get all field config objects
- *
- * @returns {Array|*}
- */
-
 
 function getAll() {
-  // rebuild index property on all fields
-  fields = fields.map(function (f, i) {
-    f.index = i;
-    return f;
-  });
-  return fields;
+  return Object.values(fields);
 }
-
-function getCategories() {
-  return categories.sort(function (a, b) {
-    return a !== 'Form fields' ? -1 : 1;
-  });
-}
-/**
- * Get all fields where a property matches the given value
- *
- * @param searchKey
- * @param searchValue
- * @returns {Array|*}
- */
-
 
 function getAllWhere(searchKey, searchValue) {
-  return fields.filter(function (field) {
+  return getAll().filter(function (field) {
     return field[searchKey] === searchValue;
   });
 }
-/**
- * Exposed methods
- */
-
 
 module.exports = {
   get: get,
   getAll: getAll,
-  getCategories: getCategories,
+  getAllWhere: getAllWhere,
   deregister: deregister,
   register: register,
-  getAllWhere: getAllWhere,
   on: on
 };
 
-},{"mithril":28}],7:[function(require,module,exports){
-'use strict'; // load CodeMirror & plugins
+},{}],7:[function(require,module,exports){
+"use strict";
 
+// load CodeMirror & plugins
 var CodeMirror = require('codemirror');
 
 require('codemirror/mode/xml/xml');
@@ -1150,7 +1057,7 @@ if (previewFrame) {
 module.exports = FormEditor;
 
 },{"codemirror":19,"codemirror/addon/edit/closetag.js":14,"codemirror/addon/edit/matchbrackets.js":15,"codemirror/addon/edit/matchtags.js":16,"codemirror/addon/fold/xml-fold.js":17,"codemirror/addon/selection/active-line.js":18,"codemirror/mode/css/css":20,"codemirror/mode/htmlmixed/htmlmixed":21,"codemirror/mode/javascript/javascript":22,"codemirror/mode/xml/xml":23}],8:[function(require,module,exports){
-'use strict';
+"use strict";
 
 var m = require('mithril');
 
@@ -1231,11 +1138,9 @@ editor.on('change', helpers.debounce(updateFields, 600));
 fields.on('change', helpers.debounce(updateFields, 600));
 
 },{"../helpers.js":9,"./fields.js":6,"./form-editor.js":7,"mithril":28}],9:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var helpers = {}; // polling
-
-helpers.debounce = function (func, wait, immediate) {
+function debounce(func, wait, immediate) {
   var timeout;
   return function () {
     var context = this;
@@ -1248,12 +1153,14 @@ helpers.debounce = function (func, wait, immediate) {
     }, wait);
     if (callNow) func.apply(context, args);
   };
+}
+
+module.exports = {
+  debounce: debounce
 };
 
-module.exports = helpers;
-
 },{}],10:[function(require,module,exports){
-'use strict';
+"use strict";
 
 var editor = require('./form-editor/form-editor.js');
 
@@ -1331,7 +1238,7 @@ editor.on('focus', requiredFieldsNotice);
 document.body.addEventListener('change', mailchimpListsNotice);
 
 },{"./form-editor/fields.js":6,"./form-editor/form-editor.js":7,"./settings":12}],11:[function(require,module,exports){
-'use strict';
+"use strict";
 
 var m = require('mithril');
 
@@ -1404,7 +1311,7 @@ function Overlay(vnode) {
 module.exports = Overlay;
 
 },{"mithril":28}],12:[function(require,module,exports){
-'use strict';
+"use strict";
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -1472,7 +1379,7 @@ module.exports = {
 };
 
 },{}],13:[function(require,module,exports){
-'use strict';
+"use strict";
 
 var editor = require('./admin/form-editor/form-editor.js');
 
@@ -2642,14 +2549,15 @@ window.mc4wp.forms.editor = editor;
           for (++i$7; i$7 < len && countsAsLeft.test(types[i$7]); ++i$7) {}
           order.push(new BidiSpan(0, start, i$7));
         } else {
-          var pos = i$7, at = order.length;
+          var pos = i$7, at = order.length, isRTL = direction == "rtl" ? 1 : 0;
           for (++i$7; i$7 < len && types[i$7] != "L"; ++i$7) {}
           for (var j$2 = pos; j$2 < i$7;) {
             if (countsAsNum.test(types[j$2])) {
-              if (pos < j$2) { order.splice(at, 0, new BidiSpan(1, pos, j$2)); }
+              if (pos < j$2) { order.splice(at, 0, new BidiSpan(1, pos, j$2)); at += isRTL; }
               var nstart = j$2;
               for (++j$2; j$2 < i$7 && countsAsNum.test(types[j$2]); ++j$2) {}
               order.splice(at, 0, new BidiSpan(2, nstart, j$2));
+              at += isRTL;
               pos = j$2;
             } else { ++j$2; }
           }
@@ -5707,7 +5615,7 @@ window.mc4wp.forms.editor = editor;
   }
 
   function setScrollTop(cm, val, forceScroll) {
-    val = Math.min(cm.display.scroller.scrollHeight - cm.display.scroller.clientHeight, val);
+    val = Math.max(0, Math.min(cm.display.scroller.scrollHeight - cm.display.scroller.clientHeight, val));
     if (cm.display.scroller.scrollTop == val && !forceScroll) { return }
     cm.doc.scrollTop = val;
     cm.display.scrollbars.setScrollTop(val);
@@ -5717,7 +5625,7 @@ window.mc4wp.forms.editor = editor;
   // Sync scroller and scrollbar, ensure the gutter elements are
   // aligned.
   function setScrollLeft(cm, val, isScroller, forceScroll) {
-    val = Math.min(val, cm.display.scroller.scrollWidth - cm.display.scroller.clientWidth);
+    val = Math.max(0, Math.min(val, cm.display.scroller.scrollWidth - cm.display.scroller.clientWidth));
     if ((isScroller ? val == cm.doc.scrollLeft : Math.abs(cm.doc.scrollLeft - val) < 2) && !forceScroll) { return }
     cm.doc.scrollLeft = val;
     alignHorizontally(cm);
@@ -6304,6 +6212,8 @@ window.mc4wp.forms.editor = editor;
         update.visible = visibleLines(cm.display, cm.doc, viewport);
         if (update.visible.from >= cm.display.viewFrom && update.visible.to <= cm.display.viewTo)
           { break }
+      } else if (first) {
+        update.visible = visibleLines(cm.display, cm.doc, viewport);
       }
       if (!updateDisplayIfNeeded(cm, update)) { break }
       updateHeightsInViewport(cm);
@@ -8653,7 +8563,7 @@ window.mc4wp.forms.editor = editor;
                               text.filter(function (t) { return t != null; }).join(cm.doc.lineSeparator())),
                           origin: "paste"};
             makeChange(cm.doc, change);
-            setSelectionReplaceHistory(cm.doc, simpleSelection(pos, changeEnd(change)));
+            setSelectionReplaceHistory(cm.doc, simpleSelection(clipPos(cm.doc, pos), clipPos(cm.doc, changeEnd(change))));
           })();
         }
       };
@@ -8986,7 +8896,7 @@ window.mc4wp.forms.editor = editor;
 
   function endOfLine(visually, cm, lineObj, lineNo, dir) {
     if (visually) {
-      if (cm.getOption("direction") == "rtl") { dir = -dir; }
+      if (cm.doc.direction == "rtl") { dir = -dir; }
       var order = getOrder(lineObj, cm.doc.direction);
       if (order) {
         var part = dir < 0 ? lst(order) : order[0];
@@ -9241,7 +9151,7 @@ window.mc4wp.forms.editor = editor;
     var line = getLine(cm.doc, start.line);
     var order = getOrder(line, cm.doc.direction);
     if (!order || order[0].level == 0) {
-      var firstNonWS = Math.max(0, line.text.search(/\S/));
+      var firstNonWS = Math.max(start.ch, line.text.search(/\S/));
       var inWS = pos.line == start.line && pos.ch <= firstNonWS && pos.ch;
       return Pos(start.line, inWS ? 0 : firstNonWS, start.sticky)
     }
@@ -10797,7 +10707,7 @@ window.mc4wp.forms.editor = editor;
     var oldPos = pos;
     var origDir = dir;
     var lineObj = getLine(doc, pos.line);
-    var lineDir = visually && doc.cm && doc.cm.getOption("direction") == "rtl" ? -dir : dir;
+    var lineDir = visually && doc.direction == "rtl" ? -dir : dir;
     function findNextLine() {
       var l = pos.line + lineDir;
       if (l < doc.first || l >= doc.first + doc.size) { return false }
@@ -10962,7 +10872,7 @@ window.mc4wp.forms.editor = editor;
 
   ContentEditableInput.prototype.prepareSelection = function () {
     var result = prepareSelection(this.cm, false);
-    result.focus = this.cm.state.focused;
+    result.focus = document.activeElement == this.div;
     return result
   };
 
@@ -11058,7 +10968,7 @@ window.mc4wp.forms.editor = editor;
 
   ContentEditableInput.prototype.focus = function () {
     if (this.cm.options.readOnly != "nocursor") {
-      if (!this.selectionInEditor())
+      if (!this.selectionInEditor() || document.activeElement != this.div)
         { this.showSelection(this.prepareSelection(), true); }
       this.div.focus();
     }
@@ -11890,7 +11800,7 @@ window.mc4wp.forms.editor = editor;
 
   addLegacyProps(CodeMirror);
 
-  CodeMirror.version = "5.51.0";
+  CodeMirror.version = "5.52.2";
 
   return CodeMirror;
 
@@ -12354,81 +12264,98 @@ CodeMirror.defineMode("css", function(config, parserConfig) {
     "alignment-baseline", "anchor-point", "animation", "animation-delay",
     "animation-direction", "animation-duration", "animation-fill-mode",
     "animation-iteration-count", "animation-name", "animation-play-state",
-    "animation-timing-function", "appearance", "azimuth", "backface-visibility",
-    "background", "background-attachment", "background-blend-mode", "background-clip",
-    "background-color", "background-image", "background-origin", "background-position",
-    "background-repeat", "background-size", "baseline-shift", "binding",
-    "bleed", "bookmark-label", "bookmark-level", "bookmark-state",
-    "bookmark-target", "border", "border-bottom", "border-bottom-color",
-    "border-bottom-left-radius", "border-bottom-right-radius",
-    "border-bottom-style", "border-bottom-width", "border-collapse",
-    "border-color", "border-image", "border-image-outset",
+    "animation-timing-function", "appearance", "azimuth", "backdrop-filter",
+    "backface-visibility", "background", "background-attachment",
+    "background-blend-mode", "background-clip", "background-color",
+    "background-image", "background-origin", "background-position",
+    "background-position-x", "background-position-y", "background-repeat",
+    "background-size", "baseline-shift", "binding", "bleed", "block-size",
+    "bookmark-label", "bookmark-level", "bookmark-state", "bookmark-target",
+    "border", "border-bottom", "border-bottom-color", "border-bottom-left-radius",
+    "border-bottom-right-radius", "border-bottom-style", "border-bottom-width",
+    "border-collapse", "border-color", "border-image", "border-image-outset",
     "border-image-repeat", "border-image-slice", "border-image-source",
-    "border-image-width", "border-left", "border-left-color",
-    "border-left-style", "border-left-width", "border-radius", "border-right",
-    "border-right-color", "border-right-style", "border-right-width",
-    "border-spacing", "border-style", "border-top", "border-top-color",
-    "border-top-left-radius", "border-top-right-radius", "border-top-style",
-    "border-top-width", "border-width", "bottom", "box-decoration-break",
-    "box-shadow", "box-sizing", "break-after", "break-before", "break-inside",
-    "caption-side", "caret-color", "clear", "clip", "color", "color-profile", "column-count",
-    "column-fill", "column-gap", "column-rule", "column-rule-color",
-    "column-rule-style", "column-rule-width", "column-span", "column-width",
-    "columns", "content", "counter-increment", "counter-reset", "crop", "cue",
-    "cue-after", "cue-before", "cursor", "direction", "display",
-    "dominant-baseline", "drop-initial-after-adjust",
-    "drop-initial-after-align", "drop-initial-before-adjust",
-    "drop-initial-before-align", "drop-initial-size", "drop-initial-value",
-    "elevation", "empty-cells", "fit", "fit-position", "flex", "flex-basis",
-    "flex-direction", "flex-flow", "flex-grow", "flex-shrink", "flex-wrap",
-    "float", "float-offset", "flow-from", "flow-into", "font", "font-feature-settings",
-    "font-family", "font-kerning", "font-language-override", "font-size", "font-size-adjust",
-    "font-stretch", "font-style", "font-synthesis", "font-variant",
-    "font-variant-alternates", "font-variant-caps", "font-variant-east-asian",
-    "font-variant-ligatures", "font-variant-numeric", "font-variant-position",
-    "font-weight", "grid", "grid-area", "grid-auto-columns", "grid-auto-flow",
-    "grid-auto-rows", "grid-column", "grid-column-end", "grid-column-gap",
-    "grid-column-start", "grid-gap", "grid-row", "grid-row-end", "grid-row-gap",
-    "grid-row-start", "grid-template", "grid-template-areas", "grid-template-columns",
-    "grid-template-rows", "hanging-punctuation", "height", "hyphens",
-    "icon", "image-orientation", "image-rendering", "image-resolution",
-    "inline-box-align", "justify-content", "justify-items", "justify-self", "left", "letter-spacing",
-    "line-break", "line-height", "line-stacking", "line-stacking-ruby",
+    "border-image-width", "border-left", "border-left-color", "border-left-style",
+    "border-left-width", "border-radius", "border-right", "border-right-color",
+    "border-right-style", "border-right-width", "border-spacing", "border-style",
+    "border-top", "border-top-color", "border-top-left-radius",
+    "border-top-right-radius", "border-top-style", "border-top-width",
+    "border-width", "bottom", "box-decoration-break", "box-shadow", "box-sizing",
+    "break-after", "break-before", "break-inside", "caption-side", "caret-color",
+    "clear", "clip", "color", "color-profile", "column-count", "column-fill",
+    "column-gap", "column-rule", "column-rule-color", "column-rule-style",
+    "column-rule-width", "column-span", "column-width", "columns", "contain",
+    "content", "counter-increment", "counter-reset", "crop", "cue", "cue-after",
+    "cue-before", "cursor", "direction", "display", "dominant-baseline",
+    "drop-initial-after-adjust", "drop-initial-after-align",
+    "drop-initial-before-adjust", "drop-initial-before-align", "drop-initial-size",
+    "drop-initial-value", "elevation", "empty-cells", "fit", "fit-position",
+    "flex", "flex-basis", "flex-direction", "flex-flow", "flex-grow",
+    "flex-shrink", "flex-wrap", "float", "float-offset", "flow-from", "flow-into",
+    "font", "font-family", "font-feature-settings", "font-kerning",
+    "font-language-override", "font-optical-sizing", "font-size",
+    "font-size-adjust", "font-stretch", "font-style", "font-synthesis",
+    "font-variant", "font-variant-alternates", "font-variant-caps",
+    "font-variant-east-asian", "font-variant-ligatures", "font-variant-numeric",
+    "font-variant-position", "font-variation-settings", "font-weight", "gap",
+    "grid", "grid-area", "grid-auto-columns", "grid-auto-flow", "grid-auto-rows",
+    "grid-column", "grid-column-end", "grid-column-gap", "grid-column-start",
+    "grid-gap", "grid-row", "grid-row-end", "grid-row-gap", "grid-row-start",
+    "grid-template", "grid-template-areas", "grid-template-columns",
+    "grid-template-rows", "hanging-punctuation", "height", "hyphens", "icon",
+    "image-orientation", "image-rendering", "image-resolution", "inline-box-align",
+    "inset", "inset-block", "inset-block-end", "inset-block-start", "inset-inline",
+    "inset-inline-end", "inset-inline-start", "isolation", "justify-content",
+    "justify-items", "justify-self", "left", "letter-spacing", "line-break",
+    "line-height", "line-height-step", "line-stacking", "line-stacking-ruby",
     "line-stacking-shift", "line-stacking-strategy", "list-style",
     "list-style-image", "list-style-position", "list-style-type", "margin",
-    "margin-bottom", "margin-left", "margin-right", "margin-top",
-    "marks", "marquee-direction", "marquee-loop",
-    "marquee-play-count", "marquee-speed", "marquee-style", "max-height",
-    "max-width", "min-height", "min-width", "mix-blend-mode", "move-to", "nav-down", "nav-index",
-    "nav-left", "nav-right", "nav-up", "object-fit", "object-position",
-    "opacity", "order", "orphans", "outline",
-    "outline-color", "outline-offset", "outline-style", "outline-width",
-    "overflow", "overflow-style", "overflow-wrap", "overflow-x", "overflow-y",
-    "padding", "padding-bottom", "padding-left", "padding-right", "padding-top",
-    "page", "page-break-after", "page-break-before", "page-break-inside",
-    "page-policy", "pause", "pause-after", "pause-before", "perspective",
-    "perspective-origin", "pitch", "pitch-range", "place-content", "place-items", "place-self", "play-during", "position",
-    "presentation-level", "punctuation-trim", "quotes", "region-break-after",
-    "region-break-before", "region-break-inside", "region-fragment",
-    "rendering-intent", "resize", "rest", "rest-after", "rest-before", "richness",
-    "right", "rotation", "rotation-point", "ruby-align", "ruby-overhang",
-    "ruby-position", "ruby-span", "shape-image-threshold", "shape-inside", "shape-margin",
-    "shape-outside", "size", "speak", "speak-as", "speak-header",
-    "speak-numeral", "speak-punctuation", "speech-rate", "stress", "string-set",
-    "tab-size", "table-layout", "target", "target-name", "target-new",
-    "target-position", "text-align", "text-align-last", "text-decoration",
+    "margin-bottom", "margin-left", "margin-right", "margin-top", "marks",
+    "marquee-direction", "marquee-loop", "marquee-play-count", "marquee-speed",
+    "marquee-style", "max-block-size", "max-height", "max-inline-size",
+    "max-width", "min-block-size", "min-height", "min-inline-size", "min-width",
+    "mix-blend-mode", "move-to", "nav-down", "nav-index", "nav-left", "nav-right",
+    "nav-up", "object-fit", "object-position", "offset", "offset-anchor",
+    "offset-distance", "offset-path", "offset-position", "offset-rotate",
+    "opacity", "order", "orphans", "outline", "outline-color", "outline-offset",
+    "outline-style", "outline-width", "overflow", "overflow-style",
+    "overflow-wrap", "overflow-x", "overflow-y", "padding", "padding-bottom",
+    "padding-left", "padding-right", "padding-top", "page", "page-break-after",
+    "page-break-before", "page-break-inside", "page-policy", "pause",
+    "pause-after", "pause-before", "perspective", "perspective-origin", "pitch",
+    "pitch-range", "place-content", "place-items", "place-self", "play-during",
+    "position", "presentation-level", "punctuation-trim", "quotes",
+    "region-break-after", "region-break-before", "region-break-inside",
+    "region-fragment", "rendering-intent", "resize", "rest", "rest-after",
+    "rest-before", "richness", "right", "rotate", "rotation", "rotation-point",
+    "row-gap", "ruby-align", "ruby-overhang", "ruby-position", "ruby-span",
+    "scale", "scroll-behavior", "scroll-margin", "scroll-margin-block",
+    "scroll-margin-block-end", "scroll-margin-block-start", "scroll-margin-bottom",
+    "scroll-margin-inline", "scroll-margin-inline-end",
+    "scroll-margin-inline-start", "scroll-margin-left", "scroll-margin-right",
+    "scroll-margin-top", "scroll-padding", "scroll-padding-block",
+    "scroll-padding-block-end", "scroll-padding-block-start",
+    "scroll-padding-bottom", "scroll-padding-inline", "scroll-padding-inline-end",
+    "scroll-padding-inline-start", "scroll-padding-left", "scroll-padding-right",
+    "scroll-padding-top", "scroll-snap-align", "scroll-snap-type",
+    "shape-image-threshold", "shape-inside", "shape-margin", "shape-outside",
+    "size", "speak", "speak-as", "speak-header", "speak-numeral",
+    "speak-punctuation", "speech-rate", "stress", "string-set", "tab-size",
+    "table-layout", "target", "target-name", "target-new", "target-position",
+    "text-align", "text-align-last", "text-combine-upright", "text-decoration",
     "text-decoration-color", "text-decoration-line", "text-decoration-skip",
-    "text-decoration-style", "text-emphasis", "text-emphasis-color",
-    "text-emphasis-position", "text-emphasis-style", "text-height",
-    "text-indent", "text-justify", "text-outline", "text-overflow", "text-shadow",
-    "text-size-adjust", "text-space-collapse", "text-transform", "text-underline-position",
-    "text-wrap", "top", "transform", "transform-origin", "transform-style",
-    "transition", "transition-delay", "transition-duration",
-    "transition-property", "transition-timing-function", "unicode-bidi",
-    "user-select", "vertical-align", "visibility", "voice-balance", "voice-duration",
-    "voice-family", "voice-pitch", "voice-range", "voice-rate", "voice-stress",
-    "voice-volume", "volume", "white-space", "widows", "width", "will-change", "word-break",
-    "word-spacing", "word-wrap", "z-index",
+    "text-decoration-skip-ink", "text-decoration-style", "text-emphasis",
+    "text-emphasis-color", "text-emphasis-position", "text-emphasis-style",
+    "text-height", "text-indent", "text-justify", "text-orientation",
+    "text-outline", "text-overflow", "text-rendering", "text-shadow",
+    "text-size-adjust", "text-space-collapse", "text-transform",
+    "text-underline-position", "text-wrap", "top", "transform", "transform-origin",
+    "transform-style", "transition", "transition-delay", "transition-duration",
+    "transition-property", "transition-timing-function", "translate",
+    "unicode-bidi", "user-select", "vertical-align", "visibility", "voice-balance",
+    "voice-duration", "voice-family", "voice-pitch", "voice-range", "voice-rate",
+    "voice-stress", "voice-volume", "volume", "white-space", "widows", "width",
+    "will-change", "word-break", "word-spacing", "word-wrap", "writing-mode", "z-index",
     // SVG-specific
     "clip-path", "clip-rule", "mask", "enable-background", "filter", "flood-color",
     "flood-opacity", "lighting-color", "stop-color", "stop-opacity", "pointer-events",
@@ -12442,16 +12369,28 @@ CodeMirror.defineMode("css", function(config, parserConfig) {
   ], propertyKeywords = keySet(propertyKeywords_);
 
   var nonStandardPropertyKeywords_ = [
+    "border-block", "border-block-color", "border-block-end",
+    "border-block-end-color", "border-block-end-style", "border-block-end-width",
+    "border-block-start", "border-block-start-color", "border-block-start-style",
+    "border-block-start-width", "border-block-style", "border-block-width",
+    "border-inline", "border-inline-color", "border-inline-end",
+    "border-inline-end-color", "border-inline-end-style",
+    "border-inline-end-width", "border-inline-start", "border-inline-start-color",
+    "border-inline-start-style", "border-inline-start-width",
+    "border-inline-style", "border-inline-width", "margin-block",
+    "margin-block-end", "margin-block-start", "margin-inline", "margin-inline-end",
+    "margin-inline-start", "padding-block", "padding-block-end",
+    "padding-block-start", "padding-inline", "padding-inline-end",
+    "padding-inline-start", "scroll-snap-stop", "scrollbar-3d-light-color",
     "scrollbar-arrow-color", "scrollbar-base-color", "scrollbar-dark-shadow-color",
     "scrollbar-face-color", "scrollbar-highlight-color", "scrollbar-shadow-color",
-    "scrollbar-3d-light-color", "scrollbar-track-color", "shape-inside",
-    "searchfield-cancel-button", "searchfield-decoration", "searchfield-results-button",
-    "searchfield-results-decoration", "zoom"
+    "scrollbar-track-color", "searchfield-cancel-button", "searchfield-decoration",
+    "searchfield-results-button", "searchfield-results-decoration", "shape-inside", "zoom"
   ], nonStandardPropertyKeywords = keySet(nonStandardPropertyKeywords_);
 
   var fontProperties_ = [
-    "font-family", "src", "unicode-range", "font-variant", "font-feature-settings",
-    "font-stretch", "font-weight", "font-style"
+    "font-display", "font-family", "src", "unicode-range", "font-variant",
+     "font-feature-settings", "font-stretch", "font-weight", "font-style"
   ], fontProperties = keySet(fontProperties_);
 
   var counterDescriptors_ = [
@@ -13303,7 +13242,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
   }
   function parenExpr(type) {
     if (type != "(") return pass()
-    return cont(pushlex(")"), expression, expect(")"), poplex)
+    return cont(pushlex(")"), maybeexpression, expect(")"), poplex)
   }
   function expressionInner(type, value, noComma) {
     if (cx.state.fatArrowAt == cx.stream.start) {
@@ -13332,7 +13271,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
   }
 
   function maybeoperatorComma(type, value) {
-    if (type == ",") return cont(expression);
+    if (type == ",") return cont(maybeexpression);
     return maybeoperatorNoComma(type, value, false);
   }
   function maybeoperatorNoComma(type, value, noComma) {

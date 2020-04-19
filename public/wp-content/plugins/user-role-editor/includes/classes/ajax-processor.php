@@ -255,6 +255,21 @@ class URE_Ajax_Processor {
         return $answer;
     }
     // end of get_role_caps()
+
+
+    protected function hide_pro_banner() {
+        
+        $this->lib->put_option('ure_hide_pro_banner', 1);	
+        $this->lib->flush_options();
+        
+        $answer = array(
+            'result'=>'success', 
+            'message'=>'Pro banner was hidden'
+            );
+        
+        return $answer;
+    }
+    // end of hide_pro_banner()
     
     
     protected function _dispatch() {
@@ -290,6 +305,9 @@ class URE_Ajax_Processor {
             case 'rename_role':
                 $answer = $this->rename_role();
                 break;
+            case 'hide_pro_banner':
+                $answer = $this->hide_pro_banner();
+                break;            
             default:
                 $answer = array('result' => 'error', 'message' => 'Unknown action "' . $this->action . '"');
         }

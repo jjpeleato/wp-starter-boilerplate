@@ -503,7 +503,7 @@ function update_file_entities_checkboxes(incremental, entities) {
 			if (name.substring(0, 16) != 'updraft_include_') { return; }
 			var entity = name.substring(16);
 			jQuery('#backupnow_files_updraft_include_' + entity).prop('disabled', false);
-			if (jQuery(this).is(':checked')) {
+			if (jQuery('#updraft_include_' + entity).is(':checked')) {
 				jQuery('#backupnow_files_updraft_include_' + entity).prop('checked', true);
 			}
 		});
@@ -964,28 +964,34 @@ updraft_updatehistory(0, 0);}, 30000);
  * Update the HTML for the 'existing backups' table; optionally, after local/remote re-scanning.
  * Nothing is returned; any update necessary is performed directly on the DOM.
  *
- * @param {Integer} rescan	   - first, re-scan the local storage (0 or 1)
- * @param {Integer} remotescan - first, re-scan the remote storage (you must also set rescan to 1 to use this)
- * @param {Integer} debug	   - if 1, then also request debugging information and log it to the console
+ * @param {Integer} rescan	     - first, re-scan the local storage (0 or 1)
+ * @param {Integer} remotescan   - first, re-scan the remote storage (you must also set rescan to 1 to use this)
+ * @param {Integer} debug	     - if 1, then also request debugging information and log it to the console
+ * @param {Integer} backup_count - the amount of backups we want to display
  */
-function updraft_updatehistory(rescan, remotescan, debug) {
+function updraft_updatehistory(rescan, remotescan, debug, backup_count) {
 
 	if ('undefined' != typeof updraft_restore_screen && updraft_restore_screen) return;
 
 	if ('undefined' === typeof debug) {
 		debug = jQuery('#updraft_debug_mode').is(':checked') ? 1 : 0;
 	}
-	
+
 	var unixtime = Math.round(new Date().getTime() / 1000);
 	
 	if (1 == rescan || 1 == remotescan) {
 		updraft_historytimer_notbefore = unixtime + 30;
 	} else {
-		if (unixtime < updraft_historytimer_notbefore) {
+		if (unixtime < updraft_historytimer_notbefore && 'undefined' === typeof backup_count) {
 			console.log("Update history skipped: "+unixtime.toString()+" < "+updraft_historytimer_notbefore.toString());
 			return;
 		}
 	}
+
+	if ('undefined' === typeof backup_count) {
+		backup_count = jQuery('#updraft-navtab-backups-content .updraft_existing_backups .updraft_existing_backups_row').length;
+	}
+	
 	
 	if (rescan == 1) {
 		if (remotescan == 1) {
@@ -1001,7 +1007,8 @@ function updraft_updatehistory(rescan, remotescan, debug) {
 	
 	var data = {
 		operation: what_op,
-		debug: debug
+		debug: debug,
+		backup_count: backup_count,
 	}
 	
 	updraft_send_command('rescan', data, function(resp) {
@@ -2159,6 +2166,34 @@ jQuery(document).ready(function($) {
 		}
 	});
 
+	$('#updraft-navtab-migrate-content').on('change', '.updraft_migrate_widget_module_content #updraftplus_clone_backup_options', function() {
+
+		// reset the package list
+		$('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content #updraftplus_clone_package_options > option').each(function() {
+			var value = $(this).val();
+			if ('starter' == value) $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content #updraftplus_clone_package_options  option[value="'+value+'"]').prop('selected', true);
+			$('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content #updraftplus_clone_package_options  option[value="'+value+'"]').prop("disabled", false);
+		});
+		
+		var clone_backup_select = $(this).find('option:selected');
+
+		if ('current' == $(clone_backup_select).data('nonce') || 'wp_only' == $(clone_backup_select).data('nonce')) return;
+		
+		var total_size = $(clone_backup_select).data('size');
+
+		// Disable packages that are to small for this backup set, then set the first available package as the selected option
+		$('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content #updraftplus_clone_package_options > option').each(function() {
+			var size = $(this).data('size');
+			var value = $(this).val();
+			if (total_size >= size) {
+				$('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content #updraftplus_clone_package_options  option[value="'+value+'"]').prop("disabled", true);
+			} else {
+				$('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content #updraftplus_clone_package_options  option[value="'+value+'"]').prop('selected', true);
+				return false;
+			}
+		});
+	});
+
 	$('#updraft-navtab-migrate-content').on('click', '.updraft_migrate_widget_module_content #updraft_migrate_createclone', function (e) {
 		e.preventDefault();
 
@@ -3133,6 +3168,7 @@ jQuery(document).ready(function($) {
 		var remote_deleted = backup_remote;
 		var sets_deleted = backup_sets;
 		var timestamps = jQuery('#updraft_delete_timestamp').val().split(',');
+		var error_log_prompt = '';
 		
 		var form_data = jQuery('#updraft_delete_form').serializeArray();
 		var data = {};
@@ -3211,8 +3247,12 @@ jQuery(document).ready(function($) {
 				local_deleted = local_deleted + resp.backup_local;
 				remote_deleted = remote_deleted + resp.backup_remote;
 				sets_deleted = sets_deleted + resp.backup_sets;
+				if ('' != resp.error_messages) {
+					error_log_prompt = updraftlion.delete_error_log_prompt;
+				}
+					
 				setTimeout(function() {
-					alert(resp.set_message + " " + sets_deleted + "\n" + resp.local_message + " " + local_deleted + "\n" + resp.remote_message + " " + remote_deleted);
+					alert(resp.set_message + " " + sets_deleted + "\n" + resp.local_message + " " + local_deleted + "\n" + resp.remote_message + " " + remote_deleted + "\n\n" + resp.error_messages + "\n" + error_log_prompt);
 				}, 900);
 			}
 		});
@@ -3265,6 +3305,7 @@ jQuery(document).ready(function($) {
 		process_next_action: function() {
 			var anyselected = 0;
 			var moreselected = 0;
+			var dbselected = 0;
 			var whichselected = [];
 			// Make a list of what files we want
 			var already_added_wpcore = 0;
@@ -3275,6 +3316,7 @@ jQuery(document).ready(function($) {
 					var howmany = $(y).data('howmany');
 					var type = $(y).val();
 					if ('more' == type) moreselected = 1;
+					if ('db' == type) dbselected = 1;
 					if (1 == meta_foreign || (2 == meta_foreign && 'db' != type)) {
 						if ('wpcore' != type) {
 							howmany = $('#updraft_restore_form #updraft_restore_wpcore').data('howmany');
@@ -3377,6 +3419,21 @@ jQuery(document).ready(function($) {
 							}
 						}
 					});
+
+					if (1 == dbselected) {
+						
+						anyselected = 0;
+					
+						jQuery('input[name="updraft_restore_table_options[]"').each(function (x, y) {
+							if (jQuery(y).is(':checked') && !jQuery(y).is(':disabled')) anyselected = 1;
+						});
+						
+						if (0 == anyselected) {
+							alert(updraftlion.youdidnotselectany);
+							jQuery('.updraft-restore--next-step, .updraft-restore--cancel').prop('disabled', false);
+							return;
+						}
+					}
 
 					if (1 == moreselected) {
 					
@@ -4077,6 +4134,17 @@ jQuery(document).ready(function($) {
 		} else {
 			console.log("UpdraftPlus: A upload link was clicked, but the Job ID could not be found");
 		}
+	});
+
+	jQuery('#updraft-navtab-backups-content .updraft_existing_backups').on('click', '.updraft-load-more-backups', function (e) {
+		e.preventDefault();
+		var backup_count = parseInt(jQuery('#updraft-navtab-backups-content .updraft_existing_backups .updraft_existing_backups_row').length) + parseInt(updraftlion.existing_backups_limit);
+		updraft_updatehistory(0, 0, 0, backup_count);
+	});
+
+	jQuery('#updraft-navtab-backups-content .updraft_existing_backups').on('click', '.updraft-load-all-backups', function (e) {
+		e.preventDefault();
+		updraft_updatehistory(0, 0, 0, 9999999);
 	});
 
 	/**
@@ -4814,6 +4882,11 @@ jQuery(document).ready(function($) {
 				}
 			});
 		}
+	});
+
+	jQuery('#updraft-restore-modal').on('click', '#updraftplus_restore_tables_showmoreoptions', function(e) {
+		e.preventDefault();
+		jQuery('.updraftplus_restore_tables_options_container').toggle();
 	});
 
 

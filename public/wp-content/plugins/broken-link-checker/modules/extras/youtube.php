@@ -17,7 +17,6 @@ ModuleCheckerUrlPattern: @^https?://(?:([\w\d]+\.)*youtube\.[^/]+/watch\?.*v=[^/
 */
 
 class blcYouTubeChecker extends blcChecker {
-	var $youtube_developer_key = 'AIzaSyCE2HKP0BneF8YdVT45UpadENdBeYCzFrE';
 	var $api_grace_period      = 0.3; //How long to wait between YouTube API requests.
 	var $last_api_request      = 0;   //Timestamp of the last request.
 
@@ -97,6 +96,7 @@ class blcYouTubeChecker extends blcChecker {
 				$result = $this->check_playlist( $response, $result );
 			}
 		}
+
 
 		//The hash should contain info about all pieces of data that pertain to determining if the
 		//link is working.
@@ -285,7 +285,12 @@ class blcYouTubeChecker extends blcChecker {
 	}
 
 	public function get_youtube_api_key() {
-		return apply_filters( 'blc_youtube_api_key', $this->youtube_developer_key );
+		$conf = blc_get_configuration();
+
+		//todo: Remove defualt API key.
+		$api_key = ! empty( $conf->options['youtube_api_key'] ) ? $conf->options['youtube_api_key'] : 'AIzaSyCE2HKP0BneF8YdVT45UpadENdBeYCzFrE';
+
+		return apply_filters( 'blc_youtube_api_key', $conf->options['youtube_api_key'] );
 	}
 
 }

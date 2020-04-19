@@ -211,6 +211,14 @@ class UpdraftPlus_BackupModule_ftp extends UpdraftPlus_BackupModule {
 
 	}
 
+	/**
+	 * Delete a single file from the service using FTP protocols
+	 *
+	 * @param Array $files    - array of file names to delete
+	 * @param Array $ftparr   - FTP details/credentials
+	 * @param Array $sizeinfo - unused here
+	 * @return Boolean|String - either a boolean true or an error code string
+	 */
 	public function delete($files, $ftparr = array(), $sizeinfo = array()) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 
 		global $updraftplus;
@@ -234,7 +242,7 @@ class UpdraftPlus_BackupModule_ftp extends UpdraftPlus_BackupModule {
 			if (is_wp_error($ftp) || !$ftp->connect()) {
 				if (is_wp_error($ftp)) $updraftplus->log_wp_error($ftp);
 				$this->log("Failure: we did not successfully log in with those credentials (host=".$opts['host'].").");
-				return false;
+				return 'authentication_fail';
 			}
 
 		}
@@ -247,7 +255,7 @@ class UpdraftPlus_BackupModule_ftp extends UpdraftPlus_BackupModule {
 				$this->log("delete: succeeded (${ftp_remote_path}${file})");
 			} else {
 				$this->log("delete: failed (${ftp_remote_path}${file})");
-				$ret = false;
+				$ret = 'file_delete_error';
 			}
 		}
 		return $ret;

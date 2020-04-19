@@ -122,9 +122,9 @@ if ( ! class_exists( 'YIT_Gradients' ) ) {
          * @since 1.0
          */
         public function reverse_gradient() {
-            $colors_gradient = array_reverse( $this->get( 'colors_gradient' ) );
-
-            for ( $i = 0; $i < count( $colors_gradient ); $i ++ ) {
+            $colors_gradient       = array_reverse( $this->get( 'colors_gradient' ) );
+            $colors_gradient_count = count( $colors_gradient );
+            for ( $i = 0; $i < $colors_gradient_count; $i ++ ) {
                 $colors_gradient[$i]['position'] = 100 - $colors_gradient[$i]['position'];
             }
 

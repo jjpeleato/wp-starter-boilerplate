@@ -44,6 +44,7 @@ class blcPostMeta extends blcContainer {
 		if ( is_null( $this->wrapped_object ) || $ensure_consistency ) {
 			$this->wrapped_object = get_metadata( $this->meta_type, $this->container_id );
 		}
+
 		return $this->wrapped_object;
 	}
 
@@ -59,8 +60,14 @@ class blcPostMeta extends blcContainer {
 	 * @param string $field Field name. If omitted, the value of the default field will be returned.
 	 * @return array
 	 */
-	function get_field( $field = '' ) {
+	function get_field( $field = '', $single = false ) {
 		$get_only_first_field = ( 'metadata' !== $this->fields[ $field ] );
+
+		//override the get only first by a param
+		if ( $single ) {
+			$get_only_first_field = true;
+		}
+
 		return get_metadata( $this->meta_type, $this->container_id, $field, $get_only_first_field );
 	}
 
@@ -75,6 +82,21 @@ class blcPostMeta extends blcContainer {
 	 * @return bool|WP_Error True on success, an error object if something went wrong.
 	 */
 	function update_field( $field, $new_value, $old_value = '' ) {
+
+		//necessary for metas that store more than one value in a key
+		$meta_value     = $this->get_field( $field, true );
+		$new_meta_value = $meta_value;
+		if ( is_array( $meta_value ) ) {
+			foreach ( $meta_value as $key => $meta ) {
+				if ( $meta === $old_value ) {
+					$new_meta_value[ $key ] = $new_value;
+				}
+			}
+			$new_value = $new_meta_value;
+			$old_value = $meta_value;
+		}
+
+		//update the medatadata
 		$rez = update_metadata( $this->meta_type, $this->container_id, $field, $new_value, $old_value );
 		if ( $rez ) {
 			return true;

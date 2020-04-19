@@ -43,7 +43,6 @@ class UpdraftCentral_Core_Commands extends UpdraftCentral_Commands {
 					if (1 === $error_flag) break;
 				} else {
 
-					$class_prefix = $command_info['class_prefix'];
 					$action = $command_info['command'];
 					$command_php_class = $command_info['command_php_class'];
 
@@ -326,6 +325,8 @@ class UpdraftCentral_Core_Commands extends UpdraftCentral_Commands {
 	public function site_info() {
 
 		global $wpdb;
+
+		// THis is included so we can get $wp_version
 		@include(ABSPATH.WPINC.'/version.php');// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
 
 		$ud_version = is_a($this->ud, 'UpdraftPlus') ? $this->ud->version : 'none';
@@ -334,7 +335,7 @@ class UpdraftCentral_Core_Commands extends UpdraftCentral_Commands {
 			'versions' => array(
 				'ud' => $ud_version,
 				'php' => PHP_VERSION,
-				'wp' => $wp_version,
+				'wp' => $wp_version,// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 				'mysql' => $wpdb->db_version(),
 				'udrpc_php' => $this->rc->udrpc_version,
 			),

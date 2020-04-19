@@ -83,7 +83,7 @@ class WPCF7SAdmin
                 <option value="0"><?php _e('Contact Form', 'contact-form-submissions'); ?></option>
                 <?php foreach ($forms as $post) {
                 ?>
-                    <?php $selected = ($post->ID == $_GET['wpcf7_contact_form']) ? 'selected' : ''; ?>
+                    <?php $selected = ($post->ID == esc_attr($_GET['wpcf7_contact_form'])) ? 'selected' : ''; ?>
                     <option value="<?php echo $post->ID; ?>" <?php echo $selected; ?>><?php echo $post->post_title; ?></option>
                 <?php
             } ?>
@@ -155,7 +155,7 @@ class WPCF7SAdmin
 
         // dynamically add cols if the user selects a form
         if (isset($_GET['wpcf7_contact_form']) && !empty($_GET['wpcf7_contact_form'])) {
-            $form_id = $_GET['wpcf7_contact_form'];
+            $form_id = esc_attr($_GET['wpcf7_contact_form']);
 
             $wpcf7s_columns = $this->get_available_columns($form_id);
 
@@ -196,7 +196,7 @@ class WPCF7SAdmin
                 <?php
                 break;
             default:
-                echo get_post_meta($post_id, $column, true);
+                echo esc_html(get_post_meta($post_id, $column, true));
                 break;
         }
     }

@@ -2,7 +2,7 @@
 /*
 Plugin Name: Contact Form Submissions
 Description: Never miss an enquiry again! Save all Contact Form 7 submissions in your database.
-Version:     1.6.2
+Version:     1.6.4
 Author:      Jason Green
 License:     GPLv3
 Domain Path: /languages
