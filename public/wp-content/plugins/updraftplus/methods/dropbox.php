@@ -250,13 +250,13 @@ class UpdraftPlus_BackupModule_dropbox extends UpdraftPlus_BackupModule {
 			$filesize = $filesize/1024;
 			$microtime = microtime(true);
 
-			if ($upload_id = $this->jobdata_get('upload_id_'.$hash, null, 'updraf_dbid_'.$hash)) {
+			if ('None' != ($upload_id = $this->jobdata_get('upload_id_'.$hash, 'None', 'updraf_dbid_'.$hash))) {
 				// Resume
-				$offset = $this->jobdata_get('upload_offset_'.$hash, null, 'updraf_dbof_'.$hash);
-				$this->log("This is a resumption: $offset bytes had already been uploaded");
+				$offset = $this->jobdata_get('upload_offset_'.$hash, 0, 'updraf_dbof_'.$hash);
+				if ($offset) $this->log("This is a resumption: $offset bytes had already been uploaded");
 			} else {
 				$offset = 0;
-				$upload_id = null;
+				$upload_id = 'None';
 			}
 
 			// We don't actually abort now - there's no harm in letting it try and then fail
@@ -291,6 +291,7 @@ class UpdraftPlus_BackupModule_dropbox extends UpdraftPlus_BackupModule {
 					$dropbox_wanted = (int) $matches[2];
 					$this->log("not yet aligned: tried=$we_tried, wanted=$dropbox_wanted; will attempt recovery");
 					$this->uploaded_offset = $dropbox_wanted;
+					$upload_id = $this->jobdata_get('upload_id_'.$hash, 'None', 'updraf_dbid_'.$hash);
 					try {
 						$dropbox->chunkedUpload($updraft_dir.'/'.$file, '', $ufile, true, $dropbox_wanted, $upload_id, array($this, 'chunked_callback'));
 					} catch (Exception $e) {
@@ -423,6 +424,14 @@ class UpdraftPlus_BackupModule_dropbox extends UpdraftPlus_BackupModule {
 		return apply_filters('updraftplus_dropbox_defaults', array('Z3Q3ZmkwbnplNHA0Zzlx', 'bTY0bm9iNmY4eWhjODRt'));
 	}
 
+	/**
+	 * Delete a single file from the service using the Dropbox API
+	 *
+	 * @param Array $files    - array of filenames to delete
+	 * @param Array $data     - unused here
+	 * @param Array $sizeinfo - unused here
+	 * @return Boolean|String - either a boolean true or an error code string
+	 */
 	public function delete($files, $data = null, $sizeinfo = array()) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 
 		if (is_string($files)) $files = array($files);
@@ -432,7 +441,7 @@ class UpdraftPlus_BackupModule_dropbox extends UpdraftPlus_BackupModule {
 		if (empty($opts['tk_access_token'])) {
 			$this->log('You do not appear to be authenticated with Dropbox (3)');
 			$this->log(sprintf(__('You do not appear to be authenticated with %s (whilst deleting)', 'updraftplus'), 'Dropbox'), 'warning');
-			return false;
+			return 'authentication_fail';
 		}
 
 		try {
@@ -440,7 +449,7 @@ class UpdraftPlus_BackupModule_dropbox extends UpdraftPlus_BackupModule {
 		} catch (Exception $e) {
 			$this->log($e->getMessage().' (line: '.$e->getLine().', file: '.$e->getFile().')');
 			$this->log(sprintf(__('Failed to access %s when deleting (see log file for more)', 'updraftplus'), 'Dropbox'), 'warning');
-			return false;
+			return 'service_unavailable';
 		}
 		if (false === $dropbox) return false;
 
@@ -457,8 +466,9 @@ class UpdraftPlus_BackupModule_dropbox extends UpdraftPlus_BackupModule {
 
 			if (isset($file_success)) {
 				$this->log('delete succeeded');
+				return true;
 			} else {
-				return false;
+				return 'file_delete_error';
 			}
 		}
 

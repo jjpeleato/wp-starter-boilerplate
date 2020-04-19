@@ -1,6 +1,350 @@
 <?php
 /* THIS IS A GENERATED FILE. DO NOT EDIT DIRECTLY. */
 $redirection_strings = array(
+_n( "Are you sure you want to delete this item?", "Are you sure you want to delete the selected items?", 1, "redirection" ), // client/lib/store/index.js:20
+__( "Name", "redirection" ), // client/page/groups/constants.js:8
+__( "Module", "redirection" ), // client/page/groups/constants.js:9
+__( "Status", "redirection" ), // client/page/groups/constants.js:10
+__( "Redirects", "redirection" ), // client/page/groups/constants.js:11
+__( "Standard Display", "redirection" ), // client/page/groups/constants.js:17
+__( "Compact Display", "redirection" ), // client/page/groups/constants.js:22
+__( "Status", "redirection" ), // client/page/groups/constants.js:29
+__( "Enabled", "redirection" ), // client/page/groups/constants.js:33
+__( "Disabled", "redirection" ), // client/page/groups/constants.js:37
+__( "Module", "redirection" ), // client/page/groups/constants.js:43
+__( "Status", "redirection" ), // client/page/groups/constants.js:56
+__( "Name", "redirection" ), // client/page/groups/constants.js:61
+__( "Redirects", "redirection" ), // client/page/groups/constants.js:66
+__( "Module", "redirection" ), // client/page/groups/constants.js:71
+__( "Delete", "redirection" ), // client/page/groups/constants.js:79
+__( "Enable", "redirection" ), // client/page/groups/constants.js:83
+__( "Disable", "redirection" ), // client/page/groups/constants.js:87
+__( "Search", "redirection" ), // client/page/groups/constants.js:94
+__( "Filters", "redirection" ), // client/page/groups/index.js:136
+__( "Add Group", "redirection" ), // client/page/groups/index.js:159
+__( "Use groups to organise your redirects. Groups are assigned to a module, which affects how the redirects in that group work. If you are unsure then stick to the WordPress module.", "redirection" ), // client/page/groups/index.js:160
+__( "Name", "redirection" ), // client/page/groups/index.js:166
+__( "Note that you will need to set the Apache module path in your Redirection options.", "redirection" ), // client/page/groups/index.js:179
+__( "Edit", "redirection" ), // client/page/groups/row.js:88
+__( "Delete", "redirection" ), // client/page/groups/row.js:92
+__( "View Redirects", "redirection" ), // client/page/groups/row.js:96
+__( "Disable", "redirection" ), // client/page/groups/row.js:101
+__( "Enable", "redirection" ), // client/page/groups/row.js:103
+__( "Name", "redirection" ), // client/page/groups/row.js:130
+__( "Module", "redirection" ), // client/page/groups/row.js:134
+__( "Save", "redirection" ), // client/page/groups/row.js:143
+__( "Cancel", "redirection" ), // client/page/groups/row.js:144
+__( "Note that you will need to set the Apache module path in your Redirection options.", "redirection" ), // client/page/groups/row.js:147
+__( "Filter on: %(type)s", "redirection" ), // client/page/groups/row.js:206
+__( "A database upgrade is in progress. Please continue to finish.", "redirection" ), // client/page/home/database-update.js:25
+__( "Redirection stores data in your database and sometimes this needs upgrading. Your database is at version {{strong}}%(current)s{{/strong}} and the latest is {{strong}}%(latest)s{{/strong}}.", "redirection" ), // client/page/home/database-update.js:30
+__( "If your site needs special database permissions, or you would rather do it yourself, you can manually run the following SQL.", "redirection" ), // client/page/home/database-update.js:63
+__( "Click \"Complete Upgrade\" when finished.", "redirection" ), // client/page/home/database-update.js:63
+__( "Complete Upgrade", "redirection" ), // client/page/home/database-update.js:65
+__( "Click the \"Upgrade Database\" button to automatically upgrade the database.", "redirection" ), // client/page/home/database-update.js:75
+__( "Upgrade Database", "redirection" ), // client/page/home/database-update.js:77
+__( "Upgrade Required", "redirection" ), // client/page/home/database-update.js:103
+__( "Redirection database needs upgrading", "redirection" ), // client/page/home/database-update.js:106
+__( "Please make a backup of your Redirection data: {{download}}downloading a backup{{/download}}. If you experience any issues you can import this back into Redirection.", "redirection" ), // client/page/home/database-update.js:109
+__( "Manual Upgrade", "redirection" ), // client/page/home/database-update.js:121
+__( "Automatic Upgrade", "redirection" ), // client/page/home/database-update.js:122
+__( "Redirections", "redirection" ), // client/page/home/index.js:44
+__( "Site", "redirection" ), // client/page/home/index.js:45
+__( "Groups", "redirection" ), // client/page/home/index.js:46
+__( "Import/Export", "redirection" ), // client/page/home/index.js:47
+__( "Logs", "redirection" ), // client/page/home/index.js:48
+__( "404 errors", "redirection" ), // client/page/home/index.js:49
+__( "Options", "redirection" ), // client/page/home/index.js:50
+__( "Support", "redirection" ), // client/page/home/index.js:51
+__( "Cached Redirection detected", "redirection" ), // client/page/home/index.js:165
+__( "Please clear your browser cache and reload this page.", "redirection" ), // client/page/home/index.js:166
+__( "If you are using a caching system such as Cloudflare then please read this: ", "redirection" ), // client/page/home/index.js:168
+__( "clearing your cache.", "redirection" ), // client/page/home/index.js:169
+__( "Something went wrong 🙁", "redirection" ), // client/page/home/index.js:178
+__( "Redirection is not working. Try clearing your browser cache and reloading this page.", "redirection" ), // client/page/home/index.js:181
+__( "If you are using a page caching plugin or service (CloudFlare, OVH, etc) then you can also try clearing that cache.", "redirection" ), // client/page/home/index.js:182
+__( "If that doesn't help, open your browser's error console and create a {{link}}new issue{{/link}} with the details.", "redirection" ), // client/page/home/index.js:186
+__( "Please mention {{code}}%s{{/code}}, and explain what you were doing at the time", "redirection" ), // client/page/home/index.js:193
+__( "Add New", "redirection" ), // client/page/home/index.js:236
+__( "total = ", "redirection" ), // client/page/io/importer.js:17
+__( "Import from %s", "redirection" ), // client/page/io/importer.js:20
+__( "Import to group", "redirection" ), // client/page/io/index.js:97
+__( "Import a CSV, .htaccess, or JSON file.", "redirection" ), // client/page/io/index.js:105
+__( "Click 'Add File' or drag and drop here.", "redirection" ), // client/page/io/index.js:106
+__( "Add File", "redirection" ), // client/page/io/index.js:108
+__( "File selected", "redirection" ), // client/page/io/index.js:119
+__( "Upload", "redirection" ), // client/page/io/index.js:125
+__( "Cancel", "redirection" ), // client/page/io/index.js:126
+__( "Importing", "redirection" ), // client/page/io/index.js:136
+__( "Finished importing", "redirection" ), // client/page/io/index.js:152
+__( "Total redirects imported:", "redirection" ), // client/page/io/index.js:154
+__( "Double-check the file is the correct format!", "redirection" ), // client/page/io/index.js:155
+__( "OK", "redirection" ), // client/page/io/index.js:157
+__( "Close", "redirection" ), // client/page/io/index.js:206
+__( "Are you sure you want to import from %s?", "redirection" ), // client/page/io/index.js:220
+__( "Plugin Importers", "redirection" ), // client/page/io/index.js:228
+__( "The following redirect plugins were detected on your site and can be imported from.", "redirection" ), // client/page/io/index.js:230
+__( "Import", "redirection" ), // client/page/io/index.js:242
+__( "All imports will be appended to the current database - nothing is merged.", "redirection" ), // client/page/io/index.js:253
+__( "{{strong}}CSV file format{{/strong}}: {{code}}source URL, target URL{{/code}} - and can be optionally followed with {{code}}regex, http code{{/code}} ({{code}}regex{{/code}} - 0 for no, 1 for yes).", "redirection" ), // client/page/io/index.js:256
+__( "CSV does not include all information, and everything is imported/exported as \"URL only\" matches. Use the JSON format for a full set of data.", "redirection" ), // client/page/io/index.js:263
+__( "Export", "redirection" ), // client/page/io/index.js:266
+__( "Export to CSV, Apache .htaccess, Nginx, or Redirection JSON. The JSON format contains full information, and other formats contain partial information appropriate to the format.", "redirection" ), // client/page/io/index.js:267
+__( "Everything", "redirection" ), // client/page/io/index.js:271
+__( "WordPress redirects", "redirection" ), // client/page/io/index.js:272
+__( "Apache redirects", "redirection" ), // client/page/io/index.js:273
+__( "Nginx redirects", "redirection" ), // client/page/io/index.js:274
+__( "Complete data (JSON)", "redirection" ), // client/page/io/index.js:278
+__( "CSV", "redirection" ), // client/page/io/index.js:279
+__( "Apache .htaccess", "redirection" ), // client/page/io/index.js:280
+__( "Nginx rewrite rules", "redirection" ), // client/page/io/index.js:281
+__( "View", "redirection" ), // client/page/io/index.js:284
+__( "Download", "redirection" ), // client/page/io/index.js:285
+__( "Export redirect", "redirection" ), // client/page/io/index.js:292
+__( "Export 404", "redirection" ), // client/page/io/index.js:293
+__( "Date", "redirection" ), // client/page/logs/constants.js:14
+__( "Source URL", "redirection" ), // client/page/logs/constants.js:18
+__( "Target URL", "redirection" ), // client/page/logs/constants.js:23
+__( "Referrer", "redirection" ), // client/page/logs/constants.js:28
+__( "User Agent", "redirection" ), // client/page/logs/constants.js:33
+__( "IP", "redirection" ), // client/page/logs/constants.js:38
+__( "Delete", "redirection" ), // client/page/logs/constants.js:46
+__( "Standard Display", "redirection" ), // client/page/logs/constants.js:53
+__( "Compact Display", "redirection" ), // client/page/logs/constants.js:58
+__( "Date", "redirection" ), // client/page/logs/constants.js:64
+__( "URL", "redirection" ), // client/page/logs/constants.js:65
+__( "Referrer", "redirection" ), // client/page/logs/constants.js:66
+__( "User Agent", "redirection" ), // client/page/logs/constants.js:67
+__( "Target", "redirection" ), // client/page/logs/constants.js:68
+__( "IP", "redirection" ), // client/page/logs/constants.js:69
+__( "Search URL", "redirection" ), // client/page/logs/constants.js:77
+__( "Search referrer", "redirection" ), // client/page/logs/constants.js:81
+__( "Search user agent", "redirection" ), // client/page/logs/constants.js:85
+__( "Search IP", "redirection" ), // client/page/logs/constants.js:89
+__( "Search target URL", "redirection" ), // client/page/logs/constants.js:93
+__( "Delete all from IP %s", "redirection" ), // client/page/logs/delete-all.js:42
+__( "Delete all matching \"%s\"", "redirection" ), // client/page/logs/delete-all.js:48
+__( "Delete All", "redirection" ), // client/page/logs/delete-all.js:53
+__( "Delete the logs - are you sure?", "redirection" ), // client/page/logs/delete-all.js:67
+__( "Once deleted your current logs will no longer be available. You can set a delete schedule from the Redirection options if you want to do this automatically.", "redirection" ), // client/page/logs/delete-all.js:68
+__( "Yes! Delete the logs", "redirection" ), // client/page/logs/delete-all.js:70
+__( "No! Don't delete the logs", "redirection" ), // client/page/logs/delete-all.js:70
+__( "Delete", "redirection" ), // client/page/logs/row.js:111
+__( "Geo Info", "redirection" ), // client/page/logs/row.js:115
+__( "Agent Info", "redirection" ), // client/page/logs/row.js:119
+__( "Filter by IP", "redirection" ), // client/page/logs/row.js:164
+__( "Source URL", "redirection" ), // client/page/logs404/constants.js:16
+__( "Count", "redirection" ), // client/page/logs404/constants.js:22
+__( "IP", "redirection" ), // client/page/logs404/constants.js:34
+__( "Count", "redirection" ), // client/page/logs404/constants.js:40
+__( "Date", "redirection" ), // client/page/logs404/constants.js:53
+__( "Source URL", "redirection" ), // client/page/logs404/constants.js:57
+__( "Referrer", "redirection" ), // client/page/logs404/constants.js:62
+__( "User Agent", "redirection" ), // client/page/logs404/constants.js:67
+__( "IP", "redirection" ), // client/page/logs404/constants.js:72
+__( "Delete", "redirection" ), // client/page/logs404/constants.js:83
+__( "Redirect All", "redirection" ), // client/page/logs404/constants.js:87
+__( "Block IP", "redirection" ), // client/page/logs404/constants.js:91
+__( "Delete", "redirection" ), // client/page/logs404/constants.js:99
+__( "Redirect All", "redirection" ), // client/page/logs404/constants.js:103
+__( "Ignore URL", "redirection" ), // client/page/logs404/constants.js:107
+__( "No grouping", "redirection" ), // client/page/logs404/constants.js:116
+__( "Group by URL", "redirection" ), // client/page/logs404/constants.js:120
+__( "Group by IP", "redirection" ), // client/page/logs404/constants.js:127
+__( "Standard Display", "redirection" ), // client/page/logs404/constants.js:137
+__( "Compact Display", "redirection" ), // client/page/logs404/constants.js:142
+__( "Date", "redirection" ), // client/page/logs404/constants.js:148
+__( "URL", "redirection" ), // client/page/logs404/constants.js:149
+__( "Referrer", "redirection" ), // client/page/logs404/constants.js:150
+__( "User Agent", "redirection" ), // client/page/logs404/constants.js:151
+__( "IP", "redirection" ), // client/page/logs404/constants.js:152
+__( "Search URL", "redirection" ), // client/page/logs404/constants.js:160
+__( "Search referrer", "redirection" ), // client/page/logs404/constants.js:164
+__( "Search user agent", "redirection" ), // client/page/logs404/constants.js:168
+__( "Search IP", "redirection" ), // client/page/logs404/constants.js:172
+__( "Add Redirect", "redirection" ), // client/page/logs404/create-redirect.js:78
+__( "Delete Log Entries", "redirection" ), // client/page/logs404/create-redirect.js:80
+__( "Delete all logs for this entry", "redirection" ), // client/page/logs404/create-redirect.js:85
+__( "Delete all logs for these entries", "redirection" ), // client/page/logs404/create-redirect.js:85
+__( "Delete All", "redirection" ), // client/page/logs404/row-ip.js:98
+__( "Redirect All", "redirection" ), // client/page/logs404/row-ip.js:102
+__( "Show All", "redirection" ), // client/page/logs404/row-ip.js:106
+__( "Geo Info", "redirection" ), // client/page/logs404/row-ip.js:109
+__( "Block IP", "redirection" ), // client/page/logs404/row-ip.js:110
+__( "Delete All", "redirection" ), // client/page/logs404/row-url.js:66
+__( "Redirect All", "redirection" ), // client/page/logs404/row-url.js:70
+__( "Show All", "redirection" ), // client/page/logs404/row-url.js:74
+__( "Ignore URL", "redirection" ), // client/page/logs404/row-url.js:78
+__( "Add Redirect", "redirection" ), // client/page/logs404/row.js:81
+__( "Delete 404s", "redirection" ), // client/page/logs404/row.js:84
+__( "Delete all logs for this entry", "redirection" ), // client/page/logs404/row.js:89
+__( "Delete", "redirection" ), // client/page/logs404/row.js:157
+__( "Add Redirect", "redirection" ), // client/page/logs404/row.js:161
+__( "Geo Info", "redirection" ), // client/page/logs404/row.js:165
+__( "Agent Info", "redirection" ), // client/page/logs404/row.js:169
+__( "Filter by IP", "redirection" ), // client/page/logs404/row.js:209
+__( "Delete the plugin - are you sure?", "redirection" ), // client/page/options/delete-plugin.js:37
+__( "Deleting the plugin will remove all your redirections, logs, and settings. Do this if you want to remove the plugin for good, or if you want to reset the plugin.", "redirection" ), // client/page/options/delete-plugin.js:38
+__( "Once deleted your redirections will stop working. If they appear to continue working then please clear your browser cache.", "redirection" ), // client/page/options/delete-plugin.js:39
+__( "Yes! Delete the plugin", "redirection" ), // client/page/options/delete-plugin.js:41
+__( "No! Don't delete the plugin", "redirection" ), // client/page/options/delete-plugin.js:41
+__( "Delete Redirection", "redirection" ), // client/page/options/delete-plugin.js:52
+__( "Selecting this option will delete all redirections, all logs, and any options associated with the Redirection plugin.  Make sure this is what you want to do.", "redirection" ), // client/page/options/delete-plugin.js:54
+__( "Delete", "redirection" ), // client/page/options/delete-plugin.js:55
+__( "You've supported this plugin - thank you!", "redirection" ), // client/page/options/donation.js:82
+__( "I'd like to support some more.", "redirection" ), // client/page/options/donation.js:83
+__( "Redirection is free to use - life is wonderful and lovely! It has required a great deal of time and effort to develop and you can help support this development by {{strong}}making a small donation{{/strong}}.", "redirection" ), // client/page/options/donation.js:99
+__( "You get useful software and I get to carry on making it better.", "redirection" ), // client/page/options/donation.js:104
+__( "Support 💰", "redirection" ), // client/page/options/donation.js:127
+__( "Plugin Support", "redirection" ), // client/page/options/donation.js:139
+__( "Newsletter", "redirection" ), // client/page/options/newsletter.js:23
+__( "Thanks for subscribing! {{a}}Click here{{/a}} if you need to return to your subscription.", "redirection" ), // client/page/options/newsletter.js:25
+__( "Newsletter", "redirection" ), // client/page/options/newsletter.js:36
+__( "Want to keep up to date with changes to Redirection?", "redirection" ), // client/page/options/newsletter.js:38
+__( "Sign up for the tiny Redirection newsletter - a low volume newsletter about new features and changes to the plugin. Ideal if you want to test beta changes before release.", "redirection" ), // client/page/options/newsletter.js:39
+__( "Your email address:", "redirection" ), // client/page/options/newsletter.js:43
+__( "No logs", "redirection" ), // client/page/options/options-form.js:19
+__( "A day", "redirection" ), // client/page/options/options-form.js:20
+__( "A week", "redirection" ), // client/page/options/options-form.js:21
+__( "A month", "redirection" ), // client/page/options/options-form.js:22
+__( "Two months", "redirection" ), // client/page/options/options-form.js:23
+__( "Forever", "redirection" ), // client/page/options/options-form.js:24
+__( "Never cache", "redirection" ), // client/page/options/options-form.js:27
+__( "An hour", "redirection" ), // client/page/options/options-form.js:28
+__( "A day", "redirection" ), // client/page/options/options-form.js:29
+__( "A week", "redirection" ), // client/page/options/options-form.js:30
+__( "Forever", "redirection" ), // client/page/options/options-form.js:31
+__( "No IP logging", "redirection" ), // client/page/options/options-form.js:34
+__( "Full IP logging", "redirection" ), // client/page/options/options-form.js:35
+__( "Anonymize IP (mask last part)", "redirection" ), // client/page/options/options-form.js:36
+__( "Default REST API", "redirection" ), // client/page/options/options-form.js:39
+__( "Raw REST API", "redirection" ), // client/page/options/options-form.js:40
+__( "Relative REST API", "redirection" ), // client/page/options/options-form.js:41
+__( "Exact match", "redirection" ), // client/page/options/options-form.js:44
+__( "Ignore all query parameters", "redirection" ), // client/page/options/options-form.js:45
+__( "Ignore and pass all query parameters", "redirection" ), // client/page/options/options-form.js:46
+__( "URL Monitor Changes", "redirection" ), // client/page/options/options-form.js:132
+__( "Save changes to this group", "redirection" ), // client/page/options/options-form.js:135
+__( "For example \"/amp\"", "redirection" ), // client/page/options/options-form.js:137
+__( "Create associated redirect (added to end of URL)", "redirection" ), // client/page/options/options-form.js:137
+__( "Monitor changes to %(type)s", "redirection" ), // client/page/options/options-form.js:161
+__( "I'm a nice person and I have helped support the author of this plugin", "redirection" ), // client/page/options/options-form.js:188
+__( "Redirect Logs", "redirection" ), // client/page/options/options-form.js:192
+__( "(time to keep logs for)", "redirection" ), // client/page/options/options-form.js:193
+__( "404 Logs", "redirection" ), // client/page/options/options-form.js:196
+__( "(time to keep logs for)", "redirection" ), // client/page/options/options-form.js:197
+__( "IP Logging", "redirection" ), // client/page/options/options-form.js:200
+__( "(select IP logging level)", "redirection" ), // client/page/options/options-form.js:201
+__( "GDPR / Privacy information", "redirection" ), // client/page/options/options-form.js:203
+__( "URL Monitor", "redirection" ), // client/page/options/options-form.js:206
+__( "RSS Token", "redirection" ), // client/page/options/options-form.js:212
+__( "A unique token allowing feed readers access to Redirection log RSS (leave blank to auto-generate)", "redirection" ), // client/page/options/options-form.js:214
+__( "Default URL settings", "redirection" ), // client/page/options/options-form.js:217
+__( "Applies to all redirections unless you configure them otherwise.", "redirection" ), // client/page/options/options-form.js:218
+__( "Case insensitive matches (i.e. {{code}}/Exciting-Post{{/code}} will match {{code}}/exciting-post{{/code}})", "redirection" ), // client/page/options/options-form.js:222
+__( "Ignore trailing slashes (i.e. {{code}}/exciting-post/{{/code}} will match {{code}}/exciting-post{{/code}})", "redirection" ), // client/page/options/options-form.js:233
+__( "Default query matching", "redirection" ), // client/page/options/options-form.js:242
+__( "Applies to all redirections unless you configure them otherwise.", "redirection" ), // client/page/options/options-form.js:243
+__( "Exact - matches the query parameters exactly defined in your source, in any order", "redirection" ), // client/page/options/options-form.js:248
+__( "Ignore - as exact, but ignores any query parameters not in your source", "redirection" ), // client/page/options/options-form.js:249
+__( "Pass - as ignore, but also copies the query parameters to the target", "redirection" ), // client/page/options/options-form.js:250
+__( "Auto-generate URL", "redirection" ), // client/page/options/options-form.js:254
+__( "Used to auto-generate a URL if no URL is given. Use the special tags {{code}}\$dec\${{/code}} or {{code}}\$hex\${{/code}} to insert a unique ID instead", "redirection" ), // client/page/options/options-form.js:257
+__( "Apache .htaccess", "redirection" ), // client/page/options/options-form.js:265
+__( "Redirects added to an Apache group can be saved to an {{code}}.htaccess{{/code}} file by adding the full path here. For reference, your WordPress is installed to {{code}}%(installed)s{{/code}}.", "redirection" ), // client/page/options/options-form.js:270
+__( "Unable to save .htaccess file", "redirection" ), // client/page/options/options-form.js:280
+__( "Redirect Cache", "redirection" ), // client/page/options/options-form.js:284
+__( "How long to cache redirected 301 URLs (via \"Expires\" HTTP header)", "redirection" ), // client/page/options/options-form.js:286
+__( "REST API", "redirection" ), // client/page/options/options-form.js:289
+__( "How Redirection uses the REST API - don't change unless necessary", "redirection" ), // client/page/options/options-form.js:291
+__( "Update", "redirection" ), // client/page/options/options-form.js:295
+__( "Status", "redirection" ), // client/page/redirects/constants.js:15
+__( "URL", "redirection" ), // client/page/redirects/constants.js:20
+__( "Match Type", "redirection" ), // client/page/redirects/constants.js:25
+__( "Action Type", "redirection" ), // client/page/redirects/constants.js:30
+__( "Code", "redirection" ), // client/page/redirects/constants.js:35
+__( "Group", "redirection" ), // client/page/redirects/constants.js:40
+__( "Pos", "redirection" ), // client/page/redirects/constants.js:45
+__( "Hits", "redirection" ), // client/page/redirects/constants.js:49
+__( "Last Access", "redirection" ), // client/page/redirects/constants.js:53
+__( "Delete", "redirection" ), // client/page/redirects/constants.js:60
+__( "Enable", "redirection" ), // client/page/redirects/constants.js:64
+__( "Disable", "redirection" ), // client/page/redirects/constants.js:68
+__( "Reset hits", "redirection" ), // client/page/redirects/constants.js:72
+__( "Source", "redirection" ), // client/page/redirects/constants.js:77
+__( "URL options", "redirection" ), // client/page/redirects/constants.js:78
+__( "Query Parameters", "redirection" ), // client/page/redirects/constants.js:79
+__( "Title", "redirection" ), // client/page/redirects/constants.js:80
+__( "Target", "redirection" ), // client/page/redirects/constants.js:81
+__( "HTTP code", "redirection" ), // client/page/redirects/constants.js:82
+__( "Match Type", "redirection" ), // client/page/redirects/constants.js:83
+__( "Position", "redirection" ), // client/page/redirects/constants.js:84
+__( "Hits", "redirection" ), // client/page/redirects/constants.js:85
+__( "Last Access", "redirection" ), // client/page/redirects/constants.js:86
+__( "Status", "redirection" ), // client/page/redirects/constants.js:87
+__( "Action Type", "redirection" ), // client/page/redirects/constants.js:88
+__( "Group", "redirection" ), // client/page/redirects/constants.js:89
+__( "Standard Display", "redirection" ), // client/page/redirects/constants.js:95
+__( "Compact Display", "redirection" ), // client/page/redirects/constants.js:100
+__( "Status", "redirection" ), // client/page/redirects/constants.js:107
+__( "Enabled", "redirection" ), // client/page/redirects/constants.js:111
+__( "Disabled", "redirection" ), // client/page/redirects/constants.js:115
+__( "URL match", "redirection" ), // client/page/redirects/constants.js:121
+__( "Regular Expression", "redirection" ), // client/page/redirects/constants.js:125
+__( "Plain", "redirection" ), // client/page/redirects/constants.js:129
+__( "Match Type", "redirection" ), // client/page/redirects/constants.js:135
+__( "Action Type", "redirection" ), // client/page/redirects/constants.js:140
+__( "HTTP Status Code", "redirection" ), // client/page/redirects/constants.js:146
+__( "Last Accessed", "redirection" ), // client/page/redirects/constants.js:151
+__( "Never accessed", "redirection" ), // client/page/redirects/constants.js:155
+__( "Not accessed in last month", "redirection" ), // client/page/redirects/constants.js:159
+__( "Not accessed in last year", "redirection" ), // client/page/redirects/constants.js:163
+__( "Search URL", "redirection" ), // client/page/redirects/constants.js:173
+__( "Search target URL", "redirection" ), // client/page/redirects/constants.js:177
+__( "Search title", "redirection" ), // client/page/redirects/constants.js:181
+__( "Add new redirection", "redirection" ), // client/page/redirects/index.js:82
+__( "Add Redirect", "redirection" ), // client/page/redirects/index.js:86
+__( "All groups", "redirection" ), // client/page/redirects/index.js:145
+__( "Filters", "redirection" ), // client/page/redirects/index.js:202
+__( "Edit", "redirection" ), // client/page/redirects/row.js:89
+__( "Delete", "redirection" ), // client/page/redirects/row.js:93
+__( "Disable", "redirection" ), // client/page/redirects/row.js:98
+__( "Enable", "redirection" ), // client/page/redirects/row.js:100
+__( "Check Redirect", "redirection" ), // client/page/redirects/row.js:105
+__( "pass", "redirection" ), // client/page/redirects/row.js:158
+__( "Exact Query", "redirection" ), // client/page/redirects/row.js:251
+__( "Ignore Query", "redirection" ), // client/page/redirects/row.js:254
+__( "Ignore & Pass Query", "redirection" ), // client/page/redirects/row.js:256
+__( "Options on this page can cause problems if used incorrectly. You can {{link}}temporarily disable them{{/link}} to make changes.", "redirection" ), // client/page/site/index.js:68
+__( "Update", "redirection" ), // client/page/site/index.js:81
+__( "Database version", "redirection" ), // client/page/support/debug.js:64
+__( "Do not change unless advised to do so!", "redirection" ), // client/page/support/debug.js:70
+__( "Save", "redirection" ), // client/page/support/debug.js:71
+__( "IP Headers", "redirection" ), // client/page/support/debug.js:77
+__( "Need help?", "redirection" ), // client/page/support/help.js:14
+__( "Full documentation for Redirection can be found at {{site}}https://redirection.me{{/site}}. If you have a problem please check the {{faq}}FAQ{{/faq}} first.", "redirection" ), // client/page/support/help.js:16
+__( "If you want to report a bug please read the {{report}}Reporting Bugs{{/report}} guide.", "redirection" ), // client/page/support/help.js:23
+__( "Please note that any support is provide on as-time-is-available basis and is not guaranteed. I do not provide paid support.", "redirection" ), // client/page/support/help.js:38
+__( "If you want to submit information that you don't want in a public repository then send it directly via {{email}}email{{/email}} - include as much information as you can!", "redirection" ), // client/page/support/help.js:39
+__( "Unable to load details", "redirection" ), // client/page/support/http-tester.js:42
+__( "URL is being redirected with Redirection", "redirection" ), // client/page/support/http-tester.js:52
+__( "URL is not being redirected with Redirection", "redirection" ), // client/page/support/http-tester.js:53
+__( "Target", "redirection" ), // client/page/support/http-tester.js:54
+__( "Redirect Tester", "redirection" ), // client/page/support/http-tester.js:65
+__( "Sometimes your browser can cache a URL, making it hard to know if it's working as expected. Use this to check a URL to see how it is really redirecting.", "redirection" ), // client/page/support/http-tester.js:68
+__( "URL", "redirection" ), // client/page/support/http-tester.js:71
+__( "Enter full URL, including http:// or https://", "redirection" ), // client/page/support/http-tester.js:71
+__( "Check", "redirection" ), // client/page/support/http-tester.js:72
+__( "Unable to load details", "redirection" ), // client/page/support/http-tester.js:76
+__( "If the magic button doesn't work then you should read the error and see if you can fix it manually, otherwise follow the 'Need help' section below.", "redirection" ), // client/page/support/plugin-status.js:21
+__( "⚡️ Magic fix ⚡️", "redirection" ), // client/page/support/plugin-status.js:22
+__( "Good", "redirection" ), // client/page/support/plugin-status.js:33
+__( "Problem", "redirection" ), // client/page/support/plugin-status.js:33
+__( "WordPress REST API", "redirection" ), // client/page/support/status.js:29
+__( "Redirection communicates with WordPress through the WordPress REST API. This is a standard part of WordPress, and you will experience problems if you cannot use it.", "redirection" ), // client/page/support/status.js:30
+__( "Plugin Status", "redirection" ), // client/page/support/status.js:33
+__( "Plugin Debug", "redirection" ), // client/page/support/status.js:38
+__( "This information is provided for debugging purposes. Be careful making any changes.", "redirection" ), // client/page/support/status.js:39
 __( "A loop was detected and the upgrade has been stopped. This usually indicates {{support}}your site is cached{{/support}} and database changes are not being saved.", "redirection" ), // client/component/database/index.js:112
 __( "Database problem", "redirection" ), // client/component/database/index.js:125
 __( "Try again", "redirection" ), // client/component/database/index.js:128
@@ -250,355 +594,42 @@ __( "Redirection", "redirection" ), // client/component/welcome-wizard/index.js:
 __( "I need support!", "redirection" ), // client/component/welcome-wizard/index.js:420
 __( "Manual Install", "redirection" ), // client/component/welcome-wizard/index.js:421
 __( "Automatic Install", "redirection" ), // client/component/welcome-wizard/index.js:422
-_n( "Are you sure you want to delete this item?", "Are you sure you want to delete the selected items?", 1, "redirection" ), // client/lib/store/index.js:20
-__( "Name", "redirection" ), // client/page/groups/constants.js:8
-__( "Module", "redirection" ), // client/page/groups/constants.js:9
-__( "Status", "redirection" ), // client/page/groups/constants.js:10
-__( "Redirects", "redirection" ), // client/page/groups/constants.js:11
-__( "Standard Display", "redirection" ), // client/page/groups/constants.js:17
-__( "Compact Display", "redirection" ), // client/page/groups/constants.js:22
-__( "Status", "redirection" ), // client/page/groups/constants.js:29
-__( "Enabled", "redirection" ), // client/page/groups/constants.js:33
-__( "Disabled", "redirection" ), // client/page/groups/constants.js:37
-__( "Module", "redirection" ), // client/page/groups/constants.js:43
-__( "Status", "redirection" ), // client/page/groups/constants.js:56
-__( "Name", "redirection" ), // client/page/groups/constants.js:61
-__( "Redirects", "redirection" ), // client/page/groups/constants.js:66
-__( "Module", "redirection" ), // client/page/groups/constants.js:71
-__( "Delete", "redirection" ), // client/page/groups/constants.js:79
-__( "Enable", "redirection" ), // client/page/groups/constants.js:83
-__( "Disable", "redirection" ), // client/page/groups/constants.js:87
-__( "Search", "redirection" ), // client/page/groups/constants.js:94
-__( "Filters", "redirection" ), // client/page/groups/index.js:136
-__( "Add Group", "redirection" ), // client/page/groups/index.js:159
-__( "Use groups to organise your redirects. Groups are assigned to a module, which affects how the redirects in that group work. If you are unsure then stick to the WordPress module.", "redirection" ), // client/page/groups/index.js:160
-__( "Name", "redirection" ), // client/page/groups/index.js:166
-__( "Note that you will need to set the Apache module path in your Redirection options.", "redirection" ), // client/page/groups/index.js:179
-__( "Edit", "redirection" ), // client/page/groups/row.js:88
-__( "Delete", "redirection" ), // client/page/groups/row.js:92
-__( "View Redirects", "redirection" ), // client/page/groups/row.js:96
-__( "Disable", "redirection" ), // client/page/groups/row.js:101
-__( "Enable", "redirection" ), // client/page/groups/row.js:103
-__( "Name", "redirection" ), // client/page/groups/row.js:130
-__( "Module", "redirection" ), // client/page/groups/row.js:134
-__( "Save", "redirection" ), // client/page/groups/row.js:143
-__( "Cancel", "redirection" ), // client/page/groups/row.js:144
-__( "Note that you will need to set the Apache module path in your Redirection options.", "redirection" ), // client/page/groups/row.js:147
-__( "Filter on: %(type)s", "redirection" ), // client/page/groups/row.js:206
-__( "A database upgrade is in progress. Please continue to finish.", "redirection" ), // client/page/home/database-update.js:25
-__( "Redirection stores data in your database and sometimes this needs upgrading. Your database is at version {{strong}}%(current)s{{/strong}} and the latest is {{strong}}%(latest)s{{/strong}}.", "redirection" ), // client/page/home/database-update.js:30
-__( "If your site needs special database permissions, or you would rather do it yourself, you can manually run the following SQL.", "redirection" ), // client/page/home/database-update.js:63
-__( "Click \"Complete Upgrade\" when finished.", "redirection" ), // client/page/home/database-update.js:63
-__( "Complete Upgrade", "redirection" ), // client/page/home/database-update.js:65
-__( "Click the \"Upgrade Database\" button to automatically upgrade the database.", "redirection" ), // client/page/home/database-update.js:75
-__( "Upgrade Database", "redirection" ), // client/page/home/database-update.js:77
-__( "Upgrade Required", "redirection" ), // client/page/home/database-update.js:103
-__( "Redirection database needs upgrading", "redirection" ), // client/page/home/database-update.js:106
-__( "Please make a backup of your Redirection data: {{download}}downloading a backup{{/download}}. If you experience any issues you can import this back into Redirection.", "redirection" ), // client/page/home/database-update.js:109
-__( "Manual Upgrade", "redirection" ), // client/page/home/database-update.js:121
-__( "Automatic Upgrade", "redirection" ), // client/page/home/database-update.js:122
-__( "Redirections", "redirection" ), // client/page/home/index.js:44
-__( "Site", "redirection" ), // client/page/home/index.js:45
-__( "Groups", "redirection" ), // client/page/home/index.js:46
-__( "Import/Export", "redirection" ), // client/page/home/index.js:47
-__( "Logs", "redirection" ), // client/page/home/index.js:48
-__( "404 errors", "redirection" ), // client/page/home/index.js:49
-__( "Options", "redirection" ), // client/page/home/index.js:50
-__( "Support", "redirection" ), // client/page/home/index.js:51
-__( "Cached Redirection detected", "redirection" ), // client/page/home/index.js:165
-__( "Please clear your browser cache and reload this page.", "redirection" ), // client/page/home/index.js:166
-__( "If you are using a caching system such as Cloudflare then please read this: ", "redirection" ), // client/page/home/index.js:168
-__( "clearing your cache.", "redirection" ), // client/page/home/index.js:169
-__( "Something went wrong 🙁", "redirection" ), // client/page/home/index.js:178
-__( "Redirection is not working. Try clearing your browser cache and reloading this page.", "redirection" ), // client/page/home/index.js:181
-__( "If you are using a page caching plugin or service (CloudFlare, OVH, etc) then you can also try clearing that cache.", "redirection" ), // client/page/home/index.js:182
-__( "If that doesn't help, open your browser's error console and create a {{link}}new issue{{/link}} with the details.", "redirection" ), // client/page/home/index.js:186
-__( "Please mention {{code}}%s{{/code}}, and explain what you were doing at the time", "redirection" ), // client/page/home/index.js:193
-__( "Add New", "redirection" ), // client/page/home/index.js:236
-__( "total = ", "redirection" ), // client/page/io/importer.js:17
-__( "Import from %s", "redirection" ), // client/page/io/importer.js:20
-__( "Import to group", "redirection" ), // client/page/io/index.js:97
-__( "Import a CSV, .htaccess, or JSON file.", "redirection" ), // client/page/io/index.js:105
-__( "Click 'Add File' or drag and drop here.", "redirection" ), // client/page/io/index.js:106
-__( "Add File", "redirection" ), // client/page/io/index.js:108
-__( "File selected", "redirection" ), // client/page/io/index.js:119
-__( "Upload", "redirection" ), // client/page/io/index.js:125
-__( "Cancel", "redirection" ), // client/page/io/index.js:126
-__( "Importing", "redirection" ), // client/page/io/index.js:136
-__( "Finished importing", "redirection" ), // client/page/io/index.js:152
-__( "Total redirects imported:", "redirection" ), // client/page/io/index.js:154
-__( "Double-check the file is the correct format!", "redirection" ), // client/page/io/index.js:155
-__( "OK", "redirection" ), // client/page/io/index.js:157
-__( "Close", "redirection" ), // client/page/io/index.js:206
-__( "Are you sure you want to import from %s?", "redirection" ), // client/page/io/index.js:220
-__( "Plugin Importers", "redirection" ), // client/page/io/index.js:228
-__( "The following redirect plugins were detected on your site and can be imported from.", "redirection" ), // client/page/io/index.js:230
-__( "Import", "redirection" ), // client/page/io/index.js:242
-__( "All imports will be appended to the current database - nothing is merged.", "redirection" ), // client/page/io/index.js:253
-__( "{{strong}}CSV file format{{/strong}}: {{code}}source URL, target URL{{/code}} - and can be optionally followed with {{code}}regex, http code{{/code}} ({{code}}regex{{/code}} - 0 for no, 1 for yes).", "redirection" ), // client/page/io/index.js:256
-__( "CSV does not include all information, and everything is imported/exported as \"URL only\" matches. Use the JSON format for a full set of data.", "redirection" ), // client/page/io/index.js:263
-__( "Export", "redirection" ), // client/page/io/index.js:266
-__( "Export to CSV, Apache .htaccess, Nginx, or Redirection JSON. The JSON format contains full information, and other formats contain partial information appropriate to the format.", "redirection" ), // client/page/io/index.js:267
-__( "Everything", "redirection" ), // client/page/io/index.js:271
-__( "WordPress redirects", "redirection" ), // client/page/io/index.js:272
-__( "Apache redirects", "redirection" ), // client/page/io/index.js:273
-__( "Nginx redirects", "redirection" ), // client/page/io/index.js:274
-__( "Complete data (JSON)", "redirection" ), // client/page/io/index.js:278
-__( "CSV", "redirection" ), // client/page/io/index.js:279
-__( "Apache .htaccess", "redirection" ), // client/page/io/index.js:280
-__( "Nginx rewrite rules", "redirection" ), // client/page/io/index.js:281
-__( "View", "redirection" ), // client/page/io/index.js:284
-__( "Download", "redirection" ), // client/page/io/index.js:285
-__( "Export redirect", "redirection" ), // client/page/io/index.js:292
-__( "Export 404", "redirection" ), // client/page/io/index.js:293
-__( "Date", "redirection" ), // client/page/logs/constants.js:14
-__( "Source URL", "redirection" ), // client/page/logs/constants.js:18
-__( "Target URL", "redirection" ), // client/page/logs/constants.js:23
-__( "Referrer", "redirection" ), // client/page/logs/constants.js:28
-__( "User Agent", "redirection" ), // client/page/logs/constants.js:33
-__( "IP", "redirection" ), // client/page/logs/constants.js:38
-__( "Delete", "redirection" ), // client/page/logs/constants.js:46
-__( "Standard Display", "redirection" ), // client/page/logs/constants.js:53
-__( "Compact Display", "redirection" ), // client/page/logs/constants.js:58
-__( "Date", "redirection" ), // client/page/logs/constants.js:64
-__( "URL", "redirection" ), // client/page/logs/constants.js:65
-__( "Referrer", "redirection" ), // client/page/logs/constants.js:66
-__( "User Agent", "redirection" ), // client/page/logs/constants.js:67
-__( "Target", "redirection" ), // client/page/logs/constants.js:68
-__( "IP", "redirection" ), // client/page/logs/constants.js:69
-__( "Search URL", "redirection" ), // client/page/logs/constants.js:77
-__( "Search referrer", "redirection" ), // client/page/logs/constants.js:81
-__( "Search user agent", "redirection" ), // client/page/logs/constants.js:85
-__( "Search IP", "redirection" ), // client/page/logs/constants.js:89
-__( "Search target URL", "redirection" ), // client/page/logs/constants.js:93
-__( "Delete all from IP %s", "redirection" ), // client/page/logs/delete-all.js:42
-__( "Delete all matching \"%s\"", "redirection" ), // client/page/logs/delete-all.js:48
-__( "Delete All", "redirection" ), // client/page/logs/delete-all.js:53
-__( "Delete the logs - are you sure?", "redirection" ), // client/page/logs/delete-all.js:67
-__( "Once deleted your current logs will no longer be available. You can set a delete schedule from the Redirection options if you want to do this automatically.", "redirection" ), // client/page/logs/delete-all.js:68
-__( "Yes! Delete the logs", "redirection" ), // client/page/logs/delete-all.js:70
-__( "No! Don't delete the logs", "redirection" ), // client/page/logs/delete-all.js:70
-__( "Delete", "redirection" ), // client/page/logs/row.js:111
-__( "Geo Info", "redirection" ), // client/page/logs/row.js:115
-__( "Agent Info", "redirection" ), // client/page/logs/row.js:119
-__( "Filter by IP", "redirection" ), // client/page/logs/row.js:164
-__( "Source URL", "redirection" ), // client/page/logs404/constants.js:16
-__( "Count", "redirection" ), // client/page/logs404/constants.js:22
-__( "IP", "redirection" ), // client/page/logs404/constants.js:34
-__( "Count", "redirection" ), // client/page/logs404/constants.js:40
-__( "Date", "redirection" ), // client/page/logs404/constants.js:53
-__( "Source URL", "redirection" ), // client/page/logs404/constants.js:57
-__( "Referrer", "redirection" ), // client/page/logs404/constants.js:62
-__( "User Agent", "redirection" ), // client/page/logs404/constants.js:67
-__( "IP", "redirection" ), // client/page/logs404/constants.js:72
-__( "Delete", "redirection" ), // client/page/logs404/constants.js:83
-__( "Redirect All", "redirection" ), // client/page/logs404/constants.js:87
-__( "Block IP", "redirection" ), // client/page/logs404/constants.js:91
-__( "Delete", "redirection" ), // client/page/logs404/constants.js:99
-__( "Redirect All", "redirection" ), // client/page/logs404/constants.js:103
-__( "Ignore URL", "redirection" ), // client/page/logs404/constants.js:107
-__( "No grouping", "redirection" ), // client/page/logs404/constants.js:116
-__( "Group by URL", "redirection" ), // client/page/logs404/constants.js:120
-__( "Group by IP", "redirection" ), // client/page/logs404/constants.js:127
-__( "Standard Display", "redirection" ), // client/page/logs404/constants.js:137
-__( "Compact Display", "redirection" ), // client/page/logs404/constants.js:142
-__( "Date", "redirection" ), // client/page/logs404/constants.js:148
-__( "URL", "redirection" ), // client/page/logs404/constants.js:149
-__( "Referrer", "redirection" ), // client/page/logs404/constants.js:150
-__( "User Agent", "redirection" ), // client/page/logs404/constants.js:151
-__( "IP", "redirection" ), // client/page/logs404/constants.js:152
-__( "Search URL", "redirection" ), // client/page/logs404/constants.js:160
-__( "Search referrer", "redirection" ), // client/page/logs404/constants.js:164
-__( "Search user agent", "redirection" ), // client/page/logs404/constants.js:168
-__( "Search IP", "redirection" ), // client/page/logs404/constants.js:172
-__( "Add Redirect", "redirection" ), // client/page/logs404/create-redirect.js:78
-__( "Delete Log Entries", "redirection" ), // client/page/logs404/create-redirect.js:80
-__( "Delete all logs for this entry", "redirection" ), // client/page/logs404/create-redirect.js:85
-__( "Delete all logs for these entries", "redirection" ), // client/page/logs404/create-redirect.js:85
-__( "Delete All", "redirection" ), // client/page/logs404/row-ip.js:98
-__( "Redirect All", "redirection" ), // client/page/logs404/row-ip.js:102
-__( "Show All", "redirection" ), // client/page/logs404/row-ip.js:106
-__( "Geo Info", "redirection" ), // client/page/logs404/row-ip.js:109
-__( "Block IP", "redirection" ), // client/page/logs404/row-ip.js:110
-__( "Delete All", "redirection" ), // client/page/logs404/row-url.js:66
-__( "Redirect All", "redirection" ), // client/page/logs404/row-url.js:70
-__( "Show All", "redirection" ), // client/page/logs404/row-url.js:74
-__( "Ignore URL", "redirection" ), // client/page/logs404/row-url.js:78
-__( "Add Redirect", "redirection" ), // client/page/logs404/row.js:81
-__( "Delete 404s", "redirection" ), // client/page/logs404/row.js:84
-__( "Delete all logs for this entry", "redirection" ), // client/page/logs404/row.js:89
-__( "Delete", "redirection" ), // client/page/logs404/row.js:157
-__( "Add Redirect", "redirection" ), // client/page/logs404/row.js:161
-__( "Geo Info", "redirection" ), // client/page/logs404/row.js:165
-__( "Agent Info", "redirection" ), // client/page/logs404/row.js:169
-__( "Filter by IP", "redirection" ), // client/page/logs404/row.js:209
-__( "Delete the plugin - are you sure?", "redirection" ), // client/page/options/delete-plugin.js:37
-__( "Deleting the plugin will remove all your redirections, logs, and settings. Do this if you want to remove the plugin for good, or if you want to reset the plugin.", "redirection" ), // client/page/options/delete-plugin.js:38
-__( "Once deleted your redirections will stop working. If they appear to continue working then please clear your browser cache.", "redirection" ), // client/page/options/delete-plugin.js:39
-__( "Yes! Delete the plugin", "redirection" ), // client/page/options/delete-plugin.js:41
-__( "No! Don't delete the plugin", "redirection" ), // client/page/options/delete-plugin.js:41
-__( "Delete Redirection", "redirection" ), // client/page/options/delete-plugin.js:52
-__( "Selecting this option will delete all redirections, all logs, and any options associated with the Redirection plugin.  Make sure this is what you want to do.", "redirection" ), // client/page/options/delete-plugin.js:54
-__( "Delete", "redirection" ), // client/page/options/delete-plugin.js:55
-__( "You've supported this plugin - thank you!", "redirection" ), // client/page/options/donation.js:82
-__( "I'd like to support some more.", "redirection" ), // client/page/options/donation.js:83
-__( "Redirection is free to use - life is wonderful and lovely! It has required a great deal of time and effort to develop and you can help support this development by {{strong}}making a small donation{{/strong}}.", "redirection" ), // client/page/options/donation.js:99
-__( "You get useful software and I get to carry on making it better.", "redirection" ), // client/page/options/donation.js:104
-__( "Support 💰", "redirection" ), // client/page/options/donation.js:127
-__( "Plugin Support", "redirection" ), // client/page/options/donation.js:139
-__( "Newsletter", "redirection" ), // client/page/options/newsletter.js:23
-__( "Thanks for subscribing! {{a}}Click here{{/a}} if you need to return to your subscription.", "redirection" ), // client/page/options/newsletter.js:25
-__( "Newsletter", "redirection" ), // client/page/options/newsletter.js:36
-__( "Want to keep up to date with changes to Redirection?", "redirection" ), // client/page/options/newsletter.js:38
-__( "Sign up for the tiny Redirection newsletter - a low volume newsletter about new features and changes to the plugin. Ideal if you want to test beta changes before release.", "redirection" ), // client/page/options/newsletter.js:39
-__( "Your email address:", "redirection" ), // client/page/options/newsletter.js:43
-__( "No logs", "redirection" ), // client/page/options/options-form.js:19
-__( "A day", "redirection" ), // client/page/options/options-form.js:20
-__( "A week", "redirection" ), // client/page/options/options-form.js:21
-__( "A month", "redirection" ), // client/page/options/options-form.js:22
-__( "Two months", "redirection" ), // client/page/options/options-form.js:23
-__( "Forever", "redirection" ), // client/page/options/options-form.js:24
-__( "Never cache", "redirection" ), // client/page/options/options-form.js:27
-__( "An hour", "redirection" ), // client/page/options/options-form.js:28
-__( "A day", "redirection" ), // client/page/options/options-form.js:29
-__( "A week", "redirection" ), // client/page/options/options-form.js:30
-__( "Forever", "redirection" ), // client/page/options/options-form.js:31
-__( "No IP logging", "redirection" ), // client/page/options/options-form.js:34
-__( "Full IP logging", "redirection" ), // client/page/options/options-form.js:35
-__( "Anonymize IP (mask last part)", "redirection" ), // client/page/options/options-form.js:36
-__( "Default REST API", "redirection" ), // client/page/options/options-form.js:39
-__( "Raw REST API", "redirection" ), // client/page/options/options-form.js:40
-__( "Relative REST API", "redirection" ), // client/page/options/options-form.js:41
-__( "Exact match", "redirection" ), // client/page/options/options-form.js:44
-__( "Ignore all query parameters", "redirection" ), // client/page/options/options-form.js:45
-__( "Ignore and pass all query parameters", "redirection" ), // client/page/options/options-form.js:46
-__( "URL Monitor Changes", "redirection" ), // client/page/options/options-form.js:132
-__( "Save changes to this group", "redirection" ), // client/page/options/options-form.js:135
-__( "For example \"/amp\"", "redirection" ), // client/page/options/options-form.js:137
-__( "Create associated redirect (added to end of URL)", "redirection" ), // client/page/options/options-form.js:137
-__( "Monitor changes to %(type)s", "redirection" ), // client/page/options/options-form.js:157
-__( "I'm a nice person and I have helped support the author of this plugin", "redirection" ), // client/page/options/options-form.js:184
-__( "Redirect Logs", "redirection" ), // client/page/options/options-form.js:188
-__( "(time to keep logs for)", "redirection" ), // client/page/options/options-form.js:189
-__( "404 Logs", "redirection" ), // client/page/options/options-form.js:192
-__( "(time to keep logs for)", "redirection" ), // client/page/options/options-form.js:193
-__( "IP Logging", "redirection" ), // client/page/options/options-form.js:196
-__( "(select IP logging level)", "redirection" ), // client/page/options/options-form.js:197
-__( "GDPR / Privacy information", "redirection" ), // client/page/options/options-form.js:199
-__( "URL Monitor", "redirection" ), // client/page/options/options-form.js:202
-__( "RSS Token", "redirection" ), // client/page/options/options-form.js:208
-__( "A unique token allowing feed readers access to Redirection log RSS (leave blank to auto-generate)", "redirection" ), // client/page/options/options-form.js:210
-__( "Default URL settings", "redirection" ), // client/page/options/options-form.js:213
-__( "Applies to all redirections unless you configure them otherwise.", "redirection" ), // client/page/options/options-form.js:214
-__( "Case insensitive matches (i.e. {{code}}/Exciting-Post{{/code}} will match {{code}}/exciting-post{{/code}})", "redirection" ), // client/page/options/options-form.js:218
-__( "Ignore trailing slashes (i.e. {{code}}/exciting-post/{{/code}} will match {{code}}/exciting-post{{/code}})", "redirection" ), // client/page/options/options-form.js:229
-__( "Default query matching", "redirection" ), // client/page/options/options-form.js:238
-__( "Applies to all redirections unless you configure them otherwise.", "redirection" ), // client/page/options/options-form.js:239
-__( "Exact - matches the query parameters exactly defined in your source, in any order", "redirection" ), // client/page/options/options-form.js:244
-__( "Ignore - as exact, but ignores any query parameters not in your source", "redirection" ), // client/page/options/options-form.js:245
-__( "Pass - as ignore, but also copies the query parameters to the target", "redirection" ), // client/page/options/options-form.js:246
-__( "Auto-generate URL", "redirection" ), // client/page/options/options-form.js:250
-__( "Used to auto-generate a URL if no URL is given. Use the special tags {{code}}\$dec\${{/code}} or {{code}}\$hex\${{/code}} to insert a unique ID instead", "redirection" ), // client/page/options/options-form.js:253
-__( "Apache .htaccess", "redirection" ), // client/page/options/options-form.js:261
-__( "Redirects added to an Apache group can be saved to an {{code}}.htaccess{{/code}} file by adding the full path here. For reference, your WordPress is installed to {{code}}%(installed)s{{/code}}.", "redirection" ), // client/page/options/options-form.js:266
-__( "Unable to save .htaccess file", "redirection" ), // client/page/options/options-form.js:276
-__( "Redirect Cache", "redirection" ), // client/page/options/options-form.js:280
-__( "How long to cache redirected 301 URLs (via \"Expires\" HTTP header)", "redirection" ), // client/page/options/options-form.js:282
-__( "REST API", "redirection" ), // client/page/options/options-form.js:285
-__( "How Redirection uses the REST API - don't change unless necessary", "redirection" ), // client/page/options/options-form.js:287
-__( "Update", "redirection" ), // client/page/options/options-form.js:291
-__( "Status", "redirection" ), // client/page/redirects/constants.js:15
-__( "URL", "redirection" ), // client/page/redirects/constants.js:20
-__( "Match Type", "redirection" ), // client/page/redirects/constants.js:25
-__( "Action Type", "redirection" ), // client/page/redirects/constants.js:30
-__( "Code", "redirection" ), // client/page/redirects/constants.js:35
-__( "Group", "redirection" ), // client/page/redirects/constants.js:40
-__( "Pos", "redirection" ), // client/page/redirects/constants.js:45
-__( "Hits", "redirection" ), // client/page/redirects/constants.js:49
-__( "Last Access", "redirection" ), // client/page/redirects/constants.js:53
-__( "Delete", "redirection" ), // client/page/redirects/constants.js:60
-__( "Enable", "redirection" ), // client/page/redirects/constants.js:64
-__( "Disable", "redirection" ), // client/page/redirects/constants.js:68
-__( "Reset hits", "redirection" ), // client/page/redirects/constants.js:72
-__( "Source", "redirection" ), // client/page/redirects/constants.js:77
-__( "URL options", "redirection" ), // client/page/redirects/constants.js:78
-__( "Query Parameters", "redirection" ), // client/page/redirects/constants.js:79
-__( "Title", "redirection" ), // client/page/redirects/constants.js:80
-__( "Target", "redirection" ), // client/page/redirects/constants.js:81
-__( "HTTP code", "redirection" ), // client/page/redirects/constants.js:82
-__( "Match Type", "redirection" ), // client/page/redirects/constants.js:83
-__( "Position", "redirection" ), // client/page/redirects/constants.js:84
-__( "Hits", "redirection" ), // client/page/redirects/constants.js:85
-__( "Last Access", "redirection" ), // client/page/redirects/constants.js:86
-__( "Status", "redirection" ), // client/page/redirects/constants.js:87
-__( "Action Type", "redirection" ), // client/page/redirects/constants.js:88
-__( "Group", "redirection" ), // client/page/redirects/constants.js:89
-__( "Standard Display", "redirection" ), // client/page/redirects/constants.js:95
-__( "Compact Display", "redirection" ), // client/page/redirects/constants.js:100
-__( "Status", "redirection" ), // client/page/redirects/constants.js:107
-__( "Enabled", "redirection" ), // client/page/redirects/constants.js:111
-__( "Disabled", "redirection" ), // client/page/redirects/constants.js:115
-__( "URL match", "redirection" ), // client/page/redirects/constants.js:121
-__( "Regular Expression", "redirection" ), // client/page/redirects/constants.js:125
-__( "Plain", "redirection" ), // client/page/redirects/constants.js:129
-__( "Match Type", "redirection" ), // client/page/redirects/constants.js:135
-__( "Action Type", "redirection" ), // client/page/redirects/constants.js:140
-__( "HTTP Status Code", "redirection" ), // client/page/redirects/constants.js:146
-__( "Last Accessed", "redirection" ), // client/page/redirects/constants.js:151
-__( "Never accessed", "redirection" ), // client/page/redirects/constants.js:155
-__( "Not accessed in last month", "redirection" ), // client/page/redirects/constants.js:159
-__( "Not accessed in last year", "redirection" ), // client/page/redirects/constants.js:163
-__( "Search URL", "redirection" ), // client/page/redirects/constants.js:173
-__( "Search target URL", "redirection" ), // client/page/redirects/constants.js:177
-__( "Search title", "redirection" ), // client/page/redirects/constants.js:181
-__( "Add new redirection", "redirection" ), // client/page/redirects/index.js:82
-__( "Add Redirect", "redirection" ), // client/page/redirects/index.js:86
-__( "All groups", "redirection" ), // client/page/redirects/index.js:145
-__( "Filters", "redirection" ), // client/page/redirects/index.js:202
-__( "Edit", "redirection" ), // client/page/redirects/row.js:89
-__( "Delete", "redirection" ), // client/page/redirects/row.js:93
-__( "Disable", "redirection" ), // client/page/redirects/row.js:98
-__( "Enable", "redirection" ), // client/page/redirects/row.js:100
-__( "Check Redirect", "redirection" ), // client/page/redirects/row.js:105
-__( "pass", "redirection" ), // client/page/redirects/row.js:158
-__( "Exact Query", "redirection" ), // client/page/redirects/row.js:251
-__( "Ignore Query", "redirection" ), // client/page/redirects/row.js:254
-__( "Ignore & Pass Query", "redirection" ), // client/page/redirects/row.js:256
-__( "Options on this page can cause problems if used incorrectly. You can {{link}}temporarily disable them{{/link}} to make changes.", "redirection" ), // client/page/site/index.js:68
-__( "Update", "redirection" ), // client/page/site/index.js:81
-__( "Database version", "redirection" ), // client/page/support/debug.js:64
-__( "Do not change unless advised to do so!", "redirection" ), // client/page/support/debug.js:70
-__( "Save", "redirection" ), // client/page/support/debug.js:71
-__( "IP Headers", "redirection" ), // client/page/support/debug.js:77
-__( "Need help?", "redirection" ), // client/page/support/help.js:14
-__( "Full documentation for Redirection can be found at {{site}}https://redirection.me{{/site}}. If you have a problem please check the {{faq}}FAQ{{/faq}} first.", "redirection" ), // client/page/support/help.js:16
-__( "If you want to report a bug please read the {{report}}Reporting Bugs{{/report}} guide.", "redirection" ), // client/page/support/help.js:23
-__( "Please note that any support is provide on as-time-is-available basis and is not guaranteed. I do not provide paid support.", "redirection" ), // client/page/support/help.js:38
-__( "If you want to submit information that you don't want in a public repository then send it directly via {{email}}email{{/email}} - include as much information as you can!", "redirection" ), // client/page/support/help.js:39
-__( "Unable to load details", "redirection" ), // client/page/support/http-tester.js:42
-__( "URL is being redirected with Redirection", "redirection" ), // client/page/support/http-tester.js:52
-__( "URL is not being redirected with Redirection", "redirection" ), // client/page/support/http-tester.js:53
-__( "Target", "redirection" ), // client/page/support/http-tester.js:54
-__( "Redirect Tester", "redirection" ), // client/page/support/http-tester.js:65
-__( "Sometimes your browser can cache a URL, making it hard to know if it's working as expected. Use this to check a URL to see how it is really redirecting.", "redirection" ), // client/page/support/http-tester.js:68
-__( "URL", "redirection" ), // client/page/support/http-tester.js:71
-__( "Enter full URL, including http:// or https://", "redirection" ), // client/page/support/http-tester.js:71
-__( "Check", "redirection" ), // client/page/support/http-tester.js:72
-__( "Unable to load details", "redirection" ), // client/page/support/http-tester.js:76
-__( "If the magic button doesn't work then you should read the error and see if you can fix it manually, otherwise follow the 'Need help' section below.", "redirection" ), // client/page/support/plugin-status.js:21
-__( "⚡️ Magic fix ⚡️", "redirection" ), // client/page/support/plugin-status.js:22
-__( "Good", "redirection" ), // client/page/support/plugin-status.js:33
-__( "Problem", "redirection" ), // client/page/support/plugin-status.js:33
-__( "WordPress REST API", "redirection" ), // client/page/support/status.js:29
-__( "Redirection communicates with WordPress through the WordPress REST API. This is a standard part of WordPress, and you will experience problems if you cannot use it.", "redirection" ), // client/page/support/status.js:30
-__( "Plugin Status", "redirection" ), // client/page/support/status.js:33
-__( "Plugin Debug", "redirection" ), // client/page/support/status.js:38
-__( "This information is provided for debugging purposes. Be careful making any changes.", "redirection" ), // client/page/support/status.js:39
 __( "Redirection saved", "redirection" ), // client/state/message/reducer.js:49
 __( "Log deleted", "redirection" ), // client/state/message/reducer.js:50
 __( "Settings saved", "redirection" ), // client/state/message/reducer.js:51
 __( "Group saved", "redirection" ), // client/state/message/reducer.js:52
 __( "404 deleted", "redirection" ), // client/state/message/reducer.js:53
+__( "Site Aliases", "redirection" ), // client/page/site/aliases/index.js:39
+__( "A site alias is another domain that you want to be redirected to this site. For example, an old domain, or a subdomain. This will redirect all URLs, including WordPress login and admin.", "redirection" ), // client/page/site/aliases/index.js:41
+__( "You will need to configure your system (DNS and server) to pass requests for these domains to this WordPress install.", "redirection" ), // client/page/site/aliases/index.js:42
+__( "Aliased Domain", "redirection" ), // client/page/site/aliases/index.js:47
+__( "Alias", "redirection" ), // client/page/site/aliases/index.js:48
+__( "No aliases", "redirection" ), // client/page/site/aliases/index.js:64
+__( "Add Alias", "redirection" ), // client/page/site/aliases/index.js:68
+__( "Don't set a preferred domain - {{code}}%(site)s{{/code}}", "redirection" ), // client/page/site/canonical/index.js:11
+__( "Remove www from domain - {{code}}%(siteWWW)s{{/code}} ⇒ {{code}}%(site)s{{/code}}", "redirection" ), // client/page/site/canonical/index.js:22
+__( "Add www to domain - {{code}}%(site)s{{/code}} ⇒ {{code}}%(siteWWW)s{{/code}}", "redirection" ), // client/page/site/canonical/index.js:34
+__( "Canonical Settings", "redirection" ), // client/page/site/canonical/index.js:86
+__( "Force a redirect from HTTP to HTTPS - {{code}}%(site)s{{/code}} ⇒ {{code}}%(siteHTTPS)s{{/code}}", "redirection" ), // client/page/site/canonical/index.js:90
+__( "{{strong}}Warning{{/strong}}: ensure your HTTPS is working before forcing a redirect.", "redirection" ), // client/page/site/canonical/index.js:103
+__( "Preferred domain", "redirection" ), // client/page/site/canonical/index.js:110
+__( "You should update your site URL to match your canonical settings: {{code}}%(current)s{{/code}} ⇒ {{code}}%(site)s{{/code}}", "redirection" ), // client/page/site/canonical/index.js:120
+__( "Site", "redirection" ), // client/page/site/headers/header.js:25
+__( "Redirect", "redirection" ), // client/page/site/headers/header.js:29
+__( "General", "redirection" ), // client/page/site/headers/header.js:226
+__( "Custom Header", "redirection" ), // client/page/site/headers/header.js:259
+__( "Add Header", "redirection" ), // client/page/site/headers/index.js:17
+__( "Add Security Presets", "redirection" ), // client/page/site/headers/index.js:21
+__( "Add CORS Presets", "redirection" ), // client/page/site/headers/index.js:25
+__( "HTTP Headers", "redirection" ), // client/page/site/headers/index.js:84
+__( "Site headers are added across your site, including redirects. Redirect headers are only added to redirects.", "redirection" ), // client/page/site/headers/index.js:85
+__( "Location", "redirection" ), // client/page/site/headers/index.js:90
+__( "Header", "redirection" ), // client/page/site/headers/index.js:91
+__( "No headers", "redirection" ), // client/page/site/headers/index.js:106
+__( "Note that some HTTP headers are set by your server and cannot be changed.", "redirection" ), // client/page/site/headers/index.js:117
+__( "Relocate Site", "redirection" ), // client/page/site/relocate/index.js:31
+__( "Want to redirect the entire site? Enter a domain to redirect everything, except WordPress login and admin. Enabling this option will disable any site aliases or canonical settings.", "redirection" ), // client/page/site/relocate/index.js:32
+__( "Relocate to domain", "redirection" ), // client/page/site/relocate/index.js:34
 __( "Logged In", "redirection" ), // client/component/redirect-edit/action/login.js:20
 __( "Target URL when matched (empty to ignore)", "redirection" ), // client/component/redirect-edit/action/login.js:21
 __( "Logged Out", "redirection" ), // client/component/redirect-edit/action/login.js:23
@@ -645,39 +676,8 @@ __( "Enter server URL to match against", "redirection" ), // client/component/re
 __( "Select All", "redirection" ), // client/component/table/header/check-column.js:14
 __( "No results", "redirection" ), // client/component/table/row/empty-row.js:15
 __( "Sorry, something went wrong loading the data - please try again", "redirection" ), // client/component/table/row/failed-row.js:16
-__( "Site Aliases", "redirection" ), // client/page/site/aliases/index.js:39
-__( "A site alias is another domain that you want to be redirected to this site. For example, an old domain, or a subdomain. This will redirect all URLs, including WordPress login and admin.", "redirection" ), // client/page/site/aliases/index.js:41
-__( "You will need to configure your system (DNS and server) to pass requests for these domains to this WordPress install.", "redirection" ), // client/page/site/aliases/index.js:42
-__( "Aliased Domain", "redirection" ), // client/page/site/aliases/index.js:47
-__( "Alias", "redirection" ), // client/page/site/aliases/index.js:48
-__( "No aliases", "redirection" ), // client/page/site/aliases/index.js:64
-__( "Add Alias", "redirection" ), // client/page/site/aliases/index.js:68
-__( "Don't set a preferred domain - {{code}}%(site)s{{/code}}", "redirection" ), // client/page/site/canonical/index.js:11
-__( "Remove www from domain - {{code}}%(siteWWW)s{{/code}} → {{code}}%(site)s{{/code}}", "redirection" ), // client/page/site/canonical/index.js:22
-__( "Add www to domain - {{code}}%(site)s{{/code}} → {{code}}%(siteWWW)s{{/code}}", "redirection" ), // client/page/site/canonical/index.js:34
-__( "Canonical Settings", "redirection" ), // client/page/site/canonical/index.js:86
-__( "Force a redirect from HTTP to HTTPS - {{code}}%(site)s{{/code}} → {{code}}%(siteHTTPS)s{{/code}}", "redirection" ), // client/page/site/canonical/index.js:90
-__( "{{strong}}Warning{{/strong}}: ensure your HTTPS is working before forcing a redirect.", "redirection" ), // client/page/site/canonical/index.js:103
-__( "Preferred domain", "redirection" ), // client/page/site/canonical/index.js:110
-__( "You should update your site URL to match your canonical settings: {{code}}%(current)s{{/code}} → {{code}}%(site)s{{/code}}", "redirection" ), // client/page/site/canonical/index.js:120
-__( "Site", "redirection" ), // client/page/site/headers/header.js:25
-__( "Redirect", "redirection" ), // client/page/site/headers/header.js:29
-__( "General", "redirection" ), // client/page/site/headers/header.js:226
-__( "Custom Header", "redirection" ), // client/page/site/headers/header.js:259
-__( "Add Header", "redirection" ), // client/page/site/headers/index.js:17
-__( "Add Security Presets", "redirection" ), // client/page/site/headers/index.js:21
-__( "Add CORS Presets", "redirection" ), // client/page/site/headers/index.js:25
-__( "HTTP Headers", "redirection" ), // client/page/site/headers/index.js:84
-__( "Site headers are added across your site, including redirects. Redirect headers are only added to redirects.", "redirection" ), // client/page/site/headers/index.js:85
-__( "Location", "redirection" ), // client/page/site/headers/index.js:90
-__( "Header", "redirection" ), // client/page/site/headers/index.js:91
-__( "No headers", "redirection" ), // client/page/site/headers/index.js:106
-__( "Note that some HTTP headers are set by your server and cannot be changed.", "redirection" ), // client/page/site/headers/index.js:117
-__( "Relocate Site", "redirection" ), // client/page/site/relocate/index.js:31
-__( "Want to redirect the entire site? Enter a domain to redirect everything, except WordPress login and admin. Enabling this option will disable any site aliases or canonical settings.", "redirection" ), // client/page/site/relocate/index.js:32
-__( "Relocate to domain", "redirection" ), // client/page/site/relocate/index.js:34
 __( "All", "redirection" ), // client/page/site/headers/types/multi-choice.js:34
 __( "Values", "redirection" ), // client/page/site/headers/types/multi-choice.js:37
-__( "Value", "redirection" ), // client/page/site/headers/types/plain-value.js:11
+__( "Value", "redirection" ), // client/page/site/headers/types/plain-value.js:10
 );
 /* THIS IS THE END OF THE GENERATED FILE */

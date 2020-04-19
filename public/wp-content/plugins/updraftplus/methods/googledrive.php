@@ -640,7 +640,7 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 				if ($filesize > $available_quota) {
 					$already_failed = true;
 					$this->log("File upload expected to fail: file ($file_name) size is $filesize b, whereas available quota is only $available_quota b");
-					$this->log(sprintf(__("Account full: your %s account has only %d bytes left, but the file to be uploaded is %d bytes", 'updraftplus'), __('Google Drive', 'updraftplus'), $available_quota, $filesize), +'error');
+					$this->log(sprintf(__("Account full: your %s account has only %d bytes left, but the file to be uploaded is %d bytes", 'updraftplus'), __('Google Drive', 'updraftplus'), $available_quota, $filesize), 'error');
 				}
 			}
 
@@ -1007,6 +1007,14 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 		return $result;
 	}
 
+	/**
+	 * Delete a single file from the service using GoogleDrive API
+	 *
+	 * @param Array|String $files    - array of file names to delete
+	 * @param Array        $data     - unused here
+	 * @param Array        $sizeinfo - unused here
+	 * @return Boolean|String - either a boolean true or an error code string
+	 */
 	public function delete($files, $data = null, $sizeinfo = array()) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 
 		if (is_string($files)) $files = array($files);
@@ -1014,7 +1022,7 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 		$storage = $this->bootstrap();
 		if (is_wp_error($storage)) {
 			$this->log("delete: failed due to storage error: ".$storage->get_error_code()." (".$storage->get_error_message().")");
-			return false;
+			return 'service_unavailable';
 		}
 			
 		if (false == $storage) return $storage;
@@ -1026,7 +1034,7 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 			$sub_items = $this->get_subitems($parent_id, 'file');
 		} catch (Exception $e) {
 			$this->log("delete: failed to access parent folder: ".$e->getMessage().' (line: '.$e->getLine().', file: '.$e->getFile().')');
-			return false;
+			return 'container_access_error';
 		}
 
 		$ret = true;
@@ -1044,7 +1052,7 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 				}
 			} catch (Exception $e) {
 				$this->log("delete: exception: ".$e->getMessage().' (line: '.$e->getLine().', file: '.$e->getFile().')');
-				$ret = false;
+				$ret = 'file_delete_error';
 				continue;
 			}
 		}

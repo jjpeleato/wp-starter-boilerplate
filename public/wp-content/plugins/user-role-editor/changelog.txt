@@ -1,6 +1,16 @@
 CHANGES LOG (full version).
 ===========================
 
+= [4.53.1] 22.03.2020 =
+* New: "Hide Pro banner" checkbox works via AJAX without full page refresh.
+* Fix: Undefined variable: $message at wp-content/plugins/user-role-editor/includes/classes/editor.php:898
+* Update: Few English grammar enhancements.
+
+= [4.53] 01.02.2020 =
+* Update: "Add role", "Delete role", "Rename role", "Add capability", "Delete capability" do not reload full page on completion, but use AJAX for data exchange with server and refresh parts of the page via JavaScript.
+* Update: Multisite: "Allow non super administrators to create, edit, and delete users" option: priority for 'map_meta_cap' filter priority was raised from 1 to 99, in order make possible to overwrite changes made by other plugins, like WooCommerce.
+* Fix: Some English grammar mistakes.
+
 = [4.52.2] 26.12.2019 =
 * Fix: Custom capabilities for custom post types was not created by URE automatically since version 4.52.1.
 * Fix: 'administrator' role protection did not show to power users roles with 'administrator' word inside, like 'shop_administrator', etc.

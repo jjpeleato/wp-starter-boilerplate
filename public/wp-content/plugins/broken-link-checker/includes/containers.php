@@ -13,6 +13,7 @@ class blcContainerManager extends blcModule {
 	var $container_type       = '';
 	var $fields               = array();
 	var $container_class_name = 'blcContainer';
+	var $updating_urls        = '';
 
 	/**
 	 * Do whatever setup necessary that wasn't already done in the constructor.
@@ -508,6 +509,12 @@ class blcContainer {
 
 		//Get the current value of the field that needs to be edited.
 		$old_value = $this->get_field( $field_name );
+
+		//store the new url
+		$this->updating_urls = array(
+			'old_url' => $old_url,
+			'new_url' => $new_url,
+		);
 
 		//Have the parser modify the specified link. If successful, the parser will
 		//return an associative array with two keys - 'content' and 'raw_url'.

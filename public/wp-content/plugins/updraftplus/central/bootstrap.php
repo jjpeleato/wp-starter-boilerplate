@@ -45,7 +45,7 @@ class UpdraftPlus_UpdraftCentral_Main {
 		// These are different from the remote send keys, which are set up in the Migrator add-on
 		$our_keys = UpdraftPlus_Options::get_updraft_option('updraft_central_localkeys');
 		if (is_array($our_keys) && !empty($our_keys)) {
-			$remote_control = new UpdraftPlus_UpdraftCentral_Listener($our_keys, $command_classes);
+			new UpdraftPlus_UpdraftCentral_Listener($our_keys, $command_classes);
 		}
 
 	}
@@ -305,9 +305,7 @@ class UpdraftPlus_UpdraftCentral_Main {
 
 		$ud_rpc = $updraftplus->get_udrpc($indicator_name);
 
-		$send_to_updraftpluscom = false;
 		if ('__updraftpluscom' == $post_it) {
-			$send_to_updraftpluscom = true;
 			$post_it = defined('UPDRAFTPLUS_OVERRIDE_UDCOM_DESTINATION') ? UPDRAFTPLUS_OVERRIDE_UDCOM_DESTINATION : 'https://updraftplus.com/?updraftcentral_action=receive_key';
 			$post_it_description = 'UpdraftPlus.Com';
 		} else {

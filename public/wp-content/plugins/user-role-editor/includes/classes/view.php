@@ -239,24 +239,24 @@ class URE_View {
     // content of User Role Editor Pro advertisement slot - for direct call
     public function advertise_pro() {        
         ?>		
-        			<div id="ure_pro_advertisement" style="clear:left;display:block; float: left;">
-        				<a href="https://www.role-editor.com?utm_source=UserRoleEditor&utm_medium=banner&utm_campaign=Plugins " target="_new" >
+        <div id="ure_pro_advertisement" style="clear:left;display:block; float: left;">
+            <a href="https://www.role-editor.com?utm_source=UserRoleEditor&utm_medium=banner&utm_campaign=Plugins " target="_new" >
         <?php
         $hide_pro_banner = $this->lib->get_option('ure_hide_pro_banner', 0);
         if ($hide_pro_banner) {
             echo 'User Role Editor Pro: extended functionality, no advertisement - from $29.</a>';
         } else {
         ?>
-            					<img src="<?php echo URE_PLUGIN_URL; ?>images/user-role-editor-pro-728x90.jpg" alt="User Role Editor Pro" 
-            						 title="More functionality and premium support with Pro version of User Role Editor."/>
-            				</a><br />
-            				<label for="ure_hide_pro_banner">
-            					<input type="checkbox" name="ure_hide_pro_banner" id="ure_hide_pro_banner" onclick="ure_hide_pro_banner();"/>&nbsp;Thanks, hide this banner.
-            				</label>
+            <img src="<?php echo URE_PLUGIN_URL; ?>images/user-role-editor-pro-728x90.jpg" alt="User Role Editor Pro" 
+            	 title="More functionality and premium support with Pro version of User Role Editor."/>
+           </a><br />
+            <label for="ure_hide_pro_banner">
+            	<input type="checkbox" name="ure_hide_pro_banner" id="ure_hide_pro_banner" onclick="ure_main.hide_pro_banner();"/>&nbsp;Thanks, hide this banner.
+            </label>
             <?php
         }
             ?>
-        			</div>  			
+        </div>  			
         <?php
     }
     // end of advertise_pro_version()
@@ -331,7 +331,7 @@ class URE_View {
 ?>
                     <div class="ure-table-cell ure-caps-option nowrap">
                         <?php esc_html_e('Quick filter:', 'user-role-editor'); ?>&nbsp;
-                        <input type="text" id="quick_filter" name="quick_filter" value="" size="10" onkeyup="ure_filter_capabilities(this.value);" />&nbsp;&nbsp;&nbsp;
+                        <input type="text" id="quick_filter" name="quick_filter" value="" size="10" onkeyup="ure_main.filter_capabilities(this.value);" />&nbsp;&nbsp;&nbsp;
                         <input type="checkbox" id="granted_only" name="granted_only" />
                         <label for="granted_only"><?php esc_html_e('Granted Only', 'user-role-editor'); ?></label>&nbsp;
                     </div>                    

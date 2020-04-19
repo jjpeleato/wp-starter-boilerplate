@@ -3,9 +3,9 @@ Contributors: shinephp
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=vladimir%40shinephp%2ecom&lc=RU&item_name=ShinePHP%2ecom&item_number=User%20Role%20Editor%20WordPress%20plugin&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
 Tags: user, role, editor, security, access, permission, capability
 Requires at least: 4.0
-Tested up to: 5.3.2
-Stable tag: 4.53
-Requires PHP: 5.5
+Tested up to: 5.4
+Stable tag: 4.53.1
+Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -81,7 +81,12 @@ https://translate.wordpress.org/projects/wp-plugins/user-role-editor/
 
 == Changelog =
 
-= [4.53] 01.02.2019 =
+= [4.53.1] 22.03.2020 =
+* New: "Hide Pro banner" checkbox works via AJAX without full page refresh.
+* Fix: Undefined variable: $message at wp-content/plugins/user-role-editor/includes/classes/editor.php:898
+* Update: Few English grammar enhancements.
+
+= [4.53] 01.02.2020 =
 * Update: "Add role", "Delete role", "Rename role", "Add capability", "Delete capability" do not reload full page on completion, but use AJAX for data exchange with server and refresh parts of the page via JavaScript.
 * Update: Multisite: "Allow non super administrators to create, edit, and delete users" option: priority for 'map_meta_cap' filter priority was raised from 1 to 99, in order make possible to overwrite changes made by other plugins, like WooCommerce.
 * Fix: Some English grammar mistakes.
@@ -104,6 +109,7 @@ You can find more information about "User Role Editor" plugin at [this page](htt
 I am ready to answer on your questions about plugin usage. Use [plugin page comments](http://www.shinephp.com/user-role-editor-wordpress-plugin/) for that.
 
 == Upgrade Notice ==
-= [4.53] 01.02.2019 =
-* Update: "Add role", "Delete role", "Rename role", "Add capability", "Delete capability" do not reload full page on completion, but use AJAX for data exchange with server and refresh parts of the page via JavaScript.
-* Update: Multisite: "Allow non super administrators to create, edit, and delete users" option: priority for 'map_meta_cap' filter priority was raised from 1 to 99, in order make possible to overwrite changes made by other plugins, like WooCommerce.	
+= [4.53.1] 22.03.2020 =
+* New: "Hide Pro banner" checkbox works via AJAX without full page refresh.
+* Fix: Undefined variable: message at wp-content/plugins/user-role-editor/includes/classes/editor.php:898
+* Update: Few English grammar enhancements.

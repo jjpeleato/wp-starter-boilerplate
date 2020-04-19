@@ -43,7 +43,7 @@ class MACHETE_CLEANUP_MODULE extends MACHETE_MODULE {
 				'title'       => __( 'feed_links', 'machete' ),
 				'description' => __( 'Remove Automatics RSS links. RSS will still work, but you will need to provide your own links.', 'machete' ),
 			),
-			'feed_generator'        => array(
+			'feed_generator'    => array(
 				'title'       => __( 'feed_generator', 'machete' ),
 				'description' => __( 'Remove generator tag from RSS feeds.', 'machete' ),
 			),
@@ -119,7 +119,7 @@ class MACHETE_CLEANUP_MODULE extends MACHETE_MODULE {
 		$this->tweaks_array = array(
 			'json_api'       => array(
 				'title'       => __( 'JSON API', 'machete' ),
-				'description' => __( 'Remove the JSON-API links from page headers. Also require that API consumers be authenticated.', 'machete' ) . ' <br><span style="color: #d94f4f">' . __( 'Might break external appplications if they need to access your site\'s API anonymously.', 'machete' ) . '</span>',
+				'description' => __( 'Remove the JSON-API links from page headers. Also require that API consumers be authenticated.', 'machete' ) . ' <br><span style="color: #d94f4f">' . __( 'Be careful. Breaks the block editor and many plugins that use the REST API.', 'machete' ) . '</span>',
 			),
 			'xmlrpc'         => array(
 				'title'       => __( 'XML-RPC', 'machete' ),

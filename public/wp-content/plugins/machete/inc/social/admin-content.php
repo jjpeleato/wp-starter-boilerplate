@@ -59,9 +59,7 @@ if ( ! defined( 'MACHETE_ADMIN_INIT' ) ) {
 	<?php foreach ( $this->positions as $machete_position_slug => $machete_position ) { ?>
 		<label><input type="checkbox" name="positionEnabled[]" value="<?php echo esc_attr( $machete_position_slug ); ?>" id="position_<?php echo esc_attr( $machete_network_slug . '_fld' ); ?>" <?php checked( true, in_array( $machete_position_slug, $this->settings['positions'], true ), true ); ?>> <?php echo esc_html( $machete_position ); ?></label><br>
 	<?php } ?>
-	</fieldset>
-	<p class="description"><?php esc_html_e( 'The bottom share buttons are also visible on mobile devices', 'machete' ); ?></p>
-	</td>
+	</fieldset></td>
 </tr>
 
 <tr>
@@ -73,6 +71,13 @@ if ( ! defined( 'MACHETE_ADMIN_INIT' ) ) {
 	</fieldset></td>
 </tr>
 
+
+<tr>
+	<th scope="row"><?php esc_html_e( 'Use with shortcode', 'machete' ); ?></th>
+	<td><code>[mct-social-share]</code>
+	<p class="description"><?php esc_html_e( 'You can use this shortcode in the content of any post, page or custom post type. It won\'t work on archive pages, sidebars...', 'machete' ); ?></p>
+	</td>
+</tr>
 
 </tbody></table>
 

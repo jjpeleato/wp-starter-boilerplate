@@ -67,7 +67,7 @@ class blcPostTypeOverlord {
 		add_action( 'delete_post', array( &$this, 'post_deleted' ) );
 		add_action( 'save_post', array( &$this, 'post_saved' ) );
 		//We also treat post trashing/untrashing as delete/save.
-		add_action( 'trash_post', array( &$this, 'post_deleted' ) );
+		add_action( 'trashed_post', array( &$this, 'post_deleted' ) );
 		add_action( 'untrash_post', array( &$this, 'post_saved' ) );
 
 		//Highlight and nofollow broken links in posts & pages
@@ -586,6 +586,7 @@ class blcAnyPostContainer extends blcContainer {
 		}
 
 		$post_id = wp_update_post( $this->wrapped_object, true );
+
 		if ( is_wp_error( $post_id ) ) {
 			return $post_id;
 		} elseif ( $post_id == 0 ) {
@@ -594,7 +595,31 @@ class blcAnyPostContainer extends blcContainer {
 				sprintf( __( 'Updating post %d failed', 'broken-link-checker' ), $this->container_id )
 			);
 		} else {
+			$this->update_pagebuilders( $post_id );
 			return true;
+		}
+	}
+
+	/**
+	 * Update the the links on pagebuilders
+	 *
+	 * @param $post_id  Post ID of whose content to update
+	 */
+	function update_pagebuilders( $post_id ) {
+
+		if ( ! $post_id ) {
+			return;
+		}
+
+		global $wpdb;
+		//support for elementor page builder.
+		if ( class_exists( '\Elementor\Plugin' ) && \Elementor\Plugin::$instance->db->is_built_with_elementor( $post_id ) ) {
+			// @codingStandardsIgnoreStart cannot use `$wpdb->prepare` because it remove's the backslashes
+			$rows_affected = $wpdb->query(
+				"UPDATE {$wpdb->postmeta} " .
+				"SET `meta_value` = REPLACE(`meta_value`, '" . str_replace( '/', '\\\/', $this->updating_urls['old_url'] ) . "', '" . str_replace( '/', '\\\/', $this->updating_urls['new_url'] ) . "') " .
+				"WHERE `meta_key` = '_elementor_data' AND `post_id` = '" . $post_id . "' AND `meta_value` LIKE '[%' ;" ); // meta_value LIKE '[%' are json formatted
+			// @codingStandardsIgnoreEnd
 		}
 	}
 

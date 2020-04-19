@@ -116,12 +116,13 @@ class UpdraftPlus_Backup_History {
 	 * Get the HTML for the table of existing backups
 	 *
 	 * @param Array|Boolean $backup_history - a list of backups to use, or false to get the current list from the database
+	 * @param Boolean       $backup_count   - the amount of backups currently displayed in the existing backups table
 	 *
 	 * @uses UpdraftPlus_Admin::include_template()
 	 *
 	 * @return String - HTML for the table
 	 */
-	public static function existing_backup_table($backup_history = false) {
+	public static function existing_backup_table($backup_history = false, $backup_count = 0) {
 
 		global $updraftplus, $updraftplus_admin;
 
@@ -129,13 +130,19 @@ class UpdraftPlus_Backup_History {
 		
 		if (!is_array($backup_history) || empty($backup_history)) return '<div class="postbox"><p class="updraft-no-backups-msg"><em>'.__('You have not yet made any backups.', 'updraftplus').'</em></p></div>';
 
+		if (empty($backup_count)) {
+			$backup_count = defined('UPDRAFTPLUS_EXISTING_BACKUPS_LIMIT') ? UPDRAFTPLUS_EXISTING_BACKUPS_LIMIT : 100;
+		}
+
 		// Reverse date sort - i.e. most recent first
 		krsort($backup_history);
 		
 		$pass_values = array(
 			'backup_history' => self::add_jobdata($backup_history),
 			'updraft_dir' => $updraftplus->backups_dir_location(),
-			'backupable_entities' => $updraftplus->get_backupable_file_entities(true, true)
+			'backupable_entities' => $updraftplus->get_backupable_file_entities(true, true),
+			'backup_count' => $backup_count,
+			'show_paging_actions' => false,
 		);
 		
 		return $updraftplus_admin->include_template('wp-admin/settings/existing-backups-table.php', true, $pass_values);

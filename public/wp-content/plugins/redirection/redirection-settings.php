@@ -26,7 +26,7 @@ function red_get_post_types( $full = true ) {
 			continue;
 		}
 
-		if ( $full ) {
+		if ( $full && strlen( $type->label ) > 0 ) {
 			$post_types[ $type->name ] = $type->label;
 		} else {
 			$post_types[] = $type->name;
@@ -166,7 +166,7 @@ function red_set_options( array $settings = array() ) {
 		}
 	}
 
-	if ( isset( $settings['location'] ) && strlen( $settings['location'] ) > 0 ) {
+	if ( isset( $settings['location'] ) && ( ! isset( $options['location'] ) || $options['location'] !== $settings['location'] ) ) {
 		$module = Red_Module::get( 2 );
 		$options['modules'][2] = $module->update( $settings );
 	}

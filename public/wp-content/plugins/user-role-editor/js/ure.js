@@ -399,9 +399,9 @@ var ure_main = {
             if ( ure_data.do_not_revoke_from_admin==1 ) {  
                 var el = document.getElementById(this.id);
                 if ( 'administrator'===ure_current_role ) {
-                    el.addEventListener( 'click', ure_turn_it_back );
+                    el.addEventListener( 'click', ure_main.turn_it_back );
                 } else {
-                    el.removeEventListener( 'click', ure_turn_it_back );
+                    el.removeEventListener( 'click', ure_main.turn_it_back );
                 }
             }
         }); 
@@ -865,11 +865,6 @@ var ure_main = {
                         error: ure_main.ajax_error
                     } );                    
                     jQuery(this).dialog('close');
-                    /*
-                    jQuery.ure_postGo(ure_data.page_url,
-                            {action: 'rename-role', user_role_id: role_id, user_role_name: role_name, ure_nonce: ure_data.wp_nonce}
-                    );
-                    */
                 },
                 CancelRenameRole: function () {
                     jQuery(this).dialog('close');
@@ -899,11 +894,61 @@ var ure_main = {
         } else {
             ure_main.show_notice( data.message, 'error' );
         }
-    }    
+    },
+    
+    hide_pro_banner: function() {
+        jQuery('#ure_task_status').show();
+        jQuery.ajax( {
+            url: ajaxurl,
+            type: 'POST',
+            dataType: 'json',
+            async: true,
+            data: {
+                action: 'ure_ajax',
+                sub_action: 'hide_pro_banner',                
+                network_admin: ure_data.network_admin,
+                wp_nonce: ure_data.wp_nonce
+            },
+            success: ure_main.hide_pro_banner_success,
+            error: ure_main.ajax_error
+        } );        
+    },
+    
+    hide_pro_banner_success: function( data ) {
+        jQuery('#ure_task_status').hide();
+        if ( data.result=='success' ) {
+            jQuery( '#ure_pro_advertisement' ).hide();
+        } else {
+            ure_main.show_notice( data.message, 'error' );
+        }
+    },
+    
+    filter_capabilities: function( cap_id ) {
+        var div_list = jQuery('.ure-cap-div');
+        for (var i = 0; i < div_list.length; i++) {
+            if (cap_id !== '' && div_list[i].id.substr(11).indexOf(cap_id) !== -1) {
+                jQuery('#'+ div_list[i].id).addClass('ure_tag');
+                div_list[i].style.color = '#27CF27';
+            } else {
+                div_list[i].style.color = '#000000';
+                jQuery('#'+ div_list[i].id).removeClass('ure_tag');
+            }
+        }
+
+    },
+    
+    // turn on checkbox back if clicked to turn off - for 'administrator' role only!
+    turn_it_back: function( event ) {
+    
+        if ( 'administrator'===ure_current_role ) {
+            event.target.checked = true; 
+        }
+
+    }
+    
 
 };  // end of ure_main declaration
 //-------------------------------
-
 
 
 function ure_ui_button_text(caption) {
@@ -1008,17 +1053,6 @@ jQuery(function ($) {
 // end of jQuery(function() ...
 
 
-// turn on checkbox back if clicked to turn off - for 'administrator' role only!
-function ure_turn_it_back( event ) {
-    
-    if ( 'administrator'===ure_current_role ) {
-        event.target.checked = true; 
-    }
-
-}
-// end of ure_turn_it_back()
-
-
 function ure_turn_caps_readable(user_id) {
     var ure_obj = 'user';
     if (user_id === 0) {
@@ -1041,30 +1075,6 @@ function ure_turn_deprecated_caps(user_id) {
 
 }
 // ure_turn_deprecated_caps()
-
-
-function ure_filter_capabilities(cap_id) {
-    var div_list = jQuery('.ure-cap-div');
-    for (var i = 0; i < div_list.length; i++) {
-        if (cap_id !== '' && div_list[i].id.substr(11).indexOf(cap_id) !== -1) {
-            jQuery('#'+ div_list[i].id).addClass('ure_tag');
-            div_list[i].style.color = '#27CF27';
-        } else {
-            div_list[i].style.color = '#000000';
-            jQuery('#'+ div_list[i].id).removeClass('ure_tag');
-        }
-    }
-
-}
-// end of ure_filter_capabilities()
-
-
-function ure_hide_pro_banner() {
-
-    jQuery.ure_postGo(ure_data.page_url, {action: 'hide-pro-banner', ure_nonce: ure_data.wp_nonce});
-
-}
-// end of ure_hide_this_banner()
 
 
 jQuery(window).resize(function () {

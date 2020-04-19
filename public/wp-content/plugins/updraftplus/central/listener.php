@@ -54,7 +54,7 @@ class UpdraftPlus_UpdraftCentral_Listener {
 			$ud_rpc->activate_replay_protection();
 			if (!empty($key['extra_info']) && isset($key['extra_info']['mothership'])) {
 				$mothership = $key['extra_info']['mothership'];
-				unset($url);
+				$url = '';
 				if ('__updraftpluscom' == $mothership) {
 					$url = 'https://updraftplus.com';
 				} elseif (false != ($parsed = parse_url($key['extra_info']['mothership'])) && is_array($parsed)) {
@@ -73,8 +73,10 @@ class UpdraftPlus_UpdraftCentral_Listener {
 			if (!empty($_GET['login_id']) && is_numeric($_GET['login_id']) && !empty($_GET['login_key'])) {
 				$login_user = get_user_by('id', $_GET['login_id']);
 				
+				// THis is included so we can get $wp_version
 				include_once(ABSPATH.WPINC.'/version.php');
-				if (is_a($login_user, 'WP_User') || (version_compare($wp_version, '3.5', '<') && !empty($login_user->ID))) {
+
+				if (is_a($login_user, 'WP_User') || (version_compare($wp_version, '3.5', '<') && !empty($login_user->ID))) {// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 					// Allow site implementers to disable this functionality
 					$allow_autologin = apply_filters('updraftcentral_allow_autologin', true, $login_user);
 					if ($allow_autologin) {
