@@ -522,6 +522,9 @@ if ( ! class_exists( 'wsBrokenLinkChecker' ) ) {
 				$this->conf->options['run_in_dashboard'] = ! empty( $_POST['run_in_dashboard'] );
 				$this->conf->options['run_via_cron']     = ! empty( $_POST['run_via_cron'] );
 
+				//youtube api
+				$this->conf->options['youtube_api_key'] = ! empty( $_POST['youtube_api_key'] ) ? $_POST['youtube_api_key'] : '';
+
 				//Email notifications on/off
 				$email_notifications              = ! empty( $_POST['send_email_notifications'] );
 				$send_authors_email_notifications = ! empty( $_POST['send_authors_email_notifications'] );
@@ -690,6 +693,7 @@ if ( ! class_exists( 'wsBrokenLinkChecker' ) ) {
 				'how'      => __( 'Protocols & APIs', 'broken-link-checker' ),
 				'advanced' => __( 'Advanced', 'broken-link-checker' ),
 			);
+
 			?>
 
 			<!--[if lte IE 7]>
@@ -908,7 +912,7 @@ if ( ! class_exists( 'wsBrokenLinkChecker' ) ) {
 				</a>
 				</p>
 
-				<div id="removed-link-css-wrap" 
+				<div id="removed-link-css-wrap"
 				<?php
 				if ( ! blcUtility::get_cookie( 'removed-link-css-wrap', false ) ) {
 					echo ' class="hidden"';
@@ -982,6 +986,25 @@ if ( ! class_exists( 'wsBrokenLinkChecker' ) ) {
 						<?php
 							_e( 'Turning off this option will make the plugin report all problems as broken links.', 'broken-link-checker' );
 						?>
+						</p>
+					</td>
+				</tr>
+
+				<tr valign="top">
+					<th scope="row"><?php echo __( 'YouTube API Key', 'broken-link-checker' ); ?></th>
+					<td>
+						<p>
+						<label>
+							<input
+								type="text"
+								name="youtube_api_key"
+								id="youtube_api_key"
+								value="<?php echo $this->conf->options[ 'youtube_api_key' ]; ?>"
+								class="regular-text ltr">
+						</label><br>
+						<span class="description">
+							<?php printf( __( 'Use your own %1$sapi key%2$s for checking youtube links.', 'broken-link-checker' ), '<a href="https://developers.google.com/youtube/v3/getting-started">', '</a>' ); ?>
+						</span>
 						</p>
 					</td>
 				</tr>
@@ -2158,17 +2181,20 @@ if ( ! class_exists( 'wsBrokenLinkChecker' ) ) {
 
 			$message   = '';
 			$msg_class = 'updated';
-
+			$total_links = count( $selected_links );
 			check_admin_referer( 'bulk-action' );
 
-			if ( count( $selected_links ) > 0 ) {
+			if ( $total_links > 0 ) {
+				$placeholders = array_fill( 0, $total_links, '%d' );
+				$format = implode( ', ', $placeholders );
+				$query  = "UPDATE {$wpdb->prefix}blc_links
+				SET last_check_attempt = '0000-00-00 00:00:00'
+				WHERE link_id IN ( $format )";
 
 				$changes = $wpdb->query(
 					$wpdb->prepare(
-						"UPDATE {$wpdb->prefix}blc_links
-						SET last_check_attempt = '0000-00-00 00:00:00'
-						WHERE link_id IN ( %s )",
-						implode( '', $selected_links )
+						$query, //phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+						$selected_links
 					)
 				);
 
@@ -2287,6 +2313,7 @@ if ( ! class_exists( 'wsBrokenLinkChecker' ) ) {
 					$link->dismissed = true;
 
 					$link->isOptionLinkChanged = true;
+
 					//Save the changes
 					if ( $link->save() ) {
 						$processed_links++;

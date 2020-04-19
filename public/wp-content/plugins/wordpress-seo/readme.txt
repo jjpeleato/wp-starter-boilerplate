@@ -4,9 +4,9 @@ Donate link: https://yoa.st/1up
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Tags: SEO, XML sitemap, Content analysis, Readability
-Requires at least: 5.2
-Tested up to: 5.3.2
-Stable tag: 13.1
+Requires at least: 5.3
+Tested up to: 5.4
+Stable tag: 13.5
 Requires PHP: 5.6.20
 
 Improve your WordPress SEO: Write better content and have a fully optimized WordPress site using the Yoast SEO plugin.
@@ -77,7 +77,7 @@ You should also check out these other products by Yoast:
 
 * **[Yoast Local SEO](https://yoa.st/1uu)** to optimize all website that serve a local audience, like certain small businesses, or businesses with multiple locations.
 * **[Yoast Video SEO](https://yoa.st/1uw)** to make sure Google understands what you video is about, thus increasing your chances to rank in video results.
-* **[Yoast News SEO](https://yoa.st/1uv)** for websites that are in Google News and what to optimize all news articles for the best indexation and ranking.
+* **[Yoast News SEO](https://yoa.st/1uv)** for websites that are in Google News and want to optimize all news articles for the best indexation and ranking.
 * **[WooCommerce SEO](https://yoa.st/3rh)** for all online shops that want to perform better in search engines and on social platforms.
 
 They work with the FREE version of Yoast SEO already, and these premium extensions of course come with support too.
@@ -209,36 +209,29 @@ Your question has most likely been answered on our knowledge base: [kb.yoast.com
 
 == Changelog ==
 
-= 13.1 =
-Release Date: February 18th, 2020
+= 13.5 =
+Release Date: April 14th, 2020
 
-Yoast SEO 13.1 is out today! In this plugin, you’ll find several fixes and enhancements, mostly focused at improving our Schema.org structured data implementation. Learn more about the latest versions of Yoast SEO in [our 13.1 release post](https://yoa.st/release-13-1)!
+While we’re working on getting [Yoast SEO 14.0](https://yoa.st/3zs) ready for the world, you can enjoy today’s release of Yoast SEO 13.5. Read all about Yoast SEO 13.5 in [our release post](https://yoa.st/release-13-5)!
 
 Bugfixes:
 
-* Fixes a bug where the HowTo schema name was incorrectly set to the page title.
-* Fixes a bug where the "force rewrite titles" option would remove the title tag in svg tags. Props to [stodorovic](https://github.com/stodorovic)
-
-Enhancements:
-
-* Sets the Schema HowTo name and Article headline to the post title with a fallback to "No title".
-* Adds the `inLanguage` property to the schema CreativeWork pieces.
-* Removes a duplicate directory from the composer autoload classmap configuration. Props to [szepeviktor](https://github.com/szepeviktor)
-* Improves the copy for the paginated comments Site Health check.
+* Fixes a bug where a fatal error would be thrown when saving a post while the type was no longer WP_Post due to filtering.
+* Fixes a bug where .xsl site map files would not be cached correctly.
 
 Other:
 
-* Removes the Search Console item from the admin menu and the toolbar menu.
+* Sets minimum supported WordPress version to 5.3.
 
-= 13.0 =
-Release Date: February 4th, 2020
+= 13.4 =
+Release Date: March 31st, 2020
 
-Today, we’re releasing Yoast SEO 13.0. This release is one in a series of releases focusing on improving our code and fixing issues — most of them behind the scenes. Read more about those changes in [our 13.0 release post](https://yoa.st/release-13-0)!
+In Yoast SEO 9.0, we launched an innovative new way to analyze your English language text using word forms. In Yoast SEO 10.1, we added word form support for the German language. Today, we’re glad to announce word form support for Dutch. You can read why this is such an awesome addition in [our 13.4 release post](https://yoa.st/release-13-4)!
 
-Enhancements:
+Bugfixes:
 
-* Hides the Facebook settings when Open Graph is disabled.
-* Adds a success state to the paginated comments Health Check. This means the paginated comments check will also be shown when the paginated comments are set up correctly.
+* Fixes a bug where the host part of URLs could contain reserved characters, like spaces and brackets. Props to [stodorovic](https://github.com/stodorovic)
+* Fixes a bug where form fields were validated inconsistently.
 
 = Earlier versions =
 For the changelog of earlier versions, please refer to [the changelog on yoast.com](https://yoa.st/yoast-seo-changelog).

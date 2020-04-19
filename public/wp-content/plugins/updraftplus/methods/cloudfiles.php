@@ -263,7 +263,15 @@ class UpdraftPlus_BackupModule_cloudfiles_oldsdk extends UpdraftPlus_BackupModul
 		return $results;
 
 	}
-
+	
+	/**
+	 * Delete a single file from the service using the CloudFiles API
+	 *
+	 * @param Array $files         - array of file paths to delete
+	 * @param Array $cloudfilesarr - CloudFiles container and object details
+	 * @param Array $sizeinfo      - unused here
+	 * @return Boolean|String - either a boolean true or an error code string
+	 */
 	public function delete($files, $cloudfilesarr = false, $sizeinfo = array()) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 
 		if (is_string($files)) $files =array($files);
@@ -280,7 +288,7 @@ class UpdraftPlus_BackupModule_cloudfiles_oldsdk extends UpdraftPlus_BackupModul
 			} catch (Exception $e) {
 				$this->log('authentication failed ('.$e->getMessage().')');
 				$this->log(__('authentication failed', 'updraftplus').' ('.$e->getMessage().')', 'error');
-				return false;
+				return 'authentication_fail';
 			}
 		}
 
@@ -310,7 +318,7 @@ class UpdraftPlus_BackupModule_cloudfiles_oldsdk extends UpdraftPlus_BackupModul
 				$this->log('Deleted: '.$fpath);
 			} catch (Exception $e) {
 				$this->log('delete failed: '.$e->getMessage());
-				$ret = false;
+				$ret = 'file_delete_error';
 			}
 		}
 		return $ret;

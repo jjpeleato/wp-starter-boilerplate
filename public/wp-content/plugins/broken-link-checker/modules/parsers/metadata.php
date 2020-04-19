@@ -33,46 +33,68 @@ class blcMetadataParser extends blcParser {
 		}
 
 		foreach ( $content as $value ) {
-			//The complete contents of the meta field are stored in raw_url.
-			//This is useful for editing/unlinking, when one may need to
-			//distinguish between multiple fields with the same name.
-			$raw_url = $value;
-
-			//If this is a multiline metadata field take only the first line (workaround for the 'enclosure' field).
-			$lines = explode( "\n", $value );
-			$url   = trim( reset( $lines ) );
-
-			//Attempt to parse the URL
-			$parts = @parse_url( $url );
-
-			if ( ! $parts ) {
-				return $instances; //Ignore invalid URLs
-			}
-
-			if ( ! isset( $parts['scheme'] ) ) {
-				//No scheme - likely a relative URL. Turn it into an absolute one.
-				$url = $this->relative2absolute( $url, $base_url );
-
-				//Skip invalid URLs (again)
-				if ( ! $url || ( strlen( $url ) < 6 ) ) {
-					return $instances;
+			//parse all values of a seralized custom field
+			if ( is_array( $value ) ) {
+				foreach ( $value as $singular_value ) {
+					//only get urls
+					//todo: filter relative urls
+					if ( filter_var( $singular_value, FILTER_VALIDATE_URL ) ) {
+						$instances[] = $this->parse_metafield( $singular_value, $base_url, $default_link_text );
+					}
 				}
+			} else {
+				$instances[] = $this->parse_metafield( $value, $base_url, $default_link_text );
 			}
-
-			//The URL is okay, create and populate a new link instance.
-			$instance = new blcLinkInstance();
-
-			$instance->set_parser( $this );
-			$instance->raw_url   = $raw_url;
-			$instance->link_text = $default_link_text;
-
-			$link_obj = new blcLink( $url ); //Creates or loads the link
-			$instance->set_link( $link_obj );
-
-			$instances[] = $instance;
 		}
 
-		return $instances;
+		return array_values( array_filter( $instances ) );
+	}
+
+	/**
+	 * Metadata url parser helper.
+	 *
+	 * @param string $metaurl The url on the meta data
+	 * @param string $default_link_text
+	 * @return array An array of new blcLinkInstance objects.
+	 */
+	function parse_metafield( $metaurl = '', $base_url, $default_link_text = '' ) {
+		//The complete contents of the meta field are stored in raw_url.
+		//This is useful for editing/unlinking, when one may need to
+		//distinguish between multiple fields with the same name.
+		$raw_url = $metaurl;
+
+		//If this is a multiline metadata field take only the first line (workaround for the 'enclosure' field).
+		$lines = explode( "\n", $metaurl );
+		$url   = trim( reset( $lines ) );
+
+		//Attempt to parse the URL
+		$parts = @parse_url( $url );
+
+		if ( ! $parts ) {
+			return ''; //Ignore invalid URLs
+		}
+
+		if ( ! isset( $parts['scheme'] ) ) {
+			//No scheme - likely a relative URL. Turn it into an absolute one.
+			$url = $this->relative2absolute( $url, $base_url );
+
+			//Skip invalid URLs (again)
+			if ( ! $url || ( strlen( $url ) < 6 ) ) {
+				return '';
+			}
+		}
+
+		//The URL is okay, create and populate a new link instance.
+		$instance = new blcLinkInstance();
+
+		$instance->set_parser( $this );
+		$instance->raw_url   = $raw_url;
+		$instance->link_text = $default_link_text;
+
+		$link_obj = new blcLink( $url ); //Creates or loads the link
+		$instance->set_link( $link_obj );
+
+		return $instance;
 	}
 
 	/**

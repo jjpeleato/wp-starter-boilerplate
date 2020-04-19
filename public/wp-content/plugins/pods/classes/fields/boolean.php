@@ -79,7 +79,8 @@ class PodsField_Boolean extends PodsField {
 
 		$is_empty = false;
 
-		$value = filter_var( $value, FILTER_VALIDATE_BOOLEAN );
+		// is_empty() is used for if/else statements. Value should be true to pass.
+		$value = $this->pre_save( $value );
 
 		if ( ! $value ) {
 			$is_empty = true;
@@ -173,11 +174,18 @@ class PodsField_Boolean extends PodsField {
 	 * {@inheritdoc}
 	 */
 	public function validate( $value, $name = null, $options = null, $fields = null, $pod = null, $id = null, $params = null ) {
-	
+
+		if ( ! $this->is_required( $options ) ) {
+			// Any value can be parsed to boolean.
+			return true;
+		}
+
 		$errors = array();
 		$check  = $this->pre_save( $value, $id, $name, $options, $fields, $pod, $params );
 
-		if ( 1 === (int) pods_v( 'required', $options ) && 0 === $check ) {
+		$yes_required = ( 'checkbox' === pods_v( static::$type . '_format_type', $options ) );
+
+		if ( $yes_required && ! $check ) {
 			$errors[] = __( 'This field is required.', 'pods' );
 		}
 
@@ -189,6 +197,8 @@ class PodsField_Boolean extends PodsField {
 	}
 
 	/**
+	 * Replicates filter_var() with `FILTER_VALIDATE_BOOLEAN` and adds custom input for yes/no values.
+	 *
 	 * {@inheritdoc}
 	 */
 	public function pre_save( $value, $id = null, $name = null, $options = null, $fields = null, $pod = null, $params = null ) {
@@ -196,19 +206,15 @@ class PodsField_Boolean extends PodsField {
 		$yes = strtolower( pods_v( static::$type . '_yes_label', $options, __( 'Yes', 'pods' ), true ) );
 		$no  = strtolower( pods_v( static::$type . '_no_label', $options, __( 'No', 'pods' ), true ) );
 
-		// Only allow 0 / 1
-		if ( 'yes' === strtolower( $value ) || '1' === (string) $value ) {
-			$value = 1;
-		} elseif ( 'no' === strtolower( $value ) || '0' === (string) $value ) {
-			$value = 0;
-		} elseif ( strtolower( $value ) === $yes ) {
-			$value = 1;
-		} elseif ( strtolower( $value ) === $no ) {
-			$value = 0;
-		} elseif ( 0 !== (int) $value ) {
+		if ( is_string( $value ) ) {
+			$value = strtolower( $value );
+		}
+
+		if ( $yes === $value ) {
 			$value = 1;
 		} else {
-			$value = 0;
+			// Validate: 1, "1", true, "true", "on", and "yes" as 1, all others are 0.
+			$value = (int) filter_var( $value, FILTER_VALIDATE_BOOLEAN );
 		}
 
 		return $value;

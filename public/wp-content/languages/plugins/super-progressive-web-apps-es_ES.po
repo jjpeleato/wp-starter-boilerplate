@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - Super Progressive Web Apps - Development (trunk) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2019-01-21 18:14:55+0000\n"
+"PO-Revision-Date: 2020-04-17 07:29:15+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -348,10 +348,6 @@ msgstr "Página sin conexión"
 msgid "Application Icon"
 msgstr "Icono de la aplicación"
 
-#: admin/admin-ui-setup.php:108
-msgid "Background Color"
-msgstr "Color de fonto"
-
 #. Description of the plugin
 msgid "Convert your WordPress website into a Progressive Web App"
 msgstr "Transforma tu web WordPress en una aplicación web progresiva"
@@ -386,3 +382,7 @@ msgstr "SuperPWA"
 #: admin/admin-ui-render-settings.php:109
 msgid "This will be the icon of your app when installed on the phone. Must be a <code>PNG</code> image exactly <code>192x192</code> in size."
 msgstr "Este será el icono de tu aplicación cuando sea instalada en el teléfono. Debe ser una imagen <code>PNG</code> con dimensiones exactas de <code>192x192</code>."
+
+#: admin/admin-ui-setup.php:108
+msgid "Background Color"
+msgstr "Color de fondo"

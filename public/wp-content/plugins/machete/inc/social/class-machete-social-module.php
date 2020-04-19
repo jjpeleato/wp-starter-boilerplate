@@ -34,14 +34,15 @@ class MACHETE_SOCIAL_MODULE extends MACHETE_MODULE {
 				'facebook',
 				'twitter',
 			),
-			'positions'  => array( 'below' ),
+			'positions'  => array( 'after', 'footer' ),
 			'post_types' => array( 'post' ),
 			'theme'      => 'color',
 			'responsive' => true,
 		);
 		$this->positions        = array(
-			'above' => __( 'At the beginning of the content', 'machete' ),
-			'below' => __( 'At the end of the content', 'machete' ),
+			'before' => __( 'At the beginning of the content', 'machete' ),
+			'after'  => __( 'At the end of the content (hidden on mobile)', 'machete' ),
+			'footer' => __( 'Floating footer (mobile only)', 'machete' ),
 		);
 		$this->networks         = array(
 			'facebook'  => array(
@@ -62,7 +63,7 @@ class MACHETE_SOCIAL_MODULE extends MACHETE_MODULE {
 			'whatsapp'  => array(
 				'title' => _x( 'WhatsApp (only on mobile devices)', 'network name', 'machete' ),
 				'label' => _x( 'Share this', 'WhatsApp button label', 'machete' ),
-				'url'   => 'https://wa.me/?text=%s',
+				'url'   => 'https://api.whatsapp.com/send?text=%s',
 			),
 			'pinterest' => array(
 				'title' => _x( 'Pinterest', 'network name', 'machete' ),
@@ -73,6 +74,32 @@ class MACHETE_SOCIAL_MODULE extends MACHETE_MODULE {
 		);
 
 	}
+
+	/**
+	 * Reads the modules settings to the settings proerty,
+	 * also returns them in an array.
+	 *
+	 * @return array module settings array
+	 */
+	protected function read_settings() {
+		$this->settings = get_option(
+			'machete_' . $this->params['slug'] . '_settings',
+			$this->default_settings
+		);
+
+		$below_pos = array_search( 'below', $this->settings['positions'], true );
+
+		if ( false !== $below_pos ) {
+			// Old positions were 'above' and 'below'.
+			// 'below' is converted to 'after' + 'footer'.
+			unset( $this->settings['positions'], $below_pos );
+			$this->settings['positions'][] = 'after';
+			$this->settings['positions'][] = 'footer';
+		}
+
+		return array_merge( $this->default_settings, $this->settings );
+	}
+
 	/**
 	 * Executes code related to the WordPress admin.
 	 */
@@ -99,14 +126,12 @@ class MACHETE_SOCIAL_MODULE extends MACHETE_MODULE {
 
 		$this->read_settings();
 
-		// bail if main switch is set to inactive.
-		if ( 'enabled' !== $this->settings['status'] ) {
-			return;
-		}
+		// shortcode returns empty string if it cannot be rendered.
+		add_shortcode( 'mct-social-share', '__return_empty_string' );
 
-		// bail if no active positions or no active networks.
+		// bail if main switch is set to inactive or no active networks.
 		if (
-			( 0 === count( $this->settings['positions'] ) ) ||
+			( 'enabled' !== $this->settings['status'] ) ||
 			( 0 === count( $this->settings['networks'] ) )
 		) {
 			return;
@@ -117,9 +142,14 @@ class MACHETE_SOCIAL_MODULE extends MACHETE_MODULE {
 			function() {
 
 				global $post;
+				// bail if (no active positions OR no active post types ) AND no shortcode is present.
 				if (
-					! is_single() ||
-					( ! in_array( $post->post_type, $this->settings['post_types'], true ) )
+					(
+						( 0 === count( $this->settings['positions'] ) ) ||
+						( ! in_array( $post->post_type, $this->settings['post_types'], true ) )
+					) && (
+						! has_shortcode( $post->post_content, 'mct-social-share' )
+					)
 				) {
 					return;
 				}
@@ -138,15 +168,36 @@ class MACHETE_SOCIAL_MODULE extends MACHETE_MODULE {
 					MACHETE_VERSION,
 					true
 				);
+
+				/**
+				 * Redefines the mct-social-share shortcode for manually displaying the buttons
+				 * [mct-social-share]
+				 */
+				remove_shortcode( 'mct-social-share' );
+				add_shortcode(
+					'mct-social-share',
+					function() {
+						$out  = '<div id="mct-shortcode-share" class="mct-social-share">';
+						$out .= $this->share_buttons();
+						$out .= '</div>';
+						return $out;
+					}
+				);
 			}
 		);
 
 		add_filter(
 			'the_content',
 			function( $content ) {
+
+				// bail if no active positions.
+				if ( 0 === count( $this->settings['positions'] ) ) {
+					return $content;
+				}
+
 				global $post;
 				if (
-					! is_single() ||
+					! ( is_single() || is_singular() ) ||
 					! in_the_loop() ||
 					! is_main_query() ||
 					// check if current post type is active.
@@ -157,11 +208,14 @@ class MACHETE_SOCIAL_MODULE extends MACHETE_MODULE {
 
 				$share_buttons = $this->share_buttons();
 
-				if ( in_array( 'above', $this->settings['positions'], true ) ) {
+				if ( in_array( 'before', $this->settings['positions'], true ) ) {
 					$content = $this->top_share_block( $share_buttons ) . $content;
 				}
 
-				if ( in_array( 'below', $this->settings['positions'], true ) ) {
+				if (
+					in_array( 'after', $this->settings['positions'], true ) ||
+					in_array( 'bottom', $this->settings['positions'], true )
+				) {
 					if ( ! empty( $this->settings['title'] ) ) {
 						// replace the %%post_type%% placholder only if present.
 						if ( false !== strpos( $this->settings['title'], '%%post_type%%' ) ) {
@@ -189,13 +243,15 @@ class MACHETE_SOCIAL_MODULE extends MACHETE_MODULE {
 								$post_type_name,
 								$this->settings['title']
 							);
+						} else {
+							$title = $this->settings['title'];
 						}
 					} else {
 						$title = null;
 					}
 
 					$content .= $this->bottom_share_block( $share_buttons, $title );
-				} // end if below.
+				} // end if after.
 
 				return $content;
 
@@ -232,7 +288,7 @@ class MACHETE_SOCIAL_MODULE extends MACHETE_MODULE {
 	 * @param string $buttons HTML code for the buttons, pregenerated by share_buttons().
 	 */
 	private function top_share_block( $buttons ) {
-		return '<div id="mct-top-share">' . $buttons . '</div>';
+		return '<div id="mct-top-share" class="mct-social-share">' . $buttons . '</div>';
 	}
 
 	/**
@@ -243,16 +299,26 @@ class MACHETE_SOCIAL_MODULE extends MACHETE_MODULE {
 	 */
 	private function bottom_share_block( $buttons, $title = '' ) {
 
-		if ( $this->settings['responsive'] ) {
-			$rt = '<div id="mct-bottom-share" class="machete-responsive">';
-		} else {
-			$rt = '<div id="mct-bottom-share">';
+		$classes = array( 'mct-social-share' );
+
+		if ( ! in_array( 'after', $this->settings['positions'], true ) ) {
+			$classes[] = 'machete-hide-desktop';
 		}
+		if ( ! in_array( 'footer', $this->settings['positions'], true ) ) {
+			$classes[] = 'machete-hide-mobile';
+		}
+
+		$rt = '<div id="mct-bottom-share" class="' . join( ' ', $classes ) . '">';
+
 		if ( ! empty( $title ) ) {
 			$rt .= '<h2>' . esc_html( $title ) . '</h2>';
 		}
 		return $rt . $buttons . '</div>';
 	}
+
+
+
+
 
 	/**
 	 * Gets the list of post types where sharing buttons can be shown

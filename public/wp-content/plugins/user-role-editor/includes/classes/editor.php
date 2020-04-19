@@ -21,7 +21,6 @@ class URE_Editor {
     protected $current_role = '';
     protected $current_role_name = '';
     protected $full_capabilities = false;
-    protected $hide_pro_banner = false;
     protected $notification = '';   // notification message to show on page    
     protected $roles = null;
     protected $show_deprecated_caps = false;    
@@ -183,17 +182,7 @@ class URE_Editor {
         set_site_transient( 'ure_show_deprecated_caps', $this->show_deprecated_caps, URE_Lib::TRANSIENT_EXPIRATION );
     }
     // end of set_show_deprecated_caps()
-    
-    
-    protected function hide_pro_banner() {
-        
-        $this->hide_pro_banner = 1;
-        $this->lib->put_option('ure_hide_pro_banner', 1);	
-        $this->lib->flush_options();
-                
-    }
-    // end of hide_pro_banner()
-    
+            
     
     public function init_current_role_name() {
 
@@ -368,6 +357,10 @@ class URE_Editor {
         if (!$this->lib->is_pro()) {    
             // this functionality is for the Pro version only.
             return $result;
+        }
+
+        if ( !isset( $this->roles[$role_id]) ) {
+            return false;
         }
         
         $role = $this->roles[$role_id];
@@ -895,7 +888,7 @@ class URE_Editor {
         $wp_roles = wp_roles();
         if ( !isset( $wp_roles->roles[$role_id] ) ) {
             $response['message'] = sprintf('Error! ' . esc_html__('Role %s does not exists', 'user-role-editor'), $role_id);
-            return $message;
+            return $response;
         }
         
         $new_role_name = sanitize_text_field( $new_role_name );        
@@ -1057,7 +1050,7 @@ class URE_Editor {
     
     /**
      * Change default WordPress role
-     * @global WP_Roles $wp_roles
+     * This method is only for a single site of WordPress multisite installation.
      * @return string
      */
     protected function change_default_role() {
@@ -1069,7 +1062,7 @@ class URE_Editor {
         
         $multisite = $this->lib->get('multisite');
         if ( !$multisite || is_network_admin() ) {
-            $mess = esc_html__('This method is only for the single site of WordPress multisite installation.', 'user-role-editor');
+            $mess = esc_html__('This method is only for a single site of WordPress multisite installation.', 'user-role-editor');
             return $mess;
         }
         if ( empty( $_POST['user_role_id'] ) ) {
@@ -1134,10 +1127,6 @@ class URE_Editor {
             }
             case 'show-deprecated-caps': {
                 $this->set_show_deprecated_caps();                
-                break;
-            }
-            case 'hide-pro-banner': {
-                $this->hide_pro_banner();
                 break;
             }
             case 'roles_restore_note': {

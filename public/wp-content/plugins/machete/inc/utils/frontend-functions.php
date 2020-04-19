@@ -10,12 +10,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+
 if ( file_exists( MACHETE_DATA_PATH . 'header.html' ) ) {
 	add_action(
 		'wp_head',
-		function() {
-			$this->readfile( MACHETE_DATA_PATH . 'header.html' );
-		}
+		array( $this, 'read_header_html' ),
+		10001
 	);
 
 	if ( $this->settings['track_wpcf7'] ) {
@@ -62,51 +62,46 @@ if ( file_exists( MACHETE_DATA_PATH . 'custom.css' ) ) {
 if ( file_exists( MACHETE_DATA_PATH . 'footer.html' ) ) {
 	add_action(
 		'wp_footer',
-		function() {
-			$this->readfile( MACHETE_DATA_PATH . 'footer.html' );
-		}
+		array( $this, 'read_footer_html' ),
+		10001
 	);
 }
 
 if ( file_exists( MACHETE_DATA_PATH . 'body.html' ) ) {
-	if (
-		! empty( $this->settings['alfonso_content_injection_method'] ) &&
-		( 'auto' === $this->settings['alfonso_content_injection_method'] )
-	) {
+
+	if ( 'auto' === $this->settings['alfonso_content_injection_method'] ) {
 		/**
 		 * Automatic body injection.
 		 * Uses a work-around to add code just after the opening body tag
 		 */
 		add_filter(
 			'body_class',
-			function( $classes ) {
-				ob_start();
-				require $this->get_contents( MACHETE_DATA_PATH . 'body.html' );
-				$alfonso_content = ob_get_clean();
-				$classes[]       = '">' . $alfonso_content . '<br style="display: none';
-				return $classes;
-			},
+			array( $this, 'inject_body_html' ),
 			10001
 		);
-
+	} elseif ( 'wp_body_open' === $this->settings['alfonso_content_injection_method'] ) {
 		/**
-		 * Disables manual body injection to prevent duplicate insertion.
+		 * Body injection using wp_body hook
 		 */
-		function machete_custom_body_content() {
-			echo '';
-		}
+		add_action(
+			'wp_body_open',
+			array( $this, 'read_body_html' ),
+			1
+		);
 	} else {
-
 		/**
 		 * Manual body injection
 		 */
 		function machete_custom_body_content() {
-			$this->readfile( MACHETE_DATA_PATH . 'body.html' );
+			global $machete;
+			$machete->modules['utils']->read_body_html();
 		}
 	}
-} else {
+}
+
+if ( ! function_exists( 'machete_custom_body_content' ) ) {
 	/**
-	 * Disables manual body injection if custom body content is empty.
+	 * Defines an empty function as fallback to prevent errors
 	 */
 	function machete_custom_body_content() {
 		echo '';

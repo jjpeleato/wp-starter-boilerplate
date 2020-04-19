@@ -124,8 +124,8 @@ class UpdraftPlus_Dropbox_API {
                 
                 // Read from the file handle until EOF, uploading each chunk
                 while ($data = fread($handle, $this->chunkSize)) {
-                    
-                    // Set the file, request parameters and send the request
+
+					// Set the file, request parameters and send the request
                     $this->OAuth->setInFile($data);
 
                     if ($firstCommit) {
@@ -206,6 +206,8 @@ class UpdraftPlus_Dropbox_API {
 				
 //                 $params['cursor']['offset'] = $responseCheck[1];
 //                 $response = $this->append_upload($params, $last_call);
+            } elseif (isset($responseCheck) && strpos($responseCheck[0], 'closed') !== false) {
+                throw new Exception("Upload with upload_id {$params['cursor']['session_id']} already completed");
             } else {
                 throw $e;
             }

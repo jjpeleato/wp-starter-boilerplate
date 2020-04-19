@@ -198,11 +198,12 @@ abstract class UpdraftPlus_RemoteStorage_Addons_Base_v2 extends UpdraftPlus_Back
 		foreach ($files as $file) {
 			$this->log("Delete remote: $file");
 			try {
-				if (!$this->do_delete($file)) {
-					$ret = false;
-					$this->log("Delete failed");
-				} else {
+				$ret = $this->do_delete($file);
+				
+				if (true === $ret) {
 					$this->log("$file: Delete succeeded");
+				} else {
+					$this->log("Delete failed");
 				}
 			} catch (Exception $e) {
 				$this->log('ERROR: '.$file.': Failed to delete file: '.$e->getMessage().' (code: '.$e->getCode().', line: '.$e->getLine().', file: '.$e->getFile().')');

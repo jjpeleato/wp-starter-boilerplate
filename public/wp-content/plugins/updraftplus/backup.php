@@ -1715,12 +1715,14 @@ class UpdraftPlus_Backup {
 				if ($table_triggers) {
 					$this->stow("\n\n# Triggers of  ".UpdraftPlus_Manipulation_Functions::backquote($table)."\n\n");
 					foreach ($table_triggers as $trigger) {
-						$trigger_name = UpdraftPlus_Manipulation_Functions::backquote($trigger['Trigger']);
+						$trigger_name = $trigger['Trigger'];
 						$trigger_time = $trigger['Timing'];
 						$trigger_event = $trigger['Event'];
 						$trigger_statement = $trigger['Statement'];
-						$this->stow("DROP TRIGGER IF EXISTS $trigger_name;;\n");
-						$trigger_query = "CREATE TRIGGER $trigger_name $trigger_time $trigger_event ON ".UpdraftPlus_Manipulation_Functions::backquote($table)." FOR EACH ROW $trigger_statement;;";
+						// Since trigger name can include backquotes and trigger name is typically enclosed with backquotes as well, the backquote escaping for the trigger name can be done by adding a leading backquote
+						$quoted_escaped_trigger_name = UpdraftPlus_Manipulation_Functions::backquote(str_replace('`', '``', $trigger_name));
+						$this->stow("DROP TRIGGER IF EXISTS $quoted_escaped_trigger_name;;\n");
+						$trigger_query = "CREATE TRIGGER $quoted_escaped_trigger_name $trigger_time $trigger_event ON ".UpdraftPlus_Manipulation_Functions::backquote($table)." FOR EACH ROW $trigger_statement;;";
 						$this->stow("$trigger_query\n\n");
 					}
 				}
@@ -3009,6 +3011,7 @@ class UpdraftPlus_Backup {
 				// N.B., Since makezip_addfiles() can get called more than once if there were errors detected, potentially $zipfiles_added_thisrun can exceed the total number of batched files (if they get processed twice).
 				$this->zipfiles_added_thisrun++;
 				$files_zipadded_since_open[] = array('file' => $file, 'addas' => $add_as);
+				$updraftplus->log_remove_warning('vlargefile_'.md5($this->whichone.'#'.$add_as));
 
 				$data_added_since_reopen += $fsize;
 				// $data_added_this_resumption += $fsize;

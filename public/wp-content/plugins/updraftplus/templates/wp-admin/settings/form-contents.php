@@ -291,7 +291,7 @@ foreach ($default_options as $k => $v) {
 
 	<tr>
 		<th><?php _e('Expert settings', 'updraftplus');?>:</th>
-		<td><a class="enableexpertmode" href="<?php echo UpdraftPlus::get_current_clean_url();?>#enableexpertmode"><?php _e('Show expert settings', 'updraftplus');?></a> - <?php _e("click this to show some further options; don't bother with this unless you have a problem or are curious.", 'updraftplus');?> <?php do_action('updraftplus_expertsettingsdescription'); ?></td>
+		<td><a class="enableexpertmode" href="<?php echo UpdraftPlus::get_current_clean_url();?>#enableexpertmode"><?php _e('Show expert settings', 'updraftplus');?></a> - <?php _e("open this to show some further options; don't bother with this unless you have a problem or are curious.", 'updraftplus');?> <?php do_action('updraftplus_expertsettingsdescription'); ?></td>
 	</tr>
 	<?php
 	$delete_local = UpdraftPlus_Options::get_updraft_option('updraft_delete_local', 1);

@@ -103,6 +103,7 @@ if ( defined( 'BLC_ACTIVE' ) ) {
 			'user_has_donated'                 => false, // Whether the user has donated to the plugin.
 			'donation_flag_fixed'              => false,
 			'show_link_actions'                => array( 'blc-deredirect-action' => false ), //Visible link actions.
+			'youtube_api_key'                  => '',
 		)
 	);
 

@@ -509,6 +509,147 @@ class UpdraftPlus_Database_Utility {
 		}
 		return $exist;
 	}
+
+	/**
+	 * Check whether the currently running database server supports stored routines
+	 *
+	 * @return Array|WP_Error an array of booleans indicating whether or not some of syntax variations are supported, or WP_Error object if stored routine isn't supported
+	 *
+	 * Return format example:
+	 *
+	 *     [
+	 *         "is_create_or_replace_supported" => true, // true on MariaDB, false on MySQL
+	 *         "is_if_not_exists_function_supported" => true, // true on MariaDB, false on MySQL
+	 *         "is_aggregate_function_supported" => true, // true on MariaDB, false on MySQL
+	 *         "is_binary_logging_enabled" => true, // true if --bin-log is specified for both MariaDB and MySQL
+	 *         "is_function_creators_trusted" => false // the default value is false (MariaDB/MySQL)
+	 *     ]
+	 *
+	 *     OR a database error message, e.g. "Access denied for user 'root'@'localhost' to database 'wordpress'"
+	 */
+	public static function is_stored_routine_supported() {
+
+		global $wpdb;
+
+		$function_name = 'updraft_test_stored_routine';
+		$sql = array(
+			"DROP_FUNCTION" => "DROP FUNCTION IF EXISTS ".$function_name,
+			// sql to check whether stored routines is supported
+			"CREATE_FUNCTION" => "CREATE FUNCTION ".$function_name."() RETURNS tinyint(1) DETERMINISTIC READS SQL DATA RETURN true",
+			// sql to check whether create or replace syntax is supported
+			"CREATE_REPLACE_FUNCTION" => "CREATE OR REPLACE FUNCTION ".$function_name."() RETURNS tinyint(1) DETERMINISTIC READS SQL DATA RETURN true",
+			// sql to check whether if not exists syntax is supported (mariadb starting with 10.1.3)
+			"CREATE_FUNCTION_IF_NOT_EXISTS" => "CREATE FUNCTION IF NOT EXISTS ".$function_name."() RETURNS tinyint(1) DETERMINISTIC READS SQL DATA RETURN true",
+			// sql to check whether aggregate function is supported (mariadb starting with 10.3.3)
+			"CREATE_REPLACE_AGGREGATE" => "CREATE OR REPLACE AGGREGATE FUNCTION ".$function_name."() RETURNS tinyint(1) DETERMINISTIC READS SQL DATA BEGIN RETURN true; FETCH GROUP NEXT ROW; END;"
+		);
+
+		$old_val = $wpdb->suppress_errors();
+		$wpdb->query($sql['DROP_FUNCTION']);
+		$is_stored_routine_supported = $wpdb->query($sql['CREATE_FUNCTION']);
+		if ($is_stored_routine_supported) {
+			$is_binary_logging_enabled = 1 == $wpdb->get_var('SELECT @@GLOBAL.log_bin');
+			// not sure why the log_bin variable cant be retrieved on mysql 5.0, seems like there's a bug on that version, so we use another alternative to check whether or not binary logging is enabled
+			$is_binary_logging_enabled = false === $is_binary_logging_enabled ? $wpdb->get_results("SHOW GLOBAL VARIABLES LIKE 'log_bin'", ARRAY_A) : $is_binary_logging_enabled;
+			$is_binary_logging_enabled = is_array($is_binary_logging_enabled) && isset($is_binary_logging_enabled[0]['Value']) && '' != $is_binary_logging_enabled[0]['Value'] ? $is_binary_logging_enabled[0]['Value'] : $is_binary_logging_enabled;
+			$is_binary_logging_enabled = is_string($is_binary_logging_enabled) && ('ON' === strtoupper($is_binary_logging_enabled) || '1' === $is_binary_logging_enabled) ? true : $is_binary_logging_enabled;
+			$is_binary_logging_enabled = is_string($is_binary_logging_enabled) && ('OFF' === strtoupper($is_binary_logging_enabled) || '0' === $is_binary_logging_enabled) ? false : $is_binary_logging_enabled;
+			$is_stored_routine_supported = array(
+				'is_create_or_replace_supported' => $wpdb->query($sql['CREATE_REPLACE_FUNCTION']),
+				'is_if_not_exists_function_supported' => $wpdb->query($sql['CREATE_FUNCTION_IF_NOT_EXISTS']),
+				'is_aggregate_function_supported' => $wpdb->query($sql['CREATE_REPLACE_AGGREGATE']),
+				'is_binary_logging_enabled' => $is_binary_logging_enabled,
+				'is_function_creators_trusted' => 1 == $wpdb->get_var('SELECT @@GLOBAL.log_bin_trust_function_creators'),
+			);
+			$wpdb->query($sql['DROP_FUNCTION']);
+		} else {
+			$is_stored_routine_supported = new WP_Error('routine_creation_error', sprintf(__('An error occurred while attempting to check the support of stored routines creation (%s %s)', 'updraftplus'), $wpdb->last_error.' -', $sql['CREATE_FUNCTION']));
+		}
+		$wpdb->suppress_errors($old_val);
+
+		return $is_stored_routine_supported;
+	}
+
+	/**
+	 * Retrieve all the stored routines (functions and procedures) in the currently running database
+	 *
+	 * @return Array|WP_Error an array of routine statuses, or an empty array if there is no stored routine in the database, or WP_Error object on failure
+	 *
+	 * Output example:
+	 *
+	 *     [
+	 *         [
+	 *              "Db" => "wordpress",
+	 *              "Name" => "_NextVal",
+	 *              "Type" => "FUNCTION",
+	 *              "Definer" => "root@localhost",
+	 *              "Modified" => "2019-11-22 15:11:15",
+	 *              "Created" => "2019-11-22 14:20:29",
+	 *              "Security_type" => "DEFINER",
+	 *              "Comment" => "",
+	 *              "Function" => "_NextVal",
+	 *              "sql_mode" => "",
+	 *              "Create Function" => "
+	 *                  CREATE DEFINER=`root`@`localhost` FUNCTION `_NextVal`(vname VARCHAR(30)) RETURNS int(11)
+	 *                  BEGIN
+	 *                      -- Retrieve and update in single statement
+	 *                      UPDATE _sequences
+	 *                          SET next = next + 1
+	 *                          WHERE name = vname;
+	 *                      RETURN (SELECT next FROM _sequences LIMIT 1);
+	 *                  END"
+	 *         ],
+	 *         [
+	 *              "Db" => "wordpress",
+	 *              "Name" => "CreateSequence",
+	 *              "Type" => "Procedure",
+	 *              "Definer" => "root@localhost",
+	 *              "Modified" => "2019-11-22 15:11:15",
+	 *              "Created" => "2019-11-22 14:20:29",
+	 *              "Security_type" => "DEFINER",
+	 *              "Comment" => "",
+	 *              "Procedure" => "CreateSequence",
+	 *              "sql_mode" => "",
+	 *              "Create Procedure" => "
+	 *                   CREATE DEFINER=`root`@`localhost` PROCEDURE `CreateSequence`(name VARCHAR(30), start INT, inc INT)
+	 *                   BEGIN
+	 *                       -- Create a table to store sequences
+	 *                       CREATE TABLE  _sequences (
+	 *                           name VARCHAR(70) NOT NULL UNIQUE,
+	 *                           next INT NOT NULL,
+	 *                           inc INT NOT NULL,
+	 *                       );
+	 *                       -- Add the new sequence
+	 *                       INSERT INTO _sequences VALUES (name, start, inc);
+	 *                   END"
+	 *         ]
+	 *     ]
+	 */
+	public function get_stored_routines() {
+
+		global $wpdb;
+
+		$old_val = $wpdb->suppress_errors();
+		try {
+			$err_msg = __('An error occurred while attempting to retrieve routine status (%s %s)', 'updraftplus');
+			$function_status = $wpdb->get_results($wpdb->prepare('SHOW FUNCTION STATUS WHERE DB = %s', DB_NAME), ARRAY_A);
+			if (!empty($wpdb->last_error)) throw new Exception(sprintf($err_msg, $wpdb->last_error.' -', $wpdb->last_query), 0);
+			$procedure_status = $wpdb->get_results($wpdb->prepare('SHOW PROCEDURE STATUS WHERE DB = %s', DB_NAME), ARRAY_A);
+			if (!empty($wpdb->last_error)) throw new Exception(sprintf($err_msg, $wpdb->last_error.' -', $wpdb->last_query), 0);
+			$stored_routines = array_merge((array) $function_status, (array) $procedure_status);
+			foreach ((array) $stored_routines as $key => $routine) {
+				if (empty($routine['Name']) || empty($routine['Type'])) continue;
+				$routine = $wpdb->get_results("SHOW CREATE {$routine['Type']} `{$routine['Name']}`", ARRAY_A);
+				if (!empty($wpdb->last_error)) throw new Exception(sprintf(__('An error occurred while attempting to retrieve the routine SQL/DDL statement (%s %s)', 'updraftplus'), $wpdb->last_error.' -', $wpdb->last_query), 1);
+				$stored_routines[$key] = array_merge($stored_routines[$key], $routine ? $routine[0] : array());
+			}
+		} catch (Exception $ex) {
+			$stored_routines = new WP_Error(1 === $ex->getCode() ? 'routine_sql_error' : 'routine_status_error', $ex->getMessage());
+		}
+		$wpdb->suppress_errors($old_val);
+
+		return $stored_routines;
+	}
 }
 
 class UpdraftPlus_WPDB_OtherDB_Utility extends wpdb {
