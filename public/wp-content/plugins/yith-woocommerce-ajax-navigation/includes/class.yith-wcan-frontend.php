@@ -120,7 +120,9 @@ if ( ! class_exists( 'YITH_WCAN_Frontend' ) ) {
 
             else{
 
-            	if( is_shop() || is_product_taxonomy() || ! apply_filters( 'yith_wcan_is_search', is_search() ) ){
+            	$queried_object = get_queried_object();
+
+            	if( ! empty( $queried_object ) && ( is_shop() || is_product_taxonomy() || ! apply_filters( 'yith_wcan_is_search', is_search() ) ) ){
 		            $filtered_posts   = array();
 		            $queried_post_ids = array();
 

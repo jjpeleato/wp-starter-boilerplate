@@ -1,4 +1,4 @@
-<?php if (wfOnboardingController::willShowNewTour(wfOnboardingController::TOUR_LOGIN_SECURITY)): ?>
+<?php if (wfOnboardingController::shouldShowNewTour(wfOnboardingController::TOUR_LOGIN_SECURITY)): ?>
 	<script type="application/javascript">
 		(function($) {
 			$(function() {

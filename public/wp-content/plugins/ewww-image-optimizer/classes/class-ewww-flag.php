@@ -312,9 +312,7 @@ if ( ! class_exists( 'EWWW_Flag' ) ) {
 			}
 			ewwwio_debug_message( "optimization (flagallery) queued for $image_id" );
 			$ewwwio_flag_background->push_to_queue( array( 'id' => $image_id ) );
-			$ewwwio_flag_background->save()->dispatch();
-			set_transient( 'ewwwio-background-in-progress-flag-' . $image_id, true, 24 * HOUR_IN_SECONDS );
-			ewww_image_optimizer_debug_log();
+			$ewwwio_flag_background->dispatch();
 		}
 
 		/**
@@ -343,8 +341,6 @@ if ( ! class_exists( 'EWWW_Flag' ) ) {
 			$ewww_image->resize = 'thumbnail';
 			// Optimize the thumbnail.
 			$tres = ewww_image_optimizer( $image->image->thumbPath, 3, false, true );
-
-			ewww_image_optimizer_debug_log();
 		}
 
 		/**
@@ -376,7 +372,6 @@ if ( ! class_exists( 'EWWW_Flag' ) ) {
 				$pid  = $image->pid;
 				$meta = new flagMeta( $pid );
 			}
-			ewww_image_optimizer_debug_log();
 		}
 
 		/**
@@ -778,27 +773,27 @@ if ( ! class_exists( 'EWWW_Flag' ) ) {
 				$output .= $detail_output;
 				if ( current_user_can( apply_filters( 'ewww_image_optimizer_manual_permissions', '' ) ) ) {
 					$output .= sprintf(
-						'<a class="ewww-manual-optimize" data-id="%1$d" data-nonce="%2$s" href="admin.php?action=ewww_flag_manual&amp;ewww_manual_nonce=%2$s&amp;ewww_force=1&amp;ewww_attachment_ID=%1$d">%3$s</a>',
+						'<a class="ewww-manual-optimize" data-id="%1$d" data-nonce="%2$s" href="' . admin_url( 'admin.php?action=ewww_flag_manual' ) . '&amp;ewww_manual_nonce=%2$s&amp;ewww_force=1&amp;ewww_attachment_ID=%1$d">%3$s</a>',
 						$id,
 						$ewww_manual_nonce,
 						esc_html__( 'Re-optimize', 'ewww-image-optimizer' )
 					);
 					if ( $backup_available ) {
 						$output .= sprintf(
-							'<br><a class="ewww-manual-cloud-restore" data-id="%1$d" data-nonce="%2$s" href="admin.php?action=ewww_flag_cloud_restore&amp;ewww_manual_nonce=%2$s&amp;ewww_attachment_ID=%1$d">%3$s</a>',
+							'<br><a class="ewww-manual-cloud-restore" data-id="%1$d" data-nonce="%2$s" href="' . admin_url( 'admin.php?action=ewww_flag_cloud_restore' ) . '&amp;ewww_manual_nonce=%2$s&amp;ewww_attachment_ID=%1$d">%3$s</a>',
 							$id,
 							$ewww_manual_nonce,
 							esc_html__( 'Restore original', 'ewww-image-optimizer' )
 						);
 					}
 				}
-			} elseif ( get_transient( 'ewwwio-background-in-progress-flag-' . $id ) ) {
+			} elseif ( ewww_image_optimizer_image_is_pending( $id, 'flag-async' ) ) {
 				$output .= esc_html__( 'In Progress', 'ewww-image-optimizer' );
 				// Otherwise, tell the user that they can optimize the image now.
 			} else {
 				if ( current_user_can( apply_filters( 'ewww_image_optimizer_manual_permissions', '' ) ) ) {
 					$output .= sprintf(
-						'<a class="ewww-manual-optimize" data-id="%1$d" data-nonce="%2$s" href="admin.php?action=ewww_flag_manual&amp;ewww_manual_nonce=%2$s&amp;ewww_attachment_ID=%1$d">%3$s</a>',
+						'<a class="ewww-manual-optimize" data-id="%1$d" data-nonce="%2$s" href="' . admin_url( 'admin.php?action=ewww_flag_manual' ) . '&amp;ewww_manual_nonce=%2$s&amp;ewww_attachment_ID=%1$d">%3$s</a>',
 						$id,
 						$ewww_manual_nonce,
 						esc_html__( 'Optimize now!', 'ewww-image-optimizer' )

@@ -2,7 +2,7 @@
 <?php $scanOptions = $scanController->scanOptions(); ?>
 <p><?php printf(__('This email was sent from your website "%s" by the Wordfence plugin.', 'wordfence'), esc_html(get_bloginfo('name', 'raw'))); ?></p>
 
-<p><?php printf(__('Wordfence found the following new issues on "%s".', 'wordfence'), esc_html(get_bloginfo('name', 'raw'))); ?></p>
+<p><?php printf(__('Wordfence found the following new issues on "%s"%s.', 'wordfence'), esc_html(get_bloginfo('name', 'raw')), count($previousIssues) ? sprintf(__(' (%d existing %s also found again)', 'wordfence'), count($previousIssues), count($previousIssues) == 1 ? __('issue was', 'wordfence') : __('issues were', 'wordfence')) : ''); ?></p>
 
 <p><?php printf(__('Alert generated at %s', 'wordfence'), esc_html(wfUtils::localHumanDate())); ?></p>
 
@@ -98,10 +98,20 @@ if (!empty($i['tmplData']['badURL'])):
 <?php } } ?>
 <?php endforeach; ?>
 
-<?php if ($issuesNotShown > 0) { ?>
-<p><?php printf(($issuesNotShown == 1 ? __('%d issue was omitted from this email.', 'wordfence') : __('%d issues were omitted from this email.', 'wordfence')), $issuesNotShown); echo ' '; _e('View every issue:', 'wordfence'); ?> <a href="<?php echo esc_attr(wfUtils::wpAdminURL('admin.php?page=WordfenceScan')); ?>"><?php echo esc_html(wfUtils::wpAdminURL('admin.php?page=WordfenceScan')); ?></a></p>
-<?php } ?>
+<?php
+$sentences = array();
+if (count($previousIssues)) {
+	$sentences[] = sprintf(count($previousIssues) == 1 ? __('%d existing issue was found again and is not shown.', 'wordfence') : __('%d existing issues were found again and are not shown.', 'wordfence'), count($previousIssues));
+}
+if ($issuesNotShown > 0) {
+	$sentences[] = sprintf(($issuesNotShown == 1 ? __('%d issue was omitted from this email due to length limits.', 'wordfence') : __('%d issues were omitted from this email due to length limits.', 'wordfence')), $issuesNotShown);
+	$sentences[] = __('View every issue:', 'wordfence') . sprintf(' <a href="%s">%s</a>', esc_attr(wfUtils::wpAdminURL('admin.php?page=WordfenceScan')), esc_html(wfUtils::wpAdminURL('admin.php?page=WordfenceScan')));
+}
 
+if (count($sentences)) {
+	printf('<p>%s</p>', implode(' ', $sentences));
+}
+?>
 
 <?php if(! $isPaid){ ?>
 	<p><?php _e('NOTE: You are using the free version of Wordfence. Upgrade today:', 'wordfence'); ?></p>

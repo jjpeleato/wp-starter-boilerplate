@@ -53,7 +53,7 @@ if ( ! class_exists( 'YITH_WCAN_Navigation_Widget' ) ) {
                 return;
             }
 
-            if ( apply_filters( 'yith_wcan_show_widget', ! is_post_type_archive( 'product' ) && ! is_tax( $_attributes_array ) ) ) {
+            if ( apply_filters( 'yith_wcan_show_widget', ! is_post_type_archive( 'product' ) && ! is_tax( $_attributes_array ), $instance ) ) {
                 return;
             }
 
@@ -70,7 +70,8 @@ if ( ! class_exists( 'YITH_WCAN_Navigation_Widget' ) ) {
             $is_parent_class    = 'yit-wcan-parent-terms';
             $is_chosen_class    = 'chosen';
             $terms_type_list    = ( isset( $instance['display'] ) ) ? $instance['display'] : 'all';
-            $in_array_function = apply_filters( 'yith_wcan_in_array_ignor_case', false ) ? 'yit_in_array_ignore_case' : 'in_array';
+            $in_array_function  = apply_filters( 'yith_wcan_in_array_ignor_case', false ) ? 'yit_in_array_ignore_case' : 'in_array';
+            $instance['id']     = $this->id;
 
             $instance['attribute']      = empty( $instance['attribute'] ) ? '' : $instance['attribute'];
             $instance['extra_class']    = empty( $instance['extra_class'] ) ? '' : $instance['extra_class'];
@@ -90,7 +91,7 @@ if ( ! class_exists( 'YITH_WCAN_Navigation_Widget' ) ) {
             if ( ! taxonomy_exists( $taxonomy ) ) {
                 return;
             }
-            
+
             $terms = yit_get_terms( $terms_type_list, $taxonomy, $instance );
 
             if ( count( $terms ) > 0 ) {
@@ -142,7 +143,7 @@ if ( ! class_exists( 'YITH_WCAN_Navigation_Widget' ) ) {
                     do_action( 'yith_wcan_before_print_list', $taxonomy );
 
                     $this->add_reset_taxonomy_link( $taxonomy, $instance );
-                    
+
                     // List display
                     echo "<ul class='yith-wcan-list yith-wcan {$instance['extra_class']}'>";
 
@@ -163,7 +164,7 @@ if ( ! class_exists( 'YITH_WCAN_Navigation_Widget' ) ) {
                     echo "<ul class='yith-wcan-select yith-wcan {$instance['extra_class']}'>";
 
                     foreach ( $terms as $term ) {
-
+	                    $this->found = false;
                         // Get count based on current view - uses transients
                         //$transient_name = 'wc_ln_count_' . md5( sanitize_key( $taxonomy ) . sanitize_key( $term->term_id ) );
 
@@ -209,6 +210,9 @@ if ( ! class_exists( 'YITH_WCAN_Navigation_Widget' ) ) {
                                 $this->found = true;
                             }
 
+	                        if ( apply_filters( 'yith_wcan_skip_no_products_dropdown', $count == 0 ) ) {
+		                        continue;
+	                        }
                         }
 
 	                    $arg = apply_filters('yith_wcan_select_type_query_arg', 'filter_' . sanitize_title($instance['attribute']), $display_type, $term);
@@ -364,11 +368,11 @@ if ( ! class_exists( 'YITH_WCAN_Navigation_Widget' ) ) {
 
                         echo '<li ' . $class . '>';
 
-                        echo ( $count > 0 || $option_is_set ) ? '<a ' . $rel_nofollow . ' data-type="select" href="' . $link . '">' : '<span>';
+                        echo ( $this->found || $option_is_set ) ? '<a ' . $rel_nofollow . ' data-type="select" href="' . $link . '">' : '<span>';
 
                         echo $term->name;
 
-                        echo ( $count > 0 || $option_is_set ) ? '</a>' : '</span>';
+                        echo ( $this->found || $option_is_set ) ? '</a>' : '</span>';
 
                         echo '</li>';
 
@@ -389,8 +393,7 @@ if ( ! class_exists( 'YITH_WCAN_Navigation_Widget' ) ) {
 
                         //if ( false === ( $_products_in_term = get_transient( $transient_name ) ) ) {
 
-                        $_products_in_term = get_objects_in_term( $term->term_id, $taxonomy );
-
+						$_products_in_term = get_objects_in_term( apply_filters( 'yith_wcan_color_get_objects_in_term', $term->term_id, $taxonomy, $term ), $taxonomy );
                         //set_transient( $transient_name, $_products_in_term );
                         //}
 
@@ -969,7 +972,7 @@ if ( ! class_exists( 'YITH_WCAN_Navigation_Widget' ) ) {
         function update( $new_instance, $old_instance ) {
             $instance                   = $old_instance;
             $instance['title']          = strip_tags( $new_instance['title'] );
-            $instance['attribute']      = stripslashes( $new_instance['attribute'] );
+            $instance['attribute']      = ! empty( $new_instance['attribute'] ) ? stripslashes( $new_instance['attribute'] ) : array();
             $instance['query_type']     = stripslashes( $new_instance['query_type'] );
             $instance['type']           = stripslashes( $new_instance['type'] );
             $instance['colors']         = ! empty( $new_instance['colors'] ) ? $new_instance['colors'] : array();
@@ -1067,7 +1070,8 @@ if ( ! class_exists( 'YITH_WCAN_Navigation_Widget' ) ) {
                     //set_transient($transient_name, $_products_in_term);
                     //}
 
-                    $option_is_set = (isset($_chosen_attributes[$taxonomy]) && $in_array_function($term->term_id, $_chosen_attributes[$taxonomy]['terms']));
+					$option_is_set = (isset($_chosen_attributes[$taxonomy]) && $in_array_function($term->$filter_term_field, $_chosen_attributes[$taxonomy]['terms']));
+
 
                     $term_param = apply_filters('yith_wcan_term_param_uri', $term->$filter_term_field, $display_type, $term);
 
@@ -1084,7 +1088,7 @@ if ( ! class_exists( 'YITH_WCAN_Navigation_Widget' ) ) {
                     if ($count > 0 ) {
                         $this->found = true;
                     }
-                    
+
                     $arg = apply_filters('yith_wcan_list_type_query_arg', 'filter_' . sanitize_title($instance['attribute']), $display_type, $term, $instance['attribute']);
 
                     $current_filter = (isset($_GET[$arg])) ? explode(apply_filters('yith_wcan_list_filter_operator', ',', $display_type), apply_filters("yith_wcan_list_filter_query_{$arg}", $_GET[$arg] ) ) : array();
@@ -1105,15 +1109,13 @@ if ( ! class_exists( 'YITH_WCAN_Navigation_Widget' ) ) {
                     if ($_chosen_attributes) {
                         foreach ($_chosen_attributes as $name => $data) {
                             if ($name !== $taxonomy) {
-
+								// Remove pa_ and sanitize
+								$filter_name = sanitize_title(str_replace('pa_', '', $name));
                                 // Exclude query arg for current term archive
                                 if ($in_array_function($term->slug, $data['terms'])) {
                                     $key = array_search($current_term, $data);
                                     unset($data['terms'][$key]);
                                 }
-
-                                // Remove pa_ and sanitize
-                                $filter_name = sanitize_title(str_replace('pa_', '', $name));
 
                                 if (!empty($data['terms'])) {
                                     $link = add_query_arg('filter_' . $filter_name, implode(',', $data['terms']), $link);
@@ -1123,6 +1125,11 @@ if ( ! class_exists( 'YITH_WCAN_Navigation_Widget' ) ) {
                                     $link = add_query_arg('query_type_' . $filter_name, 'or', $link);
                                 }
                             }
+
+							else {
+								$filter_name = sanitize_title(str_replace('pa_', '', $name));
+								$link = remove_query_arg('filter_' . $filter_name, $link);
+							}
                         }
                     }
 

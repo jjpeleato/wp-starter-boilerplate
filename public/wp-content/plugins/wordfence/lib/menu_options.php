@@ -127,7 +127,6 @@ if (isset($_GET['source']) && wfPage::isValidPage($_GET['source'])) {
 				'wf-option-other-pwStrengthOnUpdate' => __('Check password strength on profile update', 'wordfence'),
 				'wf-option-other-WFNet' => __('Participate in the Real-Time Wordfence Security Network', 'wordfence'),
 				'wf-option-firewallEnabled' => __('Enable Rate Limiting and Advanced Blocking', 'wordfence'),
-				'wf-option-blockFakeBots' => __('Immediately block fake Google crawlers', 'wordfence'),
 				'wf-option-neverBlockBG' => __('How should we treat Google\'s crawlers', 'wordfence'),
 				'wf-option-maxGlobalRequests' => __('If anyone\'s requests exceed', 'wordfence'),
 				'wf-option-maxRequestsCrawlers' => __('If a crawler\'s page views exceed', 'wordfence'),

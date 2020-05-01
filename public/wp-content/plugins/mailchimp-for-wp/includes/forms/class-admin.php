@@ -168,47 +168,37 @@ class MC4WP_Forms_Admin {
 
 	/**
 	 * Saves a form to the database
-	 *
+	 * @param int $form_id
 	 * @param array $data
 	 * @return int
 	 */
-	public function save_form( $data ) {
+	private function save_form( $form_id, array $data ) {
 		$keys = array(
 			'settings' => array(),
 			'messages' => array(),
 			'name'     => '',
 			'content'  => '',
 		);
-
 		$data = array_merge( $keys, $data );
 		$data = $this->sanitize_form_data( $data );
 
 		$post_data = array(
+			'ID' => $form_id,
 			'post_type'    => 'mc4wp-form',
 			'post_status'  => ! empty( $data['status'] ) ? $data['status'] : 'publish',
 			'post_title'   => $data['name'],
 			'post_content' => $data['content'],
 		);
 
-		// if an `ID` is given, make sure post is of type `mc4wp-form`
-		if ( ! empty( $data['ID'] ) ) {
-			$post = get_post( $data['ID'] );
-
-			if ( $post instanceof WP_Post && $post->post_type === 'mc4wp-form' ) {
-				$post_data['ID'] = $data['ID'];
-
-				// merge new settings  with current settings to allow passing partial data
-				$current_settings = get_post_meta( $post->ID, '_mc4wp_settings', true );
-				if ( is_array( $current_settings ) ) {
-					$data['settings'] = array_merge( $current_settings, $data['settings'] );
-				}
-			}
-		}
-
 		// Fix for MultiSite stripping KSES for roles other than administrator
 		remove_all_filters( 'content_save_pre' );
+		wp_insert_post( $post_data );
 
-		$form_id = wp_insert_post( $post_data );
+		// merge new settings  with current settings to allow passing partial data
+		$current_settings = get_post_meta( $form_id, '_mc4wp_settings', true );
+		if ( is_array( $current_settings ) ) {
+			$data['settings'] = array_merge( $current_settings, $data['settings'] );
+		}
 		update_post_meta( $form_id, '_mc4wp_settings', $data['settings'] );
 
 		// save form messages in individual meta keys
@@ -286,13 +276,11 @@ class MC4WP_Forms_Admin {
 			update_option( 'mc4wp', $options );
 		}
 
-		// save form + settings
+		// update form, settings and messages
 		$form_id         = (int) $_POST['mc4wp_form_id'];
 		$form_data       = $_POST['mc4wp_form'];
-		$form_data['ID'] = $form_id;
-		$this->save_form( $form_data );
+		$this->save_form( $form_id, $form_data );
 		$this->set_default_form_id( $form_id );
-
 		$this->messages->flash( esc_html__( 'Form saved.', 'mailchimp-for-wp' ) );
 	}
 
@@ -302,7 +290,7 @@ class MC4WP_Forms_Admin {
 	private function set_default_form_id( $form_id ) {
 		$default_form_id = (int) get_option( 'mc4wp_default_form_id', 0 );
 
-		if ( empty( $default_form_id ) ) {
+		if ( $default_form_id === 0 ) {
 			update_option( 'mc4wp_default_form_id', $form_id );
 		}
 	}
@@ -343,7 +331,7 @@ class MC4WP_Forms_Admin {
 			$redirect_url = mc4wp_get_edit_form_url( $default_form->ID );
 		} catch ( Exception $e ) {
 			// no default form, query first available form and go there
-			$forms = mc4wp_get_forms( array( 'numberposts' => 1 ) );
+			$forms = mc4wp_get_forms( array( 'posts_per_page' => 1 ) );
 
 			if ( $forms ) {
 				// if we have a post, go to the "edit form" screen
