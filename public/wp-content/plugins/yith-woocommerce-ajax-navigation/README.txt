@@ -4,7 +4,7 @@ Contributors: yithemes
 Tags: woocommerce ajax product filter download, woocommerce, widget, ajax, ajax filtered nav, ajax navigation, ajax filtered navigation, woocommerce layered navigation, woocommerce layered nav, product filter, product filters, ajax product filter, woocommerce ajax product filter, woocommerce filters, sidebar filter, sidebar ajax filter, ajax price filter, price filter, product sorting, woocommerce filter, taxonomy filter, attribute filter, attributes filter, woocommerce product sort, ajax sort, woocommerce ajax product filter, advanced product filters, ajax product filters, filters, woocommerce ajax product filters, woocommerce product filters, woocommerce product filters, category filter, attribute filters, woocommerce products filter, woocommerce price filter, yit, yith, yithemes
 Requires at least: 4.0
 Tested up to: 5.4
-Stable tag: 3.9.0
+Stable tag: 3.10.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -85,9 +85,9 @@ Recently YITH WooCommerce Ajax Product Filter has been selected to be included i
 = The widget with WooCommerce filters is not working =
 = The page doesn't update after clicking on a WooCommerce filter =
 
-The issue could be related to the fact you are using a non-standard template for a WooCommerce shop page. To solve it, you should ask to the theme's author to use WooCommerce standard HTML classes. 
+The issue could be related to the fact you are using a non-standard template for a WooCommerce shop page. To solve it, you should ask to the theme's author to use WooCommerce standard HTML classes.
 As an alternative:
-**For version prior to 2.2.0:** 
+**For version prior to 2.2.0:**
 
 you can use this piece of code in functions.php file of your theme:
 
@@ -99,7 +99,7 @@ if( ! function_exists( 'yith_wcan_frontend_classes' ) ){
 	            'pagination'   => 'YOUR_PAGINATION_CONTAINER',
 	            'result_count' => 'YOUR_RESULT_COUNT_CONTAINER'
 
-	        ); 
+	        );
 	 }
 }
 
@@ -121,7 +121,7 @@ After the update 2.1.0, some users of YITH WooCommerce Ajax Product Filter are e
 = Is it compatible with all WordPress themes? =
 
 Compatibility with all themes is impossible, because they are too many, but generally if themes are developed according to WordPress and WooCommerce guidelines, YITH plugins are compatible with them.
-Yet, we can grant compatibility with themes developed by YIThemes, because they are constantly updated and tested with our plugins. Sometimes, especially when new versions are released, it might only require some time for them to be all updated, but you can be sure that they will be tested and will be working in a few days. 
+Yet, we can grant compatibility with themes developed by YIThemes, because they are constantly updated and tested with our plugins. Sometimes, especially when new versions are released, it might only require some time for them to be all updated, but you can be sure that they will be tested and will be working in a few days.
 
 
 = How can I get support if my WooCommerce plugin is not working? =
@@ -132,7 +132,7 @@ If you have problems with our WooCommerce plugins or something is not working as
 * Deactivate all plugins you are using and check if the problem is still occurring.
 * Ensure that you plugin version, your theme version and your WordPress and WooCommerce version (if required) are updated and that the problem you are experiencing has not already been solved in a later plugin update.
 
-If none of the previous listed actions helps you solve the problem, then, submit a ticket in the forum and describe your problem accurately, specify WordPress and WooCommerce versions you are using and any other information that might help us solve your problem as quickly as possible. Thanks! 
+If none of the previous listed actions helps you solve the problem, then, submit a ticket in the forum and describe your problem accurately, specify WordPress and WooCommerce versions you are using and any other information that might help us solve your problem as quickly as possible. Thanks!
 
 
 = How can I get more features for my WooCommerce plugin? =
@@ -158,6 +158,12 @@ If you want to see a demonstration version of the premium plugin, you can see it
 10. Admin: YIT Plugins -> Ajax Product Filter -> Custom Style
 
 == Changelog ==
+
+= 3.10.0 - Released on 30 April 2020  =
+
+* New: Support for WooCommerce 4.1
+* Update: plugin framework
+* Dev: yith_wcan_color_get_objects_in_term to filter the get_product_in_terms function
 
 = 3.9.0 - Released on 10 March 2020  =
 
@@ -533,7 +539,7 @@ If you want to see a demonstration version of the premium plugin, you can see it
 
 * Tweak: New wordpress translation text domain added
 * Added: Language files called yith-woocommerce-ajax-navigation
-* Removed: All language files called yith_wc_ajxnav 
+* Removed: All language files called yith_wc_ajxnav
 
 = 2.3.1 - Released: Sept, 17 - 2015 =
 
@@ -560,7 +566,7 @@ If you want to see a demonstration version of the premium plugin, you can see it
 
 * Added: Support to WooCommerce 2.4
 * Updated: Plugin Framework
-* Fixed: Tag list and child term support 
+* Fixed: Tag list and child term support
 
 = 2.1.1 - Released: July, 30 - 2015 =
 

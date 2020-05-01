@@ -8,6 +8,7 @@ if (!defined('WORDFENCE_VERSION')) { exit; }
  * @var string $rateOptionName The option name for the rate portion.
  * @var array $rateOptions An array of the possible values for $rateOptionName. The array is of the format array(array('value' => <the internal value>, 'label' => <a display label>), ...)
  * @var string $rateValue The current value of $rateOptionName.
+ * @var int $lowValue The value below which the false positive warning should begin showing
  * @var string $actionOptionName The option name for the rate portion.
  * @var array $actionOptions An array of the possible values for $actionOptionName. The array is of the format array(array('value' => <the internal value>, 'label' => <a display label>), ...)
  * @var string $actionValue The current value of $actionOptionName.
@@ -19,7 +20,7 @@ if (!defined('WORDFENCE_VERSION')) { exit; }
 $rateID = 'wf-option-' . preg_replace('/[^a-z0-9]/i', '-', $rateOptionName);
 $actionID = 'wf-option-' . preg_replace('/[^a-z0-9]/i', '-', $actionOptionName);
 ?>
-<ul class="wf-option wf-option-rate-limit<?php if (!wfConfig::p() && isset($premium) && $premium) { echo ' wf-option-premium'; } ?>" data-rate-option="<?php echo esc_attr($rateOptionName); ?>" data-original-rate-value="<?php echo esc_attr($rateValue); ?>" data-action-option="<?php echo esc_attr($actionOptionName); ?>" data-original-action-value="<?php echo esc_attr($actionValue); ?>">
+<ul class="wf-option wf-option-rate-limit<?php if (!wfConfig::p() && isset($premium) && $premium) { echo ' wf-option-premium'; } ?>" data-rate-option="<?php echo esc_attr($rateOptionName); ?>" data-original-rate-value="<?php echo esc_attr($rateValue); ?>" data-action-option="<?php echo esc_attr($actionOptionName); ?>" data-original-action-value="<?php echo esc_attr($actionValue); ?>" data-low-value="<?php echo (int) $lowValue; ?>">
 	<li class="wf-option-spacer"></li>
 	<li class="wf-option-content">
 		<ul>
@@ -36,6 +37,7 @@ $actionID = 'wf-option-' . preg_replace('/[^a-z0-9]/i', '-', $actionOptionName);
 						<option class="wf-option-select-option" value="<?php echo esc_attr($o['value']); ?>"<?php if ($o['value'] == $actionValue) { echo ' selected'; } ?>><?php echo esc_html($o['label']); ?></option>
 					<?php endforeach; ?>
 				</select>
+				<div class="wf-rate-limit-warning"><div class="wf-inline-notice"><i class="wf-fa wf-fa-exclamation-triangle" aria-hidden="true"></i><span>Very strict. May cause false positives.</span></div></div>
 			</li>
 		</ul>
 	</li>

@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - YITH WooCommerce Ajax Product Filter - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2020-04-05 20:43:34+0000\n"
+"PO-Revision-Date: 2020-04-30 12:23:34+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11,29 +11,54 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: Plugins - YITH WooCommerce Ajax Product Filter - Stable (latest release)\n"
 
-#: plugin-fw/templates/fields/onoff.php:25
-msgctxt "ON/OFF button: use MAX 3 characters!"
-msgid "OFF"
-msgstr "OFF"
+#: plugin-fw/templates/fields/dimensions.php:117
+msgctxt "Tooltip in the \"Dimensions\" field"
+msgid "Link values together"
+msgstr "Enlazar los valores juntos"
+
+#: plugin-fw/templates/fields/dimensions.php:19
+msgctxt "Position in the \"Dimensions\" field"
+msgid "Left"
+msgstr "Izquierda"
+
+#: plugin-fw/templates/fields/dimensions.php:18
+msgctxt "Position in the \"Dimensions\" field"
+msgid "Bottom"
+msgstr "Inferior"
+
+#: plugin-fw/templates/fields/dimensions.php:17
+msgctxt "Position in the \"Dimensions\" field"
+msgid "Right"
+msgstr "Derecha"
+
+#: plugin-fw/templates/fields/dimensions.php:16
+msgctxt "Position in the \"Dimensions\" field"
+msgid "Top"
+msgstr "Superior"
 
 #: plugin-fw/templates/fields/onoff.php:24
-msgctxt "ON/OFF button: use MAX 3 characters!"
-msgid "ON"
-msgstr "ON"
+msgctxt "YES/NO button: use MAX 3 characters!"
+msgid "YES"
+msgstr "SÍ"
 
-#: plugin-fw/lib/yit-plugin-panel.php:1238
+#: plugin-fw/templates/fields/onoff.php:25
+msgctxt "YES/NO button: use MAX 3 characters!"
+msgid "NO"
+msgstr "NO"
+
+#: plugin-fw/lib/yit-plugin-panel.php:1269
 msgid ":) Thanks!"
 msgstr ":) ¡Gracias!"
 
-#: plugin-fw/lib/yit-plugin-panel.php:1237
+#: plugin-fw/lib/yit-plugin-panel.php:1268
 msgid "help us by leaving a five-star rating"
 msgstr "ayúdanos dejando una valoración de cinco estrellas"
 
-#: plugin-fw/lib/yit-plugin-panel.php:1235
+#: plugin-fw/lib/yit-plugin-panel.php:1266
 msgid "to keep updating and improving the plugin. Please,"
 msgstr "para seguir actualizando y mejorando el plugin. Por favor,"
 
-#: plugin-fw/lib/yit-plugin-panel.php:1234
+#: plugin-fw/lib/yit-plugin-panel.php:1265
 msgid "We need your support"
 msgstr "Necesitamos tu apoyo"
 
@@ -379,8 +404,8 @@ msgstr "Filtra la lista de productos sin volver a cargar la página"
 msgid "Enter here the HTML tag for the scroll up to to top feature"
 msgstr "Introduce aquí la etiqueta HTML para la característica de desplazamiento hacia arriba"
 
-#: plugin-fw/lib/yit-plugin-panel.php:425
-#: plugin-fw/lib/yit-plugin-panel.php:428
+#: plugin-fw/lib/yit-plugin-panel.php:455
+#: plugin-fw/lib/yit-plugin-panel.php:458
 msgid "How to install premium version"
 msgstr "Cómo instalar la versión premium"
 
@@ -404,7 +429,7 @@ msgstr "Cada filtro aplicado genera una nueva url para la página. Puedes decidi
 msgid "Page url"
 msgstr "URL de la página"
 
-#: widgets/class.yith-wcan-navigation-widget.php:928
+#: widgets/class.yith-wcan-navigation-widget.php:931
 msgid "CSS custom class"
 msgstr "Clase personalizada de CSS"
 
@@ -448,7 +473,7 @@ msgstr "Aprovecha la versión premium del plugin para editar el comportamiento p
 msgid "Frontend Settings"
 msgstr "Ajustes de portada"
 
-#: templates/admin/premium.php:413 plugin-fw/templates/fields/upload.php:29
+#: plugin-fw/templates/fields/upload.php:29 templates/admin/premium.php:413
 msgid "Reset"
 msgstr "Restablecer"
 
@@ -472,60 +497,60 @@ msgstr "Etiqueta del botón"
 msgid "Reset All Filters"
 msgstr "Limpiar todos los filtros"
 
-#: widgets/class.yith-wcan-navigation-widget.php:921
+#: widgets/class.yith-wcan-navigation-widget.php:924
 msgid "Only Parent"
 msgstr "Solo superior"
 
-#: widgets/class.yith-wcan-navigation-widget.php:920
+#: widgets/class.yith-wcan-navigation-widget.php:923
 msgid "All (hierarchical)"
 msgstr "Todo (jerárquico)"
 
-#: widgets/class.yith-wcan-navigation-widget.php:919
+#: widgets/class.yith-wcan-navigation-widget.php:922
 msgid "All (no hierarchical)"
 msgstr "Todo (no jerárquico)"
 
-#: widgets/class.yith-wcan-navigation-widget.php:917
+#: widgets/class.yith-wcan-navigation-widget.php:920
 msgid "Display (default All):"
 msgstr "Mostrar (todo por defecto):"
 
-#: widgets/class.yith-wcan-navigation-widget.php:910
+#: widgets/class.yith-wcan-navigation-widget.php:913
 msgid "Attribute:"
 msgstr "Atributo:"
 
-#: widgets/class.yith-wcan-navigation-widget.php:904
+#: widgets/class.yith-wcan-navigation-widget.php:907
 msgid "OR"
 msgstr "O"
 
-#: widgets/class.yith-wcan-navigation-widget.php:903
+#: widgets/class.yith-wcan-navigation-widget.php:906
 msgid "AND"
 msgstr "Y"
 
-#: widgets/class.yith-wcan-navigation-widget.php:901
+#: widgets/class.yith-wcan-navigation-widget.php:904
 msgid "Query Type:"
 msgstr "Tipo de petición:"
 
-#: widgets/class.yith-wcan-navigation-widget.php:890
+#: widgets/class.yith-wcan-navigation-widget.php:893
 msgid "Type:"
 msgstr "Tipo:"
 
-#: widgets/class.yith-wcan-navigation-widget.php:884
+#: widgets/class.yith-wcan-navigation-widget.php:887
 #: widgets/class.yith-wcan-reset-navigation-widget.php:126
 msgid "Title"
 msgstr "Título"
 
-#: widgets/class.yith-wcan-navigation-widget.php:877
+#: widgets/class.yith-wcan-navigation-widget.php:880
 msgid "Dropdown"
 msgstr "Desplegar"
 
-#: widgets/class.yith-wcan-navigation-widget.php:876
+#: widgets/class.yith-wcan-navigation-widget.php:879
 msgid "Label"
 msgstr "Etiqueta"
 
-#: widgets/class.yith-wcan-navigation-widget.php:874
+#: widgets/class.yith-wcan-navigation-widget.php:877
 msgid "List"
 msgstr "Lista"
 
-#: widgets/class.yith-wcan-navigation-widget.php:154
+#: widgets/class.yith-wcan-navigation-widget.php:155
 msgid "Filters:"
 msgstr "Filtros:"
 
@@ -722,9 +747,9 @@ msgstr "Cerrar todo"
 msgid "Image preview"
 msgstr "Vista previa de la imagen"
 
+#: plugin-fw/templates/metaboxes/types/icon-list.php:70
 #: plugin-fw/templates/fields/upload.php:27
 #: plugin-fw/templates/panel/woocommerce/woocommerce-upload.php:40
-#: plugin-fw/templates/metaboxes/types/icon-list.php:70
 msgid "Upload"
 msgstr "Subir"
 
@@ -769,67 +794,67 @@ msgstr ""
 msgid "Plugins Activated"
 msgstr "Plugins activados"
 
-#: plugin-fw/lib/yit-plugin-panel.php:786
+#: plugin-fw/lib/yit-plugin-panel.php:817
 msgid "Sorting successful."
 msgstr "Ordenado con éxito."
 
-#: plugin-fw/lib/yit-plugin-panel.php:785
+#: plugin-fw/lib/yit-plugin-panel.php:816
 msgid "Sorry, import is disabled."
 msgstr "Lo siento, la importación está desactivada."
 
-#: plugin-fw/lib/yit-plugin-panel.php:784
+#: plugin-fw/lib/yit-plugin-panel.php:815
 msgid "The added file is not valid."
 msgstr "El archivo añadido es no válido."
 
-#: plugin-fw/lib/yit-plugin-panel.php:783
+#: plugin-fw/lib/yit-plugin-panel.php:814
 msgid "An error has occurred during import. Please try again."
 msgstr "Ha ocurrido un error durante la importación. Por favor, inténtalo de nuevo."
 
-#: plugin-fw/lib/yit-plugin-panel.php:782
+#: plugin-fw/lib/yit-plugin-panel.php:813
 msgid "Database imported correctly."
 msgstr "Base de datos importada correctamente."
 
-#: plugin-fw/lib/yit-plugin-panel.php:780
-#: plugin-fw/lib/yit-plugin-panel.php:781
+#: plugin-fw/lib/yit-plugin-panel.php:811
+#: plugin-fw/lib/yit-plugin-panel.php:812
 msgid "Element updated correctly."
 msgstr "Elemento actualizado correctamente."
 
-#: plugin-fw/lib/yit-plugin-panel.php:779
+#: plugin-fw/lib/yit-plugin-panel.php:810
 msgid "Element deleted correctly."
 msgstr "Elemento eliminado correctamente."
 
-#: plugin-fw/lib/yit-plugin-panel.php:778
+#: plugin-fw/lib/yit-plugin-panel.php:809
 msgid "Settings reset"
 msgstr "Restablecer ajustes"
 
-#: plugin-fw/lib/yit-plugin-panel.php:777
+#: plugin-fw/lib/yit-plugin-panel.php:808
 msgid "Settings saved"
 msgstr "Ajustes guardados"
 
-#: plugin-fw/lib/yit-plugin-panel.php:776
+#: plugin-fw/lib/yit-plugin-panel.php:807
 msgid "The element you have entered already exists. Please, enter another name."
 msgstr "El elemento que has introducido ya existe.Por favor, introduce otro nombre."
 
-#: plugin-fw/lib/yit-plugin-panel.php:578
-#: plugin-fw/lib/yit-plugin-subpanel.php:157
 #: plugin-fw/templates/panel/woocommerce/woocommerce-form.php:21
+#: plugin-fw/lib/yit-plugin-subpanel.php:157
+#: plugin-fw/lib/yit-plugin-panel.php:609
 msgid "Are you sure?"
 msgstr "¿Estás seguro?"
 
-#: plugin-fw/lib/yit-plugin-panel.php:577
 #: plugin-fw/lib/yit-plugin-subpanel.php:156
+#: plugin-fw/lib/yit-plugin-panel.php:608
 msgid "Reset to default"
 msgstr "Restablecer a por defecto"
 
-#: plugin-fw/lib/yit-plugin-panel.php:575
-#: plugin-fw/lib/yit-plugin-subpanel.php:154
 #: plugin-fw/templates/panel/woocommerce/woocommerce-form.php:17
+#: plugin-fw/lib/yit-plugin-subpanel.php:154
+#: plugin-fw/lib/yit-plugin-panel.php:606
 msgid "If you continue with this action, you will reset all options in this page."
 msgstr "Si continúas con esta opción, restablecerás todas las opciones en esta página."
 
-#: plugin-fw/lib/yit-plugin-panel.php:572
-#: plugin-fw/lib/yit-plugin-subpanel.php:151
 #: plugin-fw/templates/panel/woocommerce/woocommerce-form.php:14
+#: plugin-fw/lib/yit-plugin-subpanel.php:151
+#: plugin-fw/lib/yit-plugin-panel.php:603
 msgid "Save Changes"
 msgstr "Guardar los cambios"
 
@@ -853,9 +878,9 @@ msgstr "Subir varios archivos"
 msgid "Add %s from images"
 msgstr "Añadir %s desde imágenes"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:1484
 #: plugin-fw/templates/fields/customtabs.php:46
 #: plugin-fw/templates/fields/customtabs.php:89
+#: plugin-fw/lib/yit-cpt-unlimited.php:1484
 msgid "Name"
 msgstr "Nombre"
 
@@ -928,16 +953,16 @@ msgstr "Diseño para este %s"
 msgid "Type"
 msgstr "Tipo"
 
-#: plugin-fw/lib/yit-plugin-panel.php:80
 #: plugin-fw/lib/yit-cpt-unlimited.php:1050
 #: plugin-fw/lib/yit-cpt-unlimited.php:1198
 #: plugin-fw/lib/yit-cpt-unlimited.php:1204
+#: plugin-fw/lib/yit-plugin-panel.php:80
 msgid "Settings"
 msgstr "Ajustes"
 
 #: plugin-fw/lib/yit-cpt-unlimited.php:1044
 msgid "%s Settings"
-msgstr "%s Ajustes"
+msgstr "Ajustes de %s"
 
 #: plugin-fw/lib/yit-cpt-unlimited.php:726
 msgid "Categories"
@@ -975,8 +1000,8 @@ msgstr "Categoría superior"
 msgid "All Categories"
 msgstr "Todas las categorías"
 
-#: plugin-fw/lib/yit-cpt-unlimited.php:629
 #: plugin-fw/templates/fields/ajax-terms.php:56
+#: plugin-fw/lib/yit-cpt-unlimited.php:629
 msgid "Search Categories"
 msgstr "Buscar categorías"
 
@@ -1060,7 +1085,7 @@ msgid "Color 1"
 msgstr "Color 1"
 
 #: includes/functions.yith-wcan.php:88
-#: widgets/class.yith-wcan-navigation-widget.php:875
+#: widgets/class.yith-wcan-navigation-widget.php:878
 msgid "Color"
 msgstr "Color"
 
@@ -1078,7 +1103,7 @@ msgstr "Ajax Product Filter"
 msgid "Premium Version"
 msgstr "Versión premium"
 
-#: includes/class.yith-wcan-admin.php:127 settings/custom-style-options.php:12
+#: settings/custom-style-options.php:12 includes/class.yith-wcan-admin.php:127
 msgid "Custom Style"
 msgstr "Estilo personalizado"
 

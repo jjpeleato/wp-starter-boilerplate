@@ -294,10 +294,10 @@ if ( ! function_exists( 'yit_get_terms' ) ) {
         $args = array( 
             'taxonomy' => $taxonomy, 
             'hide_empty' => true, 
-            'exclude' => $exclude 
+            'exclude' => $exclude
         );
         
-        $args = apply_filters( 'yit_get_terms_args', $args );
+        $args = apply_filters( 'yit_get_terms_args', $args, $instance );
 
         switch ( $case ) {
 
@@ -792,7 +792,7 @@ if( ! function_exists( 'yith_wcan_wp_get_terms' ) ) {
     /**
      * get_terms function support for old WordPress Version
      *
-     * @param string $args 
+     * @param array $args
      * 
      * @return bool
      */

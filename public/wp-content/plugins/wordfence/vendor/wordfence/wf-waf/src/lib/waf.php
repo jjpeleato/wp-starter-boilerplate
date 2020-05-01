@@ -1986,7 +1986,7 @@ class wfWAFCronFetchIPListEvent extends wfWAFCronEvent {
 			
 			if ($response instanceof wfWAFHTTPResponse && $response->getBody()) {
 				$jsonData = wfWAFUtils::json_decode($response->getBody(), true);
-				if (array_key_exists('data', $jsonData) && array_key_exists('watchedIPList', $jsonData['data'])) {
+				if (is_array($jsonData) && array_key_exists('data', $jsonData) && is_array($jsonData['data']) && array_key_exists('watchedIPList', $jsonData['data'])) {
 					$waf->getStorageEngine()->setConfig('watchedIPs', $jsonData['data']['watchedIPList'], 'transient');
 				}
 			}

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YITH WooCommerce Ajax Product Filter\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/init\n"
-"POT-Creation-Date: 2019-04-06 13:19:15+00:00\n"
+"POT-Creation-Date: 2020-04-30 10:11:58+00:00\n"
 "PO-Revision-Date: 2019-06-06 10:17+0200\n"
 "Last-Translator: Thomas Bunte <thomas@bunte-tk.de>\n"
 "Language-Team: \n"
@@ -43,7 +43,7 @@ msgid "Term"
 msgstr "Term"
 
 #: includes/functions.yith-wcan.php:88
-#: widgets/class.yith-wcan-navigation-widget.php:868
+#: widgets/class.yith-wcan-navigation-widget.php:875
 msgid "Color"
 msgstr "Farbe"
 
@@ -134,13 +134,11 @@ msgstr ""
 
 #: settings/frontend-options.php:57
 #, fuzzy
-#| msgid "Scroll top anchor"
 msgid "Scroll up to top anchor"
 msgstr "Scroll-Top-Anker"
 
 #: settings/frontend-options.php:58
 #, fuzzy
-#| msgid "Enter here the HTML tag for the scroll to top feature"
 msgid "Enter here the HTML tag for the scroll up to to top feature"
 msgstr "Geben Sie hier das HTML-Tag für das Scroll-to-Top-Feature ein"
 
@@ -349,7 +347,6 @@ msgstr "Filtern Sie die Produktliste, ohne die Seite neu zu laden"
 
 #: widgets/class.yith-wcan-navigation-widget.php:39
 #, fuzzy
-#| msgid "Ajax Product Filter"
 msgctxt "[Plugin Name] Admin: Widget Title"
 msgid "YITH Ajax Product Filter"
 msgstr "Ajax Product Filter"
@@ -358,73 +355,71 @@ msgstr "Ajax Product Filter"
 msgid "Filters:"
 msgstr "Filter:"
 
-#: widgets/class.yith-wcan-navigation-widget.php:867
+#: widgets/class.yith-wcan-navigation-widget.php:874
 msgid "List"
 msgstr "Liste"
 
-#: widgets/class.yith-wcan-navigation-widget.php:869
+#: widgets/class.yith-wcan-navigation-widget.php:876
 msgid "Label"
 msgstr "Label"
 
-#: widgets/class.yith-wcan-navigation-widget.php:870
+#: widgets/class.yith-wcan-navigation-widget.php:877
 msgid "Dropdown"
 msgstr "Dropdown"
 
-#: widgets/class.yith-wcan-navigation-widget.php:877
+#: widgets/class.yith-wcan-navigation-widget.php:884
 #: widgets/class.yith-wcan-reset-navigation-widget.php:126
 msgid "Title"
 msgstr "Titel"
 
-#: widgets/class.yith-wcan-navigation-widget.php:883
+#: widgets/class.yith-wcan-navigation-widget.php:890
 msgid "Type:"
 msgstr "Typ:"
 
-#: widgets/class.yith-wcan-navigation-widget.php:894
+#: widgets/class.yith-wcan-navigation-widget.php:901
 msgid "Query Type:"
 msgstr "Query-Typ"
 
-#: widgets/class.yith-wcan-navigation-widget.php:896
+#: widgets/class.yith-wcan-navigation-widget.php:903
 msgid "AND"
 msgstr "AND"
 
-#: widgets/class.yith-wcan-navigation-widget.php:897
+#: widgets/class.yith-wcan-navigation-widget.php:904
 msgid "OR"
 msgstr "OR"
 
-#: widgets/class.yith-wcan-navigation-widget.php:903
+#: widgets/class.yith-wcan-navigation-widget.php:910
 msgid "Attribute:"
 msgstr "Attribute:"
 
-#: widgets/class.yith-wcan-navigation-widget.php:910
+#: widgets/class.yith-wcan-navigation-widget.php:917
 msgid "Display (default All):"
 msgstr "Anzeige (Standard Alles):"
 
-#: widgets/class.yith-wcan-navigation-widget.php:912
+#: widgets/class.yith-wcan-navigation-widget.php:919
 msgid "All (no hierarchical)"
 msgstr "Alle (nicht hierarchisch)"
 
-#: widgets/class.yith-wcan-navigation-widget.php:913
+#: widgets/class.yith-wcan-navigation-widget.php:920
 msgid "All (hierarchical)"
 msgstr "Alles (hierarchisch)"
 
-#: widgets/class.yith-wcan-navigation-widget.php:914
+#: widgets/class.yith-wcan-navigation-widget.php:921
 msgid "Only Parent"
 msgstr "Nur Übergeordnete"
 
-#: widgets/class.yith-wcan-navigation-widget.php:921
+#: widgets/class.yith-wcan-navigation-widget.php:928
 msgid "CSS custom class"
 msgstr "Benutzerdefinierte CSS-Klasse"
 
 #: widgets/class.yith-wcan-reset-navigation-widget.php:23
 #, fuzzy
-#| msgid "Reset all filters set by YITH WooCommerce Ajax Product Filter"
 msgctxt "[Plugin Name]"
 msgid "Reset all filters set by YITH WooCommerce Ajax Product Filter"
 msgstr "YITH WooCommerce Ajax Filter zurücksetzen"
 
 #: widgets/class.yith-wcan-reset-navigation-widget.php:25
 #, fuzzy
-#| msgid "YITH WooCommerce Ajax Reset Filter"
 msgid "YITH Ajax Reset Filter"
 msgstr "YITH WooCommerce Ajax Reset Filter"
 
@@ -438,8 +433,6 @@ msgstr "Button Beschriftung"
 
 #. Plugin Name of the plugin/theme
 #, fuzzy
-#| msgctxt "Admin: Widget Title"
-#| msgid "YITH WooCommerce Ajax Product Filter"
 msgid "YITH WooCommerce Ajax Product Filter"
 msgstr "YITH WooCommerce Ajax Produkt Filter"
 

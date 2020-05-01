@@ -27,11 +27,13 @@ class WPSEO_Option_Wpseo extends WPSEO_Option {
 	protected $defaults = [
 		// Non-form fields, set via (ajax) function.
 		'ms_defaults_set'                 => false,
+		'ignore_indexation_warning'       => false,
 		// Non-form field, should only be set via validation routine.
 		'version'                         => '', // Leave default as empty to ensure activation/upgrade works.
-
+		'previous_version'                => '',
 		// Form fields.
 		'disableadvanced_meta'            => true,
+		'enable_headless_rest_endpoints'  => true,
 		'ryte_indexability'               => true,
 		'baiduverify'                     => '', // Text field.
 		'googleverify'                    => '', // Text field.
@@ -228,6 +230,11 @@ class WPSEO_Option_Wpseo extends WPSEO_Option {
 				case 'version':
 					$clean[ $key ] = WPSEO_VERSION;
 					break;
+				case 'previous_version':
+					if ( isset( $dirty[ $key ] ) ) {
+						$clean[ $key ] = $dirty[ $key ];
+					}
+					break;
 
 				/* Verification strings. */
 				case 'baiduverify':
@@ -304,6 +311,7 @@ class WPSEO_Option_Wpseo extends WPSEO_Option {
 				/*
 				 * Covers:
 				 *  'disableadvanced_meta'
+				 *  'enable_headless_rest_endpoints'
 				 *  'yoast_tracking'
 				 */
 				default:
@@ -329,14 +337,15 @@ class WPSEO_Option_Wpseo extends WPSEO_Option {
 
 		// For the feature variables, set their values to off in case they are disabled.
 		$feature_vars = [
-			'disableadvanced_meta'       => false,
-			'ryte_indexability'          => false,
-			'content_analysis_active'    => false,
-			'keyword_analysis_active'    => false,
-			'enable_admin_bar_menu'      => false,
-			'enable_cornerstone_content' => false,
-			'enable_xml_sitemap'         => false,
-			'enable_text_link_counter'   => false,
+			'disableadvanced_meta'           => false,
+			'ryte_indexability'              => false,
+			'content_analysis_active'        => false,
+			'keyword_analysis_active'        => false,
+			'enable_admin_bar_menu'          => false,
+			'enable_cornerstone_content'     => false,
+			'enable_xml_sitemap'             => false,
+			'enable_text_link_counter'       => false,
+			'enable_headless_rest_endpoints' => false,
 		];
 
 		// We can reuse this logic from the base class with the above defaults to parse with the correct feature values.

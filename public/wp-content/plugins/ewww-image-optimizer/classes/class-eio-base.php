@@ -95,11 +95,17 @@ if ( ! class_exists( 'EIO_Base' ) ) {
 			global $ewwwio_temp_debug;
 			global $easyio_temp_debug;
 			$debug_log = $this->content_dir . 'debug.log';
-			if ( is_writable( WP_CONTENT_DIR ) && ! is_dir( $this->content_dir ) ) {
-				mkdir( $this->content_dir );
+			if ( ! is_dir( $this->content_dir ) && is_writable( WP_CONTENT_DIR ) ) {
+				wp_mkdir_p( $this->content_dir );
 			}
 			$debug_enabled = $this->get_option( $this->prefix . 'debug' );
-			if ( ! empty( $eio_debug ) && empty( $ewwwio_temp_debug ) && empty( $easyio_temp_debug ) && $debug_enabled && is_writable( $this->content_dir ) ) {
+			if (
+				! empty( $eio_debug ) &&
+				empty( $easyio_temp_debug ) &&
+				$debug_enabled &&
+				is_dir( $this->content_dir ) &&
+				is_writable( $this->content_dir )
+			) {
 				$memory_limit = $this->memory_limit();
 				clearstatcache();
 				$timestamp = gmdate( 'Y-m-d H:i:s' ) . "\n";
@@ -129,6 +135,9 @@ if ( ! class_exists( 'EIO_Base' ) ) {
 		 * @param string $message Debug information to add to the log.
 		 */
 		function debug_message( $message ) {
+			if ( ! is_string( $message ) ) {
+				return;
+			}
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				WP_CLI::debug( $message );
 				return;
@@ -387,6 +396,7 @@ if ( ! class_exists( 'EIO_Base' ) ) {
 			if ( $this->site_url ) {
 				return $this->site_url;
 			}
+			$this->site_url = get_home_url();
 			if ( class_exists( 'Amazon_S3_And_CloudFront' ) ) {
 				global $as3cf;
 				$s3_scheme = $as3cf->get_url_scheme();
@@ -395,10 +405,13 @@ if ( ! class_exists( 'EIO_Base' ) ) {
 				if ( is_wp_error( $s3_region ) ) {
 					$s3_region = '';
 				}
-				$s3_domain = $as3cf->get_provider()->get_url_domain( $s3_bucket, $s3_region, null, array(), true );
-				$this->debug_message( "found S3 domain of $s3_domain with bucket $s3_bucket and region $s3_region" );
+				$s3_domain = '';
+				if ( ! empty( $s3_bucket ) && ! is_wp_error( $s3_bucket ) ) {
+					$s3_domain = $as3cf->get_provider()->get_url_domain( $s3_bucket, $s3_region, null, array(), true );
+				}
 				if ( ! empty( $s3_domain ) && $as3cf->get_setting( 'serve-from-s3' ) ) {
 					$this->s3_active = true;
+					$this->debug_message( "found S3 domain of $s3_domain with bucket $s3_bucket and region $s3_region" );
 				}
 			}
 
@@ -408,7 +421,7 @@ if ( ! class_exists( 'EIO_Base' ) ) {
 				// Normally, we use this one, as it will be shorter for sub-directory installs.
 				$home_url    = get_home_url();
 				$site_url    = get_site_url();
-				$upload_dir  = wp_upload_dir( null, false );
+				$upload_dir  = wp_get_upload_dir();
 				$home_domain = $this->parse_url( $home_url, PHP_URL_HOST );
 				$site_domain = $this->parse_url( $site_url, PHP_URL_HOST );
 				// If the home domain does not match the upload url, and the site domain does match...

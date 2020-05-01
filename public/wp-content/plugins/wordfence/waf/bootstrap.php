@@ -471,29 +471,35 @@ class wfWAFWordPress extends wfWAF {
 			/** @var wfWAFCronEvent $event */
 			$cronDeduplication = array();
 			foreach ($cron as $index => $event) {
-				$event->setWaf($this);
-				if ($event->isInPast()) {
-					$run[$index] = $event;
-					$newEvent = $event->reschedule();
-					$className = get_class($newEvent);
-					if ($newEvent instanceof wfWAFCronEvent && $newEvent !== $event && !in_array($className, $cronDeduplication)) {
-						$cron[$index] = $newEvent;
-						$cronDeduplication[] = $className;
-						$updated = true;
-					} else {
-						unset($cron[$index]);
-						$updated = true;
-					}
-				}
-				else {
-					$className = get_class($event);
-					if (in_array($className, $cronDeduplication)) {
-						unset($cron[$index]);
-						$updated = true;
+				if (is_object($event) && $event instanceof wfWAFCronEvent) {
+					$event->setWaf($this);
+					if ($event->isInPast()) {
+						$run[$index] = $event;
+						$newEvent = $event->reschedule();
+						$className = get_class($newEvent);
+						if ($newEvent instanceof wfWAFCronEvent && $newEvent !== $event && !in_array($className, $cronDeduplication)) {
+							$cron[$index] = $newEvent;
+							$cronDeduplication[] = $className;
+							$updated = true;
+						} else {
+							unset($cron[$index]);
+							$updated = true;
+						}
 					}
 					else {
-						$cronDeduplication[] = $className;
+						$className = get_class($event);
+						if (in_array($className, $cronDeduplication)) {
+							unset($cron[$index]);
+							$updated = true;
+						}
+						else {
+							$cronDeduplication[] = $className;
+						}
 					}
+				}
+				else { //Remove bad/corrupt records
+					unset($cron[$index]);
+					$updated = true;
 				}
 			}
 		}
