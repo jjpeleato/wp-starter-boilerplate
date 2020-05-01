@@ -1283,6 +1283,7 @@ SQL
 		
 		add_action('wfls_xml_rpc_blocked', 'wordfence::checkSecurityNetwork');
 		add_action('wfls_registration_blocked', 'wordfence::checkSecurityNetwork');
+		add_action('wfls_activation_page_header', 'wordfence::_outputLoginSecurityInstallation');
 		add_action('wfls_activation_page_footer', 'wordfence::_outputLoginSecurityTour');
 		add_action('wfls_settings_set', 'wordfence::queueCentralConfigurationSync');
 
@@ -1363,6 +1364,12 @@ SQL
 			$links = array_merge(array('aWordfencePluginCallout' => '<a href="https://www.wordfence.com/zz12/wordfence-signup/" target="_blank" rel="noopener noreferrer"><strong style="color: #11967A; display: inline;">Upgrade To Premium</strong></a>'), $links);
 		} 
 		return $links;
+	}
+	
+	public static function _outputLoginSecurityInstallation() {
+		if (WORDFENCE_LS_FROM_CORE && wfOnboardingController::shouldShowAttempt3()) {
+			echo wfView::create('onboarding/banner')->render();
+		}
 	}
 	
 	public static function _outputLoginSecurityTour() {
@@ -2334,17 +2341,6 @@ SQL
 				return;
 			}
 
-			if (wfConfig::get('blockFakeBots')) {
-				if (wfCrawl::isGooglebot() && !wfCrawl::isVerifiedGoogleCrawler()) {
-					$reason = __('Fake Google crawler automatically blocked', 'wordfence');
-					wfBlock::createIP($reason, $IP, wfBlock::blockDuration(), time(), time(), 1, wfBlock::TYPE_IP_AUTOMATIC_TEMPORARY);
-					wfActivityReport::logBlockedIP($IP, null, 'fakegoogle');
-					wordfence::status(2, 'info', "Blocking fake Googlebot at IP {$IP}");
-					$wfLog->tagRequestForBlock($reason);
-					$wfLog->do503(3600, "Fake Google crawler automatically blocked");
-					//exits
-				}
-			}
 			if (wfConfig::get('bannedURLs', false)) {
 				$URLs = explode("\n", wfUtils::cleanupOneEntryPerLine(wfConfig::get('bannedURLs')));
 				foreach ($URLs as $URL) {
@@ -3288,6 +3284,11 @@ SQL
 			return false;
 		}
 		
+		$backoff = get_transient('wfsn_backoff');
+		if ($backoff) {
+			return false;
+		}
+		
 		try {
 			$result = wp_remote_get(WORDFENCE_HACKATTEMPT_URL_SEC . 'hackAttempt/?k=' . rawurlencode(wfConfig::get('apiKey')) . 
 																			'&IP=' . rawurlencode(filter_var($IP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ? wfUtils::inet_aton($IP) : wfUtils::inet_pton($IP)) . 
@@ -3299,6 +3300,7 @@ SQL
 					'headers' => array('Referer' => false),
 				));
 			if (is_wp_error($result)) {
+				set_transient('wfsn_backoff', 1, WORDFENCE_NOC3_FAILED_BACKOFF_TIME);
 				return false;
 			}
 			$wfdb->queryWriteIgnoreError("INSERT INTO {$table_wfSNIPCache} (IP, type, expiration, body) VALUES ('%s', %d, DATE_ADD(NOW(), INTERVAL %d SECOND), '%s')", $IP, $endpointType, 30, $result['body']);
@@ -3308,6 +3310,7 @@ SQL
 			}
 			return false;
 		} catch (Exception $err) {
+			set_transient('wfsn_backoff', 1, WORDFENCE_NOC3_FAILED_BACKOFF_TIME);
 			return false;
 		}
 	}
@@ -6666,23 +6669,26 @@ HTML
 		return wfUtils::wpAdminURL('admin.php?page=Wordfence&subpage=global_options');
 	}
 
-	public static function alert($subject, $alertMsg, $IP){
+	public static function alert($subject, $alertMsg, $IP) {
 		wfConfig::inc('totalAlertsSent');
 		$emails = wfConfig::getAlertEmails();
-		if(sizeof($emails) < 1){ return; }
+		if (sizeof($emails) < 1) { return; }
 
 		$IPMsg = "";
-		if($IP){
+		if ($IP) {
 			$IPMsg = "User IP: $IP\n";
 			$reverse = wfUtils::reverseLookup($IP);
-			if($reverse){
+			if ($reverse) {
 				$IPMsg .= "User hostname: " . $reverse . "\n";
 			}
 			$userLoc = wfUtils::getIPGeo($IP);
-			if($userLoc){
+			if ($userLoc) {
 				$IPMsg .= "User location: ";
-				if($userLoc['city']){
+				if ($userLoc['city']) {
 					$IPMsg .= $userLoc['city'] . ', ';
+				}
+				if ($userLoc['region'] && wfUtils::shouldDisplayRegion($userLoc['countryName'])) {
+					$IPMsg .= $userLoc['region'] . ', ';
 				}
 				$IPMsg .= $userLoc['countryName'] . "\n";
 			}

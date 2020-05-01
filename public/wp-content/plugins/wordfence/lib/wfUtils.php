@@ -1433,6 +1433,7 @@ class wfUtils {
 						$IPLocs[$ip_printable] = false;
 					} else {
 						$row['IP'] = self::inet_ntop($row['IP']);
+						$row['region'] = wfUtils::shouldDisplayRegion($row['countryName']) ? $row['region'] : '';
 						$IPLocs[$ip_printable] = $row;
 					}
 				}
@@ -1470,7 +1471,7 @@ class wfUtils {
 							$IPLocs[$IP] = array(
 								'IP' => $IP,
 								'city' => $value[3],
-								'region' => $value[2],
+								'region' => wfUtils::shouldDisplayRegion($value[1]) ? $value[2] : '',
 								'countryName' => $value[1],
 								'countryCode' => $value[0],
 								'lat' => $value[4],
@@ -1583,6 +1584,10 @@ class wfUtils {
 		} else {
 			return '';
 		}
+	}
+	public static function shouldDisplayRegion($country) {
+		$countries_to_show_for = array('united states', 'canada', 'australia');
+		return in_array(strtolower($country), $countries_to_show_for);
 	}
 	public static function extractBareURI($URL){
 		$URL = preg_replace('/^https?:\/\/[^\/]+/i', '', $URL); //strip of method and host

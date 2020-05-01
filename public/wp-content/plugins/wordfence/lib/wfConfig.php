@@ -80,7 +80,6 @@ class wfConfig {
 			"scansEnabled_suspiciousAdminUsers" => array('value' => true, 'autoload' => self::AUTOLOAD),
 			"liveActivityPauseEnabled" => array('value' => true, 'autoload' => self::AUTOLOAD),
 			"firewallEnabled" => array('value' => true, 'autoload' => self::AUTOLOAD),
-			"blockFakeBots" => array('value' => false, 'autoload' => self::AUTOLOAD),
 			"autoBlockScanners" => array('value' => true, 'autoload' => self::AUTOLOAD),
 			"loginSecurityEnabled" => array('value' => true, 'autoload' => self::AUTOLOAD),
 			"loginSec_strongPasswds_enabled" => array('value' => true, 'autoload' => self::AUTOLOAD),
@@ -1844,7 +1843,6 @@ Options -ExecCGI
 			case self::OPTIONS_TYPE_FIREWALL:
 				$options = array(
 					'firewallEnabled',
-					'blockFakeBots',
 					'autoBlockScanners',
 					'loginSecurityEnabled',
 					'loginSec_strongPasswds_enabled',
@@ -2005,7 +2003,6 @@ Options -ExecCGI
 					'email_summary_excluded_directories',
 					'howGetIPs_trusted_proxies',
 					'firewallEnabled',
-					'blockFakeBots',
 					'autoBlockScanners',
 					'loginSecurityEnabled',
 					'loginSec_strongPasswds_enabled',

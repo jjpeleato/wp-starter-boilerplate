@@ -5,7 +5,7 @@ Tags: optimize, image, convert, webp, resize, compress, lazy load, optimization,
 Requires at least: 5.0
 Tested up to: 5.4
 Requires PHP: 5.6
-Stable tag: 5.2.5
+Stable tag: 5.3.0
 License: GPLv3
 
 Speed up your website to better connect with your visitors. Properly compress and size/scale images. Includes lazy load and WebP convert.
@@ -172,6 +172,31 @@ https://developers.google.com/web/tools/lighthouse/audits/optimize-images
 
 * Feature requests can be viewed and submitted at https://github.com/nosilver4u/ewww-image-optimizer/labels/enhancement
 * If you would like to help translate this plugin in your language, get started here: https://translate.wordpress.org/projects/wp-plugins/ewww-image-optimizer/
+
+= 5.3.0 =
+* added: Easy IO replaces image URLs within style elements for page builders like Elementor and Divi
+* added: option to use <picture> tags for WebP rewriting
+* added: ability to define exclusions for JS WebP and <picture> WebP
+* added: include .webp images when using WP Offload Media to copy images from bucket to server
+* added: cleanup/migration tool for folks using EWWW IO 3+ years to remove old metadata entries
+* added: fetch original_image for optimization when local images are removed (WP Offload Media and Microsoft Azure Storage for WordPress)
+* changed: scheduled optimizer uses async/background mode to prevent timeouts
+* changed: images that exceed the max resize dimensions will be queued by the bulk scanner even if previously compressed
+* changed: for security, EWWW IO will only optimize images within the WP root folder, content folder, or uploads folder
+* changed: WebP Only mode will bypass the check for TinyPNG compression
+* changed: background/async mode uses better queueing system for speed and reliability
+* changed: image queue information moved to Tools page
+* changed: image re-opt troubleshooting moved to Tools page
+* fixed: noresize in filename has no effect when using Media File Renamer
+* fixed: debug_message() throws a warning with non-string values
+* fixed: notices when uploading animated GIFs using GD
+* fixed: notices when parsing JSON data from Envira
+* fixed: fatal error when a WP_Error is passed from Envira to Easy IO
+* fixed: executables could not be installed on Windows due to behavior of is_executable() on directories
+* fixed: Include All Resources rewrites wrong URLs when quotes are html-encoded
+* fixed: <picture> tags do not follow Lazy Load exclusions
+* fixed: <picture> tags broken when exluding images from Lazy Load
+* fixed: Azure storage plugin doesn't re-upload optimized images
 
 = 5.2.5 =
 * removed: data-pin-media attribute, as Pinterest is handling WebP images properly now

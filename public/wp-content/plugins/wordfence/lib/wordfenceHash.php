@@ -204,15 +204,19 @@ class wordfenceHash {
 			$indexedFiles = array();
 			
 			if (count($this->only) > 0) {
-				$files = $this->only;
+				$files = $this->only; //These are absolute paths
 			}
-			else {
-				$files = scandir($this->path);
+			else { //This code path generally should not get hit
+				$rawFiles = scandir($this->path);
+				$files = array();
+				foreach ($rawFiles as $file) {
+					if ($file == '.' || $file == '..') { continue; }
+					$fullFile = rtrim($this->path, '/') . '/' . $file;
+					$files[] = $fullFile;
+				}
 			}
 			
 			foreach ($files as $file) {
-				if ($file == '.' || $file == '..') { continue; }
-				$file = $this->path . $file;
 				$this->_dirIndex($file, $indexedFiles);
 			}
 			$this->_serviceIndexQueue($indexedFiles, true);

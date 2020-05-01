@@ -792,7 +792,11 @@ class wfScanEngine {
 	private function _scannedSkippedPaths() {
 		static $_cache = null;
 		if ($_cache === null) {
-			$baseWPStuff = array( '.htaccess', 'index.php', 'license.txt', 'readme.html', 'wp-activate.php', 'wp-admin', 'wp-app.php', 'wp-blog-header.php', 'wp-comments-post.php', 'wp-config-sample.php', 'wp-content', 'wp-cron.php', 'wp-includes', 'wp-links-opml.php', 'wp-load.php', 'wp-login.php', 'wp-mail.php', 'wp-pass.php', 'wp-register.php', 'wp-settings.php', 'wp-signup.php', 'wp-trackback.php', 'xmlrpc.php', '.well-known', 'cgi-bin');
+			$base_abspath_relative = array('.htaccess', 'index.php', 'license.txt', 'readme.html', 'wp-activate.php', 'wp-admin', 'wp-app.php', 'wp-blog-header.php', 'wp-comments-post.php', 'wp-config-sample.php', 'wp-content', 'wp-cron.php', 'wp-includes', 'wp-links-opml.php', 'wp-load.php', 'wp-login.php', 'wp-mail.php', 'wp-pass.php', 'wp-register.php', 'wp-settings.php', 'wp-signup.php', 'wp-trackback.php', 'xmlrpc.php', '.well-known', 'cgi-bin');
+			$base_absolute = array();
+			if (defined('WP_CONTENT_DIR') && strlen(WP_CONTENT_DIR)) { $base_absolute[] = WP_CONTENT_DIR; }
+			if (defined('WP_PLUGIN_DIR') && strlen(WP_PLUGIN_DIR)) { $base_absolute[] = WP_PLUGIN_DIR; }
+			if (defined('UPLOADS') && strlen(UPLOADS)) { $base_absolute[] = ABSPATH . UPLOADS; /* UPLOADS is relative to ABSPATH unlike the others */ }
 			$baseContents = scandir(ABSPATH);
 			if (!is_array($baseContents)) {
 				throw new Exception("Wordfence could not read the contents of your base WordPress directory. This usually indicates your permissions are so strict that your web server can't read your WordPress directory.");
@@ -800,7 +804,7 @@ class wfScanEngine {
 			
 			$scanOutside = $this->scanController->scanOutsideWordPress();
 			if ($scanOutside) {
-				$_cache = array('scanned' => array('' /* Ends up as a literal ABSPATH */), 'skipped' => array());
+				$_cache = array('scanned' => array_merge(array(ABSPATH), $base_absolute), 'skipped' => array());
 				return $_cache;
 			}
 			
@@ -810,12 +814,18 @@ class wfScanEngine {
 				if ($file == '.' || $file == '..') { continue; }
 				$fullFile = rtrim(ABSPATH, '/') . '/' . $file;
 				if (!wfUtils::fileTooBig($fullFile)) { //Silently ignore files that are too large for the purposes of inclusion in the scan issue
-					if (in_array($file, $baseWPStuff) || (@is_file($fullFile) && @is_readable($fullFile))) {
-						$scanned[] = $file;
+					if (in_array($file, $base_abspath_relative) || (@is_file($fullFile) && @is_readable($fullFile))) {
+						$scanned[] = realpath($fullFile);
 					}
 					else {
-						$skipped[] = $file;
+						$skipped[] = $fullFile;
 					}
+				}
+			}
+			foreach ($base_absolute as $fullFile) {
+				$realFile = realpath($fullFile);
+				if ($realFile && !in_array($realFile, $scanned)) {
+					$scanned[] = $realFile;
 				}
 			}
 			$_cache = array('scanned' => $scanned, 'skipped' => $skipped);
@@ -830,7 +840,12 @@ class wfScanEngine {
 		$paths = $this->_scannedSkippedPaths();
 		if (!empty($paths['skipped'])) {
 			$skippedList = '';
-			foreach ($paths['skipped'] as $index => $path) {
+			foreach ($paths['skipped'] as $index => $fullPath) {
+				$path = esc_html($fullPath);
+				if (strpos($fullPath, ABSPATH) === 0) {
+					$path = '~/' . esc_html(substr($fullPath, strlen(ABSPATH)));
+				}
+				
 				if ($index >= 10) {
 					$skippedList .= sprintf(__(', and %d more.', 'wordfence'), count($paths['skipped']) - 10);
 					break;
@@ -848,7 +863,7 @@ class wfScanEngine {
 					}
 				}
 				
-				$skippedList .= '~/' . esc_html($path);
+				$skippedList .= $path;
 			}
 			
 			$c = count($paths['skipped']);
