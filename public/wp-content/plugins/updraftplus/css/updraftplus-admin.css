@@ -1958,7 +1958,7 @@ section.premium-upgrade-purchase-success p {
 	font-size: 120%;
 }
 
-#backupnow_includefiles_moreoptions, #backupnow_database_moreoptions {
+#backupnow_includefiles_moreoptions, #backupnow_database_moreoptions, #backupnow_includecloud_moreoptions {
 	margin: 4px 16px 6px 16px;
 	border: 1px dotted;
 	padding: 6px 10px;
@@ -3379,6 +3379,22 @@ span#updraftplus_ajax_restore_last_activity {
 
 .updraft_restore_main--components .updated.show_admin_restore_in_progress_notice button {
 	margin-right: 5px;
+}
+
+#updraft_migrate_receivingsites .updraftplus-remote-sites-selector .button-primary, .updraft_migrate_add_site .input-field input, .updraft_migrate_add_site button {
+	vertical-align: middle;
+}
+
+#updraft_migrate_receivingsites .text-link-menu a:not(:last-child) {
+	padding-right: 10px;
+}
+
+#updraft_migrate_receivingsites a.updraft_migrate_clear_sites span.dashicons-trash:before {
+	font-size: 17px;
+}
+
+#updraft_migrate_receivingsites .updraft_migrate_add_site {
+	clear: both;
 }
 
 @media only screen and (min-width: 1024px) {

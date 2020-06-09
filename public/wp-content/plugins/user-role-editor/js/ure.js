@@ -296,8 +296,13 @@ var ure_main = {
     
 
     sizes_update: function () {
+        
         var width = jQuery('#ure_caps_td').css('width');
-        jQuery('#ure_caps_list_container').css('width', width);
+        var el = jQuery('#ure_caps_list_container');
+        el.css('width', width);
+        var height = jQuery('#ure_caps_td').css('height');
+        el.css('max-height', height);
+        
     },
 
 
@@ -926,12 +931,21 @@ var ure_main = {
     filter_capabilities: function( cap_id ) {
         var div_list = jQuery('.ure-cap-div');
         for (var i = 0; i < div_list.length; i++) {
-            if (cap_id !== '' && div_list[i].id.substr(11).indexOf(cap_id) !== -1) {
-                jQuery('#'+ div_list[i].id).addClass('ure_tag');
-                div_list[i].style.color = '#27CF27';
+            var el = jQuery('#'+ div_list[i].id);
+            if ( cap_id !== '' ) {
+                if (div_list[i].id.substr(11).indexOf(cap_id) !== -1 ) {
+                    el.addClass('ure_tag');
+                    el.removeClass('filtered');
+                    div_list[i].style.color = '#27CF27';
+                } else {                                    
+                    el.removeClass('ure_tag');
+                    el.addClass('filtered');
+                    div_list[i].style.color = '#000000';
+                }
             } else {
+                el.removeClass('ure_tag');
+                el.removeClass('filtered');
                 div_list[i].style.color = '#000000';
-                jQuery('#'+ div_list[i].id).removeClass('ure_tag');
             }
         }
 

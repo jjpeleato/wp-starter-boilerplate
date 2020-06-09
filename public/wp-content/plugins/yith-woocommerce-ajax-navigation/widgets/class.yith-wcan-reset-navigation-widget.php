@@ -60,7 +60,7 @@ if ( ! class_exists( 'YITH_WCAN_Reset_Navigation_Widget' ) ) {
                     if( yit_is_filtered_uri() && ( isset( $_GET['min_price'] ) || isset( $_GET['max_price'] ) ) && is_product_taxonomy() ){
                         $queried_object = get_queried_object();
 
-                        if( $queried_object instanceof WP_Term ){
+                        if( $queried_object instanceof WP_Term && ! isset( $_GET[ $queried_object->taxonomy ] ) ){
                             $link = get_term_link( $queried_object );
                         }
                     }

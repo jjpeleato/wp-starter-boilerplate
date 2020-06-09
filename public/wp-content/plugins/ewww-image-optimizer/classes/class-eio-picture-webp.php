@@ -24,6 +24,14 @@ class EIO_Picture_Webp extends EIO_Page_Parser {
 	protected $user_exclusions = array();
 
 	/**
+	 * A list of user-defined (element-type) exclusions, populated by validate_user_exclusions().
+	 *
+	 * @access protected
+	 * @var array $user_exclusions
+	 */
+	protected $user_element_exclusions = array();
+
+	/**
 	 * Allowed paths for Picture WebP.
 	 *
 	 * @access protected
@@ -165,6 +173,7 @@ class EIO_Picture_Webp extends EIO_Page_Parser {
 			! empty( $_GET['cornerstone'] ) ||
 			strpos( $uri, 'cornerstone-endpoint' ) !== false ||
 			did_action( 'cornerstone_boot_app' ) || did_action( 'cs_before_preview_frame' ) ||
+			'/print/' === substr( $uri, -7 ) ||
 			! empty( $_GET['et_fb'] ) ||
 			! empty( $_GET['tatsu'] ) ||
 			( ! empty( $_POST['action'] ) && 'tatsu_get_concepts' === $_POST['action'] ) ||
@@ -173,6 +182,7 @@ class EIO_Picture_Webp extends EIO_Page_Parser {
 			( defined( 'REST_REQUEST' ) && REST_REQUEST ) ||
 			preg_match( '/^<\?xml/', $buffer ) ||
 			strpos( $buffer, 'amp-boilerplate' ) ||
+			$this->is_amp() ||
 			ewww_image_optimizer_ce_webp_enabled()
 		) {
 			if ( empty( $buffer ) ) {
@@ -186,6 +196,9 @@ class EIO_Picture_Webp extends EIO_Page_Parser {
 			}
 			if ( did_action( 'cornerstone_boot_app' ) || did_action( 'cs_before_preview_frame' ) ) {
 				ewwwio_debug_message( 'cornerstone app/preview' );
+			}
+			if ( '/print/' === substr( $uri, -7 ) ) {
+				$this->debug_message( 'print page template' );
 			}
 			if ( ! empty( $_GET['et_fb'] ) ) {
 				ewwwio_debug_message( 'et_fb' );
@@ -207,6 +220,9 @@ class EIO_Picture_Webp extends EIO_Page_Parser {
 			}
 			if ( strpos( $buffer, 'amp-boilerplate' ) ) {
 				ewwwio_debug_message( 'AMP page processing' );
+			}
+			if ( $this->is_amp() ) {
+				ewwwio_debug_message( 'AMP page processing (is_amp)' );
 			}
 			if ( ewww_image_optimizer_ce_webp_enabled() ) {
 				ewwwio_debug_message( 'Cache Enabler WebP enabled' );

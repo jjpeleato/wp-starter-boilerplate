@@ -84,6 +84,12 @@ class Updraft_Restorer {
 	public $skin = null;
 	
 	public $strings = array();
+	
+	private $generated_columns = array();
+
+	private $supported_generated_column_engines = array();
+
+	private $generated_columns_exist_in_the_statement = array();
 
 	private $printed_new_table_prefix = false;
 
@@ -2310,6 +2316,91 @@ class Updraft_Restorer {
 			$this->restored_table_names[] = $this->new_table_name;
 		}
 
+		if (!empty($this->generated_columns[$this->table_name]) && isset($this->generated_columns[$this->table_name]['columns'])) {
+
+			// get all the keys definition in the create table statement if any.
+			// preg_match_all('/\s*[^,]+?key\s*[^(]+\(\s*(`.+?(?:\)|`))\s*\),?/i', $create_table_statement, $key_definitions);
+			// https://regex101.com/r/NEXaLy/1/
+			preg_match_all('/(?<![\S"\',])[^"\',]+?KEY\s*[^(]+\(\s*(`.+?(?:\)|`))\s*\)\s*(?:,|\))(?![\S"\',])/i', $create_table_statement, $key_definitions);
+
+			$reversed_generated_columns = array_reverse((array) $this->generated_columns[$this->table_name]['columns']);
+			foreach ((array) $reversed_generated_columns as $generated_column) {
+				if (empty($generated_column)) continue;
+				if (!isset($this->supported_generated_column_engines[strtolower($this->table_engine)])) $this->supported_generated_column_engines[strtolower($this->table_engine)] = UpdraftPlus_Database_Utility::is_generated_column_supported($this->table_engine);
+				if ($generated_column_db_info = $this->supported_generated_column_engines[strtolower($this->table_engine)]) {
+
+					$reversed_data_type_definition = array_reverse((array) $generated_column['column_data_type_definition']);
+					foreach ($reversed_data_type_definition as $key => &$data_type_definition) {
+						if (in_array($key, array('DATA_TYPE_TOKEN', 'GENERATED_ALWAYS_TOKEN', 'COMMENT_TOKEN'))) continue; // we dont want to replace "not null" in the "generated always as" expression, neither in the comments' string as well, so we continue
+						if (empty($data_type_definition) || 0 === strlen(trim($data_type_definition[0]))) continue;
+						if (!$generated_column_db_info['is_not_null_supported']) {
+							// If the database server doesn't support either null or not null constraint on generated virtual/stored/persistent column then the constraints need to be removed
+							$replaced_data_type_definition = preg_replace('/\b(?:not\s+null|null)\b/i', '', $data_type_definition[0]);
+							$create_table_statement = substr_replace($create_table_statement, $replaced_data_type_definition, $data_type_definition[1], strlen($data_type_definition[0]));
+							$data_type_definition[0] = $replaced_data_type_definition;
+						}
+						if (!$generated_column['is_virtual'] && !$generated_column_db_info['is_persistent_supported']) {
+							// If the persistent type is not supported it likely means that the currently running db server is MySQL, Mariadb uses persistent as an alias for stored type so if the backup file is taken from MariaDB then it needs to be changed to stored
+							$replaced_data_type_definition = preg_replace('/\bpersistent\b/i', 'STORED', $data_type_definition[0]);
+							$create_table_statement = substr_replace($create_table_statement, $replaced_data_type_definition, $data_type_definition[1], strlen($data_type_definition[0]));
+							$data_type_definition[0] = $replaced_data_type_definition;
+						}
+					}
+
+					if ($generated_column['is_virtual'] && ($generated_column_db_info['can_insert_ignore_to_generated_column'] || (isset($this->generated_columns_exist_in_the_statement[$this->table_name]) && false === $this->generated_columns_exist_in_the_statement[$this->table_name])) && !$generated_column_db_info['is_virtual_index_supported'] && !empty($key_definitions)) {
+						// MySQL doesn't support index on MyISAM's virtual generated column, in case that the restoration process is importing from MariaDB backup file which contains create index definition on virtual generated column then it needs to be removed too
+						// the column can be defined as a single or composite index, so we have no choice but loop until the end
+						foreach ($key_definitions[1] as $array_index => $column_names) {
+							if (empty($column_names)) continue;
+							if (empty($key_definitions[0][$array_index])) continue;
+							if (is_numeric(stripos($column_names, $generated_column['column_name']))) {
+								$replaced_key_definition = preg_replace('/(\s*,?[^,]+?key\s*[^(]+\(.*?)(`'.$generated_column['column_name'].'`\s*(?:\([0-9]+\)\s*)?,|,\s*`'.$generated_column['column_name'].'`\s*(?:\([0-9]+\)\s*)?|\s*`'.$generated_column['column_name'].'`\s*(?:\([0-9]+\)\s*)?)(.*\))/ism', '$1$3', $key_definitions[0][$array_index]);
+								$create_table_statement = str_ireplace($key_definitions[0][$array_index], $replaced_key_definition, $create_table_statement);
+								$key_definitions[0][$array_index] = $replaced_key_definition;
+								if (preg_match('/\s*,?[^,]+?key\s*[^(]+\(\s*\)\s*,?/i', $key_definitions[0][$array_index])) {
+									$create_table_statement = preg_replace('/\s*,?[^,]+?key\s+[^(]+\(\s*\)\s*/i', '', $create_table_statement);
+									$key_definitions[0][$array_index] = '';
+								}
+							}
+						}
+					}
+
+					if (!$generated_column_db_info['can_insert_ignore_to_generated_column'] && isset($this->generated_columns_exist_in_the_statement[$this->table_name]) && true === $this->generated_columns_exist_in_the_statement[$this->table_name]) {
+						foreach ($reversed_data_type_definition as $key => &$data_type_definition) {
+							if (empty($data_type_definition) || 0 === strlen(trim($data_type_definition[0]))) continue;
+							if ('GENERATED_ALWAYS_TOKEN' === $key) {
+								// if it's not possible to use insert ignore for the generated column even if the sql strict mode has been turned off then first we need to change the generated column to a normal/standard column
+								$create_table_statement = substr_replace($create_table_statement, '', $data_type_definition[1], strlen($data_type_definition[0]));
+								$data_type_definition[0] = '';
+							} elseif (!in_array($key, array('DATA_TYPE_TOKEN', 'COMMENT_TOKEN'))) {
+								// since "comments" and "generated always as" could contain a string of these keywords (virtual/stored/persistent), so we can't use preg_replace and $generated_column['column_definition'] var as the subject to replace the keyword to an empty string, but instead we lookup the keyword through column_data_type_definition that has captured data type definitions
+								$replaced_data_type_definition = preg_replace('/\b(?:virtual|stored|persistent)\b/i', '', $data_type_definition[0]);
+								$create_table_statement = substr_replace($create_table_statement, $replaced_data_type_definition, $data_type_definition[1], strlen($data_type_definition[0]));
+								$data_type_definition[0] = $replaced_data_type_definition;
+							}
+						}
+						// once the create table and also the insert ignore statement for the corresponding table have been executed, we will use alter table statement to change back the columns to STORED type
+						// this is the only way to avoid "value specified for generated column is not allowed" error, and I think it is the best we can do for now rather than checking the insert statement for virtual columns and replacing the value with DEFAULT
+					}
+				} else {
+					// generated column is not supported but we found a virtual/stored/persistent column type, so it needs to be changed to a normal/standard column
+					// we need to keep the generated column along with its single key index and composite key index so that the select statement on the upper layer of the application which selects the the virtual column does not break the application itself due to unknown column error
+					$reversed_data_type_definition = array_reverse((array) $generated_column['column_data_type_definition']);
+					foreach ($reversed_data_type_definition as $key => &$data_type_definition) {
+						if (empty($data_type_definition) || 0 === strlen(trim($data_type_definition[0]))) continue;
+						if ('GENERATED_ALWAYS_TOKEN' === $key) {
+							$create_table_statement = substr_replace($create_table_statement, '', $data_type_definition[1], strlen($data_type_definition[0]));
+							$data_type_definition[0] = '';
+						} elseif (!in_array($key, array('DATA_TYPE_TOKEN', 'COMMENT_TOKEN'))) {
+							$replaced_data_type_definition = preg_replace('/\b(?:virtual|stored|persistent)\b/i', '', $data_type_definition[0]);
+							$create_table_statement = substr_replace($create_table_statement, $replaced_data_type_definition, $data_type_definition[1], strlen($data_type_definition[0]));
+							$data_type_definition[0] = $replaced_data_type_definition;
+						}
+					}
+				}
+			}
+		}
+
 		$updraftplus->log($logline);
 		$updraftplus->log($print_line, 'notice-restore');
 		$this->restoring_table = $this->new_table_name;
@@ -2438,6 +2529,7 @@ class Updraft_Restorer {
 
 		$this->last_error = '';
 		$random_table_name = 'updraft_tmp_'.rand(0, 9999999).md5(microtime(true));
+		$last_created_generated_columns_table = '';
 
 		// The only purpose in funnelling queries directly here is to be able to get the error number
 		if ($this->use_wpdb()) {
@@ -2543,6 +2635,7 @@ class Updraft_Restorer {
 
 		$delimiter = ';';
 		$delimiter_regex = ';';
+		$virtual_columns_exist = false;
 		
 		// N.B. There is no such function as bzeof() - we have to detect that another way
 		while (($is_plain && !feof($dbhandle)) || (!$is_plain && (($is_bz2) || (!$is_bz2 && !gzeof($dbhandle))))) {
@@ -2637,10 +2730,29 @@ class Updraft_Restorer {
 			}
 
 			// Detect INSERT and various other commands early, so that we can split or combine them if necessary
-			if (preg_match('/^\s*(insert into \`?([^\`]*)\`?\s+(values|\())/i', $sql_line.$buffer, $matches)) {
+			if (preg_match('/^\s*(insert\s\s*into(?:\s*`(.+?)`|[^\(]+)(?:\s*\(.+?\))?\s*(?:values|\())/i', $sql_line.$buffer, $matches)) {
+				// https://regex101.com/r/zrQquQ/2
 				$this->table_name = $matches[2];
 				$sql_type = 3;
 				$insert_prefix = $matches[1];
+
+				// if the current table is a generated columns table, that means at this stage the table creation is being postponed and the block of code below will get executed first to filter the create statement
+				if (!empty($this->generated_columns[$this->table_name])) {
+					// parse the generated columns insert statement so that later we can instantly retrieve the information needed when creating the table
+					$this->generated_columns_exist_in_the_statement[$this->table_name] = UpdraftPlus_Database_Utility::generated_columns_exist_in_the_statement($sql_line.$buffer, $this->generated_columns[$this->table_name]['column_names']);
+					if ($this->table_name != $last_created_generated_columns_table) {
+						$create_statement = $this->prepare_create_table($this->generated_columns[$this->table_name]['create_statement'], $import_table_prefix, $supported_engines, $supported_charsets, $supported_collations);
+						// after getting the filtered create statement, continue with the table creation
+						$do_exec = $this->sql_exec($create_statement, 2, $import_table_prefix);
+						$last_created_generated_columns_table = $this->table_name;
+						if (is_wp_error($do_exec)) return $do_exec;
+					}
+					// on MySQL 5.7.x, we could get an error "the value specified for generated column is not allowed", disabling strict mode doesn't work, adding insert ignore doesn't work either
+					// disabling strict mode works fine on MariaDB, it may be good if we can strengthen the insert statement by adding ignore keyword into it
+					$sql_line = preg_replace('/^(\s*insert\s\s*into)(.+)$/is', 'insert ignore into$2', $sql_line);
+					$insert_prefix = preg_replace('/^(\s*insert\s\s*into)(.+)$/is', 'insert ignore into$2', $matches[0]);
+				}
+
 			} elseif (preg_match('/^\s*delimiter (\S+)\s*$/i', $sql_line.$buffer, $matches)) {
 				// This also needs processing early so that the correct delimiter is used a few lines down
 				$sql_type = 10;
@@ -2653,6 +2765,22 @@ class Updraft_Restorer {
 			} elseif (preg_match("/^[^'\"]*create[^'\"]*(?:definer\s*=\s*(?:`.{1,17}`@`[^\s]+`|'.{1,17}'@'[^\s]+').+?)?(?:function(?:\s\s*if\s\s*not\s\s*exists)?|procedure)\s*`([^\r\n]+)`/is", $sql_line.$buffer)) {
 				$sql_type = 12;
 				$buffer = $buffer."\n"; // need to do this so that the functions/procedures which have double dash and/or shell comment style (i.e -- comment, # comment) doesn't block the rest of the code in the routines body and also because we want to keep the routines as it is or in multiline (in a form that people prefer) so they who will edit it later don't get surprised by the look of it in a single line/one line
+			} elseif (preg_match('/^\s*create table \`?([^\`\(]*)\`?\s*\(/i', $sql_line.$buffer, $matches)) {
+				$sql_type = 2;
+				$this->table_name = $matches[1];
+				// check whether the column definition is a generated column
+				$generated_column_info = UpdraftPlus_Database_Utility::get_generated_column_info($buffer, strlen($sql_line));
+				if ($generated_column_info) {
+					if (!isset($this->generated_columns[$this->table_name])) $this->generated_columns[$this->table_name] = array();
+					if (!$virtual_columns_exist) $virtual_columns_exist = $generated_column_info['is_virtual'];
+					$this->generated_columns[$this->table_name]['columns'][] = $generated_column_info;
+					$this->generated_columns[$this->table_name]['column_names'][] = $generated_column_info['column_name'];
+				}
+				if (!empty($this->generated_columns[$this->table_name]) && substr($sql_line.$buffer, -strlen($delimiter), strlen($delimiter)) == $delimiter) {
+					$this->generated_columns[$this->table_name]['create_statement'] = $sql_line.$buffer;
+					$this->generated_columns[$this->table_name]['virtual_columns_exist'] = $virtual_columns_exist;
+					$virtual_columns_exist = false;
+				}
 			}
 
 			// Deal with case where adding this line will take us over the MySQL max_allowed_packet limit - must split, if we can (if it looks like consecutive rows)
@@ -2749,7 +2877,9 @@ class Updraft_Restorer {
 				$sql_type = 2;
 				$this->insert_statements_run = 0;
 				$this->table_name = $matches[1];
-				if ($this->table_should_be_skipped($this->table_name)) {
+
+				// regardless of whether or not the table should be skipped, the table creation should also be postponed if the table contains one or more generated columns
+				if ($this->table_should_be_skipped($this->table_name) || !empty($this->generated_columns[$this->table_name])) {
 					// Reset
 					$sql_line = '';
 					$sql_type = -1;
@@ -2764,9 +2894,9 @@ class Updraft_Restorer {
 
 				$sql_line = $this->prepare_create_table($sql_line, $import_table_prefix, $supported_engines, $supported_charsets, $supported_collations);
 
-			} elseif (preg_match('/^\s*(insert into \`?([^\`]*)\`?\s+(values|\())/i', $sql_line, $matches)) {
+			} elseif (preg_match('/^\s*insert(?:\s\s*ignore)?\s\s*into(?:\s*`(.+?)`|[^\(]+)(?:\s*\(.+?\))?\s*(?:values|\()/i', $sql_line, $matches)) {
 				$sql_type = 3;
-				$this->table_name = $matches[2];
+				$this->table_name = $matches[1];
 				if ($this->table_should_be_skipped($this->table_name)) {
 					// Reset
 					$sql_line = '';
@@ -2797,7 +2927,7 @@ class Updraft_Restorer {
 					$charset = $connection_charset;
 				}
 				$this->set_names = $charset;
-				if (!isset($supported_charsets[$charset])) {
+				if (!isset($supported_charsets[strtolower($charset)])) {
 					$sql_line = UpdraftPlus_Manipulation_Functions::str_lreplace($smatches[1]." ".$charset, "SET NAMES ".$this->restore_options['updraft_restorer_charset'], $sql_line);
 					$updraftplus->log('SET NAMES: '.sprintf(__('Requested character set (%s) is not present - changing to %s.', 'updraftplus'), esc_html($charset), esc_html($this->restore_options['updraft_restorer_charset'])), 'notice-restore');
 				}
@@ -2823,6 +2953,9 @@ class Updraft_Restorer {
 				$sql_type = 10;
 			} elseif (preg_match('/^CREATE(\s+ALGORITHM=\S+)?(\s+DEFINER=\S+)?(\s+SQL SECURITY (\S+))?\s+VIEW/i', $sql_line, $matches)) {
 				$sql_type = 11;
+				// remove DEFINER clause from the create view statement and add or replace SQL SECURITY DEFINER with INVOKER
+				// https://regex101.com/r/2tOEhe/4/
+				$sql_line = preg_replace('/^(\s*CREATE\s\s*(?\'or_replace\'OR\s\s*REPLACE\s\s*)?(?\'algorithm\'ALGORITHM\s*=\s*[^\s]+\s\s*)?)(?\'definer\'DEFINER\s*=\s*(?:`.{1,17}`@`[^\s]+`\s*|\'.{1,17}\'@\'[^\s]+\'\s*|[^\s]+?\s\s*))?(?\'sql_security\'SQL\s\s*SECURITY\s\s*[^\s]+?\s\s*)?(VIEW(?:\s\s*IF\s\s*NOT\s\s*EXISTS)?(?:\s*`(?:[^`]|``)+`\s*|\s\s*[^\s]+\s\s*)AS)/is', "$1 SQL SECURITY INVOKER $6", $sql_line);
 				if ($this->old_table_prefix) {
 					foreach (array_keys($this->restore_this_table) as $table_name) {
 						// Code for a view can contain pretty much anything. As such, we want to be minimise the risks of unwanted matches.
@@ -2843,6 +2976,38 @@ class Updraft_Restorer {
 				if (is_wp_error($do_exec)) return $do_exec;
 			} else {
 				$updraftplus->log("Skipped execution of SQL statement (unwanted or internally handled type=$sql_type): $sql_line");
+			}
+
+			// currently, the way UDP backups the generated column is different with the way mysqldump does it.
+			// mysqldump doesn't include all of the columns/fields value into the insert statement but instead it specifies only non generated-columns to be included in the insert statement (i.e insert into `table`(`non-generated-column1`,`non-generated-column2`) values('value','value2'))
+			// UDP includes all the columns (i.e insert into `table` values ('non-generated-column-value1', 'non-generated-column-value2', 'virtual-column-value', 'stored-column-value'))
+			// the code below will only get executed if the running DB server is MySQL and the insert statement has all the columns included. If we change the way UDP backup the generated columns to be the same as mysqldump then the code below is no longer necessary and can be removed
+			if (3 == $sql_type && !empty($this->generated_columns[$this->table_name])) {
+				// MySQL doesn't allow the "generated columns" value takes its place in the insert statement, and because of that the only solution is to change the generated columns to standard columns which have been done previously
+				// now we need to change it back to generated columns but unfortunately changing it to virtual type wont work, it can only be changed to stored type
+				if (!isset($this->supported_generated_column_engines[strtolower($this->table_engine)])) $this->supported_generated_column_engines[strtolower($this->table_engine)] = UpdraftPlus_Database_Utility::is_generated_column_supported($this->table_engine);
+				if (($generated_column_db_info = $this->supported_generated_column_engines[strtolower($this->table_engine)]) && !$generated_column_db_info['can_insert_ignore_to_generated_column'] && isset($this->generated_columns_exist_in_the_statement[$this->table_name]) && true === $this->generated_columns_exist_in_the_statement[$this->table_name]) {
+					foreach ((array) $this->generated_columns[$this->table_name]['columns'] as $generated_column) {
+						$new_data_type_definition = "`{$generated_column['column_name']}`";
+						foreach ((array) $generated_column['column_data_type_definition'] as $key => $data_type_definition) {
+							if (empty($data_type_definition) || 0 === strlen(trim($data_type_definition[0]))) continue;
+							if (in_array($key, array('DATA_TYPE_TOKEN', 'GENERATED_ALWAYS_TOKEN', 'COMMENT_TOKEN'))) {
+								$new_data_type_definition .= " ".$data_type_definition[0];
+								continue; // we only want the data type options after the "generated always as()", so we continue
+							}
+							// If the database server doesn't support either null or not null constraint on generated virtual/stored/persistent column then the constraints need to be removed
+							$new_data_type_definition .= $generated_column_db_info['is_not_null_supported'] ? $data_type_definition[0] : preg_replace('/\b(?:not\s+null|null)\b/i', '', $data_type_definition[0]);
+							if (!$generated_column['is_virtual']) {
+								// If the persistent type is not supported it likely means that the currently running db server is MySQL, Mariadb uses persistent as an alias for stored type so if the backup file is taken from MariaDB then it needs to be changed to stored
+								$new_data_type_definition = $generated_column_db_info['is_persistent_supported'] ? $new_data_type_definition : preg_replace('/\bpersistent\b/i', 'STORED', $new_data_type_definition);
+							}
+						}
+						$new_data_type_definition = preg_replace('/\bvirtual\b/i', 'STORED', $new_data_type_definition);
+						// altering table could take minutes or hours to complete depending on the size of the rows of the table
+						$do_exec = $this->sql_exec(sprintf("alter table `%s` change `%s` %s", $this->new_table_name, $generated_column['column_name'], $new_data_type_definition), -1);
+						if (is_wp_error($do_exec)) return $do_exec;
+					}
+				}
 			}
 
 			// Reset

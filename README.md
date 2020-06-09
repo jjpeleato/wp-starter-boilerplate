@@ -74,6 +74,7 @@ For more information visit:
 6. Copy the `public/wp-config-sample.php` to `public/wp-config.php`.
     - Add the following code:
     ```php
+   <?php
     define('WP_MEMORY_LIMIT', '256M');
     define('WP_ENVIRONMENT', 'dev');
     define('WP_CACHE', false);
@@ -84,6 +85,15 @@ For more information visit:
     define( 'WP_DEBUG_DISPLAY', true );
     ...
     ```
+    - Change these credentials:
+        - `define( 'DB_NAME', 'wordpress' );`
+        - `define( 'DB_USER', 'wordpress' );`
+        - `define( 'DB_PASSWORD', 'wordpress' );`
+        - `define( 'DB_HOST', 'database' );`
+        - `define( 'DB_CHARSET', 'utf8mb4' );`
+        - `define( 'DB_COLLATE', 'utf8mb4_general_ci' );`
+    - Change Authentication Unique Keys and Salts. Open the link `https://api.wordpress.org/secret-key/1.1/salt/`, copy and replace in the correct section.
+    - Change table prefix. Only numbers, letters, and underscores. For example: `$table_prefix = 'j28p_';`
 7. Copy the `assets/.htaccess.dist` to `public/.htaccess`.
 8. Open your terminal and browse to the root location of your project.
 9. Run `$lando start`.
@@ -129,23 +139,25 @@ For more information visit:
 The present project uses several technologies and tools for the automation and development process. For more information and learning visit the following links.
 
 1. WordPress: https://wordpress.org/
-2. Git: https://git-scm.com/
-3. Lando: https://docs.devwithlando.io/
-4. Deployer: https://deployer.org/
-5. Composer: https://getcomposer.org/
-6. NPM: https://www.npmjs.com/
-7. Yarn: https://yarnpkg.com/
-8. Sass: https://sass-lang.com/
-9. Gulp: https://gulpjs.com/
-10. Babel: https://babeljs.io/
-11. Bootstrap: https://getbootstrap.com/
-12. EditorConfig: https://editorconfig.org/
-13. PHP_CodeSniffer: https://github.com/squizlabs/PHP_CodeSniffer
-14. Stylelint: https://stylelint.io/
-15. Jshint: https://jshint.com/
-16. Human.txt: http://humanstxt.org/
+2. Lando: https://docs.devwithlando.io/
+3. Docker: https://www.docker.com/
+4. Git: https://git-scm.com/
+5. Apache: https://www.apache.org/
+6. MariaDB: https://mariadb.org/
+7. MySQL: https://www.mysql.com/
+8. PHP: https://www.php.net/
+9. Composer: https://getcomposer.org/
+10. PHP_CodeSniffer: https://github.com/squizlabs/PHP_CodeSniffer
+11. PhpMyAdmin: https://www.phpmyadmin.net/
+12. Deployer: https://deployer.org/
+13. Node.js: https://nodejs.org/
+14. NPM: https://www.npmjs.com/
+15. Yarn: https://yarnpkg.com/
+16. Gulp: https://gulpjs.com/
+17. Mailhog: https://github.com/mailhog/MailHog
+18. EditorConfig: https://editorconfig.org/
 
-**Note:** Thanks a lot of developers that to work on this projects.
+**Note:** Thanks all people to work on these projects.
 
 ### Clarifications
 

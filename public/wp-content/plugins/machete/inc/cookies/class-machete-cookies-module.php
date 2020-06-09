@@ -92,7 +92,7 @@ class MACHETE_COOKIES_MODULE extends MACHETE_MODULE {
 	 * Saves options to database
 	 *
 	 * @param array $options options array, normally $_POST.
-	 * @param bool  $silent prevent the function from generating admin notices.
+	 * @param bool  $silent  prevent the function from generating admin notices.
 	 */
 	protected function save_settings( $options = array(), $silent = false ) {
 
@@ -187,7 +187,7 @@ class MACHETE_COOKIES_MODULE extends MACHETE_MODULE {
 			if ( ! $this->delete( MACHETE_DATA_PATH . $this->settings['cookie_filename'] ) ) {
 				if ( ! $silent ) {
 					// translators: %s path to machete data dir.
-					$this->notice( sprintf( __( 'Could not delete old javascript file from %s please check file permissions . Aborting to prevent inconsistent state.', 'machete' ), MACHETE_RELATIVE_DATA_PATH ), 'warning' );
+					$this->notice( sprintf( __( 'Could not delete old javascript file from %s please check file permissions. Aborting to prevent inconsistent state.', 'machete' ), MACHETE_RELATIVE_DATA_PATH ), 'warning' );
 				}
 				return false;
 			}
@@ -226,7 +226,7 @@ class MACHETE_COOKIES_MODULE extends MACHETE_MODULE {
 	protected function preview_cookie_bar() {
 
 		if ( ! isset( $this->settings['bar_status'] ) || ( 'enabled' !== $this->settings['bar_status'] ) ) {
-				return false;
+			return false;
 		}
 		if ( ! isset( $this->settings['cookie_filename'] ) ) {
 			return false;
@@ -246,7 +246,7 @@ class MACHETE_COOKIES_MODULE extends MACHETE_MODULE {
 	public function render_cookie_bar() {
 
 		if ( ! isset( $this->settings['bar_status'] ) || ( 'enabled' !== $this->settings['bar_status'] ) ) {
-				return false;
+			return false;
 		}
 		if ( ! isset( $this->settings['cookie_filename'] ) ) {
 			return false;

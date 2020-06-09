@@ -107,6 +107,9 @@ class MACHETE_MAINTENANCE_PAGE {
 				'content_class' => 'default',
 			);
 		}
+		if ( is_rtl() ) {
+			$html_content['body_class'] = 'rtl';
+		}
 
 		$page_id = $this->settings['page_id'];
 
@@ -146,7 +149,7 @@ class MACHETE_MAINTENANCE_PAGE {
 	/**
 	 * File pass-through
 	 *
-	 * @param string $file      Path to the file.
+	 * @param string $file Path to the file.
 	 * @return bool false on failure.
 	 */
 	private function readfile( $file ) {

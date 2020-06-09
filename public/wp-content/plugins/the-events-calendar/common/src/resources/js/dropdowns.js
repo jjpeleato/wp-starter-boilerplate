@@ -49,9 +49,6 @@ var tribe_dropdowns = window.tribe_dropdowns || {};
 		return null;
 	};
 
-	obj.allow_html_markup = function ( m ) {
-		return m;
-	};
 
 	/**
 	 * Better Search ID for Select2, compatible with WordPress ID from WP_Query
@@ -266,7 +263,7 @@ var tribe_dropdowns = window.tribe_dropdowns || {};
 
 		// Don't Remove HTML elements or escape elements
 		if ( $select.is( '[data-allow-html]' ) ) {
-			args.escapeMarkup = obj.allow_html_markup;
+
 		}
 
 		// If we are dealing with a Input Hidden we need to set the Data for it to work.
@@ -356,7 +353,7 @@ var tribe_dropdowns = window.tribe_dropdowns || {};
 			args.data = { results: [] };
 
 			// Allows HTML from Select2 AJAX calls
-			args.escapeMarkup = obj.allow_html_markup;
+
 
 			// Format for Parents breadcrumbs
 			args.formatResult = function ( item, container, query ) {

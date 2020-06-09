@@ -236,21 +236,24 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 			case 'us-west-1':
 			case 'us-east-2':
 			case 'us-west-2':
-			case 'eu-west-2':
-			case 'eu-west-3':
-			case 'eu-north-1':
-			case 'ap-southeast-1':
-			case 'ap-southeast-2':
-			case 'ap-northeast-1':
-			case 'ap-northeast-2':
-			case 'sa-east-1':
-			case 'ca-central-1':
-			case 'us-gov-west-1':
-			case 'eu-central-1':
 			$endpoint = 's3-'.$region.'.amazonaws.com';
 				break;
+			case 'sa-east-1':
+			case 'us-gov-west-1':
+			case 'ca-central-1':
+			case 'ap-northeast-1':
+			case 'ap-northeast-2':
+			case 'ap-southeast-1':
+			case 'ap-southeast-2':
+			case 'eu-central-1':
+			case 'eu-south-1':
+			case 'eu-north-1':
+			case 'eu-west-2':
+			case 'eu-west-3':
 			case 'ap-south-1':
 			case 'me-south-1':
+			$endpoint = 's3.'.$region.'.amazonaws.com';
+				break;
 			case 'cn-north-1':
 			$endpoint = 's3.'.$region.'.amazonaws.com.cn';
 				break;

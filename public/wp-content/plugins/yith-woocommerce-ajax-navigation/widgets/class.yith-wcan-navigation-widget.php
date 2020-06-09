@@ -366,11 +366,19 @@ if ( ! class_exists( 'YITH_WCAN_Navigation_Widget' ) ) {
 
                         $link = esc_url( urldecode( apply_filters( 'woocommerce_layered_nav_link', $link ) ) );
 
+						$show_count = $count != 0 && ! empty( $instance['show_count'] ) && ! $instance['show_count'];
+
+						$show_count = apply_filters( "{$this->id}-show_product_count", $show_count, $instance );
+
                         echo '<li ' . $class . '>';
 
                         echo ( $this->found || $option_is_set ) ? '<a ' . $rel_nofollow . ' data-type="select" href="' . $link . '">' : '<span>';
 
                         echo $term->name;
+
+						if ( $this->found && apply_filters( 'yith_wcan_force_show_count', $show_count ) ) {
+							echo ' <small class="count">' . $count . '</small><div class="clear"></div>';
+						}
 
                         echo ( $this->found || $option_is_set ) ? '</a>' : '</span>';
 

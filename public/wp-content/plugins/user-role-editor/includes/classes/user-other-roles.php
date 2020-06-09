@@ -287,85 +287,87 @@ class URE_User_Other_Roles {
     // end of user_new_form()
     
     
-    // save additional user roles when user profile is updated, as WordPress itself doesn't know about them
-    public function update($user_id) {
-        global $wp_roles;
+    /* 
+     * Save additional user roles when user profile is updated, as WordPress itself doesn't know about them
+     * Returns different numbers for automatic testing purpose
+     */
+    public function update( $user_id ) {
         
-        if (!current_user_can('edit_users')) {
-            return false;
+        if ( !current_user_can('edit_users') ) {
+            return -1;  // No permissions to edit users
         }
-        if (!current_user_can('edit_user', $user_id)) {
-            return false;
+        if ( !current_user_can('edit_user', $user_id) ) {
+            return -1;  // No permissions to edit this user
         }        
-
-        if (!isset($_POST['ure_other_roles'])) {    // add default other roles, there is no related data at the POST
-            return false;
+        if ( !isset( $_POST['ure_other_roles'] ) ) {    
+            return 3;   // Add default other roles, there is no related data at the POST
+        }        
+        if ( empty( $_POST['ure_other_roles'] ) ) { 
+            return 1;   // There is no need in processing of other roles. User did not select them
         }
         
-        if (empty($_POST['ure_other_roles'])) { // there is no need in other roles, user did not selected them
-            return true;
-        }
-        
-        $user = get_userdata($user_id);
-        $data = explode(',', str_replace(' ', '', $_POST['ure_other_roles']));
+        $user = get_userdata( $user_id );
+        $data = explode(',', str_replace(' ', '', $_POST['ure_other_roles'] ) );
+        $editable_roles = get_editable_roles();
         $ure_other_roles = array();
-        foreach($data as $role_id) {
-            if (!isset($wp_roles->roles[$role_id])) {   // skip unexisted roles
+        foreach( $data as $role_id ) {
+            if ( empty( $role_id ) ) {
                 continue;
+            }            
+            if ( !isset( $editable_roles[ $role_id ] ) ) {
+                return -2;   // If the role isn't editable by the current user, stop processing - no permission to assign this role.
             }
-            if (is_array($user->roles) && !in_array($role_id, $user->roles)) {
+            if ( is_array( $user->roles ) && !in_array( $role_id, $user->roles ) ) {
                 $ure_other_roles[] = $role_id;
             }
         }
-        foreach ($ure_other_roles as $role) {
-            $user->add_role($role);
+        foreach( $ure_other_roles as $role ) {
+            $user->add_role( $role );
         }
         
-        return true;        
+        return 2;        
     }
     // end of update()
 
     
     private function add_default_other_roles($user_id) {
-        if (!current_user_can('edit_users')) {
+        if ( !current_user_can('edit_users') ) {
             return false;
         }
-        if (!current_user_can('edit_user', $user_id)) {
+        if ( !current_user_can('edit_user', $user_id) ) {
             return false;
         }
         
-        $user = get_user_by('id', $user_id);
-        if (empty($user->ID)) {
-            return;
+        $user = get_user_by('id', $user_id );
+        if ( empty( $user->ID ) ) {
+            return true;
         }
 
         // Get default roles if any
-        $other_default_roles = $this->lib->get_option('other_default_roles', array());
-        if (count($other_default_roles) == 0) {
-            return;
+        $other_default_roles = $this->lib->get_option('other_default_roles', array() );
+        if ( count( $other_default_roles ) == 0 ) {
+            return true;
         }
-        foreach ($other_default_roles as $role) {
-            if (!isset($user->caps[$role])) {
-                $user->add_role($role);
+        foreach ( $other_default_roles as $role ) {
+            if ( !isset( $user->caps[$role] ) ) {
+                $user->add_role( $role );
             }
         }
     }
-
     // end of add_default_other_roles()
 
 
-    public function add_other_roles($user_id) {
+    public function add_other_roles( $user_id ) {
 
-        if (empty($user_id)) {
-            return;
+        if ( empty( $user_id ) ) {
+            return false;
         }
 
-        $result = $this->update($user_id);
-        if ($result) {    // roles were assigned manually
-            return;
+        $result = $this->update( $user_id );
+        if ( $result==3 ) {    // Other roles were not selected manually
+            $this->add_default_other_roles( $user_id );
         }
-
-        $this->add_default_other_roles($user_id);
+        
     }
     // end of add_other_roles()    
     

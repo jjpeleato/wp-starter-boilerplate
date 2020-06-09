@@ -290,13 +290,13 @@ if ( ! function_exists( 'yit_get_terms' ) ) {
         $exclude = apply_filters( 'yith_wcan_exclude_terms', array(), $instance );
         $include = apply_filters( 'yith_wcan_include_terms', array(), $instance );
         $reordered = false;
-        
-        $args = array( 
-            'taxonomy' => $taxonomy, 
-            'hide_empty' => true, 
+
+        $args = array(
+            'taxonomy' => $taxonomy,
+            'hide_empty' => true,
             'exclude' => $exclude
         );
-        
+
         $args = apply_filters( 'yit_get_terms_args', $args, $instance );
 
         switch ( $case ) {
@@ -320,7 +320,7 @@ if ( ! function_exists( 'yit_get_terms' ) ) {
 
             default:
                 $args['include'] = $include;
-                
+
                 if ( 'parent' == $instance['display'] ) {
                     $args['parent'] = false;
                 }
@@ -515,7 +515,7 @@ if ( ! function_exists( 'yit_get_filter_args' ) ) {
             $filter_value['source_tax']  = $queried_object->taxonomy;
         }
 
-        return $filter_value;
+        return apply_filters( 'yit_get_filter_args', $filter_value );
     }
 }
 
@@ -577,7 +577,7 @@ if ( ! function_exists( 'yit_get_woocommerce_layered_nav_link' ) ) {
             $return = get_post_type_archive_link( 'product' );
             return apply_filters( 'yith_wcan_untrailingslashit', false ) && is_string( $return ) ? untrailingslashit( $return ) : $return;
         }
-        
+
         return $return;
     }
 }
@@ -793,7 +793,7 @@ if( ! function_exists( 'yith_wcan_wp_get_terms' ) ) {
      * get_terms function support for old WordPress Version
      *
      * @param array $args
-     * 
+     *
      * @return bool
      */
     function yith_wcan_wp_get_terms( $args ) {
@@ -810,7 +810,7 @@ if( ! function_exists( 'yith_wcan_wp_get_terms' ) ) {
 	    if( version_compare( $wp_version, '4.6', '<' ) ){
 	        $terms = get_terms( $args['taxonomy'], $args );
         }
-        
+
         else {
             $terms = get_terms( $args );
         }

@@ -231,13 +231,14 @@ class UpdraftPlus_Storage_Methods_Interface {
 	/**
 	 * This method will return an array of enabled remote storage objects and instance settings of the currently connected remote storage services.
 	 *
-	 * @param Array $services - an list of service identifiers (e.g. ['dropbox', 's3'])
+	 * @param Array $services                 - an list of service identifiers (e.g. ['dropbox', 's3'])
+	 * @param Array $remote_storage_instances - a list of remote storage instances the user wants to backup to, if empty we use the saved options
 	 *
 	 * @uses self::get_storage_objects_and_ids()
 	 *
 	 * @return Array					- returns an array, with a key equal to only enabled service member of the $services list passed in. The corresponding value is then an array with keys 'object', 'instance_settings'. The value for 'object' is an UpdraftPlus_BackupModule instance. The value for 'instance_settings' is an array keyed by associated enabled instance IDs, with the values being the associated settings for the enabled instance ID.
 	 */
-	public static function get_enabled_storage_objects_and_ids($services) {
+	public static function get_enabled_storage_objects_and_ids($services, $remote_storage_instances = array()) {
 		
 		$storage_objects_and_ids = self::get_storage_objects_and_ids($services);
 		
@@ -247,7 +248,9 @@ class UpdraftPlus_Storage_Methods_Interface {
 			
 			foreach ($method_information['instance_settings'] as $instance_id => $instance_information) {
 				if (!isset($instance_information['instance_enabled'])) $instance_information['instance_enabled'] = 1;
-				if (empty($instance_information['instance_enabled'])) {
+				if (!empty($remote_storage_instances) && isset($remote_storage_instances[$method]) && !in_array($instance_id, $remote_storage_instances[$method])) {
+					unset($storage_objects_and_ids[$method]['instance_settings'][$instance_id]);
+				} elseif (empty($remote_storage_instances) && empty($instance_information['instance_enabled'])) {
 					unset($storage_objects_and_ids[$method]['instance_settings'][$instance_id]);
 				}
 			}

@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'EWWW_IMAGE_OPTIMIZER_VERSION', '530' );
+define( 'EWWW_IMAGE_OPTIMIZER_VERSION', '532' );
 
 // Initialize a couple globals.
 $eio_debug  = '';
@@ -1814,6 +1814,12 @@ function ewww_image_optimizer_lr_sync_script() {
 function ewww_image_optimizer_notice_media_listmode() {
 	$current_screen = get_current_screen();
 	if ( 'upload' === $current_screen->id && ! ewww_image_optimizer_get_option( 'ewww_image_optimizer_dismiss_media_notice' ) ) {
+		$user_info = wp_get_current_user();
+		if ( ! empty( $user_info->wp_media_library_mode ) && 'list' === $user_info->wp_media_library_mode ) {
+			update_option( 'ewww_image_optimizer_dismiss_media_notice', true, false );
+			update_site_option( 'ewww_image_optimizer_dismiss_media_notice', true );
+			return;
+		}
 		echo "<div id='ewww-image-optimizer-media-listmode' class='notice notice-info is-dismissible'><p>" . esc_html__( 'Change the Media Library to List mode for additional image optimization information and actions.', 'ewww-image-optimizer' ) . ewwwio_help_link( 'https://docs.ewww.io/article/62-power-user-options-in-list-mode', '5b61fdd32c7d3a03f89d41c4' ) . '</p></div>';
 	}
 }
@@ -6825,7 +6831,8 @@ function ewww_image_optimizer_resize_from_meta_data( $meta, $id = null, $log = t
 				if ( $scan['height'] === $data['height'] && $scan['width'] === $data['width'] ) {
 					// We found a duplicate resize, so...
 					// Point this resize at the same image as the previous one.
-					$meta['sizes'][ $size ]['file'] = $meta['sizes'][ $proc ]['file'];
+					$meta['sizes'][ $size ]['file']      = $meta['sizes'][ $proc ]['file'];
+					$meta['sizes'][ $size ]['mime-type'] = $meta['sizes'][ $proc ]['mime-type'];
 					continue( 2 );
 				}
 			}
@@ -10159,6 +10166,9 @@ function ewww_image_optimizer_options( $network = 'singlesite' ) {
 	$cf_host = ewwwio_is_cf_host();
 	if ( ewww_image_optimizer_easy_active() || $cf_host ) {
 		ewww_image_optimizer_webp_rewrite_verify();
+	}
+	if ( ! empty( $_SERVER['SERVER_ADDR'] ) ) {
+		ewwwio_debug_message( 'origin: ' . $_SERVER['SERVER_ADDR'] );
 	}
 	if (
 		! $cf_host &&

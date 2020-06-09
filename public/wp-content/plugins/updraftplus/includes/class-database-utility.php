@@ -209,77 +209,46 @@ class UpdraftPlus_Database_Utility {
 	}
 
 	/**
-	 * Parse the SQL "create table" statement (non validating) and check whether it contains at least one generated column syntax and retrieve its all columns definitions and columns options
+	 * Parse the SQL "create table" column definition (non validating) and check whether it's a generated column and retrieve its column options
 	 *
 	 * @see https://dev.mysql.com/doc/refman/8.0/en/create-table.html
 	 * @see https://mariadb.com/kb/en/create-table/
 	 *
-	 * @param String $create_statement the SQL "CREATE TABLE" statement in which potential generated columns need to be identified
-	 * @return Array|False an array of generated column fragments (column definition, column name, generated column type, etc); false otherwise
+	 * @param String  $table_column_definition the column definition statement in which the generated column needs to be identified
+	 * @param Integer $starting_offset         the string position of the column definition in a "create table" statement
+	 * @return Array|False an array of generated column fragment (column definition, column name, generated column type, etc); false otherwise
 	 *
 	 * Example input:
 	 *
-	 *     $create_statement = "CREATE TABLE contacts (
-	 *         id INT AUTO_INCREMENT PRIMARY KEY,
-	 *         first_name VARCHAR(50) NOT NULL,
-	 *         last_name VARCHAR(50) NOT NULL,
-	 *         // the field below (fullname_virtual) is a virtual type of the generated columns
-	 *         fullname_virtual varchar(101) GENERATED ALWAYS AS (CONCAT(first_name,' ',last_name)) VIRTUAL,
-	 *         // and the one below (fullname_stored) is a stored type of the generated columns
-	 *         fullname_stored varchar(101) GENERATED ALWAYS AS (CONCAT(first_name,' ',last_name)) STORED,
-	 *         email VARCHAR(100) NOT NULL"
-	 *     );
+	 *     $column_definition = "fullname varchar(101) GENERATED ALWAYS AS (CONCAT(first_name,' ',last_name)) VIRTUAL NOT NULL COMMENT 'this is the comment',"
 	 *
 	 * Corresponding result:
 	 *
 	 *     [
-	 *         "columns" => [
-	 *             [
-	 *                 "column_definition" => "fullname varchar(101) GENERATED ALWAYS AS (CONCAT(first_name,' ',last_name)) VIRTUAL NOT NULL COMMENT 'this is the comment',",
-	 *                 "column_name" => "fullname",
-	 *                 "column_data_type_definition" => [
-	 *                     [
-	 *                        "GENERATED ALWAYS AS (CONCAT(first_name,' ',last_name))",
-	 *                        90
-	 *                     ],
-	 *                     [
-	 *                        "VIRTUAL NOT NULL",
-	 *                        123      // string position
-	 *                     ],
-	 *                     [
-	 *                        "COLUMN_FORMAT DEFAULT",
-	 *                        345      // string position
-	 *                     ]
-	 *                 ],
-	 *                 "is_virtual" => true
-	 *             ],
-	 *             [
-	 *                 etc...
-	 *             ]
+	 *         "column_definition" => "fullname varchar(101) GENERATED ALWAYS AS (CONCAT(first_name,' ',last_name)) VIRTUAL NOT NULL COMMENT 'this is the comment',",
+	 *         "column_name" => "fullname",
+	 *         "column_data_type_definition" => [
+	 *              [
+	 *                  "GENERATED ALWAYS AS (CONCAT(first_name,' ',last_name))",
+	 *                   90
+	 *              ],
+	 *              [
+	 *                   "VIRTUAL NOT NULL",
+	 *                   123 // string position
+	 *              ],
+	 *              [
+	 *                   "COMMENT 'this is the comment'",
+	 *                   345 // string position
+	 *              ]
 	 *         ],
-	 *         "column_names" => [
-	 *             [
-	 *                 "fullname_virtual",
-	 *                 "fullname_stored"
-	 *             ]
-	 *         ],
-	 *         "virtual_columns_exist" => true,
-	 *         "create_statement" => ["
-	 *             CREATE TABLE contacts (
-	 *             id INT AUTO_INCREMENT PRIMARY KEY,
-	 *             first_name VARCHAR(50) NOT NULL,
-	 *             last_name VARCHAR(50) NOT NULL,
-	 *             // the field below (fullname) is a virtual generated columns type
-	 *             fullname varchar(101) GENERATED ALWAYS AS (CONCAT(first_name,' ',last_name)) VIRTUAL,
-	 *             email VARCHAR(100) NOT NULL
-	 *         "]
+	 *         "is_virtual" => true
 	 *     ]
 	 */
-	public static function get_generated_column_info($create_statement) {
+	public static function get_generated_column_info($table_column_definition, $starting_offset) {
 
-		// check whether the create table statement contains one or more generated columns, if so then get all the columns definition
-		// https://regex101.com/r/Fy2Bkd/9
-		if (preg_match_all('/(?:,|\(|\s)\s*\`(.+)\`(.+?)(?:((?:GENERATED\s*ALWAYS\s*)?AS\s*\(.+\))([\w\s]*)(COMMENT\s*\'.*\')([\w\s]*)|((?:GENERATED\s*ALWAYS\s*)?AS\s*\(.+\))([\w\s]*))/i', $create_statement, $column_definitions, PREG_SET_ORDER | PREG_OFFSET_CAPTURE)) {
+		// check whether or not the column definition ($table_column_definition) is a generated column, if so then get all the column definitions
+		// https://regex101.com/r/Fy2Bkd/12
+		if (preg_match_all('/^\s*\`((?:[^`]|``)+)\`([^,\'"]+?)(?:((?:GENERATED\s*ALWAYS\s*)?AS\s*\(.+\))([\w\s]*)(COMMENT\s*(?:\'(?:[^\']|\'\')*\'|\"(?:[^"]|"")*\"))([\w\s]*)|((?:GENERATED\s*ALWAYS\s*)?AS\s*\(.+\)([\w\s]*)))/i', $table_column_definition, $column_definitions, PREG_SET_ORDER | PREG_OFFSET_CAPTURE)) {
 
 			if (empty($column_definitions)) return false;
 
@@ -375,38 +344,47 @@ class UpdraftPlus_Database_Utility {
 			 *  }
 			 */
 
-			$column_fragments = array();
-			$virtual_columns_exist = false;
-
 			foreach ($column_definitions as $key => $column_definition) {
-				if (empty($column_definition)) continue;
 				$data_type_definition = (!empty($column_definition[4][0]) ? $column_definition[4][0] : '').(!empty($column_definition[6][0]) ? $column_definition[6][0] : '').(!empty($column_definition[8][0]) ? $column_definition[8][0] : '');
 				// if no virtual, stored or persistent option is specified then it's virtual by default. It's not possible having two generated columns type in the column definition e.g fullname varchar(101) GENERATED ALWAYS AS (CONCAT(first_name,' ',last_name)) VIRTUAL STORED NOT NULL COMMENT 'comment text', both MySQL and MariaDB will produces an error
 				$is_virtual = preg_match('/\bvirtual\b/i', $data_type_definition) || (!preg_match('/\bstored\b/i', $data_type_definition) && !preg_match('/\bpersistent\b/i', $data_type_definition));
-				if ($is_virtual) $virtual_columns_exist = true;
+
 				$fragment = array(
 					// full syntax of the column definition
 					"column_definition" => $column_definition[0][0],
 					// the extracted column name
 					"column_name" => $column_definition[1][0],
-					'column_data_type_definition' => array_fill(0, 6, array()),
+					'column_data_type_definition' => array(),
 					"is_virtual" => $is_virtual,
 				);
-				if (!empty($column_definition[2][0])) $fragment['column_data_type_definition'][0] = $column_definition[2];
-				if (!empty($column_definition[3][0])) $fragment['column_data_type_definition'][1] = $column_definition[3];
-				if (empty($fragment['column_data_type_definition'][1]) && !empty($column_definition[7][0])) $fragment['column_data_type_definition'][1] = $column_definition[7];
-				if (!empty($column_definition[4][0])) $fragment['column_data_type_definition'][2] = $column_definition[4];
-				if (!empty($column_definition[5][0])) $fragment['column_data_type_definition'][3] = $column_definition[5];
-				if (!empty($column_definition[6][0])) $fragment['column_data_type_definition'][4] = $column_definition[6];
-				if (!empty($column_definition[8][0])) $fragment['column_data_type_definition'][5] = $column_definition[8];
-				$column_fragments['columns'][] = $fragment;
-				$column_fragments['column_names'][] = $fragment['column_name'];
+				if (!empty($column_definition[2])) {
+					$fragment['column_data_type_definition']['DATA_TYPE_TOKEN'] = $column_definition[2];
+					$fragment['column_data_type_definition']['DATA_TYPE_TOKEN'][1] = (int) $starting_offset + (int) $fragment['column_data_type_definition']['DATA_TYPE_TOKEN'][1];
+				}
+				if (!empty($column_definition[3])) {
+					$fragment['column_data_type_definition']['GENERATED_ALWAYS_TOKEN'] = $column_definition[3];
+					if (empty($fragment['column_data_type_definition'][1]) && !empty($column_definition[7][0])) $fragment['column_data_type_definition']['GENERATED_ALWAYS_TOKEN'] = $column_definition[7];
+					$fragment['column_data_type_definition']['GENERATED_ALWAYS_TOKEN'][1] = (int) $starting_offset + (int) $fragment['column_data_type_definition']['GENERATED_ALWAYS_TOKEN'][1];
+				}
+				if (!empty($column_definition[4])) {
+					$fragment['column_data_type_definition'][2] = $column_definition[4];
+					$fragment['column_data_type_definition'][2][1] = (int) $starting_offset + (int) $fragment['column_data_type_definition'][2][1];
+				}
+				if (!empty($column_definition[5])) {
+					$fragment['column_data_type_definition']['COMMENT_TOKEN'] = $column_definition[5];
+					$fragment['column_data_type_definition']['COMMENT_TOKEN'][1] = (int) $starting_offset + (int) $fragment['column_data_type_definition']['COMMENT_TOKEN'][1];
+				}
+				if (!empty($column_definition[6])) {
+					$fragment['column_data_type_definition'][4] = $column_definition[6];
+					$fragment['column_data_type_definition'][4][1] = (int) $starting_offset + (int) $fragment['column_data_type_definition'][4][1];
+				}
+				if (!empty($column_definition[8])) {
+					$fragment['column_data_type_definition'][5] = $column_definition[8];
+					$fragment['column_data_type_definition'][5][1] = (int) $starting_offset + (int) $fragment['column_data_type_definition'][5][1];
+				}
 			}
-			if ($virtual_columns_exist) $column_fragments['virtual_columns_exist'] = true;
-			$column_fragments['create_statement'] = $create_statement;
-
 		}
-		return isset($column_fragments) ? $column_fragments : false;
+		return isset($fragment) ? $fragment : false;
 	}
 
 	/**
@@ -625,7 +603,7 @@ class UpdraftPlus_Database_Utility {
 	 *         ]
 	 *     ]
 	 */
-	public function get_stored_routines() {
+	public static function get_stored_routines() {
 
 		global $wpdb;
 
@@ -639,7 +617,10 @@ class UpdraftPlus_Database_Utility {
 			$stored_routines = array_merge((array) $function_status, (array) $procedure_status);
 			foreach ((array) $stored_routines as $key => $routine) {
 				if (empty($routine['Name']) || empty($routine['Type'])) continue;
-				$routine = $wpdb->get_results("SHOW CREATE {$routine['Type']} `{$routine['Name']}`", ARRAY_A);
+				$routine_name = $routine['Name'];
+				// Since routine name can include backquotes and routine name is typically enclosed with backquotes as well, the backquote escaping for the routine name can be done by adding a leading backquote
+				$quoted_escaped_routine_name = UpdraftPlus_Manipulation_Functions::backquote(str_replace('`', '``', $routine_name));
+				$routine = $wpdb->get_results($wpdb->prepare('SHOW CREATE %1$s %2$s', $routine['Type'], $quoted_escaped_routine_name), ARRAY_A);
 				if (!empty($wpdb->last_error)) throw new Exception(sprintf(__('An error occurred while attempting to retrieve the routine SQL/DDL statement (%s %s)', 'updraftplus'), $wpdb->last_error.' -', $wpdb->last_query), 1);
 				$stored_routines[$key] = array_merge($stored_routines[$key], $routine ? $routine[0] : array());
 			}

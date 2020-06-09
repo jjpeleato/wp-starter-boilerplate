@@ -80,6 +80,7 @@ if ( ! class_exists( 'EIO_Lazy_Load' ) ) {
 			add_action( 'wp_head', array( $this, 'no_js_css' ) );
 
 			add_filter( $this->prefix . 'filter_page_output', array( $this, 'filter_page_output' ), 15 );
+			add_filter( 'vc_get_vc_grid_data_response', array( $this, 'filter_page_output' ) );
 
 			if ( class_exists( 'ExactDN' ) && $this->get_option( $this->prefix . 'exactdn' ) ) {
 				global $exactdn;
@@ -165,17 +166,20 @@ if ( ! class_exists( 'EIO_Lazy_Load' ) ) {
 				strpos( $uri, 'cornerstone-endpoint' ) !== false ||
 				! empty( $_GET['ct_builder'] ) ||
 				did_action( 'cornerstone_boot_app' ) || did_action( 'cs_before_preview_frame' ) ||
+				'/print/' === substr( $uri, -7 ) ||
 				! empty( $_GET['elementor-preview'] ) ||
 				! empty( $_GET['et_fb'] ) ||
 				! empty( $_GET['tatsu'] ) ||
 				( ! empty( $_POST['action'] ) && 'tatsu_get_concepts' === $_POST['action'] ) ||
 				! apply_filters( 'eio_do_lazyload', true ) ||
+				is_embed() ||
 				is_feed() ||
 				is_preview() ||
 				( defined( 'REST_REQUEST' ) && REST_REQUEST ) ||
 				wp_script_is( 'twentytwenty-twentytwenty', 'enqueued' ) ||
 				preg_match( '/^<\?xml/', $buffer ) ||
-				strpos( $buffer, 'amp-boilerplate' )
+				strpos( $buffer, 'amp-boilerplate' ) ||
+				$this->is_amp()
 			) {
 				if ( empty( $buffer ) ) {
 					$this->debug_message( 'empty buffer' );
@@ -189,6 +193,9 @@ if ( ! class_exists( 'EIO_Lazy_Load' ) ) {
 				if ( did_action( 'cornerstone_boot_app' ) || did_action( 'cs_before_preview_frame' ) ) {
 					$this->debug_message( 'cornerstone app/preview' );
 				}
+				if ( '/print/' === substr( $uri, -7 ) ) {
+					$this->debug_message( 'print page template' );
+				}
 				if ( ! empty( $_GET['elementor-preview'] ) ) {
 					$this->debug_message( 'elementor preview' );
 				}
@@ -200,6 +207,9 @@ if ( ! class_exists( 'EIO_Lazy_Load' ) ) {
 				}
 				if ( ! apply_filters( 'eio_do_lazyload', true ) ) {
 					$this->debug_message( 'do_lazyload short-circuit' );
+				}
+				if ( is_embed() ) {
+					$this->debug_message( 'is_embed' );
 				}
 				if ( is_feed() ) {
 					$this->debug_message( 'is_feed' );
@@ -218,6 +228,9 @@ if ( ! class_exists( 'EIO_Lazy_Load' ) ) {
 				}
 				if ( strpos( $buffer, 'amp-boilerplate' ) ) {
 					$this->debug_message( 'AMP page processing' );
+				}
+				if ( $this->is_amp() ) {
+					ewwwio_debug_message( 'AMP page processing (is_amp)' );
 				}
 				return $buffer;
 			}
@@ -344,6 +357,30 @@ if ( ! class_exists( 'EIO_Lazy_Load' ) ) {
 			$this->set_attribute( $image, 'data-src', $file, true );
 			$srcset = $this->get_attribute( $image, 'srcset' );
 
+			$disable_native_lazy = false;
+			// Ignore native lazy loading images.
+			$loading_attr = $this->get_attribute( $image, 'loading' );
+			if ( $loading_attr && in_array( trim( $loading_attr ), array( 'auto', 'eager', 'lazy' ), true ) ) {
+				$disable_native_lazy = true;
+			}
+			if (
+				( ! defined( 'EWWWIO_DISABLE_NATIVE_LAZY' ) || ! EWWWIO_DISABLE_NATIVE_LAZY ) &&
+				( ! defined( 'EASYIO_DISABLE_NATIVE_LAZY' ) || ! EASYIO_DISABLE_NATIVE_LAZY ) &&
+				! $disable_native_lazy
+			) {
+				$this->set_attribute( $image, 'loading', 'lazy' );
+			}
+
+			if (
+				! empty( $_POST['action'] ) &&
+				! empty( $_POST['vc_action'] ) &&
+				! empty( $_POST['tag'] ) &&
+				'vc_get_vc_grid_data' === $_POST['action'] &&
+				'vc_get_vc_grid_data' === $_POST['vc_action'] &&
+				'vc_media_grid' === $_POST['tag']
+			) {
+				return $image;
+			}
 			$width_attr      = $this->get_attribute( $image, 'width' );
 			$height_attr     = $this->get_attribute( $image, 'height' );
 			$placeholder_src = $this->placeholder_src;
@@ -422,20 +459,7 @@ if ( ! class_exists( 'EIO_Lazy_Load' ) ) {
 			} else {
 				$this->set_attribute( $image, 'src', $placeholder_src, true );
 			}
-			$disable_native_lazy = false;
-			// Ignore native lazy loading images.
-			$loading_attr = $this->get_attribute( $image, 'loading' );
-			if ( $loading_attr && in_array( trim( $loading_attr ), array( 'auto', 'eager', 'lazy' ), true ) ) {
-				$disable_native_lazy = true;
-			}
 
-			if (
-				( ! defined( 'EWWWIO_DISABLE_NATIVE_LAZY' ) || ! EWWWIO_DISABLE_NATIVE_LAZY ) &&
-				( ! defined( 'EASYIO_DISABLE_NATIVE_LAZY' ) || ! EASYIO_DISABLE_NATIVE_LAZY ) &&
-				! $disable_native_lazy
-			) {
-				$this->set_attribute( $image, 'loading', 'lazy' );
-			}
 			$this->set_attribute( $image, 'class', $this->get_attribute( $image, 'class' ) . ' lazyload', true );
 			return $image;
 		}
@@ -448,6 +472,7 @@ if ( ! class_exists( 'EIO_Lazy_Load' ) ) {
 		 * @return string The modified content with LL markup.
 		 */
 		function parse_background_images( $buffer, $tag_type ) {
+			$this->debug_message( '<b>' . __METHOD__ . '()</b>' );
 			if ( in_array( $tag_type, $this->user_element_exclusions, true ) ) {
 				return $buffer;
 			}
@@ -575,6 +600,7 @@ if ( ! class_exists( 'EIO_Lazy_Load' ) ) {
 						'gazette-featured-content-thumbnail',
 						'lazy-slider-img=',
 						'mgl-lazy',
+						'owl-lazy',
 						'skip-lazy',
 						'timthumb.php?',
 						'wpcf7_captcha/',

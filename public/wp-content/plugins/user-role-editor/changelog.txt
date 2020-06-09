@@ -1,5 +1,11 @@
 CHANGES LOG (full version).
 ===========================
+= [4.55] 03.06.2020 =
+* Update: User Role Editor uninstallation was refactored. It fully removes the ('ure_%') user capabilities from the user roles data.
+
+= [4.54] 02.05.2020 =
+New: Quick filter hides capabilities, which do not contain search string
+Update: CSS enhancement: When site has many custom post types capabilities list section maximal height is limited by real height of the left side (capabilities groups) section, not by 720px as earlier.
 
 = [4.53.1] 22.03.2020 =
 * New: "Hide Pro banner" checkbox works via AJAX without full page refresh.

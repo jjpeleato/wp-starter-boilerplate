@@ -54,9 +54,9 @@ if ( false !== $machete_settings ) {
 <div class="wrap machete-wrap machete-section-wrap">
 	<div class="wp-header-end"></div><!-- admin notices go after .wp-header-end or .wrap>h2:first-child -->
 	<h1><?php $this->icon(); ?> <?php esc_html_e( 'Analytics and Custom Code', 'machete' ); ?></h1>
-	<p class="tab-description"><?php esc_html_e( 'You don\'t need a zillion plugins to perform easy task like inserting a verification meta tag (Google Search Console, Bing, Pinterest), a json-ld snippet or a custom styleseet (Google Fonts, Print Styles, accesibility tweaks...).', 'machete' ); ?></p>
+	<p class="tab-description"><?php esc_html_e( 'You don\'t need a zillion plugins to perform easy tasks like inserting a verification meta tag (Google Search Console, Bing, Pinterest), a json-ld snippet or a custom stylesheet (Google Fonts, Print Styles, accessibility tweaks...).', 'machete' ); ?></p>
 	<?php $machete->admin_tabs( 'machete-utils' ); ?>
-	<p class="tab-performance"><span><strong><i class="dashicons dashicons-clock"></i> <?php esc_html_e( 'Performance impact:', 'machete' ); ?></strong> <?php esc_html_e( 'This tool generates up to three static HTML files that are loaded via PHP on each pageview. When enabled, custom body content requires one aditional database request.', 'machete' ); ?></span></p>
+	<p class="tab-performance"><span><strong><i class="dashicons dashicons-clock"></i> <?php esc_html_e( 'Performance impact:', 'machete' ); ?></strong> <?php esc_html_e( 'This tool generates up to three static HTML files that are loaded via PHP on each pageview. When enabled, custom body content requires one additional database request.', 'machete' ); ?></span></p>
 
 <form id="mache-utils-options" action="" method="POST">
 
@@ -69,8 +69,10 @@ if ( false !== $machete_settings ) {
 <div id="machete-tabs" class="nav-tab-wrapper" style="display: none;">
 
 	<a href="#machete-tabs-tracking" data-tab="machete-tabs-tracking" class="nav-tab machete-tabs-tracking"><?php esc_html_e( 'Tracking settings', 'machete' ); ?></a>
-	<a href="#machete-tabs-header" data-tab="machete-tabs-header" class="nav-tab machete-tabs-header"><?php esc_html_e( '<head> code', 'machete' ); ?></a>
-	<a href="#machete-tabs-alfonso" data-tab="machete-tabs-alfonso" class="nav-tab machete-tabs-alfonso"><?php esc_html_e( '<body> code', 'machete' ); ?></a>
+	<?php // Translators: <head>. ?>
+	<a href="#machete-tabs-header" data-tab="machete-tabs-header" class="nav-tab machete-tabs-header"><?php echo esc_html( sprintf( __( '%s code', 'machete' ), '&#x200E;<head>&#x200E;' ) ); ?></a>
+	<?php // Translators: <body>. ?>
+	<a href="#machete-tabs-alfonso" data-tab="machete-tabs-alfonso" class="nav-tab machete-tabs-alfonso"><?php echo esc_html( sprintf( __( '%s code', 'machete' ), '&#x200E;<body>&#x200E;' ) ); ?></a>
 	<a href="#machete-tabs-footer" data-tab="machete-tabs-footer" class="nav-tab machete-tabs-footer"><?php esc_html_e( 'Footer code', 'machete' ); ?></a>
 
 </div>
@@ -78,8 +80,7 @@ if ( false !== $machete_settings ) {
 <div class="machete-tabs-content" id="machete-tabs-tracking">
 
 	<table class="form-table">
-	<tbody><tr>
-
+	<tbody>
 
 	<tr>
 	<th scope="row"><?php esc_html_e( 'Tracking Code', 'machete' ); ?></th>
@@ -96,6 +97,7 @@ if ( false !== $machete_settings ) {
 	<p class="description" id="tracking_id_description"><?php esc_html_e( 'Format:', 'machete' ); ?> UA-12345678-1</p></td>
 	</tr>
 
+	<tr>
 	<th scope="row"><?php esc_html_e( 'CF7 Tracking', 'machete' ); ?></th>
 	<td><fieldset><legend class="screen-reader-text"><span><?php esc_html_e( 'Anonymize user IPs', 'machete' ); ?></span></legend>
 		<?php // translators: %s: link to the plugin's directory page. ?>
@@ -108,6 +110,7 @@ if ( false !== $machete_settings ) {
 		<label><input name="tacking_anonymize" value="1" type="checkbox" <?php checked( '1', $this->settings['tacking_anonymize'], true ); ?>> <?php esc_html_e( 'Check to anonymize visitor IPs. Required in some countries.', 'machete' ); ?></label><br>
 	</fieldset></td>
 	</tr>
+	</tbody>
 	</table>
 
 
@@ -121,9 +124,9 @@ if ( false !== $machete_settings ) {
 	<fieldset><legend class="screen-reader-text"><?php esc_html_e( 'Custom header content', 'machete' ); ?></legend>
 
 	<?php // translators: $s: file path. ?>
-	<label for="header_content"><p><?php printf( wp_kses_post( __( 'This code is included before the closing <code>&lt;/head&gt;</code> label.<br>Content is saved to <code>%s</code> and served using PHP\'s <code>readfile()</code> function, so no PHP or shortcodes here.', 'machete' ) ), esc_html( MACHETE_RELATIVE_DATA_PATH . 'header.html' ) ); ?></p></label>
+	<label for="header_content"><p><?php printf( wp_kses_post( __( 'This code is included before the closing <code>&lt;/head&gt;</code> tag.<br>Content is saved to <code>%s</code> and served using PHP\'s <code>readfile()</code> function, so no PHP or shortcodes here.', 'machete' ) ), esc_html( MACHETE_RELATIVE_DATA_PATH . 'header.html' ) ); ?></p></label>
 
-	<textarea name="header_content" rows="8" cols="50" id="header_content" class="large-text code"><?php echo esc_textarea( $machete_header_content ); ?></textarea>
+	<textarea name="header_content" rows="8" cols="50" id="header_content" class="large-text code" data-lpignore="true"><?php echo esc_textarea( $machete_header_content ); ?></textarea>
 	</fieldset>
 
 </div>
@@ -135,18 +138,18 @@ if ( false !== $machete_settings ) {
 	<h2><?php esc_html_e( 'Custom body content', 'machete' ); ?></h2>
 
 	<fieldset><legend class="screen-reader-text"><?php esc_html_e( 'Custom body content', 'machete' ); ?></legend>
-	<label for="alfonso_content"><p><?php echo wp_kses_post( __( 'This block is meant to be included just after the begining of the <code>&lt;body&gt;</code> label, and it\'s mainly used for conversion tracking codes.', 'machete' ) ); ?><br>
+	<label for="alfonso_content"><p><?php echo wp_kses_post( __( 'This block is meant to be included just after the beginning of the <code>&lt;body&gt;</code> tag, and it\'s mainly used for conversion tracking codes.', 'machete' ) ); ?><br>
 		<?php // translators: $s: file path. ?>
-		<?php printf( wp_kses_post( __( 'Content is saved to <code>%s</code> and served using PHP.  No PHP code or shortcodes here.', 'machete' ) ), esc_html( MACHETE_RELATIVE_DATA_PATH . 'body.html' ) ); ?>
+		<?php printf( wp_kses_post( __( 'Content is saved to <code>%s</code> and served using PHP. No PHP code or shortcodes here.', 'machete' ) ), esc_html( MACHETE_RELATIVE_DATA_PATH . 'body.html' ) ); ?>
 	</p></label>
 
-	<textarea name="alfonso_content" rows="8" cols="50" id="alfonso_content" class="large-text code"><?php echo esc_textarea( $machete_alfonso_content ); ?></textarea>
+	<textarea name="alfonso_content" rows="8" cols="50" id="alfonso_content" class="large-text code" data-lpignore="true"><?php echo esc_textarea( $machete_alfonso_content ); ?></textarea>
 	</fieldset>
 
 
 
 <table class="form-table">
-	<tbody><tr>
+	<tbody>
 	<tr>
 	<th scope="row"><?php esc_html_e( 'Code injection method', 'machete' ); ?></th>
 	<td><fieldset>
@@ -155,12 +158,13 @@ if ( false !== $machete_settings ) {
 
 		<label><input name="alfonso_content_injection_method" value="wp_body_open" type="radio" <?php checked( 'wp_body_open', $this->settings['alfonso_content_injection_method'], true ); ?>> <?php echo wp_kses_data( __( 'Include the code using the native <code>wp_body_open</code> hook (not supported by all themes).', 'machete' ) ); ?></label><br>
 
-		<?php // translators: %s url of article with explanation. ?> 
+		<?php // translators: %s url of article with explanation. ?>
 		<label><input name="alfonso_content_injection_method" value="auto" type="radio" <?php checked( 'auto', $this->settings['alfonso_content_injection_method'], true ); ?>> <?php printf( wp_kses_data( __( 'Try to inject the code automatically using <a href="%s" target="_blank" rel="nofollow">Yaniv Friedensohn\'s method</a>', 'machete' ) ), 'https://machetewp.com/hack-placing-the-google-tag-manager-in-wordpress-after-the-body-tag/' ); ?></label><br>
 
 		<label><input name="alfonso_content_injection_method" value="manual" type="radio" <?php checked( 'manual', $this->settings['alfonso_content_injection_method'], true ); ?>> <?php echo wp_kses_data( __( 'Edit your theme\'s <code>header.php</code> template manually and include this function:', 'machete' ) ); ?> <code>&lt;?php machete_custom_body_content() ?&gt;</code></label>
 	</fieldset></td>
 	</tr>
+	</tbody>
 	</table>
 
 
@@ -179,9 +183,9 @@ if ( false !== $machete_settings ) {
 
 	<fieldset><legend class="screen-reader-text"><span><?php esc_html_e( 'Custom footer content', 'machete' ); ?></span></legend>
 	<?php // translators: $s: file path. ?>
-	<label for="footer_content"><p><?php printf( wp_kses_post( __( 'This code is included when the <code>wp_footer</code> action is called, normally just before the closing <code>&lt;/body&gt;</code> label.<br>Content is saved to <code>%s</code> and served using PHP\'s <code>readfile()</code> function, so no PHP or shortcodes here.', 'machete' ) ), esc_html( MACHETE_RELATIVE_DATA_PATH . 'footer.html' ) ); ?></p></label>
+	<label for="footer_content"><p><?php printf( wp_kses_post( __( 'This code is included when the <code>wp_footer</code> action is called, normally just before the closing <code>&lt;/body&gt;</code> tag.<br>Content is saved to <code>%s</code> and served using PHP\'s <code>readfile()</code> function, so no PHP or shortcodes here.', 'machete' ) ), esc_html( MACHETE_RELATIVE_DATA_PATH . 'footer.html' ) ); ?></p></label>
 
-	<textarea name="footer_content" rows="8" cols="50" id="footer_content" class="large-text code"><?php echo esc_textarea( $machete_footer_content ); ?></textarea>
+	<textarea name="footer_content" rows="8" cols="50" id="footer_content" class="large-text code" data-lpignore="true"><?php echo esc_textarea( $machete_footer_content ); ?></textarea>
 	</fieldset>
 
 </div>
