@@ -4,7 +4,7 @@ Donate link: https://contactform7.com/donate/
 Tags: contact, form, contact form, feedback, email, ajax, captcha, akismet, multilingual
 Requires at least: 4.9
 Tested up to: 5.4
-Stable tag: 5.1.7
+Stable tag: 5.1.9
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -74,6 +74,21 @@ Do you have questions or issues with Contact Form 7? Use these support channels 
 == Changelog ==
 
 For more information, see [Releases](https://contactform7.com/category/releases/).
+
+= 5.1.9 =
+
+* Special mail-tags: Reflects WP timezone to `[_date]` and `[_time]` mail-tags.
+* WPCF7_FormTag: Reflects WP timezone to `get_date_option()` output.
+* User input validation: Strictly compares to boolean _false_.
+
+= 5.1.8 =
+
+* reCAPTCHA: Shows no warning on upgrading from v2 if the global sitekey is defined.
+* reCAPTCHA: Improves the frontend JavaScript coding.
+* Accessibility: Improves the response message markup.
+* Fixes the regular expression pattern in `wpcf7_is_tel()`.
+* Fixed: Character count was not reset after a successful submission.
+* Fixed: The fourth parameter of the `wpcf7_special_mail_tags` filter hook was not correctly set.
 
 = 5.1.7 =
 

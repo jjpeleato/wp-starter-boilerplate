@@ -260,22 +260,28 @@ class URE_Capabilities_Groups_Manager {
      * @param array $post_edit_caps
      */
     private function get_registered_cpt_caps($post_type, $post_edit_caps) {
+        
         foreach ($post_edit_caps as $capability) {
             if (isset($post_type->cap->$capability)) {
                 $cap = $post_type->cap->$capability;
             } else {
                 continue;
             }
-            if (isset($this->cpt_caps[$cap])) {
+            if ( !isset( $this->cpt_caps[$cap] ) ) {
+                $this->cpt_caps[$cap] = array();
+            } else if ( in_array( $post_type->name, $this->cpt_caps[$cap] ) ) {
                 continue;
+            }            
+            if ( !isset($this->built_in_wp_caps[$cap]) && 
+                 !in_array( 'custom', $this->cpt_caps[$cap] ) ) {
+                    $this->cpt_caps[$cap][] = 'custom';                
             }
-            $this->cpt_caps[$cap] = array();
-            if (!isset($this->built_in_wp_caps[$cap])) {
-                $this->cpt_caps[$cap][] = 'custom';
-            }
-            $this->cpt_caps[$cap][] = 'custom_post_types';
-            $this->cpt_caps[$cap][] = $post_type->name;                        
+            if ( !in_array( 'custom_post_types', $this->cpt_caps[$cap] ) ) {
+                $this->cpt_caps[$cap][] = 'custom_post_types';
+            }            
+            $this->cpt_caps[$cap][] = $post_type->name;            
         }
+        
     }
     // end of get_registered_cpt_caps()
 

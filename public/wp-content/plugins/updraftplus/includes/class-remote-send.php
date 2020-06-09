@@ -17,6 +17,7 @@ abstract class UpdraftPlus_RemoteSend {
 		add_action('updraft_migrate_key_create', array($this, 'updraft_migrate_key_create'));
 		add_filter('updraft_migrate_key_create_return', array($this, 'updraft_migrate_key_create_return'), 10, 2);
 		add_action('updraft_migrate_key_delete', array($this, 'updraft_migrate_key_delete'));
+		add_action('updraft_migrate_delete_existingsites', array($this, 'updraft_migrate_delete_existingsites'));
 		add_filter('updraftplus_initial_jobdata', array($this, 'updraftplus_initial_jobdata'), 10, 3);
 		add_filter('updraft_printjob_beforewarnings', array($this, 'updraft_printjob_beforewarnings'), 10, 2);
 		add_action('plugins_loaded', array($this, 'plugins_loaded'));
@@ -488,7 +489,7 @@ abstract class UpdraftPlus_RemoteSend {
 		if (empty($data['name'])) die;
 		$name = stripslashes($data['name']);
 		
-		$size = (empty($data['size']) || !is_numeric($data['size']) || $data['size'] < 512) ? 2048 : (int) $data['size'];
+		$size = (empty($data['size']) || !is_numeric($data['size']) || $data['size'] < 1024) ? 2048 : (int) $data['size'];
 
 		$name_hash = md5($name); // 32 characters
 		$indicator_name = $name_hash.'.migrator.updraftplus.com';
@@ -515,7 +516,7 @@ abstract class UpdraftPlus_RemoteSend {
 			echo json_encode(array(
 				'bundle' => $local_bundle,
 				'r' => __('Key created successfully.', 'updraftplus').' '.__('You must copy and paste this key on the sending site now - it cannot be shown again.', 'updraftplus'),
-				'selector' => $this->get_remotesites_selector(array()),
+				'selector' => $this->get_remotesites_selector(),
 				'ourkeys' => $this->list_our_keys($our_keys),
 			));
 			die;
@@ -610,18 +611,30 @@ abstract class UpdraftPlus_RemoteSend {
 			if (!is_array($remotesites)) $remotesites = array();
 		}
 
+		$ret = '';
+
 		if (empty($remotesites)) {
-			return '<p id="updraft_migrate_receivingsites_nonemsg"><em>'.__('No receiving sites have yet been added.', 'updraftplus').'</em></p>';
+			$ret .= '<p id="updraft_migrate_receivingsites_nonemsg"><em>'.__('No receiving sites have yet been added.', 'updraftplus').'</em></p>';
 		} else {
-			$ret = '<p class="updraftplus-remote-sites-selector"><label>'.__('Send to site:', 'updraftplus').'</label> <select id="updraft_remotesites_selector">';
+			$ret .= '<p class="updraftplus-remote-sites-selector"><label>'.__('Send to site:', 'updraftplus').'</label> <select id="updraft_remotesites_selector">';
 			foreach ($remotesites as $k => $rsite) {
 				if (!is_array($rsite) || empty($rsite['url'])) continue;
 				$ret .= '<option value="'.esc_attr($k).'">'.htmlspecialchars($rsite['url']).'</option>';
 			}
 			$ret .= '</select>';
-			$ret .= ' <button class="button-primary" style="height:30px; font-size:16px; margin-left: 3px; width:85px;" id="updraft_migrate_send_button" onclick="updraft_migrate_send_backup();">'.__('Send', 'updraftplus').'</button>';
+			$ret .= ' <button class="button-primary" id="updraft_migrate_send_button" onclick="updraft_migrate_send_backup();">'.__('Send', 'updraftplus').'</button>';
 			$ret .= '</p>';
 		}
+
+		$ret .= '<div class="text-link-menu">';
+		$ret .= '<a href="#" class="updraft_migrate_add_site--trigger"><span class="dashicons dashicons-plus"></span>'.__('Add a site', 'updraftplus').'</a>';
+		$ret .= sprintf(
+			'<a href="javascript:void(0)" class="updraft_migrate_clear_sites" %s onclick="updraft_migrate_delete_existingsites(\'%s\');"><span class="dashicons dashicons-trash"></span>%s</a>',
+			empty($remotesites) ? 'style="display: none"' : '',
+			esc_js(__("You are about to permanently delete the list of existing sites. This action cannot be undone. 'Cancel' to stop, 'OK' to delete.")),
+			__('Clear list of existing sites', 'updraftplus')
+		);
+		$ret .= '</div>';
 
 		return $ret;
 	}
@@ -651,5 +664,36 @@ abstract class UpdraftPlus_RemoteSend {
 
 		return $ret;
 
+	}
+
+	/**
+	 * Delete the list of existing remote sites from the database
+	 *
+	 * @return String The JSON format of the response of the deletion process
+	 */
+	public function updraft_migrate_delete_existingsites() {
+
+		global $wpdb;
+
+		$ret = array();
+
+		$old_val = $wpdb->suppress_errors();
+
+		UpdraftPlus_Options::delete_updraft_option('updraft_remotesites');
+
+		$remote_sites = UpdraftPlus_Options::get_updraft_option('updraft_remotesites');
+
+		if (is_array($remote_sites) && !empty($remote_sites)) {
+			$err_msg = __('There was an error while trying to remove the list of existing sites.', 'updraftplus');
+			$err_db = !empty($wpdb->last_error) ? ' ('.$wpdb->last_error.' - '.$wpdb->last_query.')' : '';
+			$ret['error'] = $err_msg.$err_db;
+		} else {
+			$ret['success'] = __('The list of existing sites has been removed', 'updraftplus');
+			$ret['html'] = $this->get_remotesites_selector();
+		}
+
+		$wpdb->suppress_errors($old_val);
+
+		echo json_encode($ret);
 	}
 }

@@ -1436,7 +1436,7 @@ class UpdraftPlus {
 
 			// Some more remains to download - so let's do it
 			// N.B. We use ftell(), which precludes us from using open in append-only ('a') mode - see https://php.net/manual/en/function.fopen.php
-			if (!($fh = fopen($fullpath, 'c'))) {// phpcs:ignore PHPCompatibility.ParameterValues.NewFopenModes.cFound -- Passing "c" as the $mode to fopen() is not supported in PHP 5.2.5 or lower. Found 'c'
+			if (!($fh = fopen($fullpath, 'c+'))) {// phpcs:ignore PHPCompatibility.ParameterValues.NewFopenModes.cplusFound -- Passing "c+" as the $mode to fopen() is not supported in PHP 5.2.5 or lower. Found 'c+'
 				$this->log("Error opening local file: $fullpath");
 				$this->log($file.": ".__("Error", 'updraftplus').": ".__('Error opening local file: Failed to download', 'updraftplus'), 'error');
 				return false;
@@ -1480,7 +1480,7 @@ class UpdraftPlus {
 					} else {
 						$ret = filesize($fullpath);
 						// fseek returns - on success
-						if (false == ($fh = fopen($fullpath, 'c')) || 0 !== fseek($fh, $ret)) {// phpcs:ignore PHPCompatibility.ParameterValues.NewFopenModes.cFound -- Passing "c" as the $mode to fopen() is not supported in PHP 5.2.5 or lower. Found 'c'
+						if (false == ($fh = fopen($fullpath, 'c+')) || 0 !== fseek($fh, $ret)) {// phpcs:ignore PHPCompatibility.ParameterValues.NewFopenModes.cplusFound -- Passing "c+" as the $mode to fopen() is not supported in PHP 5.2.5 or lower. Found 'c+'
 							$this->log("Error opening local file: $fullpath");
 							$this->log($file.": ".__("Error", 'updraftplus').": ".__('Error opening local file: Failed to download', 'updraftplus'), 'error');
 							return false;
@@ -1508,6 +1508,15 @@ class UpdraftPlus {
 			$this->log('Error ('.get_class($e).') - failed to download the file ('.$e->getCode().', '.$e->getMessage().', line '.$e->getLine().' in '.$e->getFile().')');
 			$this->log("$file: ".__('Error - failed to download the file', 'updraftplus').' ('.$e->getCode().', '.$e->getMessage().')', 'error');
 			return false;
+		}
+
+		// April 1st 2020 - Due to a bug during uploads to Dropbox some backups had string "null" appended to the end which caused warnings, this removes the string "null" from these backups
+		if ('dropbox' == $method->get_id()) {
+			fseek($fh, -4, SEEK_END);
+			$data = fgets($fh, 5);
+			if ("null" == $data) {
+				ftruncate($fh, filesize($fullpath) - 4);
+			}
 		}
 
 		fclose($fh);
@@ -3041,9 +3050,10 @@ class UpdraftPlus {
 		}
 	
 		if (!is_string($service) && !is_array($service)) {
-			$all_services = UpdraftPlus_Options::get_updraft_option('updraft_service');
+			$all_services = !empty($options['remote_storage_instances']) ? array_keys($options['remote_storage_instances']) : UpdraftPlus_Options::get_updraft_option('updraft_service');
+			$remote_storage_instances = !empty($options['remote_storage_instances']) ? $options['remote_storage_instances'] : array();
 			if (is_string($all_services))  $all_services = (array) $all_services;
-			$enabled_storage_objects_and_ids = UpdraftPlus_Storage_Methods_Interface::get_enabled_storage_objects_and_ids($all_services);
+			$enabled_storage_objects_and_ids = UpdraftPlus_Storage_Methods_Interface::get_enabled_storage_objects_and_ids($all_services, $remote_storage_instances);
 			$service = array_keys($enabled_storage_objects_and_ids);
 		}
 		$service = $this->just_one($service);
@@ -3171,6 +3181,8 @@ class UpdraftPlus {
 		if (is_array($options) && !empty($options['label'])) array_push($initial_jobdata, 'label', $options['label']);
 		
 		if (!empty($options['always_keep'])) array_push($initial_jobdata, 'always_keep', true);
+
+		if (!empty($options['remote_storage_instances'])) array_push($initial_jobdata, 'remote_storage_instances', $options['remote_storage_instances']);
 
 		try {
 			// Use of jobdata_set_multi saves around 200ms
@@ -4032,9 +4044,10 @@ class UpdraftPlus {
 		$backup_array['service_instance_ids'] = array();
 		if ('incremental' != $job_type) $backup_array['always_keep'] = $this->jobdata_get('always_keep', false);
 		$backup_array['files_enumerated_at'] = $this->jobdata_get('files_enumerated_at');
+		$remote_storage_instances = $this->jobdata_get('remote_storage_instances', array());
 		
 		// N.B. Though the saved 'service' option can have various forms (especially if upgrading from (very) old versions), in the jobdata, it is always an array.
-		$storage_objects_and_ids = UpdraftPlus_Storage_Methods_Interface::get_enabled_storage_objects_and_ids($backup_array['service']);
+		$storage_objects_and_ids = UpdraftPlus_Storage_Methods_Interface::get_enabled_storage_objects_and_ids($backup_array['service'], $remote_storage_instances);
 		
 		// N.B. On PHP 5.5+, we'd use array_column()
 		foreach ($storage_objects_and_ids as $method => $method_information) {

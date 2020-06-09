@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitff094bd149fd7b99bd36847201a1350f
+class ComposerStaticInitbbfbf1eeab6edac4f104ebea9177107a
 {
     public static $prefixLengthsPsr4 = array (
         'T' => 
@@ -34,6 +34,7 @@ class ComposerStaticInitff094bd149fd7b99bd36847201a1350f
         'Tribe\\Events\\Collections\\Lazy_Post_Collection' => __DIR__ . '/../..' . '/src/Tribe/Collections/Lazy_Post_Collection.php',
         'Tribe\\Events\\Editor\\Objects\\Editor_Object_Interface' => __DIR__ . '/../..' . '/src/Tribe/Editor/Objects/Editor_Object_Interface.php',
         'Tribe\\Events\\Editor\\Objects\\Event' => __DIR__ . '/../..' . '/src/Tribe/Editor/Objects/Event.php',
+        'Tribe\\Events\\I18n' => __DIR__ . '/../..' . '/src/Tribe/I18n.php',
         'Tribe\\Events\\Integrations\\Beaver_Builder' => __DIR__ . '/../..' . '/src/Tribe/Integrations/Beaver_Builder.php',
         'Tribe\\Events\\Integrations\\WP_Rocket' => __DIR__ . '/../..' . '/src/Tribe/Integrations/WP_Rocket.php',
         'Tribe\\Events\\Models\\Post_Types\\Event' => __DIR__ . '/../..' . '/src/Tribe/Models/Post_Types/Event.php',
@@ -80,6 +81,8 @@ class ComposerStaticInitff094bd149fd7b99bd36847201a1350f
         'Tribe\\Events\\Views\\V2\\Partials\\Day_View\\EventTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Day_View/EventTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\Day_View\\Event\\CostTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Day_View/Event/CostTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\Day_View\\Event\\DateTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Day_View/Event/DateTest.php',
+        'Tribe\\Events\\Views\\V2\\Partials\\Day_View\\Event\\Date\\FeaturedTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Day_View/Event/Date/FeaturedTest.php',
+        'Tribe\\Events\\Views\\V2\\Partials\\Day_View\\Event\\Date\\MetaTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Day_View/Event/Date/MetaTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\Day_View\\Event\\DescriptionTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Day_View/Event/DescriptionTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\Day_View\\Event\\Featured_ImageTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Day_View/Event/Featured_ImageTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\Day_View\\Event\\Time_SeparatorTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Day_View/Time_SeparatorTest.php',
@@ -101,6 +104,7 @@ class ComposerStaticInitff094bd149fd7b99bd36847201a1350f
         'Tribe\\Events\\Views\\V2\\Partials\\Latest_Past_View\\EventTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Latest_Past_View/EventTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\Latest_Past_View\\Event\\CostTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Latest_Past_View/Event/CostTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\Latest_Past_View\\Event\\DateTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Latest_Past_View/Event/DateTest.php',
+        'Tribe\\Events\\Views\\V2\\Partials\\Latest_Past_View\\Event\\Date\\FeaturedTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Latest_Past_View/Event/Date/FeaturedTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\Latest_Past_View\\Event\\Date\\MetaTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Latest_Past_View/Event/Date/MetaTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\Latest_Past_View\\Event\\Date_TagTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Latest_Past_View/Event/Date_TagTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\Latest_Past_View\\Event\\DescriptionTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Latest_Past_View/Event/DescriptionTest.php',
@@ -110,6 +114,7 @@ class ComposerStaticInitff094bd149fd7b99bd36847201a1350f
         'Tribe\\Events\\Views\\V2\\Partials\\List_View\\EventTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/List_View/EventTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\List_View\\Event\\CostTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/List_View/Event/CostTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\List_View\\Event\\DateTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/List_View/Event/DateTest.php',
+        'Tribe\\Events\\Views\\V2\\Partials\\List_View\\Event\\Date\\FeaturedTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/List_View/Event/Date/FeaturedTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\List_View\\Event\\Date\\MetaTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/List_View/Event/Date/MetaTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\List_View\\Event\\Date_TagTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/List_View/Event/Date_TagTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\List_View\\Event\\DescriptionTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/List_View/Event/DescriptionTest.php',
@@ -135,6 +140,7 @@ class ComposerStaticInitff094bd149fd7b99bd36847201a1350f
         'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Calendar_Body\\Day\\Calendar_EventsTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Calendar_Body/Day/Calendar_EventsTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Calendar_Body\\Day\\Calendar_Events\\Calendar_EventTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Calendar_Body/Day/Calendar_Events/Calendar_EventTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Calendar_Body\\Day\\Calendar_Events\\Calendar_Event\\DateTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Calendar_Body/Day/Calendar_Events/Calendar_Event/DateTest.php',
+        'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Calendar_Body\\Day\\Calendar_Events\\Calendar_Event\\Date\\FeaturedTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Calendar_Body/Day/Calendar_Events/Calendar_Event/Date/FeaturedTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Calendar_Body\\Day\\Calendar_Events\\Calendar_Event\\Date\\MetaTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Calendar_Body/Day/Calendar_Events/Calendar_Event/Date/MetaTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Calendar_Body\\Day\\Calendar_Events\\Calendar_Event\\Featured_ImageTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Calendar_Body/Day/Calendar_Events/Calendar_Event/Featured_ImageTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Calendar_Body\\Day\\Calendar_Events\\Calendar_Event\\TitleTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Calendar_Body/Day/Calendar_Events/Calendar_Event/TitleTest.php',
@@ -142,6 +148,7 @@ class ComposerStaticInitff094bd149fd7b99bd36847201a1350f
         'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Calendar_Body\\Day\\Calendar_Events\\Calendar_Event\\Tooltip\\CostTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Calendar_Body/Day/Calendar_Events/Calendar_Event/Tooltip/CostTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Calendar_Body\\Day\\Calendar_Events\\Calendar_Event\\Tooltip\\CtaTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Calendar_Body/Day/Calendar_Events/Calendar_Event/Tooltip/CtaTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Calendar_Body\\Day\\Calendar_Events\\Calendar_Event\\Tooltip\\DateTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Calendar_Body/Day/Calendar_Events/Calendar_Event/Tooltip/DateTest.php',
+        'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Calendar_Body\\Day\\Calendar_Events\\Calendar_Event\\Tooltip\\Date\\FeaturedTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Calendar_Body/Day/Calendar_Events/Calendar_Event/Tooltip/Date/FeaturedTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Calendar_Body\\Day\\Calendar_Events\\Calendar_Event\\Tooltip\\Date\\MetaTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Calendar_Body/Day/Calendar_Events/Calendar_Event/Tooltip/Date/MetaTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Calendar_Body\\Day\\Calendar_Events\\Calendar_Event\\Tooltip\\DescriptionTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Calendar_Body/Day/Calendar_Events/Calendar_Event/Tooltip/DescriptionTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Calendar_Body\\Day\\Calendar_Events\\Calendar_Event\\Tooltip\\Featured_ImageTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Calendar_Body/Day/Calendar_Events/Calendar_Event/Tooltip/Featured_ImageTest.php',
@@ -149,6 +156,12 @@ class ComposerStaticInitff094bd149fd7b99bd36847201a1350f
         'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Calendar_Body\\Day\\More_EventsTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Calendar_Body/Day/More_EventsTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Calendar_Body\\Day\\Multiday_EventsTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Calendar_Body/Day/Multiday_EventsTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Calendar_Body\\Day\\Multiday_Events\\Multiday_EventTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Calendar_Body/Day/Multiday_Events/Multiday_EventTest.php',
+        'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Calendar_Body\\Day\\Multiday_Events\\Multiday_Event\\BarTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Calendar_Body/Day/Multiday_Events/Multiday_Event/BarTest.php',
+        'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Calendar_Body\\Day\\Multiday_Events\\Multiday_Event\\HiddenTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Calendar_Body/Day/Multiday_Events/Multiday_Event/HiddenTest.php',
+        'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Calendar_Body\\Day\\Multiday_Events\\Multiday_Event\\Hidden\\DateTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Calendar_Body/Day/Multiday_Events/Multiday_Event/Hidden/DateTest.php',
+        'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Calendar_Body\\Day\\Multiday_Events\\Multiday_Event\\Hidden\\LinkTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Calendar_Body/Day/Multiday_Events/Multiday_Event/Hidden/LinkTest.php',
+        'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Calendar_Body\\Day\\Multiday_Events\\Multiday_Event\\Hidden\\Link\\FeaturedTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Calendar_Body/Day/Multiday_Events/Multiday_Event/Hidden/Link/FeaturedTest.php',
+        'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Calendar_Body\\Day\\Multiday_Events\\Multiday_Event\\Hidden\\Link\\TitleTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Calendar_Body/Day/Multiday_Events/Multiday_Event/Hidden/Link/TitleTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Calendar_Body\\Day\\Multiday_Events\\Multiday_Event_SpacerTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Calendar_Body/Day/Multiday_Events/Multiday_Event_SpacerTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Calendar_HeaderTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Calendar_HeaderTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Mobile_EventsTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Mobile_EventsTest.php',
@@ -158,6 +171,7 @@ class ComposerStaticInitff094bd149fd7b99bd36847201a1350f
         'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Mobile_Events\\Mobile_Day\\Mobile_Event\\CostTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Mobile_Events/Mobile_Day/Mobile_Event/CostTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Mobile_Events\\Mobile_Day\\Mobile_Event\\CtaTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Mobile_Events/Mobile_Day/Mobile_Event/CtaTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Mobile_Events\\Mobile_Day\\Mobile_Event\\DateTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Mobile_Events/Mobile_Day/Mobile_Event/DateTest.php',
+        'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Mobile_Events\\Mobile_Day\\Mobile_Event\\Date\\FeaturedTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Mobile_Events/Mobile_Day/Mobile_Event/Date/FeaturedTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Mobile_Events\\Mobile_Day\\Mobile_Event\\Date\\MetaTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Mobile_Events/Mobile_Day/Mobile_Event/Date/MetaTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Mobile_Events\\Mobile_Day\\Mobile_Event\\Featured_ImageTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Mobile_Events/Mobile_Day/Mobile_Event/Featured_ImageTest.php',
         'Tribe\\Events\\Views\\V2\\Partials\\Month_View\\Mobile_Events\\Mobile_Day\\Mobile_Event\\TitleTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Partials/Month_View/Mobile_Events/Mobile_Day/Mobile_Event/TitleTest.php',
@@ -241,6 +255,7 @@ class ComposerStaticInitff094bd149fd7b99bd36847201a1350f
         'Tribe\\Events\\Views\\V2\\Views\\HTML\\Month\\MonthEventMultidayTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/HTML/Month/MonthEventMultidayTest.php',
         'Tribe\\Events\\Views\\V2\\Views\\HTML\\Month\\Tooltip\\MonthTooltipCostTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/HTML/Month/Tooltip/MonthTooltipCostTest.php',
         'Tribe\\Events\\Views\\V2\\Views\\Latest_Past_View' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Views/Latest_Past_View.php',
+        'Tribe\\Events\\Views\\V2\\Views\\Latest_Past_ViewTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Views/Latest_Past_ViewTest.php',
         'Tribe\\Events\\Views\\V2\\Views\\List_View' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Views/List_View.php',
         'Tribe\\Events\\Views\\V2\\Views\\List_ViewTest' => __DIR__ . '/../..' . '/tests/views_integration/Tribe/Events/Views/V2/Views/List_ViewTest.php',
         'Tribe\\Events\\Views\\V2\\Views\\Month_View' => __DIR__ . '/../..' . '/src/Tribe/Views/V2/Views/Month_View.php',
@@ -259,9 +274,9 @@ class ComposerStaticInitff094bd149fd7b99bd36847201a1350f
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitff094bd149fd7b99bd36847201a1350f::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitff094bd149fd7b99bd36847201a1350f::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitff094bd149fd7b99bd36847201a1350f::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitbbfbf1eeab6edac4f104ebea9177107a::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitbbfbf1eeab6edac4f104ebea9177107a::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitbbfbf1eeab6edac4f104ebea9177107a::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -2,12 +2,12 @@
 # This file is distributed under the same license as the Plugins - Adminimize - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2020-04-13 16:55:56+0000\n"
+"PO-Revision-Date: 2020-05-26 22:06:53+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: GlotPress/2.4.0-alpha\n"
+"X-Generator: GlotPress/3.0.0-alpha\n"
 "Language: es\n"
 "Project-Id-Version: Plugins - Adminimize - Stable (latest release)\n"
 
@@ -517,6 +517,10 @@ msgstr "Frank Bültge"
 msgid "Status, Sticky"
 msgstr "Estado, fijo"
 
+#: inc-options/minimenu.php:137 inc-options/deinstall_options.php:15
+msgid "Uninstall Options"
+msgstr "Opciones de desinstalación"
+
 #: inc-options/write_page_options.php:165
 #: inc-options/write_page_options.php:166
 #: inc-options/write_page_options.php:167
@@ -544,10 +548,6 @@ msgstr "Estado, fijo"
 #: inc-options/write_cp_options.php:187 inc-options/write_cp_options.php:188
 msgid "QE"
 msgstr "QE"
-
-#: inc-options/minimenu.php:137 inc-options/deinstall_options.php:15
-msgid "Uninstall Options"
-msgstr "Opciones de desinstalación"
 
 #: inc-options/minimenu.php:74 inc-options/dashboard_options.php:17
 msgid "Dashboard options"
@@ -816,16 +816,6 @@ msgstr "Escribir Pagina"
 msgid "Comments"
 msgstr "Comentarios"
 
-#: inc-options/write_page_options.php:268
-#: inc-options/admin_bar_frontend.php:136 inc-options/backend_options.php:435
-#: inc-options/write_post_options.php:270 inc-options/write_cp_options.php:320
-#: inc-options/widget_options.php:184 inc-options/admin_bar.php:132
-#: inc-options/links_options.php:172 inc-options/menu_options.php:314
-#: inc-options/self_settings.php:78 inc-options/wp_nav_menu_options.php:199
-#: inc-options/global_options.php:222 inc-options/dashboard_options.php:200
-msgid "Update Options"
-msgstr "Opciones de actualización"
-
 #: inc-options/admin_bar_frontend.php:45 inc-options/widget_options.php:33
 #: inc-options/admin_bar.php:46 inc-options/links_options.php:33
 #: inc-options/wp_nav_menu_options.php:32 inc-options/global_options.php:40
@@ -952,3 +942,13 @@ msgstr "Escritorio"
 #: inc-options/backend_options.php:275 inc-options/backend_options.php:357
 msgid "Default"
 msgstr "Por defecto"
+
+#: inc-options/write_page_options.php:268
+#: inc-options/admin_bar_frontend.php:136 inc-options/backend_options.php:435
+#: inc-options/write_post_options.php:270 inc-options/write_cp_options.php:320
+#: inc-options/widget_options.php:184 inc-options/admin_bar.php:132
+#: inc-options/links_options.php:172 inc-options/menu_options.php:314
+#: inc-options/self_settings.php:78 inc-options/wp_nav_menu_options.php:199
+#: inc-options/global_options.php:222 inc-options/dashboard_options.php:200
+msgid "Update Options"
+msgstr "Actualizar opciones"

@@ -59,7 +59,7 @@ class MACHETE_UTILS_MODULE extends MACHETE_MODULE {
 	 * * header_content.
 	 * * alfonso_content
 	 * * footer_content.
-	 * @param bool  $silent prevent the function from generating admin notices.
+	 * @param bool  $silent  prevent the function from generating admin notices.
 	 */
 	protected function save_settings( $options = array(), $silent = false ) {
 
@@ -242,7 +242,7 @@ class MACHETE_UTILS_MODULE extends MACHETE_MODULE {
 		}
 
 		if ( $this->save_settings( $settings, true ) ) {
-			return __( 'Settings succesfully restored from backup', 'machete' ) . "\n";
+			return __( 'Settings successfully restored from backup', 'machete' ) . "\n";
 		} else {
 			return __( 'Error restoring settings backup', 'machete' ) . "\n";
 		}

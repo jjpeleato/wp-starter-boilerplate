@@ -4,7 +4,7 @@ Donate link:
 Tags: links, broken, maintenance, blogroll, custom fields, admin, comments, posts
 Requires at least: 4.6
 Tested up to: 5.4
-Stable tag: 1.11.12
+Stable tag: 1.11.13
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -37,7 +37,7 @@ There are several actions associated with each link. They show up when you move 
 * "Edit URL" lets you change the URL of that link. If the link is present in more than one place (e.g. both in a post and in the blogroll), all occurrences of that URL will be changed.
 * "Unlink" removes the link but leaves the link text intact.
 * "Not broken" lets you manually mark a "broken" link as working. This is useful if you know it was incorrectly detected as broken due to a network glitch or a bug. The marked link will still be checked periodically, but the plugin won't consider it broken unless it gets a new result.
-* "Dismiss" hides the link from the "Broken Links" and "Redirects" views. It will still be checked as normal and get the normal link styles (e.g. a strike-through effect for broken links), but won't be reported again unless its status changes. Useful if you want to acknowledge a link as broken/redirected and just leave as it is.
+* "Dismiss" hides the link frm the "Broken Links" and "Redirects" views. It will still be checked as normal and get the normal link styles (e.g. a strike-through effect for broken links), but won't be reported again unless its status changes. Useful if you want to acknowledge a link as broken/redirected and just leave as it is.
 
 You can also click on the contents of the "Status" or "Link Text" columns to get more info about the status of each link.
 
@@ -67,6 +67,20 @@ To upgrade your installation
 1. Reactivate the plugin. Your settings will be retained from the previous version.
 
 == Changelog ==
+= 1.11.13 =
+* Added filter for disabling email notifications.
+* Added filter to use GET requests.
+* Added option to disable last updated time on post types.
+* Added option to check post excerpts.
+* Added a confirmation box when unlinking.
+* Added basic multisite support.
+* Added proper error messages on YouTube video errors.
+* Fixed bulk recheck option.
+* Fixed minor database errors.
+* Improved performance.
+* Removed default YouTube API key.
+* Removed usage of depricated WP Snoopy.
+
 = 1.11.12 =
 * Added an interface to use personal YouTube API Key
 * Fixed database errors on installation for some hosts.

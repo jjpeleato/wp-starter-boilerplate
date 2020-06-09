@@ -8,7 +8,7 @@
 
 if ( ! defined( 'MACHETE_ADMIN_INIT' ) ) {
 	exit;
-};
+}
 
 // Manages welcome redirect to About page.
 add_action(
@@ -28,7 +28,7 @@ add_action(
 	}
 );
 
-// Content especific to Machete admin pages.
+// Content specific to Machete admin pages.
 add_action(
 	'current_screen',
 	function() {
@@ -99,6 +99,6 @@ add_action(
 foreach ( $machete->modules as $machete_module ) {
 	if ( ! $machete_module->params['is_active'] ) {
 		continue;
-	};
+	}
 	$machete_module->admin();
 }

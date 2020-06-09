@@ -22,7 +22,7 @@ class MACHETE {
 
 	/**
 	 * Placeholder for the old tabs navigation.
-
+	 *
 	 * @param string $current Current (active) tab slug.
 	 */
 	public function admin_tabs( $current = '' ) {
@@ -30,7 +30,7 @@ class MACHETE {
 	}
 	/**
 	 * Displays navigation tabs on Machete tabs (deactivated)
-
+	 *
 	 * @param string $current Current (active) tab slug.
 	 */
 	public function admin_tabs_old( $current = '' ) {
@@ -74,8 +74,8 @@ class MACHETE {
 	/**
 	 * Displays standar WordPress dashboard notice.
 	 *
-	 * @param string $message Message to display.
-	 * @param string $level Can be error, warning, info or success.
+	 * @param string $message     Message to display.
+	 * @param string $level       Can be error, warning, info or success.
 	 * @param bool   $dismissible determines if the notice can be dismissed via javascript.
 	 */
 	public function notice( $message, $level = 'info', $dismissible = true ) {
@@ -105,7 +105,7 @@ class MACHETE {
 
 	/**
 	 * Module activation and deactivation
-
+	 *
 	 * @param string $module module to work on.
 	 * @param string $action action to execute (activate|deactivate).
 	 * @param bool   $silent Supress admin notices.
@@ -121,7 +121,7 @@ class MACHETE {
 
 		if ( ! array_key_exists( $module, $this->modules ) ) {
 			if ( ! $silent ) {
-				$this->notice( __( 'Uknown module:', 'machete' ) . ' ' . $module, 'error' );
+				$this->notice( __( 'Unknown module:', 'machete' ) . ' ' . $module, 'error' );
 			}
 			return false;
 		}
@@ -150,7 +150,7 @@ class MACHETE {
 					$this->notice(
 						sprintf(
 							/* Translators: module title */
-							__( 'Module %s disabled succesfully', 'machete' ),
+							__( 'Module %s disabled successfully', 'machete' ),
 							$this->modules[ $module ]->params['title']
 						),
 						'success'
@@ -187,7 +187,7 @@ class MACHETE {
 					$this->notice(
 						sprintf(
 							/* Translators: module title */
-							__( 'Module %s enabled succesfully', 'machete' ),
+							__( 'Module %s enabled successfully', 'machete' ),
 							$this->modules[ $module ]->params['title']
 						),
 						'success'
