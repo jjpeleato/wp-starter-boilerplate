@@ -79,11 +79,21 @@ class UpdraftPlus_BackupModule_dropbox extends UpdraftPlus_BackupModule {
 		}
 	}
 
+	/**
+	 * Supported features
+	 *
+	 * @return Array
+	 */
 	public function get_supported_features() {
 		// This options format is handled via only accessing options via $this->get_options()
 		return array('multi_options', 'config_templates', 'multi_storage');
 	}
 
+	/**
+	 * Default options
+	 *
+	 * @return Array
+	 */
 	public function get_default_options() {
 		return array(
 			'appkey' => '',
@@ -91,6 +101,18 @@ class UpdraftPlus_BackupModule_dropbox extends UpdraftPlus_BackupModule {
 			'folder' => '',
 			'tk_access_token' => '',
 		);
+	}
+
+	/**
+	 * Check whether options have been set up by the user, or not
+	 *
+	 * @param Array $opts - the potential options
+	 *
+	 * @return Boolean
+	 */
+	public function options_exist($opts) {
+		if (is_array($opts) && !empty($opts['tk_access_token'])) return true;
+		return false;
 	}
 
 	/**
@@ -420,12 +442,17 @@ class UpdraftPlus_BackupModule_dropbox extends UpdraftPlus_BackupModule {
 		return $results;
 	}
 
-	public function defaults() {
+	/**
+	 * Identification of Dropbox app
+	 *
+	 * @return Array
+	 */
+	private function defaults() {
 		return apply_filters('updraftplus_dropbox_defaults', array('Z3Q3ZmkwbnplNHA0Zzlx', 'bTY0bm9iNmY4eWhjODRt'));
 	}
 
 	/**
-	 * Delete a single file from the service using the Dropbox API
+	 * Delete files from the service using the Dropbox API
 	 *
 	 * @param Array $files    - array of filenames to delete
 	 * @param Array $data     - unused here
@@ -453,6 +480,8 @@ class UpdraftPlus_BackupModule_dropbox extends UpdraftPlus_BackupModule {
 		}
 		if (false === $dropbox) return false;
 
+		$any_failures = false;
+		
 		foreach ($files as $file) {
 			$ufile = apply_filters('updraftplus_dropbox_modpath', $file, $this);
 			$this->log("request deletion: $ufile");
@@ -465,12 +494,14 @@ class UpdraftPlus_BackupModule_dropbox extends UpdraftPlus_BackupModule {
 			}
 
 			if (isset($file_success)) {
-				$this->log('delete succeeded');
-				return true;
+				$this->log('deletion succeeded');
 			} else {
-				return 'file_delete_error';
+				$this->log('deletion failed');
+				$any_failures = true;
 			}
 		}
+		
+		return $any_failures ? 'file_delete_error' : true;
 
 	}
 
@@ -858,6 +889,9 @@ class UpdraftPlus_BackupModule_dropbox extends UpdraftPlus_BackupModule {
 
 	}
 
+	/**
+	 * Bootstrap and check token
+	 */
 	public function auth_token() {
 		$this->bootstrap();
 		$opts = $this->get_options();

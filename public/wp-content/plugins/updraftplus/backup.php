@@ -95,6 +95,8 @@ class UpdraftPlus_Backup {
 		$this->updraft_dir = $updraftplus->backups_dir_location();
 		$this->updraft_dir_realpath = realpath($this->updraft_dir);
 
+		require_once(UPDRAFTPLUS_DIR.'/includes/class-database-utility.php');
+
 		if ('no' === $backup_files) {
 			$this->use_zip_object = 'UpdraftPlus_PclZip';
 			return;
@@ -373,12 +375,13 @@ class UpdraftPlus_Backup {
 		global $updraftplus;
 
 		$services = $updraftplus->just_one($updraftplus->jobdata_get('service'));
+		$remote_storage_instances = $updraftplus->jobdata_get('remote_storage_instances', array());
 		if (!is_array($services)) $services = array($services);
 
 		// We need to make sure that the loop below actually runs
 		if (empty($services)) $services = array('none');
 		
-		$storage_objects_and_ids = UpdraftPlus_Storage_Methods_Interface::get_enabled_storage_objects_and_ids($services);
+		$storage_objects_and_ids = UpdraftPlus_Storage_Methods_Interface::get_enabled_storage_objects_and_ids($services, $remote_storage_instances);
 
 		$total_instances_count = 0;
 
@@ -452,7 +455,8 @@ class UpdraftPlus_Backup {
 	
 						if (!isset($options['instance_enabled'])) $options['instance_enabled'] = 1;
 	
-						if (1 == $options['instance_enabled']) {
+						// if $remote_storage_instances is not empty then we are looping over a list of instances the user wants to backup to so we want to ignore if the instance is enabled or not
+						if (1 == $options['instance_enabled'] || !empty($remote_storage_instances)) {
 							$remote_obj = $storage_objects_and_ids[$service]['object'];
 							$remote_obj->set_options($options, true, $instance_id);
 							$do_prune = array_merge_recursive($do_prune, $this->upload_cloud($remote_obj, $service, $backup_array, $instance_id));
@@ -1730,6 +1734,25 @@ class UpdraftPlus_Backup {
 			$this->stow("DELIMITER ;\n\n");
 		}
 
+		// DB Stored Routines
+		$stored_routines = UpdraftPlus_Database_Utility::get_stored_routines();
+		if (is_array($stored_routines) && !empty($stored_routines)) {
+			$updraftplus->log("Dumping routines for database {$this->dbinfo['name']}");
+			$this->stow("\n\n# Dumping routines for database ".UpdraftPlus_Manipulation_Functions::backquote($this->dbinfo['name'])."\n\n");
+			$this->stow("DELIMITER ;;\n\n");
+			foreach ($stored_routines as $routine) {
+				$routine_name = $routine['Name'];
+				// Since routine name can include backquotes and routine name is typically enclosed with backquotes as well, the backquote escaping for the routine name can be done by adding a leading backquote
+				$quoted_escaped_routine_name = UpdraftPlus_Manipulation_Functions::backquote(str_replace('`', '``', $routine_name));
+				$this->stow("DROP {$routine['Type']} IF EXISTS $quoted_escaped_routine_name;;\n\n");
+				$this->stow($routine['Create '.ucfirst(strtolower($routine['Type']))]."\n\n;;\n\n");
+				$updraftplus->log("Dumping routine: {$routine['Name']}");
+			}
+			$this->stow("DELIMITER ;\n\n");
+		} elseif (is_wp_error($stored_routines)) {
+			$updraftplus->log($stored_routines->get_error_message());
+		}
+
 		$this->stow("/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;\n/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;\n/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;\n");
 
 		$updraftplus->log($file_base.'-db'.$this->whichdb_suffix.'.gz: finished writing out complete database file ('.round(filesize($backup_final_file_name)/1024, 1).' KB)');
@@ -1911,13 +1934,17 @@ class UpdraftPlus_Backup {
 		if ('VIEW' != $table_type && ('none' == $segment || 0 <= $segment)) {
 			$defs = array();
 			$integer_fields = array();
+			$binary_fields = array();
 			// $table_structure was from "DESCRIBE $table"
 			foreach ($table_structure as $struct) {
 				if ((0 === strpos($struct->Type, 'tinyint')) || (0 === strpos(strtolower($struct->Type), 'smallint'))
 					|| (0 === strpos(strtolower($struct->Type), 'mediumint')) || (0 === strpos(strtolower($struct->Type), 'int')) || (0 === strpos(strtolower($struct->Type), 'bigint'))
 				) {
 						$defs[strtolower($struct->Field)] = (null === $struct->Default ) ? 'NULL' : $struct->Default;
-						$integer_fields[strtolower($struct->Field)] = "1";
+						$integer_fields[strtolower($struct->Field)] = true;
+				}
+				if ((0 === strpos($struct->Type, 'binary')) || (0 === strpos(strtolower($struct->Type), 'varbinary')) || (0 === strpos(strtolower($struct->Type), 'tinyblob')) || (0 === strpos(strtolower($struct->Type), 'mediumblob')) || (0 === strpos(strtolower($struct->Type), 'blob')) || (0 === strpos(strtolower($struct->Type), 'longblob'))) {
+					$binary_fields[strtolower($struct->Field)] = true;
 				}
 			}
 
@@ -1959,6 +1986,14 @@ class UpdraftPlus_Backup {
 								// yet try to avoid quotation marks around integers
 								$value = (null === $value || '' === $value) ? $defs[strtolower($key)] : $value;
 								$values[] = ('' === $value) ? "''" : $value;
+							} elseif (isset($binary_fields[strtolower($key)])) {
+								if (null === $value) {
+									$values[] = 'NULL';
+								} elseif ('' === $value) {
+									$values[] = "''";
+								} else {
+									$values[] = "0x" . bin2hex(str_repeat("0", floor(strspn($value, "0") / 4)).$value);
+								}
 							} else {
 								$values[] = (null === $value) ? 'NULL' : "'" . str_replace($search, $replace, str_replace('\'', '\\\'', str_replace('\\', '\\\\', $value))) . "'";
 							}

@@ -449,7 +449,7 @@ class UpdraftPlus_BackupModule_updraftvault extends UpdraftPlus_BackupModule_s3 
 	 * @return Boolean
 	 */
 	public function options_exist($opts) {
-		if (is_array($opts) && isset($opts['email'])) return true;
+		if (is_array($opts) && !empty($opts['email'])) return true;
 		return false;
 	}
 	

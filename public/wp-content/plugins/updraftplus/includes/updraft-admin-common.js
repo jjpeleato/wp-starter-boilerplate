@@ -339,12 +339,36 @@ function backupnow_whichtables_checked(onlythesetableentities){
 	var send_list = false;
 	jQuery('#backupnow_database_moreoptions input[type="checkbox"]').each(function(index) {
 		if (!jQuery(this).is(':checked')) { send_list = true; return; }
+		if (jQuery(this).is(':checked') && jQuery(this).data('non_wp_table')) { send_list = true; return; }
 	});
 
 	onlythesetableentities = jQuery("input[name^='updraft_include_tables_']").serializeArray();
 
 	if (send_list) {
 		return onlythesetableentities;
+	} else {
+		return true;
+	}
+}
+
+/**
+ * A method to get all the selected cloud service values from the backup now modal
+ *
+ * @param {string} only_these_cloud_services an empty string to append values to
+ *
+ * @return {string} a string that contains the values of all selected cloud service connections selected
+ */
+function backupnow_which_cloud_services_checked(only_these_cloud_services) {
+	var send_list = false;
+	jQuery('#backupnow_includecloud_moreoptions input[type="checkbox"]').each(function(index) {
+		if (!jQuery(this).is(':checked')) { send_list = true; return; }
+		if (jQuery(this).is(':checked') && jQuery(this).data('instance_disabled')) { send_list = true; return; }
+	});
+
+	only_these_cloud_services = jQuery("input[name^='updraft_include_remote_service_']").serializeArray();
+	
+	if (send_list) {
+		return only_these_cloud_services;
 	} else {
 		return true;
 	}
@@ -456,7 +480,7 @@ function updraft_backup_dialog_open(type) {
 		jQuery('#updraft-backupnow-modal .incremental-free-only').show();
 		type = 'new';
 	} else {
-		jQuery('#updraft-backupnow-modal .incremental-backups-only').hide();
+		jQuery('#updraft-backupnow-modal .incremental-backups-only, #updraft-backupnow-modal .incremental-free-only').hide();
 	}
 	
 	jQuery('#backupnow_includefiles_moreoptions').hide();
@@ -1780,15 +1804,16 @@ function updraft_downloader_status_update(download_status, response_raw) {
 /**
  * Function that sets up a ajax call to start a backup
  *
- * @param {Integer} backupnow_nodb         Indicate whether the database should be backed up: valid values are 0, 1
- * @param {Integer} backupnow_nofiles      Indicate whether any files should be backed up: valid values are 0, 1
- * @param {Integer} backupnow_nocloud      Indicate whether the backup should be uploaded to cloud storage: valid values are 0, 1
- * @param {String}  onlythesefileentities  A csv list of file entities to be backed up
- * @param {String}  onlythesetableentities A csv list of table entities to be backed up
- * @param {Array}   extradata              any extra data to be added
- * @param {String}  label                  A optional label to be added to a backup
+ * @param {Integer} backupnow_nodb            Indicate whether the database should be backed up: valid values are 0, 1
+ * @param {Integer} backupnow_nofiles         Indicate whether any files should be backed up: valid values are 0, 1
+ * @param {Integer} backupnow_nocloud         Indicate whether the backup should be uploaded to cloud storage: valid values are 0, 1
+ * @param {String}  onlythesefileentities     A csv list of file entities to be backed up
+ * @param {String}  onlythesetableentities    A csv list of table entities to be backed up
+ * @param {Array}   extradata                 any extra data to be added
+ * @param {String}  label                     A optional label to be added to a backup
+ * @param {String}  only_these_cloud_services An array of remote sorage locations to be backed up to
  */
-function updraft_backupnow_go(backupnow_nodb, backupnow_nofiles, backupnow_nocloud, onlythesefileentities, extradata, label, onlythesetableentities) {
+function updraft_backupnow_go(backupnow_nodb, backupnow_nofiles, backupnow_nocloud, onlythesefileentities, extradata, label, onlythesetableentities, only_these_cloud_services) {
 
 	var params = {
 		backupnow_nodb: backupnow_nodb,
@@ -1804,6 +1829,10 @@ function updraft_backupnow_go(backupnow_nodb, backupnow_nofiles, backupnow_noclo
 
 	if ('' != onlythesetableentities) {
 		params.onlythesetableentities = onlythesetableentities;
+	}
+
+	if ('' != only_these_cloud_services) {
+		params.only_these_cloud_services = only_these_cloud_services;
 	}
 	
 	params.always_keep = (typeof extradata.always_keep !== 'undefined') ? extradata.always_keep : 0;
@@ -2779,8 +2808,10 @@ jQuery(document).ready(function($) {
 	function add_new_instance(method) {
 		var template = Handlebars.compile(updraftlion.remote_storage_templates[method]);
 		var context = updraftlion.remote_storage_options[method]['default'];
+		var method_name = updraftlion.remote_storage_methods[method];
 		context['instance_id'] = 's-' + generate_instance_id(32);
 		context['instance_enabled'] = 1;
+		context['instance_label'] = method_name + ' (' + (jQuery('.' + method + '_updraft_remote_storage_border').length + 1) + ')';
 		var html = template(context);
 		jQuery(html).hide().insertAfter('.' + method + '_add_instance_container:first').show('slow');
 	}
@@ -2848,6 +2879,11 @@ jQuery(document).ready(function($) {
 	$('#backupnow_database_showmoreoptions').click(function(e) {
 		e.preventDefault();
 		$('#backupnow_database_moreoptions').toggle();
+	});
+
+	$('#updraft-backupnow-modal').on('click', '#backupnow_includecloud_showmoreoptions', function(e) {
+		e.preventDefault();
+		$('#backupnow_includecloud_moreoptions').toggle();
 	});
 	
 	$('#updraft-navtab-backups-content').on('click', 'a.updraft_diskspaceused_update',function(e) {
@@ -3491,7 +3527,7 @@ jQuery(document).ready(function($) {
 
 		if ('' == onlythesetableentities && 0 == backupnow_nodb) {
 			alert(updraftlion.notableschosen);
-			jQuery('#backupnow_includefiles_moreoptions').show();
+			jQuery('#backupnow_database_moreoptions').show();
 			return;
 		}
 
@@ -3505,6 +3541,18 @@ jQuery(document).ready(function($) {
 			alert(updraftlion.nofileschosen);
 			jQuery('#backupnow_includefiles_moreoptions').show();
 			return;
+		}
+
+		var only_these_cloud_services = backupnow_which_cloud_services_checked('');
+
+		if ('' == only_these_cloud_services && 0 == backupnow_nocloud) {
+			alert(updraftlion.nocloudserviceschosen);
+			jQuery('#backupnow_includecloud_moreoptions').show();
+			return;
+		}
+
+		if (typeof only_these_cloud_services === 'boolean') {
+			only_these_cloud_services = null;
 		}
 		
 		if (backupnow_nodb && backupnow_nofiles) {
@@ -3520,7 +3568,7 @@ jQuery(document).ready(function($) {
 			});
 		}, 1700);
 	
-		updraft_backupnow_go(backupnow_nodb, backupnow_nofiles, backupnow_nocloud, onlythesefileentities, {always_keep: always_keep, incremental: incremental}, jQuery('#backupnow_label').val(), onlythesetableentities);
+		updraft_backupnow_go(backupnow_nodb, backupnow_nofiles, backupnow_nocloud, onlythesefileentities, {always_keep: always_keep, incremental: incremental}, jQuery('#backupnow_label').val(), onlythesetableentities, only_these_cloud_services);
 	};
 	backupnow_modal_buttons[updraftlion.cancel] = function() {
 	jQuery(this).dialog("close"); };
@@ -4523,15 +4571,26 @@ jQuery(document).ready(function($) {
 			if ('undefined' != typeof updraftlion.remote_storage_options[method] && 1 < Object.keys(updraftlion.remote_storage_options[method]).length) {
 				var template = Handlebars.compile(updraftlion.remote_storage_templates[method]);
 				var first_instance = true;
+				var instance_count = 1;
 				for (var instance_id in updraftlion.remote_storage_options[method]) {
 					if ('default' === instance_id) continue;
+					
 					var context = updraftlion.remote_storage_options[method][instance_id];
 					context['first_instance'] = first_instance;
 					if ('undefined' == typeof context['instance_enabled']) {
 						context['instance_enabled'] = 1;
 					}
+					if ('undefined' == typeof context['instance_label'] || '' == context['instance_label']) {
+						var method_name = updraftlion.remote_storage_methods[method];
+						var instance_label = ' (' + instance_count + ')';
+						if (1 == instance_count) {
+							instance_label = '';
+						}
+						context['instance_label'] = method_name + instance_label;
+					}
 					html += template(context);
 					first_instance = false;
+					instance_count++;
 				}
 			} else {
 				html += updraftlion.remote_storage_templates[method];

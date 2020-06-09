@@ -84,6 +84,18 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 	}
 
 	/**
+	 * Check whether options have been set up by the user, or not
+	 *
+	 * @param Array $opts - the potential options
+	 *
+	 * @return Boolean
+	 */
+	public function options_exist($opts) {
+		if (is_array($opts) && (!empty($opts['tmp_access_token']) || !empty($opts['token']))) return true;
+		return false;
+	}
+
+	/**
 	 * Get the Google folder ID for the root of the drive
 	 *
 	 * @return String|Integer
