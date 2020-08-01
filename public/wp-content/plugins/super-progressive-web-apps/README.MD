@@ -1,3 +1,6 @@
+**Help decide on the future of SuperPWA**
+We are looking for your input to decide on the future of SuperPWA. If you wish to acquire SuperPWA as a whole and continue it's development or if you are interested in a premium version of the plugin with extended features, [please fill in the form and let us know](https://superpwa.com/superpwa-2-1/?utm_source=github&utm_medium=description-future). 
+
 # Super Progressive Web Apps
 <p>
     <a href="https://twitter.com/intent/follow?screen_name=superpwa">
@@ -123,6 +126,7 @@ Here are the current features of Super Progressive Web Apps:
 * New in version 1.8: New Add-On: [Apple Touch Icons](https://superpwa.com/addons/apple-touch-icons/?utm_source=GitHub&utm_medium=Readme-version) that sets your app icons as Apple Touch Icons.
 * New in version 2.0: SuperPWA is now compatible with WordPress installed in a sub-folder.
 * New in version 2.0: You can now set [display property](https://superpwa.com/doc/web-app-manifest-display-modes/?utm_source=GitHub&utm_medium=Readme-version) from SuperPWA settings.
+* New in version 2.1.1: Support for maskabale icons.
 
 #### 🔮 Upcoming features:
 * Offline Indicator Notice.

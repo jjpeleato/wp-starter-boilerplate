@@ -113,36 +113,42 @@ $cmb->add_field(
 
 $cmb->add_field(
 	[
-		'id'      => 'rank_math_snippet_recipe_rating',
-		'type'    => 'text',
-		'name'    => esc_html__( 'Rating', 'rank-math' ),
-		'desc'    => esc_html__( 'Rating score of the recipe. Optional.', 'rank-math' ),
-		'classes' => 'cmb-row-33',
-		'dep'     => $recipe,
+		'id'              => 'rank_math_snippet_recipe_rating',
+		'type'            => 'text',
+		'name'            => esc_html__( 'Rating', 'rank-math' ),
+		'desc'            => esc_html__( 'Rating score of the recipe. Optional.', 'rank-math' ),
+		'classes'         => 'cmb-row-33',
+		'dep'             => $recipe,
+		'escape_cb'       => [ '\RankMath\CMB2', 'sanitize_float' ],
+		'sanitization_cb' => [ '\RankMath\CMB2', 'sanitize_float' ],
 	]
 );
 
 $cmb->add_field(
 	[
-		'id'      => 'rank_math_snippet_recipe_rating_min',
-		'type'    => 'text',
-		'name'    => esc_html__( 'Rating Minimum', 'rank-math' ),
-		'desc'    => esc_html__( 'Rating minimum score of the recipe.', 'rank-math' ),
-		'classes' => 'cmb-row-33',
-		'default' => 1,
-		'dep'     => $recipe,
+		'id'              => 'rank_math_snippet_recipe_rating_min',
+		'type'            => 'text',
+		'name'            => esc_html__( 'Rating Minimum', 'rank-math' ),
+		'desc'            => esc_html__( 'Rating minimum score of the recipe.', 'rank-math' ),
+		'classes'         => 'cmb-row-33',
+		'default'         => 1,
+		'dep'             => $recipe,
+		'escape_cb'       => 'absint',
+		'sanitization_cb' => 'absint',
 	]
 );
 
 $cmb->add_field(
 	[
-		'id'      => 'rank_math_snippet_recipe_rating_max',
-		'type'    => 'text',
-		'name'    => esc_html__( 'Rating Maximum', 'rank-math' ),
-		'desc'    => esc_html__( 'Rating maximum score of the recipe.', 'rank-math' ),
-		'classes' => 'cmb-row-33',
-		'default' => 5,
-		'dep'     => $recipe,
+		'id'              => 'rank_math_snippet_recipe_rating_max',
+		'type'            => 'text',
+		'name'            => esc_html__( 'Rating Maximum', 'rank-math' ),
+		'desc'            => esc_html__( 'Rating maximum score of the recipe.', 'rank-math' ),
+		'classes'         => 'cmb-row-33',
+		'default'         => 5,
+		'dep'             => $recipe,
+		'escape_cb'       => 'absint',
+		'sanitization_cb' => 'absint',
 	]
 );
 
@@ -221,6 +227,7 @@ $cmb->add_field(
 			'data-autoresize' => true,
 		],
 		'dep'        => $recipe,
+		'escape_cb'  => 'esc_textarea',
 	]
 );
 
@@ -236,6 +243,7 @@ $cmb->add_field(
 		],
 		'classes'    => 'cmb-row-50',
 		'dep'        => $recipe,
+		'escape_cb'  => 'esc_textarea',
 	]
 );
 

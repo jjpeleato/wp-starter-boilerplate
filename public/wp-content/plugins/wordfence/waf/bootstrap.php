@@ -12,6 +12,9 @@ if (!defined('WFWAF_AUTO_PREPEND')) {
 if (!defined('WF_IS_WP_ENGINE')) {
 	define('WF_IS_WP_ENGINE', isset($_SERVER['IS_WPE']));
 }
+if (!defined('WF_IS_PRESSABLE')) {
+	define('WF_IS_PRESSABLE', (defined('IS_ATOMIC') && IS_ATOMIC) || (defined('IS_PRESSABLE') && IS_PRESSABLE));
+}
 
 
 require_once(dirname(__FILE__) . '/wfWAFUserIPRange.php');
@@ -692,6 +695,43 @@ APACHE
 		);
 		@chmod(rtrim(WFWAF_LOG_PATH, '/') . '/.htaccess', (wfWAFWordPress::permissions() | 0444));
 	}
+
+	public function getGlobal($global) {
+		if (wfWAFUtils::strpos($global, '.') === false) {
+			return null;
+		}
+		list($prefix, $_global) = explode('.', $global);
+		switch ($prefix) {
+			case 'wordpress':
+				if ($_global === 'core') {
+					return $this->getStorageEngine()->getConfig('wordpressVersion', null, 'synced');
+				} else if ($_global === 'plugins') {
+					return $this->getStorageEngine()->getConfig('wordpressPluginVersions', null, 'synced');
+				} else if ($_global === 'themes') {
+					return $this->getStorageEngine()->getConfig('wordpressThemeVersions', null, 'synced');
+				}
+				break;
+		}
+		return parent::getGlobal($global);
+	}
+}
+
+class wfWAFWordPressStorageMySQL extends wfWAFStorageMySQL {
+
+	public function getSerializedParams() {
+		$params = parent::getSerializedParams();
+		$params[] = 'wordpressPluginVersions';
+		$params[] = 'wordpressThemeVersions';
+		return $params;
+	}
+
+	public function getAutoloadParams() {
+		$params = parent::getAutoloadParams();
+		$params['synced'][] = 'wordpressVersion';
+		$params['synced'][] = 'wordpressPluginVersions';
+		$params['synced'][] = 'wordpressThemeVersions';
+		return $params;
+	}
 }
 
 if (!defined('WFWAF_LOG_PATH')) {
@@ -717,14 +757,22 @@ try {
 		switch (WFWAF_STORAGE_ENGINE) {
 			case 'mysqli':
 				// Find the wp-config.php
-				if (file_exists(dirname(WFWAF_LOG_PATH) . '/../wp-config.php')) {
-					$wfWAFDBCredentials = wfWAFUtils::extractCredentialsWPConfig(WFWAF_LOG_PATH . '/../../wp-config.php');
-				} else if (file_exists(dirname(WFWAF_LOG_PATH) . '/../../wp-config.php')) {
-					$wfWAFDBCredentials = wfWAFUtils::extractCredentialsWPConfig(WFWAF_LOG_PATH . '/../../../wp-config.php');
+				if (is_dir(dirname(WFWAF_LOG_PATH))) {
+					if (file_exists(dirname(WFWAF_LOG_PATH) . '/../wp-config.php')) {
+						$wfWAFDBCredentials = wfWAFUtils::extractCredentialsWPConfig(dirname(WFWAF_LOG_PATH) . '/../wp-config.php');
+					} else if (file_exists(dirname(WFWAF_LOG_PATH) . '/../../wp-config.php')) {
+						$wfWAFDBCredentials = wfWAFUtils::extractCredentialsWPConfig(dirname(WFWAF_LOG_PATH) . '/../../wp-config.php');
+					}
+				} else if (!empty($_SERVER['DOCUMENT_ROOT'])) {
+					if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/wp-config.php')) {
+						$wfWAFDBCredentials = wfWAFUtils::extractCredentialsWPConfig($_SERVER['DOCUMENT_ROOT'] . '/wp-config.php');
+					} else if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/../wp-config.php')) {
+						$wfWAFDBCredentials = wfWAFUtils::extractCredentialsWPConfig($_SERVER['DOCUMENT_ROOT'] . '/../wp-config.php');
+					}
 				}
 
 				if (!empty($wfWAFDBCredentials)) {
-					$wfWAFStorageEngine = new wfWAFStorageMySQL(new wfWAFStorageEngineMySQLi(), $wfWAFDBCredentials['tablePrefix']);
+					$wfWAFStorageEngine = new wfWAFWordPressStorageMySQL(new wfWAFStorageEngineMySQLi(), $wfWAFDBCredentials['tablePrefix']);
 					$wfWAFStorageEngine->getDb()->connect(
 						$wfWAFDBCredentials['user'],
 						$wfWAFDBCredentials['pass'],

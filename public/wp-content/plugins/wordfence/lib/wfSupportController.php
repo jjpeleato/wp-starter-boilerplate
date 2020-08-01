@@ -147,7 +147,8 @@ class wfSupportController {
 	const ITEM_SCAN_RESULT_WAF_DISABLED = 'scan-result-waf-disabled';
 	const ITEM_SCAN_RESULT_UNKNOWN_FILE_CORE = 'scan-result-unknown-file-in-wordpress-core';
 	const ITEM_SCAN_RESULT_SKIPPED_PATHS = 'scan-result-skipped-paths';
-	
+	const ITEM_SCAN_RESULT_REPAIR_MODIFIED_FILES = 'scan-result-repair-modified-files';
+
 	const ITEM_TOOLS_TWO_FACTOR = 'tools-two-factor';
 	const ITEM_TOOLS_LIVE_TRAFFIC = 'tools-live-traffic';
 	const ITEM_TOOLS_LIVE_TRAFFIC_OPTION_ENABLE = 'tools-live-traffic-option-enable';
@@ -324,7 +325,8 @@ class wfSupportController {
 			case self::ITEM_SCAN_RESULT_WAF_DISABLED:
 			case self::ITEM_SCAN_RESULT_UNKNOWN_FILE_CORE:
 			case self::ITEM_SCAN_RESULT_SKIPPED_PATHS:
-				
+			case self::ITEM_SCAN_RESULT_REPAIR_MODIFIED_FILES:
+
 			case self::ITEM_TOOLS_TWO_FACTOR:
 			case self::ITEM_TOOLS_LIVE_TRAFFIC:
 			case self::ITEM_TOOLS_LIVE_TRAFFIC_OPTION_ENABLE:

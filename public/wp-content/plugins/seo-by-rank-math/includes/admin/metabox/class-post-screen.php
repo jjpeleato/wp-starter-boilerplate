@@ -280,7 +280,7 @@ class Post_Screen implements IScreen {
 	 * Enqueque scripts common for all builders.
 	 */
 	private function enqueue_commons() {
-		wp_register_style( 'rank-math-post-metabox', rank_math()->plugin_url() . 'assets/admin/css/sidebar.css', [], rank_math()->version );
+		wp_register_style( 'rank-math-post-metabox', rank_math()->plugin_url() . 'assets/admin/css/gutenberg.css', [], rank_math()->version );
 	}
 
 	/**
@@ -353,6 +353,7 @@ class Post_Screen implements IScreen {
 
 		$plugins_found  = [];
 		$active_plugins = get_option( 'active_plugins' );
+		$active_plugins = is_multisite() ? array_merge( $active_plugins, array_keys( get_site_option( 'active_sitewide_plugins', [] ) ) ) : $active_plugins;
 
 		/**
 		 * Allow developers to add plugins to the TOC list.
@@ -405,7 +406,7 @@ class Post_Screen implements IScreen {
 		 *
 		 * @param bool $return True to disable.
 		 */
-		if ( false === apply_filters_deprecated( 'rank_math/primary_term', array( false ), '1.0.43', 'rank_math/admin/disable_primary_term' )
+		if ( false === apply_filters_deprecated( 'rank_math/primary_term', [ false ], '1.0.43', 'rank_math/admin/disable_primary_term' )
 			&& false === $this->do_filter( 'admin/disable_primary_term', false ) ) {
 			$taxonomy = Helper::get_settings( 'titles.pt_' . $post_type . '_primary_taxonomy', false );
 		}

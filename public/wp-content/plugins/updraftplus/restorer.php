@@ -70,7 +70,11 @@ class Updraft_Restorer {
 
 	private $previous_table_name = '';
 
+	private $include_unspecified_tables = false;
+
 	private $tables_to_restore = array();
+	
+	private $tables_to_skip = array();
 	
 	// Constants for use with the move_backup_in method
 	// These can't be arbitrarily changed; there is legacy code doing bitwise operations and numerical comparisons, and possibly legacy code still using the values directly.
@@ -147,9 +151,9 @@ class Updraft_Restorer {
 			}
 		}
 
-		if (isset($restore_options['updraft_restore_table_options']) && !empty($restore_options['updraft_restore_table_options'])) {
-			$this->tables_to_restore = $restore_options['updraft_restore_table_options'];
-		}
+		if (isset($restore_options['include_unspecified_tables'])) $this->include_unspecified_tables = $restore_options['include_unspecified_tables'];
+		if (isset($restore_options['tables_to_restore'])) $this->tables_to_restore = $restore_options['tables_to_restore'];
+		if (isset($restore_options['tables_to_skip'])) $this->tables_to_skip = $restore_options['tables_to_skip'];
 
 		// Restore in the most helpful order
 		uksort($backup_set, array('UpdraftPlus_Manipulation_Functions', 'sort_restoration_entities'));
@@ -3071,7 +3075,15 @@ class Updraft_Restorer {
 		$skip_table = false;
 		$last_table = isset($this->continuation_data['last_processed_db_table']) ? $this->continuation_data['last_processed_db_table'] : '';
 
-		if (!empty($this->tables_to_restore) && !in_array($table_name, $this->tables_to_restore)) {
+		$table_should_be_skipped = false;
+		
+		if (!empty($this->tables_to_skip) && in_array($table_name, $this->tables_to_skip)) {
+			$table_should_be_skipped = true;
+		} elseif (!empty($this->tables_to_restore) && !in_array($table_name, $this->tables_to_restore) && !$this->include_unspecified_tables) {
+			$table_should_be_skipped = true;
+		}
+
+		if ($table_should_be_skipped) {
 			if (empty($this->previous_table_name) || $table_name != $this->previous_table_name) $updraftplus->log(sprintf(__('Skipping table %s: user has chosen not to restore this table', 'updraftplus'), $table_name), 'notice-restore');
 			$skip_table = true;
 		} elseif (!empty($last_table) && !empty($table_name) && $table_name != $last_table) {

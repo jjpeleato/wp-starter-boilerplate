@@ -2,8 +2,8 @@
 Contributors: Backup with UpdraftPlus, DavidAnderson, DNutbourne, aporter, snightingale, bcrodua
 Tags: backup, restore, database backup, wordpress backup, cloud backup, s3, dropbox, google drive, onedrive, ftp, backups
 Requires at least: 3.2
-Tested up to: 5.4
-Stable tag: 1.16.25
+Tested up to: 5.5
+Stable tag: 1.16.26
 Author URI: https://updraftplus.com
 Donate link: https://david.dw-perspective.org.uk/donate
 License: GPLv3 or later
@@ -166,12 +166,32 @@ Unfortunately not; since this is free software, there’s no warranty and no gua
 
 The <a href="https://updraftplus.com/news/">UpdraftPlus backup blog</a> is the best place to learn in more detail about any important changes.
 
-N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which is 1 higher in the first digit, and has an extra component on the end, but the changelog below still applies. i.e. changes listed for 1.16.25.x of the free version correspond to changes made in 2.16.25.x of the paid version.
+N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which is 1 higher in the first digit, and has an extra component on the end, but the changelog below still applies. i.e. changes listed for 1.16.26.x of the free version correspond to changes made in 2.16.26.x of the paid version.
+
+= 1.16.26 - 23/Jun/2020 =
+
+* FIX: In the free version configured remote storage locations were not selected by default in the backup now modal
+* FIX: On newer versions of Curl uploads to Dropbox can fail with a bad request, we now retry with a better request
+* FEATURE: Improve support for enormous tables when outputing via PHP via batching of the dump
+* TWEAK: Add site_url to load_plugins and load_themes requests
+* TWEAK: Catch PHP fatal errors when executing UpdraftCentral commands
+* TWEAK: Tweak the version that gets added to CSS and JS filenames to work with addons
+* TWEAK: Prevent an internal UpdraftVault message displaying in the UI when Vault is not in use
+* TWEAK: Stop displaying the 'licence expires soon' warning if an active subscription is detected on the account
+* TWEAK: Catch Google_IO_Exception during upload to Google Cloud to prevent further unwanted errors
+* TWEAK: Date/time indicator in the UI now gets updated via the WP heartbeat API
+* TWEAK: On large databases the database file scan can time-out; an option has been added to allow the restore operation to include tables that are missing from the list
+* TWEAK: Use the administration email address (if possible) as the email sender address when sending a backup report email
+* TWEAK: Catch new OneDrive access token has expired message during a backup
+* TWEAK: Cleanup failed OneDrive uploads to prevent repeated failures that will never succeed
+* TWEAK: Add a warning alert when the remote scan button is pressed to explain this feature to prevent support requests
+* TWEAK: On large databases the amount of database tables can exceed the php_max_input_vars value; an option has been added to allow the restore operation to include tables that are missing from the list
 
 = 1.16.25 - 23/May/2020 =
 
 * FIX: Dropbox since 1.16.24 was only deleting one backup files archive out of the set. i.e. Excess archives remained on Dropbox. These have to be deleted manually.
 * TWEAK: Add version to CSS and JS within filenames to prevent old versions being served after update on sites which have customisations to remove the query string
+* FEATURE: Added the ability to create UpdraftCentral keys from WP-CLI
 
 = 1.16.24 - 15/May/2020 =
 
@@ -1043,4 +1063,4 @@ Furthermore, reliance upon any non-English translation is at your own risk. Updr
 We recognise and thank the following for code and/or libraries used and/or modified under the terms of their open source licences; see: https://updraftplus.com/acknowledgements/
 
 == Upgrade Notice ==
-* 1.16.25: Fix Dropbox deletion bug. A recommended update for all.
+* 1.16.26: Fix a problem with Dropbox on new versions of Curl. Improve support for enormous tables when outputing via PHP via batching of the dump. In the free version configured remote storage locations were not selected by default in the backup now modal. A recommended update for all.

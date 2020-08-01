@@ -162,7 +162,7 @@ if (isset($_GET['source']) && wfPage::isValidPage($_GET['source'])) {
 				'wf-option-scansEnabled-comments' => __('Scan comments for known dangerous URLs and suspicious content', 'wordfence'),
 				'wf-option-scansEnabled-suspiciousOptions' => __('Scan WordPress core, plugin, and theme options for known dangerous URLs and suspicious content', 'wordfence'),
 				'wf-option-scansEnabled-oldVersions' => __('Scan for out of date, abandoned, and vulnerable plugins, themes, and WordPress versions', 'wordfence'),
-				'wf-option-scansEnabled-suspiciousAdminUsers' => __('Scan for admin users created outside of WordPress', 'wordfence'),
+				'wf-option-scansEnabled-suspiciousAdminUsers' => __('Scan for suspicious admin users created outside of WordPress', 'wordfence'),
 				'wf-option-scansEnabled-passwds' => __('Check the strength of passwords', 'wordfence'),
 				'wf-option-scansEnabled-diskSpace' => __('Monitor disk space', 'wordfence'),
 				'wf-option-scansEnabled-wafStatus' => __('Monitor Web Application Firewall status', 'wordfence'),

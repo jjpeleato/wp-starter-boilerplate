@@ -94,7 +94,8 @@ class EWWWIO_Optimize_Tests extends WP_UnitTestCase {
 	 * @return array The results of the ewww_image_optimizer() function.
 	 */
 	protected function optimize_jpg() {
-		$_REQUEST['ewww_force'] = 1;
+		global $ewww_force;
+		$ewww_force = 1;
 		$filename = self::$test_jpg . ".jpg";
 		copy( self::$test_jpg, $filename );
 		$results = ewww_image_optimizer( $filename );
@@ -107,7 +108,8 @@ class EWWWIO_Optimize_Tests extends WP_UnitTestCase {
 	 * @return array The results of the ewww_image_optimizer() function.
 	 */
 	protected function optimize_png() {
-		$_REQUEST['ewww_force'] = 1;
+		global $ewww_force;
+		$ewww_force = 1;
 		$filename = self::$test_png . ".png";
 		copy( self::$test_png, $filename );
 		$results = ewww_image_optimizer( $filename );
@@ -120,7 +122,8 @@ class EWWWIO_Optimize_Tests extends WP_UnitTestCase {
 	 * @return array The results of the ewww_image_optimizer() function.
 	 */
 	protected function optimize_gif() {
-		$_REQUEST['ewww_force'] = 1;
+		global $ewww_force;
+		$ewww_force = 1;
 		$filename = self::$test_gif . ".gif";
 		copy( self::$test_gif, $filename );
 		$results = ewww_image_optimizer( $filename );
@@ -133,7 +136,8 @@ class EWWWIO_Optimize_Tests extends WP_UnitTestCase {
 	 * @return array The results of the ewww_image_optimizer() function.
 	 */
 	protected function optimize_pdf() {
-		$_REQUEST['ewww_force'] = 1;
+		global $ewww_force;
+		$ewww_force = 1;
 		$filename = self::$test_pdf . ".pdf";
 		copy( self::$test_pdf, $filename );
 		$results = ewww_image_optimizer( $filename );
@@ -422,13 +426,21 @@ class EWWWIO_Optimize_Tests extends WP_UnitTestCase {
 	function test_optimize_gif_10_api() {
 		update_option( 'ewww_image_optimizer_gif_level', 10 );
 		update_option( 'ewww_image_optimizer_cloud_key', 'abc123' );
+		update_option( 'ewww_image_optimizer_webp', true );
 		update_site_option( 'ewww_image_optimizer_gif_level', 10 );
 		update_site_option( 'ewww_image_optimizer_cloud_key', 'abc123' );
+		update_site_option( 'ewww_image_optimizer_webp', true );
 		$results = $this->optimize_gif();
+		update_option( 'ewww_image_optimizer_webp', '' );
+		update_site_option( 'ewww_image_optimizer_webp', '' );
 		update_option( 'ewww_image_optimizer_cloud_key', '' );
 		update_site_option( 'ewww_image_optimizer_cloud_key', '' );
 		$this->assertEquals( 8900, filesize( $results[0] ) );
 		unlink( $results[0] );
+		$this->assertEquals( 8014, filesize( $results[0] . '.webp' ) );
+		if ( ewwwio_is_file( $results[0] . '.webp' ) ) {
+			unlink( $results[0] . '.webp' );
+		}
 	}
 
 	/**

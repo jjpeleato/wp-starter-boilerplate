@@ -20,6 +20,7 @@ else if (wfConfig::get('touppPromptNeeded')) {
 	echo wfView::create('gdpr/banner')->render();
 }
 ?>
+<div id="wordfenceMode_scan"></div>
 <div class="wrap wordfence">
 	<div class="wf-container-fluid">
 		<div class="wf-row">

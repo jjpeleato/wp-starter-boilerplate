@@ -5,7 +5,7 @@ Tags: optimize, image, convert, webp, resize, compress, lazy load, optimization,
 Requires at least: 5.0
 Tested up to: 5.4
 Requires PHP: 5.6
-Stable tag: 5.3.2
+Stable tag: 5.6.0
 License: GPLv3
 
 Speed up your website to better connect with your visitors. Properly compress and size/scale images. Includes lazy load and WebP convert.
@@ -170,8 +170,51 @@ https://developers.google.com/web/tools/lighthouse/audits/optimize-images
 
 == Changelog ==
 
-* Feature requests can be viewed and submitted at https://github.com/nosilver4u/ewww-image-optimizer/labels/enhancement
+* Feature requests can be viewed and submitted at https://feedback.ewww.io
 * If you would like to help translate this plugin in your language, get started here: https://translate.wordpress.org/projects/wp-plugins/ewww-image-optimizer/
+
+= 5.6.0 =
+* added: if exec() is disabled, free cloud-based JPG compression will be enabled
+* added: tool to remove originals for converted images
+* changed: improved handling of WPML replicas in media library list mode and bulk optimizer
+* fixed: JS WebP, picture WebP, and Easy IO errors with WP Offload Media 2.4
+* fixed: JS WebP cannot find local paths when WP_CONTENT_DIR is outside ABSPATH
+* fixed: Easy IO hard crops images when requested height/width is 9999
+* fixed: Lazy Load and WebP parsers running on customizer preview pane
+
+= 5.5.0 =
+* added: GIF to WebP conversion with API and Easy IO
+* changed: plugin removed from disallowed list on WP Engine!
+* changed: disable Lazy Load auto-scale by defining EIO_LL_AUTOSCALE as false
+* fixed: async functions use of wp_die causes empty errors when wp_cron is run from WP-CLI
+* fixed: big image size filter throws error when other plugins run the filter with fewer than 3 parameters
+* fixed: styling broken for optimization info on Nextgen gallery pages
+* fixed: broken link for network admin settings from single-site plugins page
+
+= 5.4.1 =
+* fixed: Bulk Optimizer sticks on stage 2 when there are no images to optimize
+* fixed: transparency in PNG images with color type 0 or 2 not detected
+* fixed: transparency false positives for PNG images with color types 4 and 6
+* fixed: lazy load skips img elements with unquoted src attributes
+* fixed: images converted by PNG to JPG (and friends) do not have restore links in library
+
+= 5.4.0 =
+* added: EXACTDN_DEFER_JQUERY_SAFE override for when inline scripts depend on jQuery
+* changed: code rewrite to validate output escaping, input sanitization, and markup on settings page
+* changed: use data-cfasync=false to prevent deferring inline JS WebP script
+* changed: Easy IO uses better query-string fall-back for plugins
+* changed: Easy IO enforces https if available rather than protocol-relative URLs
+* changed: resize detection ignores images smaller than 25px
+* changed: settings streamlined when using Easy IO
+* fixed: parallel optimization on multisite fails due to missing db prefix
+* fixed: error when saving JS WebP on network/multsite admin
+* fixed: images not resized when Media File Renamer is active
+* fixed: PHP warning while using <picture> WebP
+* fixed: Lazy Load, JS WebP and <picture> WebP have nested fall-back img elements if an image is found multiple times in a page
+* fixed: Easy IO mangles srcset URLs when src URL is relative instead of absolute
+* fixed: Easy IO URLs leaking into block editor for new uploads
+* fixed: WebP rewriting with WP Offload Media skips sub-domains of blog domain
+* deprecated: support for Image Store plugin (abandoned)
 
 = 5.3.2 =
 * added: defer jQuery also with EXACTDN_DEFER_JQUERY override

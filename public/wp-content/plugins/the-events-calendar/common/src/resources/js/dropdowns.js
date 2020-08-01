@@ -261,11 +261,6 @@ var tribe_dropdowns = window.tribe_dropdowns || {};
 			args.placeholder = $select.attr( 'placeholder' );
 		}
 
-		// Don't Remove HTML elements or escape elements
-		if ( $select.is( '[data-allow-html]' ) ) {
-
-		}
-
 		// If we are dealing with a Input Hidden we need to set the Data for it to work.
 		if ( $select.is( '[data-options]' ) ) {
 			args.data = $select.data( 'options' );
@@ -351,9 +346,6 @@ var tribe_dropdowns = window.tribe_dropdowns || {};
 
 			// For AJAX we reset the data
 			args.data = { results: [] };
-
-			// Allows HTML from Select2 AJAX calls
-
 
 			// Format for Parents breadcrumbs
 			args.formatResult = function ( item, container, query ) {

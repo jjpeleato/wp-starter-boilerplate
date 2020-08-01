@@ -256,6 +256,16 @@ class wfScan {
 			$peakMemory = self::logPeakMemory();
 			self::status(2, 'info', "Wordfence used " . wfUtils::formatBytes($peakMemory - self::$peakMemAtStart) . " of memory for scan. Server peak memory usage was: " . wfUtils::formatBytes($peakMemory));
 			self::status(2, 'error', "Scan terminated with error: " . $e->getMessage());
+
+			if (preg_match('/The Wordfence API key you\'re using is already being used by: (\S*?) /', $e->getMessage(), $matches)) {
+				wordfence::alert(__('Wordfence scan failed because of license site URL conflict', 'wordfence'), sprintf(__(<<<MSG
+The Wordfence scan has failed because the Wordfence API key you're using is already being used by: %s
+
+If you have changed your blog URL, please sign-in to Wordfence, purchase a new key or reset an existing key, and then enter that key on this site's Wordfence Options page.
+MSG
+					, 'wordfence'), $matches[1]), false);
+			}
+
 			exit();
 		}
 		catch (Exception $e) {

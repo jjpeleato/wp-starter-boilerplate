@@ -32,10 +32,6 @@ class Role_Manager extends Base {
 			[
 				'id'        => 'role-manager',
 				'directory' => $directory,
-				'help'      => [
-					'title' => esc_html__( 'Role Manager', 'rank-math' ),
-					'view'  => $directory . '/views/help.php',
-				],
 			]
 		);
 		parent::__construct();
@@ -78,7 +74,7 @@ class Role_Manager extends Base {
 					'styles' => [
 						'rank-math-common'       => '',
 						'rank-math-cmb2'         => '',
-						'rank-math-role-manager' => $uri . '/assets/role-manager.css',
+						'rank-math-role-manager' => $uri . '/assets/css/role-manager.css',
 					],
 				],
 			]
