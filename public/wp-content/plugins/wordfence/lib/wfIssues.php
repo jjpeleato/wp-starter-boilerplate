@@ -495,14 +495,16 @@ class wfIssues {
 		if (!is_array($emailed_issues)) { return; }
 		
 		$updated = array();
-		foreach ($issues as $issue) {
-			foreach ($emailed_issues as $ei) {
+		foreach ($emailed_issues as $ei) {
+			$cleared = false;
+			foreach ($issues as $issue) {
 				if ($issue['ignoreP'] == $ei['ignoreP'] || $issue['ignoreC'] == $ei['ignoreC']) {
 					//Discard this one
+					$cleared = true;
 				}
-				else {
-					$updated[] = $ei;
-				}
+			}
+			if (!$cleared) {
+				$updated[] = $ei;
 			}
 		}
 		

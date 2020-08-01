@@ -909,7 +909,6 @@ tribe_aggregator.fields = {
 		var args = {
 			formatResult: upsellFormatter,
 			formatSelection: upsellFormatter,
-
 		};
 
 		tribe_dropdowns.dropdown( $fields.filter( '.tribe-ea-dropdown' ), args );

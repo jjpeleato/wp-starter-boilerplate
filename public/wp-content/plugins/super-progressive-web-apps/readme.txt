@@ -3,7 +3,7 @@ Contributors: superpwa, arunbasillal, josevarghese
 Donate link: http://millionclues.com/donate/
 Tags: pwa, progressive web apps, manifest, web manifest, android app, chrome app, add to homescreen, mobile web
 Requires at least: 3.6.0
-Tested up to: 5.4.1
+Tested up to: 5.4.2
 Requires PHP: 5.3
 Stable tag: trunk
 License: GPLv2 or later
@@ -66,7 +66,8 @@ Here are the current features of Super Progressive Web Apps:
 * New in version 1.8: Compatibility issues with OneSignal are now resolved! 
 * New in version 1.8: New Add-On: [Apple Touch Icons](https://superpwa.com/addons/apple-touch-icons/?utm_source=wordpress.org&utm_medium=description) that sets your app icons as Apple Touch Icons. 
 * New in version 2.0: SuperPWA is now compatible with WordPress installed in a sub-folder. 
-* New in version 2.0: You can now set [display property](https://superpwa.com/doc/web-app-manifest-display-modes/?utm_source=wordpress.org&utm_medium=description) from SuperPWA settings.  
+* New in version 2.0: You can now set [display property](https://superpwa.com/doc/web-app-manifest-display-modes/?utm_source=wordpress.org&utm_medium=description) from SuperPWA settings.
+* New in version 2.1.1: SuperPWA now supports Maskable Icons.
 
 **Upcoming features:**
 
@@ -180,6 +181,15 @@ Feel free to get in touch if you have any questions.
 1. Settings page in WordPress Admin > SuperPWA > Settings
 
 == Changelog ==
+
+= 2.1.2 =
+* Date: [25.July.2020](https://superpwa.com/superpwa-2-1/?utm_source=wordpress.org&utm_medium=changelog)
+* Bug Fix: Fixed issue where Application Icon was not showing.
+
+= 2.1.1 =
+* Date: [4.July.2020](https://superpwa.com/superpwa-2-1/?utm_source=wordpress.org&utm_medium=changelog)
+* Tested with WordPress 5.4.2.
+* Enhancement: Added support for Maskable Icons [#127](https://github.com/SuperPWA/Super-Progressive-Web-Apps/issues/127)
 
 = 2.1 =
 * Date: [29.May.2020](https://superpwa.com/superpwa-2-1/?utm_source=wordpress.org&utm_medium=changelog)

@@ -520,6 +520,7 @@ class UpdraftCentral_Plugin_Commands extends UpdraftCentral_Commands {
 			$plugin->status = is_plugin_active($key) ? 'active' : 'inactive';
 			$plugin->website = $website;
 			$plugin->multisite = is_multisite();
+			$plugin->site_url = trailingslashit(get_bloginfo('url'));
 
 			if (!empty($plugin_updates[$key])) {
 				$update_info = $plugin_updates[$key];

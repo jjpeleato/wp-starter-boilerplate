@@ -16,20 +16,19 @@ $cmb->add_field(
 		'desc'            => esc_html__( 'Title tag for groups', 'rank-math' ),
 		'classes'         => 'rank-math-supports-variables rank-math-title',
 		'default'         => '',
-		'sanitization_cb' => false,
+		'sanitization_cb' => [ '\RankMath\CMB2', 'sanitize_textfield' ],
 		'attributes'      => [ 'data-exclude-variables' => 'seo_title,seo_description' ],
 	]
 );
 
 $cmb->add_field(
 	[
-		'id'              => 'bp_group_description',
-		'type'            => 'textarea',
-		'name'            => esc_html__( 'Group Description', 'rank-math' ),
-		'desc'            => esc_html__( 'BuddyPress group description', 'rank-math' ),
-		'classes'         => 'rank-math-supports-variables rank-math-description',
-		'sanitization_cb' => false,
-		'attributes'      => [
+		'id'         => 'bp_group_description',
+		'type'       => 'textarea',
+		'name'       => esc_html__( 'Group Description', 'rank-math' ),
+		'desc'       => esc_html__( 'BuddyPress group description', 'rank-math' ),
+		'classes'    => 'rank-math-supports-variables rank-math-description',
+		'attributes' => [
 			'data-exclude-variables' => 'seo_title,seo_description',
 			'rows'                   => 2,
 		],

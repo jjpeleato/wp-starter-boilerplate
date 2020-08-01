@@ -73,23 +73,6 @@ class Admin_Menu implements Runner {
 				'is_network' => is_network_admin() && Helper::is_plugin_active_for_network(),
 			]
 		);
-
-		// Help & Support.
-		new Page(
-			'rank-math-help',
-			esc_html__( 'Help &amp; Support', 'rank-math' ),
-			[
-				'position'   => 99,
-				'parent'     => 'rank-math',
-				'capability' => 'level_1',
-				'classes'    => [ 'rank-math-page' ],
-				'render'     => Admin_Helper::get_view( 'help-manager' ),
-				'assets'     => [
-					'styles'  => [ 'rank-math-common' => '' ],
-					'scripts' => [ 'rank-math-common' => '' ],
-				],
-			]
-		);
 	}
 
 	/**
@@ -101,18 +84,19 @@ class Admin_Menu implements Runner {
 			return;
 		}
 
-		if (
-			current_user_can( 'manage_options' ) &&
-			'Rank Math' === $submenu['rank-math'][0][0]
-		) {
-			$submenu['rank-math'][0][0] = esc_html__( 'Dashboard', 'rank-math' );
-		} else {
-			unset( $submenu['rank-math'][0] );
+		if ( 'Rank Math' === $submenu['rank-math'][0][0] ) {
+			if ( current_user_can( 'manage_options' ) ) {
+				$submenu['rank-math'][0][0] = esc_html__( 'Dashboard', 'rank-math' );
+			} else {
+				unset( $submenu['rank-math'][0] );
+			}
 		}
 
 		if ( empty( $submenu['rank-math'] ) ) {
 			return;
 		}
+
+		$submenu['rank-math'][] = [ esc_html__( 'Help &amp; Support', 'rank-math' ), 'level_1', 'https://rankmath.com/kb/wordpress/seo-suite/?utm_source=Plugin&utm_campaign=WP' ];
 
 		// Store ID of first_menu item so we can use it in the Admin menu item.
 		set_transient( 'rank_math_first_submenu_id', array_values( $submenu['rank-math'] )[0][2] );
@@ -123,6 +107,12 @@ class Admin_Menu implements Runner {
 	 */
 	public function icon_css() {
 		?>
+		<script type="text/javascript">
+			// Open RM KB menu link in the new tab.
+			jQuery( document ).ready( function( $ ) {
+				$( "ul#adminmenu a[href$='https://rankmath.com/kb/wordpress/seo-suite/?utm_source=Plugin&utm_campaign=WP']" ).attr( 'target', '_blank' );
+			} );
+		</script>
 		<style>
 			#wp-admin-bar-rank-math .rank-math-icon {
 				display: inline-block;

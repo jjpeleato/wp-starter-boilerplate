@@ -556,6 +556,7 @@ class UpdraftCentral_Theme_Commands extends UpdraftCentral_Commands {
 			$theme->child_theme = !empty($template) ? true : false;
 			$theme->website = $website;
 			$theme->multisite = is_multisite();
+			$theme->site_url = trailingslashit(get_bloginfo('url'));
 
 			if ($theme->child_theme) {
 				$parent_theme = wp_get_theme($template);

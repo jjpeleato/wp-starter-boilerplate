@@ -113,12 +113,13 @@ $cmb->add_field(
 
 $cmb->add_field(
 	[
-		'id'         => 'rank_math_snippet_name',
-		'type'       => 'text',
-		'name'       => esc_html__( 'Headline', 'rank-math' ),
-		'dep'        => [ [ 'rank_math_rich_snippet', 'off', '!=' ] ],
-		'attributes' => [ 'placeholder' => Helper::get_settings( "titles.pt_{$post_type}_default_snippet_name", '' ) ],
-		'classes'    => 'rank-math-supports-variables',
+		'id'              => 'rank_math_snippet_name',
+		'type'            => 'text',
+		'name'            => esc_html__( 'Headline', 'rank-math' ),
+		'dep'             => [ [ 'rank_math_rich_snippet', 'off', '!=' ] ],
+		'attributes'      => [ 'placeholder' => Helper::get_settings( "titles.pt_{$post_type}_default_snippet_name", '' ) ],
+		'classes'         => 'rank-math-supports-variables',
+		'sanitization_cb' => [ '\RankMath\CMB2', 'sanitize_textfield' ],
 	]
 );
 
@@ -134,6 +135,7 @@ $cmb->add_field(
 		],
 		'classes'    => 'rank-math-supports-variables',
 		'dep'        => [ [ 'rank_math_rich_snippet', 'off,book,local', '!=' ] ],
+		'escape_cb'  => 'esc_textarea',
 	]
 );
 

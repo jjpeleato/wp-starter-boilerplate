@@ -66,7 +66,7 @@ class Dropbox_Curl extends Dropbox_ConsumerAbstract
      * @param array $additional Additional parameters
      * @return string|object stdClass
      */
-    public function fetch($method, $url, $call, array $additional = array())
+    public function fetch($method, $url, $call, array $additional = array(), $retry_with_header = false)
     {
         // Get the signed request URL
         $request = $this->getSignedRequest($method, $url, $call, $additional);
@@ -140,8 +140,8 @@ class Dropbox_Curl extends Dropbox_ConsumerAbstract
 			} elseif (empty($additional['content_upload'])) {
 				// JSON representation of nullity
 				$options[CURLOPT_POSTFIELDS] = 'null';
-			} else {
-				// It's a content upload, and there's no data. Versions of php-curl differ as to whether they add a Content-Length header automatically or not. Dropbox complains if it's not there.
+			} elseif ($retry_with_header) {
+				// It's a content upload, and there's no data. Versions of php-curl differ as to whether they add a Content-Length header automatically or not. Dropbox complains if it's not there. Here we have had a Dropbox 400 bad request returned so we try again with the header
 				$options[CURLOPT_HTTPHEADER] = array_merge($options[CURLOPT_HTTPHEADER], array('Content-Length: 0'));
 			}
         } elseif ($method == 'PUT' && $this->inFile) { // PUT
@@ -222,6 +222,7 @@ class Dropbox_Curl extends Dropbox_ConsumerAbstract
                     case 304:
                         throw new Dropbox_NotModifiedException($message, 304);
                     case 400:
+                        if (!$retry_with_header) return $this->fetch($method, $url, $call, $additional, true);
                         throw new Dropbox_BadRequestException($message, 400);
                     case 404:
                         throw new Dropbox_NotFoundException($message, 404);

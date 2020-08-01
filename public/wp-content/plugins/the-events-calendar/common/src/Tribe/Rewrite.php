@@ -872,10 +872,16 @@ class Tribe__Rewrite {
 		$perma_query_vars     = [];
 		$url_components = parse_url($url);
 		$url_path = Arr::get( $url_components, 'path', '/' );
+		$site_path = parse_url( home_url(), PHP_URL_PATH );
+		if ( ! ( empty( $site_path ) && '/' !== $site_path ) ) {
+			// The current site is in a sub-directory: the site path should be dropped from the request path.
+			$url_path = str_replace( $site_path, '', $url_path );
+		}
 		$url_query = Arr::get( $url_components, 'query', '' );
 		parse_str( $url_query, $url_query_vars );
 		// Look for matches, removing leading `/` char.
-		$request_match = ltrim( $url_path, '/' );
+		$request_match         = ltrim( $url_path, '/' );
+		$decoded_request_match = urldecode( $request_match );
 
 		// Fetch the rewrite rules.
 		$rewrite_rules = $this->rewrite->wp_rewrite_rules();
@@ -884,7 +890,7 @@ class Tribe__Rewrite {
 		if ( ! empty( $rewrite_rules ) ) {
 			foreach ( (array) $rewrite_rules as $match => $query ) {
 				$matches_regex = preg_match( "#^$match#", $request_match, $matches )
-				                 || preg_match( "#^$match#", urldecode( $request_match ), $matches );
+				                 || preg_match( "#^$match#", $decoded_request_match, $matches );
 
 				if ( ! $matches_regex ) {
 					continue;

@@ -217,9 +217,9 @@ class UpdraftPlus_Notices extends Updraft_Notices {
 				'campaign' => 'blackfriday',
 				'button_meta' => 'updraftplus',
 				'dismiss_time' => 'dismiss_season',
-				'discount_code' => 'blackfridaysale2019',
-				'valid_from' => '2019-11-20 00:00:00',
-				'valid_to' => '2019-11-30 23:59:59',
+				'discount_code' => 'blackfridaysale2020',
+				'valid_from' => '2020-11-20 00:00:00',
+				'valid_to' => '2020-11-30 23:59:59',
 				'supported_positions' => $this->dashboard_top_or_report,
 			),
 			'christmas' => array(
@@ -231,9 +231,9 @@ class UpdraftPlus_Notices extends Updraft_Notices {
 				'campaign' => 'christmas',
 				'button_meta' => 'updraftplus',
 				'dismiss_time' => 'dismiss_season',
-				'discount_code' => 'christmassale2019',
-				'valid_from' => '2019-12-01 00:00:00',
-				'valid_to' => '2019-12-25 23:59:59',
+				'discount_code' => 'christmassale2020',
+				'valid_from' => '2020-12-01 00:00:00',
+				'valid_to' => '2020-12-25 23:59:59',
 				'supported_positions' => $this->dashboard_top_or_report,
 			),
 			'newyear' => array(
@@ -245,9 +245,9 @@ class UpdraftPlus_Notices extends Updraft_Notices {
 				'campaign' => 'newyear',
 				'button_meta' => 'updraftplus',
 				'dismiss_time' => 'dismiss_season',
-				'discount_code' => 'newyearsale2020',
-				'valid_from' => '2019-12-26 00:00:00',
-				'valid_to' => '2020-01-14 23:59:59',
+				'discount_code' => 'newyearsale2021',
+				'valid_from' => '2020-12-26 00:00:00',
+				'valid_to' => '2021-01-14 23:59:59',
 				'supported_positions' => $this->dashboard_top_or_report,
 			),
 			'spring' => array(
@@ -277,6 +277,20 @@ class UpdraftPlus_Notices extends Updraft_Notices {
 				'valid_from' => '2020-07-01 00:00:00',
 				'valid_to' => '2020-07-31 23:59:59',
 				'supported_positions' => $this->dashboard_top_or_report,
+			),
+			'collection' => array(
+				'prefix' => '',
+				'title' => __('The Updraft Plugin Collection Sale', 'updraftplus'),
+				'text' => __('Get 20% off any of our plugins. But hurry - offer ends 30th September, use this discount code:', 'updraftplus').' ',
+				'image' => 'notices/updraft_logo.png',
+				'button_link' => 'https://teamupdraft.com',
+				'campaign' => 'collection',
+				'button_meta' => 'collection',
+				'dismiss_time' => 'dismiss_season',
+				'discount_code' => 'UDP2020',
+				'valid_from' => '2020-09-01 00:00:00',
+				'valid_to' => '2020-09-30 23:59:59',
+				'supported_positions' => $this->dashboard_top_or_report,
 			)
 		);
 
@@ -293,7 +307,7 @@ class UpdraftPlus_Notices extends Updraft_Notices {
 		$this->notices_content = (defined('UPDRAFTPLUS_NOADS_B') && UPDRAFTPLUS_NOADS_B) ? array() : $this->populate_notices_content();
 		global $updraftplus;
 		$enqueue_version = $updraftplus->use_unminified_scripts() ? $updraftplus->version.'.'.time() : $updraftplus->version;
-		$updraft_min_or_not = $updraftplus->use_unminified_scripts() ? '' : '-'.str_replace('.', '-', $updraftplus->version).'.min';
+		$updraft_min_or_not = $updraftplus->get_updraftplus_file_version();
 
 		wp_enqueue_style('updraftplus-notices-css',  UPDRAFTPLUS_URL.'/css/updraftplus-notices'.$updraft_min_or_not.'.css', array(), $enqueue_version);
 	}

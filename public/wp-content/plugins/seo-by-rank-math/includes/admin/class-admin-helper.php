@@ -97,8 +97,6 @@ class Admin_Helper {
 	 * @return array
 	 */
 	public static function get_registration_data( $data = null ) {
-		$encryption = new Data_Encryption();
-
 		$row  = 'rank_math_connect_data';
 		$keys = [
 			'username',
@@ -115,7 +113,7 @@ class Admin_Helper {
 
 			foreach ( $keys as $key ) {
 				if ( isset( $data[ $key ] ) ) {
-					$data[ $key ] = $encryption->encrypt( $data[ $key ] );
+					$data[ $key ] = Data_Encryption::encrypt( $data[ $key ] );
 				}
 			}
 
@@ -131,7 +129,7 @@ class Admin_Helper {
 
 		foreach ( $keys as $key ) {
 			if ( isset( $options[ $key ] ) ) {
-				$options[ $key ] = $encryption->decrypt( $options[ $key ] );
+				$options[ $key ] = Data_Encryption::decrypt( $options[ $key ] );
 			}
 		}
 
@@ -198,16 +196,6 @@ class Admin_Helper {
 			self::get_registration_data( false );
 		}
 		return;
-	}
-
-	/**
-	 * Change tracking status.
-	 */
-	public static function allow_tracking() {
-		$settings                   = get_option( 'rank-math-options-general' );
-		$settings['usage_tracking'] = Param::post( 'rank-math-usage-tracking', false, FILTER_VALIDATE_BOOLEAN ) ? 'on' : 'off';
-
-		update_option( 'rank-math-options-general', $settings );
 	}
 
 	/**
@@ -315,11 +303,11 @@ class Admin_Helper {
 		}
 
 		$tw_link = 'https://s.rankmath.com/twitter';
-		$fb_link = urlencode( 'https://s.rankmath.com/suite-free' );
+		$fb_link = rawurlencode( 'https://s.rankmath.com/suite-free' );
 		/* translators: sitename */
-		$tw_message = urlencode( sprintf( esc_html__( 'I just installed @RankMathSEO #WordPress Plugin. It looks great! %s', 'rank-math' ), $tw_link ) );
+		$tw_message = rawurlencode( sprintf( esc_html__( 'I just installed @RankMathSEO #WordPress Plugin. It looks great! %s', 'rank-math' ), $tw_link ) );
 		/* translators: sitename */
-		$fb_message = urlencode( esc_html__( 'I just installed Rank Math SEO WordPress Plugin. It looks promising!', 'rank-math' ) );
+		$fb_message = rawurlencode( esc_html__( 'I just installed Rank Math SEO WordPress Plugin. It looks promising!', 'rank-math' ) );
 
 		$tweet_url = Security::add_query_arg(
 			[
@@ -376,8 +364,8 @@ class Admin_Helper {
 		}
 
 		$args = [
-			'site' => urlencode( home_url() ),
-			'r'    => urlencode( $redirect_to ),
+			'site' => rawurlencode( home_url() ),
+			'r'    => rawurlencode( $redirect_to ),
 		];
 
 		return apply_filters(

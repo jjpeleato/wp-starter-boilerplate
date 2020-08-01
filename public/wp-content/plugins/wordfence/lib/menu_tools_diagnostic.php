@@ -39,8 +39,9 @@ if (!isset($sendingDiagnosticEmail)) {
 					</div>
 					<div id="sendByEmailDiv" class="wf-add-bottom">
 						<span class="wf-nowrap">
-							<input class="wf-btn wf-btn-primary" type="submit" id="sendByEmail" value="Send Report by Email"/>
-							<input class="wf-btn wf-btn-default" type="button" id="expandAllDiagnostics" value="Expand All Diagnostics"/>
+							<input class="wf-btn wf-btn-primary wf-btn-sm" type="submit" id="exportDiagnostics" value="Export"/>
+							<input class="wf-btn wf-btn-primary wf-btn-sm" type="submit" id="sendByEmail" value="Send Report by Email"/>
+							<input class="wf-btn wf-btn-default wf-btn-sm" type="button" id="expandAllDiagnostics" value="Expand All Diagnostics"/>
 						</span>
 					</div>
 				</div>
