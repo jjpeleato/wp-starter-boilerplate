@@ -92,16 +92,6 @@ class Admin extends WP_REST_Controller {
 			]
 		);
 
-		register_rest_route(
-			$this->namespace,
-			'/updateTracking',
-			[
-				'methods'             => WP_REST_Server::EDITABLE,
-				'callback'            => [ $this, 'update_tracking' ],
-				'permission_callback' => [ '\\RankMath\\Rest\\Rest_Helper', 'can_manage_options' ],
-			]
-		);
-
 		$this->gutenberg_routes();
 	}
 
@@ -109,16 +99,6 @@ class Admin extends WP_REST_Controller {
 	 * Routes needed for gutenberg sidebar to work.
 	 */
 	private function gutenberg_routes() {
-		register_rest_route(
-			$this->namespace,
-			'/enableScore',
-			[
-				'methods'             => WP_REST_Server::EDITABLE,
-				'callback'            => [ $this, 'enable_score' ],
-				'permission_callback' => [ '\\RankMath\\Rest\\Rest_Helper', 'can_manage_options' ],
-			]
-		);
-
 		register_rest_route(
 			$this->namespace,
 			'/updateMeta',
@@ -262,24 +242,6 @@ class Admin extends WP_REST_Controller {
 	}
 
 	/**
-	 * Enable SEO Score.
-	 *
-	 * @param WP_REST_Request $request Full details about the request.
-	 *
-	 * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
-	 */
-	public function enable_score( WP_REST_Request $request ) {
-		$settings = wp_parse_args(
-			rank_math()->settings->all_raw(),
-			[ 'general' => '' ]
-		);
-
-		$settings['general']['frontend_seo_score'] = 'true' === $request->get_param( 'enable' ) ? 'on' : 'off';
-		Helper::update_all_settings( $settings['general'], null, null );
-		return true;
-	}
-
-	/**
 	 * Enable Auto update.
 	 *
 	 * @param WP_REST_Request $request Full details about the request.
@@ -287,13 +249,14 @@ class Admin extends WP_REST_Controller {
 	 * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function auto_update( WP_REST_Request $request ) {
-		$settings = wp_parse_args(
-			rank_math()->settings->all_raw(),
-			[ 'general' => '' ]
-		);
+		$field = $request->get_param( 'key' );
+		if ( ! in_array( $field, [ 'enable_auto_update', 'enable_auto_update_email' ], true ) ) {
+			return false;
+		}
 
-		$settings['general']['enable_auto_update'] = 'true' === $request->get_param( 'enable' ) ? 'on' : 'off';
-		Helper::update_all_settings( $settings['general'], null, null );
+		$value = 'true' === $request->get_param( 'value' ) ? 'on' : 'off';
+		Helper::toggle_auto_update_setting( $value );
+
 		return true;
 	}
 
@@ -345,25 +308,6 @@ class Admin extends WP_REST_Controller {
 		);
 
 		$settings['general']['setup_mode'] = $request->get_param( 'mode' );
-		Helper::update_all_settings( $settings['general'], null, null );
-
-		return true;
-	}
-
-	/**
-	 * Update Usage Tracking.
-	 *
-	 * @param WP_REST_Request $request Full details about the request.
-	 *
-	 * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
-	 */
-	public function update_tracking( WP_REST_Request $request ) {
-		$settings = wp_parse_args(
-			rank_math()->settings->all_raw(),
-			[ 'general' => '' ]
-		);
-
-		$settings['general']['usage_tracking'] = 'true' === $request->get_param( 'enable' ) ? 'on' : 'off';
 		Helper::update_all_settings( $settings['general'], null, null );
 
 		return true;

@@ -17,7 +17,7 @@ if (!defined('WORDFENCE_VERSION')) { exit; }
 		<div class="wf-modal-content">
 			<?php
 			$currentAutoPrependFile = ini_get('auto_prepend_file');
-			if (empty($currentAutoPrependFile) || WF_IS_WP_ENGINE):
+			if (empty($currentAutoPrependFile) || WF_IS_WP_ENGINE || WF_IS_PRESSABLE):
 			?>
 			<p><?php _e('To make your site as secure as possible, the Wordfence Web Application Firewall is designed to run via a PHP setting called <code>auto_prepend_file</code>, which ensures it runs before any potentially vulnerable code runs.', 'wordfence'); ?></p>
 			<?php else: ?>

@@ -496,6 +496,12 @@ class wfWAFRuleComparison implements wfWAFRuleInterface {
 		'urlschemenotequals',
 		'urlschemematches',
 		'urlschemenotmatches',
+		'versionequals',
+		'versionnotequals',
+		'versiongreaterthan',
+		'versiongreaterthanequalto',
+		'versionlessthan',
+		'versionlessthanequalto',
 	);
 
 	/**
@@ -1129,6 +1135,48 @@ class wfWAFRuleComparison implements wfWAFRuleInterface {
 			return false;
 		}
 		return !$this->urlSchemeMatches($subject);
+	}
+
+	public function versionEquals($subject) {
+		if ($subject === null) {
+			return false;
+		}
+		return version_compare($subject, $this->getExpected(), '==');
+	}
+
+	public function versionNotEquals($subject) {
+		if ($subject === null) {
+			return false;
+		}
+		return version_compare($subject, $this->getExpected(), '!=');
+	}
+
+	public function versionGreaterThan($subject) {
+		if ($subject === null) {
+			return false;
+		}
+		return version_compare($subject, $this->getExpected(), '>');
+	}
+
+	public function versionGreaterThanEqualTo($subject) {
+		if ($subject === null) {
+			return false;
+		}
+		return version_compare($subject, $this->getExpected(), '>=');
+	}
+
+	public function versionLessThan($subject) {
+		if ($subject === null) {
+			return false;
+		}
+		return version_compare($subject, $this->getExpected(), '<');
+	}
+
+	public function versionLessThanEqualTo($subject) {
+		if ($subject === null) {
+			return false;
+		}
+		return version_compare($subject, $this->getExpected(), '<=');
 	}
 
 	/**

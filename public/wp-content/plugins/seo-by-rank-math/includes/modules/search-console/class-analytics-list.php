@@ -91,7 +91,7 @@ class Analytics_List extends List_Table {
 	 */
 	protected function column_property( $item ) {
 		return 'query' === $this->filters['dimension'] ? $item['property'] :
-			'<a href="' . esc_url( $item['property'] ) . '">' . $item['property'] . '</a>';
+			'<a href="' . esc_url( $item['property'] ) . '">' . esc_html( $item['property'] ) . '</a>';
 	}
 
 	/**
@@ -106,7 +106,7 @@ class Analytics_List extends List_Table {
 			$current    = in_array( $column_name, [ 'ctr', 'position' ], true ) ? round( $item[ $column_name ], 2 ) : $item[ $column_name ];
 			$inverted   = 'position' === $column_name ? true : false;
 			$percentage = 'ctr' === $column_name ? true : false;
-			return isset( $this->old_items[ $item['property'] ] ) ? self::diff_label( $current, $this->old_items[ $item['property'] ][ $column_name ], $inverted, $percentage ) : $current;
+			return isset( $this->old_items[ $item['property'] ] ) ? self::diff_label( $current, $this->old_items[ $item['property'] ][ $column_name ], $inverted, $percentage, $column_name ) : esc_html( $current );
 		}
 
 		return print_r( $item, true );
@@ -145,29 +145,31 @@ class Analytics_List extends List_Table {
 	/**
 	 * Create difference label for display.
 	 *
-	 * @param integer $current    Current value.
-	 * @param integer $previous   Previous value to compare with.
-	 * @param boolean $inverted   Invert the result.
-	 * @param boolean $percentage Show as percentage.
+	 * @param integer $current     Current value.
+	 * @param integer $previous    Previous value to compare with.
+	 * @param boolean $inverted    Invert the result.
+	 * @param boolean $percentage  Show as percentage.
+	 * @param string  $column_name The current column name.
 	 *
 	 * @return string
 	 */
-	public static function diff_label( $current, $previous = 0, $inverted = false, $percentage = false ) {
+	public static function diff_label( $current, $previous = 0, $inverted = false, $percentage = false, $column_name = '' ) {
 		$diff = Admin_Helper::compare_values( $previous, $current );
 		if ( 0 === $diff ) {
-			return '<span class="compare-value">' . $current . '</span>';
+			return '<span class="compare-value">' . esc_html( $current ) . '</span>';
 		}
 
 		$downward = $inverted ? 'up' : 'down';
 		$upward   = $inverted ? 'down' : 'up';
 		$class    = $diff < 0 ? $downward : $upward;
+		$class    = 'position' === $column_name && 1 === (int) $current ? 'up' : $class;
 
 		return sprintf(
 			'<span class="compare-value value-%1$s" title="%2$s"><i class="dashicons dashicons-arrow-%1$s-alt"></i> %3$s <small>%4$s%5$s</small></span>',
 			$class,
 			/* translators: previous value */
 			esc_attr( sprintf( esc_html__( 'Previously: %s', 'rank-math' ), $previous ) ),
-			$current,
+			esc_html( $current ),
 			$inverted ? abs( $diff ) : ( $diff < 0 ? $diff : '+' . $diff ),
 			( $percentage ? '%' : '' )
 		);

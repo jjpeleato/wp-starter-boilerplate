@@ -297,6 +297,7 @@ class Installer {
 			'buddypress',
 			'bbpress',
 			'acf',
+			'web-stories',
 		];
 
 		// Role Manager.
@@ -362,14 +363,13 @@ class Installer {
 					'wc_remove_category_parent_slugs'     => 'off',
 					'rss_before_content'                  => '',
 					'rss_after_content'                   => '',
-					'usage_tracking'                      => 'off',
 					'wc_remove_generator'                 => 'on',
 					'remove_shop_snippet_data'            => 'on',
 					'frontend_seo_score'                  => 'off',
 					'frontend_seo_score_post_types'       => [ 'post' ],
 					'frontend_seo_score_position'         => 'top',
 					'frontend_seo_score'                  => 'off',
-					'enable_auto_update'                  => 'off',
+					'enable_auto_update_email'            => 'off',
 					'setup_mode'                          => 'easy',
 				]
 			)
@@ -431,8 +431,8 @@ class Installer {
 	 * @param array $sitemap Hold sitemap settings.
 	 */
 	private function create_post_type_options( &$titles, &$sitemap ) {
-		$post_types   = Helper::get_accessible_post_types();
-		$post_types[] = 'product';
+		$post_types = Helper::get_accessible_post_types();
+		array_push( $post_types, 'product', 'web-story' );
 
 		$titles['pt_download_default_rich_snippet'] = 'product';
 		foreach ( $post_types as $post_type ) {
@@ -451,7 +451,7 @@ class Installer {
 				$titles[ 'pt_' . $post_type . '_archive_title' ] = '%title% %page% %sep% %sitename%';
 			}
 
-			if ( 'attachment' === $post_type ) {
+			if ( in_array( $post_type, [ 'attachment', 'web-story' ], true ) ) {
 				$sitemap[ 'pt_' . $post_type . '_sitemap' ]     = 'off';
 				$titles[ 'pt_' . $post_type . '_add_meta_box' ] = 'off';
 				continue;
@@ -483,10 +483,11 @@ class Installer {
 	 */
 	private function get_post_type_defaults( $post_type ) {
 		$rich_snippets = [
-			'post'     => 'article',
-			'page'     => 'article',
-			'product'  => 'product',
-			'download' => 'product',
+			'post'      => 'article',
+			'page'      => 'article',
+			'product'   => 'product',
+			'download'  => 'product',
+			'web-story' => 'article',
 		];
 
 		$defaults = [
@@ -597,7 +598,6 @@ class Installer {
 	 */
 	private function get_cron_jobs() {
 		return [
-			'tracker/send_event'           => 'weekly', // Add cron job for Usage Tracking (clear it first).
 			'search_console/get_analytics' => 'daily',  // Add cron job for Get Search Console Analytics Data.
 			'redirection/clean_trashed'    => 'daily',  // Add cron for cleaning trashed redirects.
 			'links/internal_links'         => 'daily',  // Add cron for counting links.

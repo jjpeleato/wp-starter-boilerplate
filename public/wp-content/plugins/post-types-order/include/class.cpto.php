@@ -260,7 +260,10 @@
                     //check if the right interface
                     if( !isset( $screen->post_type )   ||  empty($screen->post_type))
                         return;
-                        
+                    
+                    if( isset( $screen->taxonomy ) && !empty($screen->taxonomy) )
+                        return;
+                    
                     //check if post type is sortable
                     if(isset($options['show_reorder_interfaces'][$screen->post_type]) && $options['show_reorder_interfaces'][ $screen->post_type ] != 'show')
                         return;

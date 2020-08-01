@@ -34,10 +34,6 @@ class Admin extends Base {
 			[
 				'id'        => 'rich-snippet',
 				'directory' => $directory,
-				'help'      => [
-					'title' => esc_html__( 'Schema Markup', 'rank-math' ),
-					'view'  => $directory . '/views/help.php',
-				],
 			]
 		);
 		parent::__construct();
@@ -155,10 +151,10 @@ class Admin extends Base {
 			}
 
 			$values[ $this->camelize( $id ) ] = 'group' === $type ? $cmb->get_field( $id )->value :
-				$cmb->get_field( $id )->escaped_value( 'sanitize_textarea_field' );
+				$cmb->get_field( $id )->escaped_value();
 		}
 
-		$values['snippetType'] = $cmb->get_field( 'rank_math_rich_snippet' )->escaped_value( 'sanitize_textarea_field' );
+		$values['snippetType'] = $cmb->get_field( 'rank_math_rich_snippet' )->escaped_value();
 
 		// Default values.
 		$post_type                    = \RankMath\CMB2::current_object_type();

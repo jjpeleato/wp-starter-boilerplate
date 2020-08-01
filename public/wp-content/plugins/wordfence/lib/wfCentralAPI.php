@@ -319,14 +319,22 @@ class wfCentral {
 	 * @return bool
 	 */
 	public static function isConnected() {
-		return self::isSupported() && ((bool) wfConfig::get('wordfenceCentralConnected', false));
+		return self::isSupported() && ((bool) self::_isConnected());
 	}
 
 	/**
 	 * @return bool
 	 */
 	public static function isPartialConnection() {
-		return !wfConfig::get('wordfenceCentralConnected') && wfConfig::get('wordfenceCentralSiteID');
+		return !self::_isConnected() && wfConfig::get('wordfenceCentralSiteID');
+	}
+
+	public static function _isConnected($forceUpdate = false) {
+		static $isConnected;
+		if (!isset($isConnected) || $forceUpdate) {
+			$isConnected = wfConfig::get('wordfenceCentralConnected', false);
+		}
+		return $isConnected;
 	}
 
 	/**

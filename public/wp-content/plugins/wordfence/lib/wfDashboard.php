@@ -224,7 +224,7 @@ class wfDashboard {
 		}
 
 		// Wordfence Central
-		$this->wordfenceCentralConnected = wfConfig::get('wordfenceCentralConnected');
+		$this->wordfenceCentralConnected = wfCentral::_isConnected(); // This value is cached.
 		$this->wordfenceCentralConnectTime = wfConfig::get('wordfenceCentralConnectTime');
 		$this->wordfenceCentralConnectEmail = wfConfig::get('wordfenceCentralConnectEmail');
 		$this->wordfenceCentralDisconnected = wfConfig::get('wordfenceCentralDisconnected');

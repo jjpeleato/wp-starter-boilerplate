@@ -351,29 +351,6 @@ function backupnow_whichtables_checked(onlythesetableentities){
 	}
 }
 
-/**
- * A method to get all the selected cloud service values from the backup now modal
- *
- * @param {string} only_these_cloud_services an empty string to append values to
- *
- * @return {string} a string that contains the values of all selected cloud service connections selected
- */
-function backupnow_which_cloud_services_checked(only_these_cloud_services) {
-	var send_list = false;
-	jQuery('#backupnow_includecloud_moreoptions input[type="checkbox"]').each(function(index) {
-		if (!jQuery(this).is(':checked')) { send_list = true; return; }
-		if (jQuery(this).is(':checked') && jQuery(this).data('instance_disabled')) { send_list = true; return; }
-	});
-
-	only_these_cloud_services = jQuery("input[name^='updraft_include_remote_service_']").serializeArray();
-	
-	if (send_list) {
-		return only_these_cloud_services;
-	} else {
-		return true;
-	}
-}
-
 function updraft_deleteallselected() {
 	var howmany = 0;
 	var remote_exists = 0;
@@ -2912,6 +2889,7 @@ jQuery(document).ready(function($) {
 	
 	$('#updraft-navtab-backups-content a.updraft_rescan_remote').click(function(e) {
 		e.preventDefault();
+		if (!confirm(updraftlion.remote_scan_warning)) return;
 		updraft_updatehistory(1, 1);
 	});
 	
@@ -3493,6 +3471,14 @@ jQuery(document).ready(function($) {
 
 					if (!continue_restore) return;
 					var restore_options = $('#updraft_restoreoptions_ui select, #updraft_restoreoptions_ui input').serialize();
+
+					// jQuery serialize does not pick up unchecked checkboxes, but we want to include these so that we have a list of tables the user does not want to backup we prepend these with udp-skip-table- and check this on the backend
+					jQuery.each(jQuery('input[name="updraft_restore_table_options[]').filter(function(idx) {
+						return jQuery(this).prop('checked') === false
+					}), function(idx, el) {
+						restore_options += '&' + jQuery(el).attr('name') + '=' + 'udp-skip-table-' + jQuery(el).val();
+					});
+
 					console.log("Restore options: "+restore_options);
 					$('#updraft_restorer_restore_options').val(restore_options);
 					// This must be done last, as it wipes out the section with #updraft_restoreoptions_ui
@@ -3543,7 +3529,7 @@ jQuery(document).ready(function($) {
 			return;
 		}
 
-		var only_these_cloud_services = backupnow_which_cloud_services_checked('');
+		var only_these_cloud_services = jQuery("input[name^='updraft_include_remote_service_']").serializeArray();
 
 		if ('' == only_these_cloud_services && 0 == backupnow_nocloud) {
 			alert(updraftlion.nocloudserviceschosen);
@@ -5295,11 +5281,14 @@ jQuery(document).ready(function($) {
 	});
 
 	$(document).on('heartbeat-tick', function(event, heartbeat_data) {
-		if (null === heartbeat_data || !heartbeat_data.hasOwnProperty('updraftplus')) return;
+		if (null === heartbeat_data || !heartbeat_data.hasOwnProperty('updraftplus') || null == heartbeat_data.updraftplus) return;
 		var resp = heartbeat_data.updraftplus;
 		var response_raw = JSON.stringify(resp);
 		// We do somewhat assume that there can't be overlapping heartbeat calls - they should be far enough apart to make that very unlikely (and even if it happened, it is unlikely to cause any trouble)
 		updraft_process_status_check(resp, response_raw, heartbeat_last_parameters);
+		if (!heartbeat_data.updraftplus.hasOwnProperty('time_now')) return;
+		// Set the 'Time Now' status in the UI to the current time
+		jQuery('body.settings_page_updraftplus #updraft-navtab-backups-content .updraft_time_now_wrapper .updraft_time_now').empty().html(heartbeat_data.updraftplus.time_now);
 	});
 });
 

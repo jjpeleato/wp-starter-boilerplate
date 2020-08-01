@@ -32,20 +32,19 @@ $cmb->add_field(
 		'desc'            => esc_html__( 'Homepage title tag.', 'rank-math' ),
 		'classes'         => 'rank-math-supports-variables rank-math-title',
 		'default'         => '%sitename% %page% %sep% %sitedesc%',
-		'sanitization_cb' => false,
+		'sanitization_cb' => [ '\RankMath\CMB2', 'sanitize_textfield' ],
 		'attributes'      => [ 'data-exclude-variables' => 'seo_title,seo_description' ],
 	]
 );
 
 $cmb->add_field(
 	[
-		'id'              => 'homepage_description',
-		'type'            => 'textarea_small',
-		'name'            => esc_html__( 'Homepage Meta Description', 'rank-math' ),
-		'desc'            => esc_html__( 'Homepage meta description.', 'rank-math' ),
-		'classes'         => 'rank-math-supports-variables rank-math-description',
-		'sanitization_cb' => true,
-		'attributes'      => [
+		'id'         => 'homepage_description',
+		'type'       => 'textarea_small',
+		'name'       => esc_html__( 'Homepage Meta Description', 'rank-math' ),
+		'desc'       => esc_html__( 'Homepage meta description.', 'rank-math' ),
+		'classes'    => 'rank-math-supports-variables rank-math-description',
+		'attributes' => [
 			'class'                  => 'cmb2_textarea wp-exclude-emoji',
 			'data-gramm_editor'      => 'false',
 			'rows'                   => 2,

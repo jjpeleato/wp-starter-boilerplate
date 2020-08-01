@@ -37,10 +37,6 @@ class Admin extends Base {
 				'id'             => '404-monitor',
 				'directory'      => $directory,
 				'table'          => 'RankMath\Monitor\Table',
-				'help'           => [
-					'title' => esc_html__( '404 Monitor', 'rank-math' ),
-					'view'  => $directory . '/views/help.php',
-				],
 				'screen_options' => [
 					'id'      => 'rank_math_404_monitor_per_page',
 					'default' => 100,
@@ -121,34 +117,38 @@ class Admin extends Base {
 		$dir = $this->directory . '/views/';
 		$uri = untrailingslashit( plugin_dir_url( __FILE__ ) );
 
-		$this->page = new Page( 'rank-math-404-monitor', esc_html__( '404 Monitor', 'rank-math' ), [
-			'position'   => 12,
-			'parent'     => 'rank-math',
-			'capability' => 'rank_math_404_monitor',
-			'render'     => $dir . 'main.php',
-			'help'       => [
-				'404-overview'       => [
-					'title' => esc_html__( 'Overview', 'rank-math' ),
-					'view'  => $dir . 'help-tab-overview.php',
+		$this->page = new Page(
+			'rank-math-404-monitor',
+			esc_html__( '404 Monitor', 'rank-math' ),
+			[
+				'position'   => 12,
+				'parent'     => 'rank-math',
+				'capability' => 'rank_math_404_monitor',
+				'render'     => $dir . 'main.php',
+				'help'       => [
+					'404-overview'       => [
+						'title' => esc_html__( 'Overview', 'rank-math' ),
+						'view'  => $dir . 'help-tab-overview.php',
+					],
+					'404-screen-content' => [
+						'title' => esc_html__( 'Screen Content', 'rank-math' ),
+						'view'  => $dir . 'help-tab-screen-content.php',
+					],
+					'404-actions'        => [
+						'title' => esc_html__( 'Available Actions', 'rank-math' ),
+						'view'  => $dir . 'help-tab-actions.php',
+					],
+					'404-bulk'           => [
+						'title' => esc_html__( 'Bulk Actions', 'rank-math' ),
+						'view'  => $dir . 'help-tab-bulk.php',
+					],
 				],
-				'404-screen-content' => [
-					'title' => esc_html__( 'Screen Content', 'rank-math' ),
-					'view'  => $dir . 'help-tab-screen-content.php',
+				'assets'     => [
+					'styles'  => [ 'rank-math-common' => '' ],
+					'scripts' => [ 'rank-math-404-monitor' => $uri . '/assets/js/404-monitor.js' ],
 				],
-				'404-actions'        => [
-					'title' => esc_html__( 'Available Actions', 'rank-math' ),
-					'view'  => $dir . 'help-tab-actions.php',
-				],
-				'404-bulk'           => [
-					'title' => esc_html__( 'Bulk Actions', 'rank-math' ),
-					'view'  => $dir . 'help-tab-bulk.php',
-				],
-			],
-			'assets'     => [
-				'styles'  => [ 'rank-math-common' => '' ],
-				'scripts' => [ 'rank-math-404-monitor' => $uri . '/assets/404-monitor.js' ],
-			],
-		]);
+			]
+		);
 
 		if ( $this->page->is_current_page() ) {
 			Helper::add_json( 'logConfirmClear', esc_html__( 'Are you sure you wish to delete all 404 error logs?', 'rank-math' ) );
@@ -167,15 +167,19 @@ class Admin extends Base {
 	 */
 	public function add_settings( $tabs ) {
 
-		Arr::insert( $tabs, [
-			'404-monitor' => [
-				'icon'  => 'rm-icon rm-icon-404',
-				'title' => esc_html__( '404 Monitor', 'rank-math' ),
-				/* translators: 1. Link to kb article 2. Link to redirection setting scree */
-				'desc'  => sprintf( esc_html__( 'Monitor broken pages that ruin user-experience and affect SEO. %s.', 'rank-math' ), '<a href="' . \RankMath\KB::get( '404-monitor-settings' ) . '" target="_blank">' . esc_html__( 'Learn more', 'rank-math' ) . '</a>' ),
-				'file'  => $this->directory . '/views/options.php',
+		Arr::insert(
+			$tabs,
+			[
+				'404-monitor' => [
+					'icon'  => 'rm-icon rm-icon-404',
+					'title' => esc_html__( '404 Monitor', 'rank-math' ),
+					/* translators: 1. Link to kb article 2. Link to redirection setting scree */
+					'desc'  => sprintf( esc_html__( 'Monitor broken pages that ruin user-experience and affect SEO. %s.', 'rank-math' ), '<a href="' . \RankMath\KB::get( '404-monitor-settings' ) . '" target="_blank">' . esc_html__( 'Learn more', 'rank-math' ) . '</a>' ),
+					'file'  => $this->directory . '/views/options.php',
+				],
 			],
-		], 7 );
+			7
+		);
 
 		return $tabs;
 	}
@@ -191,8 +195,8 @@ class Admin extends Base {
 		<br />
 		<h3><?php esc_html_e( '404 Monitor Stats', 'rank-math' ); ?></h3>
 		<ul>
-			<li><span><?php esc_html_e( '404 Monitor Log Count', 'rank-math' ); ?></span><?php echo Str::human_number( $data->total ); ?></li>
-			<li><span><?php esc_html_e( '404 URL Hits', 'rank-math' ); ?></span><?php echo Str::human_number( $data->hits ); ?></li>
+			<li><span><?php esc_html_e( '404 Monitor Log Count', 'rank-math' ); ?></span><?php echo esc_html( Str::human_number( $data->total ) ); ?></li>
+			<li><span><?php esc_html_e( '404 URL Hits', 'rank-math' ); ?></span><?php echo esc_html( Str::human_number( $data->hits ) ); ?></li>
 		</ul>
 		<?php
 	}

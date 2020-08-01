@@ -31,10 +31,6 @@ class Admin extends Base {
 			[
 				'id'        => 'seo-analysis',
 				'directory' => $directory,
-				'help'      => [
-					'title' => esc_html__( 'SEO Analysis', 'rank-math' ),
-					'view'  => $directory . '/views/help.php',
-				],
 			]
 		);
 		parent::__construct();
@@ -63,11 +59,11 @@ class Admin extends Base {
 				'assets'     => [
 					'styles'  => [
 						'rank-math-common'       => '',
-						'rank-math-seo-analysis' => $uri . '/assets/seo-analysis.css',
+						'rank-math-seo-analysis' => $uri . '/assets/css/seo-analysis.css',
 					],
 					'scripts' => [
-						'circle-progress'        => $uri . '/assets/circle-progress.min.js',
-						'rank-math-seo-analysis' => $uri . '/assets/seo-analysis.js',
+						'circle-progress'        => $uri . '/assets/js/circle-progress.min.js',
+						'rank-math-seo-analysis' => $uri . '/assets/js/seo-analysis.js',
 					],
 				],
 			]

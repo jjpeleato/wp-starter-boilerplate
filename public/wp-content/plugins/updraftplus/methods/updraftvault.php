@@ -108,8 +108,8 @@ class UpdraftPlus_BackupModule_updraftvault extends UpdraftPlus_BackupModule_s3 
 		$opts = $this->get_options();
 
 		if (!is_array($opts) || empty($opts['token']) || empty($opts['email'])) {
-			// Not connected
-			$this->log("this site has not been connected - check your settings");
+			// Not connected. Skip DB so that it doesn't show in the UI, which confuses people (e.g. when rescanning remote storage)
+			$this->log('this site has not been connected - check your settings', 'notice', false, true);
 			$config['error'] = array('message' => 'site_not_connected', 'values' => array());
 			
 			$this->vault_config = $config;
