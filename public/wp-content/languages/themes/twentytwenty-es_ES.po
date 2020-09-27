@@ -11,6 +11,14 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: Themes - Twenty Twenty\n"
 
+#. Description of the theme
+msgid "Our default theme for 2020 is designed to take full advantage of the flexibility of the block editor. Organizations and businesses have the ability to create dynamic landing pages with endless layouts using the group and column blocks. The centered content column and fine-tuned typography also makes it perfect for traditional blogs. Complete editor styles give you a good idea of what your content will look like, even before you publish. You can give your site a personal touch by changing the background colors and the accent color in the Customizer. The colors of all elements on your site are automatically calculated based on the colors you pick, ensuring a high, accessible color contrast for your visitors."
+msgstr "Nuestro tema por defecto para 2020 está diseñado para aprovechar al máximo la flexibilidad del editor de bloques. Las organizaciones y empresas tienen la posibilidad de crear páginas de destino dinámicas con un sinfín de diseños usando los bloques de grupos y columnas. La columna de contenido centrada y la tipografía ajustada también lo hacen perfecto para blogs tradicionales. Los completos estilos de edición te dan una buena idea de cómo se verá tu contenido, incluso antes de que lo publiques. Puedes dar un toque personal a tu sitio cambiando los colores de fondo y el color de énfasis en el personalizador. Los colores de todos los elementos de tu sitio se calculan automáticamente en base a los colores que elijas, asegurando un alto y accesible contraste de color para tus visitantes."
+
+#. Theme Name of the theme
+msgid "Twenty Twenty"
+msgstr "Twenty Twenty"
+
 #: index.php:51
 msgid "Nothing Found"
 msgstr "No se ha encontrado nada"
@@ -53,6 +61,18 @@ msgstr "Las exposiciones son realizadas por UMoMA en colaboración con artistas 
 msgid "With seven floors of striking architecture, UMoMA shows exhibitions of international contemporary art, sometimes along with art historical retrospectives. Existential, political and philosophical issues are intrinsic to our programme. As visitor you are invited to guided tours artist talks, lectures, film screenings and other events with free admission"
 msgstr "Con siete pisos de arquitectura impresionante, UMoMA muestra exposiciones de arte contemporáneo internacional, a veces junto con retrospectivas históricas del arte. Los problemas existenciales, políticos y filosóficos son intrínsecos a nuestro programa. Como visitante, estás invitado a visitas guiadas, charlas de artistas, conferencias, proyecciones de películas y otros eventos con entrada gratuita"
 
+#: inc/starter-content.php:130
+msgid "&#8220;Cyborgs, as the philosopher Donna Haraway established, are not reverent. They do not remember the cosmos.&#8221;"
+msgstr "«Los cíborgs, como estableció la filósofa Donna Haraway, no son reverentes. No recuerdan el cosmos»."
+
+#: inc/starter-content.php:114
+msgid "From Signac to Matisse"
+msgstr "Desde Signac a Matisse"
+
+#: inc/starter-content.php:99
+msgid "The Life I Deserve"
+msgstr "La vida que me merezco"
+
 #: inc/starter-content.php:85 inc/starter-content.php:117
 msgid "October 1 -- December 1"
 msgstr "1 de Octubre -- 1 de Diciembre"
@@ -69,6 +89,14 @@ msgstr "Leer más"
 #: inc/starter-content.php:70 inc/starter-content.php:102
 msgid "August 1 -- December 1"
 msgstr "1 de Agosto -- 1 de Diciembre"
+
+#: inc/starter-content.php:67
+msgid "Works and Days"
+msgstr "Obras y días"
+
+#: inc/starter-content.php:56
+msgid "The premier destination for modern art in Northern Sweden. Open from 10 AM to 6 PM every day during the summer months."
+msgstr "El principal destino para el arte moderno en el norte de Suecia. Abierto de 10:00 a 18:00 h. todos los días durante los meses de verano."
 
 #: inc/starter-content.php:48
 msgid "The New UMoMA Opens its Doors"
@@ -114,26 +142,6 @@ msgstr "Por defecto"
 msgid "Primary Color"
 msgstr "Color principal"
 
-#: inc/starter-content.php:67
-msgid "Works and Days"
-msgstr "Obras y días"
-
-#: inc/starter-content.php:99
-msgid "The Life I Deserve"
-msgstr "La vida que me merezco"
-
-#: inc/starter-content.php:114
-msgid "From Signac to Matisse"
-msgstr "Desde Signac a Matisse"
-
-#: inc/starter-content.php:56
-msgid "The premier destination for modern art in Northern Sweden. Open from 10 AM to 6 PM every day during the summer months."
-msgstr "El principal destino para el arte moderno en el norte de Suecia. Abierto de 10:00 a 18:00 h. todos los días durante los meses de verano."
-
-#: inc/starter-content.php:130
-msgid "&#8220;Cyborgs, as the philosopher Donna Haraway established, are not reverent. They do not remember the cosmos.&#8221;"
-msgstr "«Los cíborgs, como estableció la filósofa Donna Haraway, no son reverentes. No recuerdan el cosmos»."
-
 #: searchform.php:24 template-parts/modal-search.php:20
 msgid "Search for:"
 msgstr "Buscar:"
@@ -142,10 +150,22 @@ msgstr "Buscar:"
 msgid "search again"
 msgstr "buscar de nuevo"
 
+#. translators: %s: Number of search results.
+#: index.php:39
+msgid "We found %s result for your search."
+msgid_plural "We found %s results for your search."
+msgstr[0] "Hemos encontrado %s resultado para tu búsqueda."
+msgstr[1] "Hemos encontrado %s resultados para tu búsqueda."
+
 #. translators: %s: HTML character for up arrow.
 #: footer.php:49
 msgid "Up %s"
 msgstr "Subir %s"
+
+#. translators: %s: HTML character for up arrow.
+#: footer.php:43
+msgid "To the top %s"
+msgstr "Ir arriba %s"
 
 #. translators: Copyright date format, see https://www.php.net/date
 #: footer.php:25
@@ -157,71 +177,9 @@ msgstr "Y"
 msgid "404 not found"
 msgstr "404 - No encontrado"
 
-#. translators: %s: Number of search results.
-#: index.php:39
-msgid "We found %s result for your search."
-msgid_plural "We found %s results for your search."
-msgstr[0] "Hemos encontrado %s resultado para tu búsqueda."
-msgstr[1] "Hemos encontrado %s resultados para tu búsqueda."
-
-#. translators: %s: HTML character for up arrow.
-#: footer.php:43
-msgid "To the top %s"
-msgstr "Ir arriba %s"
-
-#. translators: 1: Comment date, 2: Comment time.
-#: classes/class-twentytwenty-walker-comment.php:69
-msgid "%1$s at %2$s"
-msgstr "%1$s a las %2$s"
-
-#: classes/class-twentytwenty-walker-comment.php:77
-msgid "Edit"
-msgstr "Editar"
-
-#: classes/class-twentytwenty-walker-comment.php:92
-msgid "Your comment is awaiting moderation."
-msgstr "Tu comentario está pendiente de moderación."
-
-#: comments.php:34
-msgid "Leave a comment"
-msgstr "Deja un comentario"
-
-#: comments.php:88
-msgid "Comments"
-msgstr "Comentarios"
-
-#: inc/starter-content.php:177 inc/starter-content.php:187 functions.php:489
-msgid "Primary"
-msgstr "Principal"
-
-#: inc/starter-content.php:197
-msgid "Social Links Menu"
-msgstr "Menú de enlaces sociales"
-
-#. translators: %s: Post title. Only visible to screen readers.
-#: inc/template-tags.php:207
-msgid "Edit <span class=\"screen-reader-text\">%s</span>"
-msgstr "Editar <span class=\"screen-reader-text\">%s</span>"
-
-#: functions.php:261
-msgid "Footer Menu"
-msgstr "Menú del pie de página"
-
-#: template-parts/content-cover.php:138 template-parts/content.php:48
-msgid "Pages:"
-msgstr "Páginas:"
-
-#: template-parts/footer-menus-widgets.php:37
-msgid "Footer"
-msgstr "Pie de página"
-
-#: template-parts/content-cover.php:138 template-parts/content.php:48
-msgid "Page"
-msgstr "Página"
-
-#: functions.php:494
-msgid "Secondary"
-msgstr "Secundario"
+#. Template Name of the theme
+msgid "Full Width Template"
+msgstr "Plantilla de ancho completo"
 
 #: template-parts/pagination.php:25
 msgid "Older <span class=\"nav-short\">Posts</span>"
@@ -235,6 +193,10 @@ msgstr "Entradas <span class=\"nav-short\">siguientes</span>"
 msgid "Post"
 msgstr "Entrada"
 
+#: template-parts/modal-search.php:26
+msgid "Close search"
+msgstr "Cerrar la búsqueda"
+
 #: template-parts/modal-menu.php:117
 msgid "Expanded Social links"
 msgstr "Enlaces sociales ampliados"
@@ -247,14 +209,34 @@ msgstr "Móvil"
 msgid "Expanded"
 msgstr "Ampliado"
 
+#: template-parts/modal-menu.php:21
+msgid "Close Menu"
+msgstr "Cerrar el menú"
+
 #: template-parts/footer-menus-widgets.php:57
 msgid "Social links"
 msgstr "Enlaces sociales"
+
+#: template-parts/footer-menus-widgets.php:37
+msgid "Footer"
+msgstr "Pie de página"
 
 #. translators: %s: Author name.
 #: inc/template-tags.php:357 template-parts/entry-author-bio.php:20
 msgid "By %s"
 msgstr "Por %s"
+
+#: template-parts/content-cover.php:138 template-parts/content.php:48
+msgid "Pages:"
+msgstr "Páginas:"
+
+#: template-parts/content-cover.php:138 template-parts/content.php:48
+msgid "Page"
+msgstr "Página"
+
+#: template-parts/content-cover.php:88
+msgid "Scroll Down"
+msgstr "Scroll hacia abajo"
 
 #: searchform.php:27
 msgctxt "submit button"
@@ -266,9 +248,18 @@ msgctxt "placeholder"
 msgid "Search &hellip;"
 msgstr "Buscar &hellip;"
 
+#: index.php:48
+msgid "We could not find any results for your search. You can give it another try through the search form below."
+msgstr "No hemos encontrado resultados para tu búsqueda. Puedes volver a intentarlo mediante el siguiente formulario de búsqueda."
+
 #: index.php:32
 msgid "Search:"
 msgstr "Buscar:"
+
+#. translators: %s: Post title. Only visible to screen readers.
+#: inc/template-tags.php:207
+msgid "Edit <span class=\"screen-reader-text\">%s</span>"
+msgstr "Editar <span class=\"screen-reader-text\">%s</span>"
 
 #: inc/template-tags.php:448
 msgid "Sticky post"
@@ -283,9 +274,21 @@ msgstr "Etiquetas"
 msgid "Categories"
 msgstr "Categorías"
 
+#: inc/template-tags.php:374
+msgid "Post date"
+msgstr "Fecha de la entrada"
+
 #: inc/template-tags.php:350
 msgid "Post author"
 msgstr "Autor de la entrada"
+
+#: inc/starter-content.php:197
+msgid "Social Links Menu"
+msgstr "Menú de enlaces sociales"
+
+#: inc/starter-content.php:177 inc/starter-content.php:187 functions.php:489
+msgid "Primary"
+msgstr "Principal"
 
 #: header.php:88
 msgid "Horizontal"
@@ -299,10 +302,19 @@ msgstr "Menú"
 msgid "Search"
 msgstr "Buscar"
 
+#: template-parts/content.php:36
+msgid "Continue reading"
+msgstr "Seguir leyendo"
+
 #: functions.php:546
 msgctxt "Short name of the larger font size in the block editor."
 msgid "XL"
 msgstr "XL"
+
+#: functions.php:545
+msgctxt "Name of the larger font size in the block editor"
+msgid "Larger"
+msgstr "Muy grande"
 
 #: functions.php:540
 msgctxt "Short name of the large font size in the block editor."
@@ -334,6 +346,18 @@ msgctxt "Name of the small font size in the block editor"
 msgid "Small"
 msgstr "Pequeña"
 
+#: functions.php:512
+msgid "Background Color"
+msgstr "Color del fondo"
+
+#: functions.php:499
+msgid "Subtle Background"
+msgstr "Fondo sutil"
+
+#: functions.php:494
+msgid "Secondary"
+msgstr "Secundario"
+
 #: functions.php:484
 msgid "Accent Color"
 msgstr "Color de énfasis"
@@ -341,10 +365,6 @@ msgstr "Color de énfasis"
 #: functions.php:379
 msgid "Widgets in this area will be displayed in the second column in the footer."
 msgstr "Los widgets de esta área se mostrarán en la segunda columna del pie de página."
-
-#: 404.php:17
-msgid "Page Not Found"
-msgstr "Página no encontrada"
 
 #: functions.php:377
 msgid "Footer #2"
@@ -358,25 +378,41 @@ msgstr "Los widgets de esta área se mostrarán en la primera columna del pie de
 msgid "Footer #1"
 msgstr "Pie de página #1"
 
+#: functions.php:340
+msgid "Skip to the content"
+msgstr "Saltar al contenido"
+
 #: functions.php:262
 msgid "Social Menu"
 msgstr "Menú social"
 
-#: 404.php:19
-msgid "The page you were looking for could not be found. It might have been removed, renamed, or did not exist in the first place."
-msgstr "No se ha podido encontrar la página que buscas. Puede haber sido eliminada, renombrada o ni siquiera existir."
+#: functions.php:261
+msgid "Footer Menu"
+msgstr "Menú del pie de página"
 
 #: functions.php:260
 msgid "Mobile Menu"
 msgstr "Menú móvil"
 
-#: classes/class-twentytwenty-customize.php:81
-msgid "Retina logo"
-msgstr "Logotipo Retina"
+#: functions.php:259
+msgid "Desktop Expanded Menu"
+msgstr "Menú ampliado del escritorio"
+
+#: functions.php:258
+msgid "Desktop Horizontal Menu"
+msgstr "Menú horizontal del escritorio"
+
+#: footer.php:33
+msgid "Powered by WordPress"
+msgstr "Funciona con WordPress"
 
 #: comments.php:127
 msgid "Comments are closed."
 msgstr "Los comentarios están cerrados."
+
+#: comments.php:88
+msgid "Comments"
+msgstr "Comentarios"
 
 #: comments.php:75
 msgid "Older Comments"
@@ -386,22 +422,61 @@ msgstr "Comentarios anteriores"
 msgid "Newer Comments"
 msgstr "Comentarios siguientes"
 
+#. translators: 1: Number of comments, 2: Post title.
+#: comments.php:41
+msgctxt "comments title"
+msgid "%1$s reply on &ldquo;%2$s&rdquo;"
+msgid_plural "%1$s replies on &ldquo;%2$s&rdquo;"
+msgstr[0] "%1$s respuesta a «%2$s»"
+msgstr[1] "%1$s respuestas a «%2$s»"
+
+#. translators: %s: Post title.
+#: comments.php:37
+msgctxt "comments title"
+msgid "One reply on &ldquo;%s&rdquo;"
+msgstr "Una respuesta a «%s»"
+
+#: comments.php:34
+msgid "Leave a comment"
+msgstr "Deja un comentario"
+
+#: classes/class-twentytwenty-walker-page.php:107 inc/template-tags.php:558
+msgid "Show sub menu"
+msgstr "Mostrar el submenú"
+
 #. translators: %d: ID of a post.
 #: classes/class-twentytwenty-walker-page.php:70
 msgid "#%d (no title)"
 msgstr "#%d (sin título)"
 
+#: classes/class-twentytwenty-walker-comment.php:127
+msgid "By Post Author"
+msgstr "Por el autor de la entrada"
+
+#: classes/class-twentytwenty-walker-comment.php:92
+msgid "Your comment is awaiting moderation."
+msgstr "Tu comentario está pendiente de moderación."
+
+#: classes/class-twentytwenty-walker-comment.php:77
+msgid "Edit"
+msgstr "Editar"
+
+#. translators: 1: Comment date, 2: Comment time.
+#: classes/class-twentytwenty-walker-comment.php:69
+msgid "%1$s at %2$s"
+msgstr "%1$s a las %2$s"
+
 #: classes/class-twentytwenty-walker-comment.php:56
 msgid "says:"
 msgstr "dice:"
 
-#: classes/class-twentytwenty-customize.php:82
-msgid "Scales the logo to half its uploaded size, making it sharp on high-res screens."
-msgstr "Escala el logotipo a la mitad del tamaño en el que ha sido subido, haciéndolo más nítido en las pantallas de alta resolución."
+#: classes/class-twentytwenty-customize.php:396
+msgid "Make sure that the contrast is high enough so that the text is readable."
+msgstr "Asegúrate de que el contraste sea suficientemente alto para que el texto sea legible."
 
-#: classes/class-twentytwenty-customize.php:202
-msgid "Theme Options"
-msgstr "Opciones del tema"
+#: classes/class-twentytwenty-customize.php:306
+msgid "Creates a parallax effect when the visitor scrolls."
+msgstr "Crea un efecto Parallax cuando el visitante hace scroll."
 
 #: classes/class-twentytwenty-customize.php:305
 msgid "Fixed Background Image"
@@ -424,98 +499,43 @@ msgstr "Texto completo"
 msgid "On archive pages, posts show:"
 msgstr "En las páginas de archivo, las entradas muestran:"
 
-#: template-parts/modal-search.php:26
-msgid "Close search"
-msgstr "Cerrar la búsqueda"
-
-#: index.php:48
-msgid "We could not find any results for your search. You can give it another try through the search form below."
-msgstr "No hemos encontrado resultados para tu búsqueda. Puedes volver a intentarlo mediante el siguiente formulario de búsqueda."
-
-#: classes/class-twentytwenty-walker-comment.php:127
-msgid "By Post Author"
-msgstr "Por el autor de la entrada"
-
-#: classes/class-twentytwenty-customize.php:396
-msgid "Make sure that the contrast is high enough so that the text is readable."
-msgstr "Asegúrate de que el contraste sea suficientemente alto para que el texto sea legible."
-
-#: template-parts/modal-menu.php:21
-msgid "Close Menu"
-msgstr "Cerrar el menú"
-
-#: template-parts/content.php:36
-msgid "Continue reading"
-msgstr "Seguir leyendo"
-
-#: functions.php:545
-msgctxt "Name of the larger font size in the block editor"
-msgid "Larger"
-msgstr "Muy grande"
-
-#: functions.php:340
-msgid "Skip to the content"
-msgstr "Saltar al contenido"
-
-#: functions.php:259
-msgid "Desktop Expanded Menu"
-msgstr "Menú ampliado del escritorio"
-
-#: functions.php:258
-msgid "Desktop Horizontal Menu"
-msgstr "Menú horizontal del escritorio"
-
-#: classes/class-twentytwenty-walker-page.php:107 inc/template-tags.php:558
-msgid "Show sub menu"
-msgstr "Mostrar el submenú"
-
-#: classes/class-twentytwenty-customize.php:306
-msgid "Creates a parallax effect when the visitor scrolls."
-msgstr "Crea un efecto Parallax cuando el visitante hace scroll."
-
 #: classes/class-twentytwenty-customize.php:225
 msgid "Show search in header"
 msgstr "Mostrar el buscador en la cabecera"
+
+#: classes/class-twentytwenty-customize.php:202
+msgid "Theme Options"
+msgstr "Opciones del tema"
 
 #: classes/class-twentytwenty-customize.php:101
 msgid "Header &amp; Footer Background Color"
 msgstr "Color de fondo de la cabecera y el pie de página"
 
-#: template-parts/content-cover.php:88
-msgid "Scroll Down"
-msgstr "Scroll hacia abajo"
+#: classes/class-twentytwenty-customize.php:82
+msgid "Scales the logo to half its uploaded size, making it sharp on high-res screens."
+msgstr "Escala el logotipo a la mitad del tamaño en el que ha sido subido, haciéndolo más nítido en las pantallas de alta resolución."
 
-#. translators: 1: Number of comments, 2: Post title.
-#: comments.php:41
-msgctxt "comments title"
-msgid "%1$s reply on &ldquo;%2$s&rdquo;"
-msgid_plural "%1$s replies on &ldquo;%2$s&rdquo;"
-msgstr[0] "%1$s respuesta a «%2$s»"
-msgstr[1] "%1$s respuestas a «%2$s»"
+#: classes/class-twentytwenty-customize.php:81
+msgid "Retina logo"
+msgstr "Logotipo Retina"
 
-#. translators: %s: Post title.
-#: comments.php:37
-msgctxt "comments title"
-msgid "One reply on &ldquo;%s&rdquo;"
-msgstr "Una respuesta a «%s»"
+#: 404.php:19
+msgid "The page you were looking for could not be found. It might have been removed, renamed, or did not exist in the first place."
+msgstr "No se ha podido encontrar la página que buscas. Puede haber sido eliminada, renombrada o ni siquiera existir."
 
-#: inc/template-tags.php:374
-msgid "Post date"
-msgstr "Fecha de la entrada"
-
-#: functions.php:512
-msgid "Background Color"
-msgstr "Color del fondo"
-
-#: functions.php:499
-msgid "Subtle Background"
-msgstr "Fondo sutil"
-
-#: footer.php:33
-msgid "Powered by WordPress"
-msgstr "Funciona con WordPress"
+#: 404.php:17
+msgid "Page Not Found"
+msgstr "Página no encontrada"
 
 #. Author URI of the theme
 #: footer.php:32
 msgid "https://wordpress.org/"
 msgstr "https://es.wordpress.org/"
+
+#. Author of the theme
+msgid "the WordPress team"
+msgstr "El equipo de WordPress"
+
+#. Theme URI of the theme
+msgid "https://wordpress.org/themes/twentytwenty/"
+msgstr "https://es.wordpress.org/themes/twentytwenty/"
