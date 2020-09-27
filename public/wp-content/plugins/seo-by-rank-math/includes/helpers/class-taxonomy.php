@@ -85,7 +85,7 @@ trait Taxonomy {
 	public static function get_accessible_taxonomies() {
 		static $accessible_taxonomies;
 
-		if ( isset( $accessible_taxonomies ) ) {
+		if ( isset( $accessible_taxonomies ) && did_action( 'wp_loaded' ) ) {
 			return $accessible_taxonomies;
 		}
 
@@ -165,7 +165,7 @@ trait Taxonomy {
 	 * @return array|object
 	 */
 	public static function filter_exclude_taxonomies( $taxonomies, $filter = true ) {
-		$taxonomies = $filter ? array_filter( $taxonomies, array( __CLASS__, 'is_taxonomy_viewable' ) ) : $taxonomies;
+		$taxonomies = $filter ? array_filter( $taxonomies, [ __CLASS__, 'is_taxonomy_viewable' ] ) : $taxonomies;
 
 		/**
 		 * Filter: 'rank_math_excluded_taxonomies' - Allow changing the accessible taxonomies.

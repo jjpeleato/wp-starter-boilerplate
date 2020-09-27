@@ -49,7 +49,7 @@ class Sitemaps {
 	public function display_table() {
 		echo '<form method="post">';
 
-		$this->table = new Sitemaps_List;
+		$this->table = new Sitemaps_List();
 		$this->table->prepare_items();
 		$this->table->get_refresh_button();
 		$this->table->display();
@@ -133,7 +133,7 @@ class Sitemaps {
 		}
 
 		// Normalize URLs.
-		$this_site     = trailingslashit( site_url( '', 'http' ) );
+		$this_site     = trailingslashit( home_url( '', 'http' ) );
 		$selected_site = trailingslashit( str_replace( 'https://', 'http://', Client::get()->profile ) );
 
 		// Check if site URL matches.

@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - YITH WooCommerce Ajax Product Filter - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2020-07-01 11:22:44+0000\n"
+"PO-Revision-Date: 2020-09-17 09:14:22+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -10,6 +10,30 @@ msgstr ""
 "X-Generator: GlotPress/3.0.0-alpha.2\n"
 "Language: es\n"
 "Project-Id-Version: Plugins - YITH WooCommerce Ajax Product Filter - Stable (latest release)\n"
+
+#: plugin-fw/lib/yit-assets.php:108
+msgid "Color value"
+msgstr "Valor del color"
+
+#: plugin-fw/lib/yit-assets.php:107
+msgid "Select Color"
+msgstr "Seleccionar el color"
+
+#: plugin-fw/lib/yit-assets.php:106
+msgid "Select default color"
+msgstr "Seleccionar el color por defecto"
+
+#: plugin-fw/lib/yit-assets.php:105
+msgid "Default"
+msgstr "Por defecto"
+
+#: plugin-fw/lib/yit-assets.php:104
+msgid "Clear color"
+msgstr "Vaciar el color"
+
+#: plugin-fw/lib/yit-assets.php:103
+msgid "Clear"
+msgstr "Vaciar"
 
 #: plugin-fw/templates/sysinfo/system-information-panel.php:167
 msgid "Show log files"
@@ -40,14 +64,14 @@ msgstr "Archivo «debug.log» de WP"
 msgid "The system check cannot determine which %1$s version is installed due to a connection issue between your site and our server."
 msgstr "La comprobación del sistema no ha podido determinar qué versión %1$s está instalada debido a un problema de conexión entre tu sitio y nuestro servidor."
 
-#: plugin-fw/lib/yith-system-status.php:545
-msgid "Contact your hosting company in order to install it."
-msgstr "Contacta con tu empresa de alojamiento para instalarlo."
-
 #. translators: %1$s TLS label, %2$s cURL label
 #: plugin-fw/lib/yith-system-status.php:593
 msgid "The system check cannot determine which %1$s version is installed because %2$s module is disabled. Ask your hosting company to enable it."
 msgstr "La comprobación del sistema no ha podido determinar qué versión %1$s está instalada, ya que está desactivado el módulo %2$s. Pídele a tu empresa de alojamiento que lo active."
+
+#: plugin-fw/lib/yith-system-status.php:545
+msgid "Contact your hosting company in order to install it."
+msgstr "Contacta con tu empresa de alojamiento para instalarlo."
 
 #: plugin-fw/templates/fields/dimensions.php:117
 msgctxt "Tooltip in the \"Dimensions\" field"
@@ -84,19 +108,19 @@ msgctxt "YES/NO button: use MAX 3 characters!"
 msgid "NO"
 msgstr "NO"
 
-#: plugin-fw/lib/yit-plugin-panel.php:1268
+#: plugin-fw/lib/yit-plugin-panel.php:1285
 msgid ":) Thanks!"
 msgstr ":) ¡Gracias!"
 
-#: plugin-fw/lib/yit-plugin-panel.php:1267
+#: plugin-fw/lib/yit-plugin-panel.php:1284
 msgid "help us by leaving a five-star rating"
 msgstr "ayúdanos dejando una valoración de cinco estrellas"
 
-#: plugin-fw/lib/yit-plugin-panel.php:1265
+#: plugin-fw/lib/yit-plugin-panel.php:1282
 msgid "to keep updating and improving the plugin. Please,"
 msgstr "para seguir actualizando y mejorando el plugin. Por favor,"
 
-#: plugin-fw/lib/yit-plugin-panel.php:1264
+#: plugin-fw/lib/yit-plugin-panel.php:1281
 msgid "We need your support"
 msgstr "Necesitamos tu apoyo"
 
@@ -212,7 +236,7 @@ msgstr "Lee más %1$saquí%2$s o contacta con tu empresa de alojamiento para inc
 
 #: plugin-fw/lib/yith-system-status.php:560
 msgid "Contact your hosting company in order to enable it."
-msgstr "Contacta con tu compañía de hosting para activarlo."
+msgstr "Contacta con tu empresa de alojamiento para activarlo."
 
 #. translators: %1$s code, %2$s file name
 #: plugin-fw/lib/yith-system-status.php:552
@@ -222,7 +246,7 @@ msgstr "Eliminar %1$s del archivo %2$s"
 #: plugin-fw/lib/yith-system-status.php:541
 #: plugin-fw/lib/yith-system-status.php:547
 msgid "Contact your hosting company in order to update it."
-msgstr "Contacta con tu compañía de hosting para actualizarlo."
+msgstr "Contacta con tu empresa de alojamiento para actualizarlo."
 
 #: plugin-fw/lib/yith-system-status.php:537
 msgid "Update it to the latest version in order to benefit of all new features and security updates."
@@ -302,7 +326,7 @@ msgstr "Error RSS:"
 
 #: plugin-fw/lib/yith-dashboard.php:41
 msgid "Latest news from YITH Blog"
-msgstr "Últimas noticias del Blog de YITH"
+msgstr "Últimas noticias del blog de YITH"
 
 #: plugin-fw/lib/yith-dashboard.php:40
 msgid "YITH Latest Updates"
@@ -326,7 +350,7 @@ msgstr "<code><strong>YITH WooCommerce AJAX Product Filter</strong></code> permi
 
 #. Plugin URI of the plugin
 msgid "https://wordpress.org/plugins/yith-woocommerce-ajax-navigation/"
-msgstr "https://wordpress.org/plugins/yith-woocommerce-ajax-navigation/"
+msgstr "https://es.wordpress.org/plugins/yith-woocommerce-ajax-navigation/"
 
 #: widgets/class.yith-wcan-reset-navigation-widget.php:23
 msgctxt "[Plugin Name]"
@@ -365,7 +389,7 @@ msgstr "Documentación"
 #: plugin-fw/yit-plugin.php:83
 msgctxt "Plugin Row Meta"
 msgid "Live Demo"
-msgstr "Demo en vivo"
+msgstr "Demostración en vivo"
 
 #: plugin-fw/lib/privacy/yit-privacy.php:72
 msgctxt "Privacy Policy Content"
@@ -397,17 +421,17 @@ msgctxt "Privacy Policy Guide Title"
 msgid "YITH Plugins"
 msgstr "Plugins de YITH"
 
-#: plugin-fw/templates/fields/ajax-posts.php:57
-msgid "Search Posts"
-msgstr "Buscar publicaciones"
+#: plugin-fw/templates/fields/icons.php:58
+msgid "Set Default"
+msgstr "Establecer por defecto"
 
 #: plugin-fw/templates/fields/ajax-products.php:16
 msgid "Search Product"
 msgstr "Buscar producto"
 
-#: plugin-fw/templates/fields/icons.php:58
-msgid "Set Default"
-msgstr "Establecer por defecto"
+#: plugin-fw/templates/fields/ajax-posts.php:57
+msgid "Search Posts"
+msgstr "Buscar entradas"
 
 #: settings/frontend-options.php:71
 msgid "WooCommerce Default"
@@ -427,7 +451,7 @@ msgstr "Ordenar por"
 
 #: templates/admin/premium.php:429
 msgid "Scroll to top is a feature to improve user experience on your site. Soon after filtering the product list, the page will be automatically scrolled to the top so the user can immediately see the filtered list. "
-msgstr "Desplazar hasta arriba es una característica para mejorar la experiencia del usuario en su sitio. Poco después de filtrar la lista de productos, la página se desplazará automáticamente hacia arriba para que el usuario pueda ver inmediatamente la lista filtrada."
+msgstr "«Scroll arriba» es una característica para mejorar la experiencia del usuario en tu sitio. Poco después de filtrar la lista de productos, la página se desplazará automáticamente hacia arriba para que el usuario pueda ver inmediatamente la lista filtrada. "
 
 #: templates/admin/premium.php:426
 msgid "Scroll to top"
@@ -460,19 +484,19 @@ msgstr "Filtrar por etiqueta"
 
 #: templates/admin/premium.php:384
 msgid "Each applied filter generates a new url for the page. You can decide to keep the same url or let it get automatically updated every time user applies a filter to the products list of your shop."
-msgstr "Cada filtro aplicado genera una nueva url para la página. Puedes decidir conservar la misma URL o dejar que se actualice automáticamente cada vez que el usuario aplique un filtro a la lista de productos de tu tienda."
+msgstr "Cada filtro aplicado genera una nueva URL para la página. Puedes decidir conservar la misma URL o dejar que se actualice automáticamente cada vez que el usuario aplique un filtro a la lista de productos de tu tienda."
 
 #: templates/admin/premium.php:381
 msgid "Page url"
 msgstr "URL de la página"
 
-#: widgets/class.yith-wcan-navigation-widget.php:939
+#: widgets/class.yith-wcan-navigation-widget.php:940
 msgid "CSS custom class"
 msgstr "Clase personalizada de CSS"
 
 #: templates/admin/premium.php:365
 msgid "In addition to the classic visualization style, the premium version of this plugin gives you the possibility to show filters in \"checkbox\" style. Users will experience a new look of your pages while filtering products."
-msgstr "Además del estilo de visualización clásico, la versión premium de este plugin te ofrece la posibilidad de mostrar filtros en el estilo de \"casilla de verificación\". Los usuarios experimentarán un nuevo aspecto de tus páginas al filtrar productos."
+msgstr "Además del estilo de visualización clásico, la versión premium de este plugin te ofrece la posibilidad de mostrar filtros en estilo de «casilla de verificación». Los usuarios experimentarán un nuevo aspecto de tus páginas al filtrar productos."
 
 #: templates/admin/premium.php:362
 msgid "Filter style"
@@ -492,11 +516,11 @@ msgstr "Configura el widget para permitir que los usuarios filtren el producto p
 
 #: templates/admin/premium.php:330
 msgid " Filter by category"
-msgstr "Filtrar por categoría"
+msgstr " Filtrar por categoría"
 
 #: templates/admin/premium.php:320
 msgid "The Ajax management of the plugin adds specific queries to the URLs of the current page. Choose whether to allow search engines to index the URLs generated by the plugin, or not: with the latter, you will be free to avoid possible penalizations that may apply to your site."
-msgstr "La administración de Ajax del plugin agrega consultas específicas a las URL de la página actual. Elige si deseas que los motores de búsqueda indexen las URL generadas por el plugin o no: De este modo, podrás evitar que se apliquen posibles penalizaciones a tu sitio."
+msgstr "La gestión de Ajax del plugin añade consultas específicas a las URL de la página actual. Elige si permites o no que los motores de búsqueda indexen las URL generadas por el plugin: de este modo, podrás evitar que se apliquen posibles penalizaciones a tu sitio."
 
 #: templates/admin/premium.php:317
 msgid "SEO"
@@ -504,13 +528,13 @@ msgstr "SEO"
 
 #: templates/admin/premium.php:301
 msgid "Take advantage of the premium version of the plugin to edit the default behavior of WooCommerce Price Filter. Change the %1$slayout of the filter%2$s and activate the %1$sAjax mode%2$s to apply the filter immediately, without reloading the page."
-msgstr "Aprovecha la versión premium del plugin para editar el comportamiento predeterminado del filtro de precios de WooCommerce. Cambia el %1$sdiseño del filtro%2$s y activa el %1$smodo Ajax%2$s para aplicar el filtro inmediatamente, sin volver a cargar la página."
+msgstr "Aprovecha la versión premium del plugin para editar el comportamiento por defecto del filtro de precios de WooCommerce. Cambia el %1$sdiseño del filtro%2$s y activa el %1$smodo Ajax%2$s para aplicar el filtro inmediatamente, sin volver a cargar la página."
 
 #: settings/frontend-options.php:12
 msgid "Frontend Settings"
-msgstr "Ajustes de portada"
+msgstr "Ajustes de la portada"
 
-#: templates/admin/premium.php:413 plugin-fw/templates/fields/upload.php:29
+#: plugin-fw/templates/fields/upload.php:29 templates/admin/premium.php:413
 msgid "Reset"
 msgstr "Restablecer"
 
@@ -526,64 +550,64 @@ msgstr "https://yithemes.com/"
 msgid "YITH WooCommerce Ajax Product Filter"
 msgstr "YITH WooCommerce Ajax Product Filter"
 
-#: widgets/class.yith-wcan-reset-navigation-widget.php:132
+#: widgets/class.yith-wcan-reset-navigation-widget.php:137
 msgid "Button Label"
 msgstr "Etiqueta del botón"
 
-#: widgets/class.yith-wcan-reset-navigation-widget.php:119
+#: widgets/class.yith-wcan-reset-navigation-widget.php:124
 msgid "Reset All Filters"
 msgstr "Limpiar todos los filtros"
 
-#: widgets/class.yith-wcan-navigation-widget.php:932
+#: widgets/class.yith-wcan-navigation-widget.php:933
 msgid "Only Parent"
 msgstr "Solo superior"
 
-#: widgets/class.yith-wcan-navigation-widget.php:931
+#: widgets/class.yith-wcan-navigation-widget.php:932
 msgid "All (hierarchical)"
 msgstr "Todo (jerárquico)"
 
-#: widgets/class.yith-wcan-navigation-widget.php:930
+#: widgets/class.yith-wcan-navigation-widget.php:931
 msgid "All (no hierarchical)"
 msgstr "Todo (no jerárquico)"
 
-#: widgets/class.yith-wcan-navigation-widget.php:928
+#: widgets/class.yith-wcan-navigation-widget.php:929
 msgid "Display (default All):"
 msgstr "Mostrar (todo por defecto):"
 
-#: widgets/class.yith-wcan-navigation-widget.php:921
+#: widgets/class.yith-wcan-navigation-widget.php:922
 msgid "Attribute:"
 msgstr "Atributo:"
 
-#: widgets/class.yith-wcan-navigation-widget.php:915
+#: widgets/class.yith-wcan-navigation-widget.php:916
 msgid "OR"
 msgstr "O"
 
-#: widgets/class.yith-wcan-navigation-widget.php:914
+#: widgets/class.yith-wcan-navigation-widget.php:915
 msgid "AND"
 msgstr "Y"
 
-#: widgets/class.yith-wcan-navigation-widget.php:912
+#: widgets/class.yith-wcan-navigation-widget.php:913
 msgid "Query Type:"
 msgstr "Tipo de petición:"
 
-#: widgets/class.yith-wcan-navigation-widget.php:901
+#: widgets/class.yith-wcan-navigation-widget.php:902
 msgid "Type:"
 msgstr "Tipo:"
 
-#: widgets/class.yith-wcan-navigation-widget.php:895
-#: widgets/class.yith-wcan-reset-navigation-widget.php:126
+#: widgets/class.yith-wcan-reset-navigation-widget.php:131
+#: widgets/class.yith-wcan-navigation-widget.php:896
 msgid "Title"
 msgstr "Título"
 
-#: widgets/class.yith-wcan-navigation-widget.php:888
+#: widgets/class.yith-wcan-navigation-widget.php:889
 msgid "Dropdown"
 msgstr "Desplegar"
 
-#: widgets/class.yith-wcan-navigation-widget.php:887
+#: widgets/class.yith-wcan-navigation-widget.php:888
 msgid "Label"
 msgstr "Etiqueta"
 
-#: widgets/class.yith-wcan-navigation-widget.php:885
+#: widgets/class.yith-wcan-navigation-widget.php:886
 msgid "List"
 msgstr "Lista"
 
@@ -605,7 +629,7 @@ msgstr "Cargador personalizado"
 
 #: templates/admin/premium.php:269
 msgid "With the new %1$sYITH WooCommerce Ajax Sort By%2$s widget, you can give your users the freedom to sort products with the ajax technology, without the need to reload the page. Products can be sorted by rate, sales, price or publication date."
-msgstr "Con el nuevo %1$sYITH WooCommerce Ajax ordenado por%2$s widget, puedes darle a los usuarios la libertad de ordenar los productos con la tecnología ajax, sin la necesidad de recargar la página. Los productos pueden ser ordenador por by valoración, ventas, precio o fecha de publicación."
+msgstr "Con el nuevo widget %1$sYITH WooCommerce Ajax: ordenar por%2$s, puedes darle a los usuarios la libertad de ordenar los productos con la tecnología AJAX, sin la necesidad de recargar la página. Los productos pueden ser ordenador por valoración, ventas, precio o fecha de publicación."
 
 #: templates/admin/premium.php:266
 msgid "Product sorting"
@@ -613,15 +637,15 @@ msgstr "Clasificación de producto"
 
 #: templates/admin/premium.php:256
 msgid "A new widget for the premium version of the plugin. Whoever will surf the pages of your shop will be able to display only the products on sale and/or the available ones.%3$s %1$sAn additional feature for an e-commerce site that is worthy!%2$s"
-msgstr "Un nuevo widget para la versión premium del plugin. Quien navegue por las páginas de tu tienda podrá mostrar solo los productos en oferta y / o los disponibles.%3$s %1$sUna función adicional para un sitio de comercio electrónico que vale la pena!%2$s"
+msgstr "Un nuevo widget para la versión premium del plugin. Quien navegue por las páginas de tu tienda podrá mostrar solo los productos en oferta y/o los disponibles.%3$s %1$s¡Una característica adicional para un sitio de comercio electrónico que vale la pena!%2$s"
 
 #: templates/admin/premium.php:253
 msgid "Ajax Stock/On Sale Filters"
-msgstr "Filtros Inventario de ajax/ en rebaja"
+msgstr "Filtros Ajax: inventario/en oferta"
 
 #: templates/admin/premium.php:237
 msgid "One of the most requested filter for e-commerce sites is the one that let you select products by their prices. Thanks to YITH WooCommerce Ajax List Price Filter, %1$syou can set unlimited price ranges:%2$s your users will be able to filter products selecting on the ranges you have set."
-msgstr "Uno de los filtros más solicitados para sitios de comercio electrónico es el que te permite seleccionar productos por sus precios. Gracias a YITH WooCommerce Ajax List Price Filter,%1$spuedes establecer rangos de precios ilimitados:%2$stus usuarios podrán filtrar productos seleccionando en los rangos que hayas configurado."
+msgstr "Uno de los filtros más solicitados para sitios de comercio electrónico es el que te permite seleccionar productos por sus precios. Gracias a YITH WooCommerce Ajax List Price Filter, %1$spuedes establecer rangos de precios ilimitados:%2$s tus usuarios podrán filtrar productos seleccionando en los rangos que hayas configurado."
 
 #: templates/admin/premium.php:234
 msgid "Price range"
@@ -689,13 +713,13 @@ msgstr ""
 #: settings/frontend-options.php:25
 msgctxt "Admin panel: option description"
 msgid "How To:"
-msgstr "Cómo:"
+msgstr "Cómo hacerlo:"
 
 #: settings/custom-style-options.php:24
 msgid "Enter here your custom CSS rules:"
-msgstr "Introduce tus reglas de CSS personalizado"
+msgstr "Introduce aquí tus reglas de CSS personalizado:"
 
-#: plugin-fw/templates/panel/woocommerce/woocommerce-form.php:20
+#: plugin-fw/templates/panel/woocommerce/woocommerce-form.php:22
 msgid "Reset Defaults"
 msgstr "Reestablecer por defecto"
 
@@ -774,7 +798,7 @@ msgstr "Valor"
 
 #: plugin-fw/templates/fields/customtabs.php:28
 msgid "Expand all"
-msgstr "Expandir todo"
+msgstr "Ampliar todo"
 
 #: plugin-fw/templates/fields/customtabs.php:28
 msgid "Close all"
@@ -784,8 +808,8 @@ msgstr "Cerrar todo"
 msgid "Image preview"
 msgstr "Vista previa de la imagen"
 
-#: plugin-fw/templates/fields/upload.php:27
 #: plugin-fw/templates/panel/woocommerce/woocommerce-upload.php:40
+#: plugin-fw/templates/fields/upload.php:27
 #: plugin-fw/templates/metaboxes/types/icon-list.php:70
 msgid "Upload"
 msgstr "Subir"
@@ -802,10 +826,10 @@ msgid ""
 "                                    For example, after the update, plugin options (such as for YITH WooCommerce Wishlist, YITH WooCommerce Ajax Search, etc.)\n"
 "                                    will be moved from previous location to YITH Plugins tab."
 msgstr ""
-"A partir de ahora, puedes encontrar el panel de opciones de plugins de YITH en el menú de plugins de YITH.\n"
-"                                     Cada vez que se añade uno de nuestros plugins, se agregará una nueva entrada a este menú.\n"
-"                                     Por ejemplo, después de la actualización, las opciones de plugins (como por ejemplo, YITH WooCommerce Wishlist, YITH WooCommerce Ajax Search, etc.) \n"
-"                                     se moverá de la ubicación anterior a la pestaña de YITH "
+"A partir de ahora, puedes encontrar el panel de opciones de los plugins de YITH en el menú de plugins de YITH.\n"
+"                                     Cada vez que se añade uno de nuestros plugins, se añadirá una nueva entrada a este menú.\n"
+"                                     Por ejemplo, después de la actualización, las opciones del plugin (como por ejemplo, YITH WooCommerce Wishlist, YITH WooCommerce Ajax Search, etc.) \n"
+"                                     se moverán de la ubicación anterior a la pestaña de plugins de YITH."
 
 #: plugin-fw/lib/yit-pointers.php:84
 msgid "Plugins Upgraded"
@@ -831,67 +855,67 @@ msgstr ""
 msgid "Plugins Activated"
 msgstr "Plugins activados"
 
-#: plugin-fw/lib/yit-plugin-panel.php:816
+#: plugin-fw/lib/yit-plugin-panel.php:833
 msgid "Sorting successful."
-msgstr "Ordenado con éxito."
+msgstr "Ordenado correctamente."
 
-#: plugin-fw/lib/yit-plugin-panel.php:815
+#: plugin-fw/lib/yit-plugin-panel.php:832
 msgid "Sorry, import is disabled."
 msgstr "Lo siento, la importación está desactivada."
 
-#: plugin-fw/lib/yit-plugin-panel.php:814
+#: plugin-fw/lib/yit-plugin-panel.php:831
 msgid "The added file is not valid."
-msgstr "El archivo añadido es no válido."
+msgstr "El archivo añadido no es válido."
 
-#: plugin-fw/lib/yit-plugin-panel.php:813
+#: plugin-fw/lib/yit-plugin-panel.php:830
 msgid "An error has occurred during import. Please try again."
 msgstr "Ha ocurrido un error durante la importación. Por favor, inténtalo de nuevo."
 
-#: plugin-fw/lib/yit-plugin-panel.php:812
+#: plugin-fw/lib/yit-plugin-panel.php:829
 msgid "Database imported correctly."
-msgstr "Base de datos importada correctamente."
+msgstr "La base de datos se ha importado correctamente."
 
-#: plugin-fw/lib/yit-plugin-panel.php:810
-#: plugin-fw/lib/yit-plugin-panel.php:811
+#: plugin-fw/lib/yit-plugin-panel.php:827
+#: plugin-fw/lib/yit-plugin-panel.php:828
 msgid "Element updated correctly."
-msgstr "Elemento actualizado correctamente."
+msgstr "El elemento se ha actualizado correctamente."
 
-#: plugin-fw/lib/yit-plugin-panel.php:809
+#: plugin-fw/lib/yit-plugin-panel.php:826
 msgid "Element deleted correctly."
-msgstr "Elemento eliminado correctamente."
+msgstr "El elemento se ha borrado correctamente."
 
-#: plugin-fw/lib/yit-plugin-panel.php:808
+#: plugin-fw/lib/yit-plugin-panel.php:825
 msgid "Settings reset"
-msgstr "Restablecer ajustes"
+msgstr "Restablecer los ajustes"
 
-#: plugin-fw/lib/yit-plugin-panel.php:807
+#: plugin-fw/lib/yit-plugin-panel.php:824
 msgid "Settings saved"
 msgstr "Ajustes guardados"
 
-#: plugin-fw/lib/yit-plugin-panel.php:806
+#: plugin-fw/lib/yit-plugin-panel.php:823
 msgid "The element you have entered already exists. Please, enter another name."
-msgstr "El elemento que has introducido ya existe.Por favor, introduce otro nombre."
+msgstr "El elemento que has introducido ya existe. Por favor, introduce otro nombre."
 
-#: plugin-fw/lib/yit-plugin-panel.php:608
 #: plugin-fw/lib/yit-plugin-subpanel.php:157
-#: plugin-fw/templates/panel/woocommerce/woocommerce-form.php:21
+#: plugin-fw/lib/yit-plugin-panel.php:625
+#: plugin-fw/templates/panel/woocommerce/woocommerce-form.php:23
 msgid "Are you sure?"
 msgstr "¿Estás seguro?"
 
-#: plugin-fw/lib/yit-plugin-panel.php:607
 #: plugin-fw/lib/yit-plugin-subpanel.php:156
+#: plugin-fw/lib/yit-plugin-panel.php:624
 msgid "Reset to default"
-msgstr "Restablecer a por defecto"
+msgstr "Restablecer a los valores por defecto"
 
-#: plugin-fw/lib/yit-plugin-panel.php:605
 #: plugin-fw/lib/yit-plugin-subpanel.php:154
-#: plugin-fw/templates/panel/woocommerce/woocommerce-form.php:17
+#: plugin-fw/lib/yit-plugin-panel.php:621
+#: plugin-fw/templates/panel/woocommerce/woocommerce-form.php:19
 msgid "If you continue with this action, you will reset all options in this page."
 msgstr "Si continúas con esta opción, restablecerás todas las opciones en esta página."
 
-#: plugin-fw/lib/yit-plugin-panel.php:602
 #: plugin-fw/lib/yit-plugin-subpanel.php:151
-#: plugin-fw/templates/panel/woocommerce/woocommerce-form.php:14
+#: plugin-fw/lib/yit-plugin-panel.php:617
+#: plugin-fw/templates/panel/woocommerce/woocommerce-form.php:15
 msgid "Save Changes"
 msgstr "Guardar los cambios"
 
@@ -903,7 +927,7 @@ msgstr "Plugins de YITH"
 msgid "Plugin Settings"
 msgstr "Ajustes del plugin"
 
-#: plugin-fw/lib/yit-plugin-panel-wc.php:403
+#: plugin-fw/lib/yit-plugin-panel-wc.php:427
 msgid "The changes you have made will be lost if you leave this page."
 msgstr "Los cambios que has hecho se perderán si abandonas esta página."
 
@@ -932,7 +956,7 @@ msgstr "Enlaces rápidos"
 
 #: plugin-fw/lib/yit-cpt-unlimited.php:1132
 msgid "layout settings"
-msgstr "Ajustes de diseño"
+msgstr "ajustes de diseño"
 
 #: plugin-fw/lib/yit-cpt-unlimited.php:1091
 msgid "Layout for single page of this portfolio"
@@ -940,7 +964,7 @@ msgstr "Diseño para página individual de este porfolio"
 
 #: plugin-fw/lib/yit-cpt-unlimited.php:1090
 msgid "Single layout"
-msgstr "Diseño infividual"
+msgstr "Diseño individual"
 
 #: plugin-fw/lib/yit-cpt-unlimited.php:1085
 msgid "Set univocal name for each category page URL."
@@ -952,7 +976,7 @@ msgstr "Sobreescribir taxonomía"
 
 #: plugin-fw/lib/yit-cpt-unlimited.php:1079
 msgid "If you want to use categories in the portfolio, set a name for taxonomy. Name should be a slug (must not contain capital letters nor spaces) and must not be more than 32 characters long (database structure restriction)."
-msgstr "Si quieres usar categorías en el porfolio, establece un nombre para la taxonomía. El nombre debe ser un slug (no debe contener mayúsculas ni espacios) y n debe tener más de 32 de caracteres de longitud (restriccion de estructura de base de datos)."
+msgstr "Si quieres usar categorías en el porfolio, establece un nombre para la taxonomía. El nombre debe ser un slug (no debe contener mayúsculas ni espacios) y no debe tener más de 32 de caracteres de longitud (restricción de la estructura de la base de datos)."
 
 #: plugin-fw/lib/yit-cpt-unlimited.php:1078
 msgid "Taxonomy"
@@ -990,10 +1014,10 @@ msgstr "Diseño para este %s"
 msgid "Type"
 msgstr "Tipo"
 
-#: plugin-fw/lib/yit-plugin-panel.php:80
 #: plugin-fw/lib/yit-cpt-unlimited.php:1050
 #: plugin-fw/lib/yit-cpt-unlimited.php:1198
 #: plugin-fw/lib/yit-cpt-unlimited.php:1204
+#: plugin-fw/lib/yit-plugin-panel.php:80
 msgid "Settings"
 msgstr "Ajustes"
 
@@ -1105,29 +1129,29 @@ msgstr "Añadir %s"
 
 #: init.php:49
 msgid "YITH WooCommerce Ajax Product Filter is enabled but not effective. It requires WooCommerce in order to work."
-msgstr "YITH WooCommerce Ajax Product Filter está activado pero no es efectivo. Requiere WooCommerce para funcionar."
+msgstr "YITH WooCommerce Ajax Product Filter está activado, pero no está operativo. Necesita WooCommerce para funcionar."
 
-#: includes/functions.yith-wcan.php:126
+#: includes/functions.yith-wcan.php:129
 msgid "Labels"
 msgstr "Etiquetas"
 
-#: includes/functions.yith-wcan.php:104
+#: includes/functions.yith-wcan.php:107
 msgctxt "For multicolor: I.E. white and red T-Shirt"
 msgid "Color 2"
 msgstr "Color 2"
 
-#: includes/functions.yith-wcan.php:104
+#: includes/functions.yith-wcan.php:107
 msgctxt "For multicolor: I.E. white and red T-Shirt"
 msgid "Color 1"
 msgstr "Color 1"
 
-#: includes/functions.yith-wcan.php:88
-#: widgets/class.yith-wcan-navigation-widget.php:886
+#: widgets/class.yith-wcan-navigation-widget.php:887
+#: includes/functions.yith-wcan.php:91
 msgid "Color"
 msgstr "Color"
 
-#: includes/functions.yith-wcan.php:88 includes/functions.yith-wcan.php:104
-#: includes/functions.yith-wcan.php:126
+#: includes/functions.yith-wcan.php:91 includes/functions.yith-wcan.php:107
+#: includes/functions.yith-wcan.php:129
 msgid "Term"
 msgstr "Término"
 
@@ -1146,4 +1170,4 @@ msgstr "Estilo personalizado"
 
 #: includes/class.yith-wcan-admin.php:126
 msgid "Front end"
-msgstr "Portada"
+msgstr "Vista pública"

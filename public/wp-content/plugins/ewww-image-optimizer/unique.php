@@ -54,7 +54,8 @@ function ewww_image_optimizer_exec_init() {
 		! empty( $_ENV['PANTHEON_ENVIRONMENT'] ) ||
 		defined( 'WPE_PLUGIN_VERSION' ) ||
 		defined( 'FLYWHEEL_CONFIG_DIR' ) ||
-		defined( 'KINSTAMU_VERSION' )
+		defined( 'KINSTAMU_VERSION' ) ||
+		defined( 'WPNET_INIT_PLUGIN_VERSION' )
 	) {
 		if (
 			! ewww_image_optimizer_get_option( 'ewww_image_optimizer_cloud_key' ) &&
@@ -170,6 +171,8 @@ function ewww_image_optimizer_notice_hosting_requires_api() {
 		$webhost = 'Flywheel';
 	} elseif ( defined( 'KINSTAMU_VERSION' ) ) {
 		$webhost = 'Kinsta';
+	} elseif ( defined( 'WPNET_INIT_PLUGIN_VERSION' ) ) {
+		$webhost = 'WPNET';
 	} else {
 		return;
 	}
@@ -532,7 +535,7 @@ function ewww_image_optimizer_dismiss_exec_notice() {
 	ewwwio_ob_clean();
 	ewwwio_debug_message( '<b>' . __FUNCTION__ . '()</b>' );
 	// Verify that the user is properly authorized.
-	if ( ! current_user_can( apply_filters( 'ewww_image_optimizer_admin_permissions', 'manage_options' ) ) ) {
+	if ( ! current_user_can( apply_filters( 'ewww_image_optimizer_admin_permissions', '' ) ) ) {
 		wp_die( esc_html__( 'Access denied.', 'ewww-image-optimizer' ) );
 	}
 	update_option( 'ewww_image_optimizer_jpg_level', 10 );
@@ -1769,6 +1772,7 @@ function ewww_image_optimizer( $file, $gallery_type = 4, $converted = false, $ne
 	if ( ! defined( 'EWWW_IMAGE_OPTIMIZER_CLOUD' ) ) {
 		ewww_image_optimizer_cloud_init();
 	}
+	ewww_image_optimizer_define_noexec();
 	if ( apply_filters( 'ewww_image_optimizer_bypass', false, $file ) ) {
 		ewwwio_debug_message( "optimization bypassed: $file" );
 		// Tell the user optimization was skipped.
@@ -1830,7 +1834,6 @@ function ewww_image_optimizer( $file, $gallery_type = 4, $converted = false, $ne
 	}
 	$nice = '';
 	if ( ! EWWW_IMAGE_OPTIMIZER_CLOUD ) {
-		ewww_image_optimizer_define_noexec();
 		if ( ! EWWW_IMAGE_OPTIMIZER_NOEXEC && PHP_OS !== 'WINNT' ) {
 			// Check to see if 'nice' exists.
 			$nice = ewww_image_optimizer_find_nix_binary( 'nice', 'n' );
@@ -2741,6 +2744,9 @@ function ewww_image_optimizer_webp_create( $file, $orig_size, $type, $tool, $rec
 			$copy_opt = 'all';
 		}
 		$quality = (int) apply_filters( 'jpeg_quality', 82, 'image/webp' );
+		if ( $quality < 50 ) {
+			$quality = 82;
+		}
 		if ( defined( 'EWWW_IMAGE_OPTIMIZER_LOSSY_PNG2WEBP' ) && EWWW_IMAGE_OPTIMIZER_LOSSY_PNG2WEBP ) {
 			$lossless = "-q $quality";
 		} else {
@@ -2748,9 +2754,11 @@ function ewww_image_optimizer_webp_create( $file, $orig_size, $type, $tool, $rec
 		}
 		switch ( $type ) {
 			case 'image/jpeg':
+				ewwwio_debug_message( "$nice " . $tool . " -q $quality -metadata $copy_opt -quiet " . ewww_image_optimizer_escapeshellarg( $file ) . ' -o ' . ewww_image_optimizer_escapeshellarg( $webpfile ) . ' 2>&1' );
 				exec( "$nice " . $tool . " -q $quality -metadata $copy_opt -quiet " . ewww_image_optimizer_escapeshellarg( $file ) . ' -o ' . ewww_image_optimizer_escapeshellarg( $webpfile ) . ' 2>&1', $cli_output );
 				break;
 			case 'image/png':
+				ewwwio_debug_message( "$nice " . $tool . " $lossless -metadata $copy_opt -quiet " . ewww_image_optimizer_escapeshellarg( $file ) . ' -o ' . ewww_image_optimizer_escapeshellarg( $webpfile ) . ' 2>&1' );
 				exec( "$nice " . $tool . " $lossless -metadata $copy_opt -quiet " . ewww_image_optimizer_escapeshellarg( $file ) . ' -o ' . ewww_image_optimizer_escapeshellarg( $webpfile ) . ' 2>&1', $cli_output );
 				break;
 		}
@@ -2779,8 +2787,7 @@ function ewww_image_optimizer_webp_create( $file, $orig_size, $type, $tool, $rec
  */
 function ewww_image_optimizer_install_pngout_wrapper() {
 	ewwwio_debug_message( '<b>' . __FUNCTION__ . '()</b>' );
-	$permissions = apply_filters( 'ewww_image_optimizer_admin_permissions', '' );
-	if ( false === current_user_can( $permissions ) ) {
+	if ( ! current_user_can( apply_filters( 'ewww_image_optimizer_admin_permissions', '' ) ) ) {
 		wp_die( esc_html__( 'You do not have permission to install image optimizer utilities.', 'ewww-image-optimizer' ) );
 	}
 	$sendback = ewww_image_optimizer_install_pngout();

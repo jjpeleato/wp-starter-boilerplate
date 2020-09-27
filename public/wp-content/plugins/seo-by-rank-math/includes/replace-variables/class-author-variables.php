@@ -10,6 +10,8 @@
 
 namespace RankMath\Replace_Variables;
 
+use RankMath\Admin\Admin_Helper;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -28,7 +30,11 @@ class Author_Variables extends Term_Variables {
 	 * Setup author variables.
 	 */
 	public function setup_author_variables() {
-		$user_id = get_current_user_id();
+		global $user_id;
+		if ( ! Admin_Helper::is_user_edit() ) {
+			$user_id = get_current_user_id();
+		}
+
 		if ( $this->is_post_edit ) {
 			$post   = $this->get_post();
 			$author = get_userdata( $post->post_author );
@@ -38,7 +44,7 @@ class Author_Variables extends Term_Variables {
 			'userid',
 			[
 				'name'        => esc_html__( 'Author ID', 'rank-math' ),
-				'description' => esc_html__( 'Author\'s user id of the current post, page or author archive.', 'rank-math' ),
+				'description' => esc_html__( 'Author\'s user ID of the current post, page or author archive.', 'rank-math' ),
 				'variable'    => 'userid',
 				'example'     => $this->is_post_edit ? $post->post_author : $user_id,
 			],

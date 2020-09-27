@@ -114,7 +114,7 @@
         "version_normalized": "2.70.0.0",
         "source": {
             "type": "git",
-            "url": "git@github.com:malsup/blockui.git",
+            "url": "https://github.com/malsup/blockui.git",
             "reference": "316f6e5d76a33266970778e80507149d9ef6a02d"
         },
         "dist": {
@@ -379,17 +379,17 @@
     },
     {
         "name": "phpseclib/phpseclib",
-        "version": "1.0.18",
-        "version_normalized": "1.0.18.0",
+        "version": "1.0.19",
+        "version_normalized": "1.0.19.0",
         "source": {
             "type": "git",
             "url": "https://github.com/phpseclib/phpseclib.git",
-            "reference": "ec1fcfe648e5696efa2dd26ffa54436e3478ae5c"
+            "reference": "6537e74746c09cde3bb94317ae039bd89e1decf9"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/ec1fcfe648e5696efa2dd26ffa54436e3478ae5c",
-            "reference": "ec1fcfe648e5696efa2dd26ffa54436e3478ae5c",
+            "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/6537e74746c09cde3bb94317ae039bd89e1decf9",
+            "reference": "6537e74746c09cde3bb94317ae039bd89e1decf9",
             "shasum": ""
         },
         "require": {
@@ -406,7 +406,7 @@
             "ext-mcrypt": "Install the Mcrypt extension in order to speed up a wide variety of cryptographic operations.",
             "pear-pear/PHP_Compat": "Install PHP_Compat to get phpseclib working on PHP < 5.0.0."
         },
-        "time": "2019-09-17T04:11:10+00:00",
+        "time": "2020-07-08T04:31:58+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -476,6 +476,20 @@
             "twofish",
             "x.509",
             "x509"
+        ],
+        "funding": [
+            {
+                "url": "https://github.com/terrafrost",
+                "type": "github"
+            },
+            {
+                "url": "https://www.patreon.com/phpseclib",
+                "type": "patreon"
+            },
+            {
+                "url": "https://tidelift.com/funding/github/packagist/phpseclib/phpseclib",
+                "type": "tidelift"
+            }
         ]
     },
     {
@@ -709,23 +723,23 @@
     },
     {
         "name": "symfony/process",
-        "version": "v3.4.42",
-        "version_normalized": "3.4.42.0",
+        "version": "v3.4.44",
+        "version_normalized": "3.4.44.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/process.git",
-            "reference": "8a895f0c92a7c4b10db95139bcff71bdf66d4d21"
+            "reference": "af8d812d75fcdf2eae30928b42396fe17df137e4"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/process/zipball/8a895f0c92a7c4b10db95139bcff71bdf66d4d21",
-            "reference": "8a895f0c92a7c4b10db95139bcff71bdf66d4d21",
+            "url": "https://api.github.com/repos/symfony/process/zipball/af8d812d75fcdf2eae30928b42396fe17df137e4",
+            "reference": "af8d812d75fcdf2eae30928b42396fe17df137e4",
             "shasum": ""
         },
         "require": {
             "php": "^5.5.9|>=7.0.8"
         },
-        "time": "2020-05-23T17:05:51+00:00",
+        "time": "2020-07-16T09:41:49+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YITH Plugin Starter 1.0.0 Plugin FW\n"
 "Report-Msgid-Bugs-To: YITH <plugins@yithemes.com>\n"
-"POT-Creation-Date: 2020-06-10 08:56:54+00:00\n"
+"POT-Creation-Date: 2020-08-07 14:15:08+00:00\n"
 "PO-Revision-Date: 2020-04-06 15:05+0200\n"
 "Last-Translator: \n"
 "Language-Team: Your Inspiration Themes <info@yithemes.com>\n"
@@ -21,6 +21,33 @@ msgstr ""
 "X-Poedit-Basepath: ..\n"
 "X-Textdomain-Support: yes\n"
 "X-Poedit-SearchPath-0: .\n"
+
+#: lib/yit-assets.php:102
+msgid "Clear"
+msgstr ""
+
+#: lib/yit-assets.php:103
+msgid "Clear color"
+msgstr ""
+
+#: lib/yit-assets.php:104
+#, fuzzy
+msgid "Default"
+msgstr "Instellen als standaard"
+
+#: lib/yit-assets.php:105
+#, fuzzy
+msgid "Select default color"
+msgstr "Instellen als standaard"
+
+#: lib/yit-assets.php:106
+#, fuzzy
+msgid "Select Color"
+msgstr "Selecteer alles"
+
+#: lib/yit-assets.php:107
+msgid "Color value"
+msgstr ""
 
 #: lib/yit-cpt-unlimited.php:462 lib/yit-cpt-unlimited.php:576
 #: lib/yit-cpt-unlimited.php:721 lib/yit-cpt-unlimited.php:1636
@@ -206,7 +233,7 @@ msgstr "Voeg %s toe vanaf afbeeldingen"
 msgid "Upload multiple files"
 msgstr "Upload meerdere bestanden"
 
-#: lib/yit-plugin-panel-wc.php:403
+#: lib/yit-plugin-panel-wc.php:426
 msgid "The changes you have made will be lost if you leave this page."
 msgstr "Als je deze pagina verlaat zullen alle wijzigingen verloren gaan."
 
@@ -218,80 +245,80 @@ msgstr "Plugin instellingen"
 msgid "How to install premium version"
 msgstr "Hoe installeer ik de premium versie"
 
-#: lib/yit-plugin-panel.php:602 lib/yit-plugin-subpanel.php:151
+#: lib/yit-plugin-panel.php:617 lib/yit-plugin-subpanel.php:151
 #: templates/panel/woocommerce/woocommerce-form.php:14
 msgid "Save Changes"
 msgstr "Wijzigingen opslaan"
 
-#: lib/yit-plugin-panel.php:605 lib/yit-plugin-subpanel.php:154
+#: lib/yit-plugin-panel.php:621 lib/yit-plugin-subpanel.php:154
 #: templates/panel/woocommerce/woocommerce-form.php:17
 msgid ""
 "If you continue with this action, you will reset all options in this page."
 msgstr "Als u deze actie voortzet, zult u alle opties op deze pagina resetten."
 
-#: lib/yit-plugin-panel.php:607 lib/yit-plugin-subpanel.php:156
+#: lib/yit-plugin-panel.php:624 lib/yit-plugin-subpanel.php:156
 msgid "Reset to default"
 msgstr "Resetten naar standaard"
 
-#: lib/yit-plugin-panel.php:608 lib/yit-plugin-subpanel.php:157
+#: lib/yit-plugin-panel.php:625 lib/yit-plugin-subpanel.php:157
 #: templates/panel/woocommerce/woocommerce-form.php:21
 msgid "Are you sure?"
 msgstr "Weet u het zeker?"
 
-#: lib/yit-plugin-panel.php:806
+#: lib/yit-plugin-panel.php:823
 msgid ""
 "The element you have entered already exists. Please, enter another name."
 msgstr "Het element dat u hebt ingevoerd bestaat al. Voer een andere naam in."
 
-#: lib/yit-plugin-panel.php:807
+#: lib/yit-plugin-panel.php:824
 msgid "Settings saved"
 msgstr "Instellingen opgeslagen"
 
-#: lib/yit-plugin-panel.php:808
+#: lib/yit-plugin-panel.php:825
 msgid "Settings reset"
 msgstr "Instellingen resetten"
 
-#: lib/yit-plugin-panel.php:809
+#: lib/yit-plugin-panel.php:826
 msgid "Element deleted correctly."
 msgstr "Element succesvol verwijderd."
 
-#: lib/yit-plugin-panel.php:810 lib/yit-plugin-panel.php:811
+#: lib/yit-plugin-panel.php:827 lib/yit-plugin-panel.php:828
 msgid "Element updated correctly."
 msgstr "Element juist bijgewerkt."
 
-#: lib/yit-plugin-panel.php:812
+#: lib/yit-plugin-panel.php:829
 msgid "Database imported correctly."
 msgstr "Database juist geïmporteerd."
 
-#: lib/yit-plugin-panel.php:813
+#: lib/yit-plugin-panel.php:830
 msgid "An error has occurred during import. Please try again."
 msgstr "Er is een fout opgetreden tijdens importeren. Probeer opnieuw."
 
-#: lib/yit-plugin-panel.php:814
+#: lib/yit-plugin-panel.php:831
 msgid "The added file is not valid."
 msgstr "Het toegevoegde bestand is ongeldig."
 
-#: lib/yit-plugin-panel.php:815
+#: lib/yit-plugin-panel.php:832
 msgid "Sorry, import is disabled."
 msgstr "Sorry, importeren is uitgeschakeld."
 
-#: lib/yit-plugin-panel.php:816
+#: lib/yit-plugin-panel.php:833
 msgid "Sorting successful."
 msgstr "Sorteren succesvol."
 
-#: lib/yit-plugin-panel.php:1264
+#: lib/yit-plugin-panel.php:1281
 msgid "We need your support"
 msgstr "We hebben uw hulp nodig"
 
-#: lib/yit-plugin-panel.php:1265
+#: lib/yit-plugin-panel.php:1282
 msgid "to keep updating and improving the plugin. Please,"
 msgstr "om de plugin te blijven updaten en verbeteren. A.u.b.,"
 
-#: lib/yit-plugin-panel.php:1267
+#: lib/yit-plugin-panel.php:1284
 msgid "help us by leaving a five-star rating"
 msgstr "help ons door een vijf-sterenbeoordeling achter te laten"
 
-#: lib/yit-plugin-panel.php:1268
+#: lib/yit-plugin-panel.php:1285
 msgid ":) Thanks!"
 msgstr ":) Bedankt!"
 
@@ -1195,9 +1222,6 @@ msgstr "Instellingen"
 
 #~ msgid "Renew license"
 #~ msgstr "Licentie vernieuwen"
-
-#~ msgid "Select All"
-#~ msgstr "Selecteer alles"
 
 #~ msgid "Deselect All"
 #~ msgstr "Selectie ongedaan maken"

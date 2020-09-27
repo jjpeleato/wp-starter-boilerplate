@@ -276,6 +276,7 @@ jQuery(function ($) {
                 //trigger ready event
                 $(document).trigger("ready");
                 $(document).trigger("yith-wcan-ajax-filtered", [response]);
+                $(document).trigger("yith_wcwl_reload_fragments");
                 $(window).trigger("scroll");
                 if( is_reset ){
                     if( typeof $.fn.slider != 'undefined' ){

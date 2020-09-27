@@ -2,18 +2,18 @@
 # This file is distributed under the same license as the Plugins - WP-Sweep - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2019-11-16 17:46:55+0000\n"
+"PO-Revision-Date: 2020-08-25 11:06:34+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: GlotPress/2.4.0-alpha\n"
+"X-Generator: GlotPress/3.0.0-alpha.2\n"
 "Language: es\n"
 "Project-Id-Version: Plugins - WP-Sweep - Stable (latest release)\n"
 
-#: inc/class-wpsweep-api.php:152
+#: inc/class-wpsweep-api.php:165
 msgid "No items left to sweep."
-msgstr "No quedan elementos que limpiar."
+msgstr "No quedan elementos para limpiar."
 
 #: wp-sweep.php:182
 msgctxt "Menu title"
@@ -48,18 +48,6 @@ msgstr "Término meta huérfano"
 msgid "There are a total of <strong class=\"attention \"><span class=\"sweep-count-type-terms\">%1$s</span> Terms</strong>, <strong class=\"attention \"><span class=\"sweep-count-type-termmeta\">%2$s</span> Term Meta</strong>, <strong class=\"attention\"><span class=\"sweep-count-type-term_taxonomy\">%3$s</span> Term Taxonomy</strong> and <strong class=\"attention\"><span class=\"sweep-count-type-term_relationships\">%4$s</span> Term Relationships</strong>."
 msgstr "Hay un total de <strong class=\"attention \"><span class=\"sweep-count-type-terms\">%1$s</span> términos</strong>, <strong class=\"attention \"><span class=\"sweep-count-type-termmeta\">%2$s</span> metas de término</strong>, <strong class=\"attention\"><span class=\"sweep-count-type-term_taxonomy\">%3$s</span> taxonomías de término</strong> y <strong class=\"attention\"><span class=\"sweep-count-type-term_relationships\">%4$s</span> relaciones de términos</strong>."
 
-#. Author of the plugin
-msgid "Lester 'GaMerZ' Chan"
-msgstr "Lester 'GaMerZ' Chan"
-
-#. Author URI of the plugin
-msgid "https://lesterchan.net"
-msgstr "https://lesterchan.net"
-
-#. Plugin URI of the plugin
-msgid "https://lesterchan.net/portfolio/programming/php/"
-msgstr "https://lesterchan.net/portfolio/programming/php/"
-
 #. translators: %s is the oEmbed Caches count.
 #: wp-sweep.php:808
 msgid "%s oEmbed Caches In Post Meta Processed"
@@ -69,6 +57,21 @@ msgstr "%s cachés oEmbed en meta de entradas procesadas"
 #: wp-sweep.php:793
 msgid "%s Tables Processed"
 msgstr "%s tablas procesadas"
+
+#. translators: %s is the Duplicated User Meta count.
+#: wp-sweep.php:770
+msgid "%s Duplicated User Meta Processed"
+msgstr "%s meta de usuarios duplicados procesadas"
+
+#. translators: %s is the Duplicated Comment Meta count.
+#: wp-sweep.php:757
+msgid "%s Duplicated Comment Meta Processed"
+msgstr "%s meta de comentarios duplicados procesadas"
+
+#. translators: %s is the Duplicated Post Meta count.
+#: wp-sweep.php:744
+msgid "%s Duplicated Post Meta Processed"
+msgstr "%s meta de entradas duplicados procesadas"
 
 #. translators: %s is the Unused Terms count.
 #: wp-sweep.php:731
@@ -80,17 +83,20 @@ msgstr "%s términos sin utilizar procesados"
 msgid "%s Orphaned Term Relationships Processed"
 msgstr "%s relaciones de términos huérfanas procesadas"
 
-#: wp-sweep.php:167
-msgid "Sweeping..."
-msgstr "Barriendo…"
+#. translators: %s is the Orphaned User Meta count.
+#: wp-sweep.php:680
+msgid "%s Orphaned User Meta Processed"
+msgstr "%s meta de usuarios huérfanos procesadas"
 
-#: wp-sweep.php:164
-msgid "Sweeping is in progress. If you leave now, the process won't be completed."
-msgstr "El barrido está en progreso. Si sales ahora el proceso no se completará."
+#. translators: %s is the Orphaned Comment Meta count.
+#: wp-sweep.php:664
+msgid "%s Orphaned Comment Meta Processed"
+msgstr "%s meta de comentarios huérfanos procesadas"
 
-#: wp-sweep.php:203 wp-sweep.php:229
-msgid "Failed to verify referrer."
-msgstr "Fallo al verificar el referente."
+#. translators: %s is the Orphaned Post Meta count.
+#: wp-sweep.php:648
+msgid "%s Orphaned Post Meta Processed"
+msgstr "%s meta de entradas huérfanos procesadas"
 
 #. translators: %s is the Transient Options count.
 #: wp-sweep.php:632
@@ -127,17 +133,29 @@ msgstr "%s borradores automáticos procesados"
 msgid "%s Revisions Processed"
 msgstr "%s revisiones procesadas"
 
+#: wp-sweep.php:203 wp-sweep.php:229
+msgid "Failed to verify referrer."
+msgstr "Fallo al verificar el referente."
+
+#: wp-sweep.php:167
+msgid "Sweeping..."
+msgstr "Barriendo..."
+
+#: wp-sweep.php:164
+msgid "Sweeping is in progress. If you leave now, the process won't be completed."
+msgstr "El barrido está en progreso. Si sales ahora, el proceso no se completará."
+
 #: admin.php:576
 msgid "Note that some unused terms might belong to draft posts that have not been published yet. Only sweep all when you do not have any draft posts."
-msgstr "Date cuenta de que algunos términos sin utilizar podría pertenecer a entradas en borrador que no se hayan publicado aún. Solo bárrelos si no tienes ninguna entrada en borrador."
+msgstr "Ten en cuenta que algunos términos sin utilizar podrían pertenecer a entradas en borrador que aún no se hayan publicado. Solo bárrelos si no tienes ninguna entrada en borrador."
 
-#: admin.php:575 admin.php:579 wp-sweep.php:166
+#: wp-sweep.php:166 admin.php:575 admin.php:579
 msgid "Sweep All"
 msgstr "Barrer todo"
 
 #: admin.php:553
 msgid "Optimize Tables"
-msgstr "Optimizar tablas"
+msgstr "Optimizar las tablas"
 
 #. translators: %1 is the number of database tables
 #: admin.php:539
@@ -163,7 +181,7 @@ msgstr "Barrido de opciones"
 
 #: admin.php:477
 msgid "Note that some unused terms might belong to draft posts that have not been published yet. Only sweep this when you do not have any draft posts."
-msgstr "Date cuenta de que algunos términos sin utilizar podrían pertenecer a entradas en borrador que no se hayan publicado aún. Solo bárrelos si no tienes ninguna entrada en borrador."
+msgstr "Ten en cuenta que algunos términos sin utilizar podrían pertenecer a entradas en borrador que aún no se hayan publicado. Solo bárrelos si no tienes ninguna entrada en borrador."
 
 #: admin.php:476
 msgid "Unused Terms"
@@ -185,36 +203,6 @@ msgstr "Metas de usuarios duplicadas"
 msgid "Orphaned User Meta"
 msgstr "Metas de usuarios huérfanas"
 
-#. translators: %s is the Duplicated User Meta count.
-#: wp-sweep.php:770
-msgid "%s Duplicated User Meta Processed"
-msgstr "%s meta de usuarios duplicados procesadas"
-
-#. translators: %s is the Duplicated Comment Meta count.
-#: wp-sweep.php:757
-msgid "%s Duplicated Comment Meta Processed"
-msgstr "%s meta de comentarios duplicados procesadas"
-
-#. translators: %s is the Duplicated Post Meta count.
-#: wp-sweep.php:744
-msgid "%s Duplicated Post Meta Processed"
-msgstr "%s meta de entradas duplicados procesadas"
-
-#. translators: %s is the Orphaned User Meta count.
-#: wp-sweep.php:680
-msgid "%s Orphaned User Meta Processed"
-msgstr "%s meta de usuarios huérfanos procesadas"
-
-#. translators: %s is the Orphaned Comment Meta count.
-#: wp-sweep.php:664
-msgid "%s Orphaned Comment Meta Processed"
-msgstr "%s meta de comentarios huérfanos procesadas"
-
-#. translators: %s is the Orphaned Post Meta count.
-#: wp-sweep.php:648
-msgid "%s Orphaned Post Meta Processed"
-msgstr "%s meta de entradas huérfanos procesadas"
-
 #. translators: %1 is the number of users, %2 is the number of user meta
 #: admin.php:344
 msgid "There are a total of <strong class=\"attention\"><span class=\"sweep-count-type-users\">%1$s</span> Users</strong> and <strong class=\"attention\"><span class=\"sweep-count-type-usermeta\">%2$s</span> User Meta</strong>."
@@ -224,13 +212,13 @@ msgstr "Hay un total de <strong class=\"attention\"><span class=\"sweep-count-ty
 msgid "User Sweep"
 msgstr "Barrido de usuarios"
 
-#: admin.php:300
-msgid "Orphaned Comment Meta"
-msgstr "Metas de comentarios huérfanos"
-
 #: admin.php:320
 msgid "Duplicated Comment Meta"
 msgstr "Metas de comentarios duplicados"
+
+#: admin.php:300
+msgid "Orphaned Comment Meta"
+msgstr "Metas de comentarios huérfanos"
 
 #: admin.php:280
 msgid "Deleted Comments"
@@ -238,7 +226,7 @@ msgstr "Comentarios borrados"
 
 #: admin.php:260
 msgid "Spammed Comments"
-msgstr "Comentarios spam"
+msgstr "Comentarios de spam"
 
 #: admin.php:240
 msgid "Unapproved Comments"
@@ -273,28 +261,24 @@ msgstr "Entradas borradas"
 msgid "Auto Drafts"
 msgstr "Borradores automáticos"
 
-#. Description of the plugin
-msgid "WP-Sweep allows you to clean up unused, orphaned and duplicated data in your WordPress. It cleans up revisions, auto drafts, unapproved comments, spam comments, trashed comments, orphan post meta, orphan comment meta, orphan user meta, orphan term relationships, unused terms, duplicated post meta, duplicated comment meta, duplicated user meta and transient options. It also optimizes your database tables."
-msgstr "WP-Sweep te permite limpiar datos no utilizados, huérfanos y duplicados en tu WordPress. Limpia revisiones, borradores automáticos, comentarios sin aprobar, comentarios spam, comentarios en la papelera, meta de entradas huérfanos, meta de comentarios huérfanos, meta de usuarios huérfanos, relaciones de términos huérfanos, términos sin utilizar, meta de entradas duplicados, meta de comentarios duplicados, meta de usuarios duplicados y opciones de datos transitorios. También optimiza las tablas de tu base de datos."
+#: wp-sweep.php:168 admin.php:116 admin.php:136 admin.php:156 admin.php:176
+#: admin.php:196 admin.php:216 admin.php:254 admin.php:274 admin.php:294
+#: admin.php:314 admin.php:334 admin.php:372 admin.php:392 admin.php:430
+#: admin.php:450 admin.php:470 admin.php:491 admin.php:529 admin.php:560
+#: admin.php:567
+msgid "N/A"
+msgstr "N/D"
+
+#: wp-sweep.php:165 admin.php:113 admin.php:133 admin.php:153 admin.php:173
+#: admin.php:193 admin.php:213 admin.php:251 admin.php:271 admin.php:291
+#: admin.php:311 admin.php:331 admin.php:369 admin.php:389 admin.php:427
+#: admin.php:447 admin.php:467 admin.php:488 admin.php:526 admin.php:564
+msgid "Sweep"
+msgstr "Barrer"
 
 #: admin.php:102
 msgid "Revisions"
 msgstr "Revisiones"
-
-#: admin.php:116 admin.php:136 admin.php:156 admin.php:176 admin.php:196
-#: admin.php:216 admin.php:254 admin.php:274 admin.php:294 admin.php:314
-#: admin.php:334 admin.php:372 admin.php:392 admin.php:430 admin.php:450
-#: admin.php:470 admin.php:491 admin.php:529 admin.php:560 admin.php:567
-#: wp-sweep.php:168
-msgid "N/A"
-msgstr "N/D"
-
-#: admin.php:113 admin.php:133 admin.php:153 admin.php:173 admin.php:193
-#: admin.php:213 admin.php:251 admin.php:271 admin.php:291 admin.php:311
-#: admin.php:331 admin.php:369 admin.php:389 admin.php:427 admin.php:447
-#: admin.php:467 admin.php:488 admin.php:526 admin.php:564 wp-sweep.php:165
-msgid "Sweep"
-msgstr "Barrer"
 
 #: admin.php:96 admin.php:234 admin.php:352 admin.php:410 admin.php:509
 #: admin.php:547
@@ -319,11 +303,6 @@ msgstr "Contador"
 msgid "Details"
 msgstr "Detalles"
 
-#. Plugin Name of the plugin
-#: admin.php:75
-msgid "WP-Sweep"
-msgstr "WP-Sweep"
-
 #. translators: %1 is the number of posts, %2 is the number of post meta
 #: admin.php:88
 msgid "There are a total of <strong class=\"attention\"><span class=\"sweep-count-type-posts\">%1$s</span> Posts</strong> and <strong class=\"attention\"><span class=\"sweep-count-type-postmeta\">%2$s</span> Post Meta</strong>."
@@ -333,12 +312,17 @@ msgstr "Hay un total de <strong class=\"attention\"><span class=\"sweep-count-ty
 msgid "Post Sweep"
 msgstr "Barrido de entradas"
 
-#. translators: %1 WP-DBManager Plugin URL, %2 _blank to open new window
-#: admin.php:79
-msgid "Before you do any sweep, please <a href=\"%1$s\" target=\"%2$s\">backup your database</a> first because any sweep done is irreversible."
-msgstr "Antes de hacer ningún barrido, por favor, primero <a href=\"%1$s\" target=\"%2$s\">haz copia de seguridad de tu base de datos</a> ya que cualquier barrido realizado será irreversible."
-
 #. translators: %s maximum number of results
 #: admin.php:84
 msgid "For performance reasons, only %s items will be shown if you click Details."
-msgstr "Por motivos de rendimiento solo se mostrarán %s elementos si haces clic en «Detalles»."
+msgstr "Por motivos de rendimiento, solo se mostrarán %s elementos si haces clic en «Detalles»."
+
+#. translators: %1 WP-DBManager Plugin URL, %2 _blank to open new window
+#: admin.php:79
+msgid "Before you do any sweep, please <a href=\"%1$s\" target=\"%2$s\">backup your database</a> first because any sweep done is irreversible."
+msgstr "Antes de hacer ningún barrido, por favor, primero <a href=\"%1$s\" target=\"%2$s\">haz una copia de seguridad de tu base de datos</a>, ya que cualquier barrido realizado será irreversible."
+
+#. Plugin Name of the plugin
+#: admin.php:75
+msgid "WP-Sweep"
+msgstr "WP-Sweep"

@@ -15,7 +15,9 @@ use RankMath\Helper;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Post_Type class.
+ * Post Type class.
+ *
+ * Some functionality inspired from Yoast (https://github.com/Yoast/wordpress-seo/)
  */
 trait Post_Type {
 
@@ -131,7 +133,7 @@ trait Post_Type {
 	public static function get_accessible_post_types() {
 		static $accessible_post_types;
 
-		if ( isset( $accessible_post_types ) ) {
+		if ( isset( $accessible_post_types ) && did_action( 'wp_loaded' ) ) {
 			return $accessible_post_types;
 		}
 
@@ -197,5 +199,14 @@ trait Post_Type {
 		);
 
 		return ! in_array( (int) $post_id, $pages, true );
+	}
+
+	/**
+	 * Whether to use default Product schema on WooCommerce pages.
+	 *
+	 * @return bool
+	 */
+	public static function can_use_default_product_schema() {
+		return apply_filters( 'rank_math/schema/use_default_product', true );
 	}
 }

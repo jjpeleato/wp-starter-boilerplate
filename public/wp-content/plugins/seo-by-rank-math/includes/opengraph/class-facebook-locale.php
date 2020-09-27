@@ -6,6 +6,8 @@
  * @package    RankMath
  * @subpackage RankMath\OpenGraph
  * @author     Rank Math <support@rankmath.com>
+ *
+ * Functionality adapted from Yoast (https://github.com/Yoast/wordpress-seo/)
  */
 
 namespace RankMath\OpenGraph;
@@ -199,6 +201,22 @@ class Facebook_Locale {
 			'uk' => 'uk_UA',
 			'vi' => 'vi_VN',
 			'zh' => 'zh_CN',
+			'te' => 'te_IN',
+			'ur' => 'ur_PK',
+			'cy' => 'cy_GB',
+			'eu' => 'eu_ES',
+			'th' => 'th_TH',
+			'af' => 'af_ZA',
+			'hy' => 'hy_AM',
+			'gu' => 'gu_IN',
+			'kn' => 'kn_IN',
+			'mr' => 'mr_IN',
+			'kk' => 'kk_KZ',
+			'lv' => 'lv_LV',
+			'sw' => 'sw_KE',
+			'tl' => 'tl_PH',
+			'ps' => 'ps_AF',
+			'as' => 'as_IN',
 		];
 
 		if ( isset( $fix_locales[ $locale ] ) ) {

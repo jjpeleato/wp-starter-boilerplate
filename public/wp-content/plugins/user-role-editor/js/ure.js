@@ -157,7 +157,7 @@ var ure_main = {
 
     
     caps_refresh_for_group: function (group_id) {
-        var show_deprecated = jQuery('#ure_show_deprecated_caps').attr('checked');
+        var show_deprecated = jQuery('#ure_show_deprecated_caps').prop('checked');
         jQuery('.ure-cap-div').each(function () {
             var el = jQuery(this);
             if (el.hasClass(ure_main.class_prefix + group_id)) {
@@ -209,7 +209,7 @@ var ure_main = {
             ure_main.caps_refresh_for_group( group_id );
         }    
         ure_main.change_caps_columns_quant();
-        jQuery('#granted_only').attr('checked', false);
+        jQuery('#granted_only').prop('checked', false);
     },
     
     
@@ -267,15 +267,15 @@ var ure_main = {
 
 
     show_granted_caps_only: function () {
-        var show_deprecated = jQuery('#ure_show_deprecated_caps').attr('checked');
-        var hide_flag = jQuery('#granted_only').attr('checked');
+        var show_deprecated = jQuery('#ure_show_deprecated_caps').prop('checked');
+        var hide_flag = jQuery('#granted_only').prop('checked');
         jQuery('.ure-cap-div').each(function () {
             var cap_div = jQuery(this);
             if ( !cap_div.hasClass(ure_main.class_prefix + ure_main.selected_group ) ) {    // apply to the currently selected group only
                 return;
             }
             var cap_id = cap_div.attr('id').substr( 12 );        
-            var granted = jQuery('#'+ cap_id).attr('checked');
+            var granted = jQuery('#'+ cap_id).prop('checked');
             if ( granted ) {
                 return;
             }

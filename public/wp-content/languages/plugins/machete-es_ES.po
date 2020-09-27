@@ -2,18 +2,14 @@
 # This file is distributed under the same license as the Plugins - Machete - Development (trunk) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2020-05-24 22:38:33+0000\n"
+"PO-Revision-Date: 2020-08-04 20:39:11+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: GlotPress/3.0.0-alpha\n"
+"X-Generator: GlotPress/3.0.0-alpha.2\n"
 "Language: es\n"
 "Project-Id-Version: Plugins - Machete - Development (trunk)\n"
-
-#: inc/cleanup/class-machete-cleanup-module.php:145
-msgid "Remove block editor CSS"
-msgstr "Quitar CSS del editor de boques"
 
 #: inc/cleanup/class-machete-cleanup-module.php:146
 msgid "Dequeues Gutenberg CSS stylesheets from the from the frontend."
@@ -22,6 +18,10 @@ msgstr "Desencola las hojas de estilos CSS de Gutenberg de la parte pública de 
 #: inc/cleanup/class-machete-cleanup-module.php:146
 msgid "Check this only if you are not using the block editor."
 msgstr "Actívalo solo si no estás usando el editor de bloques."
+
+#: inc/cleanup/class-machete-cleanup-module.php:145
+msgid "Remove block editor CSS"
+msgstr "Quitar CSS del editor de bloques"
 
 #. Translators: <head>.
 #. Translators: <body>.
@@ -294,10 +294,6 @@ msgstr "Cuando WordPress genera una miniatura JPEG, comprime la imagen con una c
 #: inc/cleanup/class-machete-cleanup-module.php:141
 msgid "Reduce JPEG quality"
 msgstr "Reducir la calidad JPEG"
-
-#. Description of the plugin
-msgid "Machete is a lean and simple suite of tools that makes WordPress development easier: cookie bar, tracking codes, custom code editor, header cleanup, post and page cloner"
-msgstr "Machete es un conjunto de herramientas ligeras y sencillas que facilitan el desarrollo con WordPress: barra de cookies, códigos de seguimiento, editor de código personalizado, limpieza de cabecera, duplicar entradas y páginas"
 
 #: inc/utils/admin-content.php:110
 msgid "Check to anonymize visitor IPs. Required in some countries."
@@ -677,10 +673,6 @@ msgstr "Lo siento, no puedes activar ese módulo"
 msgid "JSON API"
 msgstr "JSON API"
 
-#. Plugin URI of the plugin
-msgid "https://machetewp.com"
-msgstr "https://machetewp.com"
-
 #: inc/powertools/powertools.php:75
 msgid "Ctrl+P or Cmd+P to preview"
 msgstr "Ctrl+P or Cmd+P para previsualizar"
@@ -818,41 +810,6 @@ msgstr "Desde WordPress 4.4, oEmbed está instalado y disponible por defecto. Si
 #: inc/powertools/class-machete-powertools-module.php:23
 msgid "PowerTools"
 msgstr "PowerTools"
-
-#: inc/directory/admin-content.php:45
-msgid "Description"
-msgstr "Descripción"
-
-#: inc/directory/admin-content.php:44
-msgid "Location"
-msgstr "Origen"
-
-#: inc/directory/admin-content.php:43
-msgid "Resource"
-msgstr "Recurso"
-
-#: inc/directory/admin-content.php:24 inc/directory/admin-content.php:30
-msgid "https://www.wordpress.org/plugins/"
-msgstr "https://es.wordpress.org/plugins/"
-
-#: inc/directory/class-machete-directory-module.php:22
-#: inc/directory/class-machete-directory-module.php:23
-#: inc/directory/class-machete-directory-module.php:24
-#: inc/directory/admin-content.php:15
-msgid "Resource Directory"
-msgstr "Directorio de Recursos"
-
-#: inc/directory/admin-content.php:25 inc/directory/admin-content.php:31
-msgid "WordPress.org Plugin Directory"
-msgstr "Directorio de plugins de WordPress.org"
-
-#: inc/directory/admin-content.php:32
-msgid "Adds Open Graph metadata to your posts and pages so that they look great when shared on sites like Facebook and Google+."
-msgstr "Añade metadatos de OpenGraph a tus entradas y páginas para que tengan un aspecto estupendo cuando se compartan en sitio como Facebook o Google+."
-
-#: inc/directory/admin-content.php:26
-msgid "BlackBox is a plugin for plugin and theme developers. It collects and displays useful debug information (errors, executed queries, globals, profiler)."
-msgstr "BlackBox es un plugin para desarrolladores de plugins y temas. Recopila y muestra información útil de depuración (errores, consultas ejecutadas, globales, profiler)."
 
 #: inc/cleanup/admin-content.php:42
 msgid "WordPress has a lot of code just to keep backward compatibility or to enable optional features. You can disable most of it and save some time from each page request while making your installation safer"
@@ -1214,17 +1171,9 @@ msgstr "Se ha producido un error. Has solicitado un formato de código desconoci
 msgid "<a href=\"%s\">Settings</a>"
 msgstr "<a href=\"%s\">Ajustes</a>"
 
-#. Plugin Name of the plugin
-msgid "Machete"
-msgstr "Machete"
-
 #: inc/class-machete-module.php:171
 msgid "Options saved!"
 msgstr "¡Ajustes guardados!"
-
-#. Author of the plugin
-msgid "Nilo Velez"
-msgstr "Nilo Vélez"
 
 #: inc/about/class-machete-about-module.php:23
 #: inc/about/class-machete-about-module.php:24
@@ -1238,10 +1187,6 @@ msgstr "Analytics y código"
 #: inc/cookies/class-machete-cookies-module.php:23
 msgid "Cookie Law"
 msgstr "Ley de cookies"
-
-#. Author URI of the plugin
-msgid "https://www.nilovelez.com"
-msgstr "https://www.nilovelez.com"
 
 #: inc/cookies/admin-content.php:33
 msgid "Enabled"
@@ -1313,10 +1258,6 @@ msgstr "Quitar los enlaces «Really Simple Discovery» (RSD). Se usan para los p
 #: inc/utils/admin-content.php:57
 msgid "You don't need a zillion plugins to perform easy tasks like inserting a verification meta tag (Google Search Console, Bing, Pinterest), a json-ld snippet or a custom stylesheet (Google Fonts, Print Styles, accessibility tweaks...)."
 msgstr "No hacen falta chorrocientos plugins para realizar tareas sencillas como insertar una metaetiqueta de verificación (Google Search Console, Bing, Pinterest), un fragmento de código json-ld snippet o una hoja de estilos personalizada (Google Fonts, estilos de impresión, ajustes de accesibilidad...)."
-
-#: inc/directory/admin-content.php:16
-msgid "WordPress has a los of code just to keep backward compatiblity or enable optional features. You can disable most of it and save some time from each page request while making your installation safer"
-msgstr "WordPress tiene un montón de código solo para mantener la compatibilidad con versiones anteriores o activar características opcionales. Puedes desactivar la mayoría y ganar algo de tiempo de cada carga de página al mismo tiempo que haces tu instalación más segura"
 
 #: inc/cleanup/class-machete-cleanup-module.php:79
 msgid "Remove lots of emoji styles and scripts from the header, RSS, mail function, tinyMCE editor..."

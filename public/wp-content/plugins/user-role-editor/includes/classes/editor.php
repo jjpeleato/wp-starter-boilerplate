@@ -508,6 +508,9 @@ class URE_Editor {
         } else {
             $result = $this->wp_api_network_roles_update();            
         }
+        
+        // Use this action to hook a code to execute after roles were updated at all subsites of the multisite network
+        do_action('ure_after_network_roles_update');
 
         if ($debug) {
             echo '<div class="updated fade below-h2">Roles updated for ' . ( microtime() - $time_shot ) . ' milliseconds</div>';

@@ -136,8 +136,12 @@ class UpdraftPlus_Notices extends Updraft_Notices {
 			'social_media' => array(
 				'prefix' => '',
 				'title' => __('UpdraftPlus is on social media - check us out!', 'updraftplus'),
-				'text' => $this->url_start(true, 'twitter.com/updraftplus', true).__('Twitter', 'updraftplus').$this->url_end(true, 'twitter.com/updraftplus', true).' - '.$this->url_start(true, 'facebook.com/updraftplus', true).__('Facebook', 'updraftplus').$this->url_end(true, 'facebook.com/updraftplus', true).' - '.$this->url_start(true, 'plus.google.com/u/0/b/112313994681166369508/112313994681166369508/about', true).__('Google+', 'updraftplus').$this->url_end(true, 'plus.google.com/u/0/b/112313994681166369508/112313994681166369508/about', true).' - '.$this->url_start(true, 'www.linkedin.com/company/updraftplus', true).__('LinkedIn', 'updraftplus').$this->url_end(true, 'www.linkedin.com/company/updraftplus', true),
-				'text_plain' => $this->url_start(false, 'twitter.com/updraftplus', true).__('Twitter', 'updraftplus').$this->url_end(false, 'twitter.com/updraftplus', true).' - '.$this->url_start(false, 'facebook.com/updraftplus', true).__('Facebook', 'updraftplus').$this->url_end(false, 'facebook.com/updraftplus', true).' - '.$this->url_start(false, 'plus.google.com/u/0/b/112313994681166369508/112313994681166369508/about', true).__('Google+', 'updraftplus').$this->url_end(false, 'plus.google.com/u/0/b/112313994681166369508/112313994681166369508/about', true).' - '.$this->url_start(false, 'www.linkedin.com/company/updraftplus', true).__('LinkedIn', 'updraftplus').$this->url_end(false, 'www.linkedin.com/company/updraftplus', true),
+				'text' => $this->url_start(true, 'twitter.com/updraftplus', true). __('Twitter', 'updraftplus'). $this->url_end(true, 'twitter.com/updraftplus', true).
+						' - '.
+						$this->url_start(true, 'facebook.com/updraftplus', true). __('Facebook', 'updraftplus'). $this->url_end(true, 'facebook.com/updraftplus', true),
+				'text_plain' => $this->url_start(false, 'twitter.com/updraftplus', true). __('Twitter', 'updraftplus'). $this->url_end(false, 'twitter.com/updraftplus', true).
+						' - '.
+						$this->url_start(false, 'facebook.com/updraftplus', true). __('Facebook', 'updraftplus'). $this->url_end(false, 'facebook.com/updraftplus', true),
 				'image' => 'notices/updraft_logo.png',
 				'dismiss_time' => false,
 				'supported_positions' => $this->anywhere,
@@ -196,15 +200,6 @@ class UpdraftPlus_Notices extends Updraft_Notices {
 				'dismiss_time' => 'dismiss_notice',
 				'supported_positions' => $this->anywhere,
 				'validity_function' => 'wp_optimize_installed',
-			),
-			'metaslider' => array(
-				'prefix' => '',
-				'title' => "MetaSlider: The world's #1 slider plugin from the makers of UpdraftPlus",
-				'text' => __("With Metaslider, you can easily add style and flare with beautifully-designed sliders.", "updraftplus") . ' ' . $this->url_start(true, 'metaslider.com'),
-				'image' => 'notices/metaslider_logo.png',
-				'dismiss_time' => 'dismiss_notice',
-				'supported_positions' => $this->anywhere,
-				'validity_function' => 'metaslider_installed',
 			),
 			
 			// The sale adverts content starts here
@@ -326,37 +321,6 @@ class UpdraftPlus_Notices extends Updraft_Notices {
 			}
 		}
 		return true;
-	}
-
-	protected function metaslider_installed($plugin_base_dir = null, $product_name = null) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Filter use
-		if (!function_exists('get_plugins')) include_once(ABSPATH.'wp-admin/includes/plugin.php');
-		$plugins = get_plugins();
-
-		foreach ($plugins as $key => $value) {
-			if ('ml-slider' == $value['TextDomain']) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	protected function clef_2fa_installed($plugin_base_dir = null, $product_name = null) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Filter use
-
-		if (!function_exists('get_plugins')) include_once(ABSPATH.'wp-admin/includes/plugin.php');
-
-		$plugins = get_plugins();
-		$clef_found = false;
-
-		foreach ($plugins as $key => $value) {
-			if ('wpclef' == $value['TextDomain']) {
-				$clef_found = true;
-			} elseif ('two-factor-authentication' == $value['TextDomain'] || 'two-factor-authentication-premium' == $value['TextDomain']) {
-				return false;
-			}
-		}
-
-		return $clef_found;
-		
 	}
 	
 	protected function url_start($html_allowed = false, $url, $https = false, $website_home = 'updraftplus.com') {

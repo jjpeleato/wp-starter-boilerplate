@@ -984,6 +984,7 @@ class UpdraftPlus_Admin {
 			'no_recent_activity' => __('no recent activity; will offer resumption after: %d seconds', 'updraftplus'),
 			'restore_files_progress' => __('Restoring %s1 files out of %s2', 'updraftplus'),
 			'restore_db_table_progress' => __('Restoring table: %s', 'updraftplus'),
+			'restore_db_stored_routine_progress' => __('Restoring stored routine: %s', 'updraftplus'),
 			'finished' => __('Finished', 'updraftplus'),
 			'begun' => __('Begun', 'updraftplus'),
 			'maybe_downloading_entities' => __('Downloading backup files if needed', 'updraftplus'),
