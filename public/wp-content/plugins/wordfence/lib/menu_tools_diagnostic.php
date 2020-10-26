@@ -631,7 +631,19 @@ if (!isset($sendingDiagnosticEmail)) {
 											$missingTables[] = $t;
 										}
 									}
-									
+
+									foreach (
+										array(
+											\WordfenceLS\Controller_DB::TABLE_2FA_SECRETS,
+											\WordfenceLS\Controller_DB::TABLE_SETTINGS,
+										) as $t) {
+										$table = \WordfenceLS\Controller_DB::network_table($t);
+										if (!in_array($table, $existingTables)) {
+											$hasAll = false;
+											$missingTables[] = $t;
+										}
+									}
+
 									if ($hasAll): ?>
 									<div class="wf-result-success"><?php _e('All Tables Exist', 'wordfence'); ?></div>
 									<?php else: ?>

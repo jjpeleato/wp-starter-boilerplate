@@ -5,7 +5,7 @@ Tags: optimize, image, convert, webp, resize, compress, lazy load, optimization,
 Requires at least: 5.2
 Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 5.7.1
+Stable tag: 5.8.0
 License: GPLv3
 
 Smaller Images, Faster Sites, Happier Visitors. Comprehensive image optimization that doesn't require a degree in rocket science.
@@ -131,6 +131,17 @@ That's not a question, but since I made it up, I'll answer it. See this resource
 
 * Feature requests can be viewed and submitted on our [feedback portal](https://feedback.ewww.io)
 * If you would like to help translate this plugin in your language, [join the team](https://translate.wordpress.org/projects/wp-plugins/ewww-image-optimizer/)
+
+= 5.8.0 =
+* added: SVG optimization, huge thanks to @samsk for making this happen!
+* added: WebP quality setting, changed default to 75
+* fixed: Lazy Load and other front-end parsers breaks JSON-encoded img elements
+* fixed: Easy IO adds excess markup for images with height and/or width set to 'auto'
+* fixed: memory_limit check should be case-insensitive: g vs. G
+* fixed: PHP error during detection of Cache Enabler's WebP option
+* fixed: table upgrade routine error when primary key already exists
+* fixed: deleting files by always using realpath, props @ocean90
+* fixed: Easy IO skips images in AJAX Load More requests
 
 = 5.7.1 =
 * added: alert on domain change for Easy IO, like if you clone from a production environment to staging

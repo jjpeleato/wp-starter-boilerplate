@@ -900,12 +900,12 @@ class UpdraftPlus_Commands {
 			$content .= '</div>';
 			
 			if (0 != $response['tokens']) {
-				$is_admin_user = isset($response['is_admin_user']) ? $response['is_admin_user'] : false;
+				$is_vps_tester = !empty($response['is_vps_tester']);
 				$supported_wp_versions = isset($response['supported_wp_versions']) ? $response['supported_wp_versions'] : array();
 				$supported_packages = isset($response['supported_packages']) ? $response['supported_packages'] : array();
 				$supported_regions = isset($response['supported_regions']) ? $response['supported_regions'] : array();
 				$content .= '<div class="updraftclone_action_box">';
-				$content .= $updraftplus_admin->updraftplus_clone_ui_widget($is_admin_user, $supported_wp_versions, $supported_packages, $supported_regions);
+				$content .= $updraftplus_admin->updraftplus_clone_ui_widget($is_vps_tester, $supported_wp_versions, $supported_packages, $supported_regions);
 				$content .= '<p class="updraftplus_clone_status"></p>';
 				$content .= '<button id="updraft_migrate_createclone" class="button button-primary button-hero" data-clone_id="'.$response['clone_info']['id'].'" data-secret_token="'.$response['clone_info']['secret_token'].'">'. __('Create clone', 'updraftplus') . '</button>';
 				$content .= '<span class="updraftplus_spinner spinner">' . __('Processing', 'updraftplus') . '...</span><br>';
@@ -941,6 +941,11 @@ class UpdraftPlus_Commands {
 		if (isset($response['data'])) {
 			$tokens = isset($response['data']['tokens']) ? $response['data']['tokens'] : 0;
 			$url = isset($response['data']['url']) ? $response['data']['url'] : '';
+			
+			if (isset($response['data']['secret_token'])) {
+				$response['secret_token'] = $response['data']['secret_token'];
+				unset($response['data']['secret_token']);
+			}
 
 			$content .= '<div class="updraftclone-main-row">';
 

@@ -2250,6 +2250,7 @@ jQuery(document).ready(function($) {
 		var updraftclone_branch = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content #updraftplus_clone_updraftclone_branch').val();
 		var updraftplus_branch = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content #updraftplus_clone_updraftplus_branch').val();
 		var admin_only = $('.updraftplus_clone_admin_login_options').is(':checked');
+		var use_queue = $('#updraftplus_clone_use_queue').is(':checked') ? 1 : 0;
 
 		var backup_nonce = 'current';
 		var backup_timestamp = 'current';
@@ -2271,7 +2272,8 @@ jQuery(document).ready(function($) {
 					package: package,
 					admin_only: admin_only,
 					updraftclone_branch: ('undefined' === typeof updraftclone_branch) ? '' : updraftclone_branch,
-					updraftplus_branch: ('undefined' === typeof updraftplus_branch) ? '' : updraftplus_branch
+					updraftplus_branch: ('undefined' === typeof updraftplus_branch) ? '' : updraftplus_branch,
+					use_queue: ('undefined' === typeof use_queue) ? 1 : use_queue
 				}
 			}
 		};
@@ -2651,6 +2653,11 @@ jQuery(document).ready(function($) {
 
 						// remove the clone timeout as the clone has now been created
 						if (temporary_clone_timeout) clearTimeout(temporary_clone_timeout);
+
+						// check if the response includes a secret token, if it does we have claimed a clone from the queue and need to update our current secret token to the one that belongs to the claimed clone
+						if (response.hasOwnProperty('secret_token')) {
+							secret_token = response.secret_token;
+						}
 
 						if ('wp_only' === backup_nonce) {
 							jQuery('#updraft_clone_progress .updraftplus_spinner.spinner').addClass('visible');
@@ -3544,6 +3551,16 @@ jQuery(document).ready(function($) {
 		var onlythesetableentities = backupnow_whichtables_checked('');
 		var always_keep = jQuery('#always_keep').is(':checked') ? 1 : 0;
 		var incremental = ('incremental' == jQuery('#updraft-backupnow-modal').data('backup-type')) ? 1 : 0;
+
+		if (updraftlion.hosting_restriction.includes('only_one_backup_per_month') && !incremental) {
+			alert(updraftlion.hosting_restriction_one_backup_permonth);
+			return;
+		}
+
+		if (updraftlion.hosting_restriction.includes('only_one_incremental_per_day') && incremental) {
+			alert(updraftlion.hosting_restriction_one_incremental_perday);
+			return;
+		}
 
 		if ('' == onlythesetableentities && 0 == backupnow_nodb) {
 			alert(updraftlion.notableschosen);
@@ -4726,8 +4743,8 @@ jQuery(document).ready(function($) {
 		
 		var date_now = new Date();
 		
+		// The 'version' attribute indicates the last time the format changed - i.e. do not update this unless there is a format change
 		form_data = JSON.stringify({
-			// Indicate the last time the format changed - i.e. do not update this unless there is a format change
 			version: '1.12.40',
 			epoch_date: date_now.getTime(),
 			local_date: date_now.toLocaleString(),
@@ -4744,19 +4761,18 @@ jQuery(document).ready(function($) {
 	}
 	
 	function import_settings(updraft_file_result) {
-		var data = decodeURIComponent(updraft_file_result);
 		var parsed;
 		try {
-			parsed = ud_parse_json(data);
+			parsed = ud_parse_json(updraft_file_result);
 		} catch (e) {
 			$.unblockUI();
 			jQuery('#import_settings').val('');
-			console.log(data);
+			console.log(updraft_file_result);
 			console.log(e);
 			alert(updraftlion.import_invalid_json_file);
 			return;
 		}
-		if (window.confirm(updraftlion.importing_data_from + ' ' + data['network_site_url'] + "\n" + updraftlion.exported_on + ' ' + data['local_date'] + "\n" + updraftlion.continue_import)) {
+		if (window.confirm(updraftlion.importing_data_from + ' ' + parsed['network_site_url'] + "\n" + updraftlion.exported_on + ' ' + parsed['local_date'] + "\n" + updraftlion.continue_import)) {
 			// GET the settings back to the AJAX handler
 			var stringified = JSON.stringify(parsed['data']);
 			updraft_send_command('importsettings', {
@@ -5354,6 +5370,19 @@ function updraft_process_status_check(resp, response_raw, original_parameters) {
 			} else {
 				jQuery('#updraft_lastlogmessagerow').hide();
 				jQuery('#updraft_lastlogcontainer').html('('+updraftlion.nothing_yet_logged+')');
+			}
+		}
+
+		// hosting restrictions
+		if (updraftlion.hasOwnProperty('hosting_restriction') && updraftlion.hosting_restriction instanceof Array) {
+			updraftlion.hosting_restriction.length = 0;
+			if (resp.hasOwnProperty('hosting_restriction')) {
+				if (resp.hosting_restriction && resp.hosting_restriction.includes('only_one_backup_per_month')) {
+					updraftlion.hosting_restriction.push('only_one_backup_per_month');
+				}
+				if (resp.hosting_restriction && resp.hosting_restriction.includes('only_one_incremental_per_day')) {
+					updraftlion.hosting_restriction.push('only_one_incremental_per_day');
+				}
 			}
 		}
 		

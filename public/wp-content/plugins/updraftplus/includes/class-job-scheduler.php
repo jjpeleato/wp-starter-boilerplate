@@ -82,7 +82,7 @@ class UpdraftPlus_Job_Scheduler {
 				$log_data = $updraftplus->get_last_log_chunk($updraftplus->file_nonce);
 				$log_contents = isset($log_data['log_contents']) ? $log_data['log_contents'] : '';
 				$first_byte = isset($log_data['first_byte']) ? $log_data['first_byte'] : 0;
-				$response = $updraftplus->get_updraftplus_clone()->clone_checkin(array('clone_id' => $clone_id, 'secret_token' => $secret_token, 'first_byte' => $first_byte, 'log_contents' => $log_contents));
+				$response = $updraftplus->get_updraftplus_clone()->backup_checkin(array('clone_id' => $clone_id, 'secret_token' => $secret_token, 'first_byte' => $first_byte, 'log_contents' => $log_contents));
 				if (!isset($response['status']) || 'success' != $response['status']) {
 					$updraftplus->log("UpdraftClone backup check-in failed.");
 				} else {
@@ -131,7 +131,8 @@ class UpdraftPlus_Job_Scheduler {
 		// This next line may be too cautious; but until 14-Aug-2014, it was 300.
 		// Update 20-Mar-2015 - lowered from 180 to 120
 		// Update 03-Aug-2018 - lowered from 120 to 100
-		if ($how_far_ahead < 100) $how_far_ahead = 100;
+		// Update 09-Oct-2020 - lowered from 100 to 60
+		if ($how_far_ahead < 60) $how_far_ahead = 60;
 		$schedule_for = time() + $how_far_ahead;
 		$updraftplus->log("Rescheduling resumption $next_resumption: moving to $how_far_ahead seconds from now ($schedule_for)");
 		wp_schedule_single_event($schedule_for, 'updraft_backup_resume', array($next_resumption, $updraftplus->nonce));

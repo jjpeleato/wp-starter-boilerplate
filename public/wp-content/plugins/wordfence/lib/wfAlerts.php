@@ -50,7 +50,7 @@ class wfAutoUpdatedAlert extends wfBaseAlert {
 
 	public function send() {
 		if (wfConfig::get('alertOn_update') == '1' && $this->version) {
-			wordfence::alert("Wordfence Upgraded to version " . $this->version, "Your Wordfence installation has been upgraded to version " . $this->version, '127.0.0.1');
+			wordfence::alert(sprintf(__("Wordfence Upgraded to version %s", 'wordfence'), $this->version), sprintf(__("Your Wordfence installation has been upgraded to version %s", 'wordfence'), $this->version), false);
 		}
 	}
 
@@ -93,7 +93,7 @@ class wfWordfenceDeactivatedAlert extends wfBaseAlert {
 
 	public function send() {
 		if (wfConfig::get('alertOn_wordfenceDeactivated')) {
-			wordfence::alert("Wordfence Deactivated", "A user with username \"$this->username\" deactivated Wordfence on your WordPress site.", $this->IP);
+			wordfence::alert(__("Wordfence Deactivated", 'wordfence'), sprintf(__("A user with username \"%s\" deactivated Wordfence on your WordPress site.", 'wordfence'), $this->username), $this->IP);
 		}
 	}
 
@@ -115,7 +115,7 @@ class wfLostPasswdFormAlert extends wfBaseAlert {
 
 	public function send() {
 		if (wfConfig::get('alertOn_lostPasswdForm')) {
-			wordfence::alert("Password recovery attempted", "Someone tried to recover the password for user with email address: " . wp_kses($this->user->user_email, array()), $this->IP);
+			wordfence::alert(__("Password recovery attempted", 'wordfence'), sprintf(__("Someone tried to recover the password for user with email address: %s", 'wordfence'), wp_kses($this->user->user_email, array())), $this->IP);
 		}
 	}
 
@@ -174,7 +174,7 @@ class wfAdminLoginAlert extends wfBaseAlert {
 			}
 
 			if ($shouldAlert) {
-				wordfence::alert("Admin Login", "A user with username \"$this->username\" who has administrator access signed in to your WordPress site.", $this->IP);
+				wordfence::alert(__("Admin Login", 'wordfence'), sprintf(__("A user with username \"%s\" who has administrator access signed in to your WordPress site.", 'wordfence'), $this->username), $this->IP);
 			}
 		}
 	}
@@ -208,7 +208,7 @@ class wfNonAdminLoginAlert extends wfBaseAlert {
 			}
 
 			if ($shouldAlert) {
-				wordfence::alert("User login", "A non-admin user with username \"$this->username\" signed in to your WordPress site.", $this->IP);
+				wordfence::alert(__("User login", 'wordfence'), sprintf(__("A non-admin user with username \"%s\" signed in to your WordPress site.", 'wordfence'), $this->username), $this->IP);
 			}
 		}
 	}
@@ -253,6 +253,6 @@ class wfIncreasedAttackRateAlert extends wfBaseAlert {
 	}
 
 	public function send() {
-		wordfence::alert('Increased Attack Rate', $this->message, false);
+		wordfence::alert(__('Increased Attack Rate', 'wordfence'), $this->message, false);
 	}
 }
