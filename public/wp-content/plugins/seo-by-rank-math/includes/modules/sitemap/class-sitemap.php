@@ -18,6 +18,8 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Sitemap class.
+ *
+ * Some functionality forked from Yoast (https://github.com/Yoast/wordpress-seo/)
  */
 class Sitemap {
 
@@ -36,6 +38,7 @@ class Sitemap {
 		new Router();
 		$this->index = new Sitemap_Index();
 		$this->index->hooks();
+		new Redirect_Core_Sitemaps();
 
 		add_action( 'rank_math/sitemap/hit_index', [ __CLASS__, 'hit_sitemap_index' ] );
 		add_action( 'rank_math/sitemap/ping_search_engines', [ __CLASS__, 'ping_search_engines' ] );
@@ -46,11 +49,6 @@ class Sitemap {
 			$this->filter( 'rank_math/sitemap/build_type', 'rank_math_build_sitemap_filter' );
 			$this->filter( 'rank_math/sitemap/xml_post_url', 'exclude_hidden_language_posts', 10, 2 );
 		}
-
-		/**
-		 * Disable the WP core XML sitemaps.
-		 */
-		add_filter( 'wp_sitemaps_enabled', '__return_false' );
 	}
 
 	/**
@@ -112,9 +110,9 @@ class Sitemap {
 	}
 
 	/**
-	 * Add New CPT Notice
+	 * Add new CPT notice.
 	 *
-	 * @param  string $notice New CPT Notice.
+	 * @param  string $notice New CPT notice.
 	 * @return string
 	 */
 	public function new_post_type_notice( $notice ) {
@@ -132,7 +130,7 @@ class Sitemap {
 	}
 
 	/**
-	 * Notify search engines of the updated sitemap.
+	 * Notify Search Engines of the updated sitemap.
 	 *
 	 * @param string|null $url Optional URL to make the ping for.
 	 */
@@ -174,7 +172,7 @@ class Sitemap {
 	}
 
 	/**
-	 * Exclude object frmofrom sitemap.
+	 * Exclude object from sitemap.
 	 *
 	 * @param  int     $object_id   Object id.
 	 * @param  string  $object_type Object type. Accetps: post, term, user.
@@ -280,7 +278,7 @@ class Sitemap {
 	}
 
 	/**
-	 * Check if Object is indexable.
+	 * Check if `object` is indexable.
 	 *
 	 * @param int/object $object Post|Term Object.
 	 * @param string     $type   Object Type.

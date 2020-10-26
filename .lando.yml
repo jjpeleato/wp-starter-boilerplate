@@ -3,7 +3,7 @@ name: starterboilerplate
 # See: https://docs.devwithlando.io/tutorials/wordpress.html
 recipe: wordpress
 config:
-  php: '7.3'
+  php: '7.4'
   webroot: public
   database: mariadb
   xdebug: true
@@ -27,6 +27,8 @@ services:
     run_as_root:
       - "chown www-data: -R /app"
   node:
+    run_as_root:
+      - "cd $LANDO_MOUNT && sh sh_lando_upgrade_git.sh"
     type: node
     globals:
       npm: "latest"
@@ -49,6 +51,8 @@ services:
 
 # See: https://docs.devwithlando.io/config/tooling.html
 tooling:
+  git:
+    service: appserver
   node:
     service: node
   npm:

@@ -48,13 +48,6 @@ class Status extends Base {
 	}
 
 	/**
-	 * Load the REST API endpoints.
-	 */
-	public function init_rest_api() {
-		\error_log( 'coming' );
-	}
-
-	/**
 	 * Register admin page.
 	 */
 	public function register_admin_page() {
@@ -64,7 +57,7 @@ class Status extends Base {
 			'rank-math-status',
 			esc_html__( 'Status & Tools', 'rank-math' ),
 			[
-				'position' => 12,
+				'position' => 70,
 				'parent'   => 'rank-math',
 				'classes'  => [ 'rank-math-page' ],
 				'render'   => $this->directory . '/views/main.php',
@@ -108,7 +101,7 @@ class Status extends Base {
 	 */
 	public function display_body( $view ) {
 		$hash = $this->get_views();
-		$hash = new $hash[ $view ]['class'];
+		$hash = new $hash[ $view ]['class']();
 		$hash->display();
 	}
 

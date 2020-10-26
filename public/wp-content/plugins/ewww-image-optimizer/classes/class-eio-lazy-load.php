@@ -79,7 +79,12 @@ if ( ! class_exists( 'EIO_Lazy_Load' ) ) {
 
 			add_action( 'wp_head', array( $this, 'no_js_css' ) );
 
-			add_filter( $this->prefix . 'filter_page_output', array( $this, 'filter_page_output' ), 15 );
+			if ( method_exists( 'autoptimizeImages', 'imgopt_active' ) && autoptimizeImages::imgopt_active() ) {
+				add_filter( 'autoptimize_filter_html_before_minify', array( $this, 'filter_page_output' ) );
+			} else {
+				add_filter( $this->prefix . 'filter_page_output', array( $this, 'filter_page_output' ), 15 );
+			}
+
 			add_filter( 'vc_get_vc_grid_data_response', array( $this, 'filter_page_output' ) );
 
 			if ( class_exists( 'ExactDN' ) && $this->get_option( $this->prefix . 'exactdn' ) ) {
@@ -102,6 +107,11 @@ if ( ! class_exists( 'EIO_Lazy_Load' ) ) {
 			} else {
 				$this->allow_piip = is_writable( $this->piip_folder ) && $this->gd_support();
 			}
+
+			if ( ! apply_filters( 'wp_lazy_loading_enabled', true ) ) {
+				define( 'EWWWIO_DISABLE_NATIVE_LAZY', true );
+			}
+			add_filter( 'wp_lazy_loading_enabled', '__return_false' );
 
 			// Filter early, so that others at the default priority take precendence.
 			add_filter( 'eio_use_piip', array( $this, 'maybe_piip' ), 9 );
@@ -225,7 +235,7 @@ if ( ! class_exists( 'EIO_Lazy_Load' ) ) {
 					$this->debug_message( 'AMP page processing' );
 				}
 				if ( $this->is_amp() ) {
-					ewwwio_debug_message( 'AMP page processing (is_amp)' );
+					$this->debug_message( 'AMP page processing (is_amp)' );
 				}
 				return $buffer;
 			}
@@ -444,6 +454,7 @@ if ( ! class_exists( 'EIO_Lazy_Load' ) ) {
 					$this->set_attribute( $image, 'srcset', $placeholder_src, true );
 					$this->remove_attribute( $image, 'src' );
 				} else {
+					$placeholder_src = apply_filters( 'as3cf_get_asset', $placeholder_src );
 					$this->set_attribute( $image, 'src', $placeholder_src, true );
 					$this->remove_attribute( $image, 'srcset' );
 				}
@@ -604,6 +615,7 @@ if ( ! class_exists( 'EIO_Lazy_Load' ) ) {
 						'lazy-slider-img=',
 						'mgl-lazy',
 						'owl-lazy',
+						'preload-me',
 						'skip-lazy',
 						'timthumb.php?',
 						'wpcf7_captcha/',
@@ -824,7 +836,4 @@ if ( ! class_exists( 'EIO_Lazy_Load' ) ) {
 			);
 		}
 	}
-
-	global $eio_lazy_load;
-	$eio_lazy_load = new EIO_Lazy_Load();
 }

@@ -1,11 +1,11 @@
-=== WordPress SEO Plugin - Rank Math ===
+=== Rank Math - SEO Plugin for WordPress ===
 Contributors: rankmath
 Plugin link: https://s.rankmath.com/homepage
 Tags: seo, sitemap, google search console, schema, redirection
-Tested up to: 5.4.2
-Requires at least: 4.9.0
-Requires PHP: 5.6
-Stable tag: 1.0.46
+Tested up to: 5.5.1
+Requires at least: 5.2
+Requires PHP: 7.0
+Stable tag: 1.0.48.1
 License: GPL-2.0+
 License URI: https://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -97,7 +97,7 @@ Even with significantly more features than other plugins, Rank Math loads amazin
 
 * **Super Fast SEO Plugin** — Even after packing so many features, Rank Math has a negligible load on your server, thus making it one of the fastest SEO plugins for WordPress.
 
-* **Automatic Keyword Suggestions from Google ** — Get keyword suggestions from Google as you start typing letters in the focus keyword field of Rank Math.
+* **Automatic Keyword Suggestions from Google** — Get keyword suggestions from Google as you start typing letters in the focus keyword field of Rank Math.
 
 * **New SEO Analyzer** — Rank Math's built-in SEO analysis will give you SEO recommendations that you'd normally spend hundreds of dollars to get.
 
@@ -108,6 +108,8 @@ Even with significantly more features than other plugins, Rank Math loads amazin
 * **Optimize UNLIMITED Keywords At Once** — You can optimize your post for up to 5 different keywords by default with the Rank Math plugin and can use a filter to optimize for unlimited keywords.
 
 * **Image SEO** - With Rank Math's perfect solution to add ALT & Title tags on the fly, to optimize images, showing inside the content, and that too for FREE, there is no reason to choose any other SEO solution that does not provide all the essential SEO features.
+
+* **[Web Stories SEO](https://rankmath.com/kb/google-web-stories/)** - Make any Story created with the Google's Web Stories plugin SEO-Ready. Automatically adds AMP friendly Schema markup and Meta tags.
 
 * **Translation Plugins Support** — Rank Math works flawlessly with the top translations plugins like WPML, TranslatePress, Weglot, Polylang, etc., making it a perfect companion.
 
@@ -473,29 +475,37 @@ Please drop us an email at support@rankmath.com and we would be more than happy 
 
 == Changelog ==
 
-= 1.0.46 [Jul 30, 2020] =
-* [NEW] Added: Pixel length counter for the title & description fields [(view preview)](https://i.rankmath.com/zh0cI2)
-* Added: Synced Rank Math's [auto-update](https://rankmath.com/kb/version-control/#auto-update) feature with the auto-update option introduced in WordPress 5.5
-* Added: Rank Math's blocks are now translation-ready in the [WPML plugin](https://rankmath.com/compatibility/wpml/)
-* Improved: The [UI of Import/Export](https://i.rankmath.com/jpguHX) settings page
-* Improved: Only show the [SEO score in post lists](https://rankmath.com/kb/bulk-editing-in-rank-math/#bulk-editing-posts) when a [focus keyword](https://rankmath.com/kb/score-100-in-tests/#first-step-choosing-focus-keywords) is set and if the post is indexable
-* Improved: Show a green indicator for keywords with the first position in the [Search Console](https://rankmath.com/kb/search-console/#search-analytics)
-* Improved: `Help & Support` link in the sidebar menu now links directly to the [Knowledge Base](https://rankmath.com/kb/)
-* Improved: Removed the description from the [Article Schema](https://rankmath.com/kb/rich-snippets/#article) code for [Google Web Stories](https://rankmath.com/kb/google-web-stories/) as Google no longer requires it
-* Improved: Tooltip icon styling and consistency across both the Classic and the Gutenberg (aka Block) editor
-* Improved: API error handling for the [Analysis](https://rankmath.com/kb/seo-analysis/) functionality of Rank Math
-* Improved: Variables with double `%` will not show a preview in the Rank Math's post preview area as they don't work on the frontend
-* Improved: Error handling if an invalid file is uploaded in the [settings importer](https://rankmath.com/kb/import-export-settings/#importing-your-settings)
-* Improved: Checkbox styling in the Gutenberg & Elementor sidebar for the upcoming WordPress 5.5
-* Removed: Deprecated Structured Data Testing Tool from the [admin bar](https://rankmath.com/kb/quick-actions/)
-* Removed: Disabled Core Sitemaps coming in WordPress 5.5 to avoid conflicts with the [Rank Math's Sitemap feature](https://rankmath.com/kb/configure-sitemaps/) as Rank Math's Sitemaps are more robust at this time
-* Fixed: `twitter:image` tag was not using the image set in the [Facebook tab](https://rankmath.com/kb/meta-box-social-tab/) of Rank Math for the newly created posts using the Gutenberg Editor
-* Fixed: Broken links in the [Twitter preview tab](https://rankmath.com/kb/meta-box-social-tab/#twitter-options) for App & Player Card notice
-* Fixed: An issue where an extra slash in the Elementor's [Canonical URL](https://rankmath.com/kb/advanced-tab/#canonical-url) option was shown. Though, it was not affecting the output for the search engine bots
-* Fixed: Adding a copied link from the clipboard to the block aka Gutenberg editor was breaking the paragraph
-* Fixed: Content analysis was not working for the pending posts when the [editor user role](https://rankmath.com/kb/role-manager/) did not have the capability to `publish_pages`
-* Fixed: Multiple broken [KB links](https://rankmath.com/kb/) in the [Setup Wizard](https://rankmath.com/kb/how-to-setup/)
-* Fixed: A PHP error appearing in the post list if 'Hongo Addon' plugin was active
-* Fixed: A problem where `WP_HOMEURL` was getting used instead of `WP_SITEURL` for the [redirect 404 to homepage option](https://rankmath.com/kb/general-settings/#redirections)
+= 1.0.48.1 [Sep 27, 2020] =
+* Added: A Filter hook in the Setup Wizard steps
+* Fixed: External Redirections were not working on some installations
+* Fixed: Content analysis was not detecting the content added in the Elementor editor
+* Fixed: Hidden Primary Category option in the Classic Editor due to small CSS bug
+* Fixed: Breaking of Rank Math metabox after using `rank_math/gutenberg/enabled` filter in the Block editor
+* Fixed: jQuery Migrate Helper deprecated warning appearing after the last update
+
+= 1.0.48 [Sep 26, 2020] =
+* Added: [HUGE] Completely revamped the UI for our [Schema](https://rankmath.com/kb/rich-snippets/) module. Introducing tree structure UI, now anyone can easily understand the Schema markup in a visual format. Comes with required field validation.
+* Added: [NEW] [Entity Graph](https://www.w3.org/TR/json-ld/#named-graphs) for the Schema markup. Now all the nodes are connected by edges
+* Added: Code to make [upcoming PRO version](https://rankmath.com/pro/) compatible with the free version
+* Improved: UI of the export option in the Redirections page
+* Improved: Some missing text in the translation file
+* Improved: Added a condition to check if a method exists in the `Paper` class
+* Improved: Use `site_url()` instead of `home_url()`
+* Improved: Beta functionality now downloads [beta version](https://rankmath.com/kb/version-control/#beta-updates) from the Trunk folder of WordPress.org SVN
+* Changed: Time options in the Recipe Schema now need `PT` as a prefix, example: PT1H30M
+* Changed: Default mode to 'Advanced' on new installations
+* Fixed: [Contact shortcode](https://rankmath.com/kb/titles-and-meta/#displaying-your-contact-information) was not showing some contact info like Email & Phone number
+* Fixed: `%name%` variable was not working in the backend of single posts and pages
+* Fixed: `%name%` variable was showing the wrong user name in the profile edit page
+* Fixed: Variation Products were showing price mismatch warning in the Google Merchant Centre
+* Fixed: PHP warnings related to [beta testing](https://rankmath.com/kb/version-control/#beta-updates) functionality on some installations
+* Fixed: Schema markup issue when `BankOrCreditUnion` is selected in the Local SEO settings
+* Fixed: Removed non-archive CPT pages from the breadcrumb's schema markup code
+* Fixed: Shortcodes were not rendering on the frontend for the Category/Taxonomy description text
+* Fixed: CPTs created by some third party plugins in the [Titles & Meta](https://rankmath.com/kb/titles-and-meta/) global settings were not displaying
+* Fixed: Datepicker styling issue with the Coupon theme from PremiumPress
+* Fixed: Opening Days in the Restaurant Schema were not available for the block editor & Elementor
+* Fixed: Minimum required WordPress version notice in the Setup Wizard
+* Fixed: Icon styling in the FAQ and HowTo blocks
 
 Full changelog can be found here - **[Rank Math SEO changelog](https://rankmath.com/changelog/?utm_source=LP&utm_campaign=WP)**

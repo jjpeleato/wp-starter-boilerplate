@@ -37,7 +37,7 @@ class Admin extends Base {
 
 		if ( ( defined( 'DOING_AJAX' ) && DOING_AJAX ) || $this->page->is_current_page() ) {
 			include_once 'seo-analysis-tests.php';
-			$this->analyzer = new SEO_Analyzer;
+			$this->analyzer = new SEO_Analyzer();
 		}
 	}
 
@@ -51,7 +51,7 @@ class Admin extends Base {
 			'rank-math-seo-analysis',
 			esc_html__( 'SEO Analysis', 'rank-math' ),
 			[
-				'position'   => 12,
+				'position'   => 60,
 				'parent'     => 'rank-math',
 				'capability' => 'rank_math_site_analysis',
 				'classes'    => [ 'rank-math-page' ],

@@ -91,7 +91,7 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 	 * @return Boolean
 	 */
 	public function options_exist($opts) {
-		if (is_array($opts) && (!empty($opts['tmp_access_token']) || !empty($opts['token']))) return true;
+		if (is_array($opts) && (!empty($opts['user_id']) || !empty($opts['token']))) return true;
 		return false;
 	}
 

@@ -225,6 +225,7 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 	}
 
 	protected function set_region($obj, $region, $bucket_name = '') {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
+		// AWS Regions: https://docs.aws.amazon.com/general/latest/gr/rande.html
 		switch ($region) {
 			case 'EU':
 			case 'eu-west-1':
@@ -252,9 +253,13 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 			case 'eu-west-3':
 			case 'ap-south-1':
 			case 'me-south-1':
+			case 'af-south-1':
+			case 'ap-east-1':
+			case 'ap-northeast-3':
 			$endpoint = 's3.'.$region.'.amazonaws.com';
 				break;
 			case 'cn-north-1':
+			case 'cn-northwest-1':
 			$endpoint = 's3.'.$region.'.amazonaws.com.cn';
 				break;
 			default:

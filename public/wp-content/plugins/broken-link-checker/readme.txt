@@ -1,21 +1,20 @@
 === Broken Link Checker ===
 Contributors: managewp, wpmudev
-Donate link:
-Tags: links, broken, maintenance, blogroll, custom fields, admin, comments, posts
+Tags: links, broken links, internal link, external link, broken images, seo, test links, check links, bad links
 Requires at least: 4.6
-Tested up to: 5.4
-Stable tag: 1.11.13
+Tested up to: 5.5
+Stable tag: 1.11.14
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-This plugin will check your posts, comments and other content for broken links and missing images, and notify you if any are found.
+Check posts, pages & all content for broken links & missing images to improve SEO. Get notified when bad links are found.
 
 == Description ==
-This plugin will monitor your blog looking for broken links and let you know if any are found.
+Broken Link Checker monitors and tests all internal links & external links on your site looking for broken links. It helps you fix bad links to improve SEO and user experience.
 
 **Features**
 
-* Monitors links in your posts, pages, comments, the blogroll, and custom fields (optional).
+* Monitors external links and internal links in your posts, pages, comments, the blogroll, and custom fields (optional).
 * Detects links that don't work, missing images and redirects.
 * Notifies you either via the Dashboard or by email.
 * Makes broken links display differently in posts (optional).
@@ -37,7 +36,7 @@ There are several actions associated with each link. They show up when you move 
 * "Edit URL" lets you change the URL of that link. If the link is present in more than one place (e.g. both in a post and in the blogroll), all occurrences of that URL will be changed.
 * "Unlink" removes the link but leaves the link text intact.
 * "Not broken" lets you manually mark a "broken" link as working. This is useful if you know it was incorrectly detected as broken due to a network glitch or a bug. The marked link will still be checked periodically, but the plugin won't consider it broken unless it gets a new result.
-* "Dismiss" hides the link frm the "Broken Links" and "Redirects" views. It will still be checked as normal and get the normal link styles (e.g. a strike-through effect for broken links), but won't be reported again unless its status changes. Useful if you want to acknowledge a link as broken/redirected and just leave as it is.
+* "Dismiss" hides the link from the "Broken Links" and "Redirects" views. It will still be checked as normal and get the normal link styles (e.g. a strike-through effect for broken links), but won't be reported again unless its status changes. Useful if you want to acknowledge a link as broken/redirected and just leave as it is.
 
 You can also click on the contents of the "Status" or "Link Text" columns to get more info about the status of each link.
 
@@ -67,9 +66,11 @@ To upgrade your installation
 1. Reactivate the plugin. Your settings will be retained from the previous version.
 
 == Changelog ==
+= 1.11.14 =
+* Added compatibility for WP 5.5.
 = 1.11.13 =
 * Added filter for disabling email notifications.
-* Added filter to use GET requests.
+* Added filter to use GET requests. (Thanks to [Stian Lund](https://github.com/Pathduck))
 * Added option to disable last updated time on post types.
 * Added option to check post excerpts.
 * Added a confirmation box when unlinking.

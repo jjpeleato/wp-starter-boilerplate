@@ -44,7 +44,13 @@ class UpdraftPlus_Temporary_Clone_Dash_Notice {
 			<h1><?php _e('Welcome to your UpdraftClone (temporary clone)', 'updraftplus'); ?></h1>
 			<p>
 				<?php echo __('Your clone will renew on:', 'updraftplus') . ' ' . $pretty_date . ' ' . get_option('timezone_string') . ' (' . $date_diff . ')'; ?>.
-				<?php echo sprintf(__('Each time your clone renews (weekly) it costs %s. You can shut this clone down at the following link:', 'updraftplus'), sprintf(_n('%d token', '%d tokens', $package_cost, 'updraftplus'), $package_cost)); ?> <a target="_blank" href="https://updraftplus.com/my-account/clones/"><?php _e('Manage your clones', 'updraftplus'); ?></p></a>
+				<?php echo sprintf(__('Each time your clone renews (weekly) it costs %s. You can shut this clone down at the following link:', 'updraftplus'), sprintf(_n('%d token', '%d tokens', $package_cost, 'updraftplus'), $package_cost)); ?> <a target="_blank" href="https://updraftplus.com/my-account/clones/"><?php _e('Manage your clones', 'updraftplus'); ?></a>
+			</p>
+			<?php
+			$show_removal_warning = get_site_option('updraftplus_clone_removal_warning', false);
+
+			if ($show_removal_warning) echo '<p>'.__('Warning: You have no clone tokens remaining and either no subscriptions or no subscription that will renew before the clone expiry date.', 'updraftplus').'</p>'
+			?>
 		</div>
 		<?php
 	}
@@ -132,6 +138,23 @@ class UpdraftPlus_Temporary_Clone_Dash_Notice {
 		
 		update_site_option('updraftplus_clone_scheduled_removal', $vps_info['scheduled_removal']);
 		update_site_option('updraftplus_clone_package_cost', $vps_info['package_cost']);
+
+		$clone_removal_warning = false;
+
+		if (isset($vps_info['tokens']) && 0 == $vps_info['tokens']) {
+			if (empty($vps_info['subscription_renewals'])) {
+				$clone_removal_warning = true;
+			} else {
+				$subscription_before_expire = false;
+				foreach ($vps_info['subscription_renewals'] as $renewal) {
+					if ($renewal < $vps_info['scheduled_removal']) $subscription_before_expire = true;
+				}
+
+				if (!$subscription_before_expire) $clone_removal_warning = true;
+			}
+		}
+
+		update_site_option('updraftplus_clone_removal_warning', $clone_removal_warning);
 
 		$vps_data = array(
 			'scheduled_removal' => $vps_info['scheduled_removal'],

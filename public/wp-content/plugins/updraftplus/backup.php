@@ -1478,6 +1478,8 @@ class UpdraftPlus_Backup {
 			$this->table_prefix = $dbinfo['prefix'];
 			$this->table_prefix_raw = $dbinfo['prefix'];
 		}
+		
+		UpdraftPlus_Database_Utility::set_sql_mode(array(), array('ANSI_QUOTES'), $this->wpdb_obj);
 
 		$this->dbinfo = $dbinfo;
 
@@ -1597,23 +1599,7 @@ class UpdraftPlus_Backup {
 					continue;
 				}
 
-				// Don't include the job data for any backups - so that when the database is restored, it doesn't continue an apparently incomplete backup
-				if ('wp' == $this->whichdb && (!empty($this->table_prefix) && strtolower($this->table_prefix.'sitemeta') == strtolower($table))) {
-					$where = 'meta_key NOT LIKE "updraft_jobdata_%"';
-				} elseif ('wp' == $this->whichdb && (!empty($this->table_prefix) && strtolower($this->table_prefix.'options') == strtolower($table))) {
-					// These might look similar, but the quotes are different
-					if ('win' == strtolower(substr(PHP_OS, 0, 3))) {
-						$updraft_jobdata = "'updraft_jobdata_%'";
-						$site_transient_update = "'_site_transient_update_%'";
-					} else {
-						$updraft_jobdata = '"updraft_jobdata_%"';
-						$site_transient_update = '"_site_transient_update_%"';
-					}
-					
-					$where = 'option_name NOT LIKE '.$updraft_jobdata.' AND option_name NOT LIKE '.$site_transient_update.'';
-				} else {
-					$where = '';
-				}
+				add_filter('updraftplus_backup_table_sql_where', array($this, 'backup_exclude_jobdata'), 3, 10);
 
 				$updraftplus->jobdata_set('dbcreating_substatus', array('t' => $table, 'i' => $total_tables, 'a' => $how_many_tables));
 				
@@ -1646,7 +1632,7 @@ class UpdraftPlus_Backup {
 				// New Jul 2014: This attempt to use bindump instead at a lower threshold is quite conservative - only if the last successful run was exactly two resumptions ago - may be useful to expand
 				$bindump_threshold = (!$updraftplus->something_useful_happened && !empty($updraftplus->current_resumption) && (2 == $updraftplus->current_resumption - $updraftplus->last_successful_resumption)) ? 1000 : 8000;
 
-				$bindump = (isset($table_status->Rows) && ($table_status->Rows>$bindump_threshold || (defined('UPDRAFTPLUS_ALWAYS_TRY_MYSQLDUMP') && UPDRAFTPLUS_ALWAYS_TRY_MYSQLDUMP)) && is_string($binsqldump)) ? $this->backup_table_bindump($binsqldump, $table, $where) : false;
+				$bindump = (isset($table_status->Rows) && ($table_status->Rows>$bindump_threshold || (defined('UPDRAFTPLUS_ALWAYS_TRY_MYSQLDUMP') && UPDRAFTPLUS_ALWAYS_TRY_MYSQLDUMP)) && is_string($binsqldump)) ? $this->backup_table_bindump($binsqldump, $table) : false;
 				
 				if (true !== $bindump) {
 					while (is_integer($current_page)) {
@@ -1655,7 +1641,7 @@ class UpdraftPlus_Backup {
 							// This value is not used; it is only significant that it is an integer. The actual value stored in the file may be different, so be careful if you start using it.
 							$next_page = $current_page + 100;
 						} else {
-							$next_page = $this->backup_table($table, $where, $table_type, $current_page, 100);
+							$next_page = $this->backup_table($table, $table_type, $current_page, 100);
 							if (is_integer($next_page)) {
 								$this->backup_db_close();
 								rename($db_temp_file, $this->updraft_dir.'/'.$table_file_prefix.'.tmp'.$current_page.'.gz');
@@ -1846,7 +1832,35 @@ class UpdraftPlus_Backup {
 
 	}
 
-	private function backup_table_bindump($potsql, $table_name, $where) {
+	/**
+	 * This function will return a SQL WHERE clause to exclude updraft jobdata
+	 *
+	 * @param array  $where - an array of where clauses to add to
+	 * @param string $table - the table we want to add a where clause for
+	 *
+	 * @return array - returns an array of where clauses for the table
+	 */
+	public function backup_exclude_jobdata($where, $table) {
+		// Don't include the job data for any backups - so that when the database is restored, it doesn't continue an apparently incomplete backup
+		if ('wp' == $this->whichdb && (!empty($this->table_prefix) && strtolower($this->table_prefix.'sitemeta') == strtolower($table))) {
+			$where[] = 'meta_key NOT LIKE "updraft_jobdata_%"';
+		} elseif ('wp' == $this->whichdb && (!empty($this->table_prefix) && strtolower($this->table_prefix.'options') == strtolower($table))) {
+			// These might look similar, but the quotes are different
+			if ('win' == strtolower(substr(PHP_OS, 0, 3))) {
+				$updraft_jobdata = "'updraft_jobdata_%'";
+				$site_transient_update = "'_site_transient_update_%'";
+			} else {
+				$updraft_jobdata = '"updraft_jobdata_%"';
+				$site_transient_update = '"_site_transient_update_%"';
+			}
+			
+			$where[] = 'option_name NOT LIKE '.$updraft_jobdata.' AND option_name NOT LIKE '.$site_transient_update.'';
+		}
+
+		return $where;
+	}
+
+	private function backup_table_bindump($potsql, $table_name) {
 
 		$microtime = microtime(true);
 
@@ -1859,6 +1873,19 @@ class UpdraftPlus_Backup {
 		$pfile = md5(time().rand()).'.tmp';
 		file_put_contents($this->updraft_dir.'/'.$pfile, "[mysqldump]\npassword=".$this->dbinfo['pass']."\n");
 
+		$where_array = apply_filters('updraftplus_backup_table_sql_where', array(), $table_name, $this);
+		$where = '';
+		
+		if (!empty($where_array) && is_array($where_array)) {
+			$where = "WHERE ";
+			$first_loop = true;
+			foreach ($where_array as $condition) {
+				if (!$first_loop) $where .= " AND ";
+				$where .= $condition;
+				$first_loop = false;
+			}
+		}
+
 		// Note: escapeshellarg() adds quotes around the string
 		if ($where) $where = "--where=".escapeshellarg($where);
 
@@ -1868,7 +1895,10 @@ class UpdraftPlus_Backup {
 			$exec = "cd ".escapeshellarg($this->updraft_dir)."; ";
 		}
 
-		$exec .= "$potsql  --defaults-file=$pfile $where --max_allowed_packet=1M --quote-names --add-drop-table --skip-comments --skip-set-charset --allow-keywords --dump-date --extended-insert --user=".escapeshellarg($this->dbinfo['user'])." --host=".escapeshellarg($this->dbinfo['host'])." ".$this->dbinfo['name']." ".escapeshellarg($table_name);
+		// Allow --max_allowed_packet to be configured via constant. Experience has shown some customers with complex CMS or pagebuilder setups can have extrememly large postmeta entries.
+		$msqld_max_allowed_packet = (defined('UPDRAFTPLUS_MYSQLDUMP_MAX_ALLOWED_PACKET') && (is_int(UPDRAFTPLUS_MYSQLDUMP_MAX_ALLOWED_PACKET) || is_string(UPDRAFTPLUS_MYSQLDUMP_MAX_ALLOWED_PACKET))) ? UPDRAFTPLUS_MYSQLDUMP_MAX_ALLOWED_PACKET : '1M';
+
+		$exec .= "$potsql  --defaults-file=$pfile $where --max_allowed_packet=$msqld_max_allowed_packet --quote-names --add-drop-table --skip-comments --skip-set-charset --allow-keywords --dump-date --extended-insert --user=".escapeshellarg($this->dbinfo['user'])." --host=".escapeshellarg($this->dbinfo['host'])." ".$this->dbinfo['name']." ".escapeshellarg($table_name);
 		
 		$ret = false;
 		$any_output = false;
@@ -1957,14 +1987,13 @@ class UpdraftPlus_Backup {
 	 * Modified by Scott Merrill (http://www.skippy.net/)
 	 *
 	 * @param String  $table		 - Full name of database table to backup
-	 * @param String  $where		 - If there is a where clause to use
 	 * @param String  $table_type	 - Table type - 'VIEW' is supported; otherwise it is treated as an ordinary table
 	 * @param Integer $start_page	 - Specify the starting page (begins at 0). Page size is fixed at 1000 (though internally we might actually query in smaller batches).
 	 * @param Integer $process_pages - A maximum number of pages to process before returning; -1 for no limit
 	 *
 	 * @return Integer|Boolean - true to indicate that it is finished; false to indicate a failure; an integer to indicate the next page the case that there are more to do
 	 */
-	private function backup_table($table, $where = '', $table_type = 'BASE TABLE', $start_page = 0, $process_pages = -1) {
+	private function backup_table($table, $table_type = 'BASE TABLE', $start_page = 0, $process_pages = -1) {
 	
 		global $updraftplus;
 
@@ -1994,11 +2023,15 @@ class UpdraftPlus_Backup {
 				return true;
 			}
 		}
-		
+
+		$table_data = array();
 		if ('VIEW' != $table_type) {
+			$fields = array();
 			$defs = array();
 			$integer_fields = array();
 			$binary_fields = array();
+			$bit_fields = array();
+			$bit_field_exists = false;
 			// $table_structure was from "DESCRIBE $table"
 			foreach ($table_structure as $struct) {
 				if ((0 === strpos($struct->Type, 'tinyint')) || (0 === strpos(strtolower($struct->Type), 'smallint'))
@@ -2007,15 +2040,35 @@ class UpdraftPlus_Backup {
 						$defs[strtolower($struct->Field)] = (null === $struct->Default ) ? 'NULL' : $struct->Default;
 						$integer_fields[strtolower($struct->Field)] = true;
 				}
-				if ((0 === strpos($struct->Type, 'binary')) || (0 === strpos(strtolower($struct->Type), 'varbinary')) || (0 === strpos(strtolower($struct->Type), 'tinyblob')) || (0 === strpos(strtolower($struct->Type), 'mediumblob')) || (0 === strpos(strtolower($struct->Type), 'blob')) || (0 === strpos(strtolower($struct->Type), 'longblob'))) {
+				if ((0 === strpos(strtolower($struct->Type), 'binary')) || (0 === strpos(strtolower($struct->Type), 'varbinary')) || (0 === strpos(strtolower($struct->Type), 'tinyblob')) || (0 === strpos(strtolower($struct->Type), 'mediumblob')) || (0 === strpos(strtolower($struct->Type), 'blob')) || (0 === strpos(strtolower($struct->Type), 'longblob'))) {
 					$binary_fields[strtolower($struct->Field)] = true;
+				}
+				if (preg_match('/^bit(?:\(([0-9]+)\))?$/i', trim($struct->Type), $matches)) {
+					if (!$bit_field_exists) $bit_field_exists = true;
+					$bit_fields[strtolower($struct->Field)] = !empty($matches[1]) ? max(1, (int) $matches[1]) : 1;
+					// the reason why if bit fields are found then the fields need to be cast into binary type is that if mysqli_query function is being used, mysql will convert the bit field value to a decimal number and represent it in a string format whereas, if mysql_query function is being used, mysql will not convert it to a decimal number but instead will keep it retained as it is
+					$struct->Field = "CAST(".UpdraftPlus_Manipulation_Functions::backquote(str_replace('`', '``', $struct->Field))." AS BINARY) AS ".UpdraftPlus_Manipulation_Functions::backquote(str_replace('`', '``', $struct->Field));
+					$fields[] = $struct->Field;
+				} else {
+					$fields[] = UpdraftPlus_Manipulation_Functions::backquote(str_replace('`', '``', $struct->Field));
 				}
 			}
 
 			$search = array("\x00", "\x0a", "\x0d", "\x1a");
 			$replace = array('\0', '\n', '\r', '\Z');
+
+			$where_array = apply_filters('updraftplus_backup_table_sql_where', array(), $table, $this);
+			$where = '';
 			
-			if ($where) $where = "WHERE $where";
+			if (!empty($where_array) && is_array($where_array)) {
+				$where = "WHERE ";
+				$first_loop = true;
+				foreach ($where_array as $condition) {
+					if (!$first_loop) $where .= " AND ";
+					$where .= $condition;
+					$first_loop = false;
+				}
+			}
 			
 			// Experimentation here shows that on large tables (we tested with 180,000 rows) on MyISAM, 1000 makes the table dump out 3x faster than the previous value of 100. After that, the benefit diminishes (increasing to 4000 only saved another 12%)
 
@@ -2039,7 +2092,16 @@ class UpdraftPlus_Backup {
 
 				for ($i = 1; $i <= $inner_loop_runs; $i++) {
 				
-					$table_data = $this->wpdb_obj->get_results($this->wpdb_obj->prepare("SELECT * FROM ".UpdraftPlus_Manipulation_Functions::backquote($table)." $where LIMIT %d, %d", $row_start, $row_increment / $inner_loop_runs), ARRAY_A);
+					$select = '';
+					if ($bit_field_exists) {
+						foreach ($fields as $field) {
+							$select .= !empty($select) ? ", $field" : $field;
+						}
+					} else {
+						$select = '*';
+					}
+
+					$table_data = $this->wpdb_obj->get_results($this->wpdb_obj->prepare("SELECT ".$select." FROM ".UpdraftPlus_Manipulation_Functions::backquote($table)." $where LIMIT %d, %d", $row_start, $row_increment / $inner_loop_runs), ARRAY_A);
 					$entries = 'INSERT INTO '.UpdraftPlus_Manipulation_Functions::backquote($dump_as_table).' VALUES ';
 					// \x08\\x09, not required
 					if ($table_data) {
@@ -2061,6 +2123,15 @@ class UpdraftPlus_Backup {
 									} else {
 										$values[] = "0x" . bin2hex(str_repeat("0", floor(strspn($value, "0") / 4)).$value);
 									}
+								} elseif (isset($bit_fields[$key])) {
+									mbstring_binary_safe_encoding();
+									$val_len = strlen($value);
+									reset_mbstring_encoding();
+									$hex = '';
+									for ($i=0; $i<$val_len; $i++) {
+										$hex .= sprintf('%02X', ord($value[$i]));
+									}
+									$values[] = "b'".str_pad($this->hex2bin($hex), $bit_fields[$key], '0', STR_PAD_LEFT)."'";
 								} else {
 									$values[] = (null === $value) ? 'NULL' : "'" . str_replace($search, $replace, str_replace('\'', '\\\'', str_replace('\\', '\\\\', $value))) . "'";
 								}
@@ -2095,6 +2166,42 @@ class UpdraftPlus_Backup {
 
 		return $next_page;
 		
+	}
+
+	/**
+	 * Convert hexadecimal (base16) number into binary (base2) and no need to worry about the platform-dependent of 32bit/64bit size limitation
+	 *
+	 * @param String $hex Hexadecimal number
+	 * @return String a base2 format of the given hexadecimal number
+	 */
+	public function hex2bin($hex) {
+		$table = array(
+			'0' => '0000',
+			'1' => '0001',
+			'2' => '0010',
+			'3' => '0011',
+			'4' => '0100',
+			'5' => '0101',
+			'6' => '0110',
+			'7' => '0111',
+			'8' => '1000',
+			'9' => '1001',
+			'a' => '1010',
+			'b' => '1011',
+			'c' => '1100',
+			'd' => '1101',
+			'e' => '1110',
+			'f' => '1111'
+		);
+		$bin = '';
+
+		if (!preg_match('/^[0-9a-f]+$/i', $hex)) return '';
+
+		for ($i = 0; $i < strlen($hex); $i++) {
+			$bin .= $table[strtolower(substr($hex, $i, 1))];
+		}
+
+		return $bin;
 	}
 
 	/**

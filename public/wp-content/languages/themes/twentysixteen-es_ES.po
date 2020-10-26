@@ -11,13 +11,13 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: Themes - Twenty Sixteen\n"
 
-#. Theme Name of the theme
-msgid "Twenty Sixteen"
-msgstr "Twenty Sixteen"
-
 #. Description of the theme
 msgid "Twenty Sixteen is a modernized take on an ever-popular WordPress layout — the horizontal masthead with an optional right sidebar that works perfectly for blogs and websites. It has custom color options with beautiful default color schemes, a harmonious fluid grid using a mobile-first approach, and impeccable polish in every detail. Twenty Sixteen will make your WordPress look beautiful everywhere."
 msgstr "Twenty Sixteen es una versión modernizada de un diseño que siempre ha sido popular en WordPress -- la cabecera horizontal con una barra lateral derecha opcional que funciona perfectamente para blogs y webs. Dispone de ajustes de color personalizables con bonitos esquemas de color por defecto, utiliza un armonioso sistema de rejilla fluido preparado para móviles, y un impecable cuidado en cada detalle. Twenty Sixteen hará que tu WordPress se vea bonito en cualquier situación."
+
+#. Theme Name of the theme
+msgid "Twenty Sixteen"
+msgstr "Twenty Sixteen"
 
 #: functions.php:204
 msgid "Bright Red"
@@ -75,7 +75,7 @@ msgstr "Continuar leyendo<span class=\"screen-reader-text\"> \"%s\"</span>"
 msgid "Edit<span class=\"screen-reader-text\"> \"%s\"</span>"
 msgstr "Editar<span class=\"screen-reader-text\"> \"%s\"</span>"
 
-#: inc/customizer.php:345
+#: inc/customizer.php:347
 msgid "Red"
 msgstr "Roja"
 
@@ -183,44 +183,44 @@ msgctxt "Used before publish date."
 msgid "Posted on"
 msgstr "Publicado el"
 
-#: inc/template-tags.php:40
-msgctxt "Used before post format."
-msgid "Format"
-msgstr "Formato"
-
 #. translators: %s: Post title.
 #: inc/template-tags.php:53
 msgid "Leave a comment<span class=\"screen-reader-text\"> on %s</span>"
 msgstr "Deja un comentario<span class=\"screen-reader-text\"> en %s</span>"
+
+#: inc/template-tags.php:40
+msgctxt "Used before post format."
+msgid "Format"
+msgstr "Formato"
 
 #: inc/template-tags.php:26
 msgctxt "Used before post author name."
 msgid "Author"
 msgstr "Autor"
 
-#: functions.php:209 inc/customizer.php:355
+#: functions.php:209 inc/customizer.php:357
 msgid "Yellow"
 msgstr "Amarillo"
 
-#: inc/customizer.php:335
+#: inc/customizer.php:337
 msgid "Gray"
 msgstr "Gris"
 
-#: inc/customizer.php:325
+#: inc/customizer.php:327
 msgid "Dark"
 msgstr "Oscuro"
 
-#: inc/customizer.php:221
-msgid "Main Text Color"
-msgstr "Color principal del texto"
-
-#: inc/customizer.php:315
+#: inc/customizer.php:317
 msgid "Default"
 msgstr "Por defecto"
 
 #: inc/customizer.php:242
 msgid "Secondary Text Color"
 msgstr "Color de texto secundario"
+
+#: inc/customizer.php:221
+msgid "Main Text Color"
+msgstr "Color principal del texto"
 
 #: inc/customizer.php:200
 msgid "Link Color"
@@ -230,19 +230,19 @@ msgstr "Color de los enlaces"
 msgid "Page Background Color"
 msgstr "Color del fondo de la página"
 
-#: single.php:31 image.php:107
-msgctxt "Parent post link"
-msgid "<span class=\"meta-nav\">Published in</span><span class=\"post-title\">%title</span>"
-msgstr "<span class=\"meta-nav\">Publicado en</span><span class=\"post-title\">%title</span>"
+#: inc/customizer.php:153
+msgid "Base Color Scheme"
+msgstr "Esquema de color básico"
 
 #. translators: %s: The current WordPress version.
 #: inc/back-compat.php:42 inc/back-compat.php:56 inc/back-compat.php:75
 msgid "Twenty Sixteen requires at least WordPress version 4.4. You are running version %s. Please upgrade and try again."
 msgstr "Twenty Sixteen requiere al menos la versión 4.4 de WordPress. Estás usando la versión %s. Por favor, actualiza e inténtalo de nuevo."
 
-#: inc/customizer.php:153
-msgid "Base Color Scheme"
-msgstr "Esquema de color básico"
+#: single.php:31 image.php:107
+msgctxt "Parent post link"
+msgid "<span class=\"meta-nav\">Published in</span><span class=\"post-title\">%title</span>"
+msgstr "<span class=\"meta-nav\">Publicado en</span><span class=\"post-title\">%title</span>"
 
 #: image.php:77
 msgctxt "Used before full size attachment link."
@@ -270,40 +270,40 @@ msgstr "Menú"
 msgid "Skip to content"
 msgstr "Ir al contenido"
 
-#: functions.php:419
-msgid "expand child menu"
-msgstr "expande el menú inferior"
-
 #: functions.php:420
 msgid "collapse child menu"
 msgstr "plegar menú inferior"
+
+#: functions.php:419
+msgid "expand child menu"
+msgstr "expande el menú inferior"
 
 #: functions.php:338
 msgctxt "Inconsolata font: on or off"
 msgid "on"
 msgstr "on"
 
-#: functions.php:279
-msgid "Content Bottom 1"
-msgstr "Contenido inferior 1"
-
-#: functions.php:281 functions.php:293
-msgid "Appears at the bottom of the content on posts and pages."
-msgstr "Aparece en la parte inferior del contenido, en entradas y páginas."
-
-#: functions.php:291
-msgid "Content Bottom 2"
-msgstr "Contenido inferior 2"
+#: functions.php:330
+msgctxt "Montserrat font: on or off"
+msgid "on"
+msgstr "activado"
 
 #: functions.php:322
 msgctxt "Merriweather font: on or off"
 msgid "on"
 msgstr "activado"
 
-#: functions.php:330
-msgctxt "Montserrat font: on or off"
-msgid "on"
-msgstr "activado"
+#: functions.php:291
+msgid "Content Bottom 2"
+msgstr "Contenido inferior 2"
+
+#: functions.php:281 functions.php:293
+msgid "Appears at the bottom of the content on posts and pages."
+msgstr "Aparece en la parte inferior del contenido, en entradas y páginas."
+
+#: functions.php:279
+msgid "Content Bottom 1"
+msgstr "Contenido inferior 1"
 
 #: functions.php:267
 msgid "Sidebar"
@@ -356,13 +356,13 @@ msgstr "Parece que no hay nada en esa ubicación ¿quieres probar a buscar?"
 msgid "Oops! That page can&rsquo;t be found."
 msgstr "¡Vaya! Está página no se encuentra."
 
-#. Theme URI of the theme
-msgid "https://wordpress.org/themes/twentysixteen/"
-msgstr "https://es.wordpress.org/themes/twentysixteen/"
-
 #. Author of the theme
 msgid "the WordPress team"
 msgstr "el equipo WordPress"
+
+#. Theme URI of the theme
+msgid "https://wordpress.org/themes/twentysixteen/"
+msgstr "https://es.wordpress.org/themes/twentysixteen/"
 
 #. Author URI of the theme
 #: footer.php:60

@@ -130,6 +130,7 @@ abstract class Plugin_Importer {
 				'usermeta'     => esc_html__( 'Import Author Meta', 'rank-math' ) . Admin_Helper::get_tooltip( esc_html__( 'Import meta information like titles, descriptions, focus keyword, robots meta, etc., of your author archive pages.', 'rank-math' ) ),
 				'redirections' => esc_html__( 'Import Redirections', 'rank-math' ) . Admin_Helper::get_tooltip( esc_html__( 'Import all the redirections you have already set up in.', 'rank-math' ) ),
 				'blocks'       => esc_html__( 'Import Blocks', 'rank-math' ) . Admin_Helper::get_tooltip( esc_html__( 'Import and convert all compatible blocks in post contents.', 'rank-math' ) ),
+				'locations'    => esc_html__( 'Import Locations', 'rank-math' ) . Admin_Helper::get_tooltip( esc_html__( 'Import and convert all compatible blocks in post contents.', 'rank-math' ) ),
 			],
 			array_combine(
 				$this->choices,
@@ -183,7 +184,7 @@ abstract class Plugin_Importer {
 		 */
 		$this->items_per_page = absint( $this->do_filter( 'importers/items_per_page', 100 ) );
 
-		$status     = new Status;
+		$status     = new Status();
 		$result     = $this->$perform();
 		$is_success = is_array( $result ) || true === $result;
 
@@ -283,13 +284,13 @@ abstract class Plugin_Importer {
 	}
 
 	/**
-	 * Replace an image to its url and id.
+	 * Replace an image to its URL and ID.
 	 *
 	 * @param string         $source      Source image url.
 	 * @param array|callable $destination Destination array.
 	 * @param string         $image       Image field key to save url.
 	 * @param string         $image_id    Image id field key to save id.
-	 * @param int            $object_id   Object ID either post id, term id or user id.
+	 * @param int            $object_id   Object ID either post ID, term ID or user ID.
 	 */
 	protected function replace_image( $source, $destination, $image, $image_id, $object_id = null ) {
 		if ( empty( $source ) ) {

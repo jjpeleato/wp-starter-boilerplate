@@ -112,7 +112,8 @@ if ( ! class_exists( 'ExactDN' ) ) {
 			$this->debug_message( '<b>' . __METHOD__ . '()</b>' );
 			global $exactdn;
 			if ( is_object( $exactdn ) ) {
-				return 'you are doing it wrong';
+				$this->debug_message( 'you are doing it wrong' );
+				return;
 			}
 
 			// Bail out on customizer.
@@ -136,7 +137,7 @@ if ( ! class_exists( 'ExactDN' ) ) {
 			$uri = add_query_arg( null, null );
 			$this->debug_message( "request uri is $uri" );
 
-			if ( '/robots.txt' === $uri ) {
+			if ( '/robots.txt' === $uri || '/sitemap.xml' === $uri ) {
 				return;
 			}
 			/**
@@ -220,6 +221,12 @@ if ( ! class_exists( 'ExactDN' ) ) {
 				return;
 			}
 			$this->upload_domain = $upload_url_parts['host'];
+			if ( ! $this->get_option( $this->prefix . 'exactdn_local_domain' ) ) {
+				$this->set_option( $this->prefix . 'exactdn_local_domain', $this->upload_domain );
+			}
+			if ( $this->get_option( $this->prefix . 'exactdn_local_domain' ) !== $this->upload_domain && is_admin() ) {
+				add_action( 'admin_notices', $this->prefix . 'notice_exactdn_domain_mismatch' );
+			}
 			$this->debug_message( "allowing images from here: $this->upload_domain" );
 			if (
 				( false !== strpos( $this->upload_domain, 'amazonaws.com' ) || false !== strpos( $this->upload_domain, 'storage.googleapis.com' ) ) &&
@@ -461,7 +468,7 @@ if ( ! class_exists( 'ExactDN' ) ) {
 				$exactdn_activate_error = $error_message;
 				add_action( 'admin_notices', $this->prefix . 'notice_exactdn_activation_error' );
 				return false;
-			} elseif ( ! empty( $result['body'] ) && strpos( $result['body'], 'error' ) === false ) {
+			} elseif ( ! empty( $result['body'] ) && false === strpos( $result['body'], 'error' ) ) {
 				$response = json_decode( $result['body'], true );
 				if ( ! empty( $response['success'] ) ) {
 					if ( 2 === (int) $response['success'] ) {
@@ -486,6 +493,10 @@ if ( ! class_exists( 'ExactDN' ) ) {
 				$error_message = $response['error'];
 				$this->debug_message( "exactdn verification request failed: $error_message" );
 				$exactdn_activate_error = $error_message;
+				if ( false !== strpos( $error_message, 'not found' ) ) {
+					delete_option( $this->prefix . 'exactdn_domain' );
+					delete_site_option( $this->prefix . 'exactdn_domain' );
+				}
 				add_action( 'admin_notices', $this->prefix . 'notice_exactdn_activation_error' );
 				return false;
 			}
@@ -2882,6 +2893,11 @@ if ( ! class_exists( 'ExactDN' ) ) {
 				$args = wp_parse_args( $image_url_parts['query'], $args );
 			}
 
+			// Clear out args for some files (like videos) that might go through image_downsize.
+			if ( ! empty( $extension ) && in_array( $extension, array( 'mp4', 'm4p', 'm4v', 'mov', 'wvm', 'qt', 'webp', 'ogv', 'mpg', 'mpeg', 'mpv' ), true ) ) {
+				$args = array();
+			}
+
 			if ( $args ) {
 				if ( is_array( $args ) ) {
 					$exactdn_url = add_query_arg( $args, $exactdn_url );
@@ -2936,7 +2952,7 @@ if ( ! class_exists( 'ExactDN' ) ) {
 		}
 
 		/**
-		 * Adds link to header which enables DNS prefetching for faster speed.
+		 * Adds link to header which enables DNS prefetching and preconnect for faster speed.
 		 *
 		 * @param array  $hints A list of hints for a particular relationship type.
 		 * @param string $relationship_type The type of hint being filtered: dns-prefetch, preconnect, etc.
@@ -2944,6 +2960,9 @@ if ( ! class_exists( 'ExactDN' ) ) {
 		 */
 		function dns_prefetch( $hints, $relationship_type ) {
 			if ( 'dns-prefetch' === $relationship_type && $this->exactdn_domain ) {
+				$hints[] = '//' . $this->exactdn_domain;
+			}
+			if ( 'preconnect' === $relationship_type && $this->exactdn_domain ) {
 				$hints[] = '//' . $this->exactdn_domain;
 			}
 			return $hints;

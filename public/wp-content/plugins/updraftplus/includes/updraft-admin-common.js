@@ -134,6 +134,34 @@ function updraft_remote_storage_tab_activation(the_method){
 }
 
 /**
+ * Set the email report's setting to a different interface when email storage is selected
+ *
+ * @param {boolean} value True to set the email report setting to another interface, false otherwise
+ */
+function set_email_report_storage_interface(value) {
+	jQuery('#cb_not_email_storage_label').css('display', true === value ? 'none' : 'inline');
+	jQuery('#cb_email_storage_label').css('display', true === value ? 'inline' : 'none');
+	if (true === value) {
+		jQuery('#updraft-navtab-settings-content #updraft_report_row_no_addon input#updraft_email').click(function(e) {
+			return false;
+		});
+	} else {
+		jQuery('#updraft-navtab-settings-content #updraft_report_row_no_addon input#updraft_email').prop("onclick", null).off("click");
+	}
+	if (!jQuery('#updraft-navtab-settings-content #updraft_report_row_no_addon input#updraft_email').is(':checked')) {
+		jQuery('#updraft-navtab-settings-content #updraft_report_row_no_addon input#updraft_email').prop('checked', value);
+	}
+	jQuery('#updraft-navtab-settings-content #updraft_report_row_no_addon input#updraft_email').prop('disabled', value);
+
+	var updraft_email = jQuery('#updraft-navtab-settings-content #updraft_report_row_no_addon input#updraft_email').val();
+
+	jQuery('#updraft-navtab-settings-content #updraft_report_row_no_addon label.email_report input[type="hidden"]').remove();
+	if (true === value) {
+		jQuery('#updraft-navtab-settings-content #updraft_report_row_no_addon label.email_report input#updraft_email').after('<input type="hidden" name="updraft_email" value="'+updraft_email+'">');
+	}
+}
+
+/**
  * Check how many cron jobs are overdue, and display a message if it is several (as determined by the back-end)
  */
 function updraft_check_overduecrons() {
@@ -192,6 +220,7 @@ function updraft_remote_storage_tabs_setup() {
 					anychecked++;
 					jQuery('.remote-tab-'+serv).fadeIn();
 					updraft_remote_storage_tab_activation(serv);
+					if (jQuery('#updraft-navtab-settings-content #updraft_report_row_no_addon').length && 'email' === serv) set_email_report_storage_interface(true);
 				} else {
 					anychecked--;
 					jQuery('.remote-tab-'+serv).hide();
@@ -199,6 +228,7 @@ function updraft_remote_storage_tabs_setup() {
 					if (jQuery('.remote-tab-'+serv).data('active') == true) {
 						updraft_remote_storage_tab_activation(jQuery('.remote-tab:visible').last().attr('name'));
 					}
+					if (jQuery('#updraft-navtab-settings-content #updraft_report_row_no_addon').length && 'email' === serv) set_email_report_storage_interface(false);
 				}
 			}
 		}
@@ -214,12 +244,16 @@ function updraft_remote_storage_tabs_setup() {
 	
 	// Add stuff for free version
 	jQuery('.updraft_servicecheckbox:not(.multi)').change(function() {
+		set_email_report_storage_interface(false);
 		var svalue = jQuery(this).attr('value');
 		if (jQuery(this).is(':not(:checked)')) {
 			jQuery('.updraftplusmethod.'+svalue).hide();
 			jQuery('.updraftplusmethod.none').fadeIn();
 		} else {
 			jQuery('.updraft_servicecheckbox').not(this).prop('checked', false);
+			if ('email' === svalue) {
+				set_email_report_storage_interface(true);
+			}
 		}
 	});
 	

@@ -31,8 +31,8 @@ msgstr "Añade widgets aquí para que se vean en tu barra lateral en las entrada
 msgid "Blog Sidebar"
 msgstr "Barra lateral del blog"
 
-#: template-parts/header/site-branding.php:34
 #: template-parts/navigation/navigation-top.php:31
+#: template-parts/header/site-branding.php:34
 msgid "Scroll down to content"
 msgstr "Desplazarse al contenido"
 
@@ -165,8 +165,8 @@ msgctxt "Libre Franklin font: on or off"
 msgid "on"
 msgstr "on"
 
-#: template-parts/navigation/navigation-top.php:12 functions.php:64
-#: functions.php:205
+#: functions.php:64 functions.php:205
+#: template-parts/navigation/navigation-top.php:12
 msgid "Top Menu"
 msgstr "Menú superior"
 
@@ -195,11 +195,11 @@ msgstr "Nada encontrado"
 msgid "Previous Post"
 msgstr "Entrada anterior:"
 
-#: single.php:33 comments.php:71
+#: comments.php:71 single.php:33
 msgid "Previous"
 msgstr "Anterior"
 
-#: single.php:34 comments.php:72
+#: comments.php:72 single.php:34
 msgid "Next"
 msgstr "Siguiente"
 
@@ -224,12 +224,12 @@ msgid "Search Results for: %s"
 msgstr "Resultados de la búsqueda de: %s"
 
 #. translators: %s: Post title.
-#: template-parts/post/content.php:57 template-parts/post/content-audio.php:84
-#: template-parts/post/content-image.php:61
+#: functions.php:392 template-parts/post/content-gallery.php:71
 #: template-parts/post/content-video.php:83
-#: template-parts/post/content-gallery.php:71
+#: template-parts/post/content-image.php:61
+#: template-parts/post/content-audio.php:84 template-parts/post/content.php:57
+#: template-parts/page/content-front-page-panels.php:45
 #: template-parts/page/content-front-page.php:42
-#: template-parts/page/content-front-page-panels.php:45 functions.php:392
 msgid "Continue reading<span class=\"screen-reader-text\"> \"%s\"</span>"
 msgstr "Continuar leyendo<span class=\"screen-reader-text\"> \"%s\"</span>"
 
@@ -247,11 +247,12 @@ msgstr "Twenty Seventeen necesita, al menos, la versión 4.7 de WordPress. Está
 msgid "Edit<span class=\"screen-reader-text\"> \"%s\"</span>"
 msgstr "Editar <span class=\"screen-reader-text\">«%s»</span>"
 
-#: template-parts/post/content.php:64 template-parts/post/content-audio.php:91
-#: template-parts/post/content-image.php:68
-#: template-parts/post/content-video.php:90
 #: template-parts/post/content-gallery.php:78
+#: template-parts/post/content-video.php:90
+#: template-parts/post/content-image.php:68
+#: template-parts/post/content-audio.php:91 template-parts/post/content.php:64
 #: template-parts/page/content-page.php:26
+#: template-parts/page/content-front-page.php:48
 msgid "Pages:"
 msgstr "Páginas:"
 
@@ -302,25 +303,25 @@ msgctxt "comments title"
 msgid "One Reply to &ldquo;%s&rdquo;"
 msgstr "Una respuesta a «%s»"
 
-#: index.php:55 archive.php:51 search.php:52
+#: archive.php:51 index.php:55 search.php:52
 msgid "Page"
 msgstr "Página"
 
-#: 404.php:21
-msgid "Oops! That page can&rsquo;t be found."
-msgstr "¡Vaya! No se ha podido encontrar esa página."
+#: archive.php:50 index.php:54 search.php:51
+msgid "Next page"
+msgstr "Siguiente página"
+
+#: archive.php:49 index.php:53 search.php:50
+msgid "Previous page"
+msgstr "Página anterior"
 
 #: 404.php:24
 msgid "It looks like nothing was found at this location. Maybe try a search?"
 msgstr "Parece que no hay nada en esa ubicación. ¿Quieres probar a buscar?"
 
-#: index.php:53 archive.php:49 search.php:50
-msgid "Previous page"
-msgstr "Página anterior"
-
-#: index.php:54 archive.php:50 search.php:51
-msgid "Next page"
-msgstr "Siguiente página"
+#: 404.php:21
+msgid "Oops! That page can&rsquo;t be found."
+msgstr "¡Vaya! No se ha podido encontrar esa página."
 
 #. Author of the theme
 msgid "the WordPress team"

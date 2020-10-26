@@ -42,13 +42,13 @@ function reloadDetailsRow(link_id){
 	var details_row = jQuery('#link-details-'+link_id);
 
 	//Load up the new link info                     (so sue me)
-	details_row.find('td').html('<center><?php echo esc_js( __( 'Loading...', 'broken-link-checker' ) ); ?></center>').load(
+	details_row.find('td').html('<center><?php echo esc_js( __( 'Loading...', 'broken-link-checker' ) ); ?></center>').on( 'load', function() {
 		"<?php echo admin_url( 'admin-ajax.php' ); ?>",
 		{
 			'action' : 'blc_link_details',
 			'link_id' : link_id
 		}
-	);
+	});
 }
 
 jQuery(function($){
