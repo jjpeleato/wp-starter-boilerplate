@@ -1094,29 +1094,6 @@ SQL
 		}
 	}
 	public static function initProtection(){ //Basic protection during WAF learning period
-		if (preg_match('#/wp\-admin/admin\-ajax\.php$#i', $_SERVER['SCRIPT_FILENAME'])) {
-			$gAction = isset($_GET['action']) ? $_GET['action'] : '';
-			$pAction = isset($_POST['action']) ? $_POST['action'] : '';
-			if (
-				(($gAction == 'revslider_show_image' || $gAction == 'nopriv_revslider_show_image') && isset($_GET['img']) && preg_match('/\.php$/i', $_GET['img'])) ||
-				(($pAction == 'revslider_show_image' || $pAction == 'nopriv_revslider_show_image') && isset($_POST['img']) && preg_match('/\.php$/i', $_POST['img']))
-			) {
-				self::getLog()->do503(86400, "URL not allowed. Slider Revolution Hack attempt detected. #2");
-				exit(); //function above exits anyway
-			}
-			 
-			if (
-				(
-					(($gAction == 'revslider_ajax_action' || $gAction == 'nopriv_revslider_ajax_action') && isset($_GET['client_action']) && $_GET['client_action'] == 'update_plugin') ||
-					(($pAction == 'revslider_ajax_action' || $pAction == 'nopriv_revslider_ajax_action') && isset($_POST['client_action']) && $_POST['client_action'] == 'update_plugin')
-				) &&
-				!wfUtils::isAdmin()
-			) {
-				self::getLog()->do503(86400, "URL not allowed. Slider Revolution Hack attempt detected. #2");
-				exit(); //function above exits anyway
-			}
-		}
-
 		// Infinite WP Client - Authentication Bypass < 1.9.4.5
 		// https://wpvulndb.com/vulnerabilities/10011
 		$iwpRule = new wfWAFRule(wfWAF::getInstance(), 0x80000000, null, 'auth-bypass', 100, 'Infinite WP Client - Authentication Bypass < 1.9.4.5', 0, 'block', null);
@@ -1820,11 +1797,14 @@ SQL
 					));
 				wp_mail($email, "Unlock email requested", $content, "Content-Type: text/html");
 			}
-			echo "<html><body><h1>Your request was received</h1><p>We received a request to email \"" . wp_kses($email, array()) . "\" instructions to unlock their access. If that is the email address of a site administrator or someone on the Wordfence alert list, they have been emailed instructions on how to regain access to this system. The instructions we sent will expire 30 minutes from now.</body></html>";
+			echo "<html><body><h1>" . __('Your request was received', 'wordfence') . "</h1><p>" .
+				sprintf(__("We received a request to email \"%s\" instructions to unlock their access. If that is the email address of a site administrator or someone on the Wordfence alert list, they have been emailed instructions on how to regain access to this system. The instructions we sent will expire 30 minutes from now.", 'wordfence'), wp_kses($email, array()))
+				. "</p></body></html>";
+
 			exit();
 		} else if($wfFunc == 'unlockAccess'){
 			if (!preg_match('/^(?:(?:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){7})|(?:(?!(?:.*[a-f0-9](?::|$)){7,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?)))|(?:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){5}:)|(?:(?!(?:.*[a-f0-9]:){5,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3}:)?))?(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))(?:\.(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))){3}))$/i', get_transient('wfunlock_' . $_GET['key']))) {
-				echo "Invalid key provided for authentication.";
+				_e("Invalid key provided for authentication.", 'wordfence');
 				exit();
 			}
 			
@@ -1835,7 +1815,7 @@ SQL
 				header('Location: ' . wp_login_url());
 				exit();
 			} else if($_GET['func'] == 'unlockAllIPs'){
-				wordfence::status(1, 'info', "Request received via unlock email link to unblock all IPs.");
+				wordfence::status(1, 'info', __("Request received via unlock email link to unblock all IPs.", 'wordfence'));
 				wfBlock::removeAllIPBlocks();
 				if (class_exists('wfWAFIPBlocksController')) { wfWAFIPBlocksController::setNeedsSynchronizeConfigSettings(); }
 				delete_transient('wflginfl_' . bin2hex(wfUtils::inet_pton(wfUtils::getIP()))); //Reset login failure counter
@@ -1844,7 +1824,7 @@ SQL
 			} else if($_GET['func'] == 'disableRules'){
 				wfConfig::set('firewallEnabled', 0);
 				wfConfig::set('loginSecurityEnabled', 0);
-				wordfence::status(1, 'info', "Request received via unlock email link to unblock all IPs via disabling firewall rules.");
+				wordfence::status(1, 'info', __("Request received via unlock email link to unblock all IPs via disabling firewall rules.", 'wordfence'));
 				wfBlock::removeAllIPBlocks();
 				wfBlock::removeAllCountryBlocks();
 				if (class_exists('wfWAFIPBlocksController')) { wfWAFIPBlocksController::setNeedsSynchronizeConfigSettings(); }
@@ -1852,7 +1832,7 @@ SQL
 				header('Location: ' . wp_login_url());
 				exit();
 			} else {
-				echo "Invalid function specified. Please check the link we emailed you and make sure it was not cut-off by your email reader.";
+				_e("Invalid function specified. Please check the link we emailed you and make sure it was not cut-off by your email reader.", 'wordfence');
 				exit();
 			}
 		}
@@ -1897,7 +1877,7 @@ SQL
 						'IP' => wfUtils::getIP(),
 						'jwt' => wfUtils::generateJWT(array('email' => $email)),
 					));
-					wp_mail($email, "Unsubscribe Requested", $content, "Content-Type: text/html");
+					wp_mail($email, __("Unsubscribe Requested", 'wordfence'), $content, "Content-Type: text/html");
 				}
 				
 				echo wfView::create('common/unsubscribe', array(
@@ -2231,6 +2211,7 @@ SQL
 					'wordpressVersion' => wfConfig::get('wordpressVersion'),
 					'wordpressPluginVersions' => wfConfig::get_ser('wordpressPluginVersions'),
 					'wordpressThemeVersions' => wfConfig::get_ser('wordpressThemeVersions'),
+					'WPLANG' => get_site_option('WPLANG'),
 				);
 				if (wfUtils::isAdmin()) {
 					$errorNonceKey = 'errorNonce_' . get_current_user_id();
@@ -2359,7 +2340,7 @@ SQL
 						wfBlock::createIP($reason, $IP, wfBlock::blockDuration(), time(), time(), 1, wfBlock::TYPE_IP_AUTOMATIC_TEMPORARY);
 						wfActivityReport::logBlockedIP($IP, null, 'bannedurl');
 						$wfLog->tagRequestForBlock($reason);
-						$wfLog->do503(3600, "Accessed a banned URL");
+						$wfLog->do503(3600, __("Accessed a banned URL", 'wordfence'));
 						//exits
 					}
 				}
@@ -2370,7 +2351,7 @@ SQL
 				wfBlock::createIP($reason, $IP, wfBlock::blockDuration(), time(), time(), 1, wfBlock::TYPE_IP_AUTOMATIC_TEMPORARY);
 				wfActivityReport::logBlockedIP($IP, null, 'badpost');
 				$wfLog->tagRequestForBlock($reason);
-				$wfLog->do503(3600, "POST received with blank user-agent and referer");
+				$wfLog->do503(3600, __("POST received with blank user-agent and referer", 'wordfence'));
 				//exits
 			}
 		}
@@ -3711,7 +3692,7 @@ SQL
 			'mode' => 'phone'
 			);
 	}
-	private static function twoFactorAdd($ID, $phone, $code, $mode = 'phone', $totpID){
+	private static function twoFactorAdd($ID, $phone, $code, $mode, $totpID){
 		$twoFactorUsers = wfConfig::get_ser('twoFactorUsers', array());
 		if(! is_array($twoFactorUsers)){
 			$twoFactorUsers = array();
@@ -5733,6 +5714,8 @@ HTML;
 	}
 
 	public static function initAction(){
+		load_plugin_textdomain('wordfence', false, basename(WORDFENCE_PATH) . '/languages');
+
 		$firewall = new wfFirewall();
 		define('WFWAF_OPERATIONAL', $firewall->testConfig());
 		
@@ -6714,14 +6697,14 @@ HTML
 
 		$IPMsg = "";
 		if ($IP) {
-			$IPMsg = "User IP: $IP\n";
+			$IPMsg = sprintf(__("User IP: %s\n", 'wordfence'), $IP);
 			$reverse = wfUtils::reverseLookup($IP);
 			if ($reverse) {
-				$IPMsg .= "User hostname: " . $reverse . "\n";
+				$IPMsg .= sprintf(__("User hostname: %s\n", 'wordfence'), $reverse);
 			}
 			$userLoc = wfUtils::getIPGeo($IP);
 			if ($userLoc) {
-				$IPMsg .= "User location: ";
+				$IPMsg .= __('User location: ', 'wordfence');
 				if ($userLoc['city']) {
 					$IPMsg .= $userLoc['city'] . ', ';
 				}

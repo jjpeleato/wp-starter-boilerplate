@@ -437,6 +437,18 @@ if ($q) {
 			}
 		}
 
+		foreach (
+			array(
+				\WordfenceLS\Controller_DB::TABLE_2FA_SECRETS,
+				\WordfenceLS\Controller_DB::TABLE_SETTINGS,
+			) as $t) {
+			$table = \WordfenceLS\Controller_DB::network_table($t);
+			if (!in_array($table, $existingTables)) {
+				$hasAll = false;
+				$missingTables[] = $t;
+			}
+		}
+
 		if ($hasAll) {
 			_e('All Tables Exist', 'wordfence');
 		} else {

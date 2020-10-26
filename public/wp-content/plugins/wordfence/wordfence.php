@@ -4,8 +4,10 @@ Plugin Name: Wordfence Security
 Plugin URI: http://www.wordfence.com/
 Description: Wordfence Security - Anti-virus, Firewall and Malware Scan
 Author: Wordfence
-Version: 7.4.11
+Version: 7.4.12
 Author URI: http://www.wordfence.com/
+Text Domain: wordfence
+Domain Path: /languages
 Network: true
 */
 if(defined('WP_INSTALLING') && WP_INSTALLING){
@@ -15,8 +17,8 @@ if(defined('WP_INSTALLING') && WP_INSTALLING){
 if (!defined('ABSPATH')) {
 	exit;
 }
-define('WORDFENCE_VERSION', '7.4.11');
-define('WORDFENCE_BUILD_NUMBER', '1598542714');
+define('WORDFENCE_VERSION', '7.4.12');
+define('WORDFENCE_BUILD_NUMBER', '1603293147');
 define('WORDFENCE_BASENAME', function_exists('plugin_basename') ? plugin_basename(__FILE__) :
 	basename(dirname(__FILE__)) . '/' . basename(__FILE__));
 
@@ -39,6 +41,18 @@ if (!defined('WF_IS_WP_ENGINE')) {
 }
 if (!defined('WF_IS_PRESSABLE')) {
 	define('WF_IS_PRESSABLE', (defined('IS_ATOMIC') && IS_ATOMIC) || (defined('IS_PRESSABLE') && IS_PRESSABLE));
+}
+if (!defined('WF_PHP_UNSUPPORTED')) {
+	define('WF_PHP_UNSUPPORTED', version_compare(PHP_VERSION, '5.3', '<'));
+}
+
+if (WF_PHP_UNSUPPORTED) {
+	add_action('all_admin_notices', 'wfUnsupportedPHPOverlay');
+
+	function wfUnsupportedPHPOverlay() {
+		include "views/unsupported-php/admin-message.php";
+	}
+	return;
 }
 
 if(get_option('wordfenceActivated') != 1){

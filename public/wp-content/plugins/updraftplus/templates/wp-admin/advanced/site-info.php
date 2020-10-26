@@ -49,6 +49,7 @@
 	if ('' == $db_version) $db_version = $wpdb->db_version();
 	
 	$updraftplus_admin->settings_debugrow(sprintf(__('%s version:', 'updraftplus'), 'MySQL'), htmlspecialchars($db_version));
+	$updraftplus_admin->settings_debugrow(__('Current SQL mode:', 'updraftplus'), htmlspecialchars($wpdb->get_var('SELECT @@GLOBAL.sql_mode')));
 	if (function_exists('curl_version') && function_exists('curl_exec')) {
 		$cv = curl_version();
 		$cvs = $cv['version'].' / SSL: '.$cv['ssl_version'].' / libz: '.$cv['libz_version'];

@@ -159,8 +159,13 @@ class wordfenceScanner {
 		}
 		
 		$exParts = array_filter($exParts);
-		foreach ($exParts as &$exPart) {
-			$exPart = preg_quote(trim($exPart), '/');
+		foreach ($exParts as $key => &$exPart) {
+			$exPart = trim($exPart);
+			if ($exPart === '*') {
+				unset($exParts[$key]);
+				continue;
+			}
+			$exPart = preg_quote($exPart, '/');
 			$exPart = preg_replace('/\\\\\*/', '.*', $exPart);
 		}
 
@@ -417,7 +422,7 @@ class wordfenceScanner {
 											'severity' => wfIssues::SEVERITY_CRITICAL,
 											'ignoreP' => $this->path . $file,
 											'ignoreC' => $fileSum,
-											'shortMsg' => __('File appears to be malicious: ', 'wordfence') . esc_html($file),
+											'shortMsg' => __('File appears to be malicious or unsafe: ', 'wordfence') . esc_html($file),
 											'longMsg' => $customMessage . ' ' . __('The matched text in this file is:', 'wordfence') . ' ' . '<strong style="color: #F00;" class="wf-split-word">' . wfUtils::potentialBinaryStringToHTML((wfUtils::strlen($matchString) > 200 ? wfUtils::substr($matchString, 0, 200) . '...' : $matchString)) . '</strong>' . '<br><br>' . sprintf(__('The issue type is: <strong>%s</strong>', 'wordfence'), esc_html($rule[7])) . '<br>' . sprintf(__('Description: <strong>%s</strong>', 'wordfence'), esc_html($rule[3])) . $extraMsg,
 											'data' => array_merge(array(
 												'file' => $file,

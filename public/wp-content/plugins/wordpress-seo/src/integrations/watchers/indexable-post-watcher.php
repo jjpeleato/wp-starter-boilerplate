@@ -1,9 +1,4 @@
 <?php
-/**
- * WordPress Post watcher.
- *
- * @package Yoast\YoastSEO\Watchers
- */
 
 namespace Yoast\WP\SEO\Integrations\Watchers;
 
@@ -19,10 +14,11 @@ use Yoast\WP\SEO\Loggers\Logger;
 use Yoast\WP\SEO\Models\Indexable;
 use Yoast\WP\SEO\Repositories\Indexable_Hierarchy_Repository;
 use Yoast\WP\SEO\Repositories\Indexable_Repository;
-use Yoast\WP\SEO\Repositories\SEO_Links_Repository;
 use YoastSEO_Vendor\Psr\Log\LogLevel;
 
 /**
+ * WordPress Post watcher.
+ *
  * Fills the Indexable according to Post data.
  */
 class Indexable_Post_Watcher implements Integration_Interface {
@@ -106,7 +102,7 @@ class Indexable_Post_Watcher implements Integration_Interface {
 		$this->repository           = $repository;
 		$this->builder              = $builder;
 		$this->hierarchy_repository = $hierarchy_repository;
-		$this->link_builder         = $link_builder        ;
+		$this->link_builder         = $link_builder;
 		$this->author_archive       = $author_archive;
 		$this->post                 = $post;
 		$this->logger               = $logger;
@@ -163,12 +159,20 @@ class Indexable_Post_Watcher implements Integration_Interface {
 			return;
 		}
 
+		$post = $this->post->get_post( $updated_indexable->object_id );
+
 		// When the indexable is public or has a change in its public state.
 		if ( $updated_indexable->is_public || $updated_indexable->is_public !== $old_indexable->is_public ) {
-			$this->update_relations( $this->post->get_post( $updated_indexable->object_id ) );
+			$this->update_relations( $post );
+		}
+
+		if ( $post ) {
+			$this->link_builder->build( $updated_indexable, $post->post_content );
 		}
 
 		$this->update_has_public_posts( $updated_indexable );
+
+		$updated_indexable->save();
 	}
 
 	/**

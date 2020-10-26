@@ -237,6 +237,10 @@ class UpdraftPlus_Admin {
 		if (!empty($this->storage_service_without_settings)) {
 			add_action('all_admin_notices', array($this, 'show_admin_warning_if_remote_storage_settting_are_empty'));
 		}
+
+		if ($updraftplus->is_restricted_hosting('only_one_backup_per_month')) {
+			add_action('all_admin_notices', array($this, 'show_admin_warning_one_backup_per_month'));
+		}
 	}
 	
 	private function setup_all_admin_notices_udonly($service, $override = false) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Filter use
@@ -432,6 +436,8 @@ class UpdraftPlus_Admin {
 	 * Run upon the WP admin_init action
 	 */
 	private function admin_init() {
+
+		add_action('admin_init', array($this, 'maybe_download_backup_from_email'));
 
 		add_action('core_upgrade_preamble', array($this, 'core_upgrade_preamble'));
 		add_action('admin_action_upgrade-plugin', array($this, 'admin_action_upgrade_pluginortheme'));
@@ -797,6 +803,8 @@ class UpdraftPlus_Admin {
 			$checkout_embed_5gb_trial_attribute = $updraftplus_checkout_embed->get_product('updraftplus-vault-storage-5-gb') ? 'data-embed-checkout="'.apply_filters('updraftplus_com_link', $updraftplus_checkout_embed->get_product('updraftplus-vault-storage-5-gb', UpdraftPlus_Options::admin_page_url().'?page=updraftplus&tab=settings')).'"' : '';
 		}
 
+		$hosting_company = $updraftplus->get_hosting_info();
+
 		wp_localize_script('updraft-admin-common', 'updraftlion', array(
 			'tab' => empty($_GET['tab']) ? 'backups' : $_GET['tab'],
 			'sendonlyonwarnings' => __('Send a report only when there are warnings/errors', 'updraftplus'),
@@ -995,6 +1003,9 @@ class UpdraftPlus_Admin {
 			'delete_error_log_prompt' => __('Please check the error log for more details', 'updraftplus'),
 			'existing_backups_limit' => defined('UPDRAFTPLUS_EXISTING_BACKUPS_LIMIT') ? UPDRAFTPLUS_EXISTING_BACKUPS_LIMIT : 100,
 			'remote_scan_warning' => __('Warning: if you continue, you will add all backups stored in the configured remote storage directory (whichever site they were created by).'),
+			'hosting_restriction_one_backup_permonth' => __("You have reached the monthly limit for the number of backups you can create at this time.", 'updraftplus').' '.__('Your hosting provider only allows you to take one backup per month.', 'updraftplus').' '.sprintf(__("Please contact your hosting company (%s) if you require further support.", 'updraftplus'), $hosting_company['name']),
+			'hosting_restriction_one_incremental_perday' => __("You have reached the daily limit for the number of incremental backups you can create at this time.", 'updraftplus').' '.__("Your hosting provider only allows you to take one incremental backup per day.", 'updraftplus').' '.sprintf(__("Please contact your hosting company (%s) if you require further support.", 'updraftplus'), $hosting_company['name']),
+			'hosting_restriction' => $updraftplus->is_hosting_backup_limit_reached(),
 		));
 	}
 	
@@ -1016,10 +1027,7 @@ class UpdraftPlus_Admin {
 				global $updraftplus_notices;
 				echo apply_filters('updraftplus_autobackup_blurb', $updraftplus_notices->do_notice('autobackup', 'autobackup', true));
 			} else {
-				echo '<div class="updraft-ad-container updated" style="display:block;">';
-				echo '<h3 style="margin-top: 2px;">'. __('Be safe with an automatic backup', 'updraftplus').'</h3>';
 				echo apply_filters('updraftplus_autobackup_blurb', '');
-				echo '</div>';
 			}
 		?>
 		<script>
@@ -1167,6 +1175,21 @@ class UpdraftPlus_Admin {
 			global $updraftplus_notices;
 			$updraftplus_notices->do_notice('autobackup', 'autobackup');
 		}
+	}
+
+	/**
+	 * Show an administrative warning message, which can appear only on the UpdraftPlus plugin page
+	 *
+	 * @param String $message the HTML for the message (already escaped)
+	 * @param String $class   CSS class to use for the div
+	 */
+	public function show_plugin_page_admin_warning($message, $class = 'updated') {
+
+		global $pagenow, $plugin_page;
+
+		if (UpdraftPlus_Options::admin_page() !== $pagenow || 'updraftplus' !== $plugin_page) return;
+
+		$this->show_admin_warning($message, $class);
 	}
 
 	/**
@@ -1427,15 +1450,16 @@ class UpdraftPlus_Admin {
 			$known_size = isset($backup_history[$timestamp][$type.$itext.'-size']) ? $backup_history[$timestamp][$type.$itext.'-size'] : 0;
 
 			$services = isset($backup_history[$timestamp]['service']) ? $backup_history[$timestamp]['service'] : false;
-			if (is_string($services)) $services = array($services);
-
+			
+			$services = $updraftplus->get_canonical_service_list($services);
+			
 			$updraftplus->jobdata_set('service', $services);
 
 			// Fetch it from the cloud, if we have not already got it
 
 			$needs_downloading = false;
 
-			if (!file_exists($fullpath) && (array('none') === $services || empty($services))) {
+			if (!file_exists($fullpath) && empty($services)) {
 				$updraftplus->log('This file does not exist locally, and there is no remote storage for this file.');
 			} elseif (!file_exists($fullpath)) {
 				// If the file doesn't exist and they're using one of the cloud options, fetch it down from the cloud.
@@ -2142,6 +2166,8 @@ class UpdraftPlus_Admin {
 	 * @return String
 	 */
 	public function get_activejobs_list($request) {
+
+		global $updraftplus;
 	
 		$download_status = empty($request['downloaders']) ? array() : $this->get_download_statuses(explode(':', $request['downloaders']));
 
@@ -2163,13 +2189,17 @@ class UpdraftPlus_Admin {
 				$logupdate_array = $this->fetch_log($log_nonce, $log_pointer);
 			}
 		}
-		return array(
+		$res = array(
 			// We allow the front-end to decide what to do if there's nothing logged - we used to (up to 1.11.29) send a pre-defined message
 			'l' => htmlspecialchars(UpdraftPlus_Options::get_updraft_lastmessage()),
 			'j' => $active_jobs,
 			'ds' => $download_status,
-			'u' => $logupdate_array
+			'u' => $logupdate_array,
 		);
+
+		$res['hosting_restriction'] = $updraftplus->is_hosting_backup_limit_reached();
+
+		return $res;
 	}
 	
 	/**
@@ -3899,21 +3929,30 @@ class UpdraftPlus_Admin {
 	 * @return Array - keys are used as identifiers in the UI drop-down; values are user-displayed text describing the interval
 	 */
 	public function get_intervals($what_for = 'db') {
-		$intervals = array(
-			'manual' => _x('Manual', 'i.e. Non-automatic', 'updraftplus'),
-			'everyhour' => __('Every hour', 'updraftplus'),
-			'every2hours' => sprintf(__('Every %s hours', 'updraftplus'), '2'),
-			'every4hours' => sprintf(__('Every %s hours', 'updraftplus'), '4'),
-			'every8hours' => sprintf(__('Every %s hours', 'updraftplus'), '8'),
-			'twicedaily' => sprintf(__('Every %s hours', 'updraftplus'), '12'),
-			'daily' => __('Daily', 'updraftplus'),
-			'weekly' => __('Weekly', 'updraftplus'),
-			'fortnightly' => __('Fortnightly', 'updraftplus'),
-			'monthly' => __('Monthly', 'updraftplus'),
-		);
-		
-		if ('files' == $what_for) unset($intervals['everyhour']);
-		
+		global $updraftplus;
+
+		if ($updraftplus->is_restricted_hosting('only_one_backup_per_month')) {
+			$intervals = array(
+				'manual' => _x('Manual', 'i.e. Non-automatic', 'updraftplus'),
+				'monthly' => __('Monthly', 'updraftplus')
+			);
+		} else {
+			$intervals = array(
+				'manual' => _x('Manual', 'i.e. Non-automatic', 'updraftplus'),
+				'everyhour' => __('Every hour', 'updraftplus'),
+				'every2hours' => sprintf(__('Every %s hours', 'updraftplus'), '2'),
+				'every4hours' => sprintf(__('Every %s hours', 'updraftplus'), '4'),
+				'every8hours' => sprintf(__('Every %s hours', 'updraftplus'), '8'),
+				'twicedaily' => sprintf(__('Every %s hours', 'updraftplus'), '12'),
+				'daily' => __('Daily', 'updraftplus'),
+				'weekly' => __('Weekly', 'updraftplus'),
+				'fortnightly' => __('Fortnightly', 'updraftplus'),
+				'monthly' => __('Monthly', 'updraftplus'),
+			);
+			
+			if ('files' == $what_for) unset($intervals['everyhour']);
+		}
+
 		return apply_filters('updraftplus_backup_intervals', $intervals, $what_for);
 	}
 	
@@ -5764,14 +5803,14 @@ ENDHERE;
 	/**
 	 * This function will build and return the UpdraftPlus tempoaray clone ui widget
 	 *
-	 * @param boolean $is_admin_user         - a boolean to indicate if the user who requested the clone has clone management permissions
+	 * @param boolean $include_testing_ui	 - a boolean to indicate if testing-only UI elements should be shown (N.B. they can only work if the user also has testing permissions)
 	 * @param array   $supported_wp_versions - an array of supported WordPress versions
 	 * @param array   $supported_packages    - an array of supported clone packages
 	 * @param array   $supported_regions     - an array of supported clone regions
 	 *
 	 * @return string - the clone UI widget
 	 */
-	public function updraftplus_clone_ui_widget($is_admin_user = false, $supported_wp_versions, $supported_packages, $supported_regions) {
+	public function updraftplus_clone_ui_widget($include_testing_ui = false, $supported_wp_versions, $supported_packages, $supported_regions) {
 		global $updraftplus;
 
 		$output = '<p class="updraftplus-option updraftplus-option-inline php-version">';
@@ -5823,7 +5862,7 @@ ENDHERE;
 		$output .= '</select>';
 		$output .= '</p>';
 
-		if ((defined('UPDRAFTPLUS_UPDRAFTCLONE_DEVELOPMENT') && UPDRAFTPLUS_UPDRAFTCLONE_DEVELOPMENT) || $is_admin_user) {
+		if ((defined('UPDRAFTPLUS_UPDRAFTCLONE_DEVELOPMENT') && UPDRAFTPLUS_UPDRAFTCLONE_DEVELOPMENT) || $include_testing_ui) {
 			$output .= '<p class="updraftplus-option updraftplus-option-inline updraftclone-branch">';
 			$output .= ' <span class="updraftplus-option-label">UpdraftClone Branch:</span> ';
 			$output .= '<input id="updraftplus_clone_updraftclone_branch" type="text" size="36" name="updraftplus_clone_updraftclone_branch" value="">';
@@ -5832,9 +5871,10 @@ ENDHERE;
 			$output .= ' <span class="updraftplus-option-label">UpdraftPlus Branch:</span> ';
 			$output .= '<input id="updraftplus_clone_updraftplus_branch" type="text" size="36" name="updraftplus_clone_updraftplus_branch" value="">';
 			$output .= '</p>';
+			$output .= '<p><input type="checkbox" id="updraftplus_clone_use_queue" name="updraftplus_clone_use_queue" value="1" checked="checked"><label for="updraftplus_clone_use_queue" class="updraftplus_clone_use_queue">Use the UpdraftClone queue</label></p>';
 		}
 		$output .= '<p class="updraftplus-option limit-to-admins">';
-		$output .= '<input type="checkbox" class="updraftplus_clone_admin_login_options" id="" name="updraftplus_clone_admin_login_options" value="1" checked="checked">';
+		$output .= '<input type="checkbox" class="updraftplus_clone_admin_login_options" id="updraftplus_clone_admin_login_options" name="updraftplus_clone_admin_login_options" value="1" checked="checked">';
 		$output .= '<label for="updraftplus_clone_admin_login_options" class="updraftplus_clone_admin_login_options_label">'.__('Forbid non-administrators to login to WordPress on your clone', 'updraftplus').'</label>';
 		$output .= '</p>';
 
@@ -5987,5 +6027,39 @@ ENDHERE;
 		$response['updraftplus']['time_now'] = get_date_from_gmt(gmdate('Y-m-d H:i:s'), 'D, F j, Y H:i');
 
 		return $response;
+	}
+
+	/**
+	 * Show warning about restriction implied by the hosting company (can only perform a full backup once per month, incremental backup should not go above one per day)
+	 */
+	public function show_admin_warning_one_backup_per_month() {
+
+		global $updraftplus;
+
+		$hosting_company = $updraftplus->get_hosting_info();
+
+		$txt1 = __('Your website is hosted with %s (%s).', 'updraftplus');
+		$txt2 = __('%s permits UpdraftPlus to perform only one backup per month. Thus, we recommend you choose a full backup when performing a manual backup and to use that option when creating a scheduled backup.', 'updraftplus');
+		$txt3 = __('Due to the restriction, some settings can be automatically adjusted, disabled or not available.', 'updraftplus');
+
+		$this->show_plugin_page_admin_warning('<strong>'.__('Warning', 'updraftplus').':</strong> '.sprintf("$txt1 $txt2 $txt3", $hosting_company['name'], $hosting_company['website'], $hosting_company['name']), 'update-nag notice notice-warning', true);
+	}
+
+	/**
+	 * Find out if the current request is a backup download request, and proceed with the download if it is
+	 */
+	public function maybe_download_backup_from_email() {
+		global $pagenow;
+		if ((!defined('DOING_AJAX') || !DOING_AJAX) && UpdraftPlus_Options::admin_page() === $pagenow && isset($_REQUEST['page']) && 'updraftplus' === $_REQUEST['page'] && isset($_REQUEST['action']) && 'updraft_download_backup' === $_REQUEST['action']) {
+			$findexes = empty($_REQUEST['findex']) ? array(0) : $_REQUEST['findex'];
+			$timestamp = empty($_REQUEST['timestamp']) ? '' : $_REQUEST['timestamp'];
+			$nonce = empty($_REQUEST['nonce']) ? '' : $_REQUEST['nonce'];
+			$type = empty($_REQUEST['type']) ? '' : $_REQUEST['type'];
+			if (empty($timestamp) || empty($nonce) || empty($type)) wp_die(__('The download link is broken, you may have clicked the link from untrusted source', 'updraftplus'), '', array('back_link' => true));
+			$backup_history = UpdraftPlus_Backup_History::get_history();
+			if (!isset($backup_history[$timestamp]['nonce']) || $backup_history[$timestamp]['nonce'] !== $nonce) wp_die(__("The download link is broken or the backup file is no longer available", 'updraftplus'), '', array('back_link' => true));
+			$this->do_updraft_download_backup($findexes, $type, $timestamp, 2, false, '');
+			exit; // we don't need anything else but an exit
+		}
 	}
 }

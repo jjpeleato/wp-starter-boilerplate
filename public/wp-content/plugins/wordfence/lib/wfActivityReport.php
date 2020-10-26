@@ -372,14 +372,15 @@ SQL
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Returns list of firewall activity up to $limit number of entries.
-	 * 
+	 *
 	 * @param int $limit Max events to return in results
+	 * @param int $remainder
 	 * @return array
 	 */
-	public function getRecentFirewallActivity($limit = 300, &$remainder) {
+	public function getRecentFirewallActivity($limit, &$remainder) {
 		$dateRange = wfActivityReport::getReportDateRange();
 		$recent_firewall_activity = new wfRecentFirewallActivity(null, max(604800, $dateRange[1] - $dateRange[0]));
 		$recent_firewall_activity->run();

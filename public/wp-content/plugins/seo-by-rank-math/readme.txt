@@ -1,15 +1,15 @@
 === Rank Math - SEO Plugin for WordPress ===
 Contributors: rankmath
-Plugin link: https://s.rankmath.com/homepage
+Plugin link: https://rankmath.com/?utm_source=LP&utm_campaign=WP
 Tags: seo, sitemap, google search console, schema, redirection
 Tested up to: 5.5.1
 Requires at least: 5.2
 Requires PHP: 7.0
-Stable tag: 1.0.48.1
+Stable tag: 1.0.50.1
 License: GPL-2.0+
 License URI: https://www.gnu.org/licenses/gpl-2.0.txt
 
-Rank Math is a revolutionary SEO plugin that combines the features of many SEO tools in a single package & helps you multiply your traffic.
+Rank Math is a revolutionary WordPress SEO plugin that combines the features of many SEO tools in a single package & helps you multiply your traffic.
 
 == Description ==
 
@@ -475,37 +475,33 @@ Please drop us an email at support@rankmath.com and we would be more than happy 
 
 == Changelog ==
 
-= 1.0.48.1 [Sep 27, 2020] =
-* Added: A Filter hook in the Setup Wizard steps
-* Fixed: External Redirections were not working on some installations
-* Fixed: Content analysis was not detecting the content added in the Elementor editor
-* Fixed: Hidden Primary Category option in the Classic Editor due to small CSS bug
-* Fixed: Breaking of Rank Math metabox after using `rank_math/gutenberg/enabled` filter in the Block editor
-* Fixed: jQuery Migrate Helper deprecated warning appearing after the last update
+= 1.0.50.1 [Oct 22, 2020] =
+* Fixed: 'Add Image' button was not working in the [Social tab](https://rankmath.com/kb/meta-box-social-tab/)
+* Fixed: Typo in the Restaurant schema type
+* Fixed: Old EDD product schema converting to the `WooCommerce Product` Schema; this will not affect the frontend output
+* Fixed: `Product` Schema was set on the newly created WooCommerce products instead of `WooCommerce Product` Schema
+* Fixed: Already reviewed checkbox was not working in the Elementor Modal's Ask review tab
 
-= 1.0.48 [Sep 26, 2020] =
-* Added: [HUGE] Completely revamped the UI for our [Schema](https://rankmath.com/kb/rich-snippets/) module. Introducing tree structure UI, now anyone can easily understand the Schema markup in a visual format. Comes with required field validation.
-* Added: [NEW] [Entity Graph](https://www.w3.org/TR/json-ld/#named-graphs) for the Schema markup. Now all the nodes are connected by edges
-* Added: Code to make [upcoming PRO version](https://rankmath.com/pro/) compatible with the free version
-* Improved: UI of the export option in the Redirections page
-* Improved: Some missing text in the translation file
-* Improved: Added a condition to check if a method exists in the `Paper` class
-* Improved: Use `site_url()` instead of `home_url()`
-* Improved: Beta functionality now downloads [beta version](https://rankmath.com/kb/version-control/#beta-updates) from the Trunk folder of WordPress.org SVN
-* Changed: Time options in the Recipe Schema now need `PT` as a prefix, example: PT1H30M
-* Changed: Default mode to 'Advanced' on new installations
-* Fixed: [Contact shortcode](https://rankmath.com/kb/titles-and-meta/#displaying-your-contact-information) was not showing some contact info like Email & Phone number
-* Fixed: `%name%` variable was not working in the backend of single posts and pages
-* Fixed: `%name%` variable was showing the wrong user name in the profile edit page
-* Fixed: Variation Products were showing price mismatch warning in the Google Merchant Centre
-* Fixed: PHP warnings related to [beta testing](https://rankmath.com/kb/version-control/#beta-updates) functionality on some installations
-* Fixed: Schema markup issue when `BankOrCreditUnion` is selected in the Local SEO settings
-* Fixed: Removed non-archive CPT pages from the breadcrumb's schema markup code
-* Fixed: Shortcodes were not rendering on the frontend for the Category/Taxonomy description text
-* Fixed: CPTs created by some third party plugins in the [Titles & Meta](https://rankmath.com/kb/titles-and-meta/) global settings were not displaying
-* Fixed: Datepicker styling issue with the Coupon theme from PremiumPress
-* Fixed: Opening Days in the Restaurant Schema were not available for the block editor & Elementor
-* Fixed: Minimum required WordPress version notice in the Setup Wizard
-* Fixed: Icon styling in the FAQ and HowTo blocks
+= 1.0.50 [Oct 20, 2020] =
+* Added: Reconnect button on the Analytics settings page. This option can be used to refresh the property list
+* Added: Individual WooCommerce Product reviews in the [Schema markup](https://rankmath.com/kb/rich-snippets/) code along with the aggregate rating
+* Improved: Removed some unused code and **reduced the plugin zip file from `2.8 MB` to `2.06 MB`**
+* Improved: Made Analytics menu dot red if Google services are disconnected
+* Improved: Hide the rest of the Google Analytics and Google Search Console properties once settings are saved so no one else can see which websites are verified under your account
+* Improved: Red color dot shows up beside the Analytics menu item if Google Services are not connected
+* Improved: The CTA action box styling in the Schema popups
+* Improved: Google Maps API Key option field now uses a password type to hide the key from showing up to everyone
+* Improved: Replaced multi-select fields in the Schema types with checkboxes
+* Improved: Schema module's performance by optimizing the code further
+* Improved: Remove default border from the contact shortcode Map and also remove some unused CSS
+* Removed: Google Analytics traffic stats introduced in the last update as they were causing issue due to high usage on several installations
+* Removed: Adsense account and few other scopes as those are not required in the free version
+* Fixed: Encoded category URLs were throwing 404 error when the Remove Category Base option was enabled [Thanks to [@dawnbirth](https://github.com/dawnbirth)]
+* Fixed: Schema `@type` set as `false` if the business type is set as none
+* Fixed: An issue where the Google services were disconnecting on some installations
+* Fixed: Date Archive enable/disable option labels were showing in the reverse order
+* Fixed: 404 Monitor page title shows as a link
+* Fixed: UI issues in the Elementor dark mode
+* Fixed: System Info tab showing "Copied!" text all the time
 
 Full changelog can be found here - **[Rank Math SEO changelog](https://rankmath.com/changelog/?utm_source=LP&utm_campaign=WP)**

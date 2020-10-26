@@ -27,7 +27,7 @@ else {
 	define('WORDFENCE_LS_FROM_CORE', ($wfCoreActive && isset($wfCoreLoading) && $wfCoreLoading));
 	
 	define('WORDFENCE_LS_VERSION', '1.0.5');
-	define('WORDFENCE_LS_BUILD_NUMBER', '1598542714');
+	define('WORDFENCE_LS_BUILD_NUMBER', '1603293147');
 	
 	if (!defined('WORDFENCE_LS_EMAIL_VALIDITY_DURATION_MINUTES')) { define('WORDFENCE_LS_EMAIL_VALIDITY_DURATION_MINUTES', 15); }
 	

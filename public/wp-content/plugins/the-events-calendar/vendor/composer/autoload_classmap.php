@@ -11,6 +11,7 @@ return array(
     'Tribe\\Events\\Editor\\Objects\\Event' => $baseDir . '/src/Tribe/Editor/Objects/Event.php',
     'Tribe\\Events\\I18n' => $baseDir . '/src/Tribe/I18n.php',
     'Tribe\\Events\\Integrations\\Beaver_Builder' => $baseDir . '/src/Tribe/Integrations/Beaver_Builder.php',
+    'Tribe\\Events\\Integrations\\WPML\\Views\\V2\\Filters' => $baseDir . '/src/Tribe/Integrations/WPML/Views/V2/Filters.php',
     'Tribe\\Events\\Integrations\\WP_Rocket' => $baseDir . '/src/Tribe/Integrations/WP_Rocket.php',
     'Tribe\\Events\\Models\\Post_Types\\Event' => $baseDir . '/src/Tribe/Models/Post_Types/Event.php',
     'Tribe\\Events\\Models\\Post_Types\\Venue' => $baseDir . '/src/Tribe/Models/Post_Types/Venue.php',
@@ -64,4 +65,8 @@ return array(
     'Tribe\\Events\\Views\\V2\\Views\\Traits\\List_Behavior' => $baseDir . '/src/Tribe/Views/V2/Views/Traits/List_Behavior.php',
     'Tribe\\Events\\Views\\V2\\Views\\Traits\\With_Fast_Forward_Link' => $baseDir . '/src/Tribe/Views/V2/Views/Traits/With_Fast_Forward_Link.php',
     'Tribe\\Events\\Views\\V2\\Views\\Traits\\iCal_Data' => $baseDir . '/src/Tribe/Views/V2/Views/Traits/iCal_Data.php',
+    'Tribe\\Events\\Views\\V2\\Views\\Widgets\\Widget_List_View' => $baseDir . '/src/Tribe/Views/V2/Views/Widgets/Widget_List_View.php',
+    'Tribe\\Events\\Views\\V2\\Widgets\\Service_Provider' => $baseDir . '/src/Tribe/Views/V2/Widgets/Service_Provider.php',
+    'Tribe\\Events\\Views\\V2\\Widgets\\Widget_Abstract' => $baseDir . '/src/Tribe/Views/V2/Widgets/Widget_Abstract.php',
+    'Tribe\\Events\\Views\\V2\\Widgets\\Widget_List' => $baseDir . '/src/Tribe/Views/V2/Widgets/Widget_List.php',
 );

@@ -3,7 +3,7 @@ Contributors: Backup with UpdraftPlus, DavidAnderson, DNutbourne, aporter, snigh
 Tags: backup, restore, database backup, wordpress backup, cloud backup, s3, dropbox, google drive, onedrive, ftp, backups
 Requires at least: 3.2
 Tested up to: 5.5
-Stable tag: 1.16.29
+Stable tag: 1.16.32
 Author URI: https://updraftplus.com
 Donate link: https://david.dw-perspective.org.uk/donate
 License: GPLv3 or later
@@ -166,7 +166,35 @@ Unfortunately not; since this is free software, there’s no warranty and no gua
 
 The <a href="https://updraftplus.com/news/">UpdraftPlus backup blog</a> is the best place to learn in more detail about any important changes.
 
-N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which is 1 higher in the first digit, and has an extra component on the end, but the changelog below still applies. i.e. changes listed for 1.16.29.x of the free version correspond to changes made in 2.16.29.x of the paid version.
+N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which is 1 higher in the first digit, and has an extra component on the end, but the changelog below still applies. i.e. changes listed for 1.16.32.x of the free version correspond to changes made in 2.16.32.x of the paid version.
+
+= 1.16.32 - 20/Oct/2020 =
+
+* TWEAK: Cookie policy changes in the Chrome family of browsers broke the embedded checkout; hence, this is now disabled (goes directly to updraftplus.com instead).
+* TWEAK: Exclude All In One WP Migration-related archive files when backing up plugins and/or others from the UpdraftPlus backup process
+* TWEAK: Add downloadable backup links in the Backup Report email (Reporting Addon)
+* TWEAK: Rename some classes in our fork of the Google SDK to prevent conflicts
+* TWEAK: Improve automatic backups output when 'UPDRAFTPLUS_NOAUTOBACKUPS' constant is defined.
+* TWEAK: Remove the now-redundant concept of inner loops from the database table backup routine
+
+= 1.16.31 - 20/Oct/2020 =
+
+* FIX: A regression in 1.16.30 meant that tables with integer primary keys which used signed integers omitted the first row of the table from the backups. This is not common (e.g. it does not affect any core WP tables; most plugins adding tables follow WP core in using unsigned integers for primary keys).
+
+= 1.16.30 - 15/Oct/2020 =
+
+* PERFORMANCE: Where a table has a numerical primary key, extract its data using that index. This results in a substantial performance increase when fetching large tables using PHP. (The filter updraftplus_can_use_primary_key_default can be used to de-activate this behaviour).
+* FIX: Remove incorrect decodeURIComponent() parsing when importing settings, which could prevent import of settings containing some special characters
+* FIX: An issue where database tables that were not selected to be backed up in a "Backup Now" backup would get added to the backup during a resumption (i.e. if it did not finish in a single run)
+* TWEAK: Catch errors from Google Cloud when the bucket is not found
+* TWEAK: Fix undefined variables instead of expected values in message prior to settings import
+* TWEAK: Strip the redundant WHERE for the --where parameter to mysqldump (which modern versions strip out, but a version was found that didn't)
+* TWEAK: Handle hosts that have disabled the session_id() function
+* TWEAK: Provide SQL mode information in the 'Site Information' section under the 'Advanced Tools' tab and in the database backup's header
+* TWEAK: Show a notification of UpdraftPlus plugin updates even if the associated user account is not connected to the UpdraftPlus website
+* TWEAK: Add mechanism to detect what hosting provider is being used and use it to make UpdraftPlus comply with Kinsta's backup limit policies (thus removing it from the list of disallowed plugins)
+* TWEAK: When booting a clone if it's claimed from the clone queue then update the token being used
+* TWEAK: Tweaked downwards the minimum time in the future for rescheduling a resumption
 
 = 1.16.29 - 08/Sep/2020 =
 
@@ -1087,4 +1115,4 @@ Furthermore, reliance upon any non-English translation is at your own risk. Updr
 We recognise and thank the following for code and/or libraries used and/or modified under the terms of their open source licences; see: https://updraftplus.com/acknowledgements/
 
 == Upgrade Notice ==
-* 1.16.29: Fix a couple of issues with S3 backups to Cape Town and downloading via the dashboard; various other small tweaks/improvements. A recommended update for all.
+* 1.16.32: Fixes various minor inconveniences. A recommended update for all.

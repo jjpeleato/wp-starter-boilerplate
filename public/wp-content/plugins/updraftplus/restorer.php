@@ -1103,11 +1103,10 @@ class Updraft_Restorer {
 	 * The purposes of the $type parameter are 1) to detect 'others' and apply a historical bugfix 2) to detect wpcore, and apply the setting for what to do with wp-config.php 3) to work out whether to delete the directory itself
 	 * Must use only wp_filesystem
 	 * $dest_dir must already have a trailing slash
-	 * $preserve_existing: this setting only applies at the top level: 0 = overwrite with no backup; 1 = make backup of existing; 2 = do nothing if there is existing, 3 = do nothing to the top level directory, but do copy-in contents (and over-write files). Thus, on a multi-archive set where you want a backup, you'd do this: first call with $preserve_existing === 1, then on subsequent zips call with 3
 	 *
 	 * @param  string  $working_dir       specify working directory
 	 * @param  string  $dest_dir          specify destination directory (a WP_Filesystem path)
-	 * @param  integer $preserve_existing check to preserve exisitng file
+	 * @param  integer $preserve_existing this setting only applies at the top level: 0 = overwrite with no backup; 1 = make backup of existing; 2 = do nothing if there is existing, 3 = do nothing to the top level directory, but do copy-in contents (and over-write files). Thus, on a multi-archive set where you want a backup, you'd do this: first call with $preserve_existing === 1, then on subsequent zips call with 3
 	 * @param  array   $do_not_overwrite  Specify files or directories not to overwrite
 	 * @param  string  $type              specify type
 	 * @param  boolean $send_actions      send actions
