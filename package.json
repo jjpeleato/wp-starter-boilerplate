@@ -22,29 +22,31 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "gulp:dev": "gulp",
-        "gulp:prod": "env NODE_ENV=production gulp"
+        "gulp:prod": "env NODE_ENV=production gulp",
+        "gulp:validate": "gulp validate"
     },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/jjpeleato/wp-starter-boilerplate.git"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-free": "^5.11.2",
-        "bootstrap": "^4.4.1",
+        "@fortawesome/fontawesome-free": "^5.15.1",
+        "@popperjs/core": "^2.5.3",
+        "aos": "^2.3.4",
+        "bootstrap": "^4.5.3",
         "jquery": "^3.4.1",
-        "lazyload": "^2.0.0-rc.2",
-        "owl.carousel": "^2.3.4",
-        "photoswipe": "^4.1.3",
-        "popper.js": "^1.16.0",
+        "normalize.css": "^8.0.1",
+        "salvattore": "^1.0.9",
         "skrollr": "^0.6.26",
-        "wow.js": "^1.2.2"
+        "tiny-slider": "^2.9.3",
+        "vanilla-lazyload": "^17.1.3"
     },
     "devDependencies": {
-        "@babel/core": "^7.7.5",
-        "@babel/preset-env": "^7.7.5",
-        "@babel/register": "^7.7.4",
-        "autoprefixer": "^9.7.3",
-        "browser-sync": "^2.26.7",
+        "@babel/core": "^7.12.3",
+        "@babel/preset-env": "^7.12.1",
+        "@babel/register": "^7.12.1",
+        "autoprefixer": "^9.8.6",
+        "browser-sync": "^2.26.13",
         "del": "^3.0.0",
         "gulp": "^4.0.2",
         "gulp-autoprefixer": "^6.1.0",
@@ -56,12 +58,20 @@
         "gulp-sass": "^4.0.2",
         "gulp-sourcemaps": "^2.6.4",
         "gulp-stylelint": "^8.0.0",
-        "gulp-terser": "^1.2.0",
+        "gulp-terser": "^1.4.0",
         "gulp-uglifycss": "^1.1.0",
         "gulp-util": "^3.0.8",
-        "jshint": "^2.10.3",
+        "husky": "^4.3.0",
+        "jshint": "^2.12.0",
         "stylelint": "^9.10.1",
         "stylelint-config-standard": "^18.3.0",
         "stylelint-scss": "^3.13.0"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lando npm run gulp:validate",
+            "post-merge": "lando npm install --save-dev",
+            "post-rewrite": "lando npm install --save-dev"
+        }
     }
 }

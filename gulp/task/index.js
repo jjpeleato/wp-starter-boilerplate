@@ -44,6 +44,7 @@ gulp.task('imagesAssets', imagesAssets);
 gulp.task('js', js);
 gulp.task('jsAssets', jsAssets);
 gulp.task('jsWithConcat', jsWithConcat);
+gulp.task('validate', gulp.series(validateScss, validateJs));
 gulp.task('validateJs', validateJs);
 gulp.task('validateScss', validateScss);
 gulp.task('watch', watch);
