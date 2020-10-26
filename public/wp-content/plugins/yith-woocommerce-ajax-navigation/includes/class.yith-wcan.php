@@ -78,14 +78,14 @@ if ( ! class_exists( 'YITH_WCAN' ) ) {
         public function __construct() {
 
             $this->version = YITH_WCAN_VERSION;
-            
+
             /**
              * WooCommerce Version Check
              */
             $this->current_wc_version = WC()->version;
             $this->is_wc_older_2_1    = version_compare( $this->current_wc_version, '2.1', '<' );
             $this->is_wc_older_2_6    = version_compare( $this->current_wc_version, '2.6', '<' );
-            
+
             /**
              * WordPress Version Check
              */
@@ -95,7 +95,7 @@ if ( ! class_exists( 'YITH_WCAN' ) ) {
             if( $this->is_wc_older_2_6 ){
                 $this->filter_term_field = 'term_id';
             }
-            
+
 
             /* Load Plugin Framework */
             add_action( 'plugins_loaded', array( $this, 'plugin_fw_loader' ), 15 );
@@ -231,9 +231,9 @@ if ( ! class_exists( 'YITH_WCAN' ) ) {
 
         /**
          * Support to ultimate members functions
-         * 
+         *
          * The method set_predefined_fields call a WP_Query that generate
-         * an issue with shop filtered query. Move this step to init with priority 2 
+         * an issue with shop filtered query. Move this step to init with priority 2
          * instead of 1
          *
          * @author Andrea Grillo <andrea.grillo@yithemes.com>
@@ -247,6 +247,36 @@ if ( ! class_exists( 'YITH_WCAN' ) ) {
                 add_action('init',  array($ultimatemember->builtin, 'set_predefined_fields'), 2);
             }
         }
+
+	    /**
+	     * Register plugins for activation tab
+	     *
+	     * @return void
+	     * @since    2.0.0
+	     * @author   Andrea Grillo <andrea.grillo@yithemes.com>
+	     */
+	    public function register_plugin_for_activation() {
+		    if ( ! class_exists( 'YIT_Plugin_Licence' ) ) {
+			    require_once YITH_WCAN_DIR . 'plugin-fw/lib/yit-plugin-licence.php';
+		    }
+
+		    YIT_Plugin_Licence()->register( YITH_WCAN_INIT, YITH_WCAN_SECRET_KEY, YITH_WCAN_SLUG );
+	    }
+
+	    /**
+	     * Register plugins for update tab
+	     *
+	     * @return void
+	     * @since    2.0.0
+	     * @author   Andrea Grillo <andrea.grillo@yithemes.com>
+	     */
+	    public function register_plugin_for_updates() {
+		    if ( ! class_exists( 'YIT_Upgrade' ) ) {
+			    require_once YITH_WCAN_DIR . 'plugin-fw/lib/yit-upgrade.php';
+		    }
+
+		    YIT_Upgrade()->register( YITH_WCAN_SLUG, YITH_WCAN_INIT );
+	    }
 
     }
 }

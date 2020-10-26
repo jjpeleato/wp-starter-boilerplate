@@ -124,6 +124,9 @@ class EIO_Alt_Webp extends EIO_Page_Parser {
 			}
 		}
 
+		if ( function_exists( 'swis' ) && swis()->settings->get_option( 'cdn_domain' ) ) {
+			$this->webp_paths[] = swis()->settings->get_option( 'cdn_domain' );
+		}
 		foreach ( $this->webp_paths as $webp_path ) {
 			$webp_domain = $this->parse_url( $webp_path, PHP_URL_HOST );
 			if ( $webp_domain ) {
@@ -202,11 +205,16 @@ class EIO_Alt_Webp extends EIO_Page_Parser {
 			'usemap',
 			'vspace',
 			'width',
+			'data-animation',
 			'data-attachment-id',
+			'data-auto-height',
 			'data-caption',
 			'data-comments-opened',
+			'data-delay',
 			'data-event-trigger',
+			'data-flex_fx',
 			'data-height',
+			'data-hide-on-end',
 			'data-highlight-color',
 			'data-highlight-border-color',
 			'data-highlight-border-opacity',
@@ -215,18 +223,32 @@ class EIO_Alt_Webp extends EIO_Page_Parser {
 			'data-image-meta',
 			'data-image-title',
 			'data-image-description',
+			'data-interval',
 			'data-large_image_width',
 			'data-large_image_height',
 			'data-lazy',
 			'data-lazy-type',
+			'data-mode',
+			'data-name',
 			'data-no-lazy',
 			'data-orig-size',
+			'data-partial',
+			'data-per-view',
 			'data-permalink',
 			'data-pin-description',
 			'data-pin-id',
 			'data-pin-media',
 			'data-pin-url',
+			'data-rel',
+			'data-ride',
+			'data-shadow',
+			'data-shadow-direction',
+			'data-slide',
+			'data-slide-to',
+			'data-target',
+			'data-vc-zoom',
 			'data-width',
+			'data-wrap',
 		);
 		foreach ( $attributes as $attribute ) {
 			$attr_value = $this->get_attribute( $image, $attribute );

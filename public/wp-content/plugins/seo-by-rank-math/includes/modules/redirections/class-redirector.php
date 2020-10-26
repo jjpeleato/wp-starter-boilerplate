@@ -88,7 +88,7 @@ class Redirector {
 	 * Set the required values.
 	 */
 	private function start() {
-		$this->uri = str_replace( site_url( '/' ), '', Param::server( 'REQUEST_URI' ) );
+		$this->uri = str_replace( home_url( '/' ), '', Param::server( 'REQUEST_URI' ) );
 		$this->uri = urldecode( $this->uri );
 		$this->uri = trim( Redirection::strip_subdirectory( $this->uri ), '/' );
 
@@ -318,7 +318,6 @@ class Redirector {
 
 		require_once ABSPATH . 'wp-admin/includes/screen.php';
 
-		$assets_uri = untrailingslashit( plugin_dir_url( __FILE__ ) );
 		include_once \dirname( __FILE__ ) . '/views/debugging.php';
 		exit;
 	}

@@ -1,19 +1,12 @@
 <?php
-/**
- * Cart Coupons route.
- *
- * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
- * @package WooCommerce/Blocks
- */
-
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
-
-defined( 'ABSPATH' ) || exit;
 
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\CartController;
 
 /**
  * CartCoupons class.
+ *
+ * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
 class CartCoupons extends AbstractRoute {
 	/**
@@ -33,20 +26,23 @@ class CartCoupons extends AbstractRoute {
 	public function get_args() {
 		return [
 			[
-				'methods'  => \WP_REST_Server::READABLE,
-				'callback' => [ $this, 'get_response' ],
-				'args'     => [
+				'methods'             => \WP_REST_Server::READABLE,
+				'callback'            => [ $this, 'get_response' ],
+				'permission_callback' => '__return_true',
+				'args'                => [
 					'context' => $this->get_context_param( [ 'default' => 'view' ] ),
 				],
 			],
 			[
-				'methods'  => \WP_REST_Server::CREATABLE,
-				'callback' => [ $this, 'get_response' ],
-				'args'     => $this->schema->get_endpoint_args_for_item_schema( \WP_REST_Server::CREATABLE ),
+				'methods'             => \WP_REST_Server::CREATABLE,
+				'callback'            => [ $this, 'get_response' ],
+				'permission_callback' => '__return_true',
+				'args'                => $this->schema->get_endpoint_args_for_item_schema( \WP_REST_Server::CREATABLE ),
 			],
 			[
-				'methods'  => \WP_REST_Server::DELETABLE,
-				'callback' => [ $this, 'get_response' ],
+				'methods'             => \WP_REST_Server::DELETABLE,
+				'permission_callback' => '__return_true',
+				'callback'            => [ $this, 'get_response' ],
 			],
 			'schema' => [ $this->schema, 'get_public_item_schema' ],
 		];

@@ -471,6 +471,8 @@
                             $data = apply_filters('pto/save-ajax-order', $data, $menu_order, $id);
                             
                             $wpdb->update( $wpdb->posts, $data, array('ID' => $id) );
+                            
+                            clean_post_cache( $id );
                         }
                         
                     //trigger action completed

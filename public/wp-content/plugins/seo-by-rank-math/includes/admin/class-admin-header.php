@@ -26,7 +26,7 @@ class Admin_Header {
 	/**
 	 * Hold current screen ID.
 	 *
-	 * @var Current screen id.
+	 * @var Current screen ID.
 	 */
 	private $screen_id = '';
 
@@ -39,7 +39,7 @@ class Admin_Header {
 		?>
 		<div class="rank-math-header">
 			<div class="rank-math-logo">
-				<?php echo $logo_url; ?>
+				<?php echo $logo_url; // phpcs:ignore ?>
 			</div>
 			<h1 class="rank-math-logo-text">Rank Math SEO</h1>
 			<?php $this->get_search_options(); ?>
@@ -121,7 +121,7 @@ class Admin_Header {
 			'seo-analysis'           => 'rank-math-seo-analysis' === Param::get( 'page' ),
 		];
 
-		$link = 'https://rankmath.com/kb/';
+		$link = 'https://rankmath.com/kb/?utm_source=Plugin&utm_medium=RM%20Header%20KB%20Icon&utm_campaign=WP';
 		foreach ( $links as $key => $value ) {
 			if ( $value ) {
 				$link = KB::get( $key );

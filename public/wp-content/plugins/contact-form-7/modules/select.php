@@ -40,7 +40,14 @@ function wpcf7_select_form_tag_handler( $tag ) {
 		$atts['aria-required'] = 'true';
 	}
 
-	$atts['aria-invalid'] = $validation_error ? 'true' : 'false';
+	if ( $validation_error ) {
+		$atts['aria-invalid'] = 'true';
+		$atts['aria-describedby'] = wpcf7_get_validation_error_reference(
+			$tag->name
+		);
+	} else {
+		$atts['aria-invalid'] = 'false';
+	}
 
 	$multiple = $tag->has_option( 'multiple' );
 	$include_blank = $tag->has_option( 'include_blank' );
@@ -127,18 +134,17 @@ add_filter( 'wpcf7_validate_select*', 'wpcf7_select_validation_filter', 10, 2 );
 function wpcf7_select_validation_filter( $result, $tag ) {
 	$name = $tag->name;
 
-	if ( isset( $_POST[$name] )
-	and is_array( $_POST[$name] ) ) {
-		foreach ( $_POST[$name] as $key => $value ) {
-			if ( '' === $value ) {
-				unset( $_POST[$name][$key] );
-			}
-		}
+	$has_value = isset( $_POST[$name] ) && '' !== $_POST[$name];
+
+	if ( $has_value and $tag->has_option( 'multiple' ) ) {
+		$vals = array_filter( (array) $_POST[$name], function( $val ) {
+			return '' !== $val;
+		} );
+
+		$has_value = ! empty( $vals );
 	}
 
-	$empty = ! isset( $_POST[$name] ) || empty( $_POST[$name] ) && '0' !== $_POST[$name];
-
-	if ( $tag->is_required() and $empty ) {
+	if ( $tag->is_required() and ! $has_value ) {
 		$result->invalidate( $tag, wpcf7_get_message( 'invalid_required' ) );
 	}
 

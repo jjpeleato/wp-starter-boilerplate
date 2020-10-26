@@ -1,13 +1,5 @@
 <?php
-/**
- * Abstract dynamic block class.
- *
- * @package WooCommerce/Blocks
- */
-
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
-
-defined( 'ABSPATH' ) || exit;
 
 /**
  * AbstractDynamicBlock class.
@@ -40,6 +32,7 @@ abstract class AbstractDynamicBlock {
 				'editor_style'    => 'wc-block-editor',
 				'style'           => 'wc-block-style',
 				'attributes'      => $this->get_attributes(),
+				'supports'        => [],
 			)
 		);
 	}

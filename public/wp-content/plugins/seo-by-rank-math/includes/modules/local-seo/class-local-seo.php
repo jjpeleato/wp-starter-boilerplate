@@ -33,7 +33,7 @@ class Local_Seo {
 		$this->ajax( 'search_pages', 'search_pages' );
 		$this->action( 'after_setup_theme', 'location_sitemap' );
 		$this->filter( 'rank_math/settings/title', 'add_settings' );
-		$this->filter( 'rank_math/json_ld', 'organization_or_person', 15, 2 );
+		$this->filter( 'rank_math/json_ld', 'organization_or_person', 9, 2 );
 	}
 
 	/**
@@ -45,7 +45,7 @@ class Local_Seo {
 			'company' === Helper::get_settings( 'titles.knowledgegraph_type' ) &&
 			$this->do_filter( 'sitemap/locations', false )
 		) {
-			new KML_File;
+			new KML_File();
 		}
 	}
 
@@ -102,10 +102,6 @@ class Local_Seo {
 	 * @return array
 	 */
 	public function organization_or_person( $data, $json_ld ) {
-		if ( ! $this->can_output_schema() ) {
-			return $data;
-		}
-
 		$entity = [
 			'@type' => '',
 			'@id'   => '',
@@ -116,33 +112,24 @@ class Local_Seo {
 		$json_ld->add_prop( 'email', $entity );
 		$json_ld->add_prop( 'url', $entity );
 		$json_ld->add_prop( 'address', $entity );
-		$json_ld->add_prop( 'image', $entity );
+
+		if ( $value = Helper::get_settings( 'titles.knowledgegraph_logo' ) ) { // phpcs:ignore
+			$entity['logo'] = [
+				'@type' => 'ImageObject',
+				'url'   => $value,
+			];
+		}
 
 		switch ( Helper::get_settings( 'titles.knowledgegraph_type' ) ) {
 			case 'company':
-				$data['Organization'] = $this->organization( $entity );
+				$data['publisher'] = $this->organization( $entity );
 				break;
 			case 'person':
-				$data['Person'] = $this->person( $entity, $json_ld );
+				$data['publisher'] = $this->person( $entity, $json_ld );
 				break;
 		}
 
 		return $data;
-	}
-
-	/**
-	 * Check if schema data can be output.
-	 *
-	 * @return bool
-	 */
-	private function can_output_schema() {
-		$post_id = Post::get_simple_page_id();
-		$pages   = array_map( 'absint', array_filter( [ Helper::get_settings( 'titles.local_seo_about_page' ), Helper::get_settings( 'titles.local_seo_contact_page' ) ] ) );
-		if ( $post_id > 0 && ! in_array( $post_id, $pages, true ) && ! is_front_page() ) {
-			return false;
-		}
-
-		return true;
 	}
 
 	/**
@@ -154,8 +141,12 @@ class Local_Seo {
 		$name            = Helper::get_settings( 'titles.knowledgegraph_name' );
 		$type            = Helper::get_settings( 'titles.local_business_type' );
 		$entity['@type'] = $type ? $type : 'Organization';
-		$entity['@id']   = get_home_url() . '#organization';
+		$entity['@id']   = home_url( '/#organization' );
 		$entity['name']  = $name ? $name : get_bloginfo( 'name' );
+
+		if ( is_singular() && 'Organization' !== $type ) {
+			$entity['@type'] = \array_values( array_filter( [ $type, 'Organization' ] ) );
+		}
 
 		$this->add_contact_points( $entity );
 		$this->add_geo_cordinates( $entity );
@@ -166,7 +157,7 @@ class Local_Seo {
 			$entity['priceRange'] = $price_range;
 		}
 
-		return $this->sanitize_organization_schema( $entity, $entity['@type'] );
+		return $this->sanitize_organization_schema( $entity, $type );
 	}
 
 	/**
@@ -181,14 +172,22 @@ class Local_Seo {
 			return false;
 		}
 
-		$entity['@type'] = 'Person';
-		$entity['@id']   = '#person';
+		$entity['@type'] = is_singular()
+		? [
+			'Organization',
+			'Person',
+		]
+		: 'Person';
+		$entity['@id']   = home_url( '/#person' );
 		$entity['name']  = $name;
 		$json_ld->add_prop( 'phone', $entity );
 
 		if ( isset( $entity['logo'] ) ) {
 			$entity['image'] = $entity['logo'];
-			unset( $entity['logo'] );
+
+			if ( ! is_singular() ) {
+				unset( $entity['logo'] );
+			}
 		}
 
 		return $entity;
@@ -288,7 +287,7 @@ class Local_Seo {
 			'ecp'  => [ 'Zoo', 'Airport', 'Beach', 'BusStation', 'BusStop', 'Cemetery', 'Crematorium', 'TaxiStand', 'TrainStation', 'EventVenue', 'Museum', 'MusicVenue', 'PlaceOfWorship', 'Buddhist Temple', 'CatholicChurch', 'Church', 'Hindu Temple', 'Mosque', 'Synagogue', 'RVPark', 'SubwayStation', 'GovernmentBuilding', 'CityHall', 'Courthouse', 'DefenceEstablishment', 'Embassy', 'LegislativeBuilding', 'ParkingFacility', 'Park', 'PerformingArtsTheater', 'Playground' ],
 			'op'   => [ 'Organization', 'Corporation', 'EducationalOrganization', 'CollegeorUniversity', 'ElementarySchool', 'HighSchool', 'MiddleSchool', 'Preschool', 'School', 'SportsTeam', 'MedicalOrganization', 'DiagnosticLab', 'Pharmacy', 'VeterinaryCare', 'PerformingGroup', 'DanceGroup', 'MusicGroup', 'TheaterGroup', 'GovernmentOrganization', 'NGO' ],
 			'opec' => [ 'Residence', 'ApartmentComplex', 'GatedResidenceCommunity', 'SingleFamilyResidence', 'Aquarium' ],
-			'logo' => [ 'AnimalShelter', 'AutomotiveBusiness', 'Campground', 'ChildCare', 'DryCleaningorLaundry', 'Dentist', 'EmergencyService', 'FireStation', 'PoliceStation', 'EntertainmentBusiness', 'AdultEntertainment', 'AmusementPark', 'ArtGallery', 'Casino', 'ComedyClub', 'NightClub', 'EmploymentAgency', 'TravelAgency', 'Store', 'BikeStore', 'BookStore', 'ClothingStore', 'ComputerStore', 'ConvenienceStore', 'DepartmentStore', 'ElectronicsStore', 'Florist', 'FurnitureStore', 'GardenStore', 'GroceryStore', 'HardwareStore', 'HobbyShop', 'HomeGoodsStore', 'JewelryStore', 'LiquorStore', 'MensClothingStore', 'MobilePhoneStore', 'MovieRentalStore', 'MusicStore', 'OfficeEquipmentStore', 'OutletStore', 'PawnShop', 'PetStore', 'ShoeStore', 'SportingGoodsStore', 'TireShop', 'ToyStore', 'WholesaleStore', 'FinancialService', 'Hospital', 'MovieTheater', 'HomeAndConstructionBusiness', 'Electrician', 'GeneralContractor', 'Plumber', 'InternetCafe', 'Library', 'LocalBusiness', 'LodgingBusiness', 'Hostel', 'Hotel', 'Motel', 'BedAndBreakfast', 'RadioStation', 'RealEstateAgent', 'RecyclingCenter', 'SelfStorage', 'ShoppingCenter', 'SportsActivityLocation', 'BowlingAlley', 'ExerciseGym', 'GolfCourse', 'HealthClub', 'PublicSwimmingPool', 'SkiResort', 'SportsClub', 'TennisComplex', 'StadiumOrArena', 'TelevisionStation', 'TouristInformationCenter', 'MovingCompany', 'InsuranceAgency', 'ProfessionalService', 'HVACBusiness', 'AutoBodyShop', 'AutoDealer', 'AutoPartsStore', 'AutoRental', 'AutoRepair', 'AutoWash', 'GasStation', 'MotorcycleDealer', 'MotorcycleRepair', 'AccountingService', 'AutomatedTeller', 'BankOrCreditUnion', 'FoodEstablishment', 'Bakery', 'BarOrPub', 'Brewery', 'CafeorCoffeeShop', 'FastFoodRestaurant', 'IceCreamShop', 'Restaurant', 'Winery', 'GovernmentOffice', 'PostOffice', 'HealthAndBeautyBusiness', 'BeautySalon', 'DaySpa', 'HairSalon', 'HealthClub', 'NailSalon', 'TattooParlor', 'HousePainter', 'Locksmith', 'Notary', 'RoofingContractor', 'LegalService', 'Physician', 'Optician', 'MedicalClinic' ],
+			'logo' => [ 'AnimalShelter', 'AutomotiveBusiness', 'Campground', 'ChildCare', 'DryCleaningorLaundry', 'Dentist', 'EmergencyService', 'FireStation', 'PoliceStation', 'EntertainmentBusiness', 'AdultEntertainment', 'AmusementPark', 'ArtGallery', 'Casino', 'ComedyClub', 'NightClub', 'EmploymentAgency', 'TravelAgency', 'Store', 'BikeStore', 'BookStore', 'ClothingStore', 'ComputerStore', 'ConvenienceStore', 'DepartmentStore', 'ElectronicsStore', 'Florist', 'FurnitureStore', 'GardenStore', 'GroceryStore', 'HardwareStore', 'HobbyShop', 'HomeGoodsStore', 'JewelryStore', 'LiquorStore', 'MensClothingStore', 'MobilePhoneStore', 'MovieRentalStore', 'MusicStore', 'OfficeEquipmentStore', 'OutletStore', 'PawnShop', 'PetStore', 'ShoeStore', 'SportingGoodsStore', 'TireShop', 'ToyStore', 'WholesaleStore', 'FinancialService', 'Hospital', 'MovieTheater', 'HomeAndConstructionBusiness', 'Electrician', 'GeneralContractor', 'Plumber', 'InternetCafe', 'Library', 'LocalBusiness', 'LodgingBusiness', 'Hostel', 'Hotel', 'Motel', 'BedAndBreakfast', 'RadioStation', 'RealEstateAgent', 'RecyclingCenter', 'SelfStorage', 'ShoppingCenter', 'SportsActivityLocation', 'BowlingAlley', 'ExerciseGym', 'GolfCourse', 'HealthClub', 'PublicSwimmingPool', 'SkiResort', 'SportsClub', 'TennisComplex', 'StadiumOrArena', 'TelevisionStation', 'TouristInformationCenter', 'MovingCompany', 'InsuranceAgency', 'ProfessionalService', 'HVACBusiness', 'AutoBodyShop', 'AutoDealer', 'AutoPartsStore', 'AutoRental', 'AutoRepair', 'AutoWash', 'GasStation', 'MotorcycleDealer', 'MotorcycleRepair', 'AccountingService', 'AutomatedTeller', 'FoodEstablishment', 'Bakery', 'BarOrPub', 'Brewery', 'CafeorCoffeeShop', 'FastFoodRestaurant', 'IceCreamShop', 'Restaurant', 'Winery', 'GovernmentOffice', 'PostOffice', 'HealthAndBeautyBusiness', 'BeautySalon', 'DaySpa', 'HairSalon', 'HealthClub', 'NailSalon', 'TattooParlor', 'HousePainter', 'Locksmith', 'Notary', 'RoofingContractor', 'LegalService', 'Physician', 'Optician', 'MedicalClinic', 'BankorCreditUnion' ],
 		];
 
 		$perform = false;
@@ -354,7 +353,6 @@ class Local_Seo {
 	private function sanitize_organization_logo( $entity ) {
 		if ( isset( $entity['logo'] ) ) {
 			$entity['image'] = $entity['logo'];
-			unset( $entity['logo'] );
 		}
 		if ( isset( $entity['contactPoint'] ) ) {
 			$entity['telephone'] = $entity['contactPoint'][0]['telephone'];

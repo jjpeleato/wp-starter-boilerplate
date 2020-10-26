@@ -170,7 +170,7 @@ class UpdraftCentral_Posts_Commands extends UpdraftCentral_Commands {
 			require_once(ABSPATH.'wp-admin/includes/theme.php');
 		}
 
-		$templates = get_page_templates();
+		$templates = get_page_templates(null, 'post');
 		if (!empty($templates)) {
 			$templates = array_flip($templates);
 			if (!isset($templates['default'])) {
@@ -1161,7 +1161,7 @@ class UpdraftCentral_Posts_Commands extends UpdraftCentral_Commands {
 			require_once(ABSPATH.'wp-admin/includes/theme.php');
 		}
 
-		$templates = get_page_templates();
+		$templates = get_page_templates(null, 'post');
 		$template_options = array();
 		foreach ($templates as $template => $filename) {
 			$item = array(

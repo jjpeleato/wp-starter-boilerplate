@@ -16,6 +16,15 @@ if (!defined('WF_IS_PRESSABLE')) {
 	define('WF_IS_PRESSABLE', (defined('IS_ATOMIC') && IS_ATOMIC) || (defined('IS_PRESSABLE') && IS_PRESSABLE));
 }
 
+if (!defined('WF_PHP_UNSUPPORTED')) {
+	define('WF_PHP_UNSUPPORTED', version_compare(PHP_VERSION, '5.3', '<'));
+}
+
+if (WF_PHP_UNSUPPORTED) {
+	return;
+}
+
+
 
 require_once(dirname(__FILE__) . '/wfWAFUserIPRange.php');
 require_once(dirname(__FILE__) . '/wfWAFIPBlocksController.php');
@@ -734,6 +743,57 @@ class wfWAFWordPressStorageMySQL extends wfWAFStorageMySQL {
 	}
 }
 
+class wfWAFWordPressI18n implements wfWAFI18nEngine {
+
+	protected $translations;
+
+	/** @var wfWAFStorageInterface */
+	private $storageEngine;
+	/**
+	 * @var wfMO
+	 */
+	private $mo;
+
+	/**
+	 * @param wfWAFStorageInterface $storageEngine
+	 */
+	public function __construct($storageEngine) {
+		$this->storageEngine = $storageEngine;
+		$this->loadTranslations();
+	}
+
+	/**
+	 * @param string $text
+	 * @return string
+	 */
+	public function __($text) {
+		if ($this->mo) {
+			$translated = $this->mo->translate($text);
+			if ($translated) {
+				return $translated;
+			}
+		}
+
+		return $text;
+	}
+
+	protected function loadTranslations() {
+		require_once dirname(__FILE__) . '/pomo/mo.php';
+
+		$currentLocale = $this->storageEngine->getConfig('WPLANG', '', 'synced');
+
+		// Find translation file for the current language.
+		$mofile = dirname(__FILE__) . '/../languages/wordfence-' . $currentLocale . '.mo';
+		if (!file_exists($mofile)) {
+			// No translation, use the default
+			$mofile = dirname(__FILE__) . '/../languages/wordfence.mo';
+		}
+
+		$this->mo = new wfMO();
+		return $this->mo->import_from_file( $mofile );
+	}
+}
+
 if (!defined('WFWAF_LOG_PATH')) {
 	if (!defined('WP_CONTENT_DIR')) { //Loading before WordPress
 		exit();
@@ -863,6 +923,8 @@ try {
 			$GLOBALS['wfWAFDebugBuildException'] = $e;
 		}
 	}
+
+	wfWAFI18n::setInstance(new wfWAFI18n(new wfWAFWordPressI18n($wfWAFStorageEngine)));
 
 	try {
 		wfWAF::getInstance()->run();

@@ -4,15 +4,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YITH Plugin Starter 1.0.0 Plugin FW\n"
 "Report-Msgid-Bugs-To: YITH <plugins@yithemes.com>\n"
-"POT-Creation-Date: 2020-06-10 08:56:54+00:00\n"
-"PO-Revision-Date: 2020-04-06 10:45+0200\n"
+"POT-Creation-Date: 2020-08-07 14:15:08+00:00\n"
+"PO-Revision-Date: 2020-08-13 10:05+0100\n"
 "Last-Translator: \n"
 "Language-Team: Your Inspiration Themes <info@yithemes.com>\n"
 "Language: el_GR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.3\n"
 "X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
 "_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;"
 "esc_html_x:1,2c;_x;_ex\n"
@@ -21,6 +21,30 @@ msgstr ""
 "X-Poedit-Basepath: ..\n"
 "X-Textdomain-Support: yes\n"
 "X-Poedit-SearchPath-0: .\n"
+
+#: lib/yit-assets.php:102
+msgid "Clear"
+msgstr "Καθαρισμός"
+
+#: lib/yit-assets.php:103
+msgid "Clear color"
+msgstr "Καθαρισμός χρώματος"
+
+#: lib/yit-assets.php:104
+msgid "Default"
+msgstr "Προεπιλεγμένο"
+
+#: lib/yit-assets.php:105
+msgid "Select default color"
+msgstr "Επιλογή προεπιλεγμένου χρώματος"
+
+#: lib/yit-assets.php:106
+msgid "Select Color"
+msgstr "Επιλογή Χρώματος"
+
+#: lib/yit-assets.php:107
+msgid "Color value"
+msgstr "Αξία χρώματος"
 
 #: lib/yit-cpt-unlimited.php:462 lib/yit-cpt-unlimited.php:576
 #: lib/yit-cpt-unlimited.php:721 lib/yit-cpt-unlimited.php:1636
@@ -202,7 +226,7 @@ msgstr "Προσθήκη %s από εικόνες"
 msgid "Upload multiple files"
 msgstr "Ανέβασμα πολλαπλών αρχείων"
 
-#: lib/yit-plugin-panel-wc.php:403
+#: lib/yit-plugin-panel-wc.php:426
 msgid "The changes you have made will be lost if you leave this page."
 msgstr ""
 "Οι αλλαγές που έχετε δημιουργήσει θα χαθούν αν αφήσετε αυτήν την σελίδα."
@@ -215,12 +239,12 @@ msgstr "Ρυθμίσεις Προσθέτου"
 msgid "How to install premium version"
 msgstr "Πώς να εγκαταστήσετε την προηγμένη έκδοση"
 
-#: lib/yit-plugin-panel.php:602 lib/yit-plugin-subpanel.php:151
+#: lib/yit-plugin-panel.php:617 lib/yit-plugin-subpanel.php:151
 #: templates/panel/woocommerce/woocommerce-form.php:14
 msgid "Save Changes"
 msgstr "Αποθήκευση Αλλαγών"
 
-#: lib/yit-plugin-panel.php:605 lib/yit-plugin-subpanel.php:154
+#: lib/yit-plugin-panel.php:621 lib/yit-plugin-subpanel.php:154
 #: templates/panel/woocommerce/woocommerce-form.php:17
 msgid ""
 "If you continue with this action, you will reset all options in this page."
@@ -228,70 +252,70 @@ msgstr ""
 "Αν συνεχίσετε με αυτή την ενέργεια θα επαναφέρετε όλες τις επιλογές στη "
 "σελίδα."
 
-#: lib/yit-plugin-panel.php:607 lib/yit-plugin-subpanel.php:156
+#: lib/yit-plugin-panel.php:624 lib/yit-plugin-subpanel.php:156
 msgid "Reset to default"
 msgstr "Επαναφορά σε προεπιλεγμένο"
 
-#: lib/yit-plugin-panel.php:608 lib/yit-plugin-subpanel.php:157
+#: lib/yit-plugin-panel.php:625 lib/yit-plugin-subpanel.php:157
 #: templates/panel/woocommerce/woocommerce-form.php:21
 msgid "Are you sure?"
 msgstr "Είστε σίγουρος;"
 
-#: lib/yit-plugin-panel.php:806
+#: lib/yit-plugin-panel.php:823
 msgid ""
 "The element you have entered already exists. Please, enter another name."
 msgstr "Το στοιχείο που εισάγατε υπάρχει ήδη. Παρακαλώ, εισάγετε άλλο όνομα."
 
-#: lib/yit-plugin-panel.php:807
+#: lib/yit-plugin-panel.php:824
 msgid "Settings saved"
 msgstr "Ρυθμίσεις αποθηκεύτηκαν"
 
-#: lib/yit-plugin-panel.php:808
+#: lib/yit-plugin-panel.php:825
 msgid "Settings reset"
 msgstr "Επαναφορά ρυθμίσεων"
 
-#: lib/yit-plugin-panel.php:809
+#: lib/yit-plugin-panel.php:826
 msgid "Element deleted correctly."
 msgstr "Το στοιχείο διαγράφηκε επιτυχώς."
 
-#: lib/yit-plugin-panel.php:810 lib/yit-plugin-panel.php:811
+#: lib/yit-plugin-panel.php:827 lib/yit-plugin-panel.php:828
 msgid "Element updated correctly."
 msgstr "Το στοιχείο αναβαθμίστηκε επιτυχώς."
 
-#: lib/yit-plugin-panel.php:812
+#: lib/yit-plugin-panel.php:829
 msgid "Database imported correctly."
 msgstr "Επιτυχής εισαγωγή βάσης δεδομένων."
 
-#: lib/yit-plugin-panel.php:813
+#: lib/yit-plugin-panel.php:830
 msgid "An error has occurred during import. Please try again."
 msgstr "Παρουσιάστηκε σφάλμα κατά την εισαγωγή. Παρακαλώ προσπαθήστε ξανά."
 
-#: lib/yit-plugin-panel.php:814
+#: lib/yit-plugin-panel.php:831
 msgid "The added file is not valid."
 msgstr "Το προστιθέμενο αρχείο δεν είναι έγκυρο."
 
-#: lib/yit-plugin-panel.php:815
+#: lib/yit-plugin-panel.php:832
 msgid "Sorry, import is disabled."
 msgstr "Συγνώμη, η εισαγωγή είναι απενεργοποιημένη."
 
-#: lib/yit-plugin-panel.php:816
+#: lib/yit-plugin-panel.php:833
 msgid "Sorting successful."
 msgstr "Διαλογή επιτυχής."
 
-#: lib/yit-plugin-panel.php:1264
+#: lib/yit-plugin-panel.php:1281
 msgid "We need your support"
 msgstr "Χρειαζόμαστε την υποστήριξή σας"
 
-#: lib/yit-plugin-panel.php:1265
+#: lib/yit-plugin-panel.php:1282
 msgid "to keep updating and improving the plugin. Please,"
 msgstr ""
 "για να διατηρήσετε την ενημέρωση και τη βελτίωση του πρόσθετου. Παρακαλώ,"
 
-#: lib/yit-plugin-panel.php:1267
+#: lib/yit-plugin-panel.php:1284
 msgid "help us by leaving a five-star rating"
 msgstr "βοηθήστε μας αφήνοντας μια βαθμολογία πέντε αστέρων"
 
-#: lib/yit-plugin-panel.php:1268
+#: lib/yit-plugin-panel.php:1285
 msgid ":) Thanks!"
 msgstr ":) Ευχαριστώ!"
 
@@ -434,13 +458,12 @@ msgstr "Προσοχή!"
 
 #. translators: %1$s open link tag, %2$s open link tag
 #: lib/yith-system-status.php:334
-#, fuzzy
 msgid ""
 "The system check has detected some compatibility issues on your installation."
 "%1$sClick here%2$s to know more"
 msgstr ""
 "Ο έλεγχος συστήματος έχει εντοπίσει κάποια προβλήματα συμβατότητας στην "
-"εγκατάστασή σας. %sΚάντε κλικ εδώ%s για να μάθετε περισσότερα"
+"εγκατάστασή σας.%1$sΚάντε κλικ εδώ%2$s για να μάθετε περισσότερα"
 
 #: lib/yith-system-status.php:473
 msgid "Enabled"
@@ -456,21 +479,18 @@ msgstr "N/A"
 
 #. translators: %1$s plugin name, %2$s requirement name
 #: lib/yith-system-status.php:506
-#, fuzzy
 msgid "%1$s needs %2$s enabled"
-msgstr "%s χρειάζεται %s ενεργοποιημένο"
+msgstr "%1$s χρειάζεται %2$s ενεργοποιημένο"
 
 #. translators: %1$s plugin name, %2$s required memory amount
 #: lib/yith-system-status.php:509
-#, fuzzy
 msgid "%1$s needs at least %2$s of available memory"
-msgstr "%s χρειάζεται τουλάχιστον %s διαθέσιμης μνήμης"
+msgstr "%1$s χρειάζεται τουλάχιστον %2$s διαθέσιμης μνήμης"
 
 #. translators: %1$s plugin name, %2$s version number
 #: lib/yith-system-status.php:512
-#, fuzzy
 msgid "%1$s needs at least %2$s version"
-msgstr "%s χρειάζεται τουλάχιστον %s έκδοση"
+msgstr "%1$s χρειάζεται τουλάχιστον %2$s έκδοση"
 
 #: lib/yith-system-status.php:537
 msgid ""
@@ -485,15 +505,13 @@ msgid "Contact your hosting company in order to update it."
 msgstr "Επικοινωνήστε με την εταιρεία hosting σας για να αναβαθμίσετε."
 
 #: lib/yith-system-status.php:545
-#, fuzzy
 msgid "Contact your hosting company in order to install it."
-msgstr "Επικοινωνήστε με την εταιρεία hosting σας για να ενεργοποιήσετε."
+msgstr "Επικοινωνήστε με την εταιρεία hosting σας για να το ενεργοποιήσετε."
 
 #. translators: %1$s code, %2$s file name
 #: lib/yith-system-status.php:552
-#, fuzzy
 msgid "Remove %1$s from %2$s file"
-msgstr "Αφαίρεση %s από αρχείο %s"
+msgstr "Αφαίρεση %1$s από αρχείο %2$s"
 
 #: lib/yith-system-status.php:560
 msgid "Contact your hosting company in order to enable it."
@@ -501,13 +519,12 @@ msgstr "Επικοινωνήστε με την εταιρεία hosting σας �
 
 #. translators: %1$s opening link tag, %2$s closing link tag
 #: lib/yith-system-status.php:564 lib/yith-system-status.php:588
-#, fuzzy
 msgid ""
 "Read more %1$shere%2$s or contact your hosting company in order to increase "
 "it."
 msgstr ""
-"Μάθετε περισσότερα %s εδώ%s ή επικοινωνήστε με την εταιρεία hosting σας για "
-"να το βελτιώσετε."
+"Μάθετε περισσότερα %1$sεδώ%2$s ή επικοινωνήστε με την εταιρεία hosting σας "
+"για να το βελτιώσετε."
 
 #. translators: %s recommended memory amount
 #: lib/yith-system-status.php:585
@@ -520,14 +537,13 @@ msgstr ""
 
 #. translators: %1$s TLS label, %2$s cURL label
 #: lib/yith-system-status.php:593
-#, fuzzy
 msgid ""
 "The system check cannot determine which %1$s version is installed because "
 "%2$s module is disabled. Ask your hosting company to enable it."
 msgstr ""
-"Δεν μπορούμε να καθορίσουμε ποια έκδοση <b>TLS</b> έχει εγκατασταθεί γιατί "
-"το άρθρωμα <b>cURL</b> είναι απενεργοποιημένο. Ζητήστε από την εταιρεία "
-"hosting σας να το ενεργοποιήσει."
+"Το σύστημα δεν μπορεί να καθορίσει ποια %1$s έκδοση έχει εγκατασταθεί γιατί "
+"το %2$s άρθρωμα είναι απενεργοποιημένο. Ζητήστε από την εταιρεία hosting σας "
+"να το ενεργοποιήσει."
 
 #. translators: %1$s TLS label
 #: lib/yith-system-status.php:596
@@ -535,6 +551,9 @@ msgid ""
 "The system check cannot determine which %1$s version is installed due to a "
 "connection issue between your site and our server."
 msgstr ""
+"Ο έλεγχος συστήματος δεν μπορεί να διευκρινήσει ποια έκδοση %1$s έχει "
+"εγκατασταθεί λόγω προβλήματος σύνδεσης ανάμεσα στον ιστότοπο σας και τον "
+"διακομιστή μας."
 
 #: templates/fields/ajax-customers.php:57
 msgid "Search Customers"
@@ -672,11 +691,11 @@ msgstr "Σύστημα Πληροφοριών YITH"
 
 #: templates/sysinfo/system-information-panel.php:50
 msgid "WP debug.log file"
-msgstr ""
+msgstr "Αρχείο WP debug.log"
 
 #: templates/sysinfo/system-information-panel.php:54
 msgid "PHP error_log file"
-msgstr ""
+msgstr "Αρχείο PHP error_log"
 
 #: templates/sysinfo/system-information-panel.php:59
 #: templates/sysinfo/system-information-panel.php:83
@@ -697,15 +716,15 @@ msgstr "Διεύθυνση IP Παραγωγής"
 
 #: templates/sysinfo/system-information-panel.php:120
 msgid "Defined WP_CACHE"
-msgstr ""
+msgstr "Καθορισμένο WP_CACHE"
 
 #: templates/sysinfo/system-information-panel.php:123
 msgid "Yes"
-msgstr ""
+msgstr "Ναι"
 
 #: templates/sysinfo/system-information-panel.php:123
 msgid "No"
-msgstr ""
+msgstr "Όχι"
 
 #: templates/sysinfo/system-information-panel.php:159
 msgid "Show full PHPInfo"
@@ -713,7 +732,7 @@ msgstr "Πλήρης εμφάνιση PHPInfo"
 
 #: templates/sysinfo/system-information-panel.php:167
 msgid "Show log files"
-msgstr ""
+msgstr "Εμφάνιση αρχείων καταγραφής"
 
 #: yit-plugin.php:194
 msgid "License"
@@ -800,27 +819,27 @@ msgstr "YITH"
 #: templates/fields/dimensions.php:16
 msgctxt "Position in the \"Dimensions\" field"
 msgid "Top"
-msgstr ""
+msgstr "Κορυφή"
 
 #: templates/fields/dimensions.php:17
 msgctxt "Position in the \"Dimensions\" field"
 msgid "Right"
-msgstr ""
+msgstr "Δεξιά"
 
 #: templates/fields/dimensions.php:18
 msgctxt "Position in the \"Dimensions\" field"
 msgid "Bottom"
-msgstr ""
+msgstr "Κάτω"
 
 #: templates/fields/dimensions.php:19
 msgctxt "Position in the \"Dimensions\" field"
 msgid "Left"
-msgstr ""
+msgstr "Αριστερά"
 
 #: templates/fields/dimensions.php:117
 msgctxt "Tooltip in the \"Dimensions\" field"
 msgid "Link values together"
-msgstr ""
+msgstr "Συνδέστε αξίες"
 
 #: templates/fields/onoff.php:24
 msgctxt "YES/NO button: use MAX 3 characters!"

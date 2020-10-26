@@ -6,7 +6,7 @@
  */
 
 use Yoast\WP\Lib\Model;
-use Yoast\WP\SEO\Integrations\Admin\Indexation_Integration;
+use Yoast\WP\SEO\Integrations\Admin\Indexing_Tool_Integration;
 
 /**
  * This code handles the option upgrades.
@@ -35,10 +35,7 @@ class WPSEO_Upgrade {
 			'4.7'        => 'upgrade_47',
 			'4.9'        => 'upgrade_49',
 			'5.0'        => 'upgrade_50',
-			'5.1'        => 'upgrade_50_51',
 			'5.5'        => 'upgrade_55',
-			'5.6'        => 'upgrade_56',
-			'6.1'        => 'upgrade_61',
 			'6.3'        => 'upgrade_63',
 			'7.0-RC0'    => 'upgrade_70',
 			'7.1-RC0'    => 'upgrade_71',
@@ -60,6 +57,8 @@ class WPSEO_Upgrade {
 			'14.1-RC0'   => 'upgrade_141',
 			'14.2-RC0'   => 'upgrade_142',
 			'14.5-RC0'   => 'upgrade_145',
+			'14.9-RC0'   => 'upgrade_149',
+			'15.1-RC0'   => 'upgrade_151',
 		];
 
 		array_walk( $routines, [ $this, 'run_upgrade_routine' ], $version );
@@ -367,29 +366,8 @@ class WPSEO_Upgrade {
 	private function upgrade_50() {
 		global $wpdb;
 
-		$link_installer = new WPSEO_Link_Installer();
-		$link_installer->install();
-
-		// Trigger reindex notification.
-		$notifier = new WPSEO_Link_Notifier();
-		$notifier->manage_notification();
-
 		// Deletes the post meta value, which might created in the RC.
 		$wpdb->query( 'DELETE FROM ' . $wpdb->postmeta . ' WHERE meta_key = "_yst_content_links_processed"' );
-	}
-
-	/**
-	 * Updates the internal_link_count column to support improved functionality.
-	 *
-	 * @param string $version The current version to compare with.
-	 */
-	private function upgrade_50_51( $version ) {
-		global $wpdb;
-
-		if ( version_compare( $version, '5.0', '>=' ) ) {
-			$count_storage = new WPSEO_Meta_Storage();
-			$wpdb->query( 'ALTER TABLE ' . $count_storage->get_table_name() . ' MODIFY internal_link_count int(10) UNSIGNED NULL DEFAULT NULL' );
-		}
 	}
 
 	/**
@@ -403,41 +381,6 @@ class WPSEO_Upgrade {
 		// Register capabilities.
 		do_action( 'wpseo_register_capabilities' );
 		WPSEO_Capability_Manager_Factory::get()->add();
-	}
-
-	/**
-	 * Updates legacy license page options to the latest version.
-	 */
-	private function upgrade_56() {
-		global $wpdb;
-
-		// Make sure License Server checks are on the latest server version by default.
-		update_option( 'wpseo_license_server_version', WPSEO_License_Page_Manager::VERSION_BACKWARDS_COMPATIBILITY );
-
-		// Make sure incoming link count entries are at least 0, not NULL.
-		$count_storage = new WPSEO_Meta_Storage();
-		$wpdb->query( 'UPDATE ' . $count_storage->get_table_name() . ' SET incoming_link_count = 0 WHERE incoming_link_count IS NULL' );
-	}
-
-	/**
-	 * Updates the links for the link count when there is a difference between the site and home url.
-	 * We've used the site url instead of the home url.
-	 *
-	 * @return void
-	 */
-	private function upgrade_61() {
-		// When the home url is the same as the site url, just do nothing.
-		if ( home_url() === site_url() ) {
-			return;
-		}
-
-		global $wpdb;
-
-		$link_storage = new WPSEO_Link_Storage();
-		$wpdb->query( 'DELETE FROM ' . $link_storage->get_table_name() );
-
-		$meta_storage = new WPSEO_Meta_Storage();
-		$wpdb->query( 'DELETE FROM ' . $meta_storage->get_table_name() );
 	}
 
 	/**
@@ -780,17 +723,65 @@ class WPSEO_Upgrade {
 	}
 
 	/**
+	 * Performs the 14.9 upgrade.
+	 */
+	private function upgrade_149() {
+		$version = get_option( 'wpseo_license_server_version', WPSEO_License_Page_Manager::VERSION_BACKWARDS_COMPATIBILITY );
+		WPSEO_Options::set( 'license_server_version', $version );
+		delete_option( 'wpseo_license_server_version' );
+	}
+
+	/**
+	 * Performs the 15.1 upgrade.
+	 *
+	 * @return void
+	 */
+	private function upgrade_151() {
+		$this->set_home_url_for_151();
+		$this->move_indexables_indexation_reason_for_151();
+
+		add_action( 'init', [ $this, 'set_permalink_structure_option_for_151' ] );
+	}
+
+	/**
+	 * Sets the home_url option for the 15.1 upgrade routine.
+	 *
+	 * @return void
+	 */
+	protected function set_home_url_for_151() {
+		$home_url = WPSEO_Options::get( 'home_url' );
+
+		if ( empty( $home_url ) ) {
+			WPSEO_Options::set( 'home_url', get_home_url() );
+		}
+	}
+
+	/**
+	 * Moves the `indexables_indexation_reason` option to the
+	 * renamed `indexing_reason` option.
+	 *
+	 * @return void
+	 */
+	protected function move_indexables_indexation_reason_for_151() {
+		$reason = WPSEO_Options::get( 'indexables_indexation_reason', '' );
+		WPSEO_Options::set( 'indexing_reason', $reason );
+		WPSEO_Options::set( 'indexation_warning_hide_until', false );
+	}
+
+	/**
 	 * Checks if the indexable indexation is completed.
 	 * If so, sets the `indexables_indexation_completed` option to `true`,
 	 * else to `false`.
 	 */
 	public function set_indexation_completed_option_for_145() {
 		/**
-		 * @var Indexation_Integration
+		 * Holds the indexation integration instance.
+		 *
+		 * @var Indexing_Tool_Integration $indexing_integration
 		 */
-		$indexation_integration = YoastSEO()->classes->get( Indexation_Integration::class );
+		$indexing_integration = YoastSEO()->classes->get( Indexing_Tool_Integration::class );
 
-		WPSEO_Options::set( 'indexables_indexation_completed', $indexation_integration->get_total_unindexed() === 0 );
+		WPSEO_Options::set( 'indexables_indexation_completed', $indexing_integration->get_unindexed_indexables_count() === 0 );
 	}
 
 	/**
@@ -1033,5 +1024,14 @@ class WPSEO_Upgrade {
 
 			WPSEO_Options::set( 'noindex-ptarchive-product', false );
 		}
+	}
+
+	/**
+	 * Stores the initial `permalink_structure` option.
+	 *
+	 * @return void
+	 */
+	public function set_permalink_structure_option_for_151() {
+		WPSEO_Options::set( 'permalink_structure', get_option( 'permalink_structure' ) );
 	}
 }

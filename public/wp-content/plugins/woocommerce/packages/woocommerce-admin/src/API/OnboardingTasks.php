@@ -3,20 +3,18 @@
  * REST API Onboarding Tasks Controller
  *
  * Handles requests to complete various onboarding tasks.
- *
- * @package WooCommerce Admin/API
  */
 
 namespace Automattic\WooCommerce\Admin\API;
 
 use Automattic\WooCommerce\Admin\Features\Onboarding;
+use Automattic\WooCommerce\Admin\Features\OnboardingTasks as OnboardingTasksFeature;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Onboarding Tasks Controller.
  *
- * @package WooCommerce Admin/API
  * @extends WC_REST_Data_Controller
  */
 class OnboardingTasks extends \WC_REST_Data_Controller {
@@ -53,19 +51,6 @@ class OnboardingTasks extends \WC_REST_Data_Controller {
 
 		register_rest_route(
 			$this->namespace,
-			'/' . $this->rest_base . '/create_store_pages',
-			array(
-				array(
-					'methods'             => \WP_REST_Server::CREATABLE,
-					'callback'            => array( $this, 'create_store_pages' ),
-					'permission_callback' => array( $this, 'create_pages_permission_check' ),
-				),
-				'schema' => array( $this, 'get_public_item_schema' ),
-			)
-		);
-
-		register_rest_route(
-			$this->namespace,
 			'/' . $this->rest_base . '/create_homepage',
 			array(
 				array(
@@ -74,6 +59,19 @@ class OnboardingTasks extends \WC_REST_Data_Controller {
 					'permission_callback' => array( $this, 'create_pages_permission_check' ),
 				),
 				'schema' => array( $this, 'get_public_item_schema' ),
+			)
+		);
+
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/status',
+			array(
+				array(
+					'methods'             => \WP_REST_Server::READABLE,
+					'callback'            => array( $this, 'get_status' ),
+					'permission_callback' => array( $this, 'get_status_permission_check' ),
+				),
+				'schema' => array( $this, 'get_status_item_schema' ),
 			)
 		);
 	}
@@ -101,6 +99,20 @@ class OnboardingTasks extends \WC_REST_Data_Controller {
 	public function create_pages_permission_check( $request ) {
 		if ( ! wc_rest_check_post_permissions( 'page', 'create' ) || ! current_user_can( 'manage_options' ) ) {
 			return new \WP_Error( 'woocommerce_rest_cannot_create', __( 'Sorry, you are not allowed to create new pages.', 'woocommerce' ), array( 'status' => rest_authorization_required_code() ) );
+		}
+
+		return true;
+	}
+
+	/**
+	 * Check if a given request has access to get onboarding tasks status.
+	 *
+	 * @param  WP_REST_Request $request Full details about the request.
+	 * @return WP_Error|boolean
+	 */
+	public function get_status_permission_check( $request ) {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return new \WP_Error( 'woocommerce_rest_cannot_create', __( 'Sorry, you are not allowed to retrieve onboarding status.', 'woocommerce' ), array( 'status' => rest_authorization_required_code() ) );
 		}
 
 		return true;
@@ -259,32 +271,24 @@ class OnboardingTasks extends \WC_REST_Data_Controller {
 				<h2 style="text-align:center">' . __( 'Shop by Category', 'woocommerce' ) . '</h2>
 				<!-- /wp:heading -->
 				<!-- wp:shortcode -->
-				[product_categories limit="3" columns="3" orderby="menu_order"]
+				[product_categories number="0" parent="0"]
 				<!-- /wp:shortcode -->
 				<!-- wp:heading {"align":"center"} -->
 				<h2 style="text-align:center">' . __( 'New In', 'woocommerce' ) . '</h2>
 				<!-- /wp:heading -->
-				<!-- wp:woocommerce/product-new {"columns":4} -->
-				<div class="wp-block-woocommerce-product-new">[products limit="4" columns="4" orderby="date" order="DESC"]</div>
-				<!-- /wp:woocommerce/product-new -->
+				<!-- wp:woocommerce/product-new {"columns":4} /-->
 				<!-- wp:heading {"align":"center"} -->
 				<h2 style="text-align:center">' . __( 'Fan Favorites', 'woocommerce' ) . '</h2>
 				<!-- /wp:heading -->
-				<!-- wp:woocommerce/product-top-rated {"columns":4} -->
-				<div class="wp-block-woocommerce-product-top-rated">[products limit="4" columns="4" orderby="rating"]</div>
-				<!-- /wp:woocommerce/product-top-rated -->
+				<!-- wp:woocommerce/product-top-rated {"columns":4} /-->
 				<!-- wp:heading {"align":"center"} -->
 				<h2 style="text-align:center">' . __( 'On Sale', 'woocommerce' ) . '</h2>
 				<!-- /wp:heading -->
-				<!-- wp:woocommerce/product-on-sale {"columns":4} -->
-				<div class="wp-block-woocommerce-product-on-sale">[products limit="4" columns="4" orderby="date" order="DESC" on_sale="1"]</div>
-				<!-- /wp:woocommerce/product-on-sale -->
+				<!-- wp:woocommerce/product-on-sale {"columns":4} /-->
 				<!-- wp:heading {"align":"center"} -->
 				<h2 style="text-align:center">' . __( 'Best Sellers', 'woocommerce' ) . '</h2>
 				<!-- /wp:heading -->
-				<!-- wp:woocommerce/product-best-sellers {"columns":4} -->
-				<div class="wp-block-woocommerce-product-best-sellers">[products limit="4" columns="4" best_selling="1"]</div>
-				<!-- /wp:woocommerce/product-best-sellers -->
+				<!-- wp:woocommerce/product-best-sellers {"columns":4} /-->
 			';
 
 			/**
@@ -394,17 +398,6 @@ class OnboardingTasks extends \WC_REST_Data_Controller {
 	}
 
 	/**
-	 * Creates base store starter pages like my account and checkout.
-	 * Note that WC_Install::create_pages already checks if pages exist before creating them again.
-	 *
-	 * @return bool
-	 */
-	public static function create_store_pages() {
-		\WC_Install::create_pages();
-		return true;
-	}
-
-	/**
 	 * Create a homepage from a template.
 	 *
 	 * @return WP_Error|array
@@ -447,5 +440,105 @@ class OnboardingTasks extends \WC_REST_Data_Controller {
 		} else {
 			return $post_id;
 		}
+	}
+
+	/**
+	 * Get the status endpoint schema, conforming to JSON Schema.
+	 *
+	 * @return array
+	 */
+	public function get_status_item_schema() {
+		$schema = array(
+			'$schema'    => 'http://json-schema.org/draft-04/schema#',
+			'title'      => 'Onboarding Task Status',
+			'type'       => 'object',
+			'properties' => array(
+				'automatedTaxSupportedCountries' => array(
+					'type'        => 'array',
+					'description' => __( 'Country codes that support Automated Taxes.', 'woocommerce' ),
+					'context'     => array( 'view' ),
+					'readonly'    => true,
+					'items'       => array(
+						'type' => 'string',
+					),
+				),
+				'hasHomepage'                    => array(
+					'type'        => 'boolean',
+					'description' => __( 'If the store has a homepage created.', 'woocommerce' ),
+					'context'     => array( 'view' ),
+					'readonly'    => true,
+				),
+				'hasPaymentGateway'              => array(
+					'type'        => 'boolean',
+					'description' => __( 'If the store has an enabled payment gateway.', 'woocommerce' ),
+					'context'     => array( 'view' ),
+					'readonly'    => true,
+				),
+				'hasPhysicalProducts'            => array(
+					'type'        => 'boolean',
+					'description' => __( 'If the store has any physical (non-virtual) products.', 'woocommerce' ),
+					'context'     => array( 'view' ),
+					'readonly'    => true,
+				),
+				'hasProducts'                    => array(
+					'type'        => 'boolean',
+					'description' => __( 'If the store has any products.', 'woocommerce' ),
+					'context'     => array( 'view' ),
+					'readonly'    => true,
+				),
+				'isTaxComplete'                  => array(
+					'type'        => 'boolean',
+					'description' => __( 'If the tax step has been completed.', 'woocommerce' ),
+					'context'     => array( 'view' ),
+					'readonly'    => true,
+				),
+				'shippingZonesCount'             => array(
+					'type'        => 'number',
+					'description' => __( 'The number of shipping zones configured for the store.', 'woocommerce' ),
+					'context'     => array( 'view' ),
+					'readonly'    => true,
+				),
+				'stripeSupportedCountries'       => array(
+					'type'        => 'array',
+					'description' => __( 'Country codes that are supported by Stripe.', 'woocommerce' ),
+					'context'     => array( 'view' ),
+					'readonly'    => true,
+					'items'       => array(
+						'type' => 'string',
+					),
+				),
+				'taxJarActivated'                => array(
+					'type'        => 'boolean',
+					'description' => __( 'If the store has the TaxJar extension active.', 'woocommerce' ),
+					'context'     => array( 'view' ),
+					'readonly'    => true,
+				),
+				'themeMods'                      => array(
+					'type'        => 'object',
+					'description' => __( 'Active theme modifications.', 'woocommerce' ),
+					'context'     => array( 'view' ),
+					'readonly'    => true,
+				),
+				'wcPayIsConnected'               => array(
+					'type'        => 'boolean',
+					'description' => __( 'If the store is using WooCommerce Payments.', 'woocommerce' ),
+					'context'     => array( 'view' ),
+					'readonly'    => true,
+				),
+			),
+		);
+
+		return $this->add_additional_fields_schema( $schema );
+	}
+
+	/**
+	 * Get various onboarding task statuses.
+	 *
+	 * @return WP_Error|array
+	 */
+	public function get_status() {
+		$status = OnboardingTasksFeature::get_settings();
+
+		return rest_ensure_response( $status );
 	}
 }

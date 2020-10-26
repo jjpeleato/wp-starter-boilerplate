@@ -2,15 +2,15 @@
  * External dependencies
  */
 import TestRenderer from 'react-test-renderer';
+import * as mockUtils from '@woocommerce/editor-components/utils';
 
 /**
  * Internal dependencies
  */
 import withProductVariations from '../with-product-variations';
-import * as mockUtils from '../../components/utils';
 import * as mockBaseUtils from '../../base/utils/errors';
 
-jest.mock( '../../components/utils', () => ( {
+jest.mock( '@woocommerce/editor-components/utils', () => ( {
 	getProductVariations: jest.fn(),
 } ) );
 
@@ -19,10 +19,13 @@ jest.mock( '../../base/utils/errors', () => ( {
 } ) );
 
 const mockProducts = [
-	{ id: 1, name: 'Hoodie', variations: [ 3, 4 ] },
+	{ id: 1, name: 'Hoodie', variations: [ { id: 3 }, { id: 4 } ] },
 	{ id: 2, name: 'Backpack' },
 ];
-const mockVariations = [ { id: 3, name: 'Blue' }, { id: 4, name: 'Red' } ];
+const mockVariations = [
+	{ id: 3, name: 'Blue' },
+	{ id: 4, name: 'Red' },
+];
 const TestComponent = withProductVariations( ( props ) => {
 	return (
 		<div

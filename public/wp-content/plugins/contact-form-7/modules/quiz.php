@@ -47,7 +47,15 @@ function wpcf7_quiz_form_tag_handler( $tag ) {
 	$atts['tabindex'] = $tag->get_option( 'tabindex', 'signed_int', true );
 	$atts['autocomplete'] = 'off';
 	$atts['aria-required'] = 'true';
-	$atts['aria-invalid'] = $validation_error ? 'true' : 'false';
+
+	if ( $validation_error ) {
+		$atts['aria-invalid'] = 'true';
+		$atts['aria-describedby'] = wpcf7_get_validation_error_reference(
+			$tag->name
+		);
+	} else {
+		$atts['aria-invalid'] = 'false';
+	}
 
 	$pipes = $tag->pipes;
 
@@ -151,6 +159,24 @@ function wpcf7_quiz_ajax_refill( $items ) {
 	}
 
 	return $items;
+}
+
+
+/* Mail-tag replacement */
+
+add_filter( 'wpcf7_mail_tag_replaced_quiz', 'wpcf7_quiz_mail_tag', 10, 4 );
+
+function wpcf7_quiz_mail_tag( $replaced, $submitted, $html, $mail_tag ) {
+	$field_name = $mail_tag->field_name();
+	$submitted = isset( $_POST[$field_name] ) ? $_POST[$field_name] : '';
+	$replaced = $submitted;
+
+	if ( $html ) {
+		$replaced = esc_html( $replaced );
+		$replaced = wptexturize( $replaced );
+	}
+
+	return $replaced;
 }
 
 

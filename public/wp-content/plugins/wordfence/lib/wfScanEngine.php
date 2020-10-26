@@ -230,7 +230,9 @@ class wfScanEngine {
 			$this->recordMetric('scan', 'duration', (time() - $this->startTime));
 			$this->recordMetric('scan', 'memory', wfConfig::get('wfPeakMemory', 0, false));
 			$this->submitMetrics();
-			
+
+			$this->deleteNewIssues();
+
 			wfScanEngine::refreshScanNotification($this->i);
 			throw $e;
 		}

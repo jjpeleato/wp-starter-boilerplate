@@ -62,7 +62,7 @@ class Assets implements Runner {
 		// Scripts.
 		wp_register_script( 'validate', rank_math()->plugin_url() . 'assets/vendor/jquery.validate.min.js', [ 'jquery' ], '1.19.0', true );
 		wp_register_script( self::PREFIX . 'validate', $js . 'validate.js', [ 'jquery' ], rank_math()->version, true );
-		wp_register_script( self::PREFIX . 'common', $js . 'common.js', [ 'jquery', 'validate', 'wp-i18n' ], rank_math()->version, true );
+		wp_register_script( self::PREFIX . 'common', $js . 'common.js', [ 'jquery', 'validate', 'wp-i18n', 'lodash' ], rank_math()->version, true );
 		wp_register_script( self::PREFIX . 'dashboard', $js . 'dashboard.js', [ 'jquery', 'clipboard', 'validate' ], rank_math()->version, true );
 		wp_register_script( self::PREFIX . 'plugin-feedback', $js . 'feedback.js', [ 'jquery' ], rank_math()->version, true );
 
@@ -194,7 +194,7 @@ class Assets implements Runner {
 	/**
 	 * Enqueues styles.
 	 *
-	 * @param string $style The name of the style to enqueue.
+	 * @param string $style Name of the style.
 	 */
 	public function enqueue_style( $style ) {
 		wp_enqueue_style( self::PREFIX . $style );
@@ -203,7 +203,7 @@ class Assets implements Runner {
 	/**
 	 * Enqueues scripts.
 	 *
-	 * @param string $script The name of the script to enqueue.
+	 * @param string $script Name of the script.
 	 */
 	public function enqueue_script( $script ) {
 		wp_enqueue_script( self::PREFIX . $script );
@@ -222,11 +222,12 @@ class Assets implements Runner {
 			'rank-math_page_rank-math-404-monitor',
 			'rank-math_page_rank-math-redirections',
 			'rank-math_page_rank-math-link-builder',
-			'rank-math_page_rank-math-search-console',
+			'rank-math_page_rank-math-analytics',
 			'rank-math_page_rank-math-import-export',
 			'rank-math_page_rank-math-help',
 			'user-edit',
 			'profile',
+			'rank_math_schema',
 		];
 
 		return array_merge( $pages, Helper::get_allowed_post_types() );

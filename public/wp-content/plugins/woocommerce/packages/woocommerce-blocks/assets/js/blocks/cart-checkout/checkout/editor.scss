@@ -1,5 +1,5 @@
 .editor-styles-wrapper {
-	.wp-block h4.wc-block-checkout-step__title {
+	.wp-block h4.wc-block-components-checkout-step__title {
 		@include font-size(regular);
 		line-height: 24px;
 		margin: 0 $gap-small 0 0;
@@ -21,4 +21,9 @@
 
 .components-panel__body-title .components-button {
 	opacity: 1;
+}
+
+.wp-block-woocommerce-checkout.is-editor-preview {
+	max-height: 1000px;
+	overflow: hidden;
 }

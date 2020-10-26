@@ -3,8 +3,6 @@
  * WooCommerce Admin: Profile reminder note.
  *
  * Adds a notes to complete or skip the profiler.
- *
- * @package WooCommerce Admin
  */
 
 namespace Automattic\WooCommerce\Admin\Notes;
@@ -53,15 +51,15 @@ class WC_Admin_Notes_Onboarding_Profiler {
 		$note->add_action(
 			'continue-profiler',
 			__( 'Continue Store Setup', 'woocommerce' ),
-			wc_admin_url( '&enable_onboarding=1' ),
-			'unactioned',
+			wc_admin_url( '&path=/setup-wizard' ),
+			WC_Admin_Note::E_WC_ADMIN_NOTE_UNACTIONED,
 			true
 		);
 		$note->add_action(
 			'skip-profiler',
 			__( 'Skip Setup', 'woocommerce' ),
 			wc_admin_url( '&reset_profiler=0' ),
-			'actioned',
+			WC_Admin_Note::E_WC_ADMIN_NOTE_ACTIONED,
 			false
 		);
 		return $note;
@@ -75,7 +73,7 @@ class WC_Admin_Notes_Onboarding_Profiler {
 	 */
 	public static function update_status_on_complete( $old_value, $new_value ) {
 		if (
-			( isset( $old_value['complete'] ) && $old_value['completed'] ) ||
+			( isset( $old_value['completed'] ) && $old_value['completed'] ) ||
 			! isset( $new_value['completed'] ) ||
 			! $new_value['completed']
 		) {

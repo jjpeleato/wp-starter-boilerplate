@@ -3,13 +3,14 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
-import {
-	Button,
-	PaymentMethodIcons,
-} from '@woocommerce/base-components/cart-checkout';
+import { PaymentMethodIcons } from '@woocommerce/base-components/cart-checkout';
+import Button from '@woocommerce/base-components/button';
 import { CHECKOUT_URL } from '@woocommerce/block-settings';
 import { useCheckoutContext } from '@woocommerce/base-context';
-import { usePaymentMethods } from '@woocommerce/base-hooks';
+import {
+	usePaymentMethods,
+	usePositionRelativeToViewport,
+} from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -30,11 +31,15 @@ const getIconsFromPaymentMethods = ( paymentMethods ) => {
  */
 const CheckoutButton = ( { link } ) => {
 	const { isCalculating } = useCheckoutContext();
+	const [
+		positionReferenceElement,
+		positionRelativeToViewport,
+	] = usePositionRelativeToViewport();
 	const [ showSpinner, setShowSpinner ] = useState( false );
 	const { paymentMethods } = usePaymentMethods();
 
-	return (
-		<div className="wc-block-cart__submit-container">
+	const submitContainerContents = (
+		<>
 			<Button
 				className="wc-block-cart__submit-button"
 				href={ link || CHECKOUT_URL }
@@ -47,6 +52,22 @@ const CheckoutButton = ( { link } ) => {
 			<PaymentMethodIcons
 				icons={ getIconsFromPaymentMethods( paymentMethods ) }
 			/>
+		</>
+	);
+
+	return (
+		<div className="wc-block-cart__submit">
+			{ positionReferenceElement }
+			{ /* The non-sticky container must always be visible because it gives height to its parent, which is required to calculate when it becomes visible in the viewport. */ }
+			<div className="wc-block-cart__submit-container">
+				{ submitContainerContents }
+			</div>
+			{ /* If the positionReferenceElement is below the viewport, display the sticky container. */ }
+			{ positionRelativeToViewport === 'below' && (
+				<div className="wc-block-cart__submit-container wc-block-cart__submit-container--sticky">
+					{ submitContainerContents }
+				</div>
+			) }
 		</div>
 	);
 };

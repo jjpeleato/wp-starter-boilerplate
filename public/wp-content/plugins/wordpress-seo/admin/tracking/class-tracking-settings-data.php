@@ -46,6 +46,7 @@ class WPSEO_Tracking_Settings_Data implements WPSEO_Collection {
 		'youtube_url',
 		'wikipedia_url',
 		'fbadminapp',
+		'semrush_tokens',
 	];
 
 	/**
@@ -74,6 +75,7 @@ class WPSEO_Tracking_Settings_Data implements WPSEO_Collection {
 		'show_onboarding_notice',
 		'first_activated_on',
 		'myyoast-oauth',
+		'dynamic_permalinks',
 		'website_name',
 		'alternate_website_name',
 		'company_logo',
@@ -115,13 +117,10 @@ class WPSEO_Tracking_Settings_Data implements WPSEO_Collection {
 		'company_or_person_user_id',
 		'stripcategorybase',
 		'noindex-post',
-		'showdate-post',
 		'display-metabox-pt-post',
 		'noindex-page',
-		'showdate-page',
 		'display-metabox-pt-page',
 		'noindex-attachment',
-		'showdate-attachment',
 		'display-metabox-pt-attachment',
 		'display-metabox-tax-category',
 		'noindex-tax-category',
@@ -159,6 +158,9 @@ class WPSEO_Tracking_Settings_Data implements WPSEO_Collection {
 		'wikipedia_url',
 		'fbadminapp',
 		'indexables_indexation_completed',
+		'semrush_integration_active',
+		'semrush_tokens',
+		'semrush_country_code',
 	];
 
 	/**

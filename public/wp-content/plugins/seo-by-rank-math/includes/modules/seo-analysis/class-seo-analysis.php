@@ -33,7 +33,7 @@ class SEO_Analysis {
 		}
 
 		if ( is_admin() ) {
-			$this->admin = new Admin;
+			$this->admin = new Admin();
 		}
 
 		if ( Helper::has_cap( 'rank_math_site_analysis' ) ) {
@@ -64,7 +64,7 @@ class SEO_Analysis {
 				'analyze',
 				[
 					'title' => $link ? esc_html__( 'Analyze this Page', 'rank-math' ) : esc_html__( 'SEO Analysis', 'rank-math' ),
-					'href'  => Helper::get_admin_url( 'seo-analysis' ) . ( $link ? '&u=' . urlencode( $link ) : '' ),
+					'href'  => Helper::get_admin_url( 'seo-analysis' ) . ( $link ? '&u=' . rawurlencode( $link ) : '' ),
 					'meta'  => [ 'title' => esc_html__( 'SEO Analysis for this page', 'rank-math' ) ],
 				],
 				'seo-analysis'

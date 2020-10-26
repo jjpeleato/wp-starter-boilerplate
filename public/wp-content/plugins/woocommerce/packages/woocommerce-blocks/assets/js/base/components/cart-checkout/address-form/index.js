@@ -2,7 +2,7 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
-import { ValidatedTextInput } from '@woocommerce/base-components/text-input';
+import { DebouncedValidatedTextInput } from '@woocommerce/base-components/text-input';
 import {
 	BillingCountryInput,
 	ShippingCountryInput,
@@ -100,7 +100,7 @@ const AddressForm = ( {
 	id = id || instanceId;
 
 	return (
-		<div id={ id } className="wc-block-address-form">
+		<div id={ id } className="wc-block-components-address-form">
 			{ sortedAddressFields.map( ( field ) => {
 				if ( field.hidden ) {
 					return null;
@@ -172,14 +172,15 @@ const AddressForm = ( {
 				}
 
 				return (
-					<ValidatedTextInput
+					<DebouncedValidatedTextInput
 						key={ field.key }
 						id={ `${ id }-${ field.key }` }
-						className={ `wc-block-address-form__${ field.key }` }
+						className={ `wc-block-components-address-form__${ field.key }` }
 						label={
 							field.required ? field.label : field.optionalLabel
 						}
 						value={ values[ field.key ] }
+						autoCapitalize={ field.autocapitalize }
 						autoComplete={ field.autocomplete }
 						onChange={ ( newValue ) =>
 							onChange( {

@@ -1,13 +1,5 @@
 <?php
-/**
- * Abstract payment method type class.
- *
- * @package WooCommerce/Blocks
- */
-
 namespace Automattic\WooCommerce\Blocks\Payments\Integrations;
-
-defined( 'ABSPATH' ) || exit;
 
 use Automattic\WooCommerce\Blocks\Payments\PaymentMethodTypeInterface;
 
@@ -23,6 +15,24 @@ abstract class AbstractPaymentMethodType implements PaymentMethodTypeInterface {
 	 * @var string
 	 */
 	protected $name = '';
+
+	/**
+	 * Settings from the WP options table
+	 *
+	 * @var array
+	 */
+	protected $settings = [];
+
+	/**
+	 * Get a setting from the settings array if set.
+	 *
+	 * @param string $name Setting name.
+	 * @param mixed  $default Value that is returned if the setting does not exist.
+	 * @return mixed
+	 */
+	protected function get_setting( $name, $default = '' ) {
+		return isset( $this->settings[ $name ] ) ? $this->settings[ $name ] : $default;
+	}
 
 	/**
 	 * Returns the name of the payment method.

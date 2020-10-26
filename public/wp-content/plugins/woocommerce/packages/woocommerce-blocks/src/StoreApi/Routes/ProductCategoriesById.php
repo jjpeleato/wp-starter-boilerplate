@@ -1,17 +1,10 @@
 <?php
-/**
- * Product Category route.
- *
- * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
- * @package WooCommerce/Blocks
- */
-
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
-
-defined( 'ABSPATH' ) || exit;
 
 /**
  * ProductCategoriesById class.
+ *
+ * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
 class ProductCategoriesById extends AbstractRoute {
 	/**
@@ -37,9 +30,10 @@ class ProductCategoriesById extends AbstractRoute {
 				),
 			),
 			[
-				'methods'  => \WP_REST_Server::READABLE,
-				'callback' => [ $this, 'get_response' ],
-				'args'     => array(
+				'methods'             => \WP_REST_Server::READABLE,
+				'callback'            => [ $this, 'get_response' ],
+				'permission_callback' => '__return_true',
+				'args'                => array(
 					'context' => $this->get_context_param(
 						array(
 							'default' => 'view',

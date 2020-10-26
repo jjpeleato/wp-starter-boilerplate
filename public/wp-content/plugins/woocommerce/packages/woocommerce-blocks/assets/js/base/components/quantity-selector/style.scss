@@ -10,15 +10,22 @@
 	}
 }
 
-.wc-block-quantity-selector {
+.wc-block-components-quantity-selector {
 	display: flex;
 	min-width: 100px;
 	border: 1px solid $core-grey-light-600;
 	background: #fff;
 	border-radius: 4px;
+	// needed so that buttons fill the container.
+	box-sizing: content-box;
+
+	.has-dark-controls & {
+		background-color: transparent;
+		border-color: $input-border-dark;
+	}
 
 	// Extra label for specificity needed in the editor.
-	input.wc-block-quantity-selector__input {
+	input.wc-block-components-quantity-selector__input {
 		@include font-size(regular);
 		order: 2;
 		min-width: 40px;
@@ -41,13 +48,25 @@
 		&:disabled {
 			color: $core-grey-dark-100;
 		}
+
+		.has-dark-controls & {
+			color: $input-text-dark;
+			background: transparent;
+
+			&:focus {
+				background: transparent;
+			}
+			&:disabled {
+				color: $input-disabled-dark;
+			}
+		}
 	}
 	input::-webkit-outer-spin-button,
 	input::-webkit-inner-spin-button {
 		-webkit-appearance: none;
 		margin: 0;
 	}
-	.wc-block-quantity-selector__button {
+	.wc-block-components-quantity-selector__button {
 		@include reset-button;
 		@include font-size(regular);
 		min-width: 30px;
@@ -66,11 +85,23 @@
 			cursor: default;
 			@include reset-button;
 		}
+
+		.has-dark-controls & {
+			color: $input-text-dark;
+
+			&:hover,
+			&:focus {
+				color: $input-text-dark;
+			}
+			&:disabled {
+				color: $input-disabled-dark;
+			}
+		}
 	}
-	.wc-block-quantity-selector__button--minus {
+	.wc-block-components-quantity-selector__button--minus {
 		order: 1;
 	}
-	.wc-block-quantity-selector__button--plus {
+	.wc-block-components-quantity-selector__button--plus {
 		order: 3;
 	}
 }

@@ -9,7 +9,7 @@
  *
  * @wordpress-plugin
  * Plugin Name:       Rank Math SEO
- * Version:           1.0.46
+ * Version:           1.0.50.1
  * Plugin URI:        https://s.rankmath.com/home
  * Description:       Rank Math is a revolutionary SEO product that combines the features of many SEO tools and lets you multiply your traffic in the easiest way possible.
  * Author:            Rank Math
@@ -34,7 +34,7 @@ final class RankMath {
 	 *
 	 * @var string
 	 */
-	public $version = '1.0.46';
+	public $version = '1.0.50.1';
 
 	/**
 	 * Rank Math database version.
@@ -48,7 +48,7 @@ final class RankMath {
 	 *
 	 * @var string
 	 */
-	private $wordpress_version = '4.9';
+	private $wordpress_version = '5.2';
 
 	/**
 	 * Minimum version of PHP required to run Rank Math.
@@ -201,7 +201,7 @@ final class RankMath {
 		// Check WordPress version.
 		if ( version_compare( get_bloginfo( 'version' ), $this->wordpress_version, '<' ) ) {
 			/* translators: WordPress Version */
-			$this->messages[] = sprintf( esc_html__( 'Rank Math requires WordPress version %s or above. Please update WordPress to run this plugin.', 'rank-math' ), $this->wordpress_version );
+			$this->messages[] = sprintf( esc_html__( 'You are using the outdated WordPress, please update it to version %s or higher.', 'rank-math' ), $this->wordpress_version );
 		}
 
 		// Check PHP version.
@@ -393,7 +393,7 @@ final class RankMath {
 	 * Add functionality on succeessful login.
 	 */
 	public function on_login() {
-		\RankMath\Search_Console\Client::get()->refresh_auth_token_on_login();
+		\RankMath\Google\Api::get()->refresh_token_on_login();
 	}
 
 	/**
@@ -459,7 +459,7 @@ final class RankMath {
 		if ( false === load_textdomain( 'rank-math', WP_LANG_DIR . '/plugins/seo-by-rank-math-' . $locale . '.mo' ) ) {
 			load_textdomain( 'rank-math', WP_LANG_DIR . '/seo-by-rank-math/seo-by-rank-math-' . $locale . '.mo' );
 		}
-		load_plugin_textdomain( 'rank-math', false, rank_math()->plugin_dir() . '/languages/' );
+		load_plugin_textdomain( 'rank-math', false, rank_math()->plugin_dir() . 'languages/' );
 
 		if ( is_user_logged_in() && is_admin_bar_showing() ) {
 			$this->container['json']->add( 'version', $this->version, 'rankMath' );

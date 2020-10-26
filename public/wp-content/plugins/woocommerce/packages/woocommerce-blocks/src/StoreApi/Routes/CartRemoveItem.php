@@ -1,18 +1,12 @@
 <?php
-/**
- * Cart remove item route.
- *
- * @package WooCommerce/Blocks
- */
-
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
-
-defined( 'ABSPATH' ) || exit;
 
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\CartController;
 
 /**
  * CartRemoveItem class.
+ *
+ * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
 class CartRemoveItem extends AbstractCartRoute {
 	/**
@@ -32,9 +26,10 @@ class CartRemoveItem extends AbstractCartRoute {
 	public function get_args() {
 		return [
 			[
-				'methods'  => \WP_REST_Server::CREATABLE,
-				'callback' => [ $this, 'get_response' ],
-				'args'     => [
+				'methods'             => \WP_REST_Server::CREATABLE,
+				'callback'            => [ $this, 'get_response' ],
+				'permission_callback' => '__return_true',
+				'args'                => [
 					'key' => [
 						'description' => __( 'Unique identifier (key) for the cart item.', 'woocommerce' ),
 						'type'        => 'string',

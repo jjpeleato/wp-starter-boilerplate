@@ -1,18 +1,12 @@
 <?php
-/**
- * Cart add item route.
- *
- * @package WooCommerce/Blocks
- */
-
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
-
-defined( 'ABSPATH' ) || exit;
 
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\CartController;
 
 /**
  * CartAddItem class.
+ *
+ * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
 class CartAddItem extends AbstractCartRoute {
 	/**
@@ -32,9 +26,10 @@ class CartAddItem extends AbstractCartRoute {
 	public function get_args() {
 		return [
 			[
-				'methods'  => \WP_REST_Server::CREATABLE,
-				'callback' => [ $this, 'get_response' ],
-				'args'     => [
+				'methods'             => \WP_REST_Server::CREATABLE,
+				'callback'            => [ $this, 'get_response' ],
+				'permission_callback' => '__return_true',
+				'args'                => [
 					'id'        => [
 						'description' => __( 'The cart item product or variation ID.', 'woocommerce' ),
 						'type'        => 'integer',

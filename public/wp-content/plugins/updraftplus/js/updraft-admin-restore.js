@@ -161,6 +161,8 @@ jQuery(document).ready(function($) {
 					if (restore_data.data.hasOwnProperty('stage')) {
 						if ('table' == restore_data.data.stage) {
 							$current.find('.updraft_component--progress').html(' — '+updraftlion.restore_db_table_progress.replace('%s', '<strong>'+(restore_data.data.table)+'</strong>'));
+						} else if ('stored_routine' == restore_data.data.stage) {
+							$current.find('.updraft_component--progress').html(' — '+updraftlion.restore_db_stored_routine_progress.replace('%s', '<strong>'+(restore_data.data.routine_name)+'</strong>'));
 						} else if ('finished' == restore_data.data.stage) {
 							$current.find('.updraft_component--progress').html(' — '+updraftlion.finished);
 						} else if ('begun' == restore_data.data.stage) {

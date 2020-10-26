@@ -106,6 +106,8 @@ class Installer {
 	 * Run network-wide activation/deactivation of the plugin.
 	 *
 	 * @param bool $activate True for plugin activation, false for de-activation.
+	 *
+	 * Forked from Yoast (https://github.com/Yoast/wordpress-seo/)
 	 */
 	private function network_activate_deactivate( $activate ) {
 		global $wpdb;
@@ -129,7 +131,7 @@ class Installer {
 	 */
 	private function activate() {
 		// Init to use the common filters.
-		new \RankMath\Defaults;
+		new \RankMath\Defaults();
 
 		$current_version    = get_option( 'rank_math_version', null );
 		$current_db_version = get_option( 'rank_math_db_version', null );
@@ -158,11 +160,12 @@ class Installer {
 		}
 
 		// Activate Watcher.
-		$watcher = new Watcher;
+		$watcher = new Watcher();
 		$watcher->check_activated_plugin();
 
 		$this->clear_rewrite_rules( true );
 		Helper::clear_cache();
+
 		$this->do_action( 'activate' );
 	}
 
@@ -236,28 +239,15 @@ class Installer {
 
 			// Link meta.
 			"CREATE TABLE IF NOT EXISTS {$wpdb->prefix}rank_math_internal_meta (
-				object_id bigint(20) UNSIGNED NOT NULL,
+				object_id BIGINT(20) UNSIGNED NOT NULL,
 				internal_link_count int(10) UNSIGNED NULL DEFAULT 0,
 				external_link_count int(10) UNSIGNED NULL DEFAULT 0,
 				incoming_link_count int(10) UNSIGNED NULL DEFAULT 0,
-				UNIQUE KEY object_id (object_id)
-			) $collate;",
-
-			"CREATE TABLE IF NOT EXISTS {$wpdb->prefix}rank_math_sc_analytics (
-				id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-				date DATETIME NOT NULL,
-				property TEXT NOT NULL,
-				clicks mediumint(6) NOT NULL,
-				impressions mediumint(6) NOT NULL,
-				position double NOT NULL,
-				ctr double NOT NULL,
-				dimension VARCHAR(25) NOT NULL,
-				PRIMARY KEY (id),
-				KEY property (property(191))
+				PRIMARY KEY (object_id)
 			) $collate;",
 		];
 
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		foreach ( $table_schema as $table ) {
 			dbDelta( $table );
 		}
@@ -276,20 +266,12 @@ class Installer {
 	 * Create misc options.
 	 */
 	private function create_misc_options() {
-		add_option(
-			'rank_math_search_console_data',
-			[
-				'authorized' => false,
-				'profiles'   => [],
-			]
-		);
-
 		// Update "known CPTs" list, so we can send notice about new ones later.
 		add_option( 'rank_math_known_post_types', Helper::get_accessible_post_types() );
 
 		$modules = [
 			'link-counter',
-			'search-console',
+			'analytics',
 			'seo-analysis',
 			'sitemap',
 			'rich-snippet',
@@ -354,7 +336,6 @@ class Installer {
 					'404_monitor_ignore_query_parameters' => 'on',
 					'redirections_header_code'            => '301',
 					'redirections_debug'                  => 'off',
-					'console_profile'                     => '',
 					'console_caching_control'             => '90',
 					'link_builder_links_per_page'         => '7',
 					'link_builder_links_per_target'       => '1',
@@ -369,8 +350,7 @@ class Installer {
 					'frontend_seo_score_post_types'       => [ 'post' ],
 					'frontend_seo_score_position'         => 'top',
 					'frontend_seo_score'                  => 'off',
-					'enable_auto_update_email'            => 'off',
-					'setup_mode'                          => 'easy',
+					'setup_mode'                          => 'advanced',
 				]
 			)
 		);
@@ -598,9 +578,8 @@ class Installer {
 	 */
 	private function get_cron_jobs() {
 		return [
-			'search_console/get_analytics' => 'daily',  // Add cron job for Get Search Console Analytics Data.
-			'redirection/clean_trashed'    => 'daily',  // Add cron for cleaning trashed redirects.
-			'links/internal_links'         => 'daily',  // Add cron for counting links.
+			'redirection/clean_trashed' => 'daily',  // Add cron for cleaning trashed redirects.
+			'links/internal_links'      => 'daily',  // Add cron for counting links.
 		];
 	}
 

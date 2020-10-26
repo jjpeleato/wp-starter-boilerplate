@@ -3,8 +3,6 @@
  * WooCommerce Admin: Help us improve the WooCommerce Home screen
  *
  * Adds a note to ask the client to provide feedback about the home screen.
- *
- * @package WooCommerce Admin
  */
 
 namespace Automattic\WooCommerce\Admin\Notes;
@@ -44,10 +42,9 @@ class WC_Admin_Notes_Home_Screen_Feedback {
 			return;
 		}
 
-		// If the homescreen is enabled, set the current time stamp.
-		if ( 'yes' === get_option( 'woocommerce_homescreen_enabled', 'no' ) ) {
-			update_option( self::HOMESCREEN_ACCESSED_OPTION_NAME, time() );
-		}
+		// Set the current time stamp, as the home screen is the default
+		// experience.
+		update_option( self::HOMESCREEN_ACCESSED_OPTION_NAME, time() );
 	}
 
 	/**

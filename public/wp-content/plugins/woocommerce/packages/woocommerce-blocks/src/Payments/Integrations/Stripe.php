@@ -1,13 +1,4 @@
 <?php
-/**
- * Temporary integration of the stripe payment method for the new cart and
- * checkout blocks. Once the api is demonstrated to be stable, this integration
- * will be moved to the Stripe extension
- *
- * @package WooCommerce/Blocks
- * @since 2.6.0
- */
-
 namespace Automattic\WooCommerce\Blocks\Payments\Integrations;
 
 use Exception;
@@ -20,6 +11,10 @@ use Automattic\WooCommerce\Blocks\Payments\PaymentResult;
 /**
  * Stripe payment method integration
  *
+ * Temporary integration of the stripe payment method for the new cart and
+ * checkout blocks. Once the api is demonstrated to be stable, this integration
+ * will be moved to the Stripe extension
+ *
  * @since 2.6.0
  */
 final class Stripe extends AbstractPaymentMethodType {
@@ -29,13 +24,6 @@ final class Stripe extends AbstractPaymentMethodType {
 	 * @var string
 	 */
 	protected $name = 'stripe';
-
-	/**
-	 * Stripe settings from the WP options table
-	 *
-	 * @var array
-	 */
-	private $settings;
 
 	/**
 	 * An instance of the Asset Api
@@ -93,18 +81,19 @@ final class Stripe extends AbstractPaymentMethodType {
 	 */
 	public function get_payment_method_data() {
 		return [
-			'stripeTotalLabel' => $this->get_total_label(),
-			'publicKey'        => $this->get_publishable_key(),
-			'allowPrepaidCard' => $this->get_allow_prepaid_card(),
-			'button'           => [
+			'stripeTotalLabel'    => $this->get_total_label(),
+			'publicKey'           => $this->get_publishable_key(),
+			'allowPrepaidCard'    => $this->get_allow_prepaid_card(),
+			'button'              => [
 				'type'   => $this->get_button_type(),
 				'theme'  => $this->get_button_theme(),
 				'height' => $this->get_button_height(),
 				'locale' => $this->get_button_locale(),
 			],
-			'inline_cc_form'   => $this->get_inline_cc_form(),
-			'icons'            => $this->get_icons(),
-			'allowSavedCards'  => $this->get_allow_saved_cards(),
+			'inline_cc_form'      => $this->get_inline_cc_form(),
+			'icons'               => $this->get_icons(),
+			'allowSavedCards'     => $this->get_allow_saved_cards(),
+			'allowPaymentRequest' => $this->get_allow_payment_request(),
 		];
 	}
 
@@ -152,6 +141,16 @@ final class Stripe extends AbstractPaymentMethodType {
 	}
 
 	/**
+	 * Determine if store allows Payment Request buttons - e.g. Apple Pay / Chrome Pay.
+	 *
+	 * @return bool True if merchant has opted into payment request.
+	 */
+	private function get_allow_payment_request() {
+		$option = isset( $this->settings['payment_request'] ) ? $this->settings['payment_request'] : false;
+		return filter_var( $option, FILTER_VALIDATE_BOOLEAN );
+	}
+
+	/**
 	 * Return the button type for the payment button.
 	 *
 	 * @return string Defaults to 'default'.
@@ -181,7 +180,7 @@ final class Stripe extends AbstractPaymentMethodType {
 	/**
 	 * Return the inline cc option.
 	 *
-	 * @return string A pixel value for the height (defaults to '64').
+	 * @return boolean True if the inline CC form option is enabled.
 	 */
 	private function get_inline_cc_form() {
 		return isset( $this->settings['inline_cc_form'] ) && 'yes' === $this->settings['inline_cc_form'];

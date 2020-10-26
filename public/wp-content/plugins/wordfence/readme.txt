@@ -3,8 +3,8 @@ Contributors: mmaunder, wfryan, wfmatt, wfmattr
 Tags: security, firewall, malware scanner, web application firewall, two factor authentication, block hackers, country blocking, clean hacked site, blacklist, waf, login security
 Requires at least: 3.9
 Requires PHP: 5.3
-Tested up to: 5.4
-Stable tag: 7.4.9
+Tested up to: 5.5
+Stable tag: 7.4.12
 
 Secure your website with the most comprehensive WordPress security plugin. Firewall, malware scan, blocking, live traffic, login security & more.
 
@@ -182,6 +182,34 @@ Secure your website with Wordfence.
 9. Logging in is easy with Wordfence 2FA.
 
 == Changelog ==
+
+= 7.4.12 - October 21, 2020 =
+
+* Improvement: Initial integration of i18n in Wordfence.
+* Improvement: Prevent Wordfence from loading under <PHP 5.3.
+* Improvement: Updated GeoIP database.
+* Improvement: Prevented wildcard from running/saving for scan's excluded files pattern.
+* Improvement: Included Wordfence Login Security tables in diagnostics missing table list.
+* Fix: Removed new scan issues when WordPress update occurs mid-scan.
+* Fix: Specified category when saving `whitelistedServiceIPs` to WAF storage engine.
+* Fix: Removed localhost IP for auto-update email alerts.
+* Fix: Fixed broken message in Live Traffic with MySQLi storage engine for blacklisted hits.
+* Fix: Removed optional parameter values for PHP 8 compatibility.
+
+= 7.4.11 - August 27, 2020 =
+
+* Improvement: Added diagnostic debug button to clear Wordfence Central connection data from the database.
+* Improvement: Added help documentation links to modified plugin/theme file scan results.
+* Fix: Prevent file system scan from following symlinks to root.
+* Fix: Cleared pending plugin/theme update scan results and notification when a plugin/theme is auto-updated.
+* Fix: Added check for when site is disconnected on Central's end, but not in the plugin.
+
+= 7.4.10 - August 5, 2020 =
+
+* Improvement: Prevent author sitemap from leaking usernames in WordPress >= 5.5.0.
+* Fix: Prevent Wordfence auto-update from running if the user has enabled auto-update through WordPress.
+* Fix: Added default `permission_callback` params to Wordfence Central REST routes.
+* Fix: Fixed missing styling on WAF optimization admin notice.
 
 = 7.4.9 - July 8, 2020 =
 

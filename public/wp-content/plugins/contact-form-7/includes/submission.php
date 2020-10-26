@@ -49,10 +49,12 @@ class WPCF7_Submission {
 	}
 
 	private function proceed() {
+		$contact_form = $this->contact_form;
+
+		switch_to_locale( $contact_form->locale() );
+
 		$this->setup_meta_data();
 		$this->setup_posted_data();
-
-		$contact_form = $this->contact_form;
 
 		if ( $this->is( 'init' ) and ! $this->validate() ) {
 			$this->set_status( 'validation_failed' );
@@ -94,6 +96,8 @@ class WPCF7_Submission {
 				do_action( 'wpcf7_mail_failed', $contact_form );
 			}
 		}
+
+		restore_previous_locale();
 
 		$this->remove_uploaded_files();
 	}
@@ -240,29 +244,31 @@ class WPCF7_Submission {
 				}
 			}
 
-			if ( wpcf7_form_tag_supports( $type, 'selectable-values' )
-			and $tag->has_option( 'free_text' )
-			and isset( $posted_data[$name . '_free_text'] )
-			and is_array( $value ) ) {
-				$last_val = array_pop( $value );
+			if ( wpcf7_form_tag_supports( $type, 'selectable-values' ) ) {
+				$value = (array) $value;
 
-				list( $tied_item ) = array_slice(
-					WPCF7_USE_PIPE ? $tag->pipes->collect_afters() : $tag->values,
-					-1, 1
-				);
+				if ( $tag->has_option( 'free_text' )
+				and isset( $posted_data[$name . '_free_text'] ) ) {
+					$last_val = array_pop( $value );
 
-				$tied_item = html_entity_decode( $tied_item, ENT_QUOTES, 'UTF-8' );
-
-				if ( $last_val === $tied_item ) {
-					$value[] = sprintf( '%s %s',
-						$last_val,
-						$posted_data[$name . '_free_text']
+					list( $tied_item ) = array_slice(
+						WPCF7_USE_PIPE ? $tag->pipes->collect_afters() : $tag->values,
+						-1, 1
 					);
-				} else {
-					$value[] = $last_val;
-				}
 
-				unset( $posted_data[$name . '_free_text'] );
+					$tied_item = html_entity_decode( $tied_item, ENT_QUOTES, 'UTF-8' );
+
+					if ( $last_val === $tied_item ) {
+						$value[] = sprintf( '%s %s',
+							$last_val,
+							$posted_data[$name . '_free_text']
+						);
+					} else {
+						$value[] = $last_val;
+					}
+
+					unset( $posted_data[$name . '_free_text'] );
+				}
 			}
 
 			$value = apply_filters( "wpcf7_posted_data_{$type}", $value,
@@ -410,16 +416,7 @@ class WPCF7_Submission {
 			) );
 		}
 
-		if ( $this->is_blacklisted() ) {
-			$spam = true;
-
-			$this->add_spam_log( array(
-				'agent' => 'wpcf7',
-				'reason' => __( "Blacklisted words are used.", 'contact-form-7' ),
-			) );
-		}
-
-		return apply_filters( 'wpcf7_spam', $spam );
+		return apply_filters( 'wpcf7_spam', $spam, $this );
 	}
 
 	public function add_spam_log( $args = '' ) {
@@ -441,16 +438,6 @@ class WPCF7_Submission {
 		}
 
 		return wpcf7_verify_nonce( $_POST['_wpnonce'] );
-	}
-
-	private function is_blacklisted() {
-		$target = wpcf7_array_flatten( $this->posted_data );
-		$target[] = $this->get_meta( 'remote_ip' );
-		$target[] = $this->get_meta( 'user_agent' );
-		$target = implode( "\n", $target );
-
-		return (bool) apply_filters( 'wpcf7_submission_is_blacklisted',
-			wpcf7_blacklist_check( $target ), $this );
 	}
 
 	/* Mail */

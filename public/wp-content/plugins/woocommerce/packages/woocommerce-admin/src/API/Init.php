@@ -1,8 +1,6 @@
 <?php
 /**
  * REST API bootstrap.
- *
- * @package WooCommerce Admin/Classes
  */
 
 namespace Automattic\WooCommerce\Admin\API;
@@ -93,18 +91,10 @@ class Init {
 			'Automattic\WooCommerce\Admin\API\Taxes',
 			'Automattic\WooCommerce\Admin\API\Themes',
 			'Automattic\WooCommerce\Admin\API\Plugins',
+			'Automattic\WooCommerce\Admin\API\OnboardingProfile',
+			'Automattic\WooCommerce\Admin\API\OnboardingTasks',
+			'Automattic\WooCommerce\Admin\API\OnboardingThemes',
 		);
-
-		if ( Loader::is_onboarding_enabled() ) {
-			$controllers = array_merge(
-				$controllers,
-				array(
-					'Automattic\WooCommerce\Admin\API\OnboardingProfile',
-					'Automattic\WooCommerce\Admin\API\OnboardingTasks',
-					'Automattic\WooCommerce\Admin\API\OnboardingThemes',
-				)
-			);
-		}
 
 		// The performance indicators controller must be registered last, after other /stats endpoints have been registered.
 		$controllers[] = 'Automattic\WooCommerce\Admin\API\Reports\PerformanceIndicators\Controller';
@@ -150,7 +140,7 @@ class Init {
 
 	/**
 	 * Add the currency symbol (in addition to currency code) to each Order
-	 * object in REST API responses. For use in formatCurrency().
+	 * object in REST API responses. For use in formatAmount().
 	 *
 	 * @param {WP_REST_Response} $response REST response object.
 	 * @returns {WP_REST_Response}

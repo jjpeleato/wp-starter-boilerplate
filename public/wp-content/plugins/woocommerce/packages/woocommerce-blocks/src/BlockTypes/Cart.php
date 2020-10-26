@@ -1,20 +1,14 @@
 <?php
-/**
- * Cart block.
- *
- * @package WooCommerce/Blocks
- */
-
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 use Automattic\WooCommerce\Blocks\Package;
 use Automattic\WooCommerce\Blocks\Assets;
 use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
 
-defined( 'ABSPATH' ) || exit;
-
 /**
  * Cart class.
+ *
+ * @internal
  */
 class Cart extends AbstractBlock {
 	/**
@@ -36,6 +30,7 @@ class Cart extends AbstractBlock {
 				'editor_style'    => 'wc-block-editor',
 				'style'           => [ 'wc-block-style', 'wc-block-vendors-style' ],
 				'script'          => 'wc-' . $this->block_name . '-block-frontend',
+				'supports'        => [],
 			)
 		);
 	}
@@ -55,13 +50,11 @@ class Cart extends AbstractBlock {
 		$this->enqueue_assets( $block_attributes );
 		do_action( 'woocommerce_blocks_enqueue_cart_block_scripts_after' );
 
-		// Add placeholder element to footer to push content for the sticky bar on mobile.
-		add_action(
-			'wp_footer',
-			function() {
-				echo '<div class="wc-block-cart__submit-container-push"></div>';
-			}
-		);
+		// Deregister core cart scripts and styles.
+		wp_deregister_script( 'wc-cart' );
+		wp_deregister_script( 'wc-password-strength-meter' );
+		wp_deregister_script( 'selectWoo' );
+		wp_deregister_style( 'select2' );
 
 		return $this->inject_html_data_attributes( $content . $this->get_skeleton(), $block_attributes );
 	}
@@ -78,15 +71,12 @@ class Cart extends AbstractBlock {
 			AssetDataRegistry::class
 		);
 
-		$block_data = [
-			'shippingCountries' => [ WC()->countries, 'get_shipping_countries' ],
-			'shippingStates'    => [ WC()->countries, 'get_shipping_country_states' ],
-		];
+		if ( ! $data_registry->exists( 'shippingCountries' ) ) {
+			$data_registry->add( 'shippingCountries', $this->deep_sort_with_accents( WC()->countries->get_shipping_countries() ) );
+		}
 
-		foreach ( $block_data as $key => $callback ) {
-			if ( ! $data_registry->exists( $key ) ) {
-				$data_registry->add( $key, call_user_func( $callback ) );
-			}
+		if ( ! $data_registry->exists( 'shippingStates' ) ) {
+			$data_registry->add( 'shippingStates', $this->deep_sort_with_accents( WC()->countries->get_shipping_country_states() ) );
 		}
 
 		$permalink = ! empty( $attributes['checkoutPageId'] ) ? get_permalink( $attributes['checkoutPageId'] ) : false;
@@ -101,6 +91,26 @@ class Cart extends AbstractBlock {
 		}
 
 		do_action( 'woocommerce_blocks_cart_enqueue_data' );
+	}
+
+	/**
+	 * Removes accents from an array of values, sorts by the values, then returns the original array values sorted.
+	 *
+	 * @param array $array Array of values to sort.
+	 * @return array Sorted array.
+	 */
+	protected function deep_sort_with_accents( $array ) {
+		if ( ! is_array( $array ) || empty( $array ) ) {
+			return $array;
+		}
+
+		if ( is_array( reset( $array ) ) ) {
+			return array_map( [ $this, 'deep_sort_with_accents' ], $array );
+		}
+
+		$array_without_accents = array_map( 'remove_accents', array_map( 'wc_strtolower', array_map( 'html_entity_decode', $array ) ) );
+		asort( $array_without_accents );
+		return array_replace( $array_without_accents, $array );
 	}
 
 	/**
@@ -130,8 +140,8 @@ class Cart extends AbstractBlock {
 	 */
 	protected function get_skeleton() {
 		return '
-			<div class="wc-block-skeleton wc-block-sidebar-layout wc-block-cart wc-block-cart--is-loading wc-block-cart--skeleton hidden" aria-hidden="true">
-				<div class="wc-block-main wc-block-cart__main">
+			<div class="wc-block-skeleton wc-block-components-sidebar-layout wc-block-cart wc-block-cart--is-loading wc-block-cart--skeleton hidden" aria-hidden="true">
+				<div class="wc-block-components-main wc-block-cart__main">
 					<h2><span></span></h2>
 					<table class="wc-block-cart-items">
 						<thead>
@@ -152,10 +162,10 @@ class Cart extends AbstractBlock {
 									<div class="wc-block-cart-item__product-metadata"></div>
 								</td>
 								<td class="wc-block-cart-item__quantity">
-								<div class="wc-block-quantity-selector">
-									<input class="wc-block-quantity-selector__input" type="number" step="1" min="0" value="1" />
-									<button class="wc-block-quantity-selector__button wc-block-quantity-selector__button--minus">－</button>
-									<button class="wc-block-quantity-selector__button wc-block-quantity-selector__button--plus">＋</button>
+								<div class="wc-block-components-quantity-selector">
+									<input class="wc-block-components-quantity-selector__input" type="number" step="1" min="0" value="1" />
+									<button class="wc-block-components-quantity-selector__button wc-block-components-quantity-selector__button--minus">－</button>
+									<button class="wc-block-components-quantity-selector__button wc-block-components-quantity-selector__button--plus">＋</button>
 								</div>
 								</td>
 								<td class="wc-block-cart-item__total">
@@ -171,10 +181,10 @@ class Cart extends AbstractBlock {
 									<div class="wc-block-cart-item__product-metadata">&nbsp;</div>
 								</td>
 								<td class="wc-block-cart-item__quantity">
-								<div class="wc-block-quantity-selector">
-									<input class="wc-block-quantity-selector__input" type="number" step="1" min="0" value="1" />
-									<button class="wc-block-quantity-selector__button wc-block-quantity-selector__button--minus">－</button>
-									<button class="wc-block-quantity-selector__button wc-block-quantity-selector__button--plus">＋</button>
+								<div class="wc-block-components-quantity-selector">
+									<input class="wc-block-components-quantity-selector__input" type="number" step="1" min="0" value="1" />
+									<button class="wc-block-components-quantity-selector__button wc-block-components-quantity-selector__button--minus">－</button>
+									<button class="wc-block-components-quantity-selector__button wc-block-components-quantity-selector__button--plus">＋</button>
 								</div>
 								</td>
 								<td class="wc-block-cart-item__total">
@@ -190,10 +200,10 @@ class Cart extends AbstractBlock {
 									<div class="wc-block-cart-item__product-metadata"></div>
 								</td>
 								<td class="wc-block-cart-item__quantity">
-								<div class="wc-block-quantity-selector">
-									<input class="wc-block-quantity-selector__input" type="number" step="1" min="0" value="1" />
-									<button class="wc-block-quantity-selector__button wc-block-quantity-selector__button--minus">－</button>
-									<button class="wc-block-quantity-selector__button wc-block-quantity-selector__button--plus">＋</button>
+								<div class="wc-block-components-quantity-selector">
+									<input class="wc-block-components-quantity-selector__input" type="number" step="1" min="0" value="1" />
+									<button class="wc-block-components-quantity-selector__button wc-block-components-quantity-selector__button--minus">－</button>
+									<button class="wc-block-components-quantity-selector__button wc-block-components-quantity-selector__button--plus">＋</button>
 								</div>
 								</td>
 								<td class="wc-block-cart-item__total">
@@ -203,7 +213,7 @@ class Cart extends AbstractBlock {
 						</tbody>
 					</table>
 				</div>
-				<div class="wc-block-sidebar wc-block-cart__sidebar">
+				<div class="wc-block-components-sidebar wc-block-cart__sidebar">
 					<div class="components-card"></div>
 				</div>
 			</div>

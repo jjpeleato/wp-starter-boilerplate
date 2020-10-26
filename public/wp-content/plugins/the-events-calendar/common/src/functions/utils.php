@@ -289,21 +289,21 @@ if ( ! function_exists( 'tribe_normalize_terms_list' ) ) {
 
 		return $normalized;
 	}
+}
 
-	if ( ! function_exists( 'tribe_upload_image' ) ) {
-		/**
-		 * @see Tribe__Image__Uploader::upload_and_get_attachment_id()
-		 *
-		 * @param string|int $image The path to an image file, an image URL or an attachment post ID.
-		 *
-		 * @return int|bool The attachment post ID if the uploading and attachment is successful or the ID refers to an attachment;
-		 *                  `false` otherwise.
-		 */
-		function tribe_upload_image( $image ) {
-			$uploader = new Tribe__Image__Uploader( $image );
+if ( ! function_exists( 'tribe_upload_image' ) ) {
+	/**
+	 * @see Tribe__Image__Uploader::upload_and_get_attachment_id()
+	 *
+	 * @param string|int $image The path to an image file, an image URL or an attachment post ID.
+	 *
+	 * @return int|bool The attachment post ID if the uploading and attachment is successful or the ID refers to an attachment;
+	 *                  `false` otherwise.
+	 */
+	function tribe_upload_image( $image ) {
+		$uploader = new Tribe__Image__Uploader( $image );
 
-			return $uploader->upload_and_get_attachment_id();
-		}
+		return $uploader->upload_and_get_attachment_id();
 	}
 }
 
@@ -1062,5 +1062,80 @@ if ( ! function_exists( 'tribe_get_query_var' ) ) {
 			(array) $parsed,
 			array_combine( $query_args, $query_args )
 		);
+	}
+}
+
+if ( ! function_exists( 'tribe_without_filters' ) ) {
+	/**
+	 * Runs a callback or Closure taking care to detach and reattach a set of filters.
+	 *
+	 * The purpose of this function is to make sure a certain callback will run in a "clean" filter environment where
+	 *  a set of filters (and actions) has been suspended to avoid side effects from applying to it.
+	 * The function guarantees the existing filters will be detached and re-attached only to run the callback, avoiding
+	 * issues where some piece of code might detach some filters and not re-attach them due to errors.
+	 *
+	 * @since 4.12.10
+	 *
+	 * @param array<string> $filters    A set of filter, or actions, handles to detach before running the callback and
+	 *                                  re-attach after.
+	 * @param callable      $do         The callback, or Closure, that should run in the context where the specified set of filters
+	 *                                  has been "suspended".
+	 *
+	 * @return mixed The result of the callback function.
+	 */
+	function tribe_without_filters( array $filters, callable $do ) {
+		$filter_backups = [];
+		// If none of the filters to skip has anything attached to it, then skip it.
+		$hooked_filters = array_filter( $filters, 'has_filter' );
+
+		if ( empty( $hooked_filters ) ) {
+			// No filter has functions attached to it, just return the callback invocation.
+			return $do();
+		}
+
+		foreach ( $hooked_filters as $tag ) {
+			$filter_backups[ $tag ] = $GLOBALS['wp_filter'][ $tag ];
+			// A `null` entry will be parsed, from filter API functions, as a filter that has nothing on it.
+			$GLOBALS['wp_filter'][ $tag ] = null;
+		}
+
+		$result = $do();
+
+		foreach ( $filter_backups as $tag => $filter_backup ) {
+			$GLOBALS['wp_filter'][ $tag ] = $filter_backup;
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Runs a callbacks while suspending, removing and re-adding, a filter or action.
+	 *
+	 * The function will infer the priority of the filter, required for its correct detachment and re-attachment, on
+	 * its own.
+	 *
+	 * @since 5.12.12
+	 *
+	 * @param string   $filter_tag      The filter tag to suspend.
+	 * @param callable $filter_callback The filter_callback currently attached to the filter.
+	 * @param callable $do              The filter_callback that will be run detaching the `$filter_callback`.
+	 * @param int      $args            The number of arguments that should be used to re-attach the filtering callback to the filter.
+	 *
+	 * @return mixed The return value of the `$do` callback.
+	 */
+	function tribe_suspending_filter( $filter_tag, callable $filter_callback, callable $do, $args = 1 ) {
+		$priority = has_filter( $filter_tag, $filter_callback );
+
+		if ( false !== $priority ) {
+			remove_filter( $filter_tag, $filter_callback, $priority );
+		}
+
+		$result = $do();
+
+		if ( false !== $priority ) {
+			add_filter( $filter_tag, $filter_callback, $priority, $args );
+		}
+
+		return $result;
 	}
 }

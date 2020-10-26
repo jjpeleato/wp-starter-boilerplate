@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { useMemo } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import { decodeEntities } from '@wordpress/html-entities';
@@ -10,6 +11,7 @@ import classnames from 'classnames';
  * Internal dependencies
  */
 import { ValidatedSelect } from '../select';
+import './style.scss';
 
 const CountryInput = ( {
 	className,
@@ -26,13 +28,22 @@ const CountryInput = ( {
 		'woocommerce'
 	),
 } ) => {
-	const options = Object.keys( countries ).map( ( key ) => ( {
-		key,
-		name: decodeEntities( countries[ key ] ),
-	} ) );
+	const options = useMemo(
+		() =>
+			Object.keys( countries ).map( ( key ) => ( {
+				key,
+				name: decodeEntities( countries[ key ] ),
+			} ) ),
+		[ countries ]
+	);
 
 	return (
-		<div className={ classnames( className, 'wc-block-country-input' ) }>
+		<div
+			className={ classnames(
+				className,
+				'wc-block-components-country-input'
+			) }
+		>
 			<ValidatedSelect
 				id={ id }
 				label={ label }

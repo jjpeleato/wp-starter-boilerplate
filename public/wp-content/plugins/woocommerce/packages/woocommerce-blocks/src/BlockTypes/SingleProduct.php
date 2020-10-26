@@ -1,13 +1,5 @@
 <?php
-/**
- * Single Product block.
- *
- * @package WooCommerce\Blocks
- */
-
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
-
-defined( 'ABSPATH' ) || exit;
 
 use Automattic\WooCommerce\Blocks\Assets;
 
@@ -34,6 +26,7 @@ class SingleProduct extends AbstractBlock {
 				'editor_style'    => 'wc-block-editor',
 				'style'           => [ 'wc-block-style', 'wc-block-vendors-style' ],
 				'script'          => 'wc-' . $this->block_name . '-frontend',
+				'supports'        => [],
 			)
 		);
 	}

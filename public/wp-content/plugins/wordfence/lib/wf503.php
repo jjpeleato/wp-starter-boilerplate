@@ -328,7 +328,7 @@
 		<hr>
 		<?php require(dirname(__FILE__) . '/wfUnlockMsg.php'); ?>
 
-		<h2 class="h3">Block Technical Data</h2>
+		<h2 class="h3"><?php _e('Block Technical Data', 'wordfence') ?></h2>
 		<table border="0" cellspacing="0" cellpadding="0" class="block-data">
 			<tr>
 				<th class="reason"><?php _e('Block Reason', 'wordfence'); ?>:</th>

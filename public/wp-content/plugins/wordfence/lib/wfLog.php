@@ -214,19 +214,19 @@ class wfLog {
 		wfRateLimit::countHit($type, wfUtils::getIP());
 		
 		if (wfRateLimit::globalRateLimit()->shouldEnforce($type)) {
-			$this->takeBlockingAction('maxGlobalRequests', "Exceeded the maximum global requests per minute for crawlers or humans.");
+			$this->takeBlockingAction('maxGlobalRequests', __("Exceeded the maximum global requests per minute for crawlers or humans.", 'wordfence'));
 		}
 		else if (wfRateLimit::crawlerViewsRateLimit()->shouldEnforce($type)) {
-			$this->takeBlockingAction('maxRequestsCrawlers', "Exceeded the maximum number of requests per minute for crawlers."); //may not exit
+			$this->takeBlockingAction('maxRequestsCrawlers', __("Exceeded the maximum number of requests per minute for crawlers.", 'wordfence')); //may not exit
 		}
 		else if (wfRateLimit::crawler404sRateLimit()->shouldEnforce($type)) {
-			$this->takeBlockingAction('max404Crawlers', "Exceeded the maximum number of page not found errors per minute for a crawler.");
+			$this->takeBlockingAction('max404Crawlers', __("Exceeded the maximum number of page not found errors per minute for a crawler.", 'wordfence'));
 		}
 		else if (wfRateLimit::humanViewsRateLimit()->shouldEnforce($type)) {
-			$this->takeBlockingAction('maxRequestsHumans', "Exceeded the maximum number of page requests per minute for humans.");
+			$this->takeBlockingAction('maxRequestsHumans', __("Exceeded the maximum number of page requests per minute for humans.", 'wordfence'));
 		}
 		else if (wfRateLimit::human404sRateLimit()->shouldEnforce($type)) {
-			$this->takeBlockingAction('max404Humans', "Exceeded the maximum number of page not found errors per minute for humans.");
+			$this->takeBlockingAction('max404Humans', __("Exceeded the maximum number of page not found errors per minute for humans.", 'wordfence'));
 		}
 	}
 	
@@ -553,7 +553,7 @@ class wfLog {
 				$b->recordBlock();
 				wfActivityReport::logBlockedIP($IP, null, 'advanced');
 				$this->currentRequest->actionDescription = 'UA/Referrer/IP Range not allowed';
-				$this->do503(3600, "Advanced blocking in effect."); //exits
+				$this->do503(3600, __("Advanced blocking in effect.", 'wordfence')); //exits
 			}
 		}
 
@@ -1459,7 +1459,7 @@ class wfLiveTrafficQuery {
 	 * @return string
 	 * @throws wfLiveTrafficQueryException
 	 */
-	public function buildQuery(&$delayedHumanBotFiltering = null, &$humanOnly) {
+	public function buildQuery(&$delayedHumanBotFiltering, &$humanOnly) {
 		global $wpdb;
 		$filters = $this->getFilters();
 		$groupBy = $this->getGroupBy();

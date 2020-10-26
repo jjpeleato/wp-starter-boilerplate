@@ -1,13 +1,5 @@
 <?php
-/**
- * Abstract block class.
- *
- * @package WooCommerce/Blocks
- */
-
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
-
-defined( 'ABSPATH' ) || exit;
 
 /**
  * AbstractBlock class.
@@ -57,6 +49,7 @@ abstract class AbstractBlock {
 				'editor_script' => 'wc-' . $this->block_name,
 				'editor_style'  => 'wc-block-editor',
 				'style'         => 'wc-block-style',
+				'supports'      => [],
 			)
 		);
 	}

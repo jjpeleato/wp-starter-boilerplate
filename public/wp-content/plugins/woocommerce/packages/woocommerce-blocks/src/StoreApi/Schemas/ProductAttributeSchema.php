@@ -1,17 +1,10 @@
 <?php
-/**
- * Product Attribute Schema.
- *
- * @package WooCommerce/Blocks
- */
-
 namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas;
-
-defined( 'ABSPATH' ) || exit;
 
 /**
  * ProductAttributeSchema class.
  *
+ * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  * @since 2.5.0
  */
 class ProductAttributeSchema extends AbstractSchema {
@@ -41,8 +34,8 @@ class ProductAttributeSchema extends AbstractSchema {
 				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
 			),
-			'slug'         => array(
-				'description' => __( 'String based identifier for the attribute, and its WordPress taxonomy.', 'woocommerce' ),
+			'taxonomy'     => array(
+				'description' => __( 'The attribute taxonomy name.', 'woocommerce' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
@@ -84,7 +77,7 @@ class ProductAttributeSchema extends AbstractSchema {
 		return [
 			'id'           => (int) $attribute->id,
 			'name'         => $this->prepare_html_response( $attribute->name ),
-			'slug'         => $attribute->slug,
+			'taxonomy'     => $attribute->slug,
 			'type'         => $attribute->type,
 			'order'        => $attribute->order_by,
 			'has_archives' => $attribute->has_archives,

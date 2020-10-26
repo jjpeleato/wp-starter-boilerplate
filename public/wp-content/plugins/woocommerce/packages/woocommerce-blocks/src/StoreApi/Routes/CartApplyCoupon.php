@@ -1,18 +1,12 @@
 <?php
-/**
- * Cart apply coupon route.
- *
- * @package WooCommerce/Blocks
- */
-
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
-
-defined( 'ABSPATH' ) || exit;
 
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\CartController;
 
 /**
  * CartApplyCoupon class.
+ *
+ * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
 class CartApplyCoupon extends AbstractCartRoute {
 	/**
@@ -32,9 +26,10 @@ class CartApplyCoupon extends AbstractCartRoute {
 	public function get_args() {
 		return [
 			[
-				'methods'  => \WP_REST_Server::CREATABLE,
-				'callback' => [ $this, 'get_response' ],
-				'args'     => [
+				'methods'             => \WP_REST_Server::CREATABLE,
+				'callback'            => [ $this, 'get_response' ],
+				'permission_callback' => '__return_true',
+				'args'                => [
 					'code' => [
 						'description' => __( 'Unique identifier for the coupon within the cart.', 'woocommerce' ),
 						'type'        => 'string',

@@ -5,14 +5,14 @@ Donate link: http://blog.futtta.be/2013/10/21/do-not-donate-to-me/
 Requires at least: 4.9
 Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 2.7.6
+Stable tag: 2.7.8
 
 Autoptimize speeds up your website by optimizing JS, CSS, images (incl. lazy-load), HTML and Google Fonts, asyncing JS, removing emoji cruft and more.
 
 == Description ==
 
-Autoptimize makes optimizing your site really easy. It can aggregate, minify and cache scripts and styles, injects CSS in the page head by default but can also inline critical CSS and defer the aggregated full CSS, moves and defers scripts to the footer and minifies HTML. You can optimize and lazy-load images, optimize Google Fonts, async non-aggregated JavaScript, remove WordPress core emoji cruft and more. As such it can improve your site's performance even when already on HTTP/2! There is extensive API available to enable you to tailor Autoptimize to each and every site's specific needs.
-If you consider performance important, you really should use one of the many caching plugins to do page caching. Some good candidates to complement Autoptimize that way are e.g. [KeyCDN's Cache Enabler](https://wordpress.org/plugins/cache-enabler) or [WP Super Cache](http://wordpress.org/plugins/wp-super-cache/).
+Autoptimize makes optimizing your site really easy. It can aggregate, minify and cache scripts and styles, injects CSS in the page head by default but can also inline critical CSS and defer the aggregated full CSS, moves and defers scripts to the footer and minifies HTML. You can optimize and lazy-load images (with support for WebP and AVIF formats), optimize Google Fonts, async non-aggregated JavaScript, remove WordPress core emoji cruft and more. As such it can improve your site's performance even when already on HTTP/2! There is extensive API available to enable you to tailor Autoptimize to each and every site's specific needs.
+If you consider performance important, you really should use one of the many caching plugins to do page caching. Some good candidates to complement Autoptimize that way are e.g. [Speed Booster pack](https://wordpress.org/plugins/speed-booster-pack/), [KeyCDN's Cache Enabler](https://wordpress.org/plugins/cache-enabler), [WP Super Cache](http://wordpress.org/plugins/wp-super-cache/) or if you use Cloudflare [WP Cloudflare Super Page Cache](https://wordpress.org/plugins/wp-cloudflare-page-cache/).
 
 > <strong>Premium Support</strong><br>
 > We provide great [Autoptimize Pro Support and Web Performance Optimization services](https://autoptimize.com/), check out our offering on [https://autoptimize.com/](https://autoptimize.com/)!
@@ -208,6 +208,10 @@ define('AUTOPTIMIZE_CACHE_CHILD_DIR','/resources/');
 define('AUTOPTIMIZE_CACHEFILE_PREFIX','aggregated_');
 `
 
+= Does this work with non-default WP_CONTENT_URL ? =
+
+No, Autoptimize does not support a non-default WP_CONTENT_URL out-of-the-box, but this can be accomplished with a couple of lines of code hooking into Autoptimize's API.
+
 = Can the generated JS/ CSS be pre-gzipped? =
 
 Yes, but this is off by default. You can enable this by passing ´true´ to ´autoptimize_filter_cache_create_static_gzip´. You'll obviously still have to configure your webserver to use these files instead of the non-gzipped ones to avoid the overhead of on-the-fly compression.
@@ -310,6 +314,19 @@ You can get help on the [wordpress.org support forum](http://wordpress.org/suppo
 Just [fork Autoptimize on Github](https://github.com/futtta/autoptimize) and code away!
 
 == Changelog ==
+
+= 2.7.8 =
+* Image optimization: add support for AVIF image format for browsers that support it (enabled with the existing WebP-option, also requires lazy-load to be active)
+* Critical CSS: further security improvements of critical CSS import settings upload, based on the input of [Marcin Weglowski of afine.com](https://afine.com)
+* Misc. other minor fixes, see the [GitHub commit log](https://github.com/futtta/autoptimize/commits/beta).
+
+= 2.7.7 =
+* critical CSS: make sure pages get a path-based rule even if a CPT or template matches (when "path based rules for pages" option is on)
+* critical CSS: make sure the "unload CCSS javascript" is only added once
+* settings screens: switch jQuery .attr() to .prop() as suggested by jQuery Migrate to prepare for [the great oncoming big jQuery updates](https://wptavern.com/major-jquery-changes-on-the-way-for-wordpress-5-5-and-beyond)
+* HTML minify: reverse placeholder array to make sure last replaced placeholder is changed back first to fix rare issues
+* security fix: kudos to [Erin Germ](https://eringerm.com/) for finding & reporting an authenticated XSS vulnerability
+* security fix: props to an anonymous pentester for finding & reporting an authenticated malicous file upload vulnerability
 
 = 2.7.6 =
 * fix for top frontend admin-bar being invisible when "inline & defer" is active.

@@ -1,11 +1,12 @@
-.wc-block-shipping-calculator-address {
+.wc-block-components-shipping-calculator-address {
 	margin-bottom: 0;
 }
 
-.wc-block-shipping-calculator-address__button {
+.wc-block-components-shipping-calculator-address__button {
 	width: 100%;
+	margin-top: em($gap-large);
 }
 
-.wc-block-cart__shipping-calculator {
+.wc-block-components-shipping-calculator {
 	padding: em($gap-smaller) 0 em($gap-small);
 }

@@ -1,11 +1,4 @@
 <?php
-/**
- * PayPal Standard (core) gateway implementation.
- *
- * @package WooCommerce/Blocks
- * @since 2.6.0
- */
-
 namespace Automattic\WooCommerce\Blocks\Payments\Integrations;
 
 use Exception;
@@ -25,13 +18,6 @@ final class PayPal extends AbstractPaymentMethodType {
 	 * @var string
 	 */
 	protected $name = 'paypal';
-
-	/**
-	 * Settings from the WP options table
-	 *
-	 * @var array
-	 */
-	private $settings;
 
 	/**
 	 * An instance of the Asset Api
@@ -62,7 +48,7 @@ final class PayPal extends AbstractPaymentMethodType {
 	 * @return boolean
 	 */
 	public function is_active() {
-		return ! empty( $this->settings['enabled'] ) && 'yes' === $this->settings['enabled'];
+		return filter_var( $this->get_setting( 'enabled', false ), FILTER_VALIDATE_BOOLEAN );
 	}
 
 	/**
@@ -85,8 +71,8 @@ final class PayPal extends AbstractPaymentMethodType {
 	 */
 	public function get_payment_method_data() {
 		return [
-			'title'       => isset( $this->settings['title'] ) ? $this->settings['title'] : '',
-			'description' => isset( $this->settings['description'] ) ? $this->settings['description'] : '',
+			'title'       => $this->get_setting( 'title' ),
+			'description' => $this->get_setting( 'description' ),
 		];
 	}
 }

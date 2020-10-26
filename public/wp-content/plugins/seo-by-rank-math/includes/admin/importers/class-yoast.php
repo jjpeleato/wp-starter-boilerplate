@@ -11,10 +11,11 @@
 namespace RankMath\Admin\Importers;
 
 use RankMath\Helper;
-use MyThemeShop\Helpers\DB;
-use MyThemeShop\Helpers\WordPress;
 use RankMath\Redirections\Redirection;
 use RankMath\Tools\Yoast_Blocks;
+use MyThemeShop\Helpers\DB;
+use MyThemeShop\Helpers\WordPress;
+use MyThemeShop\Helpers\Str;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -49,7 +50,7 @@ class Yoast extends Plugin_Importer {
 	 *
 	 * @var array
 	 */
-	protected $choices = [ 'settings', 'postmeta', 'termmeta', 'usermeta', 'redirections', 'blocks' ];
+	protected $choices = [ 'settings', 'locations', 'news', 'postmeta', 'termmeta', 'usermeta', 'redirections', 'blocks' ];
 
 	/**
 	 * Table names to drop while cleaning.
@@ -99,10 +100,6 @@ class Yoast extends Plugin_Importer {
 		}
 		Helper::update_modules( $modules );
 
-		// Knowledge Graph Logo.
-		if ( isset( $yoast_main['company_logo'] ) ) {
-			$this->replace_image( $yoast_main['company_logo'], $this->titles, 'knowledgegraph_logo', 'knowledgegraph_logo_id' );
-		}
 		$this->titles['local_seo'] = isset( $yoast_titles['company_or_person'] ) && ! empty( $yoast_titles['company_or_person'] ) ? 'on' : 'off';
 
 		// Titles & Descriptions.
@@ -220,15 +217,18 @@ class Yoast extends Plugin_Importer {
 		$this->set_primary_term( $post_ids );
 
 		$hash = [
-			'_yoast_wpseo_title'                 => 'rank_math_title',
-			'_yoast_wpseo_metadesc'              => 'rank_math_description',
-			'_yoast_wpseo_focuskw'               => 'rank_math_focus_keyword',
-			'_yoast_wpseo_canonical'             => 'rank_math_canonical_url',
-			'_yoast_wpseo_opengraph-title'       => 'rank_math_facebook_title',
-			'_yoast_wpseo_opengraph-description' => 'rank_math_facebook_description',
-			'_yoast_wpseo_twitter-title'         => 'rank_math_twitter_title',
-			'_yoast_wpseo_twitter-description'   => 'rank_math_twitter_description',
-			'_yoast_wpseo_bctitle'               => 'rank_math_breadcrumb_title',
+			'_yoast_wpseo_title'                    => 'rank_math_title',
+			'_yoast_wpseo_metadesc'                 => 'rank_math_description',
+			'_yoast_wpseo_focuskw'                  => 'rank_math_focus_keyword',
+			'_yoast_wpseo_canonical'                => 'rank_math_canonical_url',
+			'_yoast_wpseo_opengraph-title'          => 'rank_math_facebook_title',
+			'_yoast_wpseo_opengraph-description'    => 'rank_math_facebook_description',
+			'_yoast_wpseo_twitter-title'            => 'rank_math_twitter_title',
+			'_yoast_wpseo_twitter-description'      => 'rank_math_twitter_description',
+			'_yoast_wpseo_bctitle'                  => 'rank_math_breadcrumb_title',
+			'_yoast_wpseo_newssitemap-stocktickers' => 'rank_math_news_sitemap_stock_tickers',
+			'_yoast_wpseo_newssitemap-genre'        => 'rank_math_news_sitemap_genres',
+			'_yoast_wpseo_newssitemap-exclude'      => 'rank_math_news_sitemap_exclude',
 		];
 
 		foreach ( $post_ids as $post ) {
@@ -242,6 +242,10 @@ class Yoast extends Plugin_Importer {
 				update_post_meta( $post_id, 'rank_math_pillar_content', 'on' );
 			}
 
+			$news_robots = get_post_meta( $post_id, '_yoast_wpseo_newssitemap-robots-index', true );
+			$news_robots = ! empty( $news_robots ) ? 'noindex' : 'index';
+			update_post_meta( $post_id, 'rank_math_news_sitemap_robots', $news_robots );
+
 			$this->set_post_robots( $post_id );
 			$this->replace_image( get_post_meta( $post_id, '_yoast_wpseo_opengraph-image', true ), 'post', 'rank_math_facebook_image', 'rank_math_facebook_image_id', $post_id );
 			$this->replace_image( get_post_meta( $post_id, '_yoast_wpseo_twitter-image', true ), 'post', 'rank_math_twitter_image', 'rank_math_twitter_image_id', $post_id );
@@ -253,9 +257,231 @@ class Yoast extends Plugin_Importer {
 	}
 
 	/**
+	 * Import Locations data from Yoast Local plugin.
+	 *
+	 * @return array
+	 */
+	protected function locations() {
+		$this->import_locations_terms();
+		$this->set_pagination( $this->get_location_ids( true ) );
+		$locations = $this->get_location_ids();
+
+		foreach ( $locations as $location ) {
+			$args = (array) $location;
+			unset( $args['ID'] );
+			$args['post_type'] = 'rank_math_locations';
+
+			$post_id = wp_insert_post( $args );
+			if ( is_wp_error( $post_id ) ) {
+				continue;
+			}
+
+			$post_terms = wp_get_object_terms( $location->ID, 'wpseo_locations_category', [ 'fields' => 'slugs' ] );
+			wp_set_object_terms( $post_id, $post_terms, 'rank_math_location_category', false );
+
+			$this->locations_meta( $location->ID, $post_id );
+		}
+
+		return $this->get_pagination_arg();
+	}
+
+	/**
+	 * Import Locations terms.
+	 */
+	private function import_locations_terms() {
+		$terms = get_terms( 'wpseo_locations_category' );
+		if ( empty( $terms ) || is_wp_error( $terms ) ) {
+			return;
+		}
+
+		foreach ( $terms as $term ) {
+			wp_insert_term( $term->name, 'rank_math_location_category', $term );
+		}
+	}
+
+	/**
+	 * Import Locations metadata.
+	 *
+	 * @param int $old_post_id Yoast's location id.
+	 * @param int $new_post_id Newly created location id.
+	 */
+	private function locations_meta( $old_post_id, $new_post_id ) {
+		$metas = DB::query_builder( 'postmeta' )->where( 'post_id', $old_post_id )->select()->get();
+		if ( empty( $metas ) ) {
+			return;
+		}
+
+		$hash = [
+			'_wpseo_business_type'                => '@type',
+			'_wpseo_business_email'               => 'email',
+			'_wpseo_business_url'                 => 'url',
+			'_wpseo_business_address'             => 'address',
+			'_wpseo_business_address_2'           => 'address',
+			'_wpseo_business_city'                => 'address',
+			'_wpseo_business_state'               => 'address',
+			'_wpseo_business_zipcode'             => 'address',
+			'_wpseo_business_country'             => 'address',
+			'_wpseo_business_phone'               => 'telephone',
+			'_wpseo_business_fax'                 => 'faxNumber',
+			'_wpseo_business_location_logo'       => 'image',
+			'_wpseo_business_vat_id'              => 'vatID',
+			'_wpseo_business_tax_id'              => 'taxID',
+			'_wpseo_business_price_range'         => 'priceRange',
+			'_wpseo_business_currencies_accepted' => 'currenciesAccepted',
+			'_wpseo_business_payment_accepted'    => 'paymentAccepted',
+			'_wpseo_business_area_served'         => 'areaServed',
+			'_wpseo_coordinates_lat'              => 'latitude',
+			'_wpseo_coordinates_long'             => 'longitude',
+			'_wpseo_business_phone_2nd'           => 'secondary_number',
+			'_wpseo_business_coc_id'              => 'coc_id',
+		];
+
+		$schema        = [
+			'name'     => '%seo_title%',
+			'metadata' => [
+				'type'  => 'template',
+				'title' => 'LocalBusiness',
+			],
+			'geo'      => [
+				'@type' => 'GeoCoordinates',
+			],
+		];
+		$address       = [];
+		$opening_hours = [];
+
+		foreach ( $metas as $meta ) {
+			if ( ! Str::starts_with( '_wpseo_', $meta->meta_key ) ) {
+				update_post_meta( $new_post_id, $meta->meta_key, $meta->meta_value );
+				continue;
+			}
+
+			if ( Str::starts_with( '_wpseo_opening_hours_', $meta->meta_key ) ) {
+				$opening_hours[ $meta->meta_key ] = $meta->meta_value;
+				continue;
+			}
+
+			if ( ! isset( $hash[ $meta->meta_key ] ) ) {
+				continue;
+			}
+
+			if ( in_array( $hash[ $meta->meta_key ], [ 'secondary_number', 'coc_id' ], true ) ) {
+				$schema['metadata'][ $hash[ $meta->meta_key ] ] = $meta->meta_value;
+				continue;
+			}
+
+			if ( 'address' === $hash[ $meta->meta_key ] ) {
+				$address[ $meta->meta_key ] = $meta->meta_value;
+				continue;
+			}
+
+			if ( in_array( $hash[ $meta->meta_key ], [ 'latitude', 'longitude' ], true ) ) {
+				$schema['geo'][ $hash[ $meta->meta_key ] ] = $meta->meta_value;
+				continue;
+			}
+
+			$schema[ $hash[ $meta->meta_key ] ] = $meta->meta_value;
+		}
+
+		if ( ! empty( $address ) ) {
+			$schema['address'] = $this->replace_address( $address );
+		}
+
+		if ( ! empty( $opening_hours ) ) {
+			$schema['openingHoursSpecification'] = $this->replace_opening_hours( $opening_hours );
+		}
+
+		$schema['@type'] = 'LocalBusiness';
+
+		if ( ! empty( $schema['image'] ) ) {
+			$schema['image'] = [
+				'@type' => 'ImageObject',
+				'url'   => $schema['image'],
+			];
+		}
+
+		if ( isset( $schema['geo']['latitude'] ) && isset( $schema['geo']['longitude'] ) ) {
+			update_post_meta( $new_post_id, 'rank_math_local_business_latitide', $schema['geo']['latitude'] );
+			update_post_meta( $new_post_id, 'rank_math_local_business_longitude', $schema['geo']['longitude'] );
+		}
+
+		update_post_meta( $new_post_id, 'rank_math_schema_' . $schema['@type'], $schema );
+	}
+
+	/**
+	 * Replace Opening Hours data.
+	 *
+	 * @param array $opening_hours Opening Hours data.
+	 * @return array Processed data.
+	 */
+	private function replace_opening_hours( $opening_hours ) {
+		$data = [];
+		$days = [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday' ];
+		foreach ( $days as $day ) {
+			$opens  = ! empty( $opening_hours[ '_wpseo_opening_hours_' . strtolower( $day ) . '_from' ] ) ? $opening_hours[ '_wpseo_opening_hours_' . strtolower( $day ) . '_from' ] : 'closed';
+			$closes = ! empty( $opening_hours[ '_wpseo_opening_hours_' . strtolower( $day ) . '_to' ] ) ? $opening_hours[ '_wpseo_opening_hours_' . strtolower( $day ) . '_to' ] : 'closed';
+
+			if ( 'closed' === $opens ) {
+				continue;
+			}
+
+			$data[ $day ] = [
+				'@type'     => 'OpeningHoursSpecification',
+				'dayOfWeek' => $day,
+				'opens'     => $opens,
+				'closes'    => $closes,
+			];
+		}
+
+		return array_values( $data );
+	}
+
+	/**
+	 * Replace Address data.
+	 *
+	 * @param array $address Address data.
+	 * @return array Processed data.
+	 */
+	private function replace_address( $address ) {
+		$data = [
+			'@type' => 'PostalAddress',
+		];
+		$hash = [
+			'_wpseo_business_address'   => 'streetAddress',
+			'_wpseo_business_address_2' => 'addressLocality',
+			'_wpseo_business_state'     => 'addressRegion',
+			'_wpseo_business_zipcode'   => 'postalCode',
+			'_wpseo_business_country'   => 'addressCountry',
+		];
+
+		foreach ( $hash as $key => $value ) {
+			$data[ $value ] = isset( $address[ $key ] ) ? $address[ $key ] : '';
+		}
+
+		if ( ! empty( $address['_wpseo_business_city'] ) ) {
+			$data['addressLocality'] = $data['addressLocality'] . ', ' . $address['_wpseo_business_city'];
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Get all location IDs.
+	 *
+	 * @param bool $count If we need count only for pagination purposes.
+	 * @return int|array
+	 */
+	private function get_location_ids( $count = false ) {
+		$paged = $this->get_pagination_arg( 'page' );
+		$table = DB::query_builder( 'posts' )->where( 'post_type', 'wpseo_locations' );
+
+		return $count ? absint( $table->selectCount( 'ID', 'total' )->getVar() ) :
+			$table->select()->page( $paged - 1, $this->items_per_page )->get();
+	}
+
+	/**
 	 * Set post robots.
 	 *
-	 * @param int $post_id Post id.
+	 * @param int $post_id Post ID.
 	 */
 	private function set_post_robots( $post_id ) {
 		// Early bail if robots data is set in Rank Math plugin.
@@ -289,7 +515,7 @@ class Yoast extends Plugin_Importer {
 	/**
 	 * Set post robots based on the Settings.
 	 *
-	 * @param int $post_id        Post id.
+	 * @param int $post_id        Post ID.
 	 * @param int $robots_noindex Whether or not the post is indexed.
 	 *
 	 * @return string
@@ -306,7 +532,7 @@ class Yoast extends Plugin_Importer {
 	/**
 	 * Set Focus Keyword.
 	 *
-	 * @param int $post_id Post id.
+	 * @param int $post_id Post ID.
 	 */
 	private function set_post_focus_keyword( $post_id ) {
 		$extra_fks = get_post_meta( $post_id, '_yoast_wpseo_focuskeywords', true );
@@ -333,7 +559,7 @@ class Yoast extends Plugin_Importer {
 	/**
 	 * Set primary term for the posts.
 	 *
-	 * @param int[] $post_ids Post ids.
+	 * @param int[] $post_ids Post IDs.
 	 */
 	private function set_primary_term( $post_ids ) {
 		$post_ids = wp_list_pluck( $post_ids, 'ID' );
@@ -389,7 +615,7 @@ class Yoast extends Plugin_Importer {
 	/**
 	 * Set term robots.
 	 *
-	 * @param int   $term_id Term id.
+	 * @param int   $term_id Term ID.
 	 * @param array $data    Term data.
 	 */
 	private function set_term_robots( $term_id, $data ) {
@@ -407,7 +633,7 @@ class Yoast extends Plugin_Importer {
 	/**
 	 * Set term social media.
 	 *
-	 * @param int   $term_id Term id.
+	 * @param int   $term_id Term ID.
 	 * @param array $data    Term data.
 	 */
 	private function set_term_social_media( $term_id, $data ) {
@@ -537,9 +763,16 @@ class Yoast extends Plugin_Importer {
 	 * @param array $yoast_social Settings.
 	 */
 	private function misc_settings( $yoast_titles, $yoast_social ) {
+		$knowledgegraph_type = ! empty( $yoast_titles['company_or_person'] ) ? $yoast_titles['company_or_person'] : '';
+
+		$logo_key = 'company' === $knowledgegraph_type ? 'company_logo' : 'person_logo';
+		$logo_id  = 'company' === $knowledgegraph_type ? 'company_logo_id' : 'person_logo_id';
+
 		$hash = [
 			'company_name'      => 'knowledgegraph_name',
 			'company_or_person' => 'knowledgegraph_type',
+			$logo_key           => 'knowledgegraph_logo',
+			$logo_id            => 'knowledgegraph_logo_id',
 		];
 		$this->replace( $hash, $yoast_titles, $this->titles );
 
@@ -604,6 +837,85 @@ class Yoast extends Plugin_Importer {
 	}
 
 	/**
+	 * Import News Settings from Yoast News plugin.
+	 */
+	protected function news() {
+		$yoast_news = get_option( 'wpseo_news' );
+		if ( empty( $yoast_news ) ) {
+			return false;
+		}
+
+		Helper::update_modules( [ 'news-sitemap' => 'on' ] );
+
+		$this->get_settings();
+		$this->sitemap['news_sitemap_publication_name'] = ! empty( $yoast_news['news_sitemap_name'] ) ? $yoast_news['news_sitemap_name'] : '';
+		$this->sitemap['news_sitemap_default_genres']   = ! empty( $yoast_news['news_sitemap_default_genre'] ) ? [ $yoast_news['news_sitemap_default_genre'] ] : [];
+		if ( ! empty( $yoast_news['news_sitemap_include_post_types'] ) ) {
+			$this->sitemap['news_sitemap_post_type'] = array_keys( $yoast_news['news_sitemap_include_post_types'] );
+			$this->add_excluded_news_terms( $yoast_news );
+		}
+		$this->update_settings();
+
+		return true;
+	}
+
+	/**
+	 * Deactivate plugin action.
+	 */
+	protected function deactivate() {
+		if ( is_plugin_active( $this->get_plugin_file() ) ) {
+			deactivate_plugins( $this->get_plugin_file() );
+			deactivate_plugins( 'wpseo-news/wpseo-news.php' );
+			deactivate_plugins( 'wpseo-local/local-seo.php' );
+		}
+
+		return true;
+	}
+
+	/**
+	 * Import Excluded News terms.
+	 *
+	 * @param array $yoast_news News Sitemap Settings.
+	 */
+	private function add_excluded_news_terms( $yoast_news ) {
+		$exclude_terms = $yoast_news['news_sitemap_exclude_terms'];
+		if ( empty( $exclude_terms ) ) {
+			return;
+		}
+
+		$post_types = array_keys( $yoast_news['news_sitemap_include_post_types'] );
+		foreach ( $post_types as $post_type ) {
+			$taxonomies = get_object_taxonomies( $post_type, 'objects' );
+
+			foreach ( $taxonomies as $taxonomy ) {
+				if ( ! $taxonomy->show_ui ) {
+					continue;
+				}
+
+				$terms = get_terms(
+					[
+						'taxonomy'   => $taxonomy->name,
+						'hide_empty' => false,
+						'fields'     => 'id=>slug',
+					]
+				);
+
+				if ( empty( $terms ) ) {
+					continue;
+				}
+
+				foreach ( $terms as $term_id => $term ) {
+					$field = "{$taxonomy->name}_{$term}_for_{$post_type}";
+					$key   = "news_sitemap_exclude_{$post_type}_terms";
+					if ( isset( $exclude_terms[ $field ] ) && 'on' === $exclude_terms[ $field ] ) {
+						$this->sitemap[ $key ][] = $term_id;
+					}
+				}
+			}
+		}
+	}
+
+	/**
 	 * Sitemap exclude roles.
 	 *
 	 * @param array $yoast_sitemap Settings.
@@ -652,7 +964,7 @@ class Yoast extends Plugin_Importer {
 	/**
 	 * Local phones settings.
 	 *
-	 * @param array $yoast_local Array of yoast local seo settings.
+	 * @param array $yoast_local Array of yoast local SEO settings.
 	 */
 	private function local_phones_settings( $yoast_local ) {
 		if ( empty( $yoast_local['location_phone'] ) ) {
@@ -675,7 +987,7 @@ class Yoast extends Plugin_Importer {
 	/**
 	 * Local address settings.
 	 *
-	 * @param array $yoast_local Array of yoast local seo settings.
+	 * @param array $yoast_local Array of yoast local SEO settings.
 	 */
 	private function local_address_settings( $yoast_local ) {
 		// Address Format.

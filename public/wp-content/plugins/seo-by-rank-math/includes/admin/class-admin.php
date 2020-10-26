@@ -43,6 +43,10 @@ class Admin implements Runner {
 		$this->ajax( 'is_keyword_new', 'is_keyword_new' );
 		$this->ajax( 'save_checklist_layout', 'save_checklist_layout' );
 		$this->ajax( 'deactivate_plugins', 'deactivate_plugins' );
+
+		// POST.
+		$this->action( 'admin_init', 'process_oauth' );
+		$this->action( 'admin_init', 'reconnect_google' );
 	}
 
 	/**
@@ -56,10 +60,52 @@ class Admin implements Runner {
 	}
 
 	/**
+	 * Reconnect Google.
+	 */
+	public function reconnect_google() {
+		if ( ! isset( $_GET['reconnect'] ) || 'google' !== $_GET['reconnect'] ) {
+			return;
+		}
+
+		if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'rank_math_reconnect_google' ) ) {
+			wp_nonce_ays( 'rank_math_reconnect_google' );
+			die();
+		}
+
+		if ( ! Helper::has_cap( 'analytics' ) ) {
+			return;
+		}
+
+		\RankMath\Google\Api::get()->revoke_token();
+		\RankMath\Analytics\Data_Fetcher::get()->kill_process();
+
+		wp_redirect( \RankMath\Google\Authentication::get_auth_url() );
+		die();
+	}
+
+	/**
+	 * OAuth reply back
+	 */
+	public function process_oauth() {
+		if ( ! isset( $_GET['process_oauth'] ) ) {
+			return;
+		}
+
+		if ( ! wp_verify_nonce( $_GET['security'], 'rank_math_oauth_token' ) ) {
+			wp_nonce_ays( 'rank_math_oauth_token' );
+			die();
+		}
+
+		\RankMath\Google\Authentication::get_tokens_from_server();
+	}
+
+	/**
 	 * Add Facebook and Twitter as user contact methods.
 	 *
 	 * @param array $contactmethods Current contact methods.
 	 * @return array New contact methods with extra items.
+	 *
+	 * Adapted from Yoast (https://github.com/Yoast/wordpress-seo/)
 	 */
 	public function update_user_contactmethods( $contactmethods ) {
 		$contactmethods['twitter']  = esc_html__( 'Twitter username (without @)', 'rank-math' );
@@ -118,7 +164,7 @@ class Admin implements Runner {
 	/**
 	 * Show notice when canonical URL is not a valid URL.
 	 *
-	 * @param int $post_id The post id.
+	 * @param int $post_id The post ID.
 	 */
 	public function canonical_check_notice( $post_id ) {
 		$post_type  = get_post_type( $post_id );
@@ -332,6 +378,7 @@ class Admin implements Runner {
 		if ( 0 !== strpos( $cmb_id, 'rank_math' ) && 0 !== strpos( $cmb_id, 'rank-math' ) ) {
 			return;
 		}
+
 		Helper::is_configured( true );
 	}
 

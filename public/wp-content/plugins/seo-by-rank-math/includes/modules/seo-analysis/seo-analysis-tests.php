@@ -10,12 +10,14 @@
 
 use RankMath\KB;
 use RankMath\Helper;
+use RankMath\Google\Console;
+use RankMath\Google\Authentication;
 
 defined( 'ABSPATH' ) || exit;
 
 add_filter( 'rank_math/seo_analysis/tests', 'rank_math_register_seo_analysis_basic_tests' );
 /**
- * Register local seo analysis basic tests.
+ * Register local SEO analysis basic tests.
  *
  * @param array $tests Array of tests.
  *
@@ -39,7 +41,7 @@ function rank_math_register_seo_analysis_basic_tests( $tests ) {
 		'description' => esc_html__( 'Your site may not be visible to search engine.', 'rank-math' ),
 		'how_to_fix'  => '<p>' .
 			sprintf(
-				/* translators: %1$s resolves to the opening tag of the link to the reading settings, %1$s resolves to the closing tag for the link */
+				/* translators: %1$s link to the reading settings, %2$s closing tag for the link */
 				esc_html__( 'You must %1$sgo to your Reading Settings%2$s and uncheck the box for Search Engine Visibility.', 'rank-math' ),
 				'<a href="' . esc_url( admin_url( 'options-reading.php' ) ) . '">',
 				'</a>'
@@ -86,7 +88,7 @@ function rank_math_register_seo_analysis_basic_tests( $tests ) {
 
 add_filter( 'rank_math/seo_analysis/tests', 'rank_math_register_seo_analysis_advance_tests' );
 /**
- * Register local seo analysis basic tests.
+ * Register local SEO analysis basic tests.
  *
  * @param array $tests Array of tests.
  *
@@ -100,13 +102,13 @@ function rank_math_register_seo_analysis_advance_tests( $tests ) {
 			/* translators: link to plugin setting screen */
 			esc_html__( 'Register at Google Search Console and verificate your site by adding the code to <a href="%1$s">Settings &gt; Verificate Tools</a>, then navigate to <a href="%2$s">Settings &gt; Search Console</a> to authenticate and link your site.', 'rank-math' ),
 			Helper::get_admin_url( 'options-general#setting-panel-webmaster' ),
-			Helper::get_admin_url( 'options-general#setting-panel-search-console' )
+			Helper::get_admin_url( 'options-general#setting-panel-analytics' )
 		),
 		'how_to_fix'  => '<p>' . esc_html__( 'Google\'s Search Console is a vital source of information concerning your rankings and click-through rates.  Rank Math can import this data, so you don\'t have to log into your Google account to get the data you need.', 'rank-math' ) . '</p>' .
 			/* translators: link to plugin search console setting screen */
-			'<p>' . sprintf( wp_kses_post( __( 'You can integrate the Google Search Console with Rank math in the <a href="%1$s" target="_blank">Search Console tab</a>. of Rank Math\'s General Settings menu.', 'rank-math' ) ), esc_url( Helper::get_admin_url( 'options-general#setting-panel-search-console' ) ) ) . '</p>' .
+			'<p>' . sprintf( wp_kses_post( __( 'You can integrate the Google Search Console with Rank math in the <a href="%1$s" target="_blank">Search Console tab</a>. of Rank Math\'s General Settings menu.', 'rank-math' ) ), esc_url( Helper::get_admin_url( 'options-general#setting-panel-analytics' ) ) ) . '</p>' .
 			/* translators: Link to Search Console KB article */
-			'<p>' . sprintf( wp_kses_post( __( 'Read <a href="%1$s" target="_blank">this article</a> for detailed instructions on setting up your Google Webmaster account and getting Rank Math to work with the Google Search Console.', 'rank-math' ) ), KB::get( 'search-console' ) ) . '</p>',
+			'<p>' . sprintf( wp_kses_post( __( 'Read <a href="%1$s" target="_blank">this article</a> for detailed instructions on setting up your Google Webmaster account and getting Rank Math to work with the Google Search Console.', 'rank-math' ) ), KB::get( 'analytics' ) ) . '</p>',
 		'callback'    => 'rank_math_analyze_search_console',
 	];
 
@@ -183,7 +185,7 @@ function rank_math_analyze_site_description() {
 		return [
 			'status'  => 'warning',
 			'message' => sprintf(
-				/* translators: 1: link open tag; 2: link close tag. */
+				/* translators: %1$s link to the customize settings, %2$s closing tag for the link */
 				esc_html__( 'You have not entered a tagline yet. It is a good idea to choose one. %1$sYou can fix this in the customizer%2$s.', 'rank-math' ),
 				'<a href="' . esc_url( admin_url( 'customize.php' ) ) . '" target="_blank">',
 				'</a>'
@@ -263,11 +265,7 @@ function rank_math_has_postname_in_permalink() {
  * @return array
  */
 function rank_math_analyze_search_console() {
-
-	$data          = Helper::search_console_data();
-	$is_authorized = $data['authorized'] && $data['access_token'] && $data['refresh_token'];
-	$profile       = Helper::get_settings( 'general.console_profile' );
-	$status        = $is_authorized && $profile;
+	$status = Authentication::is_authorized() && Console::get_site_url();
 
 	return [
 		'status'  => $status ? 'ok' : 'fail',
@@ -369,7 +367,7 @@ function rank_math_analyze_post_titles() {
 	}
 	$count = count( $post_ids ) - 20;
 	if ( $count > 0 ) {
-		/* translators: post id count */
+		/* translators: post ID count */
 		$info[] = sprintf( esc_html__( '+%d More...', 'rank-math' ), $count );
 	}
 
@@ -382,7 +380,7 @@ function rank_math_analyze_post_titles() {
 }
 
 /**
- * Get post_type links.
+ * Get `post_type` links.
  *
  * @param array $rows Rows.
  *
@@ -442,9 +440,9 @@ function rank_math_get_posts_with_titles() {
 }
 
 /**
- * Group Result Data by Post type.
+ * Group result data by post type.
  *
- * @param array $data Result Data.
+ * @param array $data Result data.
  *
  * @return array
  */

@@ -45,7 +45,7 @@ class Post_Variables extends Advanced_Variables {
 				'name'        => esc_html__( 'Post Title of parent page', 'rank-math' ),
 				'description' => esc_html__( 'Title of the parent page of the current post/page', 'rank-math' ),
 				'variable'    => 'parent_title',
-				'example'     => esc_html__( 'Example Parent Title', 'rank-math' ),
+				'example'     => $this->get_parent_title(),
 			],
 			[ $this, 'get_parent_title' ]
 		);
@@ -92,6 +92,28 @@ class Post_Variables extends Advanced_Variables {
 				'example'     => $this->get_excerpt(),
 			],
 			[ $this, 'get_seo_description' ]
+		);
+
+		$this->register_replacement(
+			'url',
+			[
+				'name'        => esc_html__( 'Post URL', 'rank-math' ),
+				'description' => esc_html__( 'URL of the current post/page', 'rank-math' ),
+				'variable'    => 'url',
+				'example'     => $this->get_url(),
+			],
+			[ $this, 'get_url' ]
+		);
+
+		$this->register_replacement(
+			'post_thumbnail',
+			[
+				'name'        => esc_html__( 'Post Thumbnail', 'rank-math' ),
+				'description' => esc_html__( 'Current Post Thumbnail', 'rank-math' ),
+				'variable'    => 'post_thumbnail',
+				'example'     => $this->get_post_thumbnail(),
+			],
+			[ $this, 'get_post_thumbnail' ]
 		);
 
 		$this->setup_post_dates_variables();
@@ -474,5 +496,28 @@ class Post_Variables extends Advanced_Variables {
 		}
 
 		return $defaults;
+	}
+
+	/**
+	 * Get the canonical URL to use as a replacement.
+	 *
+	 * @return string|null
+	 */
+	public function get_url() {
+		return Paper::get()->get_canonical() ? Paper::get()->get_canonical() : get_the_permalink( $this->args->ID );
+	}
+
+	/**
+	 * Get the the post thumbnail to use as a replacement.
+	 *
+	 * @return string|null
+	 */
+	public function get_post_thumbnail() {
+		if ( ! has_post_thumbnail( $this->args->ID ) ) {
+			return '';
+		}
+
+		$image = wp_get_attachment_image_src( get_post_thumbnail_id( $this->args->ID ), 'full' );
+		return $image[0];
 	}
 }

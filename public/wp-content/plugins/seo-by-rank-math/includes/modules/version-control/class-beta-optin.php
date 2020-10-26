@@ -62,7 +62,7 @@ class Beta_Optin {
 		}
 
 		$transient = get_site_transient( 'update_plugins' );
-		if ( self::is_beta_update( $transient ) ) {
+		if ( self::has_beta_update( $transient ) ) {
 			// No-js fallback.
 			echo '<html><head></head><body style="margin: 0;"><iframe src="' . esc_attr( self::BETA_CHANGELOG_URL ) . '" style="width: 100%; height: 100%;"></body></html>';
 			exit;
@@ -75,7 +75,7 @@ class Beta_Optin {
 	 * @param  mixed $transient Transient value.
 	 * @return boolean          If it is a beta update or not.
 	 */
-	public function is_beta_update( $transient ) {
+	public static function has_beta_update( $transient ) {
 		return (
 			is_object( $transient )
 			&& ! empty( $transient->response )
@@ -92,7 +92,7 @@ class Beta_Optin {
 	 * @return array List of versions and download URLs.
 	 */
 	public static function get_available_versions( $beta = false ) {
-		$versions    = array();
+		$versions    = [];
 		$plugin_info = Version_Control::get_plugin_info();
 
 		foreach ( (array) $plugin_info['versions'] as $version => $url ) {
@@ -143,21 +143,42 @@ class Beta_Optin {
 	 * @return string Latest beta version number.
 	 */
 	public function get_latest_beta_version() {
-		$plugin_info = Version_Control::get_plugin_info();
-		$versions    = $plugin_info['versions'];
+		$version = get_transient( 'rank_math_trunk_version' );
+		if ( ! $version ) {
+			$version = $this->fetch_trunk_version();
+		}
 
-		uksort( $versions, 'version_compare' );
-
-		$versions = array_keys( $versions );
-		$beta     = reset( $versions );
-
-		foreach ( (array) $plugin_info['versions'] as $version => $url ) {
-			if ( Str::contains( 'beta', $version ) ) {
-				$beta = $version;
-			}
+		$beta = 0;
+		if ( Str::contains( 'beta', $version ) ) {
+			$beta = $version;
 		}
 
 		return $beta;
+	}
+
+	/**
+	 * Fetch latest plugin file from public SVN and get version number.
+	 *
+	 * @return string
+	 */
+	public function fetch_trunk_version() {
+		$version = 0;
+
+		$response = wp_remote_get( 'https://plugins.svn.wordpress.org/seo-by-rank-math/trunk/rank-math.php' );
+		if ( ! is_array( $response ) || is_wp_error( $response ) ) {
+			return $version;
+		}
+
+		$plugin_file = wp_remote_retrieve_body( $response );
+
+		preg_match( '/Version:\s+([0-9a-zA-Z.-]+)\s*$/m', $plugin_file, $matches );
+		if ( empty( $matches[1] ) ) {
+			return $version;
+		}
+
+		$version = $matches[1];
+		set_transient( 'rank_math_trunk_version', $version, ( 12 * HOUR_IN_SECONDS ) );
+		return $version;
 	}
 
 	/**
@@ -170,6 +191,10 @@ class Beta_Optin {
 	public function transient_update_plugins( $value ) {
 		$beta_version = $this->get_latest_beta_version();
 		$new_version  = isset( $value->response['seo-by-rank-math/rank-math.php'] ) && ! empty( $value->response['seo-by-rank-math/rank-math.php']->new_version ) ? $value->response['seo-by-rank-math/rank-math.php']->new_version : 0;
+
+		if ( ! $beta_version ) {
+			return $value;
+		}
 
 		if ( version_compare( $beta_version, rank_math()->version, '>' ) && version_compare( $beta_version, $new_version, '>' ) ) {
 			$value = $this->inject_beta( $value, $beta_version );
@@ -195,16 +220,15 @@ class Beta_Optin {
 			$value->response = [];
 		}
 
-		$versions = self::get_available_versions( true );
 		$value->response['seo-by-rank-math/rank-math.php'] = new \stdClass();
 
-		$plugin_data = Version_Control::get_plugin_data( $beta_version, $versions[ $beta_version ] );
+		$plugin_data = Version_Control::get_plugin_data( $beta_version, 'https://downloads.wordpress.org/plugin/seo-by-rank-math.zip' );
 		foreach ( $plugin_data as $prop_key => $prop_value ) {
 			$value->response['seo-by-rank-math/rank-math.php']->{$prop_key} = $prop_value;
 		}
 
 		$value->response['seo-by-rank-math/rank-math.php']->is_beta        = true;
-		$value->response['seo-by-rank-math/rank-math.php']->upgrade_notice = self::NOTICE_START_MARKER . ' ' . __( '[WARNING] This update will install a beta version of Rank Math.', 'rank-math' ) . ' ' . self::NOTICE_END_MARKER;
+		$value->response['seo-by-rank-math/rank-math.php']->upgrade_notice = self::NOTICE_START_MARKER . ' ' . __( 'This update will install a beta version of Rank Math.', 'rank-math' ) . ' ' . self::NOTICE_END_MARKER;
 
 		if ( empty( $value->no_update ) ) {
 			$value->no_update = [];
@@ -253,7 +277,7 @@ class Beta_Optin {
 		}
 
 		$transient = get_site_transient( 'update_plugins' );
-		if ( ! self::is_beta_update( $transient ) ) {
+		if ( ! self::has_beta_update( $transient ) ) {
 			return;
 		}
 		?>
@@ -277,7 +301,7 @@ class Beta_Optin {
 						var contents = $( element ).html();
 						if ( contents.indexOf( '<?php echo esc_js( html_entity_decode( self::NOTICE_START_MARKER ) ); ?>' ) !== -1 && contents.indexOf( '<?php echo esc_js( html_entity_decode( self::NOTICE_END_MARKER ) ); ?>' ) !== -1 ) {
 							contents = contents
-								.replace( '<?php echo esc_js( html_entity_decode( self::NOTICE_START_MARKER ) ); ?>', '</p><div class="update-message notice inline notice-warning notice-alt" style="margin-top: 20px;"><p>' )
+								.replace( '<?php echo esc_js( html_entity_decode( self::NOTICE_START_MARKER ) ); ?>', '</p><div class="update-message notice inline notice-warning notice-alt rank-math-beta-update-notice"><p>' )
 								.replace( '<?php echo esc_js( html_entity_decode( self::NOTICE_END_MARKER ) ); ?>', '</p></div><p style="display: none;">' );
 
 							$( element ).html( contents );
@@ -288,6 +312,15 @@ class Beta_Optin {
 				<?php } ?>
 			} );
 		</script>
+		<style>
+			.update-message.rank-math-beta-update-notice {
+				font-weight: bold;
+				margin-top: 20px;
+			}
+			.update-message.rank-math-beta-update-notice > p:before {
+				content: "\f534";
+			}
+		</style>
 		<?php
 	}
 }

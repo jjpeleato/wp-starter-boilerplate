@@ -60,8 +60,9 @@ For more information visit:
 ├─ gulpfile.babel.js
 ├─ LICENSE
 ├─ package.json
-├─ phpcs.xml
-└─ README.md
+├─ phpcs.xml.dist
+├─ README.md
+└─ sh_lando_upgrade_git.sh
 ```
 
 ### Installing
@@ -118,6 +119,7 @@ For more information visit:
     - `$lando gulp js` Validate the code with JSHint. Minify the JS files.
     - `$lando gulp jsAssets` Copy JS assets to public directory.
     - `$lando gulp jsWithConcat` Validate the code with Jshint. Concat and minify the JS files.
+    - `$lando gulp validate` Validate JS with JSHint (https://jshint.com/) and SCSS according Stylint (https://stylelint.io/).
     - `$lando gulp validateJs` Validate JS with JSHint (https://jshint.com/).
     - `$lando gulp validateScss` Validate SCSS according Stylint (https://stylelint.io/).
     - `$lando gulp watch` Compile SASS to CSS and concat and minify JS files in real-time.

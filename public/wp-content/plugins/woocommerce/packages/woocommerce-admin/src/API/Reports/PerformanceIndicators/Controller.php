@@ -3,8 +3,6 @@
  * REST API Performance indicators controller
  *
  * Handles requests to the /reports/store-performance endpoint.
- *
- * @package WooCommerce Admin/API
  */
 
 namespace Automattic\WooCommerce\Admin\API\Reports\PerformanceIndicators;
@@ -16,7 +14,6 @@ defined( 'ABSPATH' ) || exit;
 /**
  * REST API Reports Performance indicators controller class.
  *
- * @package WooCommerce/API
  * @extends WC_REST_Reports_Controller
  */
 class Controller extends \WC_REST_Reports_Controller {
@@ -170,11 +167,10 @@ class Controller extends \WC_REST_Reports_Controller {
 						continue;
 					}
 
-					$stat                  = $prefix . '/' . $property_key;
-					$this->allowed_stats[] = $stat;
-					$stat_label            = empty( $schema_info['title'] ) ? $schema_info['description'] : $schema_info['title'];
-
-					$this->labels[ $stat ]  = trim( preg_replace( '/\W+/', ' ', $stat_label ) );
+					$stat                   = $prefix . '/' . $property_key;
+					$this->allowed_stats[]  = $stat;
+					$stat_label             = empty( $schema_info['title'] ) ? $schema_info['description'] : $schema_info['title'];
+					$this->labels[ $stat ]  = trim( $stat_label, '.' );
 					$this->formats[ $stat ] = isset( $schema_info['format'] ) ? $schema_info['format'] : 'number';
 				}
 

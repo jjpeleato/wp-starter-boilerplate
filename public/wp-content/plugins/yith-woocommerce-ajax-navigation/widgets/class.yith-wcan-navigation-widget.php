@@ -163,8 +163,9 @@ if ( ! class_exists( 'YITH_WCAN_Navigation_Widget' ) ) {
 
                     echo "<ul class='yith-wcan-select yith-wcan {$instance['extra_class']}'>";
 
+                    $this->found = false;
                     foreach ( $terms as $term ) {
-	                    $this->found = false;
+
                         // Get count based on current view - uses transients
                         //$transient_name = 'wc_ln_count_' . md5( sanitize_key( $taxonomy ) . sanitize_key( $term->term_id ) );
 
@@ -595,7 +596,7 @@ if ( ! class_exists( 'YITH_WCAN_Navigation_Widget' ) ) {
 		                    $color = $instance['colors'][$term_id];
 	                    }
 
-	                    elseif( function_exists( 'ywccl_get_term_meta' ) && ! empty( $wc_product_attributes[ $term->taxonomy ]->attribute_type ) && 'colorpicker' == $wc_product_attributes[ $term->taxonomy ]->attribute_type ) {
+	                    elseif( apply_filters( 'yith_wcan_ywccl_support', function_exists( 'ywccl_get_term_meta' ) ) && ! empty( $wc_product_attributes[ $term->taxonomy ]->attribute_type ) && 'colorpicker' == $wc_product_attributes[ $term->taxonomy ]->attribute_type ) {
 		                    $colors = ywccl_get_term_meta( $term->term_id, $term->taxonomy . '_yith_wccl_value' );
 		                    if( ! empty( $colors ) ){
 		                        $colors = explode( ',', $colors );
@@ -836,7 +837,7 @@ if ( ! class_exists( 'YITH_WCAN_Navigation_Widget' ) ) {
 	                        $label = ywccl_get_term_meta( $term->term_id, $term->taxonomy . '_yith_wccl_value' );
                         }
 
-                        if ( $label ) {
+                        if ( apply_filters( 'yith_wcan_filter_label_text', $label, $term, $taxonomy ) ) {
 
                             echo '<li ' . $class . '>';
 

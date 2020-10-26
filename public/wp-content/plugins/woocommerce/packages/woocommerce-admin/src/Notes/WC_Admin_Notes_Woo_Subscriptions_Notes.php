@@ -3,8 +3,6 @@
  * WooCommerce Admin (Dashboard) WooCommerce.com Extension Subscriptions Note Provider.
  *
  * Adds notes to the merchant's inbox concerning WooCommerce.com extension subscriptions.
- *
- * @package WooCommerce Admin
  */
 
 namespace Automattic\WooCommerce\Admin\Notes;
@@ -64,8 +62,8 @@ class WC_Admin_Notes_Woo_Subscriptions_Notes {
 			return;
 		}
 
-		// The site just connected.
-		if ( empty( $old_token ) && ! empty( $new_token ) ) {
+		// The site is connected.
+		if ( $this->is_connected() ) {
 			$this->remove_notes();
 			$this->refresh_subscription_notes();
 			return;

@@ -225,7 +225,13 @@ class URE_Capabilities_Groups_Manager {
             $caps['manage_network_options'] = array('core', 'multisite', 'general');
             $caps['upgrade_network'] = array('core', 'multisite', 'general');
         }
-                
+        
+        $caps['install_languages'] = array('core', 'general');
+        $caps['resume_plugins'] = array('core', 'plugins');        
+        $caps['resume_themes'] = array('core', 'themes');
+        $caps['view_site_health_checks'] = array('core', 'general');
+        
+        
         $caps = apply_filters('ure_built_in_wp_caps', $caps);
         
         $this->built_in_wp_caps = $caps;

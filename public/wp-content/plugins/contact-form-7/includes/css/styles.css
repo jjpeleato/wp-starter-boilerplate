@@ -42,7 +42,7 @@
 }
 
 .wpcf7-not-valid-tip {
-	color: #f00;
+	color: #dc3232;
 	font-size: 1em;
 	font-weight: normal;
 	display: block;
@@ -53,7 +53,7 @@
 	top: 20%;
 	left: 20%;
 	z-index: 100;
-	border: 1px solid #ff0000;
+	border: 1px solid #dc3232;
 	background: #fff;
 	padding: .2em .8em;
 }
@@ -71,7 +71,7 @@ span.wpcf7-list-item-label::after {
 div.wpcf7 .ajax-loader {
 	visibility: hidden;
 	display: inline-block;
-	background-image: url('../../images/ajax-loader.gif');
+	background-image: url('../../assets/ajax-loader.gif');
 	width: 16px;
 	height: 16px;
 	border: none;
