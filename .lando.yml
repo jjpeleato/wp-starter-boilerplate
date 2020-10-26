@@ -51,8 +51,6 @@ services:
 
 # See: https://docs.devwithlando.io/config/tooling.html
 tooling:
-  git:
-    service: appserver
   node:
     service: node
   npm:
