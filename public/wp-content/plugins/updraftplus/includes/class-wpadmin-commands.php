@@ -551,6 +551,8 @@ class UpdraftPlus_WPAdmin_Commands extends UpdraftPlus_Commands {
 					}
 				}
 			}
+		} else {
+			$node_array['error'] = sprintf(__('Failed to open directory: %s. This is normally caused by file permissions.', 'updraftplus'), $path);
 		}
 
 		return $node_array;

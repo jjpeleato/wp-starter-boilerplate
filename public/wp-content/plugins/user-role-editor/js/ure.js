@@ -21,7 +21,7 @@
 })(jQuery);
 
 
-jQuery(document).ready(function() {
+jQuery(function() {
 
     jQuery( '#ure_add_role' ).button({
         label: ure_data.add_role

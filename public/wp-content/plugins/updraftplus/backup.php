@@ -353,13 +353,12 @@ class UpdraftPlus_Backup {
 	public function do_prune_standalone() {
 		global $updraftplus;
 
-		$services = $updraftplus->just_one($updraftplus->jobdata_get('service'));
-		if (!is_array($services)) $services = array($services);
+		$services = (array) $updraftplus->just_one($updraftplus->jobdata_get('service'));
 
 		$prune_services = array();
 
 		foreach ($services as $ind => $service) {
-			if ("none" == $service || '' == $service) continue;
+			if ('none' === $service || '' == $service) continue;
 
 			$objname = "UpdraftPlus_BackupModule_${service}";
 			if (!class_exists($objname) && file_exists(UPDRAFTPLUS_DIR.'/methods/'.$service.'.php')) {
@@ -386,9 +385,8 @@ class UpdraftPlus_Backup {
 
 		global $updraftplus;
 
-		$services = $updraftplus->just_one($updraftplus->jobdata_get('service'));
+		$services = (array) $updraftplus->just_one($updraftplus->jobdata_get('service'));
 		$remote_storage_instances = $updraftplus->jobdata_get('remote_storage_instances', array());
-		if (!is_array($services)) $services = array($services);
 
 		// We need to make sure that the loop below actually runs
 		if (empty($services)) $services = array('none');
@@ -1565,6 +1563,23 @@ class UpdraftPlus_Backup {
 		$found_options_table = false;
 		$is_multisite = is_multisite();
 
+		// Gather the list of files that look like partial table files once only
+		$potential_stitch_files = array();
+		$table_file_prefix_base= $file_base.'-db'.$this->whichdb_suffix.'-table-';
+		if (false !== ($dir_handle = opendir($this->updraft_dir))) {
+			while (false !== ($e = readdir($dir_handle))) {
+				// The 'r' in 'tmpr' indicates that the new scheme is being used. N.B. That does *not* imply that the table has a usable primary key.
+				if (!is_file($this->updraft_dir.'/'.$e)) continue;
+				if (preg_match('#'.$table_file_prefix_base.'.*\.table\.tmpr?(\d+)\.gz$#', $e, $matches)) {
+					// We need to stich them in order
+					$potential_stitch_files[] = $e;
+				}
+			}
+		} else {
+			$updraftplus->log("Error: Failed to open directory for reading");
+			$updraftplus->log(__("Failed to open directory for reading:", 'updraftplus').' '.$this->updraft_dir, 'error');
+		}
+		
 		foreach ($all_tables as $ti) {
 
 			$table = $ti['name'];
@@ -1587,23 +1602,16 @@ class UpdraftPlus_Backup {
 				$skip_dblog = (($stitched > 10 && 0 != $stitched % 20) || ($stitched > 100 && 0 != $stitched % 100));
 				$updraftplus->log("Table $table: corresponding file already exists; moving on", 'notice', false, $skip_dblog);
 				
-				if (false !== ($dir_handle = opendir($this->updraft_dir))) {
-					$max_record = false;
-					while (false !== ($e = readdir($dir_handle))) {
-						// The 'r' in 'tmpr' indicates that the new scheme is being used. N.B. That does *not* imply that the table has a usable primary key.
-						if (!is_file($this->updraft_dir.'/'.$e)) continue;
-						if (preg_match('#'.$table_file_prefix.'\.tmpr?(\d+)\.gz$#', $e, $matches)) {
-							// We need to stich them in order
-							$stitch_files[$table][$matches[1]] = $e;
-							if (false === $max_record || $matches[1] > $max_record) $max_record = $matches[1];
-						}
+				$max_record = false;
+				foreach ($potential_stitch_files as $e) {
+					// The 'r' in 'tmpr' indicates that the new scheme is being used. N.B. That does *not* imply that the table has a usable primary key.
+					if (preg_match('#'.$table_file_prefix.'\.tmpr?(\d+)\.gz$#', $e, $matches)) {
+						// We need to stich them in order
+						$stitch_files[$table][$matches[1]] = $e;
+						if (false === $max_record || $matches[1] > $max_record) $max_record = $matches[1];
 					}
-					// This ought to be empty; it still needs removing
-					$stitch_files[$table][$max_record+1] = $table_file_prefix.'.gz';
-				} else {
-					$updraftplus->log("Error: $table: Failed to open directory for reading");
-					$updraftplus->log(__("Failed to open directory for reading:", 'updraftplus').' '.$this->updraft_dir, 'error');
 				}
+				$stitch_files[$table][$max_record+1] = $table_file_prefix.'.gz';
 				
 				// Move on to the next table
 				continue;
@@ -1663,16 +1671,13 @@ class UpdraftPlus_Backup {
 				// Means "start of table". N.B. The meaning of an integer depends upon whether the table has a usable primary key or not.
 				$start_record = true;
 				$can_use_primary_key = apply_filters('updraftplus_can_use_primary_key_default', true, $table);
-				if (false !== ($dir_handle = opendir($this->updraft_dir))) {
-					while (false !== ($e = readdir($dir_handle))) {
-						// The 'r' in 'tmpr' indicates that the new scheme is being used. N.B. That does *not* imply that the table has a usable primary key.
-						if (!is_file($this->updraft_dir.'/'.$e)) continue;
-						if (preg_match('#'.$table_file_prefix.'\.tmp(r)?(\d+)\.gz$#', $e, $matches)) {
-							$stitch_files[$table][$matches[2]] = $e;
-							if (true === $start_record || $matches[2] > $start_record) $start_record = $matches[2];
-							// Legacy scheme. The purpose of this is to prevent backups failing if one is in progress during an upgrade to a new version that implements the new scheme
-							if ('r' !== $matches[1]) $can_use_primary_key = false;
-						}
+				foreach ($potential_stitch_files as $e) {
+					// The 'r' in 'tmpr' indicates that the new scheme is being used. N.B. That does *not* imply that the table has a usable primary key.
+					if (preg_match('#'.$table_file_prefix.'\.tmp(r)?(\d+)\.gz$#', $e, $matches)) {
+						$stitch_files[$table][$matches[2]] = $e;
+						if (true === $start_record || $matches[2] > $start_record) $start_record = $matches[2];
+						// Legacy scheme. The purpose of this is to prevent backups failing if one is in progress during an upgrade to a new version that implements the new scheme
+						if ('r' !== $matches[1]) $can_use_primary_key = false;
 					}
 				}
 				

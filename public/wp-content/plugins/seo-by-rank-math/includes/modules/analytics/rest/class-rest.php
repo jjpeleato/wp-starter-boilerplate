@@ -31,7 +31,7 @@ class Rest extends WP_REST_Controller {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->namespace = \RankMath\Rest\Rest_Helper::BASE . '/analytics';
+		$this->namespace = \RankMath\Rest\Rest_Helper::BASE . '/an';
 	}
 
 	/**
@@ -64,16 +64,6 @@ class Rest extends WP_REST_Controller {
 			[
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => [ Stats::get(), 'get_posts_summary' ],
-				'permission_callback' => [ $this, 'has_permission' ],
-			]
-		);
-
-		register_rest_route(
-			$this->namespace,
-			'/postsRows',
-			[
-				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => [ Stats::get(), 'get_posts_rows_by_pageviews' ],
 				'permission_callback' => [ $this, 'has_permission' ],
 			]
 		);

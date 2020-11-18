@@ -84,7 +84,7 @@
 			}
 		}
 	}
-	$(document).ready(function(e) {
+	jQuery(function(e) {
 		checkout_embed.init();
 	});
 })(jQuery);
