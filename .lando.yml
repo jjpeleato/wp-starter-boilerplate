@@ -27,8 +27,6 @@ services:
     run_as_root:
       - "chown www-data: -R /app"
   node:
-    run_as_root:
-      - "cd $LANDO_MOUNT && sh sh_lando_upgrade_git.sh"
     type: node
     globals:
       npm: "latest"
