@@ -182,7 +182,7 @@ function ewww_image_optimizer_notice_hosting_requires_api() {
 	} elseif ( defined( 'KINSTAMU_VERSION' ) ) {
 		$webhost = 'Kinsta';
 	} elseif ( defined( 'WPNET_INIT_PLUGIN_VERSION' ) ) {
-		$webhost = 'WPNET';
+		$webhost = 'WP NET';
 	} else {
 		return;
 	}
@@ -1210,6 +1210,7 @@ function ewww_image_optimizer_md5check( $path ) {
 			return true;
 		}
 	}
+	ewwwio_debug_message( 'invalid checksum' );
 	ewwwio_memory( __FUNCTION__ );
 	return false;
 }

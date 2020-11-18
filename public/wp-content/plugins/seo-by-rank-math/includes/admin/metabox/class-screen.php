@@ -130,11 +130,12 @@ class Screen implements IScreen {
 				'trendsIcon'       => Admin_Helper::get_trends_icon_svg(),
 				'showScore'        => Helper::is_score_enabled(),
 				'canUser'          => [
-					'general'  => Helper::has_cap( 'onpage_general' ),
-					'advanced' => Helper::has_cap( 'onpage_advanced' ) && Helper::is_advanced_mode(),
-					'snippet'  => Helper::has_cap( 'onpage_snippet' ),
-					'social'   => Helper::has_cap( 'onpage_social' ),
-					'analysis' => Helper::has_cap( 'onpage_analysis' ),
+					'general'   => Helper::has_cap( 'onpage_general' ),
+					'advanced'  => Helper::has_cap( 'onpage_advanced' ) && Helper::is_advanced_mode(),
+					'snippet'   => Helper::has_cap( 'onpage_snippet' ),
+					'social'    => Helper::has_cap( 'onpage_social' ),
+					'analysis'  => Helper::has_cap( 'onpage_analysis' ),
+					'analytics' => Helper::has_cap( 'analytics' ),
 				],
 				'assessor'         => [
 					'serpData'         => $this->get_object_values(),
@@ -143,6 +144,7 @@ class Screen implements IScreen {
 					'hundredScoreLink' => KB::get( 'score-100-ge' ),
 					'researchesTests'  => $this->get_analysis(),
 				],
+				'isPro'            => defined( 'RANK_MATH_PRO_FILE' ),
 				'is_front_page'    => Admin_Helper::is_home_page(),
 			]
 		);

@@ -761,7 +761,7 @@ msgstr ""
 msgid "Otherwise, you can leave it blank."
 msgstr ""
 
-#: src/addons/googlecloud.php:1055, src/addons/migrator.php:491, src/addons/migrator.php:494, src/addons/migrator.php:497, src/admin.php:1225, src/admin.php:2756, src/backup.php:3673, src/class-updraftplus.php:4868, src/class-updraftplus.php:4868, src/updraftplus.php:157
+#: src/addons/googlecloud.php:1055, src/addons/migrator.php:491, src/addons/migrator.php:494, src/addons/migrator.php:497, src/admin.php:1225, src/admin.php:2756, src/backup.php:3678, src/class-updraftplus.php:4868, src/class-updraftplus.php:4868, src/updraftplus.php:157
 msgid "Go here for more information."
 msgstr ""
 
@@ -1097,7 +1097,7 @@ msgstr ""
 msgid "other content from wp-content"
 msgstr ""
 
-#: src/addons/migrator.php:497, src/addons/multisite.php:732
+#: src/addons/migrator.php:497, src/addons/multisite.php:734
 msgid "Must-use plugins"
 msgstr ""
 
@@ -1243,11 +1243,11 @@ msgstr ""
 msgid "rows: %d"
 msgstr ""
 
-#: src/addons/migrator.php:1539, src/backup.php:486, src/backup.php:2363, src/class-updraftplus.php:2352, src/class-updraftplus.php:2419, src/includes/class-storage-methods-interface.php:369, src/restorer.php:587
+#: src/addons/migrator.php:1539, src/backup.php:484, src/backup.php:2368, src/class-updraftplus.php:2352, src/class-updraftplus.php:2419, src/includes/class-storage-methods-interface.php:369, src/restorer.php:587
 msgid "A PHP exception (%s) has occurred: %s"
 msgstr ""
 
-#: src/addons/migrator.php:1546, src/backup.php:492, src/backup.php:2372, src/class-updraftplus.php:2361, src/class-updraftplus.php:2426, src/includes/class-storage-methods-interface.php:378, src/restorer.php:601
+#: src/addons/migrator.php:1546, src/backup.php:490, src/backup.php:2377, src/class-updraftplus.php:2361, src/class-updraftplus.php:2426, src/includes/class-storage-methods-interface.php:378, src/restorer.php:601
 msgid "A PHP fatal error (%s) has occurred: %s"
 msgstr ""
 
@@ -1359,7 +1359,7 @@ msgstr ""
 msgid "database connection attempt failed"
 msgstr ""
 
-#: src/addons/moredatabase.php:136, src/backup.php:1487
+#: src/addons/moredatabase.php:136, src/backup.php:1485
 msgid "Connection failed: check your access details, that the database server is up, and that the network connection is not firewalled."
 msgstr ""
 
@@ -1399,7 +1399,7 @@ msgstr ""
 msgid "Add an external database to backup..."
 msgstr ""
 
-#: src/addons/moredatabase.php:260, src/addons/morefiles.php:310, src/addons/morefiles.php:898, src/addons/reporting.php:536
+#: src/addons/moredatabase.php:260, src/addons/morefiles.php:312, src/addons/morefiles.php:900, src/addons/reporting.php:536
 msgid "Remove"
 msgstr ""
 
@@ -1443,7 +1443,7 @@ msgstr ""
 msgid "Enter database."
 msgstr ""
 
-#: src/addons/moredatabase.php:266, src/addons/reporting.php:275, src/addons/wp-cli.php:428, src/admin.php:359, src/admin.php:4209, src/admin.php:4262, src/admin.php:4864, src/includes/class-remote-send.php:412, src/includes/class-wpadmin-commands.php:156, src/includes/class-wpadmin-commands.php:596, src/restorer.php:564, src/templates/wp-admin/settings/delete-and-restore-modals.php:81, src/templates/wp-admin/settings/delete-and-restore-modals.php:82, src/templates/wp-admin/settings/take-backup.php:34
+#: src/addons/moredatabase.php:266, src/addons/reporting.php:275, src/addons/wp-cli.php:428, src/admin.php:359, src/admin.php:4209, src/admin.php:4262, src/admin.php:4864, src/includes/class-remote-send.php:412, src/includes/class-wpadmin-commands.php:156, src/includes/class-wpadmin-commands.php:598, src/restorer.php:564, src/templates/wp-admin/settings/delete-and-restore-modals.php:81, src/templates/wp-admin/settings/delete-and-restore-modals.php:82, src/templates/wp-admin/settings/take-backup.php:34
 msgid "Database"
 msgstr ""
 
@@ -1520,7 +1520,7 @@ msgstr ""
 msgid "%s restoration options:"
 msgstr ""
 
-#: src/addons/morefiles.php:151, src/includes/class-wpadmin-commands.php:598
+#: src/addons/morefiles.php:151, src/includes/class-wpadmin-commands.php:600
 msgid "WordPress Core"
 msgstr ""
 
@@ -1580,59 +1580,59 @@ msgstr ""
 msgid "Be careful what you select - if you select / then it really will try to create a zip containing your entire webserver."
 msgstr ""
 
-#: src/addons/morefiles.php:310, src/addons/morefiles.php:855, src/addons/morefiles.php:897, src/templates/wp-admin/settings/file-backup-exclude.php:11
+#: src/addons/morefiles.php:312, src/addons/morefiles.php:857, src/addons/morefiles.php:899, src/templates/wp-admin/settings/file-backup-exclude.php:11
 msgid "Edit"
 msgstr ""
 
-#: src/addons/morefiles.php:344
+#: src/addons/morefiles.php:346
 msgid "Exclude these:"
 msgstr ""
 
-#: src/addons/morefiles.php:347, src/admin.php:4063
+#: src/addons/morefiles.php:349, src/admin.php:4063
 msgid "If entering multiple files/directories, then separate them with commas. For entities at the top level, you can use a * at the start or end of the entry as a wildcard."
 msgstr ""
 
-#: src/addons/morefiles.php:409
+#: src/addons/morefiles.php:411
 msgid "No backup of location: there was nothing found to back up"
 msgstr ""
 
-#: src/addons/morefiles.php:577
+#: src/addons/morefiles.php:579
 msgid "No backup of %s directories: there was nothing found to back up"
 msgstr ""
 
-#: src/addons/morefiles.php:805
+#: src/addons/morefiles.php:807
 msgid "The original filesystem location for some of the following items was not found. Please select where you want these backups to be restored to."
 msgstr ""
 
-#: src/addons/morefiles.php:807
+#: src/addons/morefiles.php:809
 msgid "Please select the more files backups that you wish to restore:"
 msgstr ""
 
-#: src/addons/morefiles.php:850
+#: src/addons/morefiles.php:852
 msgid "Restore location does not exist on the filesystem for:"
 msgstr ""
 
-#: src/addons/morefiles.php:852
+#: src/addons/morefiles.php:854
 msgid "Restore location found for:"
 msgstr ""
 
-#: src/addons/morefiles.php:869
+#: src/addons/morefiles.php:871
 msgid "Add directory..."
 msgstr ""
 
-#: src/addons/morefiles.php:872, src/addons/morefiles.php:872
+#: src/addons/morefiles.php:874, src/addons/morefiles.php:874
 msgid "Go up a directory"
 msgstr ""
 
-#: src/addons/morefiles.php:876, src/admin.php:862, src/templates/wp-admin/settings/delete-and-restore-modals.php:94
+#: src/addons/morefiles.php:878, src/admin.php:862, src/templates/wp-admin/settings/delete-and-restore-modals.php:94
 msgid "Cancel"
 msgstr ""
 
-#: src/addons/morefiles.php:877
+#: src/addons/morefiles.php:879
 msgid "Confirm"
 msgstr ""
 
-#: src/addons/morefiles.php:899
+#: src/addons/morefiles.php:901
 msgid "Please choose a file or directory"
 msgstr ""
 
@@ -1664,7 +1664,7 @@ msgstr ""
 msgid "(Nothing has been logged yet)"
 msgstr ""
 
-#: src/addons/multisite.php:96, src/addons/multisite.php:776, src/options.php:84
+#: src/addons/multisite.php:96, src/addons/multisite.php:778, src/options.php:84
 msgid "UpdraftPlus Backups"
 msgstr ""
 
@@ -1672,27 +1672,27 @@ msgstr ""
 msgid "Multisite Install"
 msgstr ""
 
-#: src/addons/multisite.php:503, src/class-updraftplus.php:1974
+#: src/addons/multisite.php:505, src/class-updraftplus.php:1974
 msgid "Uploads"
 msgstr ""
 
-#: src/addons/multisite.php:641
+#: src/addons/multisite.php:643
 msgid "Which site to restore"
 msgstr ""
 
-#: src/addons/multisite.php:645
+#: src/addons/multisite.php:647
 msgid "All sites"
 msgstr ""
 
-#: src/addons/multisite.php:650
+#: src/addons/multisite.php:652
 msgid "may include some site-wide data"
 msgstr ""
 
-#: src/addons/multisite.php:659
+#: src/addons/multisite.php:661
 msgid "Read more..."
 msgstr ""
 
-#: src/addons/multisite.php:739
+#: src/addons/multisite.php:741
 msgid "Blog uploads"
 msgstr ""
 
@@ -3313,7 +3313,7 @@ msgstr ""
 msgid "Error: invalid path"
 msgstr ""
 
-#: src/admin.php:1778, src/includes/class-wpadmin-commands.php:581
+#: src/admin.php:1778, src/includes/class-wpadmin-commands.php:583
 msgid "Backup set not found"
 msgstr ""
 
@@ -3405,7 +3405,7 @@ msgstr ""
 msgid "No local copy present."
 msgstr ""
 
-#: src/admin.php:2469, src/backup.php:1240
+#: src/admin.php:2469, src/backup.php:1238
 msgid "Backup directory (%s) is not writable, or does not exist."
 msgstr ""
 
@@ -4016,111 +4016,111 @@ msgstr ""
 msgid "Could not create %s zip. Consult the log file for more information."
 msgstr ""
 
-#: src/backup.php:1487
+#: src/backup.php:1485
 msgid "database connection attempt failed."
 msgstr ""
 
-#: src/backup.php:1537
+#: src/backup.php:1535
 msgid "please wait for the rescheduled attempt"
 msgstr ""
 
-#: src/backup.php:1539
+#: src/backup.php:1537
 msgid "No database tables found"
 msgstr ""
 
-#: src/backup.php:1550
+#: src/backup.php:1548
 msgid "The backup directory is not writable (or disk space is full) - the database backup is expected to shortly fail."
 msgstr ""
 
-#: src/backup.php:1605
+#: src/backup.php:1580
 msgid "Failed to open directory for reading:"
 msgstr ""
 
-#: src/backup.php:1652
+#: src/backup.php:1660
 msgid "Table %s has very many rows (%s) - we hope your web hosting company gives you enough resources to dump out that table in the backup"
 msgstr ""
 
-#: src/backup.php:1652
+#: src/backup.php:1660
 msgid "If not, you will need to either remove data from this table, or contact your hosting company to request more resources."
 msgstr ""
 
-#: src/backup.php:1709
+#: src/backup.php:1714
 msgid "Failed to backup database table:"
 msgstr ""
 
-#: src/backup.php:1751, src/backup.php:1753
+#: src/backup.php:1756, src/backup.php:1758
 msgid "The database backup appears to have failed"
 msgstr ""
 
-#: src/backup.php:1751
+#: src/backup.php:1756
 msgid "no options or sitemeta table was found"
 msgstr ""
 
-#: src/backup.php:1753
+#: src/backup.php:1758
 msgid "the options table was not found"
 msgstr ""
 
-#: src/backup.php:1801
+#: src/backup.php:1806
 msgid "Failed to open database file for reading:"
 msgstr ""
 
-#: src/backup.php:1873
+#: src/backup.php:1878
 msgid "An error occurred whilst closing the final database file"
 msgstr ""
 
-#: src/backup.php:2087
+#: src/backup.php:2092
 msgid "Error getting table details"
 msgstr ""
 
-#: src/backup.php:2410
+#: src/backup.php:2415
 msgid "Could not open the backup file for writing"
 msgstr ""
 
-#: src/backup.php:2425, src/backup.php:2429
+#: src/backup.php:2430, src/backup.php:2434
 msgid "There was an error writing a line to the backup script:"
 msgstr ""
 
-#: src/backup.php:2523
+#: src/backup.php:2528
 msgid "Infinite recursion: consult your log for more information"
 msgstr ""
 
-#: src/backup.php:2556
+#: src/backup.php:2561
 msgid "%s: unreadable file - could not be backed up (check the file permissions and ownership)"
 msgstr ""
 
-#: src/backup.php:2578
+#: src/backup.php:2583
 msgid "Failed to open directory (check the file permissions and ownership): %s"
 msgstr ""
 
-#: src/backup.php:2643
+#: src/backup.php:2648
 msgid "%s: unreadable file - could not be backed up"
 msgstr ""
 
-#: src/backup.php:3329, src/backup.php:3622
+#: src/backup.php:3334, src/backup.php:3627
 msgid "Failed to open the zip file (%s) - %s"
 msgstr ""
 
-#: src/backup.php:3355
+#: src/backup.php:3360
 msgid "A very large file was encountered: %s (size: %s Mb)"
 msgstr ""
 
-#: src/backup.php:3666, src/class-updraftplus.php:966
+#: src/backup.php:3671, src/class-updraftplus.php:966
 msgid "Your free space in your hosting account is very low - only %s Mb remain"
 msgstr ""
 
-#: src/backup.php:3673
+#: src/backup.php:3678
 msgid "The zip engine returned the message: %s."
 msgstr ""
 
-#: src/backup.php:3675
+#: src/backup.php:3680
 msgid "A zip error occurred"
 msgstr ""
 
-#: src/backup.php:3677
+#: src/backup.php:3682
 msgid "your web hosting account appears to be full; please see: %s"
 msgstr ""
 
-#: src/backup.php:3679
+#: src/backup.php:3684
 msgid "check your log for more details."
 msgstr ""
 
@@ -5012,11 +5012,15 @@ msgstr ""
 msgid "Constants"
 msgstr ""
 
-#: src/includes/class-wpadmin-commands.php:595
+#: src/includes/class-wpadmin-commands.php:555
+msgid "Failed to open directory: %s. This is normally caused by file permissions."
+msgstr ""
+
+#: src/includes/class-wpadmin-commands.php:597
 msgid "Extra database"
 msgstr ""
 
-#: src/includes/class-wpadmin-commands.php:604
+#: src/includes/class-wpadmin-commands.php:606
 msgid "archive"
 msgstr ""
 

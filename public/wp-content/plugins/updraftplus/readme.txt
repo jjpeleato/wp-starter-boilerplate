@@ -3,7 +3,7 @@ Contributors: Backup with UpdraftPlus, DavidAnderson, DNutbourne, aporter, snigh
 Tags: backup, restore, database backup, wordpress backup, cloud backup, s3, dropbox, google drive, onedrive, ftp, backups
 Requires at least: 3.2
 Tested up to: 5.5
-Stable tag: 1.16.32
+Stable tag: 1.16.34
 Author URI: https://updraftplus.com
 Donate link: https://david.dw-perspective.org.uk/donate
 License: GPLv3 or later
@@ -168,8 +168,15 @@ The <a href="https://updraftplus.com/news/">UpdraftPlus backup blog</a> is the b
 
 N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which is 1 higher in the first digit, and has an extra component on the end, but the changelog below still applies. i.e. changes listed for 1.16.32.x of the free version correspond to changes made in 2.16.32.x of the paid version.
 
-= 1.16.32 - 20/Oct/2020 =
+= 1.16.34 - 30/Oct/2020 =
 
+* TWEAK: On sites with enormous numbers of tables (e.g. very large multisites), counting the already-backed-up tables when resuming took unnecessarily long since 1.16.30
+* TWEAK: Update jQuery document ready style to the one not deprecated in jQuery 3.0
+* TWEAK: While using the file tree browser return an error if we are unable to open a directory
+
+= 1.16.33 - 20/Oct/2020 =
+
+* FIX: Fatal error when doing a backup with no storage in the short-lived 1.16.32 (free version)
 * TWEAK: Cookie policy changes in the Chrome family of browsers broke the embedded checkout; hence, this is now disabled (goes directly to updraftplus.com instead).
 * TWEAK: Exclude All In One WP Migration-related archive files when backing up plugins and/or others from the UpdraftPlus backup process
 * TWEAK: Add downloadable backup links in the Backup Report email (Reporting Addon)
@@ -1115,4 +1122,4 @@ Furthermore, reliance upon any non-English translation is at your own risk. Updr
 We recognise and thank the following for code and/or libraries used and/or modified under the terms of their open source licences; see: https://updraftplus.com/acknowledgements/
 
 == Upgrade Notice ==
-* 1.16.32: Fixes various minor inconveniences. A recommended update for all.
+* 1.16.34: Improve performance on sites with vast numbers of table (e.g. very large multisites), plus a couple of other small tweaks. A recommended update for all.

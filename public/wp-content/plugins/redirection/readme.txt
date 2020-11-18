@@ -3,8 +3,8 @@ Contributors: johnny5
 Donate link: https://redirection.me/donation/
 Tags: redirect, htaccess, 301, 404, seo, permalink, apache, nginx, post, admin
 Requires at least: 5.0
-Tested up to: 5.5.1
-Stable tag: 4.9.1
+Tested up to: 5.5.2
+Stable tag: 4.9.2
 Requires PHP: 5.6
 License: GPLv3
 
@@ -176,6 +176,10 @@ The plugin works in a similar manner to how WordPress handles permalinks and sho
 == Changelog ==
 
 An x.1 version increase introduces new or updated features and can be considered to contain 'breaking' changes. A x.x.1 increase is purely a bug fix and introduces no new features, and can be considered as containing no breaking changes.
+
+= 4.9.2 - 30th October 2020 =
+* Fix warning with PHP 5.6
+* Improve display of long URLs
 
 = 4.9.1 - 26th October 2020 =
 * Restore missing time and referrer URL from log pages

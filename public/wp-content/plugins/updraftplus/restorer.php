@@ -4034,6 +4034,15 @@ if (!class_exists('WP_Filesystem_Direct')) {
 }
 class UpdraftPlus_WP_Filesystem_Direct extends WP_Filesystem_Direct {
 
+	/**
+	 * Moves a file
+	 *
+	 * @param String  $source      Path to the source file.
+	 * @param String  $destination Path to the destination file.
+	 * @param Boolean $overwrite   Whether to overwrite the destination file if it exists.
+	 *
+	 * @return Boolean Success status
+	 */
 	public function move($source, $destination, $overwrite = false) {
 		if (!$overwrite && $this->exists($destination))
 			return false;

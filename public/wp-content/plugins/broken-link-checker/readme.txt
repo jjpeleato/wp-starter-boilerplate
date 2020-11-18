@@ -3,7 +3,7 @@ Contributors: managewp, wpmudev
 Tags: links, broken links, internal link, external link, broken images, seo, test links, check links, bad links
 Requires at least: 4.6
 Tested up to: 5.5
-Stable tag: 1.11.14
+Stable tag: 1.11.15
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -66,8 +66,12 @@ To upgrade your installation
 1. Reactivate the plugin. Your settings will be retained from the previous version.
 
 == Changelog ==
+= 1.11.15 =
+* Added integration with WP External Links plugin
+
 = 1.11.14 =
 * Added compatibility for WP 5.5.
+
 = 1.11.13 =
 * Added filter for disabling email notifications.
 * Added filter to use GET requests. (Thanks to [Stian Lund](https://github.com/Pathduck))

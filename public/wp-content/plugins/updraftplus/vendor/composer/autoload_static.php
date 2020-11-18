@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitaab3e972f7bd452d7b6aec134b9a00fb
+class ComposerStaticInitb9765c31380d71381abf41c80af90ecf
 {
     public static $files = array (
         'ce89ac35a6c330c55f4710717db9ff78' => __DIR__ . '/..' . '/kriswallsmith/assetic/src/functions.php',
@@ -119,6 +119,7 @@ class ComposerStaticInitaab3e972f7bd452d7b6aec134b9a00fb
     );
 
     public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Psr\\Log\\AbstractLogger' => __DIR__ . '/..' . '/psr/log/Psr/Log/AbstractLogger.php',
         'Psr\\Log\\InvalidArgumentException' => __DIR__ . '/..' . '/psr/log/Psr/Log/InvalidArgumentException.php',
         'Psr\\Log\\LogLevel' => __DIR__ . '/..' . '/psr/log/Psr/Log/LogLevel.php',
@@ -146,10 +147,10 @@ class ComposerStaticInitaab3e972f7bd452d7b6aec134b9a00fb
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitaab3e972f7bd452d7b6aec134b9a00fb::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitaab3e972f7bd452d7b6aec134b9a00fb::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitaab3e972f7bd452d7b6aec134b9a00fb::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInitaab3e972f7bd452d7b6aec134b9a00fb::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitb9765c31380d71381abf41c80af90ecf::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitb9765c31380d71381abf41c80af90ecf::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitb9765c31380d71381abf41c80af90ecf::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitb9765c31380d71381abf41c80af90ecf::$classMap;
 
         }, null, ClassLoader::class);
     }
