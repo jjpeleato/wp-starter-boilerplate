@@ -1889,7 +1889,7 @@ function updraft_backupnow_go(backupnow_nodb, backupnow_nofiles, backupnow_noclo
 	});
 }
 
-jQuery(document).ready(function($) {
+jQuery(function($) {
 	
 	// actioned When the checkout embed is complete
 	$(document).on('udp/checkout/done', function(e, data) {
@@ -4290,7 +4290,7 @@ jQuery(document).ready(function($) {
 });
 
 // UpdraftPlus Vault
-jQuery(document).ready(function($) {
+jQuery(function($) {
 	
 	var settings_css_prefix = '#updraft-navtab-settings-content ';
 	
@@ -4459,7 +4459,7 @@ jQuery(document).ready(function($) {
 }); // End ready Vault
 
 // Next: the encrypted database pluploader
-jQuery(document).ready(function($) {
+jQuery(function($) {
 	
 	try {
 		if (typeof updraft_plupload_config2 !== 'undefined') {
@@ -4644,7 +4644,7 @@ jQuery(document).ready(function($) {
 });
 
 // Save/Export/Import settings via AJAX
-jQuery(document).ready(function($) {
+jQuery(function($) {
 	// Pre-load the image so that it doesn't jerk when first used
 	var my_image = new Image();
 	my_image.src = updraftlion.ud_url+'/images/notices/updraft_logo.png';
@@ -4960,7 +4960,7 @@ jQuery(document).ready(function($) {
 });
 
 // For When character set and collate both are unsupported at restoration time and if user change anyone substitution dropdown from both, Other substitution select box value should be change respectively.
-jQuery(document).ready(function($) {
+jQuery(function($) {
 	jQuery('#updraft-restore-modal').on('change', '#updraft_restorer_charset', function(e) {
 		if ($('#updraft_restorer_charset').length && $('#updraft_restorer_collate').length && $('#collate_change_on_charset_selection_data').length) {
 			var updraft_restorer_charset = $('#updraft_restorer_charset').val();

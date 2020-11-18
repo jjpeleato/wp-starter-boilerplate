@@ -1,5 +1,5 @@
 var updraft_restore_screen = true;
-jQuery(document).ready(function($) {
+jQuery(function($) {
 
 	var job_id = $('#updraftplus_ajax_restore_job_id').val();
 	var action = $('#updraftplus_ajax_restore_action').val();

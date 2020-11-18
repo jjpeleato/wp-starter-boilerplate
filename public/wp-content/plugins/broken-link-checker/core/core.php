@@ -154,6 +154,14 @@ if ( ! class_exists( 'wsBrokenLinkChecker' ) ) {
 		 * @return void
 		 */
 		public function admin_footer() {
+			$fix = filter_input( INPUT_GET, 'fix-install-button', FILTER_VALIDATE_BOOLEAN );
+			$tab = filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_STRING );
+			if ( true === $fix && 'plugin-information' === $tab ) {
+				echo '<script>';
+				echo "jQuery('#plugin_install_from_iframe').on('click', function() { window.location.href = jQuery(this).attr('href'); return false;});";
+				echo '</script>';
+			}
+
 			if ( ! $this->conf->options['run_in_dashboard'] ) {
 				return;
 			}
@@ -946,6 +954,31 @@ if ( ! class_exists( 'wsBrokenLinkChecker' ) ) {
 			</tr>
 
 			<tr valign="top">
+				<th scope="row">
+					<?php _ex( 'Control external links', 'settings page', 'broken-link-checker' ); ?>
+				</th>
+				<td>
+					<p>
+					<?php
+					if ( defined( 'TEST_WPEL_PLUGIN_FILE' ) ) {
+						printf(
+							__( 'Configure <a target="_blank" href="%s">External Links</a> settings.', 'broken-link-checker' ),
+							admin_url('admin.php?page=wpel-settings-page' )
+						);
+					} else {
+						printf(
+							__( 'Install the free <a href="%s" class="thickbox open-plugin-details-modal">External Links plugin</a> to control if external links open in a new tab, and their nofollow, noopener and UGC options.', 'broken-link-checker' ),
+							'plugin-install.php?fix-install-button=1&tab=plugin-information&plugin=wp-external-links&TB_iframe=true&width=772&height=691'
+						);
+						echo '<br>';
+						esc_html_e( "It's used on over 80,000 sites just like yours.", 'broken-link-checker' );
+					}
+					?>
+					</p>
+				</td>
+			</tr>
+
+			<tr valign="top">
 			<th scope="row"><?php _e( 'Link tweaks', 'broken-link-checker' ); ?></th>
 			<td>
 				<p style="margin-top: 0; margin-bottom: 0.5em;">
@@ -1668,7 +1701,13 @@ if ( ! class_exists( 'wsBrokenLinkChecker' ) ) {
 		 */
 		function options_page_css() {
 			wp_enqueue_style( 'blc-options-page', plugins_url( 'css/options-page.css', BLC_PLUGIN_FILE ), array(), '20141113' );
+
 			wp_enqueue_style( 'dashboard' );
+
+			wp_enqueue_style('plugin-install');
+			wp_enqueue_script('plugin-install');
+
+			add_thickbox();
 		}
 
 

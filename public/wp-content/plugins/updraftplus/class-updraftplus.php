@@ -4461,7 +4461,7 @@ class UpdraftPlus {
 	 * @param String		 $filter - filter suffix to use
 	 * @param Boolean|String $rinput - a 'preferred' value (unless false) if no filtering is done
 	 *
-	 * @return Array|String - output, after filtering
+	 * @return Array|String|Null - output, after filtering
 	 */
 	public function just_one($input, $filter = 'savestorage', $rinput = false) {
 		$oinput = $input;
