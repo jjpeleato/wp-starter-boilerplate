@@ -7,6 +7,8 @@ config:
   webroot: public
   database: mariadb
   xdebug: true
+  config:
+    php: private/config/php.ini
 
 # See: https://docs.devwithlando.io/config/proxy.html
 proxy:
