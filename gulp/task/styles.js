@@ -29,12 +29,12 @@ exports.validateScss = validateScss;
  */
 function css()
 {
-	return gulp
-		.src(config.paths.sassAssets.src)
-		.pipe(sass(config.options.sass))
-		.pipe(config.environment === 'production' ? uglifycss(config.options.uglifyCss) : util.noop())
-		.pipe(config.environment === 'production' ? rename({ suffix: '.min' }) : util.noop())
-		.pipe(gulp.dest(config.paths.sassAssets.dest));
+    return gulp
+        .src(config.paths.sassAssets.src)
+        .pipe(sass(config.options.sass))
+        .pipe(config.environment === 'production' ? uglifycss(config.options.uglifyCss) : util.noop())
+        .pipe(config.environment === 'production' ? rename({ suffix: '.min' }) : util.noop())
+        .pipe(gulp.dest(config.paths.sassAssets.dest));
 }
 
 exports.css = css;
@@ -50,7 +50,7 @@ function cssWithConcat()
     return gulp
         .src(merge)
         .pipe(sass(config.options.sass))
-		.pipe(config.environment === 'production' ? concat('custom-style.min.css') : concat('custom-style.css'))
+        .pipe(config.environment === 'production' ? concat('custom-style.min.css') : concat('custom-style.css'))
         .pipe(config.environment === 'production' ? uglifycss(config.options.uglifyCss) : util.noop())
         .pipe(gulp.dest(config.paths.sassAssets.dest));
 }
@@ -63,9 +63,9 @@ exports.cssWithConcat = cssWithConcat;
  */
 function cssAssets()
 {
-	return gulp
-		.src(config.paths.sassAssets.vendor)
-		.pipe(gulp.dest(config.paths.sassAssets.destVendor));
+    return gulp
+        .src(config.paths.sassAssets.vendor)
+        .pipe(gulp.dest(config.paths.sassAssets.destVendor));
 }
 
 exports.cssAssets = cssAssets;
