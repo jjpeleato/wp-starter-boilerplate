@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - MC4WP: Mailchimp for WordPress - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2020-07-09 10:25:35+0000\n"
+"PO-Revision-Date: 2020-12-06 13:42:47+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,7 +19,7 @@ msgstr "Sugerimos encarecidamente mantener la doble opción activada. Desactivar
 msgid "Submitting..."
 msgstr "Enviando..."
 
-#: includes/forms/class-form-manager.php:150
+#: includes/forms/class-form-manager.php:151
 msgid "Resource does not exist."
 msgstr "No existe el recurso."
 
@@ -75,19 +75,11 @@ msgstr "Selecciona \"sí\" para activar la protección contra spam de Google reC
 msgid "Enable Google reCaptcha"
 msgstr "Activar Google reCaptcha"
 
-#: assets/js/forms-block.js:53 assets/js/forms-block.min.js:53
-msgid "Mailchimp for WordPress Sign-up Form"
-msgstr "Formulario de registro de Mailchimp"
-
-#: assets/js/forms-block.js:11 assets/js/forms-block.min.js:11
-msgid "Block showing a Mailchimp for WordPress sign-up form"
-msgstr "Bloque que muestra un formulario de registro de Mailchimp for WordPress"
-
-#: includes/admin/class-admin.php:300
+#: includes/admin/class-admin.php:304
 msgid "This is a premium feature. Please upgrade to Mailchimp for WordPress Premium to be able to use it."
 msgstr "Esta es una característica premium. Por favor, actualiza a Mailchimp for WordPress Premium para poder usarla."
 
-#: includes/admin/class-admin.php:299
+#: includes/admin/class-admin.php:303
 msgid "The given value does not look like a valid Mailchimp API key."
 msgstr "El valor dado no parece ser una clave API válida de Mailchimp."
 
@@ -228,11 +220,11 @@ msgstr "¿Quieres suscribirte a nuestro boletín?"
 msgid "Use this integration by adding the \"Mailchimp\" field to <a href=\"%s\">your WPForms forms</a>."
 msgstr "Utiliza esta integración añadiendo el campo \"MailChimp\" a <a href=\"%s\">tus formularios de WPForms</a>."
 
-#: includes/admin/class-admin.php:421
+#: includes/admin/class-admin.php:425
 msgid "Looks like your server is blocked by Mailchimp's firewall. Please contact Mailchimp support and include the following reference number: %s"
 msgstr "Parece que tu servidor está bloqueado por el cortafuegos de MailChimp. Por favor, contacta con el soporte de MailChimp e incluye el siguiente número de referencia: %s"
 
-#: includes/admin/class-admin.php:304
+#: includes/admin/class-admin.php:308
 msgid "Failed to renew your lists. An error occured."
 msgstr "Fallo al renovar tus listas. Ocurrió un error."
 
@@ -300,23 +292,23 @@ msgstr "<a href=\"%1$s\">Actualiza a MailChimp para WordPress Premium</a> o <a h
 msgid "Do you want to track all WooCommerce orders in Mailchimp so you can send emails based on the purchase activity of your subscribers?"
 msgstr "¿Quieres hacer un seguimiento de todos los pedidos de WooCommerce en MailChimp, para que puedas enviar emails basados en la actividad de compra de tus suscriptores?"
 
-#: includes/admin/class-admin.php:303
+#: includes/admin/class-admin.php:307
 msgid "Done! Mailchimp lists renewed."
 msgstr "¡Listo! La lista de MailChimp ha sido actualizada."
 
-#: includes/admin/class-admin.php:302
+#: includes/admin/class-admin.php:306
 msgid "Fetching Mailchimp lists"
 msgstr "Obteniendo las listas de MailChimp"
 
-#: includes/admin/class-admin.php:429
+#: includes/admin/class-admin.php:433
 msgid "Mailchimp returned the following error:"
 msgstr "MailChimp devolvió el siguiente error:"
 
-#: includes/admin/class-admin.php:424
+#: includes/admin/class-admin.php:428
 msgid "Here's some info on solving common connectivity issues."
 msgstr "Aquí tienes algo de información sobre cómo resolver problemas de conectividad."
 
-#: includes/admin/class-admin.php:418
+#: includes/admin/class-admin.php:422
 msgid "Error connecting to Mailchimp:"
 msgstr "Error al conectar con MailChimp:"
 
@@ -402,7 +394,7 @@ msgstr "Preselección"
 msgid "Optional"
 msgstr "Opcional"
 
-#: includes/admin/class-admin.php:497
+#: includes/admin/class-admin.php:502
 msgid "To get started with Mailchimp for WordPress, please <a href=\"%s\">enter your Mailchimp API key on the settings page of the plugin</a>."
 msgstr "Para empezar con MailChimp para WordPress, por favor, <a href=\"%s\">introduce tu clave API de MailChimp en la página de ajustes del plugin</a>."
 
@@ -418,13 +410,13 @@ msgstr "Puesto"
 msgid "After customer details"
 msgstr "Detalles posteriores del cliente"
 
-#: includes/class-dynamic-content-tags.php:74
-msgid "Property of the current page or post."
-msgstr "Propiedad de la página o entrada actual."
-
 #: integrations/woocommerce/admin-after.php:6
 msgid "After shipping details"
 msgstr "Detalles de después del envío"
+
+#: includes/class-dynamic-content-tags.php:74
+msgid "Property of the current page or post."
+msgstr "Propiedad de la página o entrada actual."
 
 #: includes/forms/views/tabs/form-messages.php:68
 msgid "When offering a list choice, this is the text that shows when no lists were selected."
@@ -442,13 +434,13 @@ msgstr "Elige el formulario a mostrar"
 msgid "Right now, the plugin is configured to only log errors and warnings."
 msgstr "Ahora mismo el plugin está configurado para guardar registro solo de errores y avisos."
 
-#: includes/forms/class-admin.php:100
-msgid "Text to show when field has no value."
-msgstr "Texto que se muestra cuando un campo no tiene ningún valor."
-
 #: includes/forms/class-admin.php:110
 msgid "Text to prefill this field with."
 msgstr "Texto de relleno previo de este campo."
+
+#: includes/forms/class-admin.php:100
+msgid "Text to show when field has no value."
+msgstr "Texto que se muestra cuando un campo no tiene ningún valor."
 
 #: includes/views/other-settings.php:135
 msgid "Empty Log"
@@ -470,16 +462,16 @@ msgstr "Log de depuración"
 msgid "This field is marked as required in Mailchimp."
 msgstr "Este campo está marcado como obligatorio en MailChimp."
 
-#: includes/admin/class-admin.php:467
+#: includes/admin/class-admin.php:472
 msgid "Log successfully emptied."
 msgstr "Registro vaciado con éxito."
 
-#: includes/admin/class-admin.php:340
+#: includes/admin/class-admin.php:344
 msgid "Other"
 msgstr "Otro"
 
 #: includes/views/other-settings.php:60 includes/views/other-settings.php:70
-#: includes/admin/class-admin.php:339
+#: includes/admin/class-admin.php:343
 msgid "Other Settings"
 msgstr "Otras Configuraciones"
 
@@ -575,6 +567,10 @@ msgstr "Máx"
 msgid "Min"
 msgstr "Mín"
 
+#: includes/forms/class-admin.php:93
+msgid "This field will allow your visitors to choose a list to subscribe to."
+msgstr "Este campo permitirá a tus visitantes que elijan una lista a la que suscribirse."
+
 #: includes/forms/class-admin.php:91
 msgid "Is this field required?"
 msgstr "¿Es obligatorio este campo?"
@@ -598,10 +594,6 @@ msgstr "Dropdown"
 #: integrations/ninja-forms-2/class-ninja-forms.php:80
 msgid "Default Value"
 msgstr "Valor predeterminado"
-
-#: includes/forms/class-admin.php:93
-msgid "This field will allow your visitors to choose a list to subscribe to."
-msgstr "Este campo permitirá a tus visitantes que elijan una lista a la que suscribirse."
 
 #: includes/forms/class-admin.php:80
 msgid "Country"
@@ -681,7 +673,7 @@ msgstr "Decripción"
 
 #: includes/integrations/views/integrations.php:60
 msgid "Name"
-msgstr "Título"
+msgstr "Nombre"
 
 #: includes/integrations/views/integration-settings.php:28
 msgid "Please ensure you <a href=\"%1$s\">configure the plugin to send all required fields</a> or <a href=\"%2$s\">log into your Mailchimp account</a> and make sure only the email & name fields are marked as required fields for the selected list(s)."
@@ -937,7 +929,7 @@ msgstr "Una vez al mes"
 msgid "First Name"
 msgstr "Primer Nombre"
 
-#: includes/admin/class-admin.php:208
+#: includes/admin/class-admin.php:212
 msgid "Success! The cached configuration for your Mailchimp lists has been renewed."
 msgstr "¡Lo lograste! La configuración de cache de tus listas MailChimp se ha renovado."
 
@@ -977,10 +969,6 @@ msgstr "ibericode"
 #. Plugin URI of the plugin
 msgid "https://www.mc4wp.com/#utm_source=wp-plugin&utm_medium=mailchimp-for-wp&utm_campaign=plugins-page"
 msgstr "https://www.mc4wp.com/#utm_source=wp-plugin&utm_medium=mailchimp-for-wp&utm_campaign=plugins-page"
-
-#: assets/js/forms-block.js:10 assets/js/forms-block.min.js:10
-msgid "Mailchimp for WordPress Form"
-msgstr "Formulario de Mailchimp for WordPress"
 
 #: includes/admin/class-ads.php:126
 msgid "Learn how to best grow your lists & write better emails by subscribing to our monthly tips."
@@ -1227,7 +1215,7 @@ msgstr "No se encontró ninguna lista en su cuenta de MailChimp"
 
 #: includes/views/parts/lists-overview.php:10
 #: includes/forms/views/parts/add-fields-help.php:47
-#: includes/admin/class-admin.php:301
+#: includes/admin/class-admin.php:305
 msgid "Renew Mailchimp lists"
 msgstr "Renovar las listas de MailChimp"
 
@@ -1353,7 +1341,7 @@ msgstr "Título:"
 
 #: includes/forms/class-widget.php:27
 msgid "Newsletter"
-msgstr "Newsletter"
+msgstr "Boletín"
 
 #: includes/forms/class-widget.php:33
 msgid "Displays your Mailchimp for WordPress sign-up form"
@@ -1393,7 +1381,7 @@ msgstr "Casillas de verificación"
 msgid "Mailchimp"
 msgstr "MailChimp"
 
-#: includes/admin/class-admin.php:332
+#: includes/admin/class-admin.php:336
 msgid "Mailchimp API Settings"
 msgstr "Configuración de API de Mailchimp"
 

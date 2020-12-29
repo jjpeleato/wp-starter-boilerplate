@@ -29,7 +29,7 @@ if (!isset($collapseable)) {
 				<ul class="wf-block-list">
 					<?php
 					$options = array(
-						array('key' => 'scansEnabled_checkGSB', 'label' => __('Check if this website is on a domain blacklist', 'wordfence'), 'helpLink' => wfSupportController::supportURL(wfSupportController::ITEM_SCAN_OPTION_CHECK_SITE_BLACKLISTED), 'premium' => true, 'subtitleHTML' => __('<em>Reputation check</em>', 'wordfence')),
+						array('key' => 'scansEnabled_checkGSB', 'label' => __('Check if this website is on a domain blocklist', 'wordfence'), 'helpLink' => wfSupportController::supportURL(wfSupportController::ITEM_SCAN_OPTION_CHECK_SITE_BLACKLISTED), 'premium' => true, 'subtitleHTML' => __('<em>Reputation check</em>', 'wordfence')),
 						array('key' => 'spamvertizeCheck', 'label' => __('Check if this website is being "Spamvertised"', 'wordfence'), 'helpLink' => wfSupportController::supportURL(wfSupportController::ITEM_SCAN_OPTION_CHECK_SITE_SPAMVERTIZED), 'premium' => true, 'subtitleHTML' => __('<em>Reputation check</em>', 'wordfence')),
 						array('key' => 'checkSpamIP', 'label' => __('Check if this website IP is generating spam', 'wordfence'), 'helpLink' => wfSupportController::supportURL(wfSupportController::ITEM_SCAN_OPTION_CHECK_IP_SPAMMING), 'premium' => true, 'subtitleHTML' => __('<em>Reputation check</em>', 'wordfence')),
 						array('key' => 'scansEnabled_checkHowGetIPs', 'label' => __('Scan for misconfigured How does Wordfence get IPs', 'wordfence'), 'helpLink' => wfSupportController::supportURL(wfSupportController::ITEM_SCAN_OPTION_CHECK_MISCONFIGURED_HOW_GET_IPS)),

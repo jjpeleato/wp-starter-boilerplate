@@ -8,6 +8,8 @@
 
 use RankMath\Helper;
 
+defined( 'ABSPATH' ) || exit;
+
 $post_type = $tab['post_type'];
 if ( 'attachment' === $post_type && Helper::get_settings( 'general.attachment_redirect_urls', true ) ) {
 	$cmb->add_field(
@@ -119,7 +121,7 @@ if ( ( class_exists( 'WooCommerce' ) && 'product' === $post_type ) || ( class_ex
 			'desc'    => __( 'Default rich snippet selected when creating a new product.', 'rank-math' ),
 			'options' => [
 				'off'     => esc_html__( 'None', 'rank-math' ),
-				'product' => esc_html__( 'Product', 'rank-math' ),
+				'product' => 'download' === $post_type ? esc_html__( 'EDD Product', 'rank-math' ) : esc_html__( 'WooCommerce Product', 'rank-math' ),
 			],
 			'default' => $this->do_filter( 'settings/snippet/type', 'product', $post_type ),
 		]

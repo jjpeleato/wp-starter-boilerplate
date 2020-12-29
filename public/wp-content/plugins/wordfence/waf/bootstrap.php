@@ -232,7 +232,7 @@ class wfWAFWordPressObserver extends wfWAFBaseObserver {
 			}
 			$whitelistPattern = '/^(?:' . wfWAFUtils::substr($whitelistPattern, 0, -1) . ')$/i';
 
-			wfWAFRule::create(wfWAF::getInstance(), 0x8000000, 'rule', 'whitelist', 0, 'User Supplied Whitelisted URL', 'allow',
+			wfWAFRule::create(wfWAF::getInstance(), 0x8000000, 'rule', 'whitelist', 0, 'User Supplied Allowlisted URL', 'allow',
 				new wfWAFRuleComparisonGroup(
 					new wfWAFRuleComparison(wfWAF::getInstance(), 'match', $whitelistPattern, array(
 						'request.uri',
@@ -250,7 +250,7 @@ class wfWAFWordPressObserver extends wfWAFBaseObserver {
 			foreach ($whitelistedIPs as $whitelistedIP) {
 				$ipRange = new wfWAFUserIPRange($whitelistedIP);
 				if ($ipRange->isIPInRange(wfWAF::getInstance()->getRequest()->getIP())) {
-					throw new wfWAFAllowException('Wordfence whitelisted IP.');
+					throw new wfWAFAllowException('Wordfence allowlisted IP.');
 				}
 			}
 		}

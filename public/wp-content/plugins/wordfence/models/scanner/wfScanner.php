@@ -819,7 +819,7 @@ class wfScanner {
 		$reputationChecks = array(
 			'spamvertizeCheck' => __('Enable scan option to check if this website is being "Spamvertised".', 'wordfence'),
 			'checkSpamIP' => __('Enable scan option to check if your website IP is generating spam.', 'wordfence'),
-			'scansEnabled_checkGSB' => __('Enable scan option to check if your website is on a domain blacklist.', 'wordfence'),
+			'scansEnabled_checkGSB' => __('Enable scan option to check if your website is on a domain blocklist.', 'wordfence'),
 		);
 
 		foreach ($reputationChecks as $option => $optionLabel) {

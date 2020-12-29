@@ -8,6 +8,8 @@ abstract class UpdraftPlus_RemoteSend {
 
 	protected $php_events = array();
 
+	private $job_id;
+	
 	/**
 	 * Class constructor
 	 */
@@ -255,7 +257,21 @@ abstract class UpdraftPlus_RemoteSend {
 		
 		if (defined('UPDRAFTPLUS_THIS_IS_CLONE') && UPDRAFTPLUS_THIS_IS_CLONE) {
 			$job_id = (is_array($data) && !empty($data['job_id'])) ? $data['job_id'] : null;
-			do_action('updraftplus_temporary_clone_ready_for_restore', $job_id);
+			
+			$signal_ready_for_restore_now = true;
+			
+			if (class_exists('UpdraftPlus_Remote_Communications')) {
+				$test_udrpc = new UpdraftPlus_Remote_Communications();
+				if (version_compare($test_udrpc->version, '1.4.21', '>=')) {
+					$signal_ready_for_restore_now = false;
+					$this->job_id = $job_id;
+					add_action('udrpc_action_send_response', array($this, 'udrpc_action_send_response'));
+				}
+			}
+			
+			if ($signal_ready_for_restore_now) {
+				do_action('updraftplus_temporary_clone_ready_for_restore', $job_id);
+			}
 		}
 
 		return $this->return_rpc_message(array(
@@ -264,6 +280,23 @@ abstract class UpdraftPlus_RemoteSend {
 		));
 	}
 
+	/**
+	 * UpdraftPlus_Remote_Communications is going to echo a response and then die. We pre-empt it.
+	 *
+	 * @param String $response
+	 */
+	public function udrpc_action_send_response($response) {
+	
+		global $updraftplus;
+	
+		$updraftplus->close_browser_connection($response);
+		
+		do_action('updraftplus_temporary_clone_ready_for_restore', $this->job_id);
+		
+		die;
+	
+	}
+	
 	public function updraftplus_initial_jobdata($initial_jobdata, $options, $split_every) {
 
 		if (is_array($options) && !empty($options['extradata']) && !empty($options['extradata']['services']) && preg_match('#remotesend/(\d+)#', $options['extradata']['services'], $matches)) {
@@ -409,7 +442,7 @@ abstract class UpdraftPlus_RemoteSend {
 
 			global $updraftplus_admin;
 
-			$ret .= '<input type="checkbox" checked="checked" id="remotesend_backupnow_db"> <label for="remotesend_backupnow_db">'.__("Database", 'updraftplus').'</label><br>';
+			$ret .= '<label class="updraft_checkbox" for="remotesend_backupnow_db"><input type="checkbox" checked="checked" id="remotesend_backupnow_db">'.__("Database", 'updraftplus').'</label>';
 			$ret .= $updraftplus_admin->files_selector_widgetry('remotesend_', false, false);
 
 			$service = $updraftplus->just_one(UpdraftPlus_Options::get_updraft_option('updraft_service'));
@@ -436,7 +469,7 @@ abstract class UpdraftPlus_RemoteSend {
 			}
 
 			$ret .= apply_filters('updraft_backupnow_modal_afteroptions', '', 'remotesend_');
-			$ret .= '<button class="button-primary" style="height:30px; font-size:16px; margin-left: 3px; width:85px;" id="updraft_migrate_send_button" onclick="updraft_migrate_go_backup();">'.__('Send', 'updraftplus').'</button>';
+			$ret .= '<button class="button-primary" style="font-size:16px; margin-left: 3px; width:85px;" id="updraft_migrate_send_button" onclick="updraft_migrate_go_backup();">'.__('Send', 'updraftplus').'</button>';
 
 			return array('success' => 1, 'r' => $ret);
 		} catch (Exception $e) {

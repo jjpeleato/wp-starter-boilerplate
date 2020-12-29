@@ -385,9 +385,9 @@ class Stats extends Keywords {
 				COALESCE( ROUND( t1.position - t2.position, 0 ), 0 ) as diffPosition,
 				COALESCE( t1.ctr - t2.ctr, 0 ) as diffCtr
 			FROM
-				( SELECT {$created}{$dimension}, SUM( clicks ) as clicks, SUM(impressions) as impressions, AVG(position) as position, AVG(ctr) as ctr FROM {$wpdb->prefix}rank_math_analytics_gsc WHERE clicks > 0{$dates}{$sub_where} GROUP BY {$dimension}) as t1
+				( SELECT {$created}{$dimension}, SUM( clicks ) as clicks, SUM(impressions) as impressions, AVG(position) as position, AVG(ctr) as ctr FROM {$wpdb->prefix}rank_math_analytics_gsc WHERE 1 = 1{$dates}{$sub_where} GROUP BY {$dimension}) as t1
 			LEFT JOIN
-				( SELECT {$dimension}, SUM( clicks ) as clicks, SUM(impressions) as impressions, AVG(position) as position, AVG(ctr) as ctr FROM {$wpdb->prefix}rank_math_analytics_gsc WHERE clicks > 0{$dates}{$sub_where} GROUP BY {$dimension}) as t2
+				( SELECT {$dimension}, SUM( clicks ) as clicks, SUM(impressions) as impressions, AVG(position) as position, AVG(ctr) as ctr FROM {$wpdb->prefix}rank_math_analytics_gsc WHERE 1 = 1{$dates}{$sub_where} GROUP BY {$dimension}) as t2
 			ON t1.{$dimension} = t2.{$dimension}
 			{$where}
 			{$order}
@@ -570,7 +570,13 @@ class Stats extends Keywords {
 	 * @return string
 	 */
 	public static function get_relative_url( $url ) {
-		$home_url = [ 'https://creativefan.com', home_url() ];
+		$home_url = home_url();
+
+		$domain = strtolower( wp_parse_url( home_url(), PHP_URL_HOST ) );
+		$domain = str_replace( [ 'www.', '.' ], [ '', '\.' ], $domain );
+		$regex  = "/http[s]?:\/\/(www\.)?$domain/mU";
+		$url    = strtolower( trim( $url ) );
+		$url    = preg_replace( $regex, '', $url );
 
 		return \str_replace( $home_url, '', $url );
 	}

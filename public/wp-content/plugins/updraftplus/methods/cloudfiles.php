@@ -57,7 +57,7 @@ class UpdraftPlus_BackupModule_cloudfiles_oldsdk extends UpdraftPlus_BackupModul
 	 */
 	public function get_supported_features() {
 		// This options format is handled via only accessing options via $this->get_options()
-		return array('multi_options', 'config_templates', 'multi_storage');
+		return array('multi_options', 'config_templates', 'multi_storage', 'conditional_logic');
 	}
 
 	/**
@@ -116,7 +116,7 @@ class UpdraftPlus_BackupModule_cloudfiles_oldsdk extends UpdraftPlus_BackupModul
 
 		$chunk_size = 5*1024*1024;
 
-		foreach ($backup_array as $key => $file) {
+		foreach ($backup_array as $file) {
 
 			$fullpath = $updraft_dir.$file;
 			$orig_file_size = filesize($fullpath);
@@ -284,7 +284,7 @@ class UpdraftPlus_BackupModule_cloudfiles_oldsdk extends UpdraftPlus_BackupModul
 	 * @param Array $sizeinfo      - unused here
 	 * @return Boolean|String - either a boolean true or an error code string
 	 */
-	public function delete($files, $cloudfilesarr = false, $sizeinfo = array()) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
+	public function delete($files, $cloudfilesarr = false, $sizeinfo = array()) {// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- $sizeinfo is unused
 
 		if (is_string($files)) $files =array($files);
 

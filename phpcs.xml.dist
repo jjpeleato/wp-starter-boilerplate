@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
-<ruleset name="wp-starter-boilerplate">
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 name="wp-starter-boilerplate"
+		 xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
 	<!-- See https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml -->
 	<!-- See https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards -->
 	<!-- See https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/wiki -->
@@ -9,7 +11,25 @@
 	<description>Sniffs for the coding standards of your project.</description>
 
 	<!-- Strip the filepaths down to the relevant bit. -->
-	<arg name="basepath" value="./"/>
+	<arg name="basepath" value="."/>
+
+	<!--
+	Check all files in this directory and the directories below it.
+	Include the /path/to/theme.
+	-->
+	<file>public/wp-content/themes/ao-apolo/</file>
+
+	<!-- Exclude WP Core folders and files from being checked. -->
+	<exclude-pattern>public/wp-content/themes/ao-apolo/assets/</exclude-pattern>
+
+	<!-- Exclude the Composer Vendor directory. -->
+	<exclude-pattern>/vendor/*</exclude-pattern>
+
+	<!-- Exclude the Node Modules directory. -->
+	<exclude-pattern>/node_modules/*</exclude-pattern>
+
+	<!-- Exclude minified Javascript files. -->
+	<exclude-pattern>*.min.js</exclude-pattern>
 
 	<!-- Strip the filepaths down to the relevant bit. -->
 	<arg name="parallel" value="8"/>
@@ -30,29 +50,11 @@
 	<!-- Full report -->
 	<arg name="report" value="full"/>
 
-	<!--
-	Check all files in this directory and the directories below it.
-	Include the /path/to/theme.
-	-->
-	<file>public</file>
+	<!-- Enforce PSR1 compatible namespaces. -->
+	<rule ref="PSR1.Classes.ClassDeclaration"/>
 
-	<!-- Exclude WP Core folders and files from being checked. -->
-	<exclude-pattern>/public/wp-admin/*</exclude-pattern>
-	<exclude-pattern>/public/wp-includes/*</exclude-pattern>
-	<exclude-pattern>/public/wp-*.php</exclude-pattern>
-	<exclude-pattern>/public/index.php</exclude-pattern>
-	<exclude-pattern>/public/xmlrpc.php</exclude-pattern>
-	<exclude-pattern>/public/wp-content/plugins/*</exclude-pattern>
-	<exclude-pattern>/public/wp-content/themes/twentynineteen/*</exclude-pattern>
-
-	<!-- Exclude the Composer Vendor directory. -->
-	<exclude-pattern>/vendor/*</exclude-pattern>
-
-	<!-- Exclude the Node Modules directory. -->
-	<exclude-pattern>/node_modules/*</exclude-pattern>
-
-	<!-- Include the PSR2 standard. -->
-	<rule ref="PSR2"/>
+	<!-- Enforce PSR2 compatible function closing brace. -->
+	<rule ref="PSR2.Methods.FunctionClosingBrace"/>
 
 	<!-- Include the WordPress standard. -->
 	<rule ref="WordPress"/>
@@ -71,7 +73,7 @@
 	For more information, also see:
 	https://github.com/PHPCompatibility/PHPCompatibility
 	-->
-	<config name="testVersion" value="5.6-"/>
+	<config name="testVersion" value="7.2-"/>
 	<rule ref="PHPCompatibilityWP"/>
 
 	<!--
@@ -83,5 +85,5 @@
 	the wiki:
 	https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/wiki/Customizable-sniff-properties
 	-->
-	<config name="minimum_supported_wp_version" value="4.7"/>
+	<config name="minimum_supported_wp_version" value="5.5"/>
 </ruleset>

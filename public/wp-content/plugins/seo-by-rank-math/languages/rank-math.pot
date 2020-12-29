@@ -319,43 +319,6 @@ msgstr ""
 msgid "Standard"
 msgstr ""
 
-msgid "Help Us Improve"
-msgstr ""
-
-#. translators: 1. Bold text 2. Bold text
-msgid "%1$s A filter to remove the Rank Math data from the database is present in your theme. Deactivating & Deleting this plugin will remove everything related to the Rank Math plugin. %2$s"
-msgstr ""
-
-msgid "Please share why you are deactivating Rank Math"
-msgstr ""
-
-msgid "Skip & Deactivate"
-msgstr ""
-
-msgid "Submit & Deactivate"
-msgstr ""
-
-msgid "I no longer need the plugin"
-msgstr ""
-
-msgid "I found a better plugin"
-msgstr ""
-
-msgid "Please share which plugin"
-msgstr ""
-
-msgid "I couldn't get the plugin to work"
-msgstr ""
-
-msgid "It's a temporary deactivation"
-msgstr ""
-
-msgid "Other"
-msgstr ""
-
-msgid "Please share the reason"
-msgstr ""
-
 msgid "Import & Export"
 msgstr ""
 
@@ -672,10 +635,10 @@ msgstr ""
 msgid "Mobile Preview"
 msgstr ""
 
-msgid "Click to enter custom title"
+msgid "Click to enter permalink"
 msgstr ""
 
-msgid "Click to enter permalink"
+msgid "Click to enter custom title"
 msgstr ""
 
 msgid "Click to enter custom meta description"
@@ -1617,6 +1580,12 @@ msgstr ""
 msgid "Organization Logo added in Local SEO Settings."
 msgstr ""
 
+msgid "Organization URL"
+msgstr ""
+
+msgid "Organization URL added in Local SEO Settings."
+msgstr ""
+
 msgid "Variable names can only contain alphanumeric characters, underscores and dashes."
 msgstr ""
 
@@ -1926,6 +1895,9 @@ msgid "Import AIO SEO plugin settings, global meta, sitemap settings, etc."
 msgstr ""
 
 msgid "Import meta information of your posts/pages like the titles, descriptions, robots meta, OpenGraph info, etc."
+msgstr ""
+
+msgid "Import meta information of your terms like the titles, descriptions, robots meta, OpenGraph info, etc."
 msgstr ""
 
 msgid "Settings imported successfully."
@@ -2449,6 +2421,10 @@ msgstr ""
 msgid "Post re-index in progress."
 msgstr ""
 
+#. translators: Auth URL
+msgid "It seems like the connection with your Google account & Rank Math needs to be made again. <a href=\"%s\" class=\"rank-math-reconnect-google\">Please click here.</a>"
+msgstr ""
+
 msgid "Last 30 Days"
 msgstr ""
 
@@ -2604,6 +2580,9 @@ msgstr ""
 msgid "Conversion started. A success message will be shown here once the process completes. You can close this page."
 msgstr ""
 
+msgid "Tables re-created."
+msgstr ""
+
 msgid "Flush SEO Analysis Data"
 msgstr ""
 
@@ -2631,16 +2610,14 @@ msgstr ""
 msgid "Are you sure you want to delete the 404 log? This action is irreversible."
 msgstr ""
 
-msgid "Yoast Block Converter"
+msgid "Re-create Missing Database Tables"
 msgstr ""
 
-msgid "Convert FAQ & HowTo Blocks created using Yoast. Use this option to easily move your previous blocks into Rank Math."
+#. translators: 1. Review Schema documentation link
+msgid "Check if required tables exist and create them if not."
 msgstr ""
 
-msgid "Are you sure you want to convert Yoast blocks into Rank Math blocks? This action is irreversible."
-msgstr ""
-
-msgid "Convert Blocks"
+msgid "Re-create Tables"
 msgstr ""
 
 msgid "Schema Converter"
@@ -2653,6 +2630,18 @@ msgid "Are you sure you want to do this? This is not recommended until and unles
 msgstr ""
 
 msgid "Convert Schema"
+msgstr ""
+
+msgid "Yoast Block Converter"
+msgstr ""
+
+msgid "Convert FAQ & HowTo Blocks created using Yoast. Use this option to easily move your previous blocks into Rank Math."
+msgstr ""
+
+msgid "Are you sure you want to convert Yoast blocks into Rank Math blocks? This action is irreversible."
+msgstr ""
+
+msgid "Convert Blocks"
 msgstr ""
 
 msgid "Delete Internal Links Data"
@@ -3399,6 +3388,63 @@ msgid "System Info"
 msgstr ""
 
 msgid "Copy System Info to Clipboard"
+msgstr ""
+
+msgid "Version"
+msgstr ""
+
+msgid "Database version"
+msgstr ""
+
+msgid "Plugin subscription plan"
+msgstr ""
+
+msgid "Free"
+msgstr ""
+
+msgid "Google Refresh token"
+msgstr ""
+
+msgid "No token"
+msgstr ""
+
+msgid "Token exists"
+msgstr ""
+
+msgid "Database Table: 404 Log"
+msgstr ""
+
+msgid "Database Table: Redirection"
+msgstr ""
+
+msgid "Database Table: Redirection Cache"
+msgstr ""
+
+msgid "Database Table: Internal Link"
+msgstr ""
+
+msgid "Database Table: Internal Link Meta"
+msgstr ""
+
+msgid "Database Table: Google Search Console"
+msgstr ""
+
+msgid "Database Table: Flat Posts"
+msgstr ""
+
+msgid "Database Table: Google Analytics"
+msgstr ""
+
+msgid "Database Table: Google AdSense"
+msgstr ""
+
+msgid "Database Table: Keyword Manager"
+msgstr ""
+
+msgid "Created"
+msgstr ""
+
+msgid "Doesn't exists"
 msgstr ""
 
 msgid "This update will install a beta version of Rank Math."
@@ -4489,6 +4535,10 @@ msgstr ""
 msgid "Turn ON to ignore all query parameters (the part after a question mark in a URL) when logging 404 errors."
 msgstr ""
 
+#. translators: reconnect link
+msgid "There is no refresh token. Please <a href=\"%1$s\" class=\"button button-link rank-math-reconnect-google\">reconnect your app</a>"
+msgstr ""
+
 msgid "Bad request. Please check the code."
 msgstr ""
 
@@ -4749,6 +4799,9 @@ msgstr ""
 msgid "Control which user has access to which options of Rank Math. %s"
 msgstr ""
 
+msgid "Reset"
+msgstr ""
+
 msgid "Update Capabilities"
 msgstr ""
 
@@ -4883,9 +4936,6 @@ msgstr ""
 msgid "Hiring Organization "
 msgstr ""
 
-msgid "Organization URL"
-msgstr ""
-
 msgid "Gender"
 msgstr ""
 
@@ -4974,9 +5024,6 @@ msgid "Embed URL"
 msgstr ""
 
 msgid "Duration"
-msgstr ""
-
-msgid "Views"
 msgstr ""
 
 msgid "Start Site-Wide Analysis"

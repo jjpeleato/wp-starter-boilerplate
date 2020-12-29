@@ -2,7 +2,7 @@
 if (!defined('WORDFENCE_VERSION')) { exit; }
 ?>
 <ul id="wf-option-wafWhitelist" class="wf-option wf-flex-vertical wf-flex-full-width">
-	<li><strong><?php _e('Add Whitelisted URL/Param', 'wordfence'); ?></strong> <a href="<?php echo wfSupportController::esc_supportURL(wfSupportController::ITEM_FIREWALL_WAF_WHITELIST); ?>"  target="_blank" rel="noopener noreferrer" class="wf-inline-help"><i class="wf-fa wf-fa-question-circle-o" aria-hidden="true"></i></a> <?php _e('The URL/parameters in this table will not be tested by the firewall. They are typically added while the firewall is in Learning Mode or by an admin who identifies a particular action/request is a false positive.', 'wordfence'); ?></li>
+	<li><strong><?php _e('Add Allowlisted URL/Param', 'wordfence'); ?></strong> <a href="<?php echo wfSupportController::esc_supportURL(wfSupportController::ITEM_FIREWALL_WAF_WHITELIST); ?>"  target="_blank" rel="noopener noreferrer" class="wf-inline-help"><i class="wf-fa wf-fa-question-circle-o" aria-hidden="true"></i></a> <?php _e('The URL/parameters in this table will not be tested by the firewall. They are typically added while the firewall is in Learning Mode or by an admin who identifies a particular action/request is a false positive.', 'wordfence'); ?></li>
 	<li id="whitelist-form"> 
 		<div class="wf-form-inline">
 			<div class="wf-form-group">
@@ -50,14 +50,14 @@ if (!defined('WORDFENCE_VERSION')) { exit; }
 							var key = pathKey + '|' + paramKey;
 							var matches = $('#waf-whitelisted-urls-wrapper .whitelist-table > tbody > tr[data-key="' + key + '"]');
 							if (matches.length > 0) {
-								WFAD.colorboxModal((WFAD.isSmallScreen ? '300px' : '400px'), '<?php esc_attr_e('Whitelist Entry Exists', 'wordfence'); ?>', '<?php esc_attr_e('A whitelist entry for this URL and parameter already exists.', 'wordfence'); ?>');
+								WFAD.colorboxModal((WFAD.isSmallScreen ? '300px' : '400px'), '<?php esc_attr_e('Allowlist Entry Exists', 'wordfence'); ?>', '<?php esc_attr_e('An allowlist entry for this URL and parameter already exists.', 'wordfence'); ?>');
 								return;
 							}
 							
 							//Generate entry and add to display data set
 							var entry = {
 								data: {
-									description: "<?php esc_attr_e('Whitelisted via Firewall Options page', 'wordfence'); ?>",
+									description: "<?php esc_attr_e('Allowlisted via Firewall Options page', 'wordfence'); ?>",
 									source: 'waf-options',
 									disabled: false,
 									ip: "<?php echo esc_attr(wfUtils::getIP()); ?>",

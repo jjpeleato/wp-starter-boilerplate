@@ -263,7 +263,6 @@ class Data_Fetcher {
 	public function daily_tasks() {
 		$start = Helper::get_midnight( time() - DAY_IN_SECONDS );
 		$date  = date_i18n( 'Y-m-d', $start - DAY_IN_SECONDS * 2 );
-		Api::get()->refresh_token_on_login();
 		$this->get_analytics_data( $date );
 		$this->delete_all_useless();
 		$this->calculate_stats();
@@ -277,7 +276,7 @@ class Data_Fetcher {
 		$count = 1;
 		$start = Helper::get_midnight( time() + DAY_IN_SECONDS );
 
-		for ( $current = 1; $current <= 15; $current++ ) {
+		for ( $current = 1; $current <= 90; $current++ ) {
 			$date = date_i18n( 'Y-m-d', $start - ( DAY_IN_SECONDS * $current ) );
 			if ( ! DB::date_exists( $date ) ) {
 				$count++;

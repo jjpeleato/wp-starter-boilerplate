@@ -27,7 +27,9 @@ For more information visit:
 - Yarn: https://yarnpkg.com/es-ES/
 - Gulp: https://gulpjs.com/
 
-**Note:** If you work with Windows. To execute the commands, we recommend installing **Cygwin** http://www.cygwin.com/
+**Note:** If you work with Windows < 10. To execute the commands, we recommend installing **Cygwin** http://www.cygwin.com/
+
+**Note:** If you work with Windows 10. To execute the commands, we recommend installing **WSL 2** with Ubuntu https://docs.microsoft.com/es-es/windows/wsl/install-win10
 
 **Note:** I recommend installing the following IDE for PHP Programming: Visual Studio Code (https://code.visualstudio.com/) or PHPStorm (recommended) (https://www.jetbrains.com/phpstorm/).
 
@@ -61,8 +63,7 @@ For more information visit:
 ├─ LICENSE
 ├─ package.json
 ├─ phpcs.xml.dist
-├─ README.md
-└─ sh_lando_upgrade_git.sh
+└─ README.md
 ```
 
 ### Installing

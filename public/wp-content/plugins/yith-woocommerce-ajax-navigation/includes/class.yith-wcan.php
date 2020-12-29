@@ -111,6 +111,12 @@ if ( ! class_exists( 'YITH_WCAN' ) ) {
             if( class_exists( 'UM_API' ) ){
                 add_action( 'init', array( $this, 'ultimate_member_support' ), 0 );
             }
+
+	        /* Register plugin to licence/update system */
+	        if( defined( 'YITH_WCAN_INIT' ) ){
+		        add_action( 'wp_loaded', array( $this, 'register_plugin_for_activation' ), 99 );
+		        add_action( 'admin_init', array( $this, 'register_plugin_for_updates' ) );
+	        }
         }
 
         /**

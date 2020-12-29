@@ -9,6 +9,8 @@
 use RankMath\Helper;
 use RankMath\Admin\Admin_Helper;
 
+defined( 'ABSPATH' ) || exit;
+
 $cmb->add_field(
 	[
 		'id'                => 'rank_math_robots',
@@ -26,6 +28,7 @@ $cmb->add_field(
 		'id'              => 'rank_math_advanced_robots',
 		'type'            => 'advanced_robots',
 		'name'            => esc_html__( 'Advanced Robots Meta', 'rank-math' ),
+		'default_cb'      => '\\RankMath\\Helper::get_advanced_robots_defaults',
 		'sanitization_cb' => [ '\RankMath\CMB2', 'sanitize_advanced_robots' ],
 	]
 );

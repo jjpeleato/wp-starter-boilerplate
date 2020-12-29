@@ -454,13 +454,13 @@ class wfScanEngine {
 	
 	private function scan_checkGSB_init() {
 		if ($this->scanController->isPremiumScan()) {
-				$this->statusIDX['checkGSB'] = wfIssues::statusStart("Checking if your site is on a domain blacklist");
+				$this->statusIDX['checkGSB'] = wfIssues::statusStart("Checking if your site is on a domain blocklist");
 			$this->scanController->startStage(wfScanner::STAGE_BLACKLIST_CHECK);
 				$h = new wordfenceURLHoover($this->apiKey, $this->wp_version);
 				$h->cleanup();
 		}
 		else {
-			wfIssues::statusPaidOnly("Checking if your site is on a domain blacklist is for paid members only");
+			wfIssues::statusPaidOnly("Checking if your site is on a domain blocklist is for paid members only");
 			sleep(2);
 		}
 	}
@@ -496,7 +496,7 @@ class wfScanEngine {
 				$h = new wordfenceURLHoover($this->apiKey, $this->wp_version, false, true);
 				$badURLs = $h->getBaddies();
 				if ($h->errorMsg) {
-					$this->status(4, 'info', "Error checking domain blacklists: " . $h->errorMsg);
+					$this->status(4, 'info', "Error checking domain blocklists: " . $h->errorMsg);
 					wfIssues::statusEnd($this->statusIDX['checkGSB'], wfIssues::STATUS_FAILED);
 					$this->scanController->completeStage(wfScanner::STAGE_BLACKLIST_CHECK, wfIssues::STATUS_FAILED);
 					return;
@@ -553,22 +553,22 @@ class wfScanEngine {
 						}
 						else if ($badList == 'wordfence-dbl') {
 							if (is_multisite()) {
-								$shortMsg = 'The multisite blog with ID ' . intval($id) . ' is listed on the Wordfence domain blacklist.';
+								$shortMsg = 'The multisite blog with ID ' . intval($id) . ' is listed on the Wordfence domain blocklist.';
 								$data['multisite'] = intval($id);
 							}
 							else {
-								$shortMsg = 'Your site is listed on the Wordfence domain blacklist.';
+								$shortMsg = 'Your site is listed on the Wordfence domain blocklist.';
 							}
-							$longMsg = "The URL " . esc_html($url) . " is on the blacklist.";
+							$longMsg = "The URL " . esc_html($url) . " is on the blocklist.";
 							$data['gsb'] = $badList;
 						}
 						else {
 							if (is_multisite()) {
-								$shortMsg = 'The multisite blog with ID ' . intval($id) . ' is listed on a domain blacklist.';
+								$shortMsg = 'The multisite blog with ID ' . intval($id) . ' is listed on a domain blocklist.';
 								$data['multisite'] = intval($id);
 							}
 							else {
-								$shortMsg = 'Your site is listed on a domain blacklist.';
+								$shortMsg = 'Your site is listed on a domain blocklist.';
 							}
 							$longMsg = "The URL is: " . esc_html($url);
 							$data['gsb'] = 'unknown';
@@ -922,11 +922,11 @@ class wfScanEngine {
 		}
 		
 		if ($options['scansEnabled_fileContentsGSB']) {
-			$this->statusIDX['GSB'] = wfIssues::statusStart('Scanning file contents for URLs on a domain blacklist');
+			$this->statusIDX['GSB'] = wfIssues::statusStart('Scanning file contents for URLs on a domain blocklist');
 			//This stage is marked as started earlier in the hasher rather than here
 		}
 		else {
-			wfIssues::statusDisabled("Skipping scan of file contents for URLs on a domain blacklist");
+			wfIssues::statusDisabled("Skipping scan of file contents for URLs on a domain blocklist");
 		}
 		
 		if ($options['scansEnabled_fileContents'] || $options['scansEnabled_fileContentsGSB']) {
@@ -1016,7 +1016,7 @@ class wfScanEngine {
 	}
 
 	private function scan_posts_init() {
-		$this->statusIDX['posts'] = wfIssues::statusStart('Scanning posts for URLs on a domain blacklist');
+		$this->statusIDX['posts'] = wfIssues::statusStart('Scanning posts for URLs on a domain blocklist');
 		$this->scanController->startStage(wfScanner::STAGE_CONTENT_SAFETY);
 		$blogsToScan = self::getBlogsToScan('posts');
 		$this->scanQueue = '';
@@ -1120,7 +1120,7 @@ class wfScanEngine {
 				}
 				else if ($result['badList'] == 'wordfence-dbl') {
 					$shortMsg = "{$uctype} contains a suspected malware URL: " . esc_html($title);
-					$longMsg = "This " . esc_html($type) . " contains a URL that is currently listed on Wordfence's domain blacklist. The URL is: " . esc_html($result['URL']);
+					$longMsg = "This " . esc_html($type) . " contains a URL that is currently listed on Wordfence's domain blocklist. The URL is: " . esc_html($result['URL']);
 				}
 				else {
 					//A list type that may be new and the plugin has not been upgraded yet.
@@ -1159,7 +1159,7 @@ class wfScanEngine {
 		$this->scanQueue = '';
 	}
 	private function scan_comments_init(){
-		$this->statusIDX['comments'] = wfIssues::statusStart('Scanning comments for URLs on a domain blacklist');
+		$this->statusIDX['comments'] = wfIssues::statusStart('Scanning comments for URLs on a domain blocklist');
 		$this->scanController->startStage(wfScanner::STAGE_CONTENT_SAFETY);
 		$this->scanData = array();
 		$this->scanQueue = '';
@@ -1242,7 +1242,7 @@ class wfScanEngine {
 				}
 				else if ($result['badList'] == 'wordfence-dbl') {
 					$shortMsg = "$uctype contains a suspected malware URL.";
-					$longMsg = "This " . esc_html($type) . " contains a URL that is currently listed on Wordfence's domain blacklist. The URL is: " . esc_html($result['URL']);
+					$longMsg = "This " . esc_html($type) . " contains a URL that is currently listed on Wordfence's domain blocklist. The URL is: " . esc_html($result['URL']);
 				}
 				
 				if(is_multisite()){
@@ -1932,7 +1932,7 @@ class wfScanEngine {
 				}
 				else if ($result['badList'] == 'wordfence-dbl') {
 					$shortMsg = "Option contains a suspected malware URL: " . esc_html($optionKey);
-					$longMsg = "This option contains a URL that is currently listed on Wordfence's domain blacklist. It may indicate your site is infected with malware. The URL is: " . esc_html($result['URL']);
+					$longMsg = "This option contains a URL that is currently listed on Wordfence's domain blocklist. It may indicate your site is infected with malware. The URL is: " . esc_html($result['URL']);
 				}
 				else {
 					//A list type that may be new and the plugin has not been upgraded yet.

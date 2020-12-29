@@ -344,6 +344,30 @@ trait WordPress {
 	}
 
 	/**
+	 * Get advanced robots default.
+	 *
+	 * @return array
+	 */
+	public static function get_advanced_robots_defaults() {
+		$screen          = get_current_screen();
+		$advanced_robots = Helper::get_settings( 'titles.advanced_robots_global', [] );
+
+		if ( 'post' === $screen->base && Helper::get_settings( "titles.pt_{$screen->post_type}_custom_robots" ) ) {
+			$advanced_robots = Helper::get_settings( "titles.pt_{$screen->post_type}_advanced_robots", [] );
+		}
+
+		if ( 'term' === $screen->base && Helper::get_settings( "titles.tax_{$screen->taxonomy}_custom_robots" ) ) {
+			$advanced_robots = Helper::get_settings( "titles.tax_{$screen->taxonomy}_advanced_robots", [] );
+		}
+
+		if ( in_array( $screen->base, [ 'profile', 'user-edit' ], true ) && Helper::get_settings( 'titles.author_custom_robots' ) ) {
+			$advanced_robots = Helper::get_settings( 'titles.author_advanced_robots', [] );
+		}
+
+		return $advanced_robots;
+	}
+
+	/**
 	 * Convert timestamp and ISO to date.
 	 *
 	 * @param string  $value            Value to convert.
@@ -367,15 +391,23 @@ trait WordPress {
 	 * @return int
 	 */
 	public static function duration_to_seconds( $iso8601 ) {
-		$iso8601  = ! Str::starts_with( 'PT', $iso8601 ) ? 'PT' . $iso8601 : $iso8601;
-		$interval = new \DateInterval( $iso8601 );
+		$end = substr( $iso8601, -1 );
+		if ( ! in_array( $end, [ 'D', 'H', 'M', 'S' ], true ) ) {
+			$iso8601 = $iso8601 . 'S';
+		}
+		$iso8601 = ! Str::starts_with( 'P', $iso8601 ) ? 'PT' . $iso8601 : $iso8601;
+
+		preg_match( '/^P([0-9]+D|)?T?([0-9]+H|)?([0-9]+M|)?([0-9]+S|)?$/', $iso8601, $matches );
+		if ( empty( $matches ) ) {
+			return false;
+		}
 
 		return array_sum(
 			[
-				$interval->d * DAY_IN_SECONDS,
-				$interval->h * HOUR_IN_SECONDS,
-				$interval->i * MINUTE_IN_SECONDS,
-				$interval->s,
+				absint( $matches[1] ) * DAY_IN_SECONDS,
+				absint( $matches[2] ) * HOUR_IN_SECONDS,
+				absint( $matches[3] ) * MINUTE_IN_SECONDS,
+				absint( $matches[4] ),
 			]
 		);
 	}

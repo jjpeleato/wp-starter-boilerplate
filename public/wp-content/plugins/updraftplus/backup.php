@@ -80,6 +80,13 @@ class UpdraftPlus_Backup {
 
 	private $backup_excluded_patterns = array();
 	
+	// Bytes of uncompressed data written since last open
+	private $db_current_raw_bytes = 0;
+	
+	private $table_prefix;
+
+	private $table_prefix_raw;
+	
 	/**
 	 * Class constructor
 	 *
@@ -116,9 +123,11 @@ class UpdraftPlus_Backup {
 
 		$this->altered_since = $altered_since;
 
+		$resumptions_since_last_successful = $updraftplus->current_resumption - $updraftplus->last_successful_resumption;
+		
 		// false means 'tried + failed'; whereas 0 means 'not yet tried'
 		// Disallow binzip on OpenVZ when we're not sure there's plenty of memory
-		if (0 === $this->binzip && (!defined('UPDRAFTPLUS_PREFERPCLZIP') || UPDRAFTPLUS_PREFERPCLZIP != true) && (!defined('UPDRAFTPLUS_NO_BINZIP') || !UPDRAFTPLUS_NO_BINZIP) && $updraftplus->current_resumption <9) {
+		if (0 === $this->binzip && (!defined('UPDRAFTPLUS_PREFERPCLZIP') || !UPDRAFTPLUS_PREFERPCLZIP) && (!defined('UPDRAFTPLUS_NO_BINZIP') || !UPDRAFTPLUS_NO_BINZIP) && ($updraftplus->current_resumption < 9 || $resumptions_since_last_successful < 2)) {
 
 			if (@file_exists('/proc/user_beancounters') && @file_exists('/proc/meminfo') && @is_readable('/proc/meminfo')) {// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
 				$meminfo = @file_get_contents('/proc/meminfo', false, null, 0, 200);// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
@@ -191,7 +200,9 @@ class UpdraftPlus_Backup {
 	 */
 	public function create_zip($create_from_dir, $whichone, $backup_file_basename, $index, $first_linked_index = false) {
 		// Note: $create_from_dir can be an array or a string
-		@set_time_limit(UPDRAFTPLUS_SET_TIME_LIMIT);// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+		
+		set_time_limit(UPDRAFTPLUS_SET_TIME_LIMIT);
+		
 		$original_index = $index;
 
 		$this->index = $index;
@@ -357,7 +368,7 @@ class UpdraftPlus_Backup {
 
 		$prune_services = array();
 
-		foreach ($services as $ind => $service) {
+		foreach ($services as $service) {
 			if ('none' === $service || '' == $service) continue;
 
 			$objname = "UpdraftPlus_BackupModule_${service}";
@@ -439,7 +450,7 @@ class UpdraftPlus_Backup {
 				if ('none' == $service || '' == $service) {
 					$updraftplus->log('No remote despatch: user chose no remote backup service');
 					// Still want to mark as "uploaded", to signal that nothing more needs doing. (Important on incremental runs with no cloud storage).
-					foreach ($backup_array as $bind => $file) {
+					foreach ($backup_array as $file) {
 						if ($updraftplus->is_uploaded($file)) {
 							$updraftplus->log("Already uploaded: $file");
 						} else {
@@ -1039,30 +1050,30 @@ class UpdraftPlus_Backup {
 	}
 	
 	/**
-	 * Prune files from local or remote storage
+	 * Prune files from remote and local storage
 	 *
-	 * @param String $service         Service to prune
-	 * @param Array  $dofiles         An array of files (or a single string for one file)
-	 * @param Array  $method_object   specific method object
-	 * @param Array  $object_passback specific passback object
-	 * @param Array  $file_sizes      size of files
+	 * @param String	   $service         Service to prune (one only)
+	 * @param Array|String $dofiles         An array of files (or a single string for one file)
+	 * @param Array		   $method_object   specific method object
+	 * @param Array		   $object_passback specific passback object
+	 * @param Array		   $file_sizes      size of files
 	 */
 	private function prune_file($service, $dofiles, $method_object = null, $object_passback = null, $file_sizes = array()) {
 		global $updraftplus;
-		if (!is_array($dofiles)) $dofiles =array($dofiles);
+		if (!is_array($dofiles)) $dofiles = array($dofiles);
 		
 		if (!apply_filters('updraftplus_prune_file', true, $dofiles, $service, $method_object, $object_passback, $file_sizes)) {
 			$updraftplus->log("Prune: service=$service: skipped via filter");
 		}
 		
-		foreach ($dofiles as $i => $dofile) {
+		foreach ($dofiles as $dofile) {
 			if (empty($dofile)) continue;
 			$updraftplus->log("Delete file: $dofile, service=$service");
 			$fullpath = $this->updraft_dir.'/'.$dofile;
 			// delete it if it's locally available
 			if (file_exists($fullpath)) {
 				$updraftplus->log("Deleting local copy ($dofile)");
-				@unlink($fullpath);// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+				unlink($fullpath);
 			}
 		}
 		// Despatch to the particular method's deletion routine
@@ -1212,7 +1223,6 @@ class UpdraftPlus_Backup {
 		if ('finished' != $job_status && $updraftplus->current_resumption >= 2) {
 
 			// NOTYET: Possible amendment to original algorithm; not just no check-in, but if the check in was very early (can happen if we get a very early checkin for some trivial operation, then attempt something too big)
-			
 
 			// 03-Sep-2015 - came across a case (HS#2052) where there apparently was a check-in 'last time', but no resumption was scheduled because the 'useful_checkin' jobdata was *not* last time - which must indicate dying at a very unfortunate/unlikely point in the code. As a result, the split was not auto-reduced. Consequently, we've added !$updraftplus->newresumption_scheduled as a condition on the first check here (it was already on the second), as if no resumption is scheduled then whatever checkin there was last time was only partial. This was on GoDaddy, for which a number of curious I/O event combinations have been seen in recent months - their platform appears to have some odd behaviour when PHP is killed off.
 			// 04-Sep-2015 - move the '$updraftplus->current_resumption<=10' check to the inner loop (instead of applying to this whole section), as I see no reason for that restriction (case seen in HS#2064 where it was required on resumption 15)
@@ -1580,12 +1590,15 @@ class UpdraftPlus_Backup {
 			$updraftplus->log(__("Failed to open directory for reading:", 'updraftplus').' '.$this->updraft_dir, 'error');
 		}
 		
+		$errors_at_all_tables_start = $updraftplus->error_count();
+		
 		foreach ($all_tables as $ti) {
 
 			$table = $ti['name'];
 			$stitch_files[$table] = array();
 			$table_type = $ti['type'];
-		
+			$errors_at_table_start = $updraftplus->error_count();
+			
 			$manyrows_warning = false;
 			$total_tables++;
 
@@ -1689,10 +1702,9 @@ class UpdraftPlus_Backup {
 				if (true !== $bindump) {
 				
 					while (!is_array($start_record) && !is_wp_error($start_record)) {
-						
 						$start_record = $this->backup_table($table, $table_type, $start_record, $can_use_primary_key);
-						
 						if (is_integer($start_record) || is_array($start_record)) {
+						
 							$this->backup_db_close();
 							
 							// Add one here in case no records were returned - don't want to over-write the previous file
@@ -1706,13 +1718,21 @@ class UpdraftPlus_Backup {
 								rename($db_temp_file, $this->updraft_dir.'/'.$rename_base);
 								$stitch_files[$table][$use_record] = $rename_base;
 							}
-							if (false === $this->backup_db_open($db_temp_file, true)) return false;
+							
 							UpdraftPlus_Job_Scheduler::something_useful_happened();
 							
+							if (false === $this->backup_db_open($db_temp_file, true)) return false;
+							
 						} elseif (is_wp_error($start_record)) {
-							$updraftplus->log("Error (table=$table) (".$start_record->get_error_code()."): ".$start_record->get_error_message());
-							$updraftplus->log(__("Failed to backup database table:", 'updraftplus').' '.$start_record->get_error_message().' ('.$start_record->get_error_code().')', 'error');
-							$errors++;
+							$message = "Error (table=$table, type=$table_type) (".$start_record->get_error_code()."): ".$start_record->get_error_message();
+							$updraftplus->log($message);
+							// If it's a view, then the problem isn't recoverable; but views don't contain actual data except in the definition, which is likely in code, so we should not consider this a fatal error
+							$level = 'error';
+							if ('view' == strtolower($table_type) && 'table_details_error' == $start_record->get_error_code()) {
+								$level = 'warning';
+								$this->stow("# $message\n");
+							}
+							$updraftplus->log(__("Failed to backup database table:", 'updraftplus').' '.$start_record->get_error_message().' ('.$start_record->get_error_code().')', $level);
 						}
 							
 					}
@@ -1723,21 +1743,29 @@ class UpdraftPlus_Backup {
 
 				$this->backup_db_close();
 
-				// Renaming the file indicates that writing to it finished
-				rename($db_temp_file, $this->updraft_dir.'/'.$table_file_prefix.'.gz');
-				UpdraftPlus_Job_Scheduler::something_useful_happened();
+				if ($updraftplus->error_count() > $errors_at_table_start) {
+					
+					$updraftplus->log('Errors occurred during backing up the table; therefore the open file will be removed');
+					@unlink($db_temp_file); // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+					
+				} else {
 				
-				$final_stitch_value = empty($stitch_files[$table]) ? 1 : max(array_keys($stitch_files[$table])) + 1;
-				
-				$stitch_files[$table][$final_stitch_value] = $table_file_prefix.'.gz';
-				
-				$total_db_size = 0;
-				// This is more verbose than it would be if we weren't supporting PHP 5.2
-				foreach ($stitch_files[$table] as $basename) {
-					$total_db_size += filesize($this->updraft_dir.'/'.$basename);
+					// Renaming the file indicates that writing to it finished
+					rename($db_temp_file, $this->updraft_dir.'/'.$table_file_prefix.'.gz');
+					UpdraftPlus_Job_Scheduler::something_useful_happened();
+					
+					$final_stitch_value = empty($stitch_files[$table]) ? 1 : max(array_keys($stitch_files[$table])) + 1;
+					
+					$stitch_files[$table][$final_stitch_value] = $table_file_prefix.'.gz';
+					
+					$total_db_size = 0;
+					// This is more verbose than it would be if we weren't supporting PHP 5.2
+					foreach ($stitch_files[$table] as $basename) {
+						$total_db_size += filesize($this->updraft_dir.'/'.$basename);
+					}
+					
+					$updraftplus->log("Table $table: finishing file(s) (".count($stitch_files[$table]).', '.round($total_db_size/1024, 1).' KB)', 'notice', false, false);
 				}
-				
-				$updraftplus->log("Table $table: finishing file(s) (".count($stitch_files[$table]).', '.round($total_db_size/1024, 1).' KB)', 'notice', false, false);
 				
 			} else {
 				$total_tables--;
@@ -1771,6 +1799,11 @@ class UpdraftPlus_Backup {
 			}
 		}
 
+		if ($updraftplus->error_count() > $errors_at_all_tables_start) {
+			$updraftplus->log('Errors occurred whilst backing up the tables; will cease and wait for resumption');
+			die;
+		}
+		
 		// Race detection - with zip files now being resumable, these can more easily occur, with two running side-by-side
 		$backup_final_file_name = $backup_file_base.'-db'.$this->whichdb_suffix.'.gz';
 		$time_now = time();
@@ -2065,19 +2098,105 @@ class UpdraftPlus_Backup {
 	}
 	
 	/**
-	 * Taken partially from phpMyAdmin and partially from Alain Wolf, Zurich - Switzerland to use the WordPress $wpdb object
+	 * Suggest a beginning value for how many rows to fetch in each SELECT statement (before taking into account resumptions)
+	 *
+	 * @param String $table
+	 *
+	 * @return Integer
+	 */
+	private function get_rows_on_first_fetch($table) {
+
+		// In future, we could run over the table definition; if it is all non-massive defined lengths, we could base a calculation on that.
+	
+		if ($this->table_prefix_raw.'term_relationships' == $table) {
+			// This table is known to have very small data lengths
+			$rows = 100000;
+		} else {
+			$rows = 1000;
+		}
+	
+		return $rows;
+	
+	}
+	
+	/**
+	 * Suggest how many rows to fetch in each SELECT statement
+	 *
+	 * @param String  $table					- the table being fetched
+	 * @param Boolean $allow_further_reductions - whether to enable a second level of reductions
+	 * @param Boolean $is_first_fetch_for_table - whether this is the first fetch on this table
+	 *
+	 * @return Integer
+	 */
+	private function number_of_rows_to_fetch($table, $allow_further_reductions, $is_first_fetch_for_table) {
+			
+		global $updraftplus;
+		
+		$default_on_first_fetch = $this->get_rows_on_first_fetch($table);
+		
+		// If this is not the first fetch on a table, then get what was stored last time we set it (if we ever did). On the first fetch, reset back to the starting value (we presume problems are table-specific).
+		// This means that the same value will persist whilst the table is being backed up, both during the current resumption, and subsequent ones
+		$fetch_rows = $is_first_fetch_for_table ? $default_on_first_fetch : $updraftplus->jobdata_get('fetch_rows', $default_on_first_fetch);
+		
+		$fetch_rows_at_start = $fetch_rows;
+		
+		$resumptions_since_last_successful = $updraftplus->current_resumption - $updraftplus->last_successful_resumption;
+		
+		// Do we need to reduce the number of rows we attempt to fetch?
+		// If something useful has happened on this run, then we don't try any reductions (we save them for a resumption after one on which nothing useful happened)
+		if (!$updraftplus->something_useful_happened && !empty($updraftplus->current_resumption) && $resumptions_since_last_successful > 1) {
+			// This used to be fixed at 500; but we (after a long time) saw a case that looked like an out-of-memory even at this level. Now that we have implemented resumptions, the risk of timeouts is much lower (we just need to process enough rows).
+			// October 2020: added further reductions
+			// Listed in increasing order due to the handling below. At the end it gets quite drastic. Note, though, that currently we don't store this in the job-data.
+			// A future improvement could, when things get drastic, grab and log data on the size of what is required, so that we can respond more dynamically. The strategy currently here will run out of road if memory falls short multiple times. See: https://stackoverflow.com/questions/4524019/how-to-get-the-byte-size-of-resultset-in-an-sql-query
+			$fetch_rows_reductions = array(500, 250, 200, 100);
+			
+			if ($allow_further_reductions) {
+				// If we're relying on LIMIT with offsets, then we have to be mindful of how that performs
+				$fetch_rows_reductions = array_merge($fetch_rows_reductions, array(50, 20, 5));
+			}
+			
+			$break_after = $is_first_fetch_for_table ? $resumptions_since_last_successful - 1 : 1;
+			
+			foreach ($fetch_rows_reductions as $reduce_to) {
+				if ($fetch_rows > $reduce_to) {
+					// Go down one level
+					$fetch_rows = $reduce_to;
+					$break_after--;
+					if ($break_after < 1) break;
+				}
+			}
+			
+			$updraftplus->log("Last successful resumption was $resumptions_since_last_successful runs ago; fetch_rows will thus be: $fetch_rows (allow_further_reductions=$allow_further_reductions, is_first_fetch=$is_first_fetch_for_table)");
+		}
+		
+		// If it has changed, then preserve it in the job for the next resumption (of this table)
+		if ($fetch_rows_at_start !== $fetch_rows || $is_first_fetch_for_table) $updraftplus->jobdata_set('fetch_rows', $fetch_rows);
+		
+		return $fetch_rows;
+	
+	}
+	
+	/**
+	 * Original version taken partially from phpMyAdmin and partially from Alain Wolf, Zurich - Switzerland to use the WordPress $wpdb object
 	 * Website: http://restkultur.ch/personal/wolf/scripts/db_backup/
 	 * Modified by Scott Merrill (http://www.skippy.net/)
+	 * Subsequently heavily improved and modified
+	 *
+	 * This method should be called in a loop for a complete table backup (see the information for the returned parameter). The method may implement whatever strategy it likes for deciding when to return (the assumption is that when it does return with some results, the caller should register that something useful happened).
 	 *
 	 * @param String		  $table			   - Full name of database table to backup
 	 * @param String		  $table_type		   - Table type - 'VIEW' is supported; otherwise it is treated as an ordinary table
 	 * @param Integer|Boolean $start_record		   - Specify the starting record, or true to start at the beginning. Our internal page size is fixed at 1000 (though within that we might actually query in smaller batches).
-	 * @param Boolean		  $can_use_primary_key - Whether it is allowed to perform quicker SELECTS based on the primary key. The intended use case for false is to support backups running during a version upgrade.
+	 * @param Boolean		  $can_use_primary_key - Whether it is allowed to perform quicker SELECTS based on the primary key. The intended use case for false is to support backups running during a version upgrade. N.B. This "can" is not absolute; there may be other constraints dealt with within this method.
 	 *
-	 * @return Integer|Array|WP_Error - a WP_Error to indicate an error; an array indicates that it finished (if it includes 'next_record' that means it finished via producing something); an integer to indicate the next page the case that there are more to do
+	 * @return Integer|Array|WP_Error - a WP_Error to indicate an error; an array indicates that it finished (if it includes 'next_record' that means it finished via producing something); an integer to indicate the next page the case that there are more to do.
 	 */
 	private function backup_table($table, $table_type = 'BASE TABLE', $start_record = true, $can_use_primary_key = true) {
 		$process_pages = 100;
+		
+		// Preserve the passed-in value
+		$original_start_record = $start_record;
 	
 		global $updraftplus;
 
@@ -2090,7 +2209,9 @@ class UpdraftPlus_Backup {
 		$table_structure = $this->wpdb_obj->get_results("DESCRIBE ".UpdraftPlus_Manipulation_Functions::backquote($table));
 		if (!$table_structure) {
 			// $updraftplus->log(__('Error getting table details', 'updraftplus') . ": $table", 'error');
-			return new WP_Error('table_details_error', 'Error getting the table details');
+			$error_message = '';
+			if ($this->wpdb_obj->last_error) $error_message .= ' ('.$this->wpdb_obj->last_error.')';
+			return new WP_Error('table_details_error', $error_message);
 		}
 	
 		// If at the beginning of the dump for a table, then add the DROP and CREATE statements
@@ -2117,21 +2238,22 @@ class UpdraftPlus_Backup {
 			$bit_fields = array();
 			$bit_field_exists = false;
 
+			// false means "not yet set"; a string means what it was set to; null means that there are multiple (and so not useful to us). If it is not a string, then $primary_key_type is invalid and should not be used.
 			$primary_key = false;
 			$primary_key_type = false;
 			
 			// $table_structure was from "DESCRIBE $table"
 			foreach ($table_structure as $struct) {
 			
-				if (isset($struct->Key) && 'PRI' == $struct->Key) {
-					$primary_key = $struct->Field;
+				if (isset($struct->Key) && 'PRI' == $struct->Key && '' != $struct->Field) {
+					$primary_key = (false === $primary_key) ? $struct->Field : null;
 					$primary_key_type = $struct->Type;
 				}
 			
 				if ((0 === strpos($struct->Type, 'tinyint')) || (0 === strpos(strtolower($struct->Type), 'smallint'))
 					|| (0 === strpos(strtolower($struct->Type), 'mediumint')) || (0 === strpos(strtolower($struct->Type), 'int')) || (0 === strpos(strtolower($struct->Type), 'bigint'))
 				) {
-						$defs[strtolower($struct->Field)] = (null === $struct->Default ) ? 'NULL' : $struct->Default;
+						$defs[strtolower($struct->Field)] = (null === $struct->Default) ? 'NULL' : $struct->Default;
 						$integer_fields[strtolower($struct->Field)] = true;
 				}
 				
@@ -2152,7 +2274,7 @@ class UpdraftPlus_Backup {
 			
 			// N.B. At this stage this is for optimisation, mainly targets what is used on the core WP tables (bigint(20)); a value can be relied upon, but false is not definitive
 			$use_primary_key = false;
-			if ($can_use_primary_key && false !== $primary_key && preg_match('#^(small|medium|big)?int\(#i', $primary_key_type)) {
+			if ($can_use_primary_key && is_string($primary_key) && preg_match('#^(small|medium|big)?int\(#i', $primary_key_type)) {
 				$use_primary_key = true;
 				if (preg_match('# unsigned$#i', $primary_key_type)) {
 					if (true === $start_record) $start_record = -1;
@@ -2174,34 +2296,16 @@ class UpdraftPlus_Backup {
 			
 			// Experimentation here shows that on large tables (we tested with 180,000 rows) on MyISAM, 1000 makes the table dump out 3x faster than the previous value of 100. After that, the benefit diminishes (increasing to 4000 only saved another 12%)
 
-			$fetch_rows = 1000;
-			
-			$resumptions_since_last_successful = $updraftplus->current_resumption - $updraftplus->last_successful_resumption;
-			
-			// Do we need to fetch our "pages" in multiple batches? (Here we need to be careful that doing so does not affect the information returned to the caller - to the caller, page sizes are a fixed/predictable size)
-			if (!$updraftplus->something_useful_happened && !empty($updraftplus->current_resumption) && $resumptions_since_last_successful > 1) {
-				// This used to be fixed at 500; but we (after a long time) saw a case that looked like an out-of-memory even at this level. Now that we have implemented resumptions, the risk of timeouts is much lower (we just need to process 10,000 rows).
-				// June 2020: amounts fetched need to be factors of the page size; thus, the inner loop runs must also be a factor of the page size
-				// October 2020: added further reductions
-				// Listed in increasing order due to the handling below. At the end it gets quite drastic. Note, though, that currently we don't store this in the job-data.
-				// A future improvement could, when things get drastic, grab and log data on the size of what is required, so that we can respond more dynamically. The strategy currently here will run out of road if memory falls short multiple times. See: https://stackoverflow.com/questions/4524019/how-to-get-the-byte-size-of-resultset-in-an-sql-query
-				$fetch_rows_reduction = array(2 => 500, 4 => 250, 5 => 200, 6 => 100);
-				
-				if ($use_primary_key || $start_record < 500000) {
-					// If we're relying on LIMIT with offsets, then we have to be mindful of how that performs
-					$fetch_rows_reduction = array_merge($fetch_rows_reduction, array(7 => 50, 8 => 20, 9 => 5));
-				}
-				
-				foreach ($fetch_rows_reduction as $since_successful => $reduce_to) {
-					if ($resumptions_since_last_successful >= $since_successful) {
-						$fetch_rows = $reduce_to;
-					}
-				}
-				
-				$updraftplus->log("Last successful resumption was $resumptions_since_last_successful runs ago; fetch_rows will thus be: $fetch_rows");
-			}
-			
+			$fetch_rows = $this->number_of_rows_to_fetch($table, $use_primary_key || $start_record < 500000, true === $original_start_record);
+		
 			$select = $bit_field_exists ? implode(', ', $fields) : '*';
+			
+			$enough_for_now = false;
+			
+			$began_writing_at = time();
+			
+			$enough_data_after = 104857600;
+			$enough_time_after = ($fetch_rows > 250) ? 15 : 9;
 			
 			// Loop which retrieves data
 			do {
@@ -2243,8 +2347,13 @@ class UpdraftPlus_Backup {
 				$thisentry = '';
 				foreach ($table_data as $row) {
 					$total_rows++;
-					$values = array();
+					if ($thisentry) $thisentry .= ",\n ";
+					$thisentry .= '(';
+					$key_count = 0;
 					foreach ($row as $key => $value) {
+					
+						if ($key_count) $thisentry .= ', ';
+						$key_count++;
 					
 						if ($use_primary_key && strtolower($primary_key) == strtolower($key) && $value > $start_record) {
 							$start_record = $value;
@@ -2254,14 +2363,15 @@ class UpdraftPlus_Backup {
 							// make sure there are no blank spots in the insert syntax,
 							// yet try to avoid quotation marks around integers
 							$value = (null === $value || '' === $value) ? $defs[strtolower($key)] : $value;
-							$values[] = ('' === $value) ? "''" : $value;
+							$value = ('' === $value) ? "''" : $value;
+							$thisentry .= $value;
 						} elseif (isset($binary_fields[strtolower($key)])) {
 							if (null === $value) {
-								$values[] = 'NULL';
+								$thisentry .= 'NULL';
 							} elseif ('' === $value) {
-								$values[] = "''";
+								$thisentry .= "''";
 							} else {
-								$values[] = "0x" . bin2hex(str_repeat("0", floor(strspn($value, "0") / 4)).$value);
+								$thisentry .= "0x" . bin2hex(str_repeat("0", floor(strspn($value, "0") / 4)).$value);
 							}
 						} elseif (isset($bit_fields[$key])) {
 							mbstring_binary_safe_encoding();
@@ -2271,22 +2381,41 @@ class UpdraftPlus_Backup {
 							for ($i=0; $i<$val_len; $i++) {
 								$hex .= sprintf('%02X', ord($value[$i]));
 							}
-							$values[] = "b'".str_pad($this->hex2bin($hex), $bit_fields[$key], '0', STR_PAD_LEFT)."'";
+							$thisentry .= "b'".str_pad($this->hex2bin($hex), $bit_fields[$key], '0', STR_PAD_LEFT)."'";
 						} else {
-							$values[] = (null === $value) ? 'NULL' : "'" . str_replace($search, $replace, str_replace('\'', '\\\'', str_replace('\\', '\\\\', $value))) . "'";
+							$thisentry .= (null === $value) ? 'NULL' : "'" . str_replace($search, $replace, str_replace('\'', '\\\'', str_replace('\\', '\\\\', $value))) . "'";
+						}
+					}
+					$thisentry .= ')';
+					
+					// Flush every 512KB
+					if (strlen($thisentry) > 524288) {
+						$thisentry .= ';';
+						if (strlen($thisentry) > 10485760) {
+							// This is an attempt to prevent avoidable duplication of long strings in-memory, at the cost of one extra write
+							$this->stow(" \n".$entries);
+							$this->stow($thisentry);
+						} else {
+							$this->stow(" \n".$entries.$thisentry);
+						}
+						$thisentry = '';
+						// Potentially indicate that enough has been done to loop
+						if ($this->db_current_raw_bytes > $enough_data_after || time() - $began_writing_at > $enough_time_after) {
+							$enough_for_now = true;
 						}
 					}
 					
-					if ($thisentry) $thisentry .= ",\n ";
-					$thisentry .= '('.implode(', ', $values).')';
-					// Flush every 512KB
-					if (strlen($thisentry) > 524288) {
-						$this->stow(" \n".$entries.$thisentry.';');
-						$thisentry = "";
-					}
-					
 				}
-				if ($thisentry) $this->stow(" \n".$entries.$thisentry.';');
+				if ($thisentry) {
+					$thisentry .= ';';
+					if (strlen($thisentry) > 10485760) {
+						// This is an attempt to prevent avoidable duplication of long strings in-memory, at the cost of one extra write
+						$this->stow(" \n".$entries);
+						$this->stow($thisentry);
+					} else {
+						$this->stow(" \n".$entries.$thisentry);
+					}
+				}
 				
 				if (!$use_primary_key) {
 					$start_record += $fetch_rows;
@@ -2294,12 +2423,12 @@ class UpdraftPlus_Backup {
 				
 				if ($process_pages > 0) $process_pages--;
 				
-			} while (count($table_data) > 0 && (-1 == $process_pages || $process_pages > 0));
+			} while (!$enough_for_now && count($table_data) > 0 && (-1 == $process_pages || $process_pages > 0));
 		}
 		
-		$updraftplus->log("Table $table: Rows added in this batch (next record: $start_record): $total_rows in ".sprintf("%.02f", max(microtime(true)-$microtime, 0.00001))." seconds");
+		$updraftplus->log("Table $table: Rows added in this batch (next record: $start_record): $total_rows (uncompressed bytes in this segment=".$this->db_current_raw_bytes.") in ".sprintf("%.02f", max(microtime(true)-$microtime, 0.00001))." seconds");
 
-		// If all data has been fetched, then write out the closing comment, and return false (which indicates that there is nothing left)
+		// If all data has been fetched, then write out the closing comment
 		if (-1 == $process_pages || 0 == count($table_data)) {
 			$this->stow("\n# End of data contents of table ".UpdraftPlus_Manipulation_Functions::backquote($table)."\n\n");
 			return is_numeric($start_record) ? array('next_record' => (int) $start_record) : array();
@@ -2403,10 +2532,10 @@ class UpdraftPlus_Backup {
 	 */
 	public function backup_db_open($file, $allow_gz = true) {
 		if (function_exists('gzopen') && true == $allow_gz) {
-			$this->dbhandle = @gzopen($file, 'w');// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+			$this->dbhandle = gzopen($file, 'w');
 			$this->dbhandle_isgz = true;
 		} else {
-			$this->dbhandle = @fopen($file, 'w');// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+			$this->dbhandle = fopen($file, 'w');
 			$this->dbhandle_isgz = false;
 		}
 		if (false === $this->dbhandle) {
@@ -2414,6 +2543,7 @@ class UpdraftPlus_Backup {
 			$updraftplus->log("ERROR: $file: Could not open the backup file for writing");
 			$updraftplus->log($file.": ".__("Could not open the backup file for writing", 'updraftplus'), 'error');
 		}
+		$this->db_current_raw_bytes = 0;
 		return $this->dbhandle;
 	}
 
@@ -2434,6 +2564,7 @@ class UpdraftPlus_Backup {
 				// $updraftplus->log(__('There was an error writing a line to the backup script:', 'updraftplus').'  '.$query_line.'  '.$php_errormsg, 'error');
 			}
 		}
+		$this->db_current_raw_bytes += strlen($query_line);
 		return $ret;
 	}
 
@@ -3213,21 +3344,21 @@ class UpdraftPlus_Backup {
 		fwrite($handle, '],"files":[');
 		
 		$last_file_index = false;
-		foreach ($this->zipfiles_batched as $source => $store_as) {
+		foreach ($this->zipfiles_batched as $store_as) {
 			if ('all' !== $go_to_level && substr_count($store_as, '/') > $go_to_level - 1) continue;
 			$last_file_index = $store_as;
 		}
-		foreach ($this->zipfiles_skipped_notaltered as $source => $store_as) {
+		foreach ($this->zipfiles_skipped_notaltered as $store_as) {
 			if ('all' !== $go_to_level && substr_count($store_as, '/') > $go_to_level - 1) continue;
 			$last_file_index = $store_as;
 		}
 
-		foreach ($this->zipfiles_batched as $source => $store_as) {
+		foreach ($this->zipfiles_batched as $store_as) {
 			if ('all' !== $go_to_level && substr_count($store_as, '/') > $go_to_level - 1) continue;
 			fwrite($handle, json_encode($store_as).(($store_as != $last_file_index) ? ',' : ''));
 		}
 
-		foreach ($this->zipfiles_skipped_notaltered as $source => $store_as) {
+		foreach ($this->zipfiles_skipped_notaltered as $store_as) {
 			if ('all' !== $go_to_level && substr_count($store_as, '/') > $go_to_level - 1) continue;
 			fwrite($handle, json_encode($store_as).(($store_as != $last_file_index) ? ',' : ''));
 		}

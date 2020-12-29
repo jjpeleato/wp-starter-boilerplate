@@ -775,6 +775,9 @@ class wfWAFRuleComparison implements wfWAFRuleInterface {
 		
 		foreach ($files as $file) {
 			if ($file['name'] == (string) $subject) {
+				if (!is_file($file['tmp_name'])) {
+					continue;
+				}
 				$fh = @fopen($file['tmp_name'], 'r');
 				if (!$fh) {
 					continue;
@@ -836,6 +839,9 @@ class wfWAFRuleComparison implements wfWAFRuleInterface {
 		
 		foreach ($files as $file) {
 			if ($file['name'] == (string) $subject) {
+				if (!is_file($file['tmp_name'])) {
+					continue;
+				}
 				$fh = @fopen($file['tmp_name'], 'r');
 				if (!$fh) {
 					continue;
