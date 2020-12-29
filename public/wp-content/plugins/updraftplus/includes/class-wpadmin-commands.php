@@ -76,31 +76,43 @@ class UpdraftPlus_WPAdmin_Commands extends UpdraftPlus_Commands {
 		// return array('response' => $response['response'], 'status' => $response['status'], 'log' => $response['log'] );
 	}
 	
-	public function updraftcentral_delete_key($params) {
+	/**
+	 * Function to retrieve raw backup history given a timestamp and nonce
+	 *
+	 * @param Array $data - Data parameter; keys: timestamp, nonce
+	 *
+	 * @return String if empty result will be empty string
+	 */
+	public function rawbackup_history($data) {
+
+		$history = UpdraftPlus_Backup_History::get_history();
+
+		return $this->_updraftplus_admin->raw_backup_info($history, $data['timestamp'], $data['nonce'], null);
+	}
 	
-		global $updraftplus_updraftcentral_main;
-		if (!is_a($updraftplus_updraftcentral_main, 'UpdraftPlus_UpdraftCentral_Main')) {
-			return array('error' => 'UpdraftPlus_UpdraftCentral_Main object not found');
+	public function updraftcentral_delete_key($params) {
+		global $updraftcentral_main;
+		if (!is_a($updraftcentral_main, 'UpdraftCentral_Main')) {
+			return array('error' => 'UpdraftCentral_Main object not found');
 		}
 		
-		return $updraftplus_updraftcentral_main->delete_key($params['key_id']);
-	
+		return $updraftcentral_main->delete_key($params['key_id']);
 	}
 	
 	public function updraftcentral_get_log($params) {
-		global $updraftplus_updraftcentral_main;
-		if (!is_a($updraftplus_updraftcentral_main, 'UpdraftPlus_UpdraftCentral_Main')) {
-			return array('error' => 'UpdraftPlus_UpdraftCentral_Main object not found');
+		global $updraftcentral_main;
+		if (!is_a($updraftcentral_main, 'UpdraftCentral_Main')) {
+			return array('error' => 'UpdraftCentral_Main object not found');
 		}
-		return call_user_func(array($updraftplus_updraftcentral_main, 'get_log'), $params);
+		return call_user_func(array($updraftcentral_main, 'get_log'), $params);
 	}
 
 	 public function updraftcentral_create_key($params) {
-		global $updraftplus_updraftcentral_main;
-		if (!is_a($updraftplus_updraftcentral_main, 'UpdraftPlus_UpdraftCentral_Main')) {
-			return array('error' => 'UpdraftPlus_UpdraftCentral_Main object not found');
+		global $updraftcentral_main;
+		if (!is_a($updraftcentral_main, 'UpdraftCentral_Main')) {
+			return array('error' => 'UpdraftCentral_Main object not found');
 		}
-		return call_user_func(array($updraftplus_updraftcentral_main, 'create_key'), $params);
+		return call_user_func(array($updraftcentral_main, 'create_key'), $params);
 	 }
 		
 	public function restore_alldownloaded($params) {
@@ -301,6 +313,22 @@ class UpdraftPlus_WPAdmin_Commands extends UpdraftPlus_Commands {
 	 */
 	public function dismiss_notice() {
 		UpdraftPlus_Options::update_updraft_option('dismissed_general_notices_until', time() + 84*86400);
+		return array();
+	}
+
+	/**
+	 * This function is called via ajax and will update the review notice dismiss time
+	 *
+	 * @param array $data - an array that contains the dismiss notice for time
+	 *
+	 * @return array - an empty array
+	 */
+	public function dismiss_review_notice($data) {
+		if (empty($data['dismiss_forever'])) {
+			UpdraftPlus_Options::update_updraft_option('dismissed_review_notice', time() + 84*86400);
+		} else {
+			UpdraftPlus_Options::update_updraft_option('dismissed_review_notice', 100 * (365.25 * 86400));
+		}
 		return array();
 	}
 

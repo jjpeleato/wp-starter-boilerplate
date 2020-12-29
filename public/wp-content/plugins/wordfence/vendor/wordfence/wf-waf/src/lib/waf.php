@@ -245,14 +245,14 @@ auEa+7b+FGTKs7dUo2BNGR7OVifK4GZ8w/ajS0TelhrSRi3BBQCGXLzUO/UURUAh
 					if ($path && $paramKey && $ruleID) {
 						$this->whitelistRuleForParam($path, $paramKey, $ruleID, array(
 							'timestamp'   => time(),
-							'description' => 'Whitelisted by via false positive dialog',
+							'description' => 'Allowlisted by via false positive dialog',
 							'source'	  => 'false-positive',
 							'ip'          => $request->getIP(),
 						));
 						$whitelistCount++;
 					}
 				}
-				exit("Successfully whitelisted $whitelistCount params.");
+				exit("Successfully allowlisted $whitelistCount params.");
 			}
 		}
 
@@ -1261,7 +1261,7 @@ HTML
 
 						$data = array(
 							'timestamp' => time(),
-							'description' => 'Whitelisted while in Learning Mode.',
+							'description' => 'Allowlisted while in Learning Mode.',
 							'source' => 'learning-mode',
 							'ip' => $this->getRequest()->getIP(),
 						);

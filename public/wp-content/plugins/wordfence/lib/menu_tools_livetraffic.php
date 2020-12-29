@@ -462,7 +462,7 @@ if (!wfConfig::liveTrafficEnabled($overridden)):
 																	<a class="wf-btn wf-btn-default wf-btn-sm"
 																			data-bind="click: function () { $root.whitelistWAFParamKey(actionData().path, actionData().paramKey, actionData().failedRules) }"
 																			title="If this is a false positive, you can exclude this parameter from being filtered by the firewall">
-																		Whitelist param from Firewall
+																		Add Param to Firewall Allowlist
 																	</a>
 																	<?php if (WFWAF_DEBUG): ?>
 																		<a class="wf-btn wf-btn-default wf-btn-sm"

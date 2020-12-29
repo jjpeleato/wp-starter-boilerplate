@@ -398,3 +398,20 @@ ul.yith-wcan-list li.chosen > a:before{
 .theme-flatsome .yith-woocommerce-ajax-product-filter ul.yith-child-terms li{
     display: inline;
 }
+
+/*-------------------------------
+    Twenty Twenty-One SUPPORT
+--------------------------------*/
+
+.theme-twentytwentyone.yith-wcan-pro .widget_layered_nav.yith-woo-ajax-navigation li.chosen::before{
+  display: none;
+}
+
+.theme-twentytwentyone.yith-wcan-pro .widget_layered_nav ul.yith-wcan-select li.chosen a::before{
+  margin-right: 15px;
+}
+
+.theme-twentytwentyone.yith-wcan-pro .yith-wcan-select-wrapper{
+  top: 95px;
+  display: none;
+}

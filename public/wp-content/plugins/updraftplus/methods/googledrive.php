@@ -66,7 +66,7 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 	 */
 	public function get_supported_features() {
 		// This options format is handled via only accessing options via $this->get_options()
-		return array('multi_options', 'config_templates', 'multi_storage');
+		return array('multi_options', 'config_templates', 'multi_storage', 'conditional_logic');
 	}
 
 	/**
@@ -131,7 +131,7 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 
 			if (!empty($path)) {
 				$nodes = explode('/', $path);
-				foreach ($nodes as $i => $element) {
+				foreach ($nodes as $element) {
 					$found = array();
 					$sub_items = $this->get_subitems($current_parent_id, 'dir', $element);
 
@@ -805,7 +805,7 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 			if (in_array('google_api_php_client_autoload', $spl)) spl_autoload_unregister('google_api_php_client_autoload');
 		}
 
-		if ((!class_exists('UDP_Google_Config') || !class_exists('UDP_Google_Client') || !class_exists('Google_Service_Drive') || !class_exists('Google_Http_Request')) && !function_exists('google_api_php_client_autoload_updraftplus')) {
+		if ((!class_exists('UDP_Google_Config') || !class_exists('UDP_Google_Client') || !class_exists('UDP_Google_Service_Drive') || !class_exists('UDP_Google_Http_Request')) && !function_exists('google_api_php_client_autoload_updraftplus')) {
 			include_once(UPDRAFTPLUS_DIR.'/includes/Google/autoload.php');
 		}
 
@@ -817,7 +817,7 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 		$config->setClassConfig('Google_IO_Abstract', 'request_timeout_seconds', 60);
 		// In our testing, $storage->about->get() fails if gzip is not disabled when using the stream wrapper
 		if (!function_exists('curl_version') || !function_exists('curl_exec') || (defined('UPDRAFTPLUS_GOOGLEDRIVE_DISABLEGZIP') && UPDRAFTPLUS_GOOGLEDRIVE_DISABLEGZIP)) {
-			$config->setClassConfig('Google_Http_Request', 'disable_gzip', true);
+			$config->setClassConfig('UDP_Google_Http_Request', 'disable_gzip', true);
 		}
 
 		if (!$use_master) {
@@ -862,7 +862,7 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 
 		$io->setOptions($setopts);
 
-		$storage = new Google_Service_Drive($client);
+		$storage = new UDP_Google_Service_Drive($client);
 		$this->client = $client;
 		$this->set_storage($storage);
 
@@ -1027,7 +1027,7 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 	 * @param Array        $sizeinfo - unused here
 	 * @return Boolean|String - either a boolean true or an error code string
 	 */
-	public function delete($files, $data = null, $sizeinfo = array()) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
+	public function delete($files, $data = null, $sizeinfo = array()) {// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- $data and $sizeinfo unused
 
 		if (is_string($files)) $files = array($files);
 
@@ -1121,7 +1121,7 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 
 			$headers = array('content-range' => "bytes */".$local_size);
 
-			$http_request = new Google_Http_Request(
+			$http_request = new UDP_Google_Http_Request(
 				$possible_location[0],
 				'PUT',
 				$headers,
@@ -1293,7 +1293,7 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 				$pend = round(100*$end/$size, 1);
 				$this->log("Requesting byte range: $existing_size - $end ($pstart - $pend %)");
 
-				$request = $this->client->getAuth()->sign(new Google_Http_Request($gdfile->getDownloadUrl(), 'GET', $headers, null));
+				$request = $this->client->getAuth()->sign(new UDP_Google_Http_Request($gdfile->getDownloadUrl(), 'GET', $headers, null));
 				$http_request = $this->client->getIo()->makeRequest($request);
 				$http_response = $http_request->getResponseHttpCode();
 				if (200 == $http_response || 206 == $http_response) {

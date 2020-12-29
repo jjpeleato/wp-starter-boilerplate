@@ -6,6 +6,8 @@
  * @subpackage RankMath\Schema
  */
 
+defined( 'ABSPATH' ) || exit;
+
 $this->get_title();
 $this->get_image();
 ?>
@@ -31,13 +33,6 @@ $this->get_image();
 	$this->get_field(
 		esc_html__( 'Duration', 'rank-math' ),
 		'duration'
-	);
-	?>
-
-	<?php
-	$this->get_field(
-		esc_html__( 'Views', 'rank-math' ),
-		'interactionCount'
 	);
 	?>
 

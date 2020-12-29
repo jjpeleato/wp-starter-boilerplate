@@ -1,5 +1,16 @@
 CHANGES LOG (full version).
 ===========================
+= [4.57.1] 10.12.2020 =
+* Fix: Nextgen Gallery's user capabilities were not shown as granted after current role change via roles selection dropdown list.
+* Fix: PHP Warning:  The magic method __wakeup() must have public visibility. __wakeup() method was defined as private as a part of the Singleton design partern. Method was redefined as public but with exception inside to prevent its usage.
+* Update: jQuery [MultiSelect](http://multiple-select.wenzhixin.net.cn/) plugin  was updated to version 1.5.2
+
+= [4.57] 09.11.2020 =
+* Update: Marked as compatible with WordPress 5.6.
+* Update: " jQuery( document ).ready( handler ) " was replaced globally with " jQuery( handler ) " for compatibility with [jQuery 3.0](https://api.jquery.com/ready/) and WordPress 5.6.
+* Update: jQuery UI CSS was updated to version 1.12.1
+* Fix: "Grant Roles" button produced JavaScript error, if single user without any role granted (None) was selected.
+
 = [4.56.1] 05.09.2020 =
 * New: WordPress multisite: Main site: Users->User Role Editor->Apply to All->Update: 'ure_after_network_roles_update' action hook was added. It is executed after all roles were replicated from the main site to the all other subsites of the network.
 * Fix: "Granted Only" filter did not work.

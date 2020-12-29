@@ -581,7 +581,7 @@ SQL
 				}
 				
 				if (isset($actionData['failedRules']) && $actionData['failedRules'] == 'blocked') {
-					$row->longDescription = "Blocked because the IP is blacklisted";
+					$row->longDescription = "Blocked because the IP is blocklisted";
 				}
 				else {
 					$row->longDescription = "Blocked for " . $row->actionDescription;

@@ -23,7 +23,7 @@ if (!isset($collapseable)) {
 			<div class="wf-block-header">
 				<div class="wf-block-header-content">
 					<div class="wf-block-title">
-						<strong><?php _e('Whitelisted URLs', 'wordfence'); ?></strong>
+						<strong><?php _e('Allowlisted URLs', 'wordfence'); ?></strong>
 					</div>
 					<?php if ($collapseable): ?><div class="wf-block-header-action"><div class="wf-block-header-action-disclosure" role="checkbox" aria-checked="<?php echo (wfPersistenceController::shared()->isActive($stateKey) ? 'true' : 'false'); ?>" tabindex="0"></div></div><?php endif; ?>
 				</div>
@@ -154,7 +154,7 @@ if (!isset($collapseable)) {
 			{{/each}}
 			{{if (whitelistedURLParams.length == 0)}}
 			<tr>
-				<td colspan="8"><?php _e('No whitelisted URLs currently set.', 'wordfence'); ?></td>
+				<td colspan="8"><?php _e('No allowlisted URLs currently set.', 'wordfence'); ?></td>
 			</tr>
 			{{/if}}
 			</tbody>

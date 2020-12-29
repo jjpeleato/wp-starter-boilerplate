@@ -110,5 +110,5 @@ else if (WORDFENCE_LS_FROM_CORE && $correctedTime != $time) {
 	echo __('Corrected Time (WF):', 'wordfence-2fa') . ' ' . date('Y-m-d H:i:s', $correctedTime) . ' UTC (' . \WordfenceLS\Controller_Time::format_local_time('Y-m-d H:i:s', $correctedTime) . ' ' . $tz . ')<br>';
 }
 ?>
-<?php _e('Detected IP:', 'wordfence-2fa'); ?> <?php echo \WordfenceLS\Text\Model_HTML::esc_html(\WordfenceLS\Model_Request::current()->ip()); if (\WordfenceLS\Controller_Whitelist::shared()->is_whitelisted(\WordfenceLS\Model_Request::current()->ip())) { echo ' (' . __('whitelisted', 'wordfence-2fa') . ')'; } ?></p>
+<?php _e('Detected IP:', 'wordfence-2fa'); ?> <?php echo \WordfenceLS\Text\Model_HTML::esc_html(\WordfenceLS\Model_Request::current()->ip()); if (\WordfenceLS\Controller_Whitelist::shared()->is_whitelisted(\WordfenceLS\Model_Request::current()->ip())) { echo ' (' . __('allowlisted', 'wordfence-2fa') . ')'; } ?></p>
 <?php endif; ?>

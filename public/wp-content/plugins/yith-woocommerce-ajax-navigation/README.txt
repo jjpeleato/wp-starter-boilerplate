@@ -2,9 +2,9 @@
 
 Contributors: yithemes
 Tags: woocommerce ajax product filter download, woocommerce, widget, ajax, ajax filtered nav, ajax navigation, ajax filtered navigation, woocommerce layered navigation, woocommerce layered nav, product filter, product filters, ajax product filter, woocommerce ajax product filter, woocommerce filters, sidebar filter, sidebar ajax filter, ajax price filter, price filter, product sorting, woocommerce filter, taxonomy filter, attribute filter, attributes filter, woocommerce product sort, ajax sort, woocommerce ajax product filter, advanced product filters, ajax product filters, filters, woocommerce ajax product filters, woocommerce product filters, woocommerce product filters, category filter, attribute filters, woocommerce products filter, woocommerce price filter, yit, yith, yithemes
-Requires at least: 4.0
-Tested up to: 5.5
-Stable tag: 3.11.4
+Requires at least: 5.3
+Tested up to: 5.6
+Stable tag: 3.11.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -159,9 +159,18 @@ If you want to see a demonstration version of the premium plugin, you can see it
 
 == Changelog ==
 
+= 3.11.5 - Released on 03 December 2020  =
+
+* New: Support for WooCommerce 4.8
+* New: Support for WordPress 5.6
+* New: Support for Twenty Twenty-One theme
+
+= 3.11.4 - Released on 11 November 2020  =
+
 * New: Support for WooCommerce 4.7
 * New: Possibility to update plugin via WP-CLI
 * New: Possibility to update plugin via ManageWP
+* New: Greek translation
 * Update: plugin framework
 
 = 3.11.3 - Released on 16 October 2020  =

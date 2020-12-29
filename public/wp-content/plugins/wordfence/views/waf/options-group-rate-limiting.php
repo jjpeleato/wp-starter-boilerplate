@@ -191,7 +191,7 @@ if (!isset($collapseable)) {
 						echo wfView::create('options/option-textarea', array(
 							'textOptionName' => 'allowed404s',
 							'textValue' => wfUtils::cleanupOneEntryPerLine(wfConfig::get('allowed404s')),
-							'title' => __('Whitelisted 404 URLs', 'wordfence'),
+							'title' => __('Allowlisted 404 URLs', 'wordfence'),
 							'subtitle' => __('These URL patterns will be excluded from the throttling rules used to limit crawlers.', 'wordfence'),
 							'helpLink' => wfSupportController::supportURL(wfSupportController::ITEM_FIREWALL_WAF_OPTION_WHITELISTED_404),
 						))->render();

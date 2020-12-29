@@ -1251,6 +1251,22 @@ SQL
 			add_filter('wp_sitemaps_add_provider', 'wordfence::wpSitemapUserProviderFilter', 99, 2);
 		}
 		
+		if (wfConfig::get('loginSec_disableApplicationPasswords')) {
+			add_filter('wp_is_application_passwords_available', '__return_false');
+
+			// Override the wp_die handler to let the user know app passwords were disabled by the Wordfence option.
+			if (!empty($_SERVER['SCRIPT_FILENAME']) && $_SERVER['SCRIPT_FILENAME'] === ABSPATH . 'wp-admin/authorize-application.php') {
+				add_filter('wp_die_handler', function ($handler = null) {
+					return function ($message, $title, $args) {
+						if ($message === 'Application passwords are not available.') {
+							$message = __('Application passwords have been disabled by Wordfence.', 'wordfence');
+						}
+						_default_wp_die_handler($message, $title, $args);
+					};
+				}, 10, 1);
+			}
+		}
+
 		add_filter('rest_dispatch_request', 'wordfence::_filterCentralFromLiveTraffic', 99, 4);
 
 		// Change GoDaddy's limit login mu-plugin since it can interfere with the two factor auth message.
@@ -4628,7 +4644,7 @@ HTACCESS;
 		}
 		$forcedWhitelistEntry = false;
 		if (wfBlock::isWhitelisted($IP, $forcedWhitelistEntry)) {
-			$message = "The IP address " . wp_kses($IP, array()) . " is whitelisted and can't be blocked. You can remove this IP from the whitelist on the Wordfence options page.";
+			$message = "The IP address " . wp_kses($IP, array()) . " is allowlisted and can't be blocked. You can remove this IP from the allowlist on the Wordfence options page.";
 			if ($forcedWhitelistEntry) {
 				$message = "The IP address " . wp_kses($IP, array()) . " is in a range of IP addresses that Wordfence does not block. The IP range may be internal or belong to a service safe to allow access for.";
 			}
@@ -5119,7 +5135,7 @@ HTACCESS;
 		}
 
 		$htaccess = ABSPATH . '/.htaccess';
-		$change   = "<IfModule mod_php5.c>\n\tphp_value display_errors 0\n</IfModule>\n<IfModule mod_php7.c>\n\tphp_value display_errors 0\n</IfModule>";
+		$change   = "<IfModule mod_php5.c>\n\tphp_value display_errors 0\n</IfModule>\n<IfModule mod_php7.c>\n\tphp_value display_errors 0\n</IfModule>\n<IfModule mod_php.c>\n\tphp_value display_errors 0\n</IfModule>";
 		$content  = "";
 		if (file_exists($htaccess)) {
 			$content = file_get_contents($htaccess);
@@ -6196,7 +6212,15 @@ HTML;
 			wp_redirect($wafMenuURL);
 			exit;
 		}
-		
+
+		if (version_compare(PHP_VERSION, '8.0', '>=') && !get_user_option('wordfence_php8_nag')) {
+			wfAdminNoticeQueue::addAdminNotice(wfAdminNotice::SEVERITY_INFO, <<<HTML
+PHP 8 includes significant changes from PHP 7, which may cause unexpected bugs in plugins, themes, and WordPress itself. Wordfence is not yet officially supported on PHP 8, but will be supported in the near future. <a href="https://www.wordfence.com/blog/2020/11/php-8-what-wordpress-users-need-to-know/">Read More</a>
+HTML
+, 'php8', array(get_current_user_id()));
+			update_user_option(get_current_user_id(), 'wordfence_php8_nag', 1);
+		}
+
 		$notificationCount = count(wfNotification::notifications());
 		$updatingNotifications = get_site_transient('wordfence_updating_notifications');
 		$hidden = ($notificationCount == 0 || $updatingNotifications ? ' wf-hidden' : '');
@@ -7104,7 +7128,7 @@ to your httpd.conf if using Apache, or find documentation on how to disable dire
 						}
 						$data = array(
 							'timestamp'   => time(),
-							'description' => 'Whitelisted via Firewall Options page',
+							'description' => 'Allowlisted via Firewall Options page',
 							'ip'          => wfUtils::getIP(),
 							'disabled'    => empty($_POST['whitelistedEnabled']),
 						);
@@ -7391,7 +7415,7 @@ to your httpd.conf if using Apache, or find documentation on how to disable dire
 			if (isset($_POST['path']) && isset($_POST['paramKey']) && isset($_POST['failedRules'])) {
 				$data = array(
 					'timestamp'   => time(),
-					'description' => 'Whitelisted via Live Traffic',
+					'description' => 'Allowlisted via Live Traffic',
 					'source'	  => 'live-traffic',
 					'ip'          => wfUtils::getIP(),
 				);
@@ -7959,7 +7983,7 @@ ALERTMSG;
 					}
 					
 					if (isset($actionData['failedRules']) && $actionData['failedRules'] == 'blocked') {
-						$row->longDescription = "Blocked because the IP is blacklisted";
+						$row->longDescription = "Blocked because the IP is blocklisted";
 					}
 					else {
 						$row->longDescription = "Blocked for " . $row->actionDescription;
@@ -8109,13 +8133,13 @@ ALERTMSG;
 									if (isset($whitelistedData['source'])) {
 										$source = $whitelistedData['source'];
 									}
-									else if ($whitelistedData['description'] == 'Whitelisted by via false positive dialog') {
+									else if ($whitelistedData['description'] == 'Allowlisted by via false positive dialog') {
 										$source = 'false-positive';
 									}
-									else if ($whitelistedData['description'] == 'Whitelisted via Live Traffic') {
+									else if ($whitelistedData['description'] == 'Allowlisted via Live Traffic') {
 										$source = 'live-traffic';
 									}
-									else if ($whitelistedData['description'] == 'Whitelisted while in Learning Mode.') {
+									else if ($whitelistedData['description'] == 'Allowlisted while in Learning Mode.') {
 										$source = 'learning-mode';
 									}
 									else { //A user-entered description or Whitelisted via Firewall Options page
@@ -8935,7 +8959,8 @@ class wfWAFAutoPrependHelper {
 				$wafBlock = $matches[0];
 				$hasPHP5 = preg_match('/<IfModule mod_php5\.c>\s*php_value auto_prepend_file \'.*?\'\s*<\/IfModule>/is', $wafBlock);
 				$hasPHP7 = preg_match('/<IfModule mod_php7\.c>\s*php_value auto_prepend_file \'.*?\'\s*<\/IfModule>/is', $wafBlock);
-				if ($hasPHP5 && !$hasPHP7) { //The only case we care about is having the PHP 5 block but not the 7 because downgrading is unlikely
+				$hasPHP8 = preg_match('/<IfModule mod_php\.c>\s*php_value auto_prepend_file \'.*?\'\s*<\/IfModule>/is', $wafBlock);
+				if ($hasPHP5 && (!$hasPHP7 || !$hasPHP8)) { //Check if PHP 5 is configured, but not 7 or 8.
 					return false;
 				}
 			}
@@ -8957,13 +8982,22 @@ class wfWAFAutoPrependHelper {
 			if (preg_match($regex, $htaccessContent, $matches, PREG_OFFSET_CAPTURE)) {
 				$wafBlock = $matches[0][0];
 				$hasPHP5 = preg_match('/<IfModule mod_php5\.c>\s*php_value auto_prepend_file \'(.*?)\'\s*<\/IfModule>/is', $wafBlock, $php5Matches, PREG_OFFSET_CAPTURE);
-				$hasPHP7 = preg_match('/<IfModule mod_php7\.c>\s*php_value auto_prepend_file \'.*?\'\s*<\/IfModule>/is', $wafBlock);
-				if ($hasPHP5 && !$hasPHP7) { 
+				$hasPHP7 = preg_match('/<IfModule mod_php7\.c>\s*php_value auto_prepend_file \'.*?\'\s*<\/IfModule>/is', $wafBlock, $php7Matches, PREG_OFFSET_CAPTURE);
+				$hasPHP8 = preg_match('/<IfModule mod_php\.c>\s*php_value auto_prepend_file \'.*?\'\s*<\/IfModule>/is', $wafBlock);
+				if ($hasPHP5 && !$hasPHP7) {
 					$beforeWAFBlock = substr($htaccessContent, 0, $matches[0][1]);
 					$afterWAFBlock = substr($htaccessContent, $matches[0][1] + strlen($wafBlock));
 					$beforeMod_php = substr($wafBlock, 0, $php5Matches[0][1]);
 					$afterMod_php = substr($wafBlock, $php5Matches[0][1] + strlen($php5Matches[0][0]));
-					$updatedHtaccessContent = $beforeWAFBlock . $beforeMod_php . $php5Matches[0][0] . "\n" . sprintf("<IfModule mod_php7.c>\n\tphp_value auto_prepend_file '%s'\n</IfModule>", $php5Matches[1][0] /* already escaped */) . $afterMod_php . $afterWAFBlock;
+					$updatedHtaccessContent = $beforeWAFBlock . $beforeMod_php . $php5Matches[0][0] . "\n" . sprintf("<IfModule mod_php7.c>\n\tphp_value auto_prepend_file '%1\$s'\n</IfModule>\n<IfModule mod_php.c>\n\tphp_value auto_prepend_file '%1\$s'\n</IfModule>", $php5Matches[1][0] /* already escaped */) . $afterMod_php . $afterWAFBlock;
+					return file_put_contents($htaccessPath, $updatedHtaccessContent) !== false;
+				}
+				if ($hasPHP5 && $hasPHP7 && !$hasPHP8) {
+					$beforeWAFBlock = substr($htaccessContent, 0, $matches[0][1]);
+					$afterWAFBlock = substr($htaccessContent, $matches[0][1] + strlen($wafBlock));
+					$beforeMod_php = substr($wafBlock, 0, $php5Matches[0][1]);
+					$afterMod_php = substr($wafBlock, $php7Matches[0][1] + strlen($php7Matches[0][0]));
+					$updatedHtaccessContent = $beforeWAFBlock . $beforeMod_php . $php5Matches[0][0] . "\n" . $php7Matches[0][0] . "\n" . sprintf("<IfModule mod_php.c>\n\tphp_value auto_prepend_file '%s'\n</IfModule>", $php5Matches[1][0] /* already escaped */) . $afterMod_php . $afterWAFBlock;
 					return file_put_contents($htaccessPath, $updatedHtaccessContent) !== false;
 				}
 			}
@@ -9080,14 +9114,17 @@ file because of file permissions. Please verify the permissions are correct and 
 			case 'apache-mod_php':
 				$autoPrependDirective = sprintf("# Wordfence WAF
 <IfModule mod_php5.c>
-	php_value auto_prepend_file '%s'
+	php_value auto_prepend_file '%1\$s'
 </IfModule>
 <IfModule mod_php7.c>
-	php_value auto_prepend_file '%s'
+	php_value auto_prepend_file '%1\$s'
+</IfModule>
+<IfModule mod_php.c>
+	php_value auto_prepend_file '%1\$s'
 </IfModule>
 $userIniHtaccessDirectives
 # END Wordfence WAF
-", addcslashes($bootstrapPath, "'"), addcslashes($bootstrapPath, "'"));
+", addcslashes($bootstrapPath, "'"));
 				break;
 
 			case 'litespeed':

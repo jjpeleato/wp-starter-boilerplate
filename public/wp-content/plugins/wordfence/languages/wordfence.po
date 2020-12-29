@@ -78,7 +78,7 @@ msgid "If you think you have been blocked in error, contact the owner of this si
 msgstr ""
 
 #: 403-roadblock.php:366
-msgid "If you are an administrator and you are certain this is a false positive, you can automatically whitelist this request and repeat the same action."
+msgid "If you are an administrator and you are certain this is a false positive, you can automatically allowlist this request and repeat the same action."
 msgstr ""
 
 #: 403-roadblock.php:373
@@ -86,7 +86,7 @@ msgid "I am certain this is a false positive."
 msgstr ""
 
 #: 403-roadblock.php:375
-msgid "Whitelist This Action"
+msgid "Allowlist This Action"
 msgstr ""
 
 #: 403-roadblock.php:378
@@ -94,7 +94,7 @@ msgid "All set! You can refresh the page to try this action again."
 msgstr ""
 
 #: 403-roadblock.php:379
-msgid "Something went wrong whitelisting this request. You can try setting the Firewall Status to Learning Mode under Web App Firewall in the Wordfence menu, and retry this same action."
+msgid "Something went wrong allowlisting this request. You can try setting the Firewall Status to Learning Mode under Web App Firewall in the Wordfence menu, and retry this same action."
 msgstr ""
 
 #: 403-roadblock.php:417
@@ -376,7 +376,7 @@ msgstr ""
 msgid ""
 "NOTE: You are using the free version of Wordfence. Upgrade today:\n"
 " - Receive real-time Firewall and Scan engine rule updates for protection as threats emerge\n"
-" - Real-time IP Blacklist blocks the most malicious IPs from accessing your site\n"
+" - Real-time IP Blocklist blocks the most malicious IPs from accessing your site\n"
 " - Country blocking\n"
 " - IP reputation monitoring\n"
 " - Schedule scans to run more frequently and at optimal times\n"
@@ -560,7 +560,7 @@ msgid "Receive real-time Firewall and Scan engine rule updates for protection as
 msgstr ""
 
 #: lib/email_newIssues.php:121
-msgid "Real-time IP Blacklist blocks the most malicious IPs from accessing your site"
+msgid "Real-time IP Blocklist blocks the most malicious IPs from accessing your site"
 msgstr ""
 
 #: lib/email_newIssues.php:122
@@ -1217,7 +1217,7 @@ msgstr ""
 
 #: lib/menu_firewall_waf.php:69
 #: lib/menu_firewall_waf_options.php:175
-msgid "Real-Time IP Blacklist: "
+msgid "Real-Time IP Blocklist: "
 msgstr ""
 
 #: lib/menu_firewall_waf.php:69
@@ -1261,7 +1261,7 @@ msgid "Blocks requests from known malicious IPs"
 msgstr ""
 
 #: lib/menu_firewall_waf.php:72
-msgid "Manage Real-Time IP Blacklist"
+msgid "Manage Real-Time IP Blocklist"
 msgstr ""
 
 #: lib/menu_firewall_waf.php:72
@@ -1271,7 +1271,7 @@ msgstr ""
 
 #: lib/menu_firewall_waf.php:74
 #: lib/menu_firewall_waf_options.php:180
-msgid "Blacklist Status"
+msgid "Blocklist Status"
 msgstr ""
 
 #: lib/menu_firewall_waf.php:102
@@ -1355,11 +1355,11 @@ msgid "Set up the way you want the firewall to protect your site including the w
 msgstr ""
 
 #: lib/menu_firewall_waf.php:349
-msgid "All of the Firewall settings are now located here. This includes configuration options for the web application firewall, brute force protection, rate limiting, whitelisted URLs, and blocking."
+msgid "All of the Firewall settings are now located here. This includes configuration options for the web application firewall, brute force protection, rate limiting, allowlisted URLs, and blocking."
 msgstr ""
 
 #: lib/menu_firewall_waf_options.php:80
-msgid "Are you sure you want to restore the default Firewall settings? This will undo any custom changes you have made to the options on this page. If you have manually disabled any rules or added any custom whitelisted URLs, those changes will not be overwritten."
+msgid "Are you sure you want to restore the default Firewall settings? This will undo any custom changes you have made to the options on this page. If you have manually disabled any rules or added any custom allowlisted URLs, those changes will not be overwritten."
 msgstr ""
 
 #: lib/menu_options.php:24
@@ -1546,7 +1546,7 @@ msgstr ""
 
 #: lib/menu_options.php:106
 #: views/waf/options-group-basic-firewall.php:464
-msgid "Real-Time IP Blacklist"
+msgid "Real-Time IP Blocklist"
 msgstr ""
 
 #: lib/menu_options.php:107
@@ -1556,12 +1556,12 @@ msgstr ""
 
 #: lib/menu_options.php:108
 #: views/waf/options-group-advanced-firewall.php:52
-msgid "Whitelisted IP addresses that bypass all rules"
+msgid "Allowlisted IP addresses that bypass all rules"
 msgstr ""
 
 #: lib/menu_options.php:109
 #: views/waf/options-group-advanced-firewall.php:88
-msgid "Whitelisted services"
+msgid "Allowlisted services"
 msgstr ""
 
 #: lib/menu_options.php:110
@@ -1698,11 +1698,11 @@ msgstr ""
 
 #: lib/menu_options.php:137
 #: views/waf/options-group-rate-limiting.php:194
-msgid "Whitelisted 404 URLs"
+msgid "Allowlisted 404 URLs"
 msgstr ""
 
 #: lib/menu_options.php:138
-msgid "Web Application Firewall Whitelisted URLs"
+msgid "Web Application Firewall Allowlisted URLs"
 msgstr ""
 
 #: lib/menu_options.php:139
@@ -1745,7 +1745,7 @@ msgstr ""
 
 #: lib/menu_options.php:148
 #: views/scanner/options-group-general.php:32
-msgid "Check if this website is on a domain blacklist"
+msgid "Check if this website is on a domain blocklist"
 msgstr ""
 
 #: lib/menu_options.php:149
@@ -1941,7 +1941,7 @@ msgid "Enable Separate Prompt for Two Factor Code"
 msgstr ""
 
 #: lib/menu_options.php:200
-msgid "Are you sure you want to restore the default settings? This will undo any custom changes you have made to the options on this page. If you have manually disabled any rules or added any custom whitelisted URLs, those changes will not be overwritten."
+msgid "Are you sure you want to restore the default settings? This will undo any custom changes you have made to the options on this page. If you have manually disabled any rules or added any custom allowlisted URLs, those changes will not be overwritten."
 msgstr ""
 
 #: lib/menu_options.php:267
@@ -2013,7 +2013,7 @@ msgstr ""
 
 #: lib/menu_scanner.php:98
 #: lib/menu_scanner_options.php:152
-msgid "Check spam &amp; spamvertising blacklists"
+msgid "Check spam &amp; spamvertising blocklists"
 msgstr ""
 
 #: lib/menu_scanner.php:100
@@ -2779,7 +2779,7 @@ msgstr ""
 
 #: lib/menu_tools_diagnostic.php:311
 #: views/diagnostics/text.php:170
-msgid "Whitelisted hosts"
+msgid "Allowlisted hosts"
 msgstr ""
 
 #: lib/menu_tools_diagnostic.php:312
@@ -4812,7 +4812,7 @@ msgid "\"%s\" is not a valid regular expression."
 msgstr ""
 
 #: lib/wfConfig.php:1204
-msgid "Please make sure you separate your IP addresses with commas. The following whitelisted IP addresses are invalid: "
+msgid "Please make sure you separate your IP addresses with commas. The following allowlisted IP addresses are invalid: "
 msgstr ""
 
 #: lib/wfConfig.php:1223
@@ -4857,7 +4857,7 @@ msgid "Brute Force"
 msgstr ""
 
 #: lib/wfDashboard.php:194
-msgid "Blacklist"
+msgid "Blocklist"
 msgstr ""
 
 #: lib/wfDiagnostic.php:58
@@ -6264,7 +6264,7 @@ msgid "This file contains a URL that is a suspected phishing site that is curren
 msgstr ""
 
 #: lib/wordfenceScanner.php:564
-msgid "This file contains a URL that is currently listed on Wordfence's domain blacklist. The URL is: "
+msgid "This file contains a URL that is currently listed on Wordfence's domain blocklist. The URL is: "
 msgstr ""
 
 #: lib/wordfenceScanner.php:580
@@ -6312,7 +6312,7 @@ msgid "Invalid IP address."
 msgstr ""
 
 #: models/block/wfBlock.php:180
-msgid "This IP address is in a range of addresses that Wordfence does not block. The IP range may be internal or belong to a service that is always allowed. Whitelisting of external services can be disabled. <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">Learn More</a>"
+msgid "This IP address is in a range of addresses that Wordfence does not block. The IP range may be internal or belong to a service that is always allowed. Allowlisting of external services can be disabled. <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">Learn More</a>"
 msgstr ""
 
 #: models/block/wfBlock.php:183
@@ -6392,7 +6392,7 @@ msgstr ""
 
 #: models/firewall/wfFirewall.php:461
 #: models/firewall/wfFirewall.php:470
-msgid "Enable Real-Time IP Blacklist."
+msgid "Enable Real-Time IP Blocklist."
 msgstr ""
 
 #: models/firewall/wfFirewall.php:569
@@ -6485,7 +6485,7 @@ msgid "Enable scan option to check if your website IP is generating spam."
 msgstr ""
 
 #: models/scanner/wfScanner.php:822
-msgid "Enable scan option to check if your website is on a domain blacklist."
+msgid "Enable scan option to check if your website is on a domain blocklist."
 msgstr ""
 
 #: models/scanner/wfScanner.php:926
@@ -8257,7 +8257,7 @@ msgid "Spam Check"
 msgstr ""
 
 #: views/scanner/scan-progress.php:32
-msgid "Blacklist Check"
+msgid "Blocklist Check"
 msgstr ""
 
 #: views/scanner/scan-progress.php:39
@@ -8484,7 +8484,7 @@ msgid "Wordfence Scan Enabled"
 msgstr ""
 
 #: views/scanner/scanner-status.php:54
-msgid "As a free Wordfence user, you are currently using the Community version of the Threat Defense Feed. Premium users are protected by an additional %d firewall rules and malware signatures as well as the Wordfence real-time IP blacklist. Upgrade to Premium today to improve your protection."
+msgid "As a free Wordfence user, you are currently using the Community version of the Threat Defense Feed. Premium users are protected by an additional %d firewall rules and malware signatures as well as the Wordfence real-time IP blocklist. Upgrade to Premium today to improve your protection."
 msgstr ""
 
 #: views/scanner/scanner-status.php:60
@@ -8596,11 +8596,11 @@ msgid "We are excited to announce the release of a completely rebuilt two-factor
 msgstr ""
 
 #: views/tours/login-security.php:44
-msgid "Individual Whitelisting"
+msgid "Individual Allowlisting"
 msgstr ""
 
 #: views/tours/login-security.php:45
-msgid "Two-factor authentication now has its own IP whitelist. If necessary, you can allow specific IP addresses or ranges to skip 2FA when logging in."
+msgid "Two-factor authentication now has its own IP allowlist. If necessary, you can allow specific IP addresses or ranges to skip 2FA when logging in."
 msgstr ""
 
 #: views/tours/login-security.php:60
@@ -8664,7 +8664,7 @@ msgid "Manually Refresh Rules"
 msgstr ""
 
 #: views/waf/option-whitelist.php:5
-msgid "Add Whitelisted URL/Param"
+msgid "Add Allowlisted URL/Param"
 msgstr ""
 
 #: views/waf/option-whitelist.php:5
@@ -8700,15 +8700,15 @@ msgid "Add"
 msgstr ""
 
 #: views/waf/option-whitelist.php:53
-msgid "Whitelist Entry Exists"
+msgid "Allowlist Entry Exists"
 msgstr ""
 
 #: views/waf/option-whitelist.php:53
-msgid "A whitelist entry for this URL and parameter already exists."
+msgid "A allowlist entry for this URL and parameter already exists."
 msgstr ""
 
 #: views/waf/option-whitelist.php:60
-msgid "Whitelisted via Firewall Options page"
+msgid "Allowlisted via Firewall Options page"
 msgstr ""
 
 #: views/waf/option-whitelist.php:102
@@ -8750,7 +8750,7 @@ msgid "You are currently running the WAF from another WordPress installation. Th
 msgstr ""
 
 #: views/waf/options-group-advanced-firewall.php:54
-msgid "Whitelisted IPs must be separated by commas or placed on separate lines. You can specify ranges using the following formats: 127.0.0.1/24, 127.0.0.[1-100], or 127.0.0.1-127.0.1.100<br/>Wordfence automatically whitelists <a href=\"http://en.wikipedia.org/wiki/Private_network\" target=\"_blank\" rel=\"noopener noreferrer\">private networks</a> because these are not routable on the public Internet."
+msgid "Allowlisted IPs must be separated by commas or placed on separate lines. You can specify ranges using the following formats: 127.0.0.1/24, 127.0.0.[1-100], or 127.0.0.1-127.0.1.100<br/>Wordfence automatically whitelists <a href=\"http://en.wikipedia.org/wiki/Private_network\" target=\"_blank\" rel=\"noopener noreferrer\">private networks</a> because these are not routable on the public Internet."
 msgstr ""
 
 #: views/waf/options-group-advanced-firewall.php:101
@@ -8866,7 +8866,7 @@ msgstr ""
 
 #: views/waf/options-group-basic-firewall.php:466
 #: views/waf/options-group-basic-firewall.php:471
-msgid "This feature blocks all traffic from IPs with a high volume of recent malicious activity using Wordfence's real-time blacklist."
+msgid "This feature blocks all traffic from IPs with a high volume of recent malicious activity using Wordfence's real-time blocklist."
 msgstr ""
 
 #: views/waf/options-group-brute-force.php:39
@@ -8955,7 +8955,7 @@ msgid "These URL patterns will be excluded from the throttling rules used to lim
 msgstr ""
 
 #: views/waf/options-group-whitelisted.php:26
-msgid "Whitelisted URLs"
+msgid "Allowlisted URLs"
 msgstr ""
 
 #: views/waf/options-group-whitelisted.php:53
@@ -8989,7 +8989,7 @@ msgid "Toggle row ${idx}"
 msgstr ""
 
 #: views/waf/options-group-whitelisted.php:157
-msgid "No whitelisted URLs currently set."
+msgid "No allowlisted URLs currently set."
 msgstr ""
 
 #: views/waf/status-tooltip-learning-mode.php:6

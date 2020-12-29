@@ -177,7 +177,7 @@ class wfBlock {
 		
 		if ($payload['type'] == 'ip-address') {
 			if (!isset($payload['ip']) || !filter_var(trim($payload['ip']), FILTER_VALIDATE_IP) || @wfUtils::inet_pton(trim($payload['ip'])) === false) { return __('Invalid IP address.', 'wordfence'); }
-			if (self::isWhitelisted(trim($payload['ip']))) { return sprintf(__('This IP address is in a range of addresses that Wordfence does not block. The IP range may be internal or belong to a service that is always allowed. Whitelisting of external services can be disabled. <a href="%s" target="_blank" rel="noopener noreferrer">Learn More</a>', 'wordfence'), wfSupportController::supportURL(wfSupportController::ITEM_FIREWALL_WAF_OPTION_WHITELISTED_SERVICES)); }
+			if (self::isWhitelisted(trim($payload['ip']))) { return sprintf(__('This IP address is in a range of addresses that Wordfence does not block. The IP range may be internal or belong to a service that is always allowed. Allowlisting of external services can be disabled. <a href="%s" target="_blank" rel="noopener noreferrer">Learn More</a>', 'wordfence'), wfSupportController::supportURL(wfSupportController::ITEM_FIREWALL_WAF_OPTION_WHITELISTED_SERVICES)); }
 		}
 		else if ($payload['type'] == 'country') {
 			if (!isset($payload['blockLogin']) || !isset($payload['blockSite'])) { return __('Nothing selected to block.', 'wordfence'); }

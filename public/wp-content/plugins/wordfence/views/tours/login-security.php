@@ -41,8 +41,8 @@
 	</script>
 	<script type="text/x-jquery-template" id="wfNewTour2">
 		<div>
-			<h3><?php _e('Individual Whitelisting', 'wordfence'); ?></h3>
-			<p><?php _e('Two-factor authentication now has its own IP whitelist. If necessary, you can allow specific IP addresses or ranges to skip 2FA when logging in.', 'wordfence'); ?></p>
+			<h3><?php _e('Individual Allowlisting', 'wordfence'); ?></h3>
+			<p><?php _e('Two-factor authentication now has its own IP allowlist. If necessary, you can allow specific IP addresses or ranges to skip 2FA when logging in.', 'wordfence'); ?></p>
 			<div class="wf-pointer-footer">
 				<ul class="wf-tour-pagination">
 					<li>&bullet;</li>

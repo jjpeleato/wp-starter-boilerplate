@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '75e3e3afaec277ca8325430eb45aa3ec0a8f3f06',
+    'reference' => '2a9b1a0f4469c63a206aaff0d1dca3cc4f6f7e90',
     'name' => 'updraftplus/updraftplus',
   ),
   'versions' => 
@@ -31,12 +31,12 @@
     ),
     'components/jquery-blockui' => 
     array (
-      'pretty_version' => '2.70',
-      'version' => '2.70.0.0',
+      'pretty_version' => 'v2.71',
+      'version' => '2.71.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '316f6e5d76a33266970778e80507149d9ef6a02d',
+      'reference' => 'ba184b5d243e0be7183060f72ff58fabacc234d7',
     ),
     'eher/oauth' => 
     array (
@@ -266,12 +266,21 @@
     ),
     'symfony/process' => 
     array (
-      'pretty_version' => 'v3.4.46',
-      'version' => '3.4.46.0',
+      'pretty_version' => 'v3.4.47',
+      'version' => '3.4.47.0',
       'aliases' => 
       array (
       ),
       'reference' => 'b8648cf1d5af12a44a51d07ef9bf980921f15fca',
+    ),
+    'team-updraft/common-libs' => 
+    array (
+      'pretty_version' => '3.0.0',
+      'version' => '3.0.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '997b6453',
     ),
     'updraftplus/updraftplus' => 
     array (
@@ -280,7 +289,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '75e3e3afaec277ca8325430eb45aa3ec0a8f3f06',
+      'reference' => '2a9b1a0f4469c63a206aaff0d1dca3cc4f6f7e90',
     ),
   ),
 );
