@@ -5,6 +5,7 @@
  */
 import gulp from 'gulp';
 import { clean } from './clean';
+import { copy } from './extra';
 import { css } from './styles';
 import { cssAssets } from './styles';
 import { cssWithConcat } from './styles';
@@ -20,21 +21,23 @@ import { watch } from './watch';
 
 /* Tasks */
 gulp.task(
-	'default',
-	gulp.series(
-		clean,
-		validateScss,
-		css,
-		cssAssets,
-		fontAssets,
-		validateJs,
-		js,
-		jsAssets,
-		images,
-		imagesAssets
-	)
+    'default',
+    gulp.series(
+        clean,
+        validateScss,
+        css,
+        cssAssets,
+        fontAssets,
+        validateJs,
+        js,
+        jsAssets,
+        copy,
+        images,
+        //imagesAssets,
+    )
 );
 gulp.task('clean', clean);
+gulp.task('copy', copy);
 gulp.task('css', css);
 gulp.task('cssAssets', cssAssets);
 gulp.task('cssWithConcat', cssWithConcat);
