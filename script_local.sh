@@ -20,6 +20,17 @@ if [ "$?" != "0" ] ; then
     exit
 fi
 
+# Execute JS and SCSS validate
+echo
+echo "JS/SCSS validate"
+lando npm run gulp:validate
+
+if [ "$?" != "0" ] ; then
+    echo
+    echo "ERROR: JS/SCSS validate."
+    exit
+fi
+
 # Finish
 echo "Finish"
 exit
