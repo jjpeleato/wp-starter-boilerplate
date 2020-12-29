@@ -11,7 +11,7 @@ class UpdraftPlus_BackupModule_s3generic extends UpdraftPlus_BackupModule_s3 {
 
 	protected $use_v4 = false;
 
-	protected function set_region($obj, $region = '', $bucket_name = '') {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
+	protected function set_region($obj, $region = '', $bucket_name = '') {// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- $bucket_name is unused, I think we can remove this
 		$config = $this->get_config();
 		$endpoint = ('' != $region && 'n/a' != $region) ? $region : $config['endpoint'];
 		$log_message = "Set endpoint: $endpoint";
@@ -33,7 +33,7 @@ class UpdraftPlus_BackupModule_s3generic extends UpdraftPlus_BackupModule_s3 {
 	 */
 	public function get_supported_features() {
 		// This options format is handled via only accessing options via $this->get_options()
-		return array('multi_options', 'config_templates', 'multi_storage');
+		return array('multi_options', 'config_templates', 'multi_storage', 'conditional_logic');
 	}
 
 	/**
@@ -57,7 +57,7 @@ class UpdraftPlus_BackupModule_s3generic extends UpdraftPlus_BackupModule_s3 {
 	 *
 	 * @return Array - an array of options
 	 */
-	protected function get_config($force_refresh = false) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
+	protected function get_config($force_refresh = false) {// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- Filter use
 		$opts = $this->get_options();
 		$opts['whoweare'] = 'S3';
 		$opts['whoweare_long'] = __('S3 (Compatible)', 'updraftplus');

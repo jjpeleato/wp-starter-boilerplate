@@ -461,14 +461,14 @@ if (!isset($collapseable)) {
 						</script>
 					</li>
 					<li id="wf-option-disableWAFBlacklistBlocking" class="wf-flex-vertical wf-flex-align-left">
-						<h3><?php esc_html_e('Real-Time IP Blacklist', 'wordfence'); ?></h3>
+						<h3><?php esc_html_e('Real-Time IP Blocklist', 'wordfence'); ?></h3>
 						<?php if ($firewall->ruleMode() == wfFirewall::RULE_MODE_COMMUNITY): ?>
-							<p class="wf-no-top"><strong><?php _e('Premium Feature:', 'wordfence'); ?></strong> <?php _e('This feature blocks all traffic from IPs with a high volume of recent malicious activity using Wordfence\'s real-time blacklist.', 'wordfence'); ?></p>
+							<p class="wf-no-top"><strong><?php _e('Premium Feature:', 'wordfence'); ?></strong> <?php _e('This feature blocks all traffic from IPs with a high volume of recent malicious activity using Wordfence\'s real-time blocklist.', 'wordfence'); ?></p>
 							<p><a class="wf-btn wf-btn-primary wf-btn-callout-subtle" href="https://www.wordfence.com/gnl1blacklistUpgrade/wordfence-signup/#premium-order-form" target="_blank" rel="noopener noreferrer"><?php _e('Upgrade to Premium', 'wordfence'); ?></a>&nbsp;&nbsp;<a class="wf-btn wf-btn-callout-subtle wf-btn-default" href="https://www.wordfence.com/gnl1blacklistLearn/wordfence-signup/" target="_blank" rel="noopener noreferrer"><?php _e('Learn More', 'wordfence'); ?></a></p>
 						<?php elseif ($firewall->isSubDirectoryInstallation()): ?>
 							<p class="wf-no-top"><?php printf(__('You are currently running the Wordfence Web Application Firewall from another WordPress installation. Please <a href="%s">click here</a> to configure the Firewall to run correctly on this site.', 'wordfence'), esc_attr(network_admin_url('admin.php?page=WordfenceWAF&subpage=waf_options#configureAutoPrepend'))); ?></p>
 						<?php else: ?>
-							<p class="wf-no-top"><?php _e('This feature blocks all traffic from IPs with a high volume of recent malicious activity using Wordfence\'s real-time blacklist.', 'wordfence'); ?></p>
+							<p class="wf-no-top"><?php _e('This feature blocks all traffic from IPs with a high volume of recent malicious activity using Wordfence\'s real-time blocklist.', 'wordfence'); ?></p>
 							<div class="wf-option wf-option-switch wf-padding-add-bottom" data-option-name="disableWAFBlacklistBlocking" data-original-value="<?php try { echo $config->getConfig('disableWAFBlacklistBlocking') ? '1': '0'; } catch (Exception $e) { echo 0; } ?>">
 								<ul class="wf-switch" role="radiogroup">
 									<?php

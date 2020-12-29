@@ -219,6 +219,18 @@ if (!isset($collapseable)) {
 					<li>
 						<?php
 						echo wfView::create('options/option-toggled', array(
+							'optionName' => 'loginSec_disableApplicationPasswords',
+							'enabledValue' => 1,
+							'disabledValue' => 0,
+							'value' => wfConfig::get('loginSec_disableApplicationPasswords') ? 1 : 0,
+							'title' => __('Disable WordPress application passwords', 'wordfence'),
+							'helpLink' => wfSupportController::supportURL(wfSupportController::ITEM_FIREWALL_WAF_OPTION_DISABLE_APPLICATION_PASSWORDS),
+						))->render();
+						?>
+					</li>
+					<li>
+						<?php
+						echo wfView::create('options/option-toggled', array(
 							'optionName' => 'other_blockBadPOST',
 							'enabledValue' => 1,
 							'disabledValue' => 0,

@@ -119,17 +119,9 @@ class Api {
 			[
 				'username' => $username,
 				'api_key'  => $api_key,
-				'site_url' => esc_url( site_url() ),
+				'site_url' => esc_url( home_url() ),
 			]
 		);
-	}
-
-	/**
-	 * Send deactivation feedback to the Rank Math API.
-	 */
-	public function deactivate_feedback( $args ) {
-		$this->is_blocking = false;
-		$this->http_post( 'deactivationSurvey', $args );
 	}
 
 	/**

@@ -98,6 +98,7 @@ class AJAX {
 	 */
 	public function query_analytics() {
 		check_ajax_referer( 'rank-math-ajax-nonce', 'security' );
+		$this->has_cap_ajax( 'analytics' );
 
 		$query = Param::get( 'query' );
 
@@ -115,6 +116,7 @@ class AJAX {
 	 */
 	public function check_all_services() {
 		check_ajax_referer( 'rank-math-ajax-nonce', 'security' );
+		$this->has_cap_ajax( 'analytics' );
 
 		$result = [
 			'isVerified'           => false,
@@ -151,6 +153,7 @@ class AJAX {
 	 */
 	public function add_site_console() {
 		check_ajax_referer( 'rank-math-ajax-nonce', 'security' );
+		$this->has_cap_ajax( 'analytics' );
 
 		$home_url = Google_Analytics::get_site_url();
 		Api::get()->add_site( $home_url );
@@ -172,6 +175,7 @@ class AJAX {
 	 */
 	public function verify_site_console() {
 		check_ajax_referer( 'rank-math-ajax-nonce', 'security' );
+		$this->has_cap_ajax( 'analytics' );
 
 		$home_url = Google_Analytics::get_site_url();
 		Api::get()->verify_site( $home_url );
@@ -184,6 +188,7 @@ class AJAX {
 	 */
 	public function save_analytic_options() {
 		check_ajax_referer( 'rank-math-ajax-nonce', 'security' );
+		$this->has_cap_ajax( 'analytics' );
 
 		$value = [
 			'account_id'       => Param::post( 'accountID' ),
@@ -201,6 +206,26 @@ class AJAX {
 		}
 		update_option( 'rank_math_google_analytic_options', $value );
 
+		// Remove other stored accounts from option for privacy.
+		$all_accounts = get_option( 'rank_math_analytics_all_services', [] );
+		if ( isset( $all_accounts['accounts'][ $value['account_id'] ] ) ) {
+			foreach ( $all_accounts['accounts'] as $account_id => $account_data ) {
+				if ( $account_id != $value['account_id'] ) {
+					unset( $all_accounts['accounts'][ $account_id ] );
+					continue;
+				}
+				if ( isset( $account_data['properties'][ $value['property_id'] ] ) ) {
+					foreach ( $account_data['properties'] as $property_id => $property_data ) {
+						if ( $property_id != $value['property_id'] ) {
+							unset( $all_accounts['accounts'][ $account_id ][ $property_id ] );
+							continue;
+						}
+					}
+				}
+			}
+		}
+		update_option( 'rank_math_analytics_all_services', $all_accounts );
+
 		do_action( 'rank_math/analytics/options/analytics_saved' );
 
 		$this->success();
@@ -211,16 +236,25 @@ class AJAX {
 	 */
 	public function save_analytic_profile() {
 		check_ajax_referer( 'rank-math-ajax-nonce', 'security' );
+		$this->has_cap_ajax( 'analytics' );
+
+		$input_profile = Param::post( 'profile' );
+		$input_country = Param::post( 'country', 'all' );
 
 		$prev  = get_option( 'rank_math_google_analytic_profile' );
 		$value = [
-			'country' => Param::post( 'country', 'all' ),
-			'profile' => Param::post( 'profile' ),
+			'country' => $input_country,
+			'profile' => $input_profile,
 		];
 		update_option( 'rank_math_google_analytic_profile', $value );
 
+		// Remove other stored sites from option for privacy.
+		$all_accounts = get_option( 'rank_math_analytics_all_services', [] );
+		$all_accounts['sites'] = [ $input_profile => $input_profile ];
+		update_option( 'rank_math_analytics_all_services', $all_accounts );
+
 		if ( empty( $prev['profile'] ) ) {
-			$this->shoul_pull_data();
+			$this->should_pull_data();
 			$this->success();
 		}
 
@@ -235,7 +269,7 @@ class AJAX {
 	/**
 	 * Pull data.
 	 */
-	private function shoul_pull_data() {
+	private function should_pull_data() {
 		$gsc = get_option( 'rank_math_google_analytic_profile' );
 		if ( empty( $gsc['profile'] ) ) {
 			return;

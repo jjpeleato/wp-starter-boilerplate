@@ -38,7 +38,9 @@ class Installer {
 		// Add action for scheduler.
 		$fetch_gap = apply_filters( 'rank_math/analytics/fetch_gap', 7 );
 		if ( false === as_next_scheduled_action( 'rank_math/analytics/daily_tasks' ) ) {
-			as_schedule_recurring_action( strtotime( 'tomorrow' ) + 180, DAY_IN_SECONDS * $fetch_gap, 'rank_math/analytics/daily_tasks' );
+			$schedule_in_minute = rand( 3, 360 );
+			$time_to_schedule   = ( strtotime( 'tomorrow' ) + ( $schedule_in_minute * MINUTE_IN_SECONDS ) );
+			as_schedule_recurring_action( $time_to_schedule, DAY_IN_SECONDS * $fetch_gap, 'rank_math/analytics/daily_tasks' );
 		}
 
 		if ( $flat ) {
@@ -68,8 +70,8 @@ class Installer {
 				position DOUBLE NOT NULL,
 				ctr DOUBLE NOT NULL,
 				PRIMARY KEY (id),
-				INDEX analytics_query (query),
-				INDEX analytics_page (page),
+				INDEX analytics_query (query(190)),
+				INDEX analytics_page (page(190)),
 				INDEX clicks (clicks),
 				INDEX position (position)
 			) $collate;",
@@ -93,7 +95,7 @@ class Installer {
 				mobile_pagescore DOUBLE DEFAULT 0,
 				pagespeed_refreshed TIMESTAMP,
 				PRIMARY KEY (id),
-				INDEX analytics_object_page (page)
+				INDEX analytics_object_page (page(190))
 			) $collate;",
 		];
 

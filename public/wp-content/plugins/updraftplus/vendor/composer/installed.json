@@ -125,24 +125,24 @@
         },
         {
             "name": "components/jquery-blockui",
-            "version": "2.70",
-            "version_normalized": "2.70.0.0",
+            "version": "v2.71",
+            "version_normalized": "2.71.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/malsup/blockui.git",
-                "reference": "316f6e5d76a33266970778e80507149d9ef6a02d"
+                "url": "https://github.com/DavidAnderson684/blockui.git",
+                "reference": "ba184b5d243e0be7183060f72ff58fabacc234d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/malsup/blockui/zipball/316f6e5d76a33266970778e80507149d9ef6a02d",
-                "reference": "316f6e5d76a33266970778e80507149d9ef6a02d",
+                "url": "https://api.github.com/repos/DavidAnderson684/blockui/zipball/ba184b5d243e0be7183060f72ff58fabacc234d7",
+                "reference": "ba184b5d243e0be7183060f72ff58fabacc234d7",
                 "shasum": ""
             },
             "require": {
-                "components/jquery": ">=1.7",
+                "components/jquery": ">=1.12",
                 "robloach/component-installer": "*"
             },
-            "time": "2014-11-24T03:14:41+00:00",
+            "time": "2020-12-08T22:54:51+00:00",
             "type": "component",
             "extra": {
                 "component": {
@@ -176,8 +176,7 @@
                 "overlay"
             ],
             "support": {
-                "source": "https://github.com/malsup/blockui/tree/2.70",
-                "issues": "https://github.com/malsup/blockui/issues"
+                "source": "https://github.com/DavidAnderson684/blockui/tree/v2.71"
             },
             "install-path": "../components/jquery-blockui"
         },
@@ -773,8 +772,8 @@
         },
         {
             "name": "symfony/process",
-            "version": "v3.4.46",
-            "version_normalized": "3.4.46.0",
+            "version": "v3.4.47",
+            "version_normalized": "3.4.47.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
@@ -817,7 +816,7 @@
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/process/tree/v3.4.46"
+                "source": "https://github.com/symfony/process/tree/v3.4.47"
             },
             "funding": [
                 {
@@ -834,7 +833,21 @@
                 }
             ],
             "install-path": "../symfony/process"
+        },
+        {
+            "name": "team-updraft/common-libs",
+            "version": "3.0.0",
+            "version_normalized": "3.0.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://source.updraftplus.com/team-updraft/common-libs.git",
+                "reference": "997b6453"
+            },
+            "type": "library",
+            "installation-source": "source",
+            "install-path": "../team-updraft/common-libs"
         }
     ],
-    "dev": false
+    "dev": false,
+    "dev-package-names": []
 }

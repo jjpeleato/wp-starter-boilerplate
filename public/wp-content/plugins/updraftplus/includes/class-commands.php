@@ -643,37 +643,37 @@ class UpdraftPlus_Commands {
 	}
 
 	public function delete_key($key_id) {
-		global $updraftplus_updraftcentral_main;
+		global $updraftcentral_main;
 
-		if (!is_a($updraftplus_updraftcentral_main, 'UpdraftPlus_UpdraftCentral_Main')) {
-			return new WP_Error('error', '', 'UpdraftPlus_UpdraftCentral_Main object not found');
+		if (!is_a($updraftcentral_main, 'UpdraftCentral_Main')) {
+			return new WP_Error('error', '', 'UpdraftCentral_Main object not found');
 		}
 		
-		$response = $updraftplus_updraftcentral_main->delete_key($key_id);
+		$response = $updraftcentral_main->delete_key($key_id);
 		return $response;
 		
 	}
 	
 	public function create_key($data) {
-		global $updraftplus_updraftcentral_main;
+		global $updraftcentral_main;
 
-		if (!is_a($updraftplus_updraftcentral_main, 'UpdraftPlus_UpdraftCentral_Main')) {
-			return new WP_Error('error', '', 'UpdraftPlus_UpdraftCentral_Main object not found');
+		if (!is_a($updraftcentral_main, 'UpdraftCentral_Main')) {
+			return new WP_Error('error', '', 'UpdraftCentral_Main object not found');
 		}
 		
-		$response = call_user_func(array($updraftplus_updraftcentral_main, 'create_key'), $data);
+		$response = call_user_func(array($updraftcentral_main, 'create_key'), $data);
 		
 		return $response;
 	}
 	
 	public function fetch_log($data) {
-		global $updraftplus_updraftcentral_main;
+		global $updraftcentral_main;
 
-		if (!is_a($updraftplus_updraftcentral_main, 'UpdraftPlus_UpdraftCentral_Main')) {
-			return new WP_Error('error', '', 'UpdraftPlus_UpdraftCentral_Main object not found');
+		if (!is_a($updraftcentral_main, 'UpdraftCentral_Main')) {
+			return new WP_Error('error', '', 'UpdraftCentral_Main object not found');
 		}
 		
-		$response = call_user_func(array($updraftplus_updraftcentral_main, 'get_log'), $data);
+		$response = call_user_func(array($updraftcentral_main, 'get_log'), $data);
 		return $response;
 	}
 
@@ -704,6 +704,67 @@ class UpdraftPlus_Commands {
 		if (false === ($updraftplus_admin = $this->_load_ud_admin()) || false === ($updraftplus = $this->_load_ud())) return new WP_Error('no_updraftplus');// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		if (!UpdraftPlus_Options::user_can_manage()) return new WP_Error('updraftplus_permission_denied');
 		$response = $updraftplus_admin->deauth_remote_method($data);
+		return $response;
+	}
+
+	/**
+	 * A handler method to call the relevant remote storage manual authentication methods and return the authentication result
+	 *
+	 * @param array $data - an array of authentication data, normally includes the state and auth code
+	 *
+	 * @return array - an array response to be sent back to the frontend
+	 */
+	public function manual_remote_storage_authentication($data) {
+		if (false === ($updraftplus_admin = $this->_load_ud_admin()) || false === ($updraftplus = $this->_load_ud())) return new WP_Error('no_updraftplus');// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+
+		$response = array(
+			'result' => 'success'
+		);
+
+		$method = $data['method'];
+
+		$enabled_services = UpdraftPlus_Storage_Methods_Interface::get_enabled_storage_objects_and_ids(array($method));
+		
+		if (empty($enabled_services[$method]['object']) || empty($enabled_services[$method]['instance_settings']) || !$enabled_services[$method]['object']->supports_feature('manual_authentication')) {
+			$response['result'] = 'error';
+			$response['data'] = __('Manual authentication is not available for this remote storage method', 'updraftplus') . '(' . $method . ')';
+			return $response;
+		}
+
+		$backup_obj = $enabled_services[$method]['object'];
+
+		$auth_data = json_decode(base64_decode($data['auth_data']), true);
+		$instance_id = '';
+
+		$state = isset($auth_data['state']) ? urldecode($auth_data['state']) : '';
+		$code = isset($auth_data['code']) ? urldecode($auth_data['code']) : '';
+
+		if (empty($state) || empty($code)) {
+			$response['result'] = 'error';
+			$response['data'] = __('Missing authentication data:', 'updraftplus') . " ({$state}) ({$code})";
+			return $response;
+		}
+
+		if (false !== strpos($state, ':')) {
+			$parts = explode(':', $state);
+			$instance_id = $parts[1];
+		}
+
+		if (empty($instance_id)) {
+			$response['result'] = 'error';
+			$response['data'] = __('Missing instance id:', 'updraftplus') . " ($state)";
+			return $response;
+		}
+
+		if (isset($enabled_services[$method]['instance_settings'][$instance_id])) {
+			$opts = $enabled_services[$method]['instance_settings'][$instance_id];
+			$backup_obj->set_options($opts, false, $instance_id);
+		}
+
+		$result = $backup_obj->complete_authentication($state, $code, true);
+		
+		$response['data'] = $result;
+
 		return $response;
 	}
 	
@@ -772,7 +833,7 @@ class UpdraftPlus_Commands {
 	public function updraftplus_com_login_submit($data) {
 		if (false === ($updraftplus_admin = $this->_load_ud_admin()) || false === ($updraftplus = $this->_load_ud())) return new WP_Error('no_updraftplus');// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		
-		global $updraftplus_addons2;
+		global $updraftplus_addons2, $updraftplus;
 
 		$options = $updraftplus_addons2->get_option(UDADDONS2_SLUG.'_options');
 		$new_options = $data['data'];
@@ -789,7 +850,7 @@ class UpdraftPlus_Commands {
 		if (true !== $result) {
 			if (is_wp_error($result)) {
 				$connection_errors = array();
-				foreach ($result->get_error_messages() as $key => $msg) {
+				foreach ($result->get_error_messages() as $msg) {
 					$connection_errors[] = $msg;
 				}
 			} else {
@@ -798,11 +859,7 @@ class UpdraftPlus_Commands {
 			$result = false;
 		}
 		if ($result && isset($new_options['auto_update'])) {
-			if (1 == $new_options['auto_update']) {
-				UpdraftPlus_Options::update_updraft_option('updraft_auto_updates', 1);
-			} else {
-				UpdraftPlus_Options::update_updraft_option('updraft_auto_updates', 0);
-			}
+			$updraftplus->set_automatic_updates($new_options['auto_update']);
 		}
 		if ($result) {
 			return array(

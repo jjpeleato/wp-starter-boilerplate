@@ -363,7 +363,7 @@ foreach ($waf->getFailedRules() as $paramKey => $categories) {
 	<?php endif; ?>
 	<?php if ($urlParamsToWhitelist): ?>
 		<hr>
-		<p><?php echo wfWAFI18n::__('If you are an administrator and you are certain this is a false positive, you can automatically whitelist this request and repeat the same action.') ?></p>
+		<p><?php echo wfWAFI18n::__('If you are an administrator and you are certain this is a false positive, you can automatically allowlist this request and repeat the same action.') ?></p>
 
 		<form id="whitelist-form" action="<?php echo htmlentities($waf->getRequest()->getPath(), ENT_QUOTES, 'utf-8') ?>" method="post">
 			<input type="hidden" name="wfwaf-false-positive-params" value="<?php echo htmlentities(wfWAFUtils::json_encode($urlParamsToWhitelist), ENT_QUOTES, 'utf-8') ?>">
@@ -372,11 +372,11 @@ foreach ($waf->getFailedRules() as $paramKey => $categories) {
 			<div id="whitelist-actions">
 				<p><label><input id="verified-false-positive-checkbox" type="checkbox" name="wfwaf-false-positive-verified" value="1"> <em><?php echo wfWAFI18n::__('I am certain this is a false positive.') ?></em></label></p>
 
-				<p><button id="whitelist-button" type="submit"><?php echo wfWAFI18n::__('Whitelist This Action') ?></button></p>
+				<p><button id="whitelist-button" type="submit"><?php echo wfWAFI18n::__('Allowlist This Action') ?></button></p>
 			</div>
 
 			<p id="success" style="color: #35b13a; font-weight: bold; display: none"><em><?php echo wfWAFI18n::__('All set! You can refresh the page to try this action again.') ?></em></p>
-			<p id="error" style="color: #dd422c; font-weight: bold; display: none"><em><?php echo wfWAFI18n::__('Something went wrong whitelisting this request. You can try setting the Firewall Status to Learning Mode under Web App Firewall in the Wordfence menu, and retry this same action.') ?></em></p>
+			<p id="error" style="color: #dd422c; font-weight: bold; display: none"><em><?php echo wfWAFI18n::__('Something went wrong allowlisting this request. You can try setting the Firewall Status to Learning Mode under Web App Firewall in the Wordfence menu, and retry this same action.') ?></em></p>
 		</form>
 		<script>
 			var whitelistButton = document.getElementById('whitelist-button');
@@ -391,7 +391,7 @@ foreach ($waf->getFailedRules() as $paramKey => $categories) {
 				evt.preventDefault();
 				var request = new XMLHttpRequest();
 				request.addEventListener("load", function() {
-					if (this.status === 200 && this.responseText.indexOf('Successfully whitelisted') > -1) {
+					if (this.status === 200 && this.responseText.indexOf('Successfully allowlisted') > -1) {
 						document.getElementById('whitelist-actions').style.display = 'none';
 						document.getElementById('success').style.display = 'block';
 					} else {

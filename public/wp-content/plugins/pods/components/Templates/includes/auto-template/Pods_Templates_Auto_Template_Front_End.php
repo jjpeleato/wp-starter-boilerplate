@@ -24,7 +24,7 @@ class Pods_Templates_Auto_Template_Front_End {
 	 *
 	 * @var array
 	 *
-	 * @since TBD
+	 * @since 2.7.25
 	 */
 	private $auto_pods = [];
 
@@ -434,13 +434,6 @@ class Pods_Templates_Auto_Template_Front_End {
 
 					return $content;
 				}
-
-				if ( 'the_excerpt' === $current_filter && ( is_single() || is_singular() ) ) {
-					// Do not run excerpts on single.
-					$running = false;
-
-					return $content;
-				}
 			}
 
 			$pod = pods( $pod_name, $pod_id );
@@ -481,7 +474,7 @@ class Pods_Templates_Auto_Template_Front_End {
 	/**
 	 * Get list of pod information based on an object or the detected current context.
 	 *
-	 * @since TBD
+	 * @since 2.7.25
 	 *
 	 * @param null|object $obj The object to get pod information from or null to detect from current context.
 	 *

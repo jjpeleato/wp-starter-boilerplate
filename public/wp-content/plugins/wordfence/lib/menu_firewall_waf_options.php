@@ -77,7 +77,7 @@ if (isset($_GET['source']) && wfPage::isValidPage($_GET['source'])) {
 				'backLink' => $backPage->url(),
 				'backLabelHTML' => sprintf(__('<span class="wf-hidden-xs">Back to </span>%s', 'wordfence'), $backPage->label()), 
 				'restoreDefaultsSection' => wfConfig::OPTIONS_TYPE_FIREWALL,
-				'restoreDefaultsMessage' => __('Are you sure you want to restore the default Firewall settings? This will undo any custom changes you have made to the options on this page. If you have manually disabled any rules or added any custom whitelisted URLs, those changes will not be overwritten.', 'wordfence'),
+				'restoreDefaultsMessage' => __('Are you sure you want to restore the default Firewall settings? This will undo any custom changes you have made to the options on this page. If you have manually disabled any rules or added any custom allowlisted URLs, those changes will not be overwritten.', 'wordfence'),
 			))->render();
 			?>
 		</div>
@@ -172,12 +172,12 @@ else if (wfConfig::get('touppPromptNeeded')) {
 											echo wfView::create('common/status-detail', array(
 												'id' => 'waf-blacklist',
 												'percentage' => $firewall->blacklistStatus(),
-												'title' => __('Real-Time IP Blacklist: ', 'wordfence') . ($firewall->blacklistMode() == wfFirewall::BLACKLIST_MODE_ENABLED ? __('Enabled', 'wordfence') : __('Disabled', 'wordfence')),
+												'title' => __('Real-Time IP Blocklist: ', 'wordfence') . ($firewall->blacklistMode() == wfFirewall::BLACKLIST_MODE_ENABLED ? __('Enabled', 'wordfence') : __('Disabled', 'wordfence')),
 												'subtitle' => __('Blocks requests from known malicious IPs', 'wordfence'),
 												'link' => (($firewall->ruleMode() == wfFirewall::RULE_MODE_PREMIUM && $firewall->blacklistMode() == wfFirewall::BLACKLIST_MODE_DISABLED) ? network_admin_url('admin.php?page=WordfenceWAF&subpage=waf_options#waf-options-advanced') : 'https://www.wordfence.com/gnl1wafUpgrade/wordfence-signup/'),
 												'linkLabel' => null,
 												'linkNewWindow' => !($firewall->ruleMode() == wfFirewall::RULE_MODE_PREMIUM && $firewall->blacklistMode() == wfFirewall::BLACKLIST_MODE_DISABLED),
-												'statusTitle' => __('Blacklist Status', 'wordfence'),
+												'statusTitle' => __('Blocklist Status', 'wordfence'),
 												'statusList' => $firewall->wafStatusList('blacklist'),
 												'helpLink' => wfSupportController::supportURL(wfSupportController::ITEM_FIREWALL_WAF_STATUS_BLACKLIST),
 											))->render();

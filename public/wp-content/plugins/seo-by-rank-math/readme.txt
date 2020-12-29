@@ -2,10 +2,10 @@
 Contributors: rankmath
 Plugin link: https://rankmath.com/?utm_source=LP&utm_campaign=WP
 Tags: seo, sitemap, google search console, schema, redirection
-Tested up to: 5.5.3
+Tested up to: 5.6
 Requires at least: 5.2
 Requires PHP: 7.0
-Stable tag: 1.0.52.2
+Stable tag: 1.0.55
 License: GPL-2.0+
 License URI: https://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -475,10 +475,15 @@ Please drop us an email at support@rankmath.com and we would be more than happy 
 
 == Changelog ==
 
-= 1.0.52.2 [Nov 13, 2020] =
-* Improved: Schema tab styling in the [Elementor Editor](https://rankmath.com/blog/elementor-seo/)
-* Fixed: uBlock & some other Ad Blocking browser extensions were falsely blocking Analytics page-related scripts
-* Fixed: Styling of the graph filters in the [Analytics page](https://rankmath.com/kb/analytics/) was breaking due to unnecessary CSS files loading from WooCommerce and AutomateWoo plugins
-* Fixed: [Rank Math Tools](https://rankmath.com/kb/rank-math-status-and-tools/) were not showing the notice after using them
+= 1.0.55 [Dec 22, 2020] =
+* Added: Reset option in the [Role Manager](https://rankmath.com/kb/role-manager/)
+* Added: Compatibility with the Nitro CDN plugin for the [Image SEO](https://rankmath.com/kb/image-seo/)
+* Improved: Randomize [Analytics'](https://rankmath.com/kb/analytics/) cron jobs time instead of resetting on the GMT+0
+* Improved: Error reporting in the [SEO Analyzer](https://rankmath.com/kb/seo-analysis/), if the tool does not work on some installation
+* Fixed: Taxonomy pages were showing the social preview twice
+* Fixed: Conflict with [Elementor](https://rankmath.com/blog/elementor-seo/) page builder when 'Remove Product Base' option was enabled in the Rank Math's [WooCommerce Settings](https://rankmath.com/blog/woocommerce-seo/)
+* Fixed: [Advanced Robots](https://rankmath.com/kb/advanced-tab/) options were not picking the default values set in the [Global Settings](https://rankmath.com/kb/titles-and-meta/)
+* Fixed: Contact & About Page defined in the [Local setting](https://rankmath.com/kb/local-seo/) were not printing the proper [Schema codes](https://rankmath.com/kb/rich-snippets/)
+* Fixed: `Undefined index: @type` error on the Product Category pages
 
 Full changelog can be found here - **[Rank Math SEO changelog](https://rankmath.com/changelog/?utm_source=LP&utm_campaign=WP)**

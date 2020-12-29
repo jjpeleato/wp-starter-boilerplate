@@ -9,7 +9,7 @@
 <?php if(! $isPaid){ ?>
 	<?php _e('NOTE: You are using the free version of Wordfence. Upgrade today:
  - Receive real-time Firewall and Scan engine rule updates for protection as threats emerge
- - Real-time IP Blacklist blocks the most malicious IPs from accessing your site
+ - Real-time IP Blocklist blocks the most malicious IPs from accessing your site
  - Country blocking
  - IP reputation monitoring
  - Schedule scans to run more frequently and at optimal times

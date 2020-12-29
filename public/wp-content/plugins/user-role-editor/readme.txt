@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=vladi
 Tags: user, role, editor, security, access, permission, capability
 Requires at least: 4.0
 Tested up to: 5.6
-Stable tag: 4.57
+Stable tag: 4.57.1
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -80,6 +80,11 @@ https://translate.wordpress.org/projects/wp-plugins/user-role-editor/
 
 
 == Changelog =
+= [4.57.1] 10.12.2020 =
+* Fix: Nextgen Gallery's user capabilities were not shown as granted after current role change via roles selection dropdown list.
+* Fix: PHP Warning:  The magic method __wakeup() must have public visibility. __wakeup() method was defined as private as a part of the Singleton design partern. Method was redefined as public but with exception inside to prevent its usage.
+* Update: jQuery [MultiSelect](http://multiple-select.wenzhixin.net.cn/) plugin  was updated to version 1.5.2
+
 = [4.57] 09.11.2020 =
 * Update: Marked as compatible with WordPress 5.6.
 * Update: " jQuery( document ).ready( handler ) " was replaced globally with " jQuery( handler ) " for compatibility with [jQuery 3.0](https://api.jquery.com/ready/) and WordPress 5.6.

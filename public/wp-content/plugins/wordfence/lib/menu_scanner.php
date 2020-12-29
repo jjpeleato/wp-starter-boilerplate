@@ -95,7 +95,7 @@ else if (wfConfig::get('touppPromptNeeded')) {
 											'percentage' => $scanner->reputationStatus(),
 											'activeColor' => (!$scanner->isEnabled() ? '#ececec' : null /* automatic */),
 											'title' => __('Reputation Checks', 'wordfence'),
-											'subtitle' => __('Check spam &amp; spamvertising blacklists', 'wordfence'),
+											'subtitle' => __('Check spam &amp; spamvertising blocklists', 'wordfence'),
 											'link' => $optionsURL . '#wf-scanner-options-general',
 											'linkLabel' => __('Manage Options', 'wordfence'),
 											'statusTitle' => __('Reputation Check Status', 'wordfence'),

@@ -78,8 +78,14 @@ class JsonLD {
 		$schema = \json_decode( file_get_contents( 'php://input' ), true );
 		$schema = $this->replace_variables( $schema );
 		$schema = $this->filter( $schema, $this, $data );
-		$schema = wp_parse_args( $schema['schema'], array_pop( $data ) );
 
+		if ( isset( $data[ $schema['schemaID'] ] ) ) {
+			$current_data = $data[ $schema['schemaID'] ];
+			unset( $data[ $schema['schemaID'] ] );
+		} else {
+			$current_data = array_pop( $data );
+		}
+		$schema = wp_parse_args( $schema['schema'], $current_data );
 		// Merge.
 		$data = array_merge( $data, [ 'schema' => $schema ] );
 		$data = $this->validate_schema( $data );
@@ -214,13 +220,13 @@ class JsonLD {
 		$snippets        = [
 			'\\RankMath\\Schema\\Publisher'     => ! isset( $data['publisher'] ),
 			'\\RankMath\\Schema\\Website'       => true,
-			'\\RankMath\\Schema\\PrimaryImage'  => is_singular(),
+			'\\RankMath\\Schema\\PrimaryImage'  => ! post_password_required() && is_singular(),
 			'\\RankMath\\Schema\\Breadcrumbs'   => $this->can_add_breadcrumb(),
 			'\\RankMath\\Schema\\Webpage'       => true,
 			'\\RankMath\\Schema\\Author'        => is_author(),
 			'\\RankMath\\Schema\\Products_Page' => $is_product_page,
 			'\\RankMath\\Schema\\ItemListPage'  => ! $is_product_page && ( is_category() || is_tag() || is_tax() ),
-			'\\RankMath\\Schema\\Singular'      => is_singular(),
+			'\\RankMath\\Schema\\Singular'      => ! post_password_required() && is_singular(),
 		];
 
 		foreach ( $snippets as $class => $can_run ) {

@@ -8,6 +8,8 @@
 
 namespace RankMath;
 
+defined( 'ABSPATH' ) || exit;
+
 ?>
 <form class="rank-math-rollback-form cmb2-form rank-math-box" action="" method="post">
 
@@ -17,7 +19,7 @@ namespace RankMath;
 
 	<p><?php esc_html_e( 'If you are facing issues after an update, you can reinstall a previous version with this tool.', 'rank-math' ); ?></p>
 	<?php // translators: placeholder is the word "warning". ?>
-	<p class="description warning"><strong><?php printf( esc_html__( '%s Previous versions may not be secure or stable. Proceed with caution and always create a backup.', 'rank-math' ), '<span class="rollback-warning">' . esc_html__( 'Warning: ', 'rank-math' ) . '</span>' ); ?></strong></p>
+	<p class="description warning"><strong><?php printf( esc_html__( '%s Previous versions may not be secure or stable. Proceed with caution and always create a backup.', 'rank-math' ), '<span class="warning">' . esc_html__( 'Warning: ', 'rank-math' ) . '</span>' ); ?></strong></p>
 
 	<table class="form-table">
 		<tbody>

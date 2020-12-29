@@ -122,7 +122,7 @@ $selectOptions = array(
 					var option = optionElement.data('option');
 					var originalValue = optionElement.data('originalValue');
 					
-					$(this).attr('checked', originalValue == $(this).attr('value'));
+					$(this).prop('checked', originalValue == $(this).attr('value'));
 				});
 						
 				$('#howGetIPs-trusted-proxies textarea').each(function() {

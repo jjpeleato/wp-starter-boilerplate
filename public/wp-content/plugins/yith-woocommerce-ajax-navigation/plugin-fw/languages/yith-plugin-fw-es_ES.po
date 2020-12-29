@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YITH Framework\n"
 "Report-Msgid-Bugs-To: YITH <plugins@yithemes.com>\n"
-"POT-Creation-Date: 2020-11-10 12:29:32+00:00\n"
+"POT-Creation-Date: 2020-11-23 14:47:23+00:00\n"
 "PO-Revision-Date: 2020-09-25 17:04:18+0000\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
@@ -377,76 +377,77 @@ msgstr ""
 "Ha ocurrido un error, lo que puede que signifique que el feed ha caído. "
 "Inténtalo de nuevo más tarde."
 
-#: lib/yith-system-status.php:111
+#: lib/yith-system-status.php:122
 msgid "WordPress Version"
 msgstr "Versión de WordPress"
 
-#: lib/yith-system-status.php:112
+#: lib/yith-system-status.php:123
 msgid "WooCommerce Version"
 msgstr "Versión de WooCommerce"
 
-#: lib/yith-system-status.php:113
+#: lib/yith-system-status.php:124
 msgid "Available Memory"
 msgstr "Memoria disponible"
 
-#: lib/yith-system-status.php:114
+#: lib/yith-system-status.php:125
 msgid "PHP Version"
 msgstr "Versión PHP"
 
-#: lib/yith-system-status.php:115
+#: lib/yith-system-status.php:126
 msgid "TLS Version"
 msgstr "Versión TLS"
 
-#: lib/yith-system-status.php:116
+#: lib/yith-system-status.php:127
 msgid "WordPress Cron"
 msgstr "Cron de WordPress"
 
-#: lib/yith-system-status.php:117
+#: lib/yith-system-status.php:128
 msgid "SimpleXML"
 msgstr "SimpleXML"
 
-#: lib/yith-system-status.php:118
+#: lib/yith-system-status.php:129
 msgid "MultiByte String"
 msgstr "Cadena MultiByte"
 
-#: lib/yith-system-status.php:119
+#: lib/yith-system-status.php:130
 msgid "ImageMagick Version"
 msgstr "Versión ImageMagick"
 
-#: lib/yith-system-status.php:120
+#: lib/yith-system-status.php:131
 msgid "GD Library"
 msgstr "Biblioteca GD"
 
-#: lib/yith-system-status.php:121
+#: lib/yith-system-status.php:132
 msgid "Iconv Module"
 msgstr "Módulo Iconv"
 
-#: lib/yith-system-status.php:122
+#: lib/yith-system-status.php:133
 msgid "OPCache Save Comments"
 msgstr "Guardar comentarios OPCache"
 
-#: lib/yith-system-status.php:123
+#: lib/yith-system-status.php:134
 msgid "URL FOpen"
 msgstr "URL FOpen"
 
-#: lib/yith-system-status.php:141 lib/yith-system-status.php:142
+#: lib/yith-system-status.php:152 lib/yith-system-status.php:153
+#: templates/sysinfo/system-information-panel.php:14
 msgid "System Status"
 msgstr "Estado del sistema"
 
-#: lib/yith-system-status.php:184
+#: lib/yith-system-status.php:195
 msgid "YITH Plugins"
 msgstr "YITH Plugins"
 
-#: lib/yith-system-status.php:192
+#: lib/yith-system-status.php:203
 msgid "WooCommerce"
 msgstr "WooCommerce"
 
-#: lib/yith-system-status.php:330
+#: lib/yith-system-status.php:355
 msgid "Warning!"
 msgstr "¡Atención!"
 
 #. translators: %1$s open link tag, %2$s open link tag
-#: lib/yith-system-status.php:334
+#: lib/yith-system-status.php:359
 msgid ""
 "The system check has detected some compatibility issues on your installation."
 "%1$sClick here%2$s to know more"
@@ -454,34 +455,34 @@ msgstr ""
 "La comprobación del sistema ha detectado algunos problemas de compatibilidad "
 "en tu instalación.%1$sHaz clic quí%2$s para saber más"
 
-#: lib/yith-system-status.php:473
+#: lib/yith-system-status.php:544
 msgid "Enabled"
 msgstr "Activado"
 
-#: lib/yith-system-status.php:473
+#: lib/yith-system-status.php:544
 msgid "Disabled"
 msgstr "Desactivado"
 
-#: lib/yith-system-status.php:478
+#: lib/yith-system-status.php:549
 msgid "N/A"
 msgstr "N/D"
 
 #. translators: %1$s plugin name, %2$s requirement name
-#: lib/yith-system-status.php:506
+#: lib/yith-system-status.php:577
 msgid "%1$s needs %2$s enabled"
 msgstr "%1$s necesita %2$s activado"
 
 #. translators: %1$s plugin name, %2$s required memory amount
-#: lib/yith-system-status.php:509
+#: lib/yith-system-status.php:580
 msgid "%1$s needs at least %2$s of available memory"
 msgstr "%1$s necesita al menos %2$s de memoria disponible"
 
 #. translators: %1$s plugin name, %2$s version number
-#: lib/yith-system-status.php:512
+#: lib/yith-system-status.php:583
 msgid "%1$s needs at least %2$s version"
 msgstr "%1$s necesita al menos la versión %2$s"
 
-#: lib/yith-system-status.php:537
+#: lib/yith-system-status.php:608
 msgid ""
 "Update it to the latest version in order to benefit of all new features and "
 "security updates."
@@ -489,25 +490,25 @@ msgstr ""
 "Actualízalo a la última versión para beneficiarte de todas las "
 "características y actualizaciones de seguridad."
 
-#: lib/yith-system-status.php:541 lib/yith-system-status.php:547
+#: lib/yith-system-status.php:612 lib/yith-system-status.php:618
 msgid "Contact your hosting company in order to update it."
 msgstr "Ponte en contacto con tu empresa de hosting para actualizarlo."
 
-#: lib/yith-system-status.php:545
+#: lib/yith-system-status.php:616
 msgid "Contact your hosting company in order to install it."
 msgstr "Ponte en contacto con tu empresa de hosting para instalarlo."
 
 #. translators: %1$s code, %2$s file name
-#: lib/yith-system-status.php:552
+#: lib/yith-system-status.php:623
 msgid "Remove %1$s from %2$s file"
 msgstr "Eliminar %1$s desde el archivo %2$s "
 
-#: lib/yith-system-status.php:560
+#: lib/yith-system-status.php:631
 msgid "Contact your hosting company in order to enable it."
 msgstr "Ponte en contacto con tu empresa de hosting para activarlo."
 
 #. translators: %1$s opening link tag, %2$s closing link tag
-#: lib/yith-system-status.php:564 lib/yith-system-status.php:588
+#: lib/yith-system-status.php:635 lib/yith-system-status.php:659
 msgid ""
 "Read more %1$shere%2$s or contact your hosting company in order to increase "
 "it."
@@ -516,7 +517,7 @@ msgstr ""
 "incrementarlo."
 
 #. translators: %s recommended memory amount
-#: lib/yith-system-status.php:585
+#: lib/yith-system-status.php:656
 msgid ""
 "For optimal functioning of our plugins, we suggest setting at least %s of "
 "available memory"
@@ -525,7 +526,7 @@ msgstr ""
 "memoria disponible"
 
 #. translators: %1$s TLS label, %2$s cURL label
-#: lib/yith-system-status.php:593
+#: lib/yith-system-status.php:664
 msgid ""
 "The system check cannot determine which %1$s version is installed because "
 "%2$s module is disabled. Ask your hosting company to enable it."
@@ -535,7 +536,7 @@ msgstr ""
 "hosting que lo active."
 
 #. translators: %1$s TLS label
-#: lib/yith-system-status.php:596
+#: lib/yith-system-status.php:667
 msgid ""
 "The system check cannot determine which %1$s version is installed due to a "
 "connection issue between your site and our server."
@@ -673,60 +674,83 @@ msgstr "(Predeterminado: <i %s></i> )"
 msgid "Reset Defaults"
 msgstr "Restablecer valores predeterminados"
 
-#: templates/sysinfo/system-information-panel.php:39
+#: templates/sysinfo/system-information-panel.php:15
+msgid "PHPInfo"
+msgstr ""
+
+#: templates/sysinfo/system-information-panel.php:16
+#: templates/sysinfo/tabs/error-log.php:28
+#, fuzzy
+msgid "Log Files"
+msgstr "Mostrar archivos de registro"
+
+#: templates/sysinfo/system-information-panel.php:25
 msgid "YITH System Information"
 msgstr "Información de Sistema de YITH"
 
-#: templates/sysinfo/system-information-panel.php:50
+#: templates/sysinfo/tabs/error-log.php:16
 msgid "WP debug.log file"
 msgstr "Archivo WP debug.log"
 
-#: templates/sysinfo/system-information-panel.php:54
+#: templates/sysinfo/tabs/error-log.php:21
 msgid "PHP error_log file"
 msgstr "Archivo PHP error_log"
 
-#: templates/sysinfo/system-information-panel.php:59
-#: templates/sysinfo/system-information-panel.php:83
-msgid "Back to System panel"
-msgstr "Volver al panel del Sistema"
+#: templates/sysinfo/tabs/error-log.php:64
+msgid "Download"
+msgstr ""
 
-#: templates/sysinfo/system-information-panel.php:96
-msgid "Back to top"
-msgstr "Volver a la parte superior"
+#: templates/sysinfo/tabs/error-log.php:78
+msgid "The file size exceeds 8 megabytes so it must be downloaded"
+msgstr ""
 
-#: templates/sysinfo/system-information-panel.php:104
+#. translators: %s file name
+#: templates/sysinfo/tabs/error-log.php:106
+msgid ""
+"No Log file available. Enable the WordPress debug by adding this in the %s "
+"file of your installation"
+msgstr ""
+
+#: templates/sysinfo/tabs/error-log.php:115
+msgid "Copied!"
+msgstr ""
+
+#: templates/sysinfo/tabs/error-log.php:115
+msgid "Copy Code"
+msgstr ""
+
+#: templates/sysinfo/tabs/main.php:43
+msgid "Site Info"
+msgstr ""
+
+#: templates/sysinfo/tabs/main.php:48
 msgid "Site URL"
 msgstr "URL del sitio"
 
-#: templates/sysinfo/system-information-panel.php:112
+#: templates/sysinfo/tabs/main.php:57
 msgid "Output IP Address"
 msgstr "Dirección IP de salida"
 
-#: templates/sysinfo/system-information-panel.php:120
+#: templates/sysinfo/tabs/main.php:65
 msgid "Defined WP_CACHE"
 msgstr "WP_CACHE definido"
 
-#: templates/sysinfo/system-information-panel.php:123
-#: templates/sysinfo/system-information-panel.php:131
+#: templates/sysinfo/tabs/main.php:68 templates/sysinfo/tabs/main.php:76
 msgid "Yes"
 msgstr "Sí"
 
-#: templates/sysinfo/system-information-panel.php:123
-#: templates/sysinfo/system-information-panel.php:131
+#: templates/sysinfo/tabs/main.php:68 templates/sysinfo/tabs/main.php:76
 msgid "No"
 msgstr "No"
 
-#: templates/sysinfo/system-information-panel.php:128
+#: templates/sysinfo/tabs/main.php:73
 msgid "External object cache"
 msgstr ""
 
-#: templates/sysinfo/system-information-panel.php:167
-msgid "Show full PHPInfo"
-msgstr "Mostrar PHPInfo completa"
-
-#: templates/sysinfo/system-information-panel.php:175
-msgid "Show log files"
-msgstr "Mostrar archivos de registro"
+#: templates/sysinfo/tabs/main.php:82
+#, fuzzy
+msgid "Plugins Requirements"
+msgstr "Ajustes del plugin"
 
 #: yit-plugin.php:194
 msgid "License"
@@ -867,3 +891,12 @@ msgstr "Versión premium"
 msgctxt "Action links"
 msgid "Settings"
 msgstr "Ajustes"
+
+#~ msgid "Show full PHPInfo"
+#~ msgstr "Mostrar PHPInfo completa"
+
+#~ msgid "Back to top"
+#~ msgstr "Volver a la parte superior"
+
+#~ msgid "Back to System panel"
+#~ msgstr "Volver al panel del Sistema"

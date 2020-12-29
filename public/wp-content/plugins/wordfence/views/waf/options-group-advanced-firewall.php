@@ -49,9 +49,9 @@ if (!isset($collapseable)) {
 						echo wfView::create('options/option-textarea', array(
 							'textOptionName' => 'whitelisted',
 							'textValue' => wfUtils::cleanupOneEntryPerLine(wfConfig::get('whitelisted')),
-							'title' => __('Whitelisted IP addresses that bypass all rules', 'wordfence'),
+							'title' => __('Allowlisted IP addresses that bypass all rules', 'wordfence'),
 							'alignTitle' => 'top',
-							'subtitleHTML' => __('Whitelisted IPs must be separated by commas or placed on separate lines. You can specify ranges using the following formats: 127.0.0.1/24, 127.0.0.[1-100], or 127.0.0.1-127.0.1.100<br/>Wordfence automatically whitelists <a href="http://en.wikipedia.org/wiki/Private_network" target="_blank" rel="noopener noreferrer">private networks</a> because these are not routable on the public Internet.', 'wordfence'),
+							'subtitleHTML' => __('Allowlisted IPs must be separated by commas or placed on separate lines. You can specify ranges using the following formats: 127.0.0.1/24, 127.0.0.[1-100], or 127.0.0.1-127.0.1.100<br/>Wordfence automatically allowlists <a href="http://en.wikipedia.org/wiki/Private_network" target="_blank" rel="noopener noreferrer">private networks</a> because these are not routable on the public Internet.', 'wordfence'),
 							'subtitlePosition' => 'value',
 							'helpLink' => wfSupportController::supportURL(wfSupportController::ITEM_FIREWALL_WAF_OPTION_WHITELISTED_IPS),
 						))->render();
@@ -85,7 +85,7 @@ if (!isset($collapseable)) {
 						
 						echo wfView::create('options/option-toggled-multiple', array(
 							'options' => $options,
-							'title' => __('Whitelisted services', 'wordfence'),
+							'title' => __('Allowlisted services', 'wordfence'),
 							'id' => 'wf-option-whitelistedServices',
 							'helpLink' => wfSupportController::supportURL(wfSupportController::ITEM_FIREWALL_WAF_OPTION_WHITELISTED_SERVICES),
 						))->render();

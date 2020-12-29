@@ -77,8 +77,11 @@ function yith_wcan_dropdown_attributes( $selected, $echo = true ) {
 function yith_wcan_attributes_table( $type, $attribute, $id, $name, $values = array(), $echo = true ) {
     $return = '';
 
-    $terms = get_terms( array( 'taxonomy' => 'pa_' . $attribute, 'hide_empty' => '0' ) );
+    if( empty( $attribute ) ){
+    	return $return;
+    }
 
+	$terms = get_terms( array( 'taxonomy' => 'pa_' . $attribute, 'hide_empty' => '0' ) );
     if ( 'list' == $type ) {
         $return = '<input type="hidden" name="' . $name . '[colors]" value="" /><input type="hidden" name="' . $name . '[labels]" value="" />';
     }

@@ -260,7 +260,7 @@ $wfBlockRange = filter_input(INPUT_GET, 'wfBlockRange', FILTER_DEFAULT, FILTER_R
 									.off('click.wfselect2-copy')
 									.on('click.wfselect2-copy', function(e) {
 										var opt = $(this).data('wfselect2-opt');
-										opt.attr('selected', false);
+										opt.prop('selected', false);
 										opt.parents('select').trigger('change');
 									}).data('wfselect2-opt', $(value));
 								list.append(li);

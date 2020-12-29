@@ -71,7 +71,7 @@ class Frontend {
 	 * @return array
 	 */
 	public function add_schema( $data, $jsonld ) {
-		if ( ! is_singular() ) {
+		if ( ! is_singular() || post_password_required() ) {
 			return $data;
 		}
 
@@ -191,13 +191,13 @@ class Frontend {
 	 * @return array
 	 */
 	private function change_webpage_entity( $schemas, $types ) {
-		if ( in_array( 'product', $types, true ) ) {
+		if ( in_array( 'Product', $types, true ) ) {
 			$schemas['WebPage']['@type'] = 'ItemPage';
 		}
 
 		$faq_data = array_map(
 			function( $schema ) {
-				return 'FAQPage' === $schema['@type'];
+				return isset( $schema['@type'] ) && 'FAQPage' === $schema['@type'];
 			},
 			$schemas
 		);

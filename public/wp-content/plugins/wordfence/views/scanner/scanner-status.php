@@ -51,7 +51,7 @@ if (!defined('WORDFENCE_VERSION')) { exit; }
 			<?php if ($scanner->signatureMode() == wfScanner::SIGNATURE_MODE_COMMUNITY): ?>
 				<div>
 					<p><h3><?php _e('Premium Protection Disabled', 'wordfence'); ?></h3></p>
-					<p><?php printf(__('As a free Wordfence user, you are currently using the Community version of the Threat Defense Feed. Premium users are protected by an additional %d firewall rules and malware signatures as well as the Wordfence real-time IP blacklist. Upgrade to Premium today to improve your protection.', 'wordfence'), ($dashboard->tdfPremium - $dashboard->tdfCommunity)); ?></p>
+					<p><?php printf(__('As a free Wordfence user, you are currently using the Community version of the Threat Defense Feed. Premium users are protected by an additional %d firewall rules and malware signatures as well as the Wordfence real-time IP blocklist. Upgrade to Premium today to improve your protection.', 'wordfence'), ($dashboard->tdfPremium - $dashboard->tdfCommunity)); ?></p>
 					<p><a class="wf-btn wf-btn-primary wf-btn-callout-subtle" href="https://www.wordfence.com/gnl1scanUpgrade/wordfence-signup/#premium-order-form" target="_blank" rel="noopener noreferrer"><?php _e('Upgrade to Premium', 'wordfence'); ?></a>&nbsp;&nbsp;<a class="wf-btn wf-btn-callout-subtle wf-btn-default" href="https://www.wordfence.com/gnl1scanLearn/wordfence-signup/" target="_blank" rel="noopener noreferrer"><?php _e('Learn More', 'wordfence'); ?></a></p>
 				</div>
 			<?php else: ?>

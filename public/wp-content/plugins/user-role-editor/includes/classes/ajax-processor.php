@@ -243,12 +243,18 @@ class URE_Ajax_Processor {
             $role_options = array();
         }
         
+        $caps = array();
+        foreach( $wp_roles->roles[$role]['capabilities'] as $cap_id=>$allowed ) {
+            $cap = URE_Capability::escape( $cap_id );
+            $caps[$cap] = $allowed;
+        }
+        
         $answer = array(
             'result'=>'success', 
             'message'=>'Role capabilities retrieved successfully', 
             'role_id'=>$role,
             'role_name'=>$wp_roles->roles[$role]['name'],
-            'caps'=>$wp_roles->roles[$role]['capabilities'],
+            'caps'=>$caps,
             'options'=>$role_options
             );
         

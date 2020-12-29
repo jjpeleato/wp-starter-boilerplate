@@ -79,6 +79,33 @@ class UpdraftPlus_Database_Utility {
 	}
 
 	/**
+	 * Detect if the table has a composite primary key (composed from multiple columns)
+	 *
+	 * @param String	  $table	- table to examine
+	 * @param Object|Null $wpdb_obj - WPDB-like object (requires the get_results() method), or null to use the global default
+	 *
+	 * @return Boolean
+	 */
+	public static function table_has_composite_private_key($table, $wpdb_obj = null) {
+	
+		$wpdb = (null === $wpdb_obj) ? $GLOBALS['wpdb'] : $wpdb_obj;
+	
+		$table_structure = $wpdb->get_results("DESCRIBE ".UpdraftPlus_Manipulation_Functions::backquote($table));
+		if (!$table_structure) return false;
+		
+		$primary_key_columns_found = 0;
+		
+		foreach ($table_structure as $struct) {
+			if (isset($struct->Key) && 'PRI' == $struct->Key) {
+				$primary_key_columns_found++;
+				if ($primary_key_columns_found > 1) return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
 	 * Set MySQL server system variable
 	 *
 	 * @param String          $variable  The name of the system variable
@@ -350,7 +377,7 @@ class UpdraftPlus_Database_Utility {
 			 *  }
 			 */
 
-			foreach ($column_definitions as $key => $column_definition) {
+			foreach ($column_definitions as $column_definition) {
 				$data_type_definition = (!empty($column_definition[4][0]) ? $column_definition[4][0] : '').(!empty($column_definition[6][0]) ? $column_definition[6][0] : '').(!empty($column_definition[8][0]) ? $column_definition[8][0] : '');
 				// if no virtual, stored or persistent option is specified then it's virtual by default. It's not possible having two generated columns type in the column definition e.g fullname varchar(101) GENERATED ALWAYS AS (CONCAT(first_name,' ',last_name)) VIRTUAL STORED NOT NULL COMMENT 'comment text', both MySQL and MariaDB will produces an error
 				$is_virtual = preg_match('/\bvirtual\b/i', $data_type_definition) || (!preg_match('/\bstored\b/i', $data_type_definition) && !preg_match('/\bpersistent\b/i', $data_type_definition));

@@ -99,9 +99,9 @@ if (!defined('WORDFENCE_LS_VERSION')) { exit; }
 				echo \WordfenceLS\Model_View::create('options/option-textarea', array(
 					'textOptionName' => \WordfenceLS\Controller_Settings::OPTION_2FA_WHITELISTED,
 					'textValue' => implode("\n", \WordfenceLS\Controller_Settings::shared()->whitelisted_ips()),
-					'title' => new \WordfenceLS\Text\Model_HTML('<strong>' . __('Whitelisted IP addresses that bypass 2FA', 'wordfence-2fa') . '</strong>'),
+					'title' => new \WordfenceLS\Text\Model_HTML('<strong>' . __('Allowlisted IP addresses that bypass 2FA', 'wordfence-2fa') . '</strong>'),
 					'alignTitle' => 'top',
-					'subtitle' => __('Whitelisted IPs must be placed on separate lines. You can specify ranges using the following formats: 127.0.0.1/24, 127.0.0.[1-100], or 127.0.0.1-127.0.1.100.', 'wordfence-2fa'),
+					'subtitle' => __('Allowlisted IPs must be placed on separate lines. You can specify ranges using the following formats: 127.0.0.1/24, 127.0.0.[1-100], or 127.0.0.1-127.0.1.100.', 'wordfence-2fa'),
 					'subtitlePosition' => 'value',
 					'noSpacer' => true,
 				))->render();
