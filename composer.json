@@ -1,7 +1,7 @@
 {
     "name": "jjpeleato/wp-starter-boilerplate",
     "description": "WordPress base repository for any project.",
-    "keywords": ["lando", "WordPress", "deployer", "psr1", "psr2"],
+    "keywords": ["lando", "WordPress", "deployer", "psr1", "psr12"],
     "homepage": "https://github.com/jjpeleato/wp-starter-boilerplate.git",
     "license": "GPL-2.0",
     "authors": [
@@ -11,15 +11,16 @@
 		}
     ],
     "require": {
-        "php": "^7.4",
-        "vlucas/phpdotenv": "^5.2"
+        "php": "^7.4"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1",
         "deployer/deployer": "^6.8",
+        "deployer/recipes": "^6.2",
         "phpcompatibility/phpcompatibility-wp": "^2.1",
         "roave/security-advisories": "dev-latest",
         "squizlabs/php_codesniffer": "^3.5",
+        "vlucas/phpdotenv": "^5.2",
         "wp-coding-standards/wpcs": "^2.3"
     },
     "config": {
