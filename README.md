@@ -47,6 +47,7 @@ For more information visit:
 ├─ gulp/
 │  ├─ task/
 │  └─ config.js # Paths and configuration Gulp system.
+├─ private/
 ├─ public/ # WordPress directory
 ├─ .babelrc
 ├─ .editorconfig
@@ -63,17 +64,23 @@ For more information visit:
 ├─ LICENSE
 ├─ package.json
 ├─ phpcs.xml.dist
-└─ README.md
+├─ README.md
+└─ script_local.sh
 ```
 
 ### Installing
 
 1. Open the `README.md` and rename the name of client, name of project and description.
 2. Open the `lando.yml` and rename the project and proxy name.
-3. Download and install the main theme. Recommended: https://underscores.me/
-4. Add the following path `public/wp-content/themes/[theme]/assets` into `.gitignore` file.
-5. Open the `gulp/config.js` and rename the `theme` const according theme path.
-6. Copy the `public/wp-config-sample.php` to `public/wp-config.php`.
+3. Open your terminal and browse to the root location of your project.
+4. Run `$lando start`.
+	- The project has a .lando.yml file with all the environment settings.
+	- The command starts the installation process when it finishes, you can see all the URLs to access.
+5. If required.
+	- Download and install the main theme. Recommended: https://underscores.me/
+6. Add the following path `public/wp-content/themes/[theme]/assets` into `.gitignore` file.
+7. Open the `gulp/config.js` and rename the `theme` const according theme path.
+8. Copy the `public/wp-config-sample.php` to `public/wp-config.php`.
     - Add the following code:
     ```php
    <?php
@@ -96,13 +103,14 @@ For more information visit:
         - `define( 'DB_COLLATE', 'utf8mb4_general_ci' );`
     - Change Authentication Unique Keys and Salts. Open the link `https://api.wordpress.org/secret-key/1.1/salt/`, copy and replace in the correct section.
     - Change table prefix. Only numbers, letters, and underscores. For example: `$table_prefix = 'j28p_';`
-7. Copy the `assets/.htaccess.dist` to `public/.htaccess`.
-8. Open your terminal and browse to the root location of your project.
-9. Run `$lando start`.
+9. Copy the `assets/.htaccess.dist` to `public/.htaccess`.
+10. Copy the `phpcs.xml.dist` to `phpcs.xml` and rename the `ao-apolo` according theme path.
+11. Copy the `.env.dist` to `.env` and look the vars according Deployer file `deploy.php`.
+12. Open your terminal and browse to the root location of your project.
+13. Run `$lando start`.
 	- The project has a .lando.yml file with all the environment settings.
 	- The command starts the installation process when it finishes, you can see all the URLs to access.
-10. End. Happy developing.
-
+14. End. Happy developing.
 
 ### Developing with NPM or Yarn, Gulp. PHP_CodeSniffer and Deployer
 
@@ -134,8 +142,10 @@ For more information visit:
     - `$lando dep deploy pre` Deploy to the pre production server.
     - `$lando dep deploy pro` Deploy to the production server.
 - If you work with PHP CodeSniffer. If required run `$lando phpcs --config-set installed_paths /path/to/wpcs`
-	- `$lando phpcs` Runs the phpcs
-	- `$lando phpcbf` Runs the phpcbf
+	- `$lando phpcs` or `$lando composer cs` Runs the phpcs
+	- `$lando phpcbf` or `$lando composer cs:fix`  Runs the phpcbf
+- **Important**. Run the shell script to validate PHP, JS and SCSS files:
+	- `$sh script_local.sh`
 
 ### Technologies and tools
 
@@ -159,6 +169,8 @@ The present project uses several technologies and tools for the automation and d
 16. Gulp: https://gulpjs.com/
 17. Mailhog: https://github.com/mailhog/MailHog
 18. EditorConfig: https://editorconfig.org/
+19. Husky: https://www.npmjs.com/package/husky
+20. Human.txt: http://humanstxt.org/
 
 **Note:** Thanks all people to work on these projects.
 
