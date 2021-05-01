@@ -5,542 +5,75 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
+import { getSetting } from '@woocommerce/settings';
 
 /**
- * Used to render postcode before the city field.
+ * This is locale data from WooCommerce countries class. This doesn't match the shape of the new field data blocks uses,
+ * but we can import part of it to set which fields are required.
  *
- * @type {Object <AddressFieldKey, AddressField>}
+ * This supports new properties such as optionalLabel which are not used by core (yet).
  */
-const postcodeBeforeCity = {
-	city: {
-		index: 9,
-	},
-	postcode: {
-		index: 7,
-	},
-};
+const coreLocale = getSetting( 'countryLocale', {} );
 
 /**
- * Used to make the state field optional.
+ * Get supported props from the core locale and map to the correct format.
  *
- * @type {Object <AddressFieldKey, AddressField>}
+ * Ignores "class", "type", "placeholder", and "autocomplete"--blocks handles these visual elements.
+ *
+ * @param {Object} localeField Locale fields from WooCommerce.
+ * @return {Object} Supported locale fields.
  */
-const optionalState = {
-	state: {
-		required: false,
-	},
+const getSupportedProps = ( localeField ) => {
+	const fields = {};
+
+	if ( localeField.label !== undefined ) {
+		fields.label = localeField.label;
+	}
+
+	if ( localeField.required !== undefined ) {
+		fields.required = localeField.required;
+	}
+
+	if ( localeField.hidden !== undefined ) {
+		fields.hidden = localeField.hidden;
+	}
+
+	if ( localeField.label !== undefined && ! localeField.optionalLabel ) {
+		fields.optionalLabel = sprintf(
+			/* translators: %s Field label. */
+			__( '%s (optional)', 'woocommerce' ),
+			localeField.label
+		);
+	}
+
+	if ( localeField.priority ) {
+		fields.index = parseInt( localeField.priority, 10 );
+	}
+
+	if ( localeField.hidden === true ) {
+		fields.required = false;
+	}
+
+	return fields;
 };
 
-/**
- * Used to hide the state field.
- *
- * @type {Object <AddressFieldKey, AddressField>}
- */
-const hiddenState = {
-	state: {
-		required: false,
-		hidden: true,
-	},
-};
+const coreAddressFieldConfig = Object.entries( coreLocale )
+	.map( ( [ country, countryLocale ] ) => [
+		country,
+		Object.entries( countryLocale )
+			.map( ( [ localeFieldKey, localeField ] ) => [
+				localeFieldKey,
+				getSupportedProps( localeField ),
+			] )
+			.reduce( ( obj, [ key, val ] ) => {
+				obj[ key ] = val;
+				return obj;
+			}, {} ),
+	] )
+	.reduce( ( obj, [ key, val ] ) => {
+		obj[ key ] = val;
+		return obj;
+	}, {} );
 
-/**
- * Used to hide the postcode field.
- *
- * @type {Object <AddressFieldKey, AddressField>}
- */
-const hiddenPostcode = {
-	postcode: {
-		required: false,
-		hidden: true,
-	},
-};
-
-/**
- * Country specific address field properties.
- *
- * @type {CountryAddressFields}
- */
-const countryAddressFields = {
-	AE: {
-		...hiddenPostcode,
-		...optionalState,
-	},
-	AF: hiddenState,
-	AO: {
-		...hiddenPostcode,
-		state: {
-			label: __( 'Province', 'woocommerce' ),
-			optionalLabel: __(
-				'Province (optional)',
-				'woocommerce'
-			),
-		},
-	},
-	AT: {
-		...postcodeBeforeCity,
-		...hiddenState,
-	},
-	AU: {
-		city: {
-			label: __( 'Suburb', 'woocommerce' ),
-			optionalLabel: __(
-				'Suburb (optional)',
-				'woocommerce'
-			),
-		},
-		postcode: {
-			label: __( 'Postcode', 'woocommerce' ),
-			optionalLabel: __(
-				'Postcode (optional)',
-				'woocommerce'
-			),
-		},
-		state: {
-			label: __( 'State', 'woocommerce' ),
-			optionalLabel: __(
-				'State (optional)',
-				'woocommerce'
-			),
-		},
-	},
-	AX: {
-		...postcodeBeforeCity,
-		...hiddenState,
-	},
-	BD: {
-		postcode: {
-			required: false,
-		},
-		state: {
-			label: __( 'District', 'woocommerce' ),
-			optionalLabel: __(
-				'District (optional)',
-				'woocommerce'
-			),
-		},
-	},
-	BE: {
-		...postcodeBeforeCity,
-		...hiddenState,
-	},
-	BH: {
-		postcode: {
-			required: false,
-		},
-		...hiddenState,
-	},
-	BI: hiddenState,
-	BO: hiddenPostcode,
-	BS: hiddenPostcode,
-	CA: {
-		state: {
-			label: __( 'Province', 'woocommerce' ),
-			optionalLabel: __(
-				'Province (optional)',
-				'woocommerce'
-			),
-		},
-	},
-	CH: {
-		...postcodeBeforeCity,
-		state: {
-			label: __( 'Canton', 'woocommerce' ),
-			optionalLabel: __(
-				'Canton (optional)',
-				'woocommerce'
-			),
-			required: false,
-		},
-	},
-	CL: {
-		city: {
-			require: true,
-		},
-		postcode: {
-			required: false,
-		},
-		state: {
-			label: __( 'Region', 'woocommerce' ),
-			optionalLabel: __(
-				'Region (optional)',
-				'woocommerce'
-			),
-		},
-	},
-	CN: {
-		state: {
-			label: __( 'Province', 'woocommerce' ),
-			optionalLabel: __(
-				'Province (optional)',
-				'woocommerce'
-			),
-		},
-	},
-	CO: {
-		postcode: {
-			required: false,
-		},
-	},
-	CZ: hiddenState,
-	DE: {
-		...postcodeBeforeCity,
-		...hiddenState,
-	},
-	DK: {
-		...postcodeBeforeCity,
-		...hiddenState,
-	},
-	EE: {
-		...postcodeBeforeCity,
-		...hiddenState,
-	},
-	ES: {
-		...postcodeBeforeCity,
-		state: {
-			label: __( 'Province', 'woocommerce' ),
-			optionalLabel: __(
-				'Province (optional)',
-				'woocommerce'
-			),
-		},
-	},
-	FI: {
-		...postcodeBeforeCity,
-		...hiddenState,
-	},
-	FR: {
-		...postcodeBeforeCity,
-		...hiddenState,
-	},
-	GB: {
-		postcode: {
-			label: __( 'Postcode', 'woocommerce' ),
-			optionalLabel: __(
-				'Postcode (optional)',
-				'woocommerce'
-			),
-		},
-		state: {
-			label: __( 'County', 'woocommerce' ),
-			optionalLabel: __(
-				'County (optional)',
-				'woocommerce'
-			),
-		},
-	},
-	GP: hiddenState,
-	GF: hiddenState,
-	GR: optionalState,
-	HK: {
-		postcode: {
-			required: false,
-		},
-		city: {
-			label: __( 'Town/District', 'woocommerce' ),
-			optionalLabel: __(
-				'Town/District (optional)',
-				'woocommerce'
-			),
-		},
-		state: {
-			label: __( 'Region', 'woocommerce' ),
-			optionalLabel: __(
-				'Region (optional)',
-				'woocommerce'
-			),
-		},
-	},
-	HU: {
-		state: {
-			label: __( 'County', 'woocommerce' ),
-			optionalLabel: __(
-				'County (optional)',
-				'woocommerce'
-			),
-		},
-	},
-	ID: {
-		state: {
-			label: __( 'Province', 'woocommerce' ),
-			optionalLabel: __(
-				'Province (optional)',
-				'woocommerce'
-			),
-		},
-	},
-	IE: {
-		postcode: {
-			label: __( 'Eircode', 'woocommerce' ),
-			optionalLabel: __(
-				'Eircode (optional)',
-				'woocommerce'
-			),
-			required: false,
-		},
-		state: {
-			label: __( 'County', 'woocommerce' ),
-			optionalLabel: __(
-				'County (optional)',
-				'woocommerce'
-			),
-		},
-	},
-	IS: {
-		...postcodeBeforeCity,
-		...hiddenState,
-	},
-	IL: {
-		...postcodeBeforeCity,
-		...hiddenState,
-	},
-	IM: hiddenState,
-	IT: {
-		...postcodeBeforeCity,
-		state: {
-			label: __( 'Province', 'woocommerce' ),
-			optionalLabel: __(
-				'Province (optional)',
-				'woocommerce'
-			),
-		},
-	},
-	JP: {
-		first_name: {
-			index: 2,
-		},
-		last_name: {
-			index: 1,
-		},
-		address_1: {
-			index: 7,
-		},
-		address_2: {
-			index: 8,
-		},
-		postcode: {
-			index: 4,
-		},
-		city: {
-			index: 6,
-		},
-		state: {
-			label: __( 'Prefecture', 'woocommerce' ),
-			optionalLabel: __(
-				'Prefecture (optional)',
-				'woocommerce'
-			),
-			index: 5,
-		},
-	},
-	KR: hiddenState,
-	KW: hiddenState,
-	LB: hiddenState,
-	LI: {
-		...postcodeBeforeCity,
-		state: {
-			label: __( 'Municipality', 'woocommerce' ),
-			optionalLabel: __(
-				'Municipality (optional)',
-				'woocommerce'
-			),
-			required: false,
-		},
-	},
-	LK: hiddenState,
-	LU: hiddenState,
-	LV: {
-		state: {
-			label: __( 'Municipality', 'woocommerce' ),
-			optionalLabel: __(
-				'Municipality (optional)',
-				'woocommerce'
-			),
-			required: false,
-		},
-	},
-	MQ: hiddenState,
-	MT: hiddenState,
-	MZ: {
-		...hiddenPostcode,
-		state: {
-			label: __( 'Province', 'woocommerce' ),
-			optionalLabel: __(
-				'Province (optional)',
-				'woocommerce'
-			),
-		},
-	},
-	NL: {
-		...postcodeBeforeCity,
-		...hiddenState,
-	},
-	NG: {
-		...hiddenPostcode,
-		state: {
-			label: __( 'State', 'woocommerce' ),
-			optionalLabel: __(
-				'State (optional)',
-				'woocommerce'
-			),
-		},
-	},
-	NO: {
-		...postcodeBeforeCity,
-		...hiddenState,
-	},
-	NP: {
-		postcode: {
-			required: false,
-		},
-		state: {
-			label: __( 'State', 'woocommerce' ),
-			optionalLabel: __(
-				'State (optional)',
-				'woocommerce'
-			),
-		},
-	},
-	NZ: {
-		postcode: {
-			label: __( 'Postcode', 'woocommerce' ),
-			optionalLabel: __(
-				'Postcode (optional)',
-				'woocommerce'
-			),
-		},
-		state: {
-			label: __( 'Region', 'woocommerce' ),
-			optionalLabel: __(
-				'Region (optional)',
-				'woocommerce'
-			),
-		},
-	},
-	PL: {
-		...postcodeBeforeCity,
-		...hiddenState,
-	},
-	PT: hiddenState,
-	RE: hiddenState,
-	RO: {
-		state: {
-			label: __( 'County', 'woocommerce' ),
-			optionalLabel: __(
-				'County (optional)',
-				'woocommerce'
-			),
-		},
-	},
-	RS: hiddenState,
-	SE: {
-		...postcodeBeforeCity,
-		...hiddenState,
-	},
-	SG: {
-		city: {
-			required: false,
-		},
-		...hiddenState,
-	},
-	SK: {
-		...postcodeBeforeCity,
-		...hiddenState,
-	},
-	SI: {
-		...postcodeBeforeCity,
-		...hiddenState,
-	},
-	SR: {
-		...hiddenPostcode,
-	},
-	ST: {
-		...hiddenPostcode,
-		state: {
-			label: __( 'District', 'woocommerce' ),
-			optionalLabel: __(
-				'District (optional)',
-				'woocommerce'
-			),
-		},
-	},
-	MD: {
-		state: {
-			label: __(
-				'Municipality/District',
-				'woocommerce'
-			),
-			optionalLabel: __(
-				'Municipality/District (optional)',
-				'woocommerce'
-			),
-		},
-	},
-	TR: {
-		...postcodeBeforeCity,
-		state: {
-			label: __( 'Province', 'woocommerce' ),
-			optionalLabel: __(
-				'Province (optional)',
-				'woocommerce'
-			),
-		},
-	},
-	UG: {
-		...hiddenPostcode,
-		city: {
-			label: __( 'Town/Village', 'woocommerce' ),
-			optionalLabel: __(
-				'Town/Village (optional)',
-				'woocommerce'
-			),
-		},
-		state: {
-			label: __( 'District', 'woocommerce' ),
-			optionalLabel: __(
-				'District (optional)',
-				'woocommerce'
-			),
-		},
-	},
-	US: {
-		postcode: {
-			label: __( 'ZIP', 'woocommerce' ),
-			optionalLabel: __(
-				'ZIP (optional)',
-				'woocommerce'
-			),
-		},
-		state: {
-			label: __( 'State', 'woocommerce' ),
-			optionalLabel: __(
-				'State (optional)',
-				'woocommerce'
-			),
-		},
-	},
-	VN: {
-		city: {
-			index: 8,
-		},
-		postcode: {
-			index: 7,
-			required: false,
-		},
-		...hiddenState,
-	},
-	WS: hiddenPostcode,
-	YT: hiddenState,
-	ZA: {
-		state: {
-			label: __( 'Province', 'woocommerce' ),
-			optionalLabel: __(
-				'Province (optional)',
-				'woocommerce'
-			),
-		},
-	},
-	ZW: hiddenPostcode,
-};
-
-export default countryAddressFields;
+export default coreAddressFieldConfig;

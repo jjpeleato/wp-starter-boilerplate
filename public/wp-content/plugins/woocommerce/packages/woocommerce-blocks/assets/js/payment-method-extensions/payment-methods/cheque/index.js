@@ -23,7 +23,7 @@ const label = decodeEntities( settings.title ) || defaultLabel;
  * Content component
  */
 const Content = () => {
-	return <div>{ decodeEntities( settings.description || '' ) }</div>;
+	return decodeEntities( settings.description || '' );
 };
 
 /**
@@ -44,9 +44,11 @@ const offlineChequePaymentMethod = {
 	label: <Label />,
 	content: <Content />,
 	edit: <Content />,
-	icons: null,
 	canMakePayment: () => true,
 	ariaLabel: label,
+	supports: {
+		features: settings?.supports ?? [],
+	},
 };
 
-registerPaymentMethod( ( Config ) => new Config( offlineChequePaymentMethod ) );
+registerPaymentMethod( offlineChequePaymentMethod );

@@ -1,53 +1,123 @@
-# Translation of Plugins - Honeypot for Contact Form 7 - Stable (latest release) in Spanish (Spain)
-# This file is distributed under the same license as the Plugins - Honeypot for Contact Form 7 - Stable (latest release) package.
+# Translation of Plugins - Honeypot for Contact Form 7 - Development (trunk) in Spanish (Spain)
+# This file is distributed under the same license as the Plugins - Honeypot for Contact Form 7 - Development (trunk) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2019-11-05 21:19:48+0000\n"
+"PO-Revision-Date: 2021-03-08 08:55:09+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: GlotPress/2.4.0-alpha\n"
+"X-Generator: GlotPress/3.0.0-alpha.2\n"
 "Language: es\n"
-"Project-Id-Version: Plugins - Honeypot for Contact Form 7 - Stable (latest release)\n"
+"Project-Id-Version: Plugins - Honeypot for Contact Form 7 - Development (trunk)\n"
+
+#: includes/admin.php:238
+msgid "Accessibility Message"
+msgstr "Mensaje de accesibilidad"
+
+#: includes/admin.php:319
+msgid "Buy Us a Coffee"
+msgstr "Cómpranos un café"
+
+#: includes/admin.php:288
+msgid "Reset to Defaults"
+msgstr "Restablecer a los valores por defecto"
+
+#: includes/admin.php:287
+msgid "Save"
+msgstr "Guardar"
+
+#: includes/admin.php:112
+msgid "Settings"
+msgstr "Ajustes"
+
+#: includes/admin.php:188
+msgid "The changes have been saved."
+msgstr "Tus cambios se han guardado."
+
+#: includes/admin.php:169
+msgid "The settings have been reset to their defaults."
+msgstr "Los ajustes se han restablecido a sus valores por defecto."
+
+#. translators: %s: Affiliate Link
+#: includes/admin.php:328
+msgid "We use %s and find it incredibly valuable. If you choose to use them too (even for free), you are helping continued development and support of this plugin. Thank you!"
+msgstr "Usamos %s y nos parece increíblemente útil. Si también decides usarlos (incluso de forma gratuita), estás ayudando al desarrollo continuo y al apoyo de este plugin. ¡Gracias!"
+
+#: includes/admin.php:272
+msgid "By default Honeypot uses inline CSS on the honeypot field to hide it. Checking this box moves that CSS to the footer of the page. It may help confuse bots."
+msgstr "Por defecto, Honeypot usa CSS integrado en el campo de señuelo para ocultarlo. Al marcar esta casilla, ese CSS se mueve al pie de la página. Puede ayudar a confundir a los bots."
+
+#: includes/admin.php:276
+msgid "Disable Accessibility Label"
+msgstr "Desactivar la etiqueta de accesibilidad"
+
+#: includes/admin.php:204
+msgid "Get Support"
+msgstr "Obtener soporte"
+
+#: includes/admin.php:266
+msgid "Move Inline CSS"
+msgstr "Mover el CSS integrado"
+
+#: includes/honeypot4cf7.php:188 includes/honeypot4cf7.php:197
+msgid "Honeypot for CF7"
+msgstr "Señuelo para CF7"
+
+#: includes/admin.php:206
+msgid "Honeypot Settings"
+msgstr "Ajustes del señuelo"
+
+#. translators: 1: spam count 2: install date
+#: includes/admin.php:305
+msgid "Honeypot has stopped %1$s spam submissions since %2$s"
+msgstr "El señuelo ha detenido %1$s envíos de spam desde %2$s"
+
+#. translators: %s: honeypot field ID
+#: includes/honeypot4cf7.php:153
+msgid "Something is stuck in the honey. Field ID = %s"
+msgstr "Algo ha caído en la trampa. ID del campo = %s"
+
+#. translators: %s: default value
+#: includes/admin.php:248
+msgid "You can customize the (hidden) accessibility message, or just leave it the default value: %s"
+msgstr "Puedes personalizar el mensaje de accesibilidad (oculto) o simplemente dejar el valor por defecto: %s"
+
+#. translators: %s: Plugin's reviews page link
+#: includes/admin.php:351
+msgid "Please rate us on %s. Thanks!!"
+msgstr "Por favor, valóranos en %s. ¡Gracias!"
 
 #. Plugin Name of the plugin
+#: includes/admin.php:196
 msgid "Honeypot for Contact Form 7"
 msgstr "Honeypot for Contact Form 7"
 
-#: honeypot.php:279
+#: includes/honeypot4cf7.php:277 includes/admin.php:282
 msgid "If checked, the accessibility label will not be generated. This is not recommended, but may improve spam blocking. If you're unsure, leave this unchecked."
 msgstr "Si se marca esta opción, no se generará la etiqueta de accesibilidad. Esto no es recomendable, pero puede mejorar el bloqueo de spam. Si no estás seguro, deja esto sin marcar."
 
-#: honeypot.php:249
-msgid "By default the markup that wraps this form item has a random ID. You can customize it here. If you're unsure, leave blank."
-msgstr "Por defecto, la etiqueta que envuelve este elemento de formulario tiene un ID aleatorio. Puedes personalizarlo aquí. Si no estás seguro, déjalo en blanco."
-
-#: honeypot.php:245
+#: includes/honeypot4cf7.php:233
 msgid "Wrapper ID (optional)"
 msgstr "ID de contenedor (opcional)"
 
-#: honeypot.php:269
-msgid "Moves the CSS to hide the honeypot from the element to the footer of the page. May help confuse bots."
-msgstr "Mueve el CSS para ocultar el señuelo del elemento al pie de página. Puede ayudar a confundir a los bots."
+#: includes/honeypot4cf7.php:237
+msgid "By default the markup that wraps this form item has a random ID. You can customize it here. If you're unsure, leave blank."
+msgstr "Por defecto, la etiqueta que envuelve este elemento de formulario tiene un ID aleatorio. Puedes personalizarlo aquí. Si no estás seguro, déjalo en blanco."
 
-#: honeypot.php:265
+#: includes/honeypot4cf7.php:263
 msgid "Move inline CSS (optional)"
 msgstr "Mover CSS integrado (opcional)"
 
-#: honeypot.php:259
-msgid "See <a href=\"https://wordpress.org/support/topic/w3c-validation-in-1-11-explanation-and-work-arounds/\" target=\"_blank\" rel=\"noopener\">here</a> for more details. If you're unsure, leave this unchecked."
-msgstr "Ve <a href=\"https://wordpress.org/support/topic/w3c-validation-in-1-11-explanation-and-work-arounds/\" target=\"_blank\" rel=\"noopener\">aquí</a> para más detalles. Si no estás seguro, deja esta casilla sin marcar."
+#: includes/honeypot4cf7.php:267
+msgid "Moves the CSS to hide the honeypot from the element to the footer of the page. May help confuse bots."
+msgstr "Mueve el CSS para ocultar el señuelo del elemento al pie de página. Puede ayudar a confundir a los bots."
 
-#: honeypot.php:255
-msgid "Use W3C Valid Autocomplete (optional)"
-msgstr "Usar autocompletado W3C válido (opcional)"
-
-#: honeypot.php:275
+#: includes/honeypot4cf7.php:273
 msgid "Disable Accessibility Label (optional)"
 msgstr "Desactivar etiqueta de accesibilidad (opcional)"
 
-#: honeypot.php:221
+#: includes/honeypot4cf7.php:209
 msgid "This can be anything, but should be changed from the default generated \"honeypot\". For better security, change \"honeypot\" to something more appealing to a bot, such as text including \"email\" or \"website\"."
 msgstr "Esto puede ser cualquier cosa, pero es recomendable cambiar el texto «honeypot» generado de forma predeterminada. Para mayor seguridad, cambia «honeypot» por algo más atractivo para un bot, como cualquier texto que incluya «email» o «website»."
 
@@ -59,62 +129,44 @@ msgstr "http://www.nocean.ca"
 msgid "Nocean"
 msgstr "Nocean"
 
-#. Description of the plugin
-msgid "Add honeypot anti-spam functionality to the popular Contact Form 7 plugin."
-msgstr "Añade funcionalidad de señuelos antispam al popular plugin Contact Form 7."
-
 #. Plugin URI of the plugin
 msgid "http://www.nocean.ca/plugins/honeypot-module-for-contact-form-7-wordpress-plugin/"
 msgstr "http://www.nocean.ca/plugins/honeypot-module-for-contact-form-7-wordpress-plugin/"
 
-#: honeypot.php:335
-msgid "Copy this code and paste it into the form left."
-msgstr "Copia este código y pégalo en el formulario de la izquierda."
-
-#: honeypot.php:291
+#: includes/honeypot4cf7.php:289
 msgid "Insert Tag"
 msgstr "Insertar etiqueta"
 
-#: honeypot.php:326
-msgid "If checked, the accessibility message will not be generated. <strong>This is not recommended</strong>. If you're unsure, leave this unchecked."
-msgstr "Si marcas esto, no se generará el mensaje de accesibilidad. <strong>Esto no es recomendable</strong>. En caso de duda, déjalo sin marcar."
-
-#: honeypot.php:325
-msgid "Don't Use Accessibility Message (optional)"
-msgstr "No usar el mensaje de accesibilidad (opcional)"
-
-#: honeypot.php:236 honeypot.php:319
+#: includes/honeypot4cf7.php:224
 msgid "Class (optional)"
 msgstr "Clase (opcional)"
 
-#: honeypot.php:227 honeypot.php:315
+#: includes/honeypot4cf7.php:215
 msgid "ID (optional)"
 msgstr "ID (opcional)"
 
-#: honeypot.php:304
-msgid "For better security, change \"honeypot\" to something less bot-recognizable."
-msgstr "Para mayor seguridad, cambia \"honeypot\" por algo menos reconocible por un bot."
-
-#: honeypot.php:217 honeypot.php:302
+#: includes/honeypot4cf7.php:205
 msgid "Name"
 msgstr "Nombre"
 
-#: honeypot.php:208
-msgid "CF7 Honeypot"
-msgstr "CF7 Honeypot"
-
-#: honeypot.php:207
-msgid "Generate a form-tag for a spam-stopping honeypot field. For more details, see %s."
-msgstr "Genera una etiqueta de formulario de campo señuelo anti-spam. Para más información, %s."
-
-#: honeypot.php:198 honeypot.php:200
-msgid "Honeypot"
-msgstr "Honeypot"
-
-#: honeypot.php:126
+#: includes/honeypot4cf7.php:55 includes/admin.php:249
 msgid "Please leave this field empty."
 msgstr "Deja este campo en blanco, por favor."
 
-#: honeypot.php:67
+#. translators: %s: Link to Contact Form 7 plugin page.
+#: includes/admin.php:39
 msgid "%s must be installed and activated for the CF7 Honeypot plugin to work"
 msgstr "%s debe estar instalado y activo para que el plugin CF7 Honeypot funcione"
+
+#. Description of the plugin
+msgid "Add honeypot anti-spam functionality to the popular Contact Form 7 plugin."
+msgstr "Añade funcionalidad de señuelos antispam al popular plugin Contact Form 7."
+
+#. translators: %s: Link to Honeypot plugin page
+#: includes/honeypot4cf7.php:187 includes/honeypot4cf7.php:196
+msgid "Generate a form-tag for a spam-stopping honeypot field. For more details, see %s."
+msgstr "Genera una etiqueta de formulario de campo señuelo anti-spam. Para más información, %s."
+
+#: includes/honeypot4cf7.php:182 includes/admin.php:159
+msgid "Honeypot"
+msgstr "Honeypot"

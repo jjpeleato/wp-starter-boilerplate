@@ -3,8 +3,9 @@ Contributors: jasongreen
 Tags: contact form 7, save contact form, submissions, contact form db, cf7, wpcf7, contact form storage, contact form seven, contact form 7 db, export contact form
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SNHXWSXSPYATE
 Requires at least: 3.0.1
-Tested up to: 5.2.3
-Stable tag: 1.6.4
+Tested up to: 5.7
+Stable tag: 1.7.1
+Requires PHP: 5.6
 License: GPLv3
 
 Never miss an enquiry again! Save & Export your Contact Form 7 submissions.
@@ -41,6 +42,13 @@ None yet
 3. Submission detailed screen
 
 == Changelog ==
+
+= 1.7.1 =
+* Security fix
+
+= 1.7 =
+* Security fixes
+* Fixed image upload with contact form 7 code change
 
 = 1.6.4 =
 * Added security fix to escape user submitted data

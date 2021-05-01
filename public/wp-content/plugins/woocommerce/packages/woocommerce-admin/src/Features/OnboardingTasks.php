@@ -43,8 +43,10 @@ class OnboardingTasks {
 	public function __construct() {
 		// This hook needs to run when options are updated via REST.
 		add_action( 'add_option_woocommerce_task_list_complete', array( $this, 'track_completion' ), 10, 2 );
+		add_action( 'add_option_woocommerce_extended_task_list_complete', array( $this, 'track_extended_completion' ), 10, 2 );
 		add_action( 'add_option_woocommerce_task_list_tracked_completed_tasks', array( $this, 'track_task_completion' ), 10, 2 );
 		add_action( 'update_option_woocommerce_task_list_tracked_completed_tasks', array( $this, 'track_task_completion' ), 10, 2 );
+		add_action( 'admin_enqueue_scripts', array( $this, 'update_option_extended_task_list' ), 15 );
 
 		if ( ! is_admin() ) {
 			return;
@@ -62,6 +64,7 @@ class OnboardingTasks {
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_onboarding_homepage_notice_admin_script' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_onboarding_tax_notice_admin_script' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_onboarding_product_import_notice_admin_script' ) );
+		add_filter( 'woocommerce_paypal_payments_onboarding_redirect_url', array( $this, 'ppcp_ob_after_onboarding_redirect_url' ) );
 	}
 
 	/**
@@ -70,6 +73,8 @@ class OnboardingTasks {
 	public function add_media_scripts() {
 		wp_enqueue_media();
 	}
+
+
 
 	/**
 	 * Get task item data for settings filter.
@@ -99,6 +104,7 @@ class OnboardingTasks {
 		$settings['automatedTaxSupportedCountries'] = self::get_automated_tax_supported_countries();
 		$settings['hasHomepage']                    = self::check_task_completion( 'homepage' ) || 'classic' === get_option( 'classic-editor-replace' );
 		$settings['hasPaymentGateway']              = ! empty( $enabled_gateways );
+		$settings['enabledPaymentGateways']         = array_keys( $enabled_gateways );
 		$settings['hasPhysicalProducts']            = count(
 			wc_get_products(
 				array(
@@ -224,6 +230,22 @@ class OnboardingTasks {
 		}
 		return false;
 	}
+
+
+	/**
+	 * Sets the URL users are redirected to after PayPal Payments has received onboarding information from PayPal.
+	 *
+	 * @param string $url the current redirect url.
+	 * @return string redirect url redirecting to WC Admin home screen.
+	 */
+	public static function ppcp_ob_after_onboarding_redirect_url( $url ) {
+		if ( isset( $_GET['ppcpobw'] ) && 1 === absint( $_GET['ppcpobw'] ) ) { // phpcs:ignore csrf ok, sanitization ok.
+			$url = wc_admin_url( '&task=payments&method=paypal&onboarding=complete' );
+		}
+
+		return $url;
+	}
+
 
 	/**
 	 * Hooks into the product page to add a notice to return to the task list if a product was added.
@@ -365,6 +387,18 @@ class OnboardingTasks {
 	}
 
 	/**
+	 * Records an event when all tasks are completed in the extended task list.
+	 *
+	 * @param mixed $old_value Old value.
+	 * @param mixed $new_value New value.
+	 */
+	public static function track_extended_completion( $old_value, $new_value ) {
+		if ( $new_value ) {
+			wc_admin_record_tracks_event( 'extended_tasklist_tasks_completed' );
+		}
+	}
+
+	/**
 	 * Records an event for individual task completion.
 	 *
 	 * @param mixed $old_value Old value.
@@ -376,6 +410,24 @@ class OnboardingTasks {
 
 		foreach ( $untracked_tasks as $task ) {
 			wc_admin_record_tracks_event( 'tasklist_task_completed', array( 'task_name' => $task ) );
+		}
+	}
+
+	/**
+	 * Update registered extended task list items.
+	 */
+	public static function update_option_extended_task_list() {
+		if (
+			! \Automattic\WooCommerce\Admin\Loader::is_admin_page() ||
+			! \Automattic\WooCommerce\Admin\Features\Onboarding::should_show_tasks()
+		) {
+			return;
+		}
+		$extended_tasks_list_items            = get_option( 'woocommerce_extended_task_list_items', array() );
+		$registered_extended_tasks_list_items = apply_filters( 'woocommerce_get_registered_extended_tasks', array() );
+		if ( $registered_extended_tasks_list_items !== $extended_tasks_list_items ) {
+			update_option( 'woocommerce_extended_task_list_items', $registered_extended_tasks_list_items );
+			update_option( 'woocommerce_extended_task_list_hidden', 'no' );
 		}
 	}
 }

@@ -1,5 +1,29 @@
 CHANGES LOG (full version).
 ===========================
+
+= [4.59] 02.04.2021 =
+* Update: PHP constant URE_WP_ADMIN_URL was replaced with direct 'admin_url()' call to respect the 'admin_url' filter applied by the get_admin_url() WordPress API function.
+* Update: Editing roles and capabilities granted to selected user ("Capabilities" link under user row at the "Users" list) executes 'add_user_role' or 'remove_user_role' actions only in case it really grants or revokes roles and/or capabilities.
+  Previous versions fully revoked and granted again all roles during user permissions update even in case roles list was not changed. It was leaded to the false execution of the mentioned add/remove role actions.
+
+= [4.58.3] 26.02.2021 =
+* Update: URE automatically adds custom taxonomies user capabilities to administrator role before opening "Users->User Role Editor" page.
+* Fix: Role changes were not saved with option "Confirm role update" switched off.
+
+= [4.58.2] 15.01.2021 =
+* Fix: Additional options turned ON for a role was not saved during role update.
+* Update: All JavaScript files are loaded with URE plugin version number as a query string for cache busting purpose.
+
+= [4.58.1] 11.01.2021 =
+* Fix: User lost assigned role(s) after click "Update" at the user permissions page, opened via "Selected user->Capabilities" or "User Profile->Capabilities->Edit" link.
+
+= [4.58] 11.01.2021 =
+* Update: Users->User Role Editor: Update button saves changes via AJAX without full page reload.
+* Fix: New user registered via frontend (wp-login.php?action=register) automatically receives additional (other) default role(s) according to selection made at User Role Editor settings "Other default roles" tab.
+* Fix: "JQMIGRATE: jquery.fn.resize() event shorthand is deprecated" notice was fixed.
+* Fix: "JQMIGRATE: jQuery.fn.click() event shorthand is deprecated" notice was fixed.
+* Fix: "JQMIGRATE: Number-typed values are deprecated for jQuery.fn.css( (property name), value )" notice was fixed.
+
 = [4.57.1] 10.12.2020 =
 * Fix: Nextgen Gallery's user capabilities were not shown as granted after current role change via roles selection dropdown list.
 * Fix: PHP Warning:  The magic method __wakeup() must have public visibility. __wakeup() method was defined as private as a part of the Singleton design partern. Method was redefined as public but with exception inside to prevent its usage.

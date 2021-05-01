@@ -1,6 +1,6 @@
 <?php
 /**
- * The Local SEO Module
+ * The Local SEO module.
  *
  * @since      0.9.0
  * @package    RankMath
@@ -10,7 +10,6 @@
 
 namespace RankMath\Local_Seo;
 
-use RankMath\Post;
 use RankMath\Helper;
 use RankMath\Traits\Ajax;
 use RankMath\Traits\Hooker;
@@ -37,7 +36,7 @@ class Local_Seo {
 	}
 
 	/**
-	 * Init Local SEO Sitemap if possible.
+	 * Init Local SEO Sitemap.
 	 */
 	public function location_sitemap() {
 		if (
@@ -50,7 +49,7 @@ class Local_Seo {
 	}
 
 	/**
-	 * Add module settings into general optional panel.
+	 * Add module settings in Titles & Meta panel.
 	 *
 	 * @param array $tabs Array of option panel tabs.
 	 *
@@ -63,7 +62,7 @@ class Local_Seo {
 	}
 
 	/**
-	 * Ajax search pages.
+	 * Ajax handler to search pages based on the searched string. Used in the Local SEO Settings.
 	 */
 	public function search_pages() {
 		check_ajax_referer( 'rank-math-ajax-nonce', 'security' );
@@ -74,19 +73,20 @@ class Local_Seo {
 			exit;
 		}
 
-		$pages = get_posts(
-			[
-				's'              => $term,
-				'post_type'      => 'page',
-				'posts_per_page' => -1,
-			]
+		global $wpdb;
+		$pages = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT ID, post_title FROM {$wpdb->prefix}posts WHERE post_type = 'page' AND post_title LIKE %s",
+				"%{$wpdb->esc_like( $term )}%"
+			),
+			ARRAY_A
 		);
 
 		$data = [];
 		foreach ( $pages as $page ) {
 			$data[] = [
-				'id'   => $page->ID,
-				'text' => $page->post_title,
+				'id'   => $page['ID'],
+				'text' => $page['post_title'],
 			];
 		}
 
@@ -94,7 +94,7 @@ class Local_Seo {
 	}
 
 	/**
-	 * Output structured data for Person or Organization.
+	 * Add Person/Organization schema.
 	 *
 	 * @param array  $data    Array of JSON-LD data.
 	 * @param JsonLD $json_ld The JsonLD instance.
@@ -102,6 +102,10 @@ class Local_Seo {
 	 * @return array
 	 */
 	public function organization_or_person( $data, $json_ld ) {
+		if ( ! $json_ld->can_add_global_entities( $data ) ) {
+			return $data;
+		}
+
 		$entity = [
 			'@type' => '',
 			'@id'   => '',
@@ -112,17 +116,12 @@ class Local_Seo {
 		$json_ld->add_prop( 'email', $entity );
 		$json_ld->add_prop( 'url', $entity );
 		$json_ld->add_prop( 'address', $entity );
-
-		if ( $value = Helper::get_settings( 'titles.knowledgegraph_logo' ) ) { // phpcs:ignore
-			$entity['logo'] = [
-				'@type' => 'ImageObject',
-				'url'   => $value,
-			];
-		}
+		$json_ld->add_prop( 'image', $entity );
 
 		switch ( Helper::get_settings( 'titles.knowledgegraph_type' ) ) {
 			case 'company':
-				$data['publisher'] = $this->organization( $entity );
+				$this->add_place_entity( $data, $json_ld );
+				$data['publisher'] = $this->organization( $entity, $data );
 				break;
 			case 'person':
 				$data['publisher'] = $this->person( $entity, $json_ld );
@@ -133,11 +132,35 @@ class Local_Seo {
 	}
 
 	/**
+	 * Add place entity to use in the Organization schema.
+	 *
+	 * @param array  $data   Array of JSON-LD data.
+	 * @param JsonLD $jsonld The JsonLD instance.
+	 */
+	private function add_place_entity( &$data, $jsonld ) {
+		$properties = [];
+		$this->add_geo_cordinates( $properties );
+		$jsonld->add_prop( 'address', $properties );
+		if ( empty( $properties ) ) {
+			return;
+		}
+
+		$data['place'] = array_merge(
+			[
+				'@type' => 'Place',
+				'@id'   => home_url( '/#place' ),
+			],
+			$properties
+		);
+	}
+
+	/**
 	 * Structured data for Organization.
 	 *
 	 * @param array $entity Array of JSON-LD entity.
+	 * @param array $data  Array of JSON-LD data.
 	 */
-	private function organization( $entity ) {
+	private function organization( $entity, $data ) {
 		$name            = Helper::get_settings( 'titles.knowledgegraph_name' );
 		$type            = Helper::get_settings( 'titles.local_business_type' );
 		$entity['@type'] = $type ? $type : 'Organization';
@@ -148,13 +171,17 @@ class Local_Seo {
 			$entity['@type'] = \array_values( array_filter( [ $type, 'Organization' ] ) );
 		}
 
-		$this->add_contact_points( $entity );
-		$this->add_geo_cordinates( $entity );
-		$this->add_business_hours( $entity );
-
 		// Price Range.
 		if ( $price_range = Helper::get_settings( 'titles.price_range' ) ) { // phpcs:ignore
 			$entity['priceRange'] = $price_range;
+		}
+
+		$this->add_contact_points( $entity );
+		$this->add_business_hours( $entity );
+
+		// Add reference to the place entity.
+		if ( isset( $data['place'] ) ) {
+			$entity['location'] = [ '@id' => $data['place']['@id'] ];
 		}
 
 		return $this->sanitize_organization_schema( $entity, $type );
@@ -183,9 +210,10 @@ class Local_Seo {
 		$json_ld->add_prop( 'phone', $entity );
 
 		if ( isset( $entity['logo'] ) ) {
-			$entity['image'] = $entity['logo'];
+			$entity['image'] = [ '@id' => $entity['logo']['@id'] ];
 
 			if ( ! is_singular() ) {
+				$entity['image'] = $entity['logo'];
 				unset( $entity['logo'] );
 			}
 		}
@@ -194,7 +222,7 @@ class Local_Seo {
 	}
 
 	/**
-	 * Add Contact Points.
+	 * Add Contact points in the Organization schema.
 	 *
 	 * @param array $entity Array of JSON-LD entity.
 	 */
@@ -215,7 +243,7 @@ class Local_Seo {
 	}
 
 	/**
-	 * Add geo coordinates.
+	 * Add geo coordinates in Place entity.
 	 *
 	 * @param array $entity Array of JSON-LD entity.
 	 */
@@ -235,7 +263,7 @@ class Local_Seo {
 	}
 
 	/**
-	 * Add business hours.
+	 * Add business hours in the Organization schema.
 	 *
 	 * @param array $entity Array of JSON-LD entity.
 	 */
@@ -252,7 +280,7 @@ class Local_Seo {
 	}
 
 	/**
-	 * Get opening hours.
+	 * Get Business opening hours.
 	 *
 	 * @return bool|array
 	 */
@@ -284,10 +312,8 @@ class Local_Seo {
 	 */
 	private function sanitize_organization_schema( $entity, $type ) {
 		$types = [
-			'ecp'  => [ 'Zoo', 'Airport', 'Beach', 'BusStation', 'BusStop', 'Cemetery', 'Crematorium', 'TaxiStand', 'TrainStation', 'EventVenue', 'Museum', 'MusicVenue', 'PlaceOfWorship', 'Buddhist Temple', 'CatholicChurch', 'Church', 'Hindu Temple', 'Mosque', 'Synagogue', 'RVPark', 'SubwayStation', 'GovernmentBuilding', 'CityHall', 'Courthouse', 'DefenceEstablishment', 'Embassy', 'LegislativeBuilding', 'ParkingFacility', 'Park', 'PerformingArtsTheater', 'Playground' ],
-			'op'   => [ 'Organization', 'Corporation', 'EducationalOrganization', 'CollegeorUniversity', 'ElementarySchool', 'HighSchool', 'MiddleSchool', 'Preschool', 'School', 'SportsTeam', 'MedicalOrganization', 'DiagnosticLab', 'Pharmacy', 'VeterinaryCare', 'PerformingGroup', 'DanceGroup', 'MusicGroup', 'TheaterGroup', 'GovernmentOrganization', 'NGO' ],
-			'opec' => [ 'Residence', 'ApartmentComplex', 'GatedResidenceCommunity', 'SingleFamilyResidence', 'Aquarium' ],
-			'logo' => [ 'AnimalShelter', 'AutomotiveBusiness', 'Campground', 'ChildCare', 'DryCleaningorLaundry', 'Dentist', 'EmergencyService', 'FireStation', 'PoliceStation', 'EntertainmentBusiness', 'AdultEntertainment', 'AmusementPark', 'ArtGallery', 'Casino', 'ComedyClub', 'NightClub', 'EmploymentAgency', 'TravelAgency', 'Store', 'BikeStore', 'BookStore', 'ClothingStore', 'ComputerStore', 'ConvenienceStore', 'DepartmentStore', 'ElectronicsStore', 'Florist', 'FurnitureStore', 'GardenStore', 'GroceryStore', 'HardwareStore', 'HobbyShop', 'HomeGoodsStore', 'JewelryStore', 'LiquorStore', 'MensClothingStore', 'MobilePhoneStore', 'MovieRentalStore', 'MusicStore', 'OfficeEquipmentStore', 'OutletStore', 'PawnShop', 'PetStore', 'ShoeStore', 'SportingGoodsStore', 'TireShop', 'ToyStore', 'WholesaleStore', 'FinancialService', 'Hospital', 'MovieTheater', 'HomeAndConstructionBusiness', 'Electrician', 'GeneralContractor', 'Plumber', 'InternetCafe', 'Library', 'LocalBusiness', 'LodgingBusiness', 'Hostel', 'Hotel', 'Motel', 'BedAndBreakfast', 'RadioStation', 'RealEstateAgent', 'RecyclingCenter', 'SelfStorage', 'ShoppingCenter', 'SportsActivityLocation', 'BowlingAlley', 'ExerciseGym', 'GolfCourse', 'HealthClub', 'PublicSwimmingPool', 'SkiResort', 'SportsClub', 'TennisComplex', 'StadiumOrArena', 'TelevisionStation', 'TouristInformationCenter', 'MovingCompany', 'InsuranceAgency', 'ProfessionalService', 'HVACBusiness', 'AutoBodyShop', 'AutoDealer', 'AutoPartsStore', 'AutoRental', 'AutoRepair', 'AutoWash', 'GasStation', 'MotorcycleDealer', 'MotorcycleRepair', 'AccountingService', 'AutomatedTeller', 'FoodEstablishment', 'Bakery', 'BarOrPub', 'Brewery', 'CafeorCoffeeShop', 'FastFoodRestaurant', 'IceCreamShop', 'Restaurant', 'Winery', 'GovernmentOffice', 'PostOffice', 'HealthAndBeautyBusiness', 'BeautySalon', 'DaySpa', 'HairSalon', 'HealthClub', 'NailSalon', 'TattooParlor', 'HousePainter', 'Locksmith', 'Notary', 'RoofingContractor', 'LegalService', 'Physician', 'Optician', 'MedicalClinic', 'BankorCreditUnion' ],
+			'op'   => [ 'Organization', 'Corporation', 'EducationalOrganization', 'CollegeOrUniversity', 'ElementarySchool', 'HighSchool', 'MiddleSchool', 'Preschool', 'School', 'SportsTeam', 'MedicalOrganization', 'DiagnosticLab', 'Pharmacy', 'VeterinaryCare', 'PerformingGroup', 'DanceGroup', 'MusicGroup', 'TheaterGroup', 'GovernmentOrganization', 'NGO', 'Airline', 'Consortium', 'Funding Scheme', 'FundingAgency', 'LibrarySystem', 'NewsMediaOrganization', 'Project', 'SportsOrganization', 'WorkersUnion' ],
+			'logo' => [ 'AnimalShelter', 'AutomotiveBusiness', 'Campground', 'ChildCare', 'DryCleaningOrLaundry', 'Dentist', 'EmergencyService', 'FireStation', 'PoliceStation', 'EntertainmentBusiness', 'AdultEntertainment', 'AmusementPark', 'ArtGallery', 'Casino', 'ComedyClub', 'MovieTheater', 'NightClub', 'EmploymentAgency', 'TravelAgency', 'Store', 'AutoPartsStore', 'BikeStore', 'BookStore', 'ClothingStore', 'ComputerStore', 'ConvenienceStore', 'DepartmentStore', 'ElectronicsStore', 'Florist', 'FurnitureStore', 'GardenStore', 'GroceryStore', 'HardwareStore', 'HobbyShop', 'HomeGoodsStore', 'JewelryStore', 'LiquorStore', 'MensClothingStore', 'MobilePhoneStore', 'MovieRentalStore', 'MusicStore', 'OfficeEquipmentStore', 'OutletStore', 'PawnShop', 'PetStore', 'ShoeStore', 'SportingGoodsStore', 'TireShop', 'ToyStore', 'WholesaleStore', 'FinancialService', 'Hospital', 'MovieTheater', 'HomeAndConstructionBusiness', 'Electrician', 'GeneralContractor', 'Plumber', 'InternetCafe', 'Library', 'LocalBusiness', 'LodgingBusiness', 'Hostel', 'Hotel', 'Motel', 'BedAndBreakfast', 'Campground', 'RadioStation', 'RealEstateAgent', 'RecyclingCenter', 'SelfStorage', 'ShoppingCenter', 'SportsActivityLocation', 'BowlingAlley', 'ExerciseGym', 'GolfCourse', 'HealthClub', 'PublicSwimmingPool', 'Resort', 'SkiResort', 'SportsClub', 'TennisComplex', 'StadiumOrArena', 'TelevisionStation', 'TouristInformationCenter', 'MovingCompany', 'InsuranceAgency', 'ProfessionalService', 'HVACBusiness', 'AutoBodyShop', 'AutoDealer', 'AutoPartsStore', 'AutoRental', 'AutoRepair', 'AutoWash', 'GasStation', 'MotorcycleDealer', 'MotorcycleRepair', 'AccountingService', 'AutomatedTeller', 'FoodEstablishment', 'Bakery', 'BarOrPub', 'Brewery', 'CafeOrCoffeeShop', 'FastFoodRestaurant', 'IceCreamShop', 'Restaurant', 'Winery', 'GovernmentOffice', 'PostOffice', 'HealthAndBeautyBusiness', 'BeautySalon', 'DaySpa', 'HairSalon', 'HealthClub', 'NailSalon', 'TattooParlor', 'HousePainter', 'Locksmith', 'Notary', 'RoofingContractor', 'LegalService', 'Physician', 'Optician', 'MedicalBusiness', 'MedicalClinic', 'BankOrCreditUnion', 'CovidTestingFacility', 'ArchiveOrganization', 'Optician', 'Attorney' ],
 		];
 
 		$perform = false;
@@ -299,20 +325,6 @@ class Local_Seo {
 		}
 
 		return $perform ? $this->$perform( $entity ) : $entity;
-	}
-
-	/**
-	 * Remove `email`, `contactPoint`, `priceRange` properties
-	 * from the Schema entity.
-	 *
-	 * @param array $entity Array of Schema structured data.
-	 *
-	 * @return array Sanitized data.
-	 */
-	private function sanitize_organization_ecp( $entity ) {
-		unset( $entity['email'], $entity['contactPoint'], $entity['priceRange'] );
-
-		return $entity;
 	}
 
 	/**
@@ -330,20 +342,6 @@ class Local_Seo {
 	}
 
 	/**
-	 * Remove `openingHours`, `priceRange`, `email`, `contactPoint` properties
-	 * from the Schema entity.
-	 *
-	 * @param array $entity Array of Schema structured data.
-	 *
-	 * @return array Sanitized data.
-	 */
-	private function sanitize_organization_opec( $entity ) {
-		unset( $entity['openingHours'], $entity['priceRange'], $entity['email'], $entity['contactPoint'] );
-
-		return $entity;
-	}
-
-	/**
 	 * Change `logo` property to `image` & `contactPoint` to `telephone`.
 	 *
 	 * @param array $entity Array of schema data.
@@ -352,7 +350,7 @@ class Local_Seo {
 	 */
 	private function sanitize_organization_logo( $entity ) {
 		if ( isset( $entity['logo'] ) ) {
-			$entity['image'] = $entity['logo'];
+			$entity['image'] = [ '@id' => $entity['logo']['@id'] ];
 		}
 		if ( isset( $entity['contactPoint'] ) ) {
 			$entity['telephone'] = $entity['contactPoint'][0]['telephone'];

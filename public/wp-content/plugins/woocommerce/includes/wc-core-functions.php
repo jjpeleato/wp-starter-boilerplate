@@ -1771,6 +1771,11 @@ function wc_uasort_comparison( $a, $b ) {
  * @return int
  */
 function wc_ascii_uasort_comparison( $a, $b ) {
+	// 'setlocale' is required for compatibility with PHP 8.
+	// Without it, 'iconv' will return '?'s instead of transliterated characters.
+	$prev_locale = setlocale( LC_CTYPE, 0 );
+	setlocale( LC_ALL, 'C.UTF-8' );
+
 	// phpcs:disable WordPress.PHP.NoSilencedErrors.Discouraged
 	if ( function_exists( 'iconv' ) && defined( 'ICONV_IMPL' ) && @strcasecmp( ICONV_IMPL, 'unknown' ) !== 0 ) {
 		$a = @iconv( 'UTF-8', 'ASCII//TRANSLIT//IGNORE', $a );
@@ -1778,6 +1783,7 @@ function wc_ascii_uasort_comparison( $a, $b ) {
 	}
 	// phpcs:enable WordPress.PHP.NoSilencedErrors.Discouraged
 
+	setlocale( LC_ALL, $prev_locale );
 	return strcmp( $a, $b );
 }
 
@@ -1795,10 +1801,26 @@ function wc_ascii_uasort_comparison( $a, $b ) {
 function wc_asort_by_locale( &$data, $locale = '' ) {
 	// Use Collator if PHP Internationalization Functions (php-intl) is available.
 	if ( class_exists( 'Collator' ) ) {
-		$locale   = $locale ? $locale : get_locale();
-		$collator = new Collator( $locale );
-		$collator->asort( $data, Collator::SORT_STRING );
-		return $data;
+		try {
+			$locale   = $locale ? $locale : get_locale();
+			$collator = new Collator( $locale );
+			$collator->asort( $data, Collator::SORT_STRING );
+			return $data;
+		} catch ( IntlException $e ) {
+			/*
+			 * Just skip if some error got caused.
+			 * It may be caused in installations that doesn't include ICU TZData.
+			 */
+			if ( Constants::is_true( 'WP_DEBUG' ) ) {
+				error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+					sprintf(
+						'An unexpected error occurred while trying to use PHP Intl Collator class, it may be caused by an incorrect installation of PHP Intl and ICU, and could be fixed by reinstallaing PHP Intl, see more details about PHP Intl installation: %1$s. Error message: %2$s',
+						'https://www.php.net/manual/en/intl.installation.php',
+						$e->getMessage()
+					)
+				);
+			}
+		}
 	}
 
 	$raw_data = $data;
@@ -2249,7 +2271,11 @@ function wc_prevent_dangerous_auto_updates( $should_update, $plugin ) {
 
 	$new_version      = wc_clean( $plugin->new_version );
 	$plugin_updates   = new WC_Plugin_Updates();
-	$untested_plugins = $plugin_updates->get_untested_plugins( $new_version, 'major' );
+	$version_type = Constants::get_constant( 'WC_SSR_PLUGIN_UPDATE_RELEASE_VERSION_TYPE' );
+	if ( ! is_string( $version_type ) ) {
+		$version_type = 'none';
+	}
+	$untested_plugins = $plugin_updates->get_untested_plugins( $new_version, $version_type );
 	if ( ! empty( $untested_plugins ) ) {
 		return false;
 	}
@@ -2501,4 +2527,24 @@ function wc_load_cart() {
 function wc_is_running_from_async_action_scheduler() {
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	return isset( $_REQUEST['action'] ) && 'as_async_request_queue_runner' === $_REQUEST['action'];
+}
+
+/**
+ * Polyfill for wp_cache_get_multiple for WP versions before 5.5.
+ *
+ * @param array  $keys   Array of keys to get from group.
+ * @param string $group  Optional. Where the cache contents are grouped. Default empty.
+ * @param bool   $force  Optional. Whether to force an update of the local cache from the persistent
+ *                            cache. Default false.
+ * @return array|bool Array of values.
+ */
+function wc_cache_get_multiple( $keys, $group = '', $force = false ) {
+	if ( function_exists( 'wp_cache_get_multiple' ) ) {
+		return wp_cache_get_multiple( $keys, $group, $force );
+	}
+	$values = array();
+	foreach ( $keys as $key ) {
+		$values[ $key ] = wp_cache_get( $key, $group, $force );
+	}
+	return $values;
 }

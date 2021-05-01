@@ -26,7 +26,7 @@ import { reducer, prepareResponseData } from './reducer';
 import { DEFAULT_STATE, STATUS } from './constants';
 import {
 	EMIT_TYPES,
-	emitterSubscribers,
+	emitterObservers,
 	emitEvent,
 	emitEventWithAbort,
 	reducer as emitReducer,
@@ -61,6 +61,7 @@ const CheckoutContext = createContext( {
 		setAfterProcessing: ( response ) => void response,
 		incrementCalculating: () => void null,
 		decrementCalculating: () => void null,
+		setCustomerId: ( id ) => void id,
 		setOrderId: ( id ) => void id,
 		setOrderNotes: ( orderNotes ) => void orderNotes,
 	},
@@ -96,7 +97,7 @@ export const CheckoutStateProvider = ( {
 	// the redirectUrl for when checkout is reset to PRISTINE state.
 	DEFAULT_STATE.redirectUrl = redirectUrl;
 	const [ checkoutState, dispatch ] = useReducer( reducer, DEFAULT_STATE );
-	const [ observers, subscriber ] = useReducer( emitReducer, {} );
+	const [ observers, observerDispatch ] = useReducer( emitReducer, {} );
 	const currentObservers = useRef( observers );
 	const { setValidationErrors } = useValidationContext();
 	const { addErrorNotice, removeNotices } = useStoreNotices();
@@ -119,18 +120,19 @@ export const CheckoutStateProvider = ( {
 	}, [ observers ] );
 	const onCheckoutAfterProcessingWithSuccess = useMemo(
 		() =>
-			emitterSubscribers( subscriber )
+			emitterObservers( observerDispatch )
 				.onCheckoutAfterProcessingWithSuccess,
-		[ subscriber ]
+		[ observerDispatch ]
 	);
 	const onCheckoutAfterProcessingWithError = useMemo(
 		() =>
-			emitterSubscribers( subscriber ).onCheckoutAfterProcessingWithError,
-		[ subscriber ]
+			emitterObservers( observerDispatch )
+				.onCheckoutAfterProcessingWithError,
+		[ observerDispatch ]
 	);
 	const onCheckoutBeforeProcessing = useMemo(
-		() => emitterSubscribers( subscriber ).onCheckoutBeforeProcessing,
-		[ subscriber ]
+		() => emitterObservers( observerDispatch ).onCheckoutBeforeProcessing,
+		[ observerDispatch ]
 	);
 
 	/**
@@ -147,6 +149,8 @@ export const CheckoutStateProvider = ( {
 				void dispatch( actions.incrementCalculating() ),
 			decrementCalculating: () =>
 				void dispatch( actions.decrementCalculating() ),
+			setCustomerId: ( id ) =>
+				void dispatch( actions.setCustomerId( id ) ),
 			setOrderId: ( orderId ) =>
 				void dispatch( actions.setOrderId( orderId ) ),
 			setOrderNotes: ( orderNotes ) =>
@@ -250,9 +254,10 @@ export const CheckoutStateProvider = ( {
 						isFailResponse( response )
 					) {
 						if ( response.message ) {
-							const errorOptions = response.messageContext
-								? { context: response.messageContext }
-								: undefined;
+							const errorOptions = {
+								id: response?.messageContext,
+								context: response?.messageContext,
+							};
 							addErrorNotice( response.message, errorOptions );
 						}
 						// irrecoverable error so set complete

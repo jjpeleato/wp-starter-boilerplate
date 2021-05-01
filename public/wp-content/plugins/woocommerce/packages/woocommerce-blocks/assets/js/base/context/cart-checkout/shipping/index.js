@@ -9,27 +9,24 @@ import {
 	useMemo,
 	useRef,
 } from '@wordpress/element';
-import {
-	useShippingAddress,
-	useStoreCart,
-	useSelectShippingRate,
-} from '@woocommerce/base-hooks';
-import { useCheckoutContext } from '@woocommerce/base-context';
+import { useStoreCart, useSelectShippingRates } from '@woocommerce/base-hooks';
+import isShallowEqual from '@wordpress/is-shallow-equal';
+import { deriveSelectedShippingRates } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
  */
-import {
-	ERROR_TYPES,
-	DEFAULT_SHIPPING_CONTEXT_DATA,
-	shippingErrorCodes,
-} from './constants';
+import { ERROR_TYPES, DEFAULT_SHIPPING_CONTEXT_DATA } from './constants';
+import { hasInvalidShippingAddress } from './utils';
+import { errorStatusReducer } from './reducers';
 import {
 	EMIT_TYPES,
-	emitterSubscribers,
+	emitterObservers,
 	reducer as emitReducer,
 	emitEvent,
 } from './event-emit';
+import { useCheckoutContext } from '../checkout-state';
+import { useCustomerDataContext } from '../customer';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').ShippingDataContext} ShippingDataContext
@@ -37,86 +34,68 @@ import {
  */
 
 const { NONE, INVALID_ADDRESS, UNKNOWN } = ERROR_TYPES;
-
-/**
- * Reducer for shipping status state
- *
- * @param {string} state  The current status.
- * @param {Object} action The incoming action.
- * @param {string} action.type The type of action.
- */
-const errorStatusReducer = ( state, { type } ) => {
-	if ( Object.values( ERROR_TYPES ).includes( type ) ) {
-		return type;
-	}
-	return state;
-};
-
 const ShippingDataContext = createContext( DEFAULT_SHIPPING_CONTEXT_DATA );
 
 /**
- * @return {ShippingDataContext} Returns data and functions related to
- *                               shipping methods.
+ * @return {ShippingDataContext} Returns data and functions related to shipping methods.
  */
 export const useShippingDataContext = () => {
 	return useContext( ShippingDataContext );
 };
 
-const hasInvalidShippingAddress = ( errors ) => {
-	return errors.some( ( error ) => {
-		if (
-			error.code &&
-			Object.values( shippingErrorCodes ).includes( error.code )
-		) {
-			return true;
-		}
-		return false;
-	} );
-};
-
 /**
- * The shipping data provider exposes the interface for shipping in the
- * checkout/cart.
+ * The shipping data provider exposes the interface for shipping in the checkout/cart.
  *
  * @param {Object} props Incoming props for provider
  * @param {React.ReactElement} props.children
  */
 export const ShippingDataProvider = ( { children } ) => {
 	const { dispatchActions } = useCheckoutContext();
+	const { shippingAddress, setShippingAddress } = useCustomerDataContext();
 	const {
 		cartNeedsShipping: needsShipping,
+		cartHasCalculatedShipping: hasCalculatedShipping,
 		shippingRates,
 		shippingRatesLoading,
 		cartErrors,
 	} = useStoreCart();
+	const { selectShippingRate, isSelectingRate } = useSelectShippingRates();
 	const [ shippingErrorStatus, dispatchErrorStatus ] = useReducer(
 		errorStatusReducer,
 		NONE
 	);
-	const [ observers, subscriber ] = useReducer( emitReducer, {} );
-	const { shippingAddress, setShippingAddress } = useShippingAddress();
+	const [ observers, observerDispatch ] = useReducer( emitReducer, {} );
 	const currentObservers = useRef( observers );
-	const {
-		selectShippingRate: setSelectedRates,
-		selectedShippingRates: selectedRates,
-		isSelectingRate,
-	} = useSelectShippingRate( shippingRates );
-	const eventSubscribers = useMemo(
+	const eventObservers = useMemo(
 		() => ( {
-			onShippingRateSuccess: emitterSubscribers( subscriber ).onSuccess,
-			onShippingRateFail: emitterSubscribers( subscriber ).onFail,
-			onShippingRateSelectSuccess: emitterSubscribers( subscriber )
+			onShippingRateSuccess: emitterObservers( observerDispatch )
+				.onSuccess,
+			onShippingRateFail: emitterObservers( observerDispatch ).onFail,
+			onShippingRateSelectSuccess: emitterObservers( observerDispatch )
 				.onSelectSuccess,
-			onShippingRateSelectFail: emitterSubscribers( subscriber )
+			onShippingRateSelectFail: emitterObservers( observerDispatch )
 				.onSelectFail,
 		} ),
-		[ subscriber ]
+		[ observerDispatch ]
 	);
 
 	// set observers on ref so it's always current.
 	useEffect( () => {
 		currentObservers.current = observers;
 	}, [ observers ] );
+
+	// set selected rates on ref so it's always current.
+	const selectedRates = useRef( () =>
+		deriveSelectedShippingRates( shippingRates )
+	);
+	useEffect( () => {
+		const derivedSelectedRates = deriveSelectedShippingRates(
+			shippingRates
+		);
+		if ( ! isShallowEqual( selectedRates.current, derivedSelectedRates ) ) {
+			selectedRates.current = derivedSelectedRates;
+		}
+	}, [ shippingRates ] );
 
 	// increment/decrement checkout calculating counts when shipping is loading.
 	useEffect( () => {
@@ -127,8 +106,7 @@ export const ShippingDataProvider = ( { children } ) => {
 		}
 	}, [ shippingRatesLoading, dispatchActions ] );
 
-	// increment/decrement checkout calculating counts when shipping rates are
-	// being selected.
+	// increment/decrement checkout calculating counts when shipping rates are being selected.
 	useEffect( () => {
 		if ( isSelectingRate ) {
 			dispatchActions.incrementCalculating();
@@ -199,7 +177,10 @@ export const ShippingDataProvider = ( { children } ) => {
 
 	// emit shipping rate selection events.
 	useEffect( () => {
-		if ( ! isSelectingRate && currentErrorStatus.hasError ) {
+		if ( isSelectingRate ) {
+			return;
+		}
+		if ( currentErrorStatus.hasError ) {
 			emitEvent(
 				currentObservers.current,
 				EMIT_TYPES.SHIPPING_RATE_SELECT_FAIL,
@@ -208,27 +189,18 @@ export const ShippingDataProvider = ( { children } ) => {
 					hasInvalidAddress: currentErrorStatus.hasInvalidAddress,
 				}
 			);
+		} else {
+			emitEvent(
+				currentObservers.current,
+				EMIT_TYPES.SHIPPING_RATE_SELECT_SUCCESS,
+				selectedRates.current
+			);
 		}
 	}, [
-		selectedRates,
 		isSelectingRate,
 		currentErrorStatus.hasError,
 		currentErrorStatus.hasInvalidAddress,
 	] );
-
-	useEffect( () => {
-		if (
-			! isSelectingRate &&
-			selectedRates &&
-			! currentErrorStatus.hasError
-		) {
-			emitEvent(
-				currentObservers.current,
-				EMIT_TYPES.SHIPPING_RATE_SELECT_SUCCESS,
-				selectedRates
-			);
-		}
-	}, [ selectedRates, isSelectingRate, currentErrorStatus.hasError ] );
 
 	/**
 	 * @type {ShippingDataContext}
@@ -238,20 +210,17 @@ export const ShippingDataProvider = ( { children } ) => {
 		dispatchErrorStatus,
 		shippingErrorTypes: ERROR_TYPES,
 		shippingRates,
-		setShippingRates: setSelectedRates,
 		shippingRatesLoading,
-		selectedRates,
-		setSelectedRates,
+		selectedRates: selectedRates.current,
+		setSelectedRates: selectShippingRate,
 		isSelectingRate,
 		shippingAddress,
 		setShippingAddress,
-		onShippingRateSuccess: eventSubscribers.onShippingRateSuccess,
-		onShippingRateFail: eventSubscribers.onShippingRateFail,
-		onShippingRateSelectSuccess:
-			eventSubscribers.onShippingRateSelectSuccess,
-		onShippingRateSelectFail: eventSubscribers.onShippingRateSelectFail,
 		needsShipping,
+		hasCalculatedShipping,
+		...eventObservers,
 	};
+
 	return (
 		<>
 			<ShippingDataContext.Provider value={ ShippingData }>

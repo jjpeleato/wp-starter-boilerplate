@@ -19,8 +19,8 @@
         "deployer/recipes": "^6.2",
         "phpcompatibility/phpcompatibility-wp": "^2.1",
         "roave/security-advisories": "dev-latest",
-        "squizlabs/php_codesniffer": "^3.5",
-        "vlucas/phpdotenv": "^5.2",
+        "squizlabs/php_codesniffer": "^3.6",
+        "vlucas/phpdotenv": "^5.3",
         "wp-coding-standards/wpcs": "^2.3"
     },
     "config": {
@@ -30,14 +30,12 @@
     },
     "scripts": {
 		"cs": "phpcs",
-		"cs:fix": "phpcbf",
-		"test": [
-			"phpunit"
-		]
+		"cs:fix": "phpcbf"
 	},
 	"extra": {
 		"scripts-description": {
-			"test": "Run unit tests"
+			"cs": "Run phpcodesniffer",
+			"cs:fix": "Run phpcodesniffer beautifier"
 		}
 	}
 }

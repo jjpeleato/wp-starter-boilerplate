@@ -63,6 +63,8 @@ class Init {
 			'Automattic\WooCommerce\Admin\API\Options',
 			'Automattic\WooCommerce\Admin\API\Orders',
 			'Automattic\WooCommerce\Admin\API\Products',
+			'Automattic\WooCommerce\Admin\API\ProductAttributes',
+			'Automattic\WooCommerce\Admin\API\ProductAttributeTerms',
 			'Automattic\WooCommerce\Admin\API\ProductCategories',
 			'Automattic\WooCommerce\Admin\API\ProductVariations',
 			'Automattic\WooCommerce\Admin\API\ProductReviews',
@@ -95,6 +97,7 @@ class Init {
 			'Automattic\WooCommerce\Admin\API\OnboardingProfile',
 			'Automattic\WooCommerce\Admin\API\OnboardingTasks',
 			'Automattic\WooCommerce\Admin\API\OnboardingThemes',
+			'Automattic\WooCommerce\Admin\API\NavigationFavorites',
 		);
 
 		// The performance indicators controller must be registered last, after other /stats endpoints have been registered.

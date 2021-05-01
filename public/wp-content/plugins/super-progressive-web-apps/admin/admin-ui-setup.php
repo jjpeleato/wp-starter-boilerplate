@@ -29,13 +29,23 @@ function superpwa_add_menu_links() {
 	
 	// Settings page - Same as main menu page
 	add_submenu_page( 'superpwa', __( 'Super Progressive Web Apps', 'super-progressive-web-apps' ), __( 'Settings', 'super-progressive-web-apps' ), 'manage_options', 'superpwa', 'superpwa_admin_interface_render', 60);
-	
+
 	// Add-Ons page
 	add_submenu_page( 'superpwa', __( 'Super Progressive Web Apps', 'super-progressive-web-apps' ), __( 'Add-ons', 'super-progressive-web-apps' ), 'manage_options', 'superpwa-addons', 'superpwa_addons_interface_render', 70);
 
 	// UTM Tracking sub-menu
 	if ( superpwa_addons_status( 'utm_tracking' ) 		== 'active' ){ 
 		add_submenu_page( 'superpwa', __( 'Super Progressive Web Apps', 'super-progressive-web-apps' ), __( 'UTM Tracking', 'super-progressive-web-apps' ), 'manage_options', 'superpwa-utm-tracking', 'superpwa_utm_tracking_interface_render', 72 );
+	}
+
+	// apple touch icons sub-menu
+	if ( superpwa_addons_status( 'apple_touch_icons' ) 	== 'active' ){ 
+		add_submenu_page( 'superpwa', __( 'Super Progressive Web Apps', 'super-progressive-web-apps' ), __( 'Apple icons', 'super-progressive-web-apps' ), 'manage_options', 'superpwa-apple-icons', 'superpwa_apple_icons_interface_render', 74 );
+	}
+	
+	// Caching Strategies sub-menu
+	if ( superpwa_addons_status( 'caching_strategies' ) == 'active' ){ 
+		add_submenu_page( 'superpwa', __( 'Super Progressive Web Apps', 'super-progressive-web-apps' ), __( 'Caching Strategies', 'super-progressive-web-apps' ), 'manage_options', 'superpwa-caching-strategies', 'superpwa_caching_strategies_interface_render', 74 );
 	}
 
 	// Upgrade to pro page
@@ -201,6 +211,50 @@ function superpwa_register_settings() {
 			'superpwa_pwa_status_section',							// Page slug
 			'superpwa_pwa_status_section'							// Settings Section ID
 		);	
+
+
+	//Advance Page
+	// PWA Advance settings
+    add_settings_section(
+        'superpwa_pwa_advance_section',					// ID
+        __return_false(),		// Title
+        '__return_false',								// Callback Function
+        'superpwa_pwa_advance_section'					// Page slug
+    );
+    	// Disabling "Add to home screen"
+		add_settings_field(
+			'superpwa_disable_add_to_home',								// ID
+			__('Disable "Add to home screen"', 'super-progressive-web-apps'),				// Title
+			'superpwa_disable_add_to_home_cb',								// CB
+			'superpwa_pwa_advance_section',							// Page slug
+			'superpwa_pwa_advance_section'							// Settings Section ID
+		);
+        if (!defined('SUPERPWA_PRO_VERSION')) {
+            // App shortcuts
+            add_settings_field(
+                'superpwa_app_shortcut',								// ID
+            __('App shortcuts link', 'super-progressive-web-apps'),				// Title
+            'superpwa_app_shortcut_link_cb',								// CB
+            'superpwa_pwa_advance_section',							// Page slug
+            'superpwa_pwa_advance_section'							// Settings Section ID
+            );
+        }
+		// Yandex Support
+		add_settings_field(
+			'superpwa_yandex_support_shortcut',								// ID
+			__('Yandex support', 'super-progressive-web-apps'),				// Title
+			'superpwa_yandex_support_cb',								// CB
+			'superpwa_pwa_advance_section',							// Page slug
+			'superpwa_pwa_advance_section'							// Settings Section ID
+		);
+		// Analytics support
+		add_settings_field(
+			'superpwa_analytics_support_shortcut',								// ID
+			__('Offline analytics ', 'super-progressive-web-apps'),				// Title
+			'superpwa_analytics_support_cb',								// CB
+			'superpwa_pwa_advance_section',							// Page slug
+			'superpwa_pwa_advance_section'							// Settings Section ID
+		);	
 }
 add_action( 'admin_init', 'superpwa_register_settings' );
 
@@ -289,6 +343,7 @@ function superpwa_get_settings() {
 				'display'			=> 1,
 				'is_static_manifest'=> 0,
 				'is_static_sw'		=> 0,
+				'disable_add_to_home'=> 0,
 			);
 
 	$settings = get_option( 'superpwa_settings', $defaults );
@@ -328,6 +383,7 @@ function superpwa_enqueue_css_js( $hook ) {
 	if ( strpos( $hook, 'superpwa' ) === false ) {
 		return;
 	}
+	remove_all_actions('admin_notices'); 
 	
 	// Color picker CSS
 	// @refer https://make.wordpress.org/core/2012/11/30/new-color-picker-in-wp-3-5/

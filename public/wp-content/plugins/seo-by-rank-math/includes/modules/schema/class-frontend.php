@@ -1,6 +1,6 @@
 <?php
 /**
- * Outputs schema code specific for Google's JSON LD stuff
+ * The frontend code of the Schema module.
  *
  * @since      1.4.3
  * @package    RankMath
@@ -41,29 +41,19 @@ class Frontend {
 	 * The Constructor.
 	 */
 	public function __construct() {
+		if ( Helper::is_divi_frontend_editor() ) {
+			return;
+		}
 		$this->action( 'rank_math/json_ld', 'add_schema', 10, 2 );
 		$this->action( 'rank_math/json_ld', 'connect_schema_entities', 99, 2 );
 		$this->filter( 'rank_math/snippet/rich_snippet_event_entity', 'validate_event_schema', 11, 2 );
+		$this->filter( 'rank_math/snippet/rich_snippet_article_entity', 'add_name_property', 11, 2 );
+
+		new Opengraph();
 	}
 
 	/**
-	 * Add timezone to startDate field.
-	 *
-	 * @param array $schema Snippet Data.
-	 * @return array
-	 */
-	public function validate_event_schema( $schema ) {
-		if ( empty( $schema['startDate'] ) ) {
-			return $schema;
-		}
-
-		$schema['startDate'] = str_replace( ' ', 'T', Helper::convert_date( $schema['startDate'], true ) );
-
-		return $schema;
-	}
-
-	/**
-	 * Get Default Schema Data.
+	 * Output schema data for a post.
 	 *
 	 * @param array  $data   Array of json-ld data.
 	 * @param JsonLD $jsonld Instance of jsonld.
@@ -82,14 +72,18 @@ class Frontend {
 				return ! in_array( $schema['@type'], [ 'WooCommerceProduct', 'EDDProduct' ], true );
 			}
 		);
-		$schemas = $jsonld->replace_variables( $schemas );
+
+		// Check & Unpublish the JobPosting post.
+		DB::unpublish_jobposting_post( $jsonld, $schemas );
+
+		$schemas = $jsonld->replace_variables( $schemas, [], $data );
 		$schemas = $jsonld->filter( $schemas, $jsonld, $data );
 
 		return array_merge( $data, $schemas );
 	}
 
 	/**
-	 * Connect schema entities.
+	 * Connect different schema entities using isPartOf & publisher properties.
 	 *
 	 * @param array  $schemas Array of json-ld data.
 	 * @param JsonLD $jsonld  Instance of jsonld.
@@ -100,6 +94,8 @@ class Frontend {
 		if ( empty( $schemas ) ) {
 			return $schemas;
 		}
+
+		$jsonld->parts['canonical'] = ! empty( $jsonld->parts['canonical'] ) ? $jsonld->parts['canonical'] : \RankMath\Paper\Paper::get()->get_canonical();
 
 		$schema_types = [];
 		foreach ( $schemas as $id => $schema ) {
@@ -117,6 +113,39 @@ class Frontend {
 	}
 
 	/**
+	 * Add name property to the Article schema.
+	 *
+	 * @since 1.0.61
+	 *
+	 * @param  array $schema Snippet Data.
+	 * @return array
+	 */
+	public function add_name_property( $schema ) {
+		if ( empty( $schema['headline'] ) ) {
+			return $schema;
+		}
+
+		$schema['name'] = $schema['headline'];
+		return $schema;
+	}
+
+	/**
+	 * Add timezone to startDate field.
+	 *
+	 * @param array $schema Event schema Data.
+	 * @return array
+	 */
+	public function validate_event_schema( $schema ) {
+		if ( empty( $schema['startDate'] ) ) {
+			return $schema;
+		}
+
+		$schema['startDate'] = str_replace( ' ', 'T', Helper::convert_date( $schema['startDate'], true ) );
+
+		return $schema;
+	}
+
+	/**
 	 * Connect schema properties.
 	 *
 	 * @param array  $schema  Schema Entity.
@@ -125,50 +154,61 @@ class Frontend {
 	 * @param array  $schemas Array of json-ld data.
 	 */
 	private function connect_properties( &$schema, $id, $jsonld, $schemas ) {
+		if ( isset( $schema['isCustom'] ) ) {
+			unset( $schema['isCustom'] );
+			return;
+		}
+
+		// Remove empty ImageObject.
 		if ( isset( $schema['image'] ) && empty( $schema['image']['url'] ) ) {
 			unset( $schema['image'] );
 		}
 
-		$schema['@id'] = $jsonld->parts['canonical'] . '#' . $id;
-		$type          = \strtolower( $schema['@type'] );
-		$is_event      = Str::contains( 'event', $type );
-		if ( $is_event ) {
-			$jsonld->add_prop( 'publisher', $schema, 'organizer', $schemas );
-		}
+		$jsonld->parts['canonical'] = ! empty( $jsonld->parts['canonical'] ) ? $jsonld->parts['canonical'] : \RankMath\Paper\Paper::get()->get_canonical();
+		$schema['@id']              = $jsonld->parts['canonical'] . '#' . $id;
 
-		$props = [
-			'is_part_of' => [
-				'key'   => 'webpage',
-				'value' => ! in_array( $type, [ 'jobposting', 'musicgroup', 'person', 'product', 'restaurant', 'service' ], true ) && ! $is_event,
-			],
-			'publisher'  => [
-				'key'   => 'publisher',
-				'value' => ! in_array( $type, [ 'jobposting', 'musicgroup', 'person', 'product', 'restaurant', 'service' ], true ) && ! $is_event,
-			],
-			'thumbnail'  => [
-				'key'   => 'image',
-				'value' => ! in_array( $type, [ 'videoobject' ], true ) || isset( $schema['image'] ),
-			],
-			'language'   => [
-				'key'   => 'inLanguage',
-				'value' => ! in_array( $type, [ 'person', 'service', 'restaurant', 'product', 'musicgroup', 'musicalbum', 'jobposting' ], true ),
-			],
-		];
-
-		foreach ( $props as $prop => $data ) {
-			if ( ! $data['value'] ) {
-				continue;
+		$types = array_map( 'strtolower', (array) $schema['@type'] );
+		foreach ( $types as $type ) {
+			$is_event = Str::contains( 'event', $type );
+			// Add publisher entity @id in the organizer property of Event schema.
+			if ( $is_event ) {
+				$jsonld->add_prop( 'publisher', $schema, 'organizer', $schemas );
 			}
 
-			$jsonld->add_prop( $prop, $schema, $data['key'], $schemas );
+			$props = [
+				'is_part_of' => [
+					'key'   => 'webpage',
+					'value' => ! in_array( $type, [ 'jobposting', 'musicgroup', 'person', 'product', 'restaurant', 'service' ], true ) && ! $is_event,
+				],
+				'publisher'  => [
+					'key'   => 'publisher',
+					'value' => ! in_array( $type, [ 'jobposting', 'musicgroup', 'person', 'product', 'restaurant', 'service' ], true ) && ! $is_event,
+				],
+				'thumbnail'  => [
+					'key'   => 'image',
+					'value' => ! in_array( $type, [ 'videoobject' ], true ) || isset( $schema['image'] ),
+				],
+				'language'   => [
+					'key'   => 'inLanguage',
+					'value' => ! in_array( $type, [ 'person', 'service', 'restaurant', 'product', 'musicgroup', 'musicalbum', 'jobposting' ], true ),
+				],
+			];
+
+			foreach ( $props as $prop => $data ) {
+				if ( ! $data['value'] ) {
+					continue;
+				}
+
+				$jsonld->add_prop( $prop, $schema, $data['key'], $schemas );
+			}
 		}
 	}
 
 	/**
-	 * Add main entity of page property.
+	 * Add mainEntityOfPage property to Primary schema entity.
 	 *
-	 * @param array  $schema  Schema Entity.
-	 * @param JsonLD $jsonld  JsonLD Instance.
+	 * @param array  $schema Schema Entity.
+	 * @param JsonLD $jsonld JsonLD Instance.
 	 */
 	private function add_main_entity_of_page( &$schema, $jsonld ) {
 		if ( ! isset( $schema['isPrimary'] ) ) {
@@ -183,7 +223,7 @@ class Frontend {
 	}
 
 	/**
-	 * Change WebPage properties depending on the schemas.
+	 * Change WebPage entity type depending on the schemas on the page.
 	 *
 	 * @param array $schemas Schema data.
 	 * @param array $types   Schema types.
@@ -193,6 +233,10 @@ class Frontend {
 	private function change_webpage_entity( $schemas, $types ) {
 		if ( in_array( 'Product', $types, true ) ) {
 			$schemas['WebPage']['@type'] = 'ItemPage';
+		}
+
+		if ( isset( $schemas['howto'] ) && ! empty( $schemas['WebPage'] ) ) {
+			$schemas['howto']['mainEntityOfPage'] = [ '@id' => $schemas['WebPage']['@id'] ];
 		}
 
 		$faq_data = array_map(

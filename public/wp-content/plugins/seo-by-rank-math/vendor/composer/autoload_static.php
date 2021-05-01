@@ -14,36 +14,29 @@ class ComposerStaticInite0bd047aa5058f04568aa38dfc5ac000
     );
 
     public static $prefixLengthsPsr4 = array (
-        'd' =>
+        'd' => 
         array (
             'donatj\\UserAgent\\' => 17,
         ),
-        'R' =>
-        array (
-            'RankMath\\' => 9,
-        ),
-        'M' =>
+        'M' => 
         array (
             'MyThemeShop\\Helpers\\' => 20,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'donatj\\UserAgent\\' =>
+        'donatj\\UserAgent\\' => 
         array (
             0 => __DIR__ . '/..' . '/donatj/phpuseragentparser/src/UserAgent',
         ),
-        'RankMath\\' =>
-        array (
-            0 => __DIR__ . '/../..' . '/includes',
-        ),
-        'MyThemeShop\\Helpers\\' =>
+        'MyThemeShop\\Helpers\\' => 
         array (
             0 => __DIR__ . '/..' . '/mythemeshop/wordpress-helpers/src',
         ),
     );
 
     public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'MyThemeShop\\Admin\\List_Table' => __DIR__ . '/..' . '/mythemeshop/wordpress-helpers/src/admin/class-list-table.php',
         'MyThemeShop\\Admin\\Page' => __DIR__ . '/..' . '/mythemeshop/wordpress-helpers/src/admin/class-page.php',
         'MyThemeShop\\Database\\Clauses' => __DIR__ . '/..' . '/mythemeshop/wordpress-helpers/src/database/class-clauses.php',
@@ -110,9 +103,7 @@ class ComposerStaticInite0bd047aa5058f04568aa38dfc5ac000
         'RankMath\\Analytics\\Analytics' => __DIR__ . '/../..' . '/includes/modules/analytics/class-analytics.php',
         'RankMath\\Analytics\\Analytics_Common' => __DIR__ . '/../..' . '/includes/modules/analytics/class-analytics-common.php',
         'RankMath\\Analytics\\DB' => __DIR__ . '/../..' . '/includes/modules/analytics/class-db.php',
-        'RankMath\\Analytics\\Data_Fetcher' => __DIR__ . '/../..' . '/includes/modules/analytics/class-data-fetcher.php',
         'RankMath\\Analytics\\GTag' => __DIR__ . '/../..' . '/includes/modules/analytics/class-gtag.php',
-        'RankMath\\Analytics\\Installer' => __DIR__ . '/../..' . '/includes/modules/analytics/class-installer.php',
         'RankMath\\Analytics\\Keywords' => __DIR__ . '/../..' . '/includes/modules/analytics/class-keywords.php',
         'RankMath\\Analytics\\Objects' => __DIR__ . '/../..' . '/includes/modules/analytics/class-objects.php',
         'RankMath\\Analytics\\Posts' => __DIR__ . '/../..' . '/includes/modules/analytics/class-posts.php',
@@ -120,6 +111,12 @@ class ComposerStaticInite0bd047aa5058f04568aa38dfc5ac000
         'RankMath\\Analytics\\Stats' => __DIR__ . '/../..' . '/includes/modules/analytics/class-stats.php',
         'RankMath\\Analytics\\Summary' => __DIR__ . '/../..' . '/includes/modules/analytics/class-summary.php',
         'RankMath\\Analytics\\Watcher' => __DIR__ . '/../..' . '/includes/modules/analytics/class-watcher.php',
+        'RankMath\\Analytics\\Workflow\\Base' => __DIR__ . '/../..' . '/includes/modules/analytics/workflows/class-base.php',
+        'RankMath\\Analytics\\Workflow\\Console' => __DIR__ . '/../..' . '/includes/modules/analytics/workflows/class-console.php',
+        'RankMath\\Analytics\\Workflow\\Jobs' => __DIR__ . '/../..' . '/includes/modules/analytics/workflows/class-jobs.php',
+        'RankMath\\Analytics\\Workflow\\OAuth' => __DIR__ . '/../..' . '/includes/modules/analytics/workflows/class-oauth.php',
+        'RankMath\\Analytics\\Workflow\\Objects' => __DIR__ . '/../..' . '/includes/modules/analytics/workflows/class-objects.php',
+        'RankMath\\Analytics\\Workflow\\Workflow' => __DIR__ . '/../..' . '/includes/modules/analytics/workflows/class-workflow.php',
         'RankMath\\Auto_Updater' => __DIR__ . '/../..' . '/includes/class-auto-updater.php',
         'RankMath\\Beta_Optin' => __DIR__ . '/../..' . '/includes/modules/version-control/class-beta-optin.php',
         'RankMath\\BuddyPress\\Admin' => __DIR__ . '/../..' . '/includes/modules/buddypress/class-admin.php',
@@ -130,6 +127,8 @@ class ComposerStaticInite0bd047aa5058f04568aa38dfc5ac000
         'RankMath\\Compatibility' => __DIR__ . '/../..' . '/includes/class-compatibility.php',
         'RankMath\\Data_Encryption' => __DIR__ . '/../..' . '/includes/class-data-encryption.php',
         'RankMath\\Defaults' => __DIR__ . '/../..' . '/includes/class-defaults.php',
+        'RankMath\\Divi\\Divi' => __DIR__ . '/../..' . '/includes/3rdparty/divi/class-divi.php',
+        'RankMath\\Divi\\Divi_Admin' => __DIR__ . '/../..' . '/includes/3rdparty/divi/class-divi-admin.php',
         'RankMath\\Elementor\\Elementor' => __DIR__ . '/../..' . '/includes/3rdparty/elementor/class-elementor.php',
         'RankMath\\Frontend\\Breadcrumbs' => __DIR__ . '/../..' . '/includes/frontend/class-breadcrumbs.php',
         'RankMath\\Frontend\\Comments' => __DIR__ . '/../..' . '/includes/frontend/class-comments.php',
@@ -142,6 +141,7 @@ class ComposerStaticInite0bd047aa5058f04568aa38dfc5ac000
         'RankMath\\Google\\Api' => __DIR__ . '/../..' . '/includes/modules/analytics/google/class-api.php',
         'RankMath\\Google\\Authentication' => __DIR__ . '/../..' . '/includes/modules/analytics/google/class-authentication.php',
         'RankMath\\Google\\Console' => __DIR__ . '/../..' . '/includes/modules/analytics/google/class-console.php',
+        'RankMath\\Google\\Permissions' => __DIR__ . '/../..' . '/includes/modules/analytics/google/class-permissions.php',
         'RankMath\\Google\\Request' => __DIR__ . '/../..' . '/includes/modules/analytics/google/class-request.php',
         'RankMath\\Helper' => __DIR__ . '/../..' . '/includes/class-helper.php',
         'RankMath\\Helpers\\Api' => __DIR__ . '/../..' . '/includes/helpers/class-api.php',
@@ -152,6 +152,7 @@ class ComposerStaticInite0bd047aa5058f04568aa38dfc5ac000
         'RankMath\\Helpers\\Locale' => __DIR__ . '/../..' . '/includes/helpers/class-locale.php',
         'RankMath\\Helpers\\Options' => __DIR__ . '/../..' . '/includes/helpers/class-options.php',
         'RankMath\\Helpers\\Post_Type' => __DIR__ . '/../..' . '/includes/helpers/class-post-type.php',
+        'RankMath\\Helpers\\Schema' => __DIR__ . '/../..' . '/includes/helpers/class-schema.php',
         'RankMath\\Helpers\\Security' => __DIR__ . '/../..' . '/includes/helpers/class-security.php',
         'RankMath\\Helpers\\Sitepress' => __DIR__ . '/../..' . '/includes/helpers/class-sitepress.php',
         'RankMath\\Helpers\\Taxonomy' => __DIR__ . '/../..' . '/includes/helpers/class-taxonomy.php',
@@ -160,6 +161,8 @@ class ComposerStaticInite0bd047aa5058f04568aa38dfc5ac000
         'RankMath\\Image_Seo\\Admin' => __DIR__ . '/../..' . '/includes/modules/image-seo/class-admin.php',
         'RankMath\\Image_Seo\\Image_Seo' => __DIR__ . '/../..' . '/includes/modules/image-seo/class-image-seo.php',
         'RankMath\\Installer' => __DIR__ . '/../..' . '/includes/class-installer.php',
+        'RankMath\\Instant_Indexing\\Api' => __DIR__ . '/../..' . '/includes/modules/instant-indexing/class-api.php',
+        'RankMath\\Instant_Indexing\\Instant_Indexing' => __DIR__ . '/../..' . '/includes/modules/instant-indexing/class-instant-indexing.php',
         'RankMath\\KB' => __DIR__ . '/../..' . '/includes/class-kb.php',
         'RankMath\\Links\\ContentProcessor' => __DIR__ . '/../..' . '/includes/modules/links/class-contentprocessor.php',
         'RankMath\\Links\\Link' => __DIR__ . '/../..' . '/includes/modules/links/class-link.php',
@@ -222,6 +225,7 @@ class ComposerStaticInite0bd047aa5058f04568aa38dfc5ac000
         'RankMath\\Rest\\Post' => __DIR__ . '/../..' . '/includes/rest/class-post.php',
         'RankMath\\Rest\\Rest_Helper' => __DIR__ . '/../..' . '/includes/rest/class-rest-helper.php',
         'RankMath\\Rest\\Sanitize' => __DIR__ . '/../..' . '/includes/rest/class-sanitize.php',
+        'RankMath\\Rest\\Shared' => __DIR__ . '/../..' . '/includes/rest/class-shared.php',
         'RankMath\\Rewrite' => __DIR__ . '/../..' . '/includes/class-rewrite.php',
         'RankMath\\Robots_Txt' => __DIR__ . '/../..' . '/includes/modules/robots-txt/class-robots-txt.php',
         'RankMath\\Role_Manager\\Capability_Manager' => __DIR__ . '/../..' . '/includes/modules/role-manager/class-capability-manager.php',
@@ -253,6 +257,7 @@ class ComposerStaticInite0bd047aa5058f04568aa38dfc5ac000
         'RankMath\\Schema\\JsonLD' => __DIR__ . '/../..' . '/includes/modules/schema/class-jsonld.php',
         'RankMath\\Schema\\Local' => __DIR__ . '/../..' . '/includes/modules/schema/snippets/class-local.php',
         'RankMath\\Schema\\Music' => __DIR__ . '/../..' . '/includes/modules/schema/snippets/class-music.php',
+        'RankMath\\Schema\\Opengraph' => __DIR__ . '/../..' . '/includes/modules/schema/class-opengraph.php',
         'RankMath\\Schema\\Person' => __DIR__ . '/../..' . '/includes/modules/schema/snippets/class-person.php',
         'RankMath\\Schema\\PrimaryImage' => __DIR__ . '/../..' . '/includes/modules/schema/snippets/class-primaryimage.php',
         'RankMath\\Schema\\Product' => __DIR__ . '/../..' . '/includes/modules/schema/snippets/class-product.php',
@@ -307,6 +312,7 @@ class ComposerStaticInite0bd047aa5058f04568aa38dfc5ac000
         'RankMath\\Traits\\Meta' => __DIR__ . '/../..' . '/includes/traits/class-meta.php',
         'RankMath\\Traits\\Shortcode' => __DIR__ . '/../..' . '/includes/traits/class-shortcode.php',
         'RankMath\\Traits\\Wizard' => __DIR__ . '/../..' . '/includes/traits/class-wizard.php',
+        'RankMath\\Update_Email' => __DIR__ . '/../..' . '/includes/class-update-email.php',
         'RankMath\\Updates' => __DIR__ . '/../..' . '/includes/class-updates.php',
         'RankMath\\User' => __DIR__ . '/../..' . '/includes/class-user.php',
         'RankMath\\Version_Control' => __DIR__ . '/../..' . '/includes/modules/version-control/class-version-control.php',

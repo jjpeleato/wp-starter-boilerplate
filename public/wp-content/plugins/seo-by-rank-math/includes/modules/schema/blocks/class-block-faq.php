@@ -71,7 +71,7 @@ class Block_FAQ extends Block {
 	}
 
 	/**
-	 * FAQ rich snippet.
+	 * Add FAQ schema data in JSON-LD array.
 	 *
 	 * @param array $data  Array of JSON-LD data.
 	 * @param array $block JsonLD Instance.
@@ -95,6 +95,10 @@ class Block_FAQ extends Block {
 		foreach ( $block['attrs']['questions'] as $question ) {
 			if ( empty( $question['title'] ) || empty( $question['content'] ) || empty( $question['visible'] ) ) {
 				continue;
+			}
+
+			if ( empty( $question['id'] ) ) {
+				$question['id'] = 'rm-faq-' . md5( $question['title'] );
 			}
 
 			$data['faqs']['mainEntity'][] = [
@@ -138,6 +142,10 @@ class Block_FAQ extends Block {
 				continue;
 			}
 
+			if ( empty( $question['id'] ) ) {
+				$question['id'] = 'rm-faq-' . md5( $question['title'] );
+			}
+
 			$out[] = sprintf( '<%1$s id="%2$s" class="rank-math-list-item">', $item_tag, $question['id'] );
 
 			$out[] = sprintf(
@@ -164,7 +172,7 @@ class Block_FAQ extends Block {
 	}
 
 	/**
-	 * Has questions.
+	 * Check if FAQ block has questions data.
 	 *
 	 * @param array $attributes Array of attributes.
 	 *

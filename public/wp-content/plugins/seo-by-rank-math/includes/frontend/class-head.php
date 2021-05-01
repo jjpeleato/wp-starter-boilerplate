@@ -68,6 +68,9 @@ class Head {
 			$this->action( 'get_header', 'start_ob', 0 );
 			$this->action( 'wp_head', 'rewrite_title', 9999 );
 		}
+
+		// Remove core robots data.
+		remove_all_filters( 'wp_robots' );
 	}
 
 	/**
@@ -249,6 +252,16 @@ class Head {
 	 * Output the meta keywords value.
 	 */
 	public function metakeywords() {
+		/**
+		 * Passing a truthy value to the filter will effectively short-circuit the
+		 * set keywords process.
+		 *
+		 * @param bool $return Short-circuit return value. Either false or true.
+		 */
+		if ( ! $this->do_filter( 'frontend/show_keywords', false ) ) {
+			return;
+		}
+
 		$keywords = Paper::get()->get_keywords();
 		if ( Str::is_non_empty( $keywords ) ) {
 			echo '<meta name="keywords" content="', esc_attr( $keywords ), '"/>', "\n";

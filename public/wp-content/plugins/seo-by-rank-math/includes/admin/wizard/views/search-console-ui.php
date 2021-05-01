@@ -9,6 +9,7 @@
 use RankMath\KB;
 use RankMath\Helper;
 use RankMath\Google\Authentication;
+use RankMath\Google\Permissions;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -41,14 +42,16 @@ $analytics = wp_parse_args(
 		'country'          => 'all',
 		'install_code'     => false,
 		'anonymize_ip'     => false,
+		'local_ga_js'      => false,
+		'cookieless_ga'    => false,
 		'exclude_loggedin' => false,
 	]
 );
 $is_profile_connected   = ! empty( $profile['profile'] );
-$is_adsense_connected   = ! empty( $analytics ) && ! empty( $analytics['adsense_id'] );
-$is_analytics_connected = ! empty( $analytics ) && ! empty( $analytics['view_id'] );
+$is_adsense_connected   = ! empty( $analytics['adsense_id'] );
+$is_analytics_connected = ! empty( $analytics['view_id'] );
 $all_services           = get_option( 'rank_math_analytics_all_services' );
-$is_pro_active          = ! defined( 'RANK_MATH_PRO_FILE' );
+$is_pro_active          = defined( 'RANK_MATH_PRO_FILE' );
 ?>
 <input type="hidden" class="cmb2-id-check-all-services" value="<?php echo $is_profile_connected && $is_analytics_connected ? '1' : '0'; ?>" />
 
@@ -56,11 +59,26 @@ $is_pro_active          = ! defined( 'RANK_MATH_PRO_FILE' );
 	<a href="<?php echo wp_nonce_url( admin_url( 'admin.php?reconnect=google' ), 'rank_math_reconnect_google' ); ?>" class="button button-link rank-math-reconnect-google"><?php esc_html_e( 'Reconnect', 'rank-math' ); ?></a> <span>|</span> <button class="button button-link rank-math-disconnect-google"><?php esc_html_e( 'Disconnect', 'rank-math' ); ?></button>
 </div>
 
-<div class="rank-math-box no-padding rank-math-accordion <?php echo $is_profile_connected ? 'connected' : 'disconnected'; ?>" tabindex="0">
+<?php
+$console_classes = Helper::classnames(
+	'rank-math-box no-padding rank-math-accordion',
+	[
+		'connected'    => $is_profile_connected,
+		'disconnected' => ! $is_profile_connected,
+		'disabled'     => ! Permissions::has_console(),
+	]
+);
+?>
+<div class="<?php echo $console_classes; ?>" tabindex="0">
 	<header>
 		<h3><?php esc_html_e( 'Search Console', 'rank-math' ); ?></h3>
 	</header>
 	<div class="rank-math-accordion-content">
+
+		<?php
+		if ( ! Permissions::has_console() ) {
+			Permissions::print_warning();
+		} ?>
 
 		<div class="cmb-row cmb-type-select">
 			<div class="cmb-row-col">
@@ -73,19 +91,32 @@ $is_pro_active          = ! defined( 'RANK_MATH_PRO_FILE' );
 			</div>
 			<?php do_action( 'rank_math/analytics/options/console' ); ?>
 		</div>
-
-		<footer>
-			<button class="button button-primary rank-math-save-profiles"><?php esc_html_e( 'Save', 'rank-math' ); ?></button>
-			<button class="button button-secondary rank-math-accordion-close"><?php esc_html_e( 'Cancel', 'rank-math' ); ?></button>
-		</footer>
 	</div>
 </div>
 
-<div class="rank-math-box no-padding rank-math-accordion is-open <?php echo $is_analytics_connected ? 'connected' : 'disconnected'; ?>" tabindex="0">
+<?php
+$analytic_classes = Helper::classnames(
+	'rank-math-box no-padding rank-math-accordion',
+	[
+		'connected'    => $is_analytics_connected,
+		'disconnected' => ! $is_analytics_connected,
+		'disabled'     => ! Permissions::has_analytics(),
+	]
+);
+?>
+<div class="<?php echo $analytic_classes; ?>" tabindex="0">
 	<header>
 		<h3><?php esc_html_e( 'Analytics', 'rank-math' ); ?></h3>
 	</header>
 	<div class="rank-math-accordion-content">
+
+		<?php
+		if ( ! Permissions::has_analytics() ) {
+			Permissions::print_warning();
+		} ?>
+
+		<p class="warning yellow"><strong class="warning"><?php echo esc_attr( 'Notice:', 'rank-math' ); ?></strong> <?php echo wp_kses_post( 'Not seeing your website that uses Google Analytics 4? <a href="https://rankmath.com/kb/using-ga4/?utm_source=Plugin&utm_medium=Analytics%20GA4%20KB&utm_campaign=WP" target="_blank">Click here to know how to fix the issue</a>.', 'rank-math' ); ?></p>
+
 		<div class="cmb-row cmb-type-select">
 			<div class="cmb-row-col">
 				<label for="site-analytics-account"><?php esc_html_e( 'Account', 'rank-math' ); ?></label>
@@ -140,17 +171,67 @@ $is_pro_active          = ! defined( 'RANK_MATH_PRO_FILE' );
 		<div class="cmb-row cmb-type-toggle">
 			<div class="cmb-td">
 				<label class="cmb2-toggle">
-					<input type="checkbox" class="regular-text notrack" name="anonymize-ip" id="anonymize-ip" value="on"<?php checked( $analytics['anonymize_ip'] ); ?><?php disabled( $is_pro_active ); ?>>
-					<span class="cmb2-slider<?php echo $is_pro_active ? ' disabled' : ''; ?> ">
+					<input type="checkbox" class="regular-text notrack" name="anonymize-ip" id="anonymize-ip" value="on"<?php checked( $analytics['anonymize_ip'] ); ?><?php disabled( ! $is_pro_active ); ?>>
+					<span class="cmb2-slider<?php echo ! $is_pro_active ? ' disabled' : ''; ?> ">
 						<svg width="3" height="8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 6" class="toggle_on" role="img" aria-hidden="true" focusable="false"><path d="M0 0h2v6H0z"></path></svg>
 						<svg width="8" height="8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 6 6" class="toggle_off" role="img" aria-hidden="true" focusable="false"><path d="M3 1.5c.8 0 1.5.7 1.5 1.5S3.8 4.5 3 4.5 1.5 3.8 1.5 3 2.2 1.5 3 1.5M3 0C1.3 0 0 1.3 0 3s1.3 3 3 3 3-1.3 3-3-1.3-3-3-3z"></path></svg>
 					</span>
 				</label>
 				<label for="anonymize-ip">
 					<?php esc_html_e( 'Anonymize IP addresses', 'rank-math' ); ?>
-					<?php if ( $is_pro_active ) : ?>
+					<?php if ( ! $is_pro_active ) : ?>
 					<span class="rank-math-pro-badge">
 						<a href="https://rankmath.com/pricing/?utm_source=Plugin&utm_medium=Anonymize%20IP&utm_campaign=WP" target="_blank" rel="noopener noreferrer">
+							<?php esc_html_e( 'PRO', 'rank-math' ); ?>
+						</a>
+					</span>
+					<?php endif; ?>
+				</label>
+				<div class="rank-math-cmb-dependency hidden" data-relation="or">
+					<span class="hidden" data-field="install-code" data-comparison="=" data-value="on"></span>
+				</div>
+			</div>
+		</div>
+
+		<div class="cmb-row cmb-type-toggle">
+			<div class="cmb-td">
+				<label class="cmb2-toggle">
+					<input type="checkbox" class="regular-text notrack" name="cookieless-ga" id="cookieless-ga" value="on"<?php checked( $analytics['cookieless_ga'] ); ?><?php disabled( ! $is_pro_active ); ?>>
+					<span class="cmb2-slider<?php echo ! $is_pro_active ? ' disabled' : ''; ?> ">
+						<svg width="3" height="8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 6" class="toggle_on" role="img" aria-hidden="true" focusable="false"><path d="M0 0h2v6H0z"></path></svg>
+						<svg width="8" height="8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 6 6" class="toggle_off" role="img" aria-hidden="true" focusable="false"><path d="M3 1.5c.8 0 1.5.7 1.5 1.5S3.8 4.5 3 4.5 1.5 3.8 1.5 3 2.2 1.5 3 1.5M3 0C1.3 0 0 1.3 0 3s1.3 3 3 3 3-1.3 3-3-1.3-3-3-3z"></path></svg>
+					</span>
+				</label>
+				<label for="cookieless-ga">
+					<?php printf( esc_html__( 'Enable Cookieless Tracking. Want to make Analytics GDPR ready? %s', 'rank-math' ), '<a href="' . KB::get( 'settings-gdpr-analytics' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Click here.', 'rank-math' ) . '</a>' ); ?>
+					<?php if ( ! $is_pro_active ) : ?>
+					<span class="rank-math-pro-badge">
+						<a href="https://rankmath.com/pricing/?utm_source=Plugin&utm_medium=Cookieless%20IP&utm_campaign=WP" target="_blank" rel="noopener noreferrer">
+							<?php esc_html_e( 'PRO', 'rank-math' ); ?>
+						</a>
+					</span>
+					<?php endif; ?>
+				</label>
+				<div class="rank-math-cmb-dependency hidden" data-relation="or">
+					<span class="hidden" data-field="install-code" data-comparison="=" data-value="on"></span>
+				</div>
+			</div>
+		</div>
+
+		<div class="cmb-row cmb-type-toggle">
+			<div class="cmb-td">
+				<label class="cmb2-toggle">
+					<input type="checkbox" class="regular-text notrack" name="local-ga-js" id="local-ga-js" value="on"<?php checked( $analytics['local_ga_js'] ); ?><?php disabled( ! $is_pro_active ); ?>>
+					<span class="cmb2-slider<?php echo ! $is_pro_active ? ' disabled' : ''; ?> ">
+						<svg width="3" height="8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 6" class="toggle_on" role="img" aria-hidden="true" focusable="false"><path d="M0 0h2v6H0z"></path></svg>
+						<svg width="8" height="8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 6 6" class="toggle_off" role="img" aria-hidden="true" focusable="false"><path d="M3 1.5c.8 0 1.5.7 1.5 1.5S3.8 4.5 3 4.5 1.5 3.8 1.5 3 2.2 1.5 3 1.5M3 0C1.3 0 0 1.3 0 3s1.3 3 3 3 3-1.3 3-3-1.3-3-3-3z"></path></svg>
+					</span>
+				</label>
+				<label for="local-ga-js">
+					<?php esc_html_e( 'Self-Hosted Analytics JS File', 'rank-math' ); ?>
+					<?php if ( ! $is_pro_active ) : ?>
+					<span class="rank-math-pro-badge">
+						<a href="https://rankmath.com/pricing/?utm_source=Plugin&utm_medium=Localjs%20IP&utm_campaign=WP" target="_blank" rel="noopener noreferrer">
 							<?php esc_html_e( 'PRO', 'rank-math' ); ?>
 						</a>
 					</span>
@@ -177,19 +258,30 @@ $is_pro_active          = ! defined( 'RANK_MATH_PRO_FILE' );
 				</div>
 			</div>
 		</div>
-
-		<footer>
-			<button class="button button-primary rank-math-save-analytics"><?php esc_html_e( 'Save', 'rank-math' ); ?></button>
-			<button class="button button-secondary rank-math-accordion-close"><?php esc_html_e( 'Cancel', 'rank-math' ); ?></button>
-		</footer>
 	</div>
 </div>
 
-<div class="rank-math-box no-padding rank-math-accordion <?php echo $is_adsense_connected ? 'connected' : 'disconnected'; ?>" tabindex="0">
+<?php
+$adsense_classes = Helper::classnames(
+	'rank-math-box no-padding rank-math-accordion',
+	[
+		'connected'    => $is_adsense_connected,
+		'disconnected' => ! $is_adsense_connected,
+		'disabled'     => ! Permissions::has_adsense(),
+	]
+);
+?>
+<div class="<?php echo $adsense_classes; ?>" tabindex="0">
 	<header>
 		<h3><?php esc_html_e( 'AdSense', 'rank-math' ); ?></h3>
 	</header>
 	<div class="rank-math-accordion-content">
+
+		<?php
+		if ( defined( 'RANK_MATH_PRO_FILE' ) && ! Permissions::has_adsense() ) {
+			Permissions::print_warning();
+		} ?>
+
 		<div class="cmb-row cmb-type-select">
 			<div class="cmb-row-col">
 				<label for="site-adsense-account"><?php esc_html_e( 'Account', 'rank-math' ); ?></label>
@@ -204,19 +296,13 @@ $is_pro_active          = ! defined( 'RANK_MATH_PRO_FILE' );
 			</div>
 		</div>
 
-		<?php if ( $is_pro_active ) : ?>
+		<?php if ( ! $is_pro_active ) : ?>
 		<div id="rank-math-pro-cta" class="no-margin">
 			<div class="rank-math-cta-text">
 				<span class="rank-math-pro-badge"><a href="https://rankmath.com/pricing/?utm_source=Plugin&utm_medium=AdSense%20Toggle&utm_campaign=WP" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'PRO', 'rank-math' ); ?></a></span> <?php esc_html_e( "Google AdSense support is only available in Rank Math Pro's Advanced Analytics module.", 'rank-math' ); ?>
 			</div>
 		</div>
 		<?php endif; ?>
-
-		<footer>
-			<button class="button button-primary rank-math-save-adsense"><?php esc_html_e( 'Save', 'rank-math' ); ?></button>
-			<button class="button button-secondary rank-math-accordion-close"><?php esc_html_e( 'Cancel', 'rank-math' ); ?></button>
-		</footer>
-
 	</div>
 </div>
 

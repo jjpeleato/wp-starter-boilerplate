@@ -30,6 +30,8 @@ interface Platforms {
 	const PLAYSTATION_3    = 'PlayStation 3';
 	const PLAYSTATION_4    = 'PlayStation 4';
 	const PLAYSTATION_VITA = 'PlayStation Vita';
+	const SAILFISH         = 'Sailfish';
+	const SYMBIAN          = 'Symbian';
 	const TIZEN            = 'Tizen';
 	const WINDOWS_PHONE    = 'Windows Phone';
 	const XBOX             = 'Xbox';

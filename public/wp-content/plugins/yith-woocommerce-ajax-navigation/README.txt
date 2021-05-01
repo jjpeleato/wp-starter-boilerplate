@@ -3,60 +3,81 @@
 Contributors: yithemes
 Tags: woocommerce ajax product filter download, woocommerce, widget, ajax, ajax filtered nav, ajax navigation, ajax filtered navigation, woocommerce layered navigation, woocommerce layered nav, product filter, product filters, ajax product filter, woocommerce ajax product filter, woocommerce filters, sidebar filter, sidebar ajax filter, ajax price filter, price filter, product sorting, woocommerce filter, taxonomy filter, attribute filter, attributes filter, woocommerce product sort, ajax sort, woocommerce ajax product filter, advanced product filters, ajax product filters, filters, woocommerce ajax product filters, woocommerce product filters, woocommerce product filters, category filter, attribute filters, woocommerce products filter, woocommerce price filter, yit, yith, yithemes
 Requires at least: 5.3
-Tested up to: 5.6
-Stable tag: 3.11.5
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Tested up to: 5.7
+Stable tag: 4.0.3
+License: GPLv3 or later
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 YITH WooCommerce Ajax Product Filter offers you the perfect way to filter all products of your WooCommerce shop.
 
 == Description ==
 
-= Filter by the specific product you are looking for =
+E-commerce **product filtering is a must-have tool** to help your customers narrow in on the product they’re looking for and find products they might be interested in based on specific features (size, color, category, etc.)
 
-A powerful WooCommerce plugin: WooCommerce product filter widget, WooCommerce Ajax Product Filter lets you apply the filters you need to display the correct WooCommerce variations of the products you are looking for.
-Choose among color, label, list and dropdown and your WooCommerce filtering search will display those specific products that suit perfectly your needs.
-An extremely helpful WooCommerce plugin to help customers find what they really want.
-All this can be done in a quick and very intuitive way that will certainly help your WooCommerce store improve in quality and usability.
+A reliable product filtering is what allows your visitors to enjoy and appreciate your product catalog instead of leaving it after a few seconds.
 
+After all, if users can’t easily browse your product lists, they can’t easily find what they are looking for. And if they can’t find it, they can’t buy it. It’s easy to understand. :)
 
-Working demos for YITH WooCommerce Ajax Product Filter are available here:
-**[LIVE DEMO](https://plugins.yithemes.com/yith-woocommerce-ajax-product-filter/)**
+With the **YITH WooCommerce Ajax Product filter** and its new *“2021’s massive redesign”*, you can finally tackle the user experience in your WooCommerce powered shop. You can help your customers easily find and filter your products by categories, tags, taxonomy, and all kinds of attributes like sizes, colors, materials, brands, etc.
 
-Full documentation for YITH WooCommerce Ajax Product Filter is available [here](https://docs.yithemes.com/yith-woocommerce-ajax-product-filter/).
+You can create unlimited presets and show the filters on standard WooCommerce pages (Shop, Category pages) or custom pages created with Gutenberg or Elementor. You can add your filters anywhere, using the built-in widget, shortcode, or Gutenberg block. In this way, you can create a preset of filters for the shop page, a preset of filters for a specific product category, another preset of filters for a custom page, and so on: no limits and total maximum control.
 
-**Main Features of YITH WooCommerce Ajax Product Filter:**
+== YITH WooCommerce Ajax Product filter features ==
 
-* Filter WooCommerce products with YITH WooCommerce Ajax Product Filter widget (4 layouts available)
- * List
- * Dropdown
- * Color
- * Label
-* Reset all applied filters with YITH WooCommerce Ajax Reset Filter widget
+= FREE VERSION =
 
-= Premium features of YITH WooCommerce Ajax Product Filter: =
+* Easily create and customize unlimited presets of filters to show on different pages  (New from 4.0!)
+* Show filters using widget shortcodes and Gutenberg blocks (also on custom pages) (New from 4.0!)
+* Filter by product categories (New from 4.0!)
+* Filter by tags (New from 4.0!)
+* Filter any product attributes (color, size, material, etc.)
+* Choose the filter style (checkbox, select, text and color swatches)
+* Choose the ordering of the terms
+* Choose whether to show terms hierarchy or not
+* Allow multiple selections (with AND or OR) or not
+* Adoptive filtering: terms not available will be hidden
+* Show a “Reset Filters” button
+* Scroll-to-top option in mobile devices and/or desktop
+* SEO options (Activate/deactivate the indexing of the generated URLs in search engines for the filter operation of the plugin) (New!)
+* Beautiful & modern design, suitable for each kind of shop or theme
 
-* Two additional layouts for the YITH WooCommerce Ajax Product Filter widget (BiColor, Tags), in addition to compatibility with the plugin YITH WooCommerce Brands
-* Customizable reset button (in the YITH WooCommerce Ajax Reset Filter widget)
-* WooCommerce Search filter for products of a specific price range available thanks to the YITH WooCommerce Ajax List Price Filter widget
-* Search filter for products on sale/available
-* Ajax sorting for products displayed in the page (by rate, price, popularity, most recent)
-* Upload of an icon as customized loader
-* Customization of the WooCommerce Price Filter widget
+See it in action here:
 
+[Check the Live Demo of the free version >](https://plugins.yithemes.com/yith-woocommerce-ajax-product-filter-free/)
 
-YITH WooCommerce Ajax Product Filter is available in combination with many other plugins in [**YITH Essential Kit for WooCommerce #1**](https://wordpress.org/plugins/yith-essential-kit-for-woocommerce-1/), a bundle of indispensable tools to make your WooCommerce site look more professional and be more user-friendly. Learn more about all of WooCommerce plugins included and boost your WooCommerce site with a simple click!
+= NEED MORE? CHECK THE PREMIUM VERSION! =
 
+With the latest update, we have improved the UX and added significant features to our free version. For example, in the previous versions, some essential features like “filter by category” or “filter by tag” options were missing. We worked hard to release a free plugin that works for our users. Anyway, if you want more (like a mobile-friendly design inspired by the larger e-commerce sites), feel free to check the features we provide in our excellent premium version:
 
-= Compatibility with WooCommerce plugins =
+* Two additional layouts for the color filter: bicolor and image support (to better represent gradients, textures, patterns...)
+* Additional layout: label/image. Upload icons, photos and images to identify terms
+* Choose the position of the reset button (above products, above or under filters area)
+* Choose whether to show active filters (with X to remove them) or not and their position (above products, above or under filters area)
+* **Modal window on mobile: a layout for filters 100% optimized for mobile devices!** (Other plugins just add filters after the products list on mobile, yet, in this way, product filtering on smartphones and tablets is not working. We are the first to have designed and developed a 100% mobile-friendly filtering solution: in a modal window inspired by the largest e-commerce sites!)
+* Filter for reviews
+* **Price slider to filter products by price**
+* **Price ranges with unlimited ranges (last range can show “& above”)**
+* Filters to show on sale/in-stock products
+* Ajax sorting for products displayed on the page (by rating, price, popularity, latest)
+* Show an optional tooltip on hover for terms
+* Show filters as a toggle (opened or collapsed by default)
+* Show or hide the count of items
+* Adoptive filtering: choose whether terms not available must be hidden (as in the free version) **or keep them visible but not clickable (only in premium)**
+* Choose to hide empty terms and out of stock products automatically
+* Customize colors and style of filters area through the dedicated “customization” tab (colors, color swatches size, select and checkbox type, etc.)
+* Upload a custom loader
+* **Permalinks management:** choose to keep permalinks unchanged, change them by adding filtered terms or use a **custom user-friendly and shorter permalink** (for a better sharing experience!)
+* Use instant AJAX filtering or show a button to apply filters manually without AJAX
+* Choose whether to show filter results on the same page or a new page
+* Compatible with the YITH WooCommerce Brands Add-on plugin
 
-YITH WooCommerce Ajax Product Filter has been tested and compatibility is certain with the following WooCommerce plugins that you can add to your site:
+See it in action here (we have three different demo samples):
 
-* [YITH WooCommerce Multi Vendor](https://wordpress.org/plugins/yith-woocommerce-product-vendors/)
-* [YITH WooCommerce Brands Add-On](https://wordpress.org/plugins/yith-woocommerce-brands-add-on/)
-* [YITH Product Size Charts for WooCommerce](https://wordpress.org/plugins/yith-product-size-charts-for-woocommerce/)
+[Check the Live Demo of the premium version >](https://plugins.yithemes.com/yith-woocommerce-ajax-product-filter/)
 
-Nevertheless, it could be compatible with many other WooCommerce plugins that have not been tested yet. If you want to inform us about compatibility with other plugins, please, [email to us](mailto:plugins@yithemes.com "Your Inspiration Themes").
+And if you love it, get it!
+
+[GET THE PREMIUM VERSION HERE with a 100% Money Back guarantee >](https://yithemes.com/themes/plugins/yith-woocommerce-ajax-product-filter/)
 
 == Installation ==
 
@@ -66,98 +87,123 @@ Nevertheless, it could be compatible with many other WooCommerce plugins that ha
 
 == Frequently Asked Questions ==
 
-= Why isn't the widget displayed in my sidebar? =
-In order to display the widget, you need to assign it to the sidebar in the Shop page and you also need to add WooCommerce Product Attributes to your product. Read the "Getting Started" section of the documentation to learn how to add them.
+= I’m using YITH AJAX Product Filter widgets in my sidebar; can I continue to use them, or shall I switch to preset? =
+Widgets will continue to work with the 4.x version, and we will continue to support them in the upcoming plugin versions. We encourage you to give the Preset system a try and, if you like it, to switch from widgets to Presets (we even included a tool to help you transition to the new system)
+We will eventually deprecate old widgets, but we will make sure to notify everyone before this happens :)
 
-= Translation issue with the version 2.0.0 =
-Dear users,
-we would like to inform you that the plugin YITH WooCommerce Ajax Navigation will change its name into YITH WooCommerce Ajax Product Filter from the next update.
-In addition to the name, with the new release the plugin, textdomain will change too from "yit" to "yith_wc_ajxnav".
-This change solves issues concerning textdomain conflicts generated by some translation/multilanguage plugins you have identified in the past weeks.
-It may be possible that, with the plugin update, some language files will not be recognized by WordPress. In this case, you will just have to rename the language files with the correct format, changing the old textdomain with the new one.
-For example, if your language files were named yit-en_GB.po and yit-en_GB.mo, you will just have to rename them respectively as yith_wc_ajxnav-en_GB.po and yith_wc_ajxnav-en_GB.mo.
-After renaming the files, you can update/translate the .po file following the classic procedure for translations.
+= How do I upgrade to the new Preset system? =
+It will be as easy as clicking a button: when updating to version 4.x, if you’re already using the plugin’s widgets, the system will automatically add a note in presets pages
+Clicking on that note, you’ll be able to run our automatic conversion tool to create preset from your current sidebar configuration.
+After creating presets, you’ll just need to use the **YITH AJAX Filter Preset** widget in your sidebar, replacing previous widgets, and selecting the desired presets.
 
-= What are the main changes in plugin translation? =
-= Translation issue with the version 2.4.0 =
-Recently YITH WooCommerce Ajax Product Filter has been selected to be included in the "translate.wordpress.org" translate programme. In order to import correctly the plugin strings in the new system, we had to change the text domain form 'yith_wc_ajxnav' to 'yith-woocommerce-ajax-navigation'. Once the plugin will be imported in the translate.wordpress.org system, the translations of other languages will be downloaded directly from WordPress, without using any .po and .mo files. Moreover, users will be able to participate in a more direct way to plugin translations, suggesting texts in their languages in the dedicated tab on translate.wordpress.org. During this transition step, .po and .mo files will be used as always, but in order to be recognized by WordPress, they will need to have a new nomenclature, renaming them in: yith-woocommerce-ajax-navigation-.po yith-woocommerce-ajax-navigation-.mo. For example, if your language files were named yit-en_GB.po and yit-en_GB.mo, you will just have to rename them respectively as yith-woocommerce-ajax-navigation-en_GB.po and yith-woocommerce-ajax-navigation-en_GB.mo.
+If you accidentally hide the Upgrade popup, don’t worry: you can run the same process from **WooCommerce -> Status -> Tools**
 
-= The widget with WooCommerce filters is not working =
-= The page doesn't update after clicking on a WooCommerce filter =
+You can read more about the upgrade process [here](https://docs.yithemes.com/yith-woocommerce-ajax-product-filter/premium-settings/general-settings/update-yith-woocommerce-ajax-product-filter-to-version-4-0/)
 
-The issue could be related to the fact you are using a non-standard template for a WooCommerce shop page. To solve it, you should ask to the theme's author to use WooCommerce standard HTML classes.
-As an alternative:
-**For version prior to 2.2.0:**
+= Where can I see your plugin in action? =
+The chances are that you’ve already seen it in some store, given its great adoption :)
+The best way to test the full functionality is on our [Live demo](https://plugins.yithemes.com/yith-woocommerce-ajax-product-filter-free/), where you’ll be able to create your test-environment and try every option of the plugin
+If you want more, you could also look at our premium version [here](https://plugins.yithemes.com/yith-woocommerce-ajax-product-filter/)
 
-you can use this piece of code in functions.php file of your theme:
+= I’ve installed your plugin, but not all selected filters are appearing on the frontend =
+Our plugin automatically hides filters that don’t have any matching item with current product selection (this mostly work on shop-pages or product taxonomies)
+If you think filters are incorrect, you could try to clear plugin transients, visiting **WooCommerce -> Status -> Tools** and using the dedicated button.
 
-`
-if( ! function_exists( 'yith_wcan_frontend_classes' ) ){
-	 function yith_wcan_frontend_classes(){
-	  return array(
-	            'container'    => 'YOUR_SHOP_CONTAINER',
-	            'pagination'   => 'YOUR_PAGINATION_CONTAINER',
-	            'result_count' => 'YOUR_RESULT_COUNT_CONTAINER'
-
-	        );
-	 }
-}
-
-add_filter( 'yith_wcan_ajax_frontend_classes', 'yith_wcan_frontend_classes' );
-`
-
-If you don't know which classes you should use, ask to the developer of your theme.
-
-**From version 2.3.0 or later:**
-
-You don't have to write manually the code anymore, as you can just go to YITH Plugin -> Ajax Product Filter -> Front End and set easily the parameters from the text fields.
-
-If you don't know which classes you should use, ask to the developer of your theme.
-
-= PAAMAYIM NEKUDOTAYIM Error after update 2.1.0 =
-
-After the update 2.1.0, some users of YITH WooCommerce Ajax Product Filter are experiencing the error: "Parse error: syntax error, unexpected T_PAAMAYIM_NEKUDOTAYIM". This is caused by the PHP version of your server that is older than the 5.3. To solve the issue, you just have to update the plugin to the version 2.1.1.
+= I’ve installed your plugin, and now I’m missing some products from my shop page =
+Our plugin doesn’t change the product list until a filter is activated
+If you feel something is strange with your current product selection, you should try to clear plugin transients, visiting **WooCommerce -> Status -> Tools** and using the dedicated button.
 
 = Is it compatible with all WordPress themes? =
+Compatibility with all themes is impossible because there are too many who don’t follow the recommended coding standards for WooCommerce, but generally if themes are developed according to WordPress and WooCommerce guidelines, YITH plugins are compatible with them.
+For an optimal result, we suggest you use our plugins in conjunction with our amazing [YITH Proteo](https://wordpress.org/themes/yith-proteo/) theme, available for free download on WordPress.org
+If you find incompatibilities with your current theme, don’t hesitate to report them on the support forum, and we’ll do our best to provide official support
 
-Compatibility with all themes is impossible, because they are too many, but generally if themes are developed according to WordPress and WooCommerce guidelines, YITH plugins are compatible with them.
-Yet, we can grant compatibility with themes developed by YIThemes, because they are constantly updated and tested with our plugins. Sometimes, especially when new versions are released, it might only require some time for them to be all updated, but you can be sure that they will be tested and will be working in a few days.
+= After filtering my page breaks down/has missing elements =
+This could be related to an incompatibility with your theme; in most cases, it could be caused by missing JS initialization after filtering, but also some template elements (such as sidebars or titles) could be missing after load
+We suggest you test the plugin on a default twenty theme
+If the problem persists, then it could be something specific with the plugin, and we invite you to report on the support forum
+Otherwise, the problem is most probably related to theme incompatibility; in this case, your best chance is to contact theme’s developers, but you can also report on the support forum to let us know, and give us the chance to schedule a test.
 
-
-= How can I get support if my WooCommerce plugin is not working? =
-
-If you have problems with our WooCommerce plugins or something is not working as it should, first follow this preliminary steps:
+= How can I get support if my plugin is not working? =
+If you have problems with our WooCommerce plugins or something is not working as it should, first follow these preliminary steps:
 
 * Test the plugin with a WordPress default theme, to be sure that the error is not caused by the theme you are currently using.
 * Deactivate all plugins you are using and check if the problem is still occurring.
-* Ensure that you plugin version, your theme version and your WordPress and WooCommerce version (if required) are updated and that the problem you are experiencing has not already been solved in a later plugin update.
+* Ensure that your plugin version, your theme version, and your WordPress and WooCommerce version (if required) are updated and that the problem you are experiencing has not already been solved in a later plugin update.
 
-If none of the previous listed actions helps you solve the problem, then, submit a ticket in the forum and describe your problem accurately, specify WordPress and WooCommerce versions you are using and any other information that might help us solve your problem as quickly as possible. Thanks!
-
-
-= How can I get more features for my WooCommerce plugin? =
-
-You can get more features with the premium version of YITH WooCommerce Ajax Product Filter, available on [YIThemes page]( https://yithemes.com/themes/plugins/yith-woocommerce-ajax-product-filter/). Here you can read more about the premium features of the plugin and make it give it its best shot!
-
-
-= How can I try the full-featured plugin? =
-
-If you want to see a demonstration version of the premium plugin, you can see it installed on two different WooCommerce sites, either in [this page]( http://plugins.yithemes.com/yith-woocommerce-ajax-product-filter/?preview) or in [this page](http://preview.yithemes.com/bazar/shop/). Browse it and try all options available so that you can see how your plugin looks like.
+If none of the previous listed actions helps you solve the problem, then, submit a ticket in the forum and describe your problem accurately, specify WordPress and WooCommerce versions you are using, and any other information that might help us solve your problem as quickly as possible. Thanks!
 
 == Screenshots ==
 
-1. Admin - Appearance -> Widget: WooCommerce Filter Widget List Style
-2. Admin - Appearance -> Widget: WooCommerce Filter Widget Color Style
-3. Admin - Appearance -> Widget: WooCommerce Filter Widget Label Style
-4. Admin - Appearance -> Widget: WooCommerce Filter Widget Dropdown Style
-5. Admin - Appearance -> Widget: WooCommerce Filter Reset Button
-6. Frontend: WooCommerce Widget in sidebar
-7. Frontend: Dropdown style
-8. Frontend: Reset button and active filters
-9. Admin: YIT Plugins -> Ajax Product Filter -> Front end
-10. Admin: YIT Plugins -> Ajax Product Filter -> Custom Style
+1. Filters on shop page
+2. Applied filters and Reset button
+3. Filter types - Select
+4. Filter types - Color Swatches
+5. Filter types - Checkbox
+6. Filter types - Labels
+7. Filter types - Text
+8. Admin - Filter presets
+9. Admin - Preset editing
+10. Admin - Filter details
+11. Admin - General settings
+12. Admin - SEO settings
+13. Elementor widget
+14. Gutenberg block
 
 == Changelog ==
+
+= 4.0.3 - Released on 20 April 2021 =
+
+* New: support for WooCommerce 5.2
+* Update: YITH plugin framework
+* Update: language files
+* Tweak: better handle multiple filters for the same taxonomy in the same preset
+* Tweak: prevent redirect to product page when filtering a search page and getting a single result
+* Tweak: added base url for filtering operation
+* Tweak: improved performance by optimizing tax_query array
+* Tweak: avoid unnecessary queries to post when just want to list presets
+* Tweak: added new transient yith_wcan_object_in_terms to improve performance
+* Tweak: execute legacy post processing only when old widgets are active
+* Tweak: improved WPML compatibility for presets
+* Tweak: added pagination to preset edit page
+* Fix: possible error with PHP older than 7.x
+* Fix: prevent system from removing original page querystring, when clearing filters
+* Fix: correctly remove taxonomy parameters after disabling filter on frontend
+* Fix: add visibility query to plugins tax_query
+* Dev: added yith_wcan_filter_reset_button_class hook to filter reset button class
+
+= 4.0.2 - Released on 10 March 2021 =
+
+* New: support for WordPress 5.7
+* New: support for WooCommerce 5.1
+* New: Plugin UI/UX restyling
+* New: added filters preset
+* New: added YITH AJAX Filters Preset widget
+* New: added [yith_wcan_filters] shortcode
+* New: added Gutenberg block to display Filters Preset in any page
+* New: added Elementor widget to display Filters Preset in any page
+* New: filters will now work on any page, for any loop of products
+* New: added [yith_wcan_reset_button] shortcode
+* New: added Gutenberg block to display Reset Filters button in any page
+* New: added Elementor widget to display Reset Filters button in any page
+* New: added automatic upgrade procedure from old system to new preset
+* New: full compatibility to all products taxonomies
+* Update: YITH plugin framework
+* Tweak: major code refactoring and optimization
+
+= 3.11.8 - Released on 11 February 2021 =
+
+* New: support for WooCommerce 5.0
+* Update: YITH plugin framework
+
+= 3.11.7 - Released on 22 January 2021  =
+
+* Fix: non-standard hook
+
+= 3.11.6 - Released on 11 January 2021  =
+
+* New: Support for WooCommerce 4.9
+* Fix: Dropdown not working for 'select'
 
 = 3.11.5 - Released on 03 December 2020  =
 
@@ -483,270 +529,3 @@ If you want to see a demonstration version of the premium plugin, you can see it
 * Added: Support to WooCommece 2.6
 * Tweak: Layered navigation management
 * Tweak: English Typo
-
-= 2.9.2 - Released: May 16, 2016 =
-
-* Fixed: Wrong reset button link in product category page
-
-= 2.9.1 - Released: May 04, 2016 =
-
-* Fixed: $class variable are not defined
-* Fixed: Filter by list-attribute doesn't works in versio 2.9.0
-
-= 2.9.0 - Released: May 02, 2016 =
-
-* Fixed: Filtering issue with YITH WooCommerce Brands Add-on Premium
-* Fixed: HTML5 Validation (attribute name not allowed in ul element)
-* Fixed: z-index not set to -1 when user close dropdown filters with click in page area
-
-
-= 2.8.1 - Released: Mar 10, 2016 =
-
-* Fixed: Dropdown issue with Remy Theme
-* Fixed: $.fn.slider is not a function after click on reset filter
-* Fixed: Reset filter in product category page doesn't works
-* Fixed: Plugin panel option style issue
-
-= 2.8.0 - Released: Mar 1 - 2016 =
-
-* Tweak: Plugin Core Framework
-* Tweak: Term and Filter management
-
-= 2.7.8 - Released: Feb 25 - 2016 =
-
-* Fixed: Issue with filter in category and taxonomy pages
-
-= 2.7.7 - Released: Feb 19 - 2016 =
-
-* Added: Trigger window scroll event after ajax call
-* Fixed: The page scroll down after filter has been applied in mobile
-* Fixed: Duplicated query in Filter by categories
-* Fixed: generated 404 link with in stock/on sale filter
-* Fixed: YITH WooCommerce Product Slider Carousel doesn't work after a filter was applied
-* Fixed: Widget doesn't work with multiple hierarchical terms
-
-= 2.7.6 - Released: Feb 05 - 2016 =
-
-* Added: Suppoort to quantity input in loop
-* Added: yith-wcan-free body class
-* Fixed: Filter button doesn't appear in WooCommerce Price Filter Slider
-
-= 2.7.5 - Released: Jan 27 - 2016 =
-
-* Fixed: Error on plugin activation
-
-= 2.7.4 - Released: Jan 27 - 2016 =
-
-* Added: New event yith-wcan-wrapped was triggered after container wrap
-* Added: Support to WooCommerce 2.5
-* Fixed: Stop activation free version if premium is enabled
-
-= 2.7.3 - Released: Jan 12 - 2016 =
-
-* Updated: Plugin core framework
-
-= 2.7.2 - Released: Jan 07 - 2015 =
-
-* Added: Support to WooCommerce 2.5-RC1
-* Fixed: Reset Filter in category page
-* Fixed: Filter doesn't work correctly in sub-categories
-
-= 2.7.1 - Released: Dec 23 - 2015 =
-
-* Fixed: The plugin shows empty filters in product category page
-* Fixed: Reset filter doesn't works in product category page
-* Fixed: WooCommerce price slider doesn't set to default value after filter reset
-
-= 2.7.0 - Released: Dec 10 - 2015 =
-
-* Fixed: Click on row to filter in dropdown style
-* Removed: var_dump() in product filter widget
-
-= 2.6.0 - Released: Nov 02 - 2015 =
-
-* Added: yith_wcan_show_widget hook to manage the widgets display condition
-* Added: yith_wcan_is_search hook to disable the widgets in search page
-* Fixed: Disable widgets in search page
-
-= 2.5.0 - Released: Oct 21 - 2015 =
-
-* Added: yith_wcan_untrailingslashit hook for disable untrailingslashit function in filter link
-* Tweak: Performance improved with new plugin core 2.0
-* Tweak: Plugin don't apply filter in category page
-* Fixed: Issuet with YITH Infinite Scrolling plugin
-* Fixed: Filter widget don't show in product attribute page
-* Fixed: Issue with WPML and Visual Composer plugins in admin
-
-= 2.4.0 - Released: Sept, 25 - 2015 =
-
-* Tweak: New wordpress translation text domain added
-* Added: Language files called yith-woocommerce-ajax-navigation
-* Removed: All language files called yith_wc_ajxnav
-
-= 2.3.1 - Released: Sept, 17 - 2015 =
-
-* Added: Support to YITH Infinite Scrolling plugin
-* Fixed: No pagination container issue after filter applied
-* Fixed: js error yit_wcan not defined
-* Fixed: issue with blank label
-
-= 2.3.0 - Released: Sept, 11 - 2015 =
-
-* Added: Custom Style Section
-* Added: New frontend options for script configuration
-* Updated: Plugin Core Framework
-* Updated: Languages file
-
-= 2.2.0 - Released: Aug, 25 - 2015 =
-
-* Added: Support to WordPress 4.3
-* Updated: Language files
-* Fixed: Color lost after change widget style with WordPress 4.3
-* Fixed: Warning when switch from color to label style
-
-= 2.1.2 - Released: Aug, 11 - 2015 =
-
-* Added: Support to WooCommerce 2.4
-* Updated: Plugin Framework
-* Fixed: Tag list and child term support
-
-= 2.1.1 - Released: July, 30 - 2015 =
-
-* Tweak: Support to PAAMAYIM NEKUDOTAYIM in PHP Version < 5.3
-
-= 2.1.0 - Released: July, 29 - 2015 =
-
-* Added: Frontend classes option panel
-* Added: yith_wcan_ajax_frontend_classes filter
-* Added: plugin works in product category page
-* Added: WPML and String translation support
-* Updated: language pot file
-* Updated: Italian translation
-* Tweak: Shop uri management
-* Fixed: wrong filter link in product category page
-* Fixed: Widget doesn't work fine in Shop Category Page
-* Fixed: Remove trailing slash in widget shop uri
-* Fixed: Prevent double instance in singleton class
-* Fixed: The widget doesn't work with WPML with Label and Color style
-
-= 2.0.4 - Released: July, 13 - 2015 =
-
-* Added: Filter 'yith_wcan_product_taxonomy_type' to widget product tax type
-* Tweak: YITH WooCommerce Brands Add-on support in taxonomy page
-
-= 2.0.3 - Released: July, 03 - 2015 =
-
-* Added: Support to Sortable attribute
-* Fixed: Color lost after change widget style
-
-= 2.0.2 - Released: Jun, 25 - 2015 =
-
-* Fixed: Empty filters appear after update to 2.0.0
-
-= 2.0.1 - Released: Jun, 24 - 2015 =
-
-* Fixed: Unable to active plugin
-
-= 2.0.0 - Released: Jun, 24 - 2015 =
-
-* Tweak: Plugin core framework
-* Updated: Languages file
-* Fixed: Prevent warning issue with no set color/label
-* Fixed: Textdomain conflict
-* Fixed: Filter doesn't work if shop page is on front
-* Removed: old default.po catalog language file
-
-= 1.4.1 - Released: Oct, 08 - 2014 =
-
-* Fixed: Wrong attribute show with WooCommerce 2.2
-
-= 1.4.0 - Released: Set, 16 - 2014 =
-
-* Added: Support to WC 2.2
-* Updated: Plugin Core Framework
-* Fixed: Widget error on empty title
-* Fixed: Ajax load on widget type switching
-
-= 1.3.2 - Released: Jun, 05 - 2014 =
-
-* Fixed: Wrong enqueue of the main css file
-* Added: Filter yith_wcan_exclude_terms
-
-= 1.3.1 - Released: Mar, 03 - 2014 =
-
-* Added: Attribute order (All, Hieralchical or Only Parent style)
-* Fixed: Dropdown Style on Firefox
-* Fixed: Blank box on attribute without label (Label Style)
-* Fixed: Blank box on attribute without color (Color Stle)
-
-= 1.3.0 - Released: Feb, 12 - 2014 =
-
-* Added: Support to WooCommerce 2.1.X
-* Fixed: One filter bug on sidebar
-
-= 1.2.1 - Released: Jan, 29 - 2014 =
-
-* Fixed: Width of select dropdown too large
-
-= 1.2.0 - Released: Jan, 10 - 2014 =
-
-* Added: Dropdown style
-* Added: Support to Wordpress 3.8
-* Fixed: Error with non-latin languages
-* Fixed: Improved WPML compatibility
-
-= 1.1.2 - Released: Oct, 14 - 2013 =
-
-* Added: Title to the color filters
-* Removed: Limit of 3 characters in the label text input
-
-= 1.1.1 - Released: Jul, 31 - 2014 =
-
-* Minor bugs fixes
-
-= 1.1.0 - Released: Jul, 19 - 2013  =
-
-* Added new widget YITH WooCommerce Ajax Reset Navigation
-
-= 1.0.0 - Released: Jun, 24 - 2013  =
-
-* Initial release
-
-== Translators ==
-
-= Available Languages =
-* English (Default)
-* Italiano
-
-If you have created your own language pack, or have an update for an existing one, you can send [gettext PO and MO file](http://codex.wordpress.org/Translating_WordPress "Translating WordPress")
-[use](http://yithemes.com/contact/ "Your Inspiration Themes") so we can bundle it into YITH WooCommerce Ajax Navigation Languages.
-
-== Documentation ==
-
-Full documentation is available [here](https://docs.yithemes.com/yith-woocommerce-ajax-product-filter/).
-
-== Upgrade notice ==
-
-= 2.4.0 =
-
-* Changing translation texdomain for new translate program: "translate.wordpress.org"
-
-= 2.2.0 =
-
-* WordPress 4.3 Support
-
-= 2.1.2 =
-
-* WooCommerce 2.4 Support
-
-= 2.1.1 =
-
-* Tweak: Support to PAAMAYIM NEKUDOTAYIM in PHP Version < 5.3
-
-= 2.0.0 =
-
-New plugin core added.
-
-= 1.0.0 =
-
-Initial release

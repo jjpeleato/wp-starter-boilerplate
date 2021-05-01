@@ -145,7 +145,7 @@ For more information visit:
 	- `$lando phpcs` or `$lando composer cs` Runs the phpcs
 	- `$lando phpcbf` or `$lando composer cs:fix`  Runs the phpcbf
 - **Important**. Run the shell script to validate PHP, JS and SCSS files:
-	- `$sh script_local.sh`
+	- `$sh validate.sh`
 
 ### Technologies and tools
 

@@ -60,7 +60,7 @@ class JsonLD {
 	}
 
 	/**
-	 * Get Default Schema Data.
+	 * Get Schema Preview. Used in the Code Validation in Pro.
 	 */
 	public function generate_preview() {
 		global $post;
@@ -75,26 +75,38 @@ class JsonLD {
 		unset( $data['BreadcrumbList'] );
 
 		// Preview schema.
-		$schema = \json_decode( file_get_contents( 'php://input' ), true );
-		$schema = $this->replace_variables( $schema );
-		$schema = $this->filter( $schema, $this, $data );
-
-		if ( isset( $data[ $schema['schemaID'] ] ) ) {
-			$current_data = $data[ $schema['schemaID'] ];
-			unset( $data[ $schema['schemaID'] ] );
+		$schema    = \json_decode( file_get_contents( 'php://input' ), true );
+		$schema_id = $schema['schemaID'];
+		if ( isset( $data[ $schema_id ] ) ) {
+			$current_data = $data[ $schema_id ];
+			unset( $data[ $schema_id ] );
 		} else {
 			$current_data = array_pop( $data );
 		}
+		unset( $schema['schemaID'] );
+
+		$schema = $this->replace_variables( $schema );
+		$schema = $this->filter( $schema, $this, $data );
 		$schema = wp_parse_args( $schema['schema'], $current_data );
+		if ( ! empty( $schema['@type'] ) && in_array( $schema['@type'], [ 'WooCommerceProduct', 'EDDProduct' ], true ) ) {
+			$schema['@type'] = 'Product';
+		}
+
 		// Merge.
-		$data = array_merge( $data, [ 'schema' => $schema ] );
-		$data = $this->validate_schema( $data );
+		$data = array_merge( $data, [ $schema_id => $schema ] );
+
+		/**
+		 * Filter to change the Code validation data..
+		 *
+		 * @param array $unsigned An array of data to output in JSON-LD.
+		 */
+		$data = $this->do_filter( 'schema/preview/validate', $this->validate_schema( $data ) );
 
 		echo wp_json_encode( array_values( $data ) );
 	}
 
 	/**
-	 * Get old schema for conversion.
+	 * Function to get Old schema data. This code is used in the Schema_Converter to convert old schema data.
 	 *
 	 * @param  int   $post_id Post id for conversion.
 	 * @param  mixed $class   Class instance of snippet.
@@ -118,7 +130,7 @@ class JsonLD {
 	}
 
 	/**
-	 * JSON LD output function that the functions for specific code can hook into.
+	 * Output the ld+json tag with the generated schema data.
 	 */
 	public function json_ld() {
 		global $post;
@@ -130,7 +142,7 @@ class JsonLD {
 		}
 
 		/**
-		 * Collect data to output in JSON-LD.
+		 * Filter to collect data to output in JSON-LD.
 		 *
 		 * @param array  $unsigned An array of data to output in JSON-LD.
 		 * @param JsonLD $unsigned JsonLD instance.
@@ -139,23 +151,20 @@ class JsonLD {
 		$data = $this->validate_schema( $data );
 		if ( is_array( $data ) && ! empty( $data ) ) {
 
-			$class = 'schema';
-
-			if ( defined( 'RANK_MATH_PRO_FILE' ) ) {
-				$class = 'schema-pro';
-			}
-
-			$json = [
+			$class = defined( 'RANK_MATH_PRO_FILE' ) ? 'schema-pro' : 'schema';
+			$json  = [
 				'@context' => 'https://schema.org',
 				'@graph'   => array_values( $data ),
 			];
 
-			echo '<script type="application/ld+json" class="rank-math-' . esc_attr( $class ) . '">' . wp_json_encode( $json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) . '</script>' . "\n";
+			$options = defined( 'RANKMATH_DEBUG' ) && RANKMATH_DEBUG ? JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES : JSON_UNESCAPED_SLASHES;
+
+			echo '<script type="application/ld+json" class="rank-math-' . esc_attr( $class ) . '">' . wp_json_encode( wp_kses_post_deep( $json ), $options ) . '</script>' . "\n";
 		}
 	}
 
 	/**
-	 * Validate schema.
+	 * Validate schema data. Removes invalid and empty values from the schema data.
 	 *
 	 * @param array $data Array of JSON-LD data.
 	 *
@@ -216,16 +225,17 @@ class JsonLD {
 	 * @return array
 	 */
 	public function add_context_data( $data ) {
-		$is_product_page = $this->is_product_page();
-		$snippets        = [
-			'\\RankMath\\Schema\\Publisher'     => ! isset( $data['publisher'] ),
-			'\\RankMath\\Schema\\Website'       => true,
-			'\\RankMath\\Schema\\PrimaryImage'  => ! post_password_required() && is_singular(),
+		$is_product_archive = $this->is_product_archive_page();
+		$can_add_global     = $this->can_add_global_entities( $data );
+		$snippets           = [
+			'\\RankMath\\Schema\\Publisher'     => ! isset( $data['publisher'] ) && $can_add_global,
+			'\\RankMath\\Schema\\Website'       => $can_add_global,
+			'\\RankMath\\Schema\\PrimaryImage'  => ! post_password_required() && $can_add_global,
 			'\\RankMath\\Schema\\Breadcrumbs'   => $this->can_add_breadcrumb(),
-			'\\RankMath\\Schema\\Webpage'       => true,
-			'\\RankMath\\Schema\\Author'        => is_author(),
-			'\\RankMath\\Schema\\Products_Page' => $is_product_page,
-			'\\RankMath\\Schema\\ItemListPage'  => ! $is_product_page && ( is_category() || is_tag() || is_tax() ),
+			'\\RankMath\\Schema\\Author'        => is_author() || ( is_singular() && $can_add_global ),
+			'\\RankMath\\Schema\\Webpage'       => $can_add_global,
+			'\\RankMath\\Schema\\Products_Page' => $is_product_archive,
+			'\\RankMath\\Schema\\ItemListPage'  => ! $is_product_archive && ( is_category() || is_tag() || is_tax() ),
 			'\\RankMath\\Schema\\Singular'      => ! post_password_required() && is_singular(),
 		];
 
@@ -240,27 +250,36 @@ class JsonLD {
 	}
 
 	/**
-	 * Replace variable.
+	 * Function to replace variables used in Schema fields.
 	 *
-	 * @param  array $schemas Schema to replace.
+	 * @param array  $schemas Schema to replace.
+	 * @param object $object  Current Object.
+	 * @param array  $data   Array of json-ld data.
+	 *
 	 * @return array
 	 */
-	public function replace_variables( $schemas ) {
+	public function replace_variables( $schemas, $object = [], $data = [] ) {
 		$new_schemas = [];
+		$object      = empty( $object ) ? get_queried_object() : $object;
 
 		foreach ( $schemas as $key => $schema ) {
 			if ( 'metadata' === $key ) {
 				$new_schemas['isPrimary'] = ! empty( $schema['isPrimary'] );
+
+				if ( ! empty( $schema['type'] ) && 'custom' === $schema['type'] ) {
+					$new_schemas['isCustom'] = true;
+				}
+
 				continue;
 			}
 
+			$this->replace_author( $schema, $data );
 			if ( is_array( $schema ) ) {
-				$new_schemas[ $key ] = $this->replace_variables( $schema );
+				$new_schemas[ $key ] = $this->replace_variables( $schema, $object, $data );
 				continue;
 			}
 
-			$new_schemas[ $key ] = Str::contains( '%', $schema ) ? Helper::replace_vars( $schema, get_queried_object() ) : $schema;
-
+			$new_schemas[ $key ] = Str::contains( '%', $schema ) ? Helper::replace_vars( $schema, $object ) : $schema;
 			if ( '' === $new_schemas[ $key ] ) {
 				unset( $new_schemas[ $key ] );
 			}
@@ -270,7 +289,27 @@ class JsonLD {
 	}
 
 	/**
-	 * Run schema filter.
+	 * Function to replace %author% with Author entity @id.
+	 *
+	 * @param array $schema Schema to replace.
+	 * @param array $data   Array of json-ld data.
+	 *
+	 * @return array
+	 */
+	private function replace_author( &$schema, $data ) {
+		if ( empty( $data['ProfilePage'] ) ) {
+			return;
+		}
+
+		if ( empty( $schema['author'] ) || ! isset( $schema['author']['name'] ) || '%name%' !== $schema['author']['name'] ) {
+			return;
+		}
+
+		$schema['author'] = [ '@id' => $data['ProfilePage']['@id'] ];
+	}
+
+	/**
+	 * Filter schema data before adding it to ld+json.
 	 *
 	 * @param array  $schemas Schema to replace.
 	 * @param JsonLD $jsonld  Instance of jsonld.
@@ -305,7 +344,32 @@ class JsonLD {
 	}
 
 	/**
-	 * Can add breadcrumb snippet.
+	 * Whether to add global schema entities.
+	 *
+	 * @param array $data Array of json-ld data.
+	 * @return bool
+	 */
+	public function can_add_global_entities( $data = [] ) {
+		if ( is_front_page() || ! is_singular() || ! Helper::can_use_default_schema( $this->post_id ) || ! empty( $data ) ) {
+			return true;
+		}
+
+		$schemas = DB::get_schemas( $this->post_id );
+		if ( ! empty( $schemas ) ) {
+			return true;
+		}
+
+		/**
+		 * Allow developer to remove global schema entities.
+		 *
+		 * @param bool   $can_add
+		 * @param JsonLD $unsigned JsonLD instance.
+		 */
+		return $this->do_filter( 'schema/add_global_entities', Helper::get_default_schema_type( $this->post_id, true ), $this );
+	}
+
+	/**
+	 * Can add breadcrumb schema.
 	 *
 	 * @return bool
 	 */
@@ -319,11 +383,11 @@ class JsonLD {
 	}
 
 	/**
-	 * Is product page.
+	 * Check if current page is a WooCommerce archive page.
 	 *
 	 * @return bool
 	 */
-	private function is_product_page() {
+	private function is_product_archive_page() {
 		return Conditional::is_woocommerce_active() && ( ( is_tax() && in_array( get_query_var( 'taxonomy' ), get_object_taxonomies( 'product' ), true ) ) || is_shop() );
 	}
 
@@ -342,7 +406,6 @@ class JsonLD {
 
 		$hash = [
 			'email' => [ 'titles.email', 'email' ],
-			'image' => [ 'titles.knowledgegraph_logo', 'logo' ],
 			'phone' => [ 'titles.phone', 'telephone' ],
 		];
 
@@ -355,6 +418,34 @@ class JsonLD {
 		if ( method_exists( $this, $perform ) ) {
 			$this->$perform( $entity, $key, $data );
 		}
+	}
+
+	/**
+	 * Add logo property to the entity.
+	 *
+	 * @param array $entity Array of JSON-LD entity.
+	 */
+	private function add_prop_image( &$entity ) {
+		$logo = Helper::get_settings( 'titles.knowledgegraph_logo' );
+		if ( ! $logo ) {
+			return;
+		}
+
+		$entity['logo'] = [
+			'@type'   => 'ImageObject',
+			'@id'     => home_url( '/#logo' ),
+			'url'     => $logo,
+			'caption' => $this->get_website_name(),
+		];
+		$this->add_prop_language( $entity['logo'] );
+
+		$attachment = wp_get_attachment_metadata( Helper::get_settings( 'titles.knowledgegraph_logo_id' ), true );
+		if ( ! $attachment ) {
+			return;
+		}
+
+		$entity['logo']['width']  = $attachment['width'];
+		$entity['logo']['height'] = $attachment['height'];
 	}
 
 	/**
@@ -380,7 +471,7 @@ class JsonLD {
 	}
 
 	/**
-	 * Add URL property to entity.
+	 * Add isPartOf property to entity.
 	 *
 	 * @param array  $entity Array of json-ld entity.
 	 * @param string $key    Entity Key.
@@ -397,7 +488,7 @@ class JsonLD {
 	}
 
 	/**
-	 * Add Publisher property to entity
+	 * Add publisher property to entity
 	 *
 	 * @param array  $entity Entity.
 	 * @param string $key    Entity Key.
@@ -412,7 +503,7 @@ class JsonLD {
 	}
 
 	/**
-	 * Add property to entity.
+	 * Add url property to entity.
 	 *
 	 * @param array $entity Array of JSON-LD entity.
 	 */
@@ -423,7 +514,7 @@ class JsonLD {
 	}
 
 	/**
-	 * Add property to entity.
+	 * Add address property to entity.
 	 *
 	 * @param array $entity Array of JSON-LD entity.
 	 */
@@ -530,34 +621,6 @@ class JsonLD {
 	}
 
 	/**
-	 * Get post parts.
-	 */
-	private function get_parts() {
-		$parts = [
-			'title'     => $this->get_post_title(),
-			'url'       => $this->get_post_url(),
-			'canonical' => Paper::get()->get_canonical(),
-			'modified'  => mysql2date( DATE_W3C, $this->post->post_modified, false ),
-			'published' => mysql2date( DATE_W3C, $this->post->post_date, false ),
-			'excerpt'   => Helper::replace_vars( '%excerpt%', $this->post ),
-		];
-
-		// Description.
-		$desc = Helper::get_post_meta( 'snippet_desc' );
-
-		if ( ! $desc ) {
-			$desc = Helper::replace_vars( Helper::get_settings( "titles.pt_{$this->post->post_type}_default_snippet_desc" ), $this->post );
-		}
-		$parts['desc'] = $desc ? $desc : ( Helper::get_post_meta( 'description' ) ? Helper::get_post_meta( 'description' ) : $parts['excerpt'] );
-
-		// Author.
-		$author          = Helper::get_post_meta( 'snippet_author' );
-		$parts['author'] = $author ? $author : get_the_author_meta( 'display_name', $this->post->post_author );
-
-		$this->parts = $parts;
-	}
-
-	/**
 	 * Get post title.
 	 *
 	 * Retrieves the title in this order.
@@ -628,5 +691,33 @@ class JsonLD {
 		}
 
 		return $product->get_name();
+	}
+
+	/**
+	 * Get post parts.
+	 */
+	private function get_parts() {
+		$parts = [
+			'title'     => $this->get_post_title(),
+			'url'       => $this->get_post_url(),
+			'canonical' => Paper::get()->get_canonical(),
+			'modified'  => mysql2date( DATE_W3C, $this->post->post_modified, false ),
+			'published' => mysql2date( DATE_W3C, $this->post->post_date, false ),
+			'excerpt'   => Helper::replace_vars( '%excerpt%', $this->post ),
+		];
+
+		// Description.
+		$desc = Helper::get_post_meta( 'snippet_desc' );
+
+		if ( ! $desc ) {
+			$desc = Helper::replace_vars( Helper::get_settings( "titles.pt_{$this->post->post_type}_default_snippet_desc" ), $this->post );
+		}
+		$parts['desc'] = $desc ? $desc : ( Helper::get_post_meta( 'description' ) ? Helper::get_post_meta( 'description' ) : $parts['excerpt'] );
+
+		// Author.
+		$author          = Helper::get_post_meta( 'snippet_author' );
+		$parts['author'] = $author ? $author : get_the_author_meta( 'display_name', $this->post->post_author );
+
+		$this->parts = $parts;
 	}
 }

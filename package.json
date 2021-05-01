@@ -30,9 +30,9 @@
         "url": "git+https://github.com/jjpeleato/wp-starter-boilerplate.git"
     },
     "dependencies": {
-        "@popperjs/core": "^2.5.4",
+        "@popperjs/core": "^2.9.2",
         "aos": "^2.3.4",
-        "jquery": "^3.4.1",
+        "jquery": "^3.6.0",
         "normalize.css": "^8.0.1",
         "photoswipe": "^4.1.3",
         "salvattore": "^1.0.9",
@@ -41,36 +41,37 @@
         "vanilla-lazyload": "^17.1.3"
     },
     "devDependencies": {
-        "@babel/core": "^7.12.3",
-        "@babel/preset-env": "^7.12.1",
-        "@babel/register": "^7.12.1",
-        "autoprefixer": "^9.8.6",
-        "browser-sync": "^2.26.13",
-        "del": "^3.0.0",
+        "@babel/core": "^7.14.0",
+        "@babel/preset-env": "^7.14.0",
+        "@babel/register": "^7.13.16",
+        "autoprefixer": "^10.2.5",
+        "browser-sync": "^2.26.14",
+        "del": "^6.0.0",
         "gulp": "^4.0.2",
-        "gulp-autoprefixer": "^6.1.0",
+        "gulp-autoprefixer": "^7.0.1",
         "gulp-concat": "^2.6.1",
-        "gulp-imagemin": "^5.0.3",
+        "gulp-imagemin": "^7.1.0",
         "gulp-jshint": "^2.1.0",
-        "gulp-notify": "^3.2.0",
-        "gulp-rename": "^1.4.0",
-        "gulp-sass": "^4.0.2",
-        "gulp-sourcemaps": "^2.6.4",
-        "gulp-stylelint": "^8.0.0",
-        "gulp-terser": "^1.4.1",
+        "gulp-notify": "^4.0.0",
+        "gulp-rename": "^2.0.0",
+        "gulp-sass": "^4.1.0",
+        "gulp-sourcemaps": "^3.0.0",
+        "gulp-stylelint": "^13.0.0",
+        "gulp-terser": "^2.0.1",
         "gulp-uglifycss": "^1.1.0",
         "gulp-util": "^3.0.8",
-        "husky": "^4.3.0",
+        "husky": "^6.0.0",
         "jshint": "^2.12.0",
-        "stylelint": "^9.10.1",
-        "stylelint-config-standard": "^18.3.0",
-        "stylelint-scss": "^3.13.0"
+        "map-stream": "^0.0.7",
+        "stylelint": "^13.13.1",
+        "stylelint-config-standard": "^22.0.0",
+        "stylelint-scss": "^3.19.0"
     },
     "husky": {
         "hooks": {
-            "pre-commit": "lando npm run gulp:validate",
-            "post-merge": "lando npm install --save-dev",
-            "post-rewrite": "lando npm install --save-dev"
+			"pre-commit": "lando npm run gulp:validate",
+			"post-merge": "lando npm install --save-dev",
+			"post-rewrite": "lando npm install --save-dev"
         }
     }
 }

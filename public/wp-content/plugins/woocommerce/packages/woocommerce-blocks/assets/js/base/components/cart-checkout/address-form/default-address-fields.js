@@ -29,7 +29,7 @@ const AddressFields = {
 		autocapitalize: 'sentences',
 		required: true,
 		hidden: false,
-		index: 1,
+		index: 10,
 	},
 	last_name: {
 		label: __( 'Last name', 'woocommerce' ),
@@ -41,7 +41,7 @@ const AddressFields = {
 		autocapitalize: 'sentences',
 		required: true,
 		hidden: false,
-		index: 2,
+		index: 20,
 	},
 	company: {
 		label: __( 'Company', 'woocommerce' ),
@@ -53,7 +53,7 @@ const AddressFields = {
 		autocapitalize: 'sentences',
 		required: false,
 		hidden: false,
-		index: 3,
+		index: 30,
 	},
 	address_1: {
 		label: __( 'Address', 'woocommerce' ),
@@ -65,7 +65,7 @@ const AddressFields = {
 		autocapitalize: 'sentences',
 		required: true,
 		hidden: false,
-		index: 4,
+		index: 40,
 	},
 	address_2: {
 		label: __( 'Apartment, suite, etc.', 'woocommerce' ),
@@ -77,7 +77,7 @@ const AddressFields = {
 		autocapitalize: 'sentences',
 		required: false,
 		hidden: false,
-		index: 5,
+		index: 50,
 	},
 	country: {
 		label: __( 'Country/Region', 'woocommerce' ),
@@ -88,7 +88,7 @@ const AddressFields = {
 		autocomplete: 'country',
 		required: true,
 		hidden: false,
-		index: 6,
+		index: 60,
 	},
 	city: {
 		label: __( 'City', 'woocommerce' ),
@@ -97,7 +97,7 @@ const AddressFields = {
 		autocapitalize: 'sentences',
 		required: true,
 		hidden: false,
-		index: 7,
+		index: 70,
 	},
 	state: {
 		label: __( 'State/County', 'woocommerce' ),
@@ -109,7 +109,7 @@ const AddressFields = {
 		autocapitalize: 'sentences',
 		required: true,
 		hidden: false,
-		index: 8,
+		index: 80,
 	},
 	postcode: {
 		label: __( 'Postal code', 'woocommerce' ),
@@ -121,7 +121,7 @@ const AddressFields = {
 		autocapitalize: 'characters',
 		required: true,
 		hidden: false,
-		index: 9,
+		index: 90,
 	},
 };
 
