@@ -69,10 +69,9 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "lando npm run gulp:validate",
-            "pre-push": "sh script_local.sh",
-            "post-merge": "lando npm install --save-dev",
-            "post-rewrite": "lando npm install --save-dev"
+			"pre-commit": "lando npm run gulp:validate",
+			"post-merge": "lando npm install --save-dev",
+			"post-rewrite": "lando npm install --save-dev"
         }
     }
 }
