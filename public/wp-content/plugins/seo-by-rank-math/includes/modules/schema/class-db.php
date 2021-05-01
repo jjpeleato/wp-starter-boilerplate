@@ -24,24 +24,33 @@ class DB {
 	/**
 	 * Get query builder object.
 	 *
+	 * @param string $table Meta table name.
+	 *
 	 * @return Query_Builder
 	 */
-	private static function table() {
-		return Database::table( 'postmeta' );
+	private static function table( $table = 'postmeta' ) {
+		return Database::table( $table );
 	}
 
 	/**
-	 * Get all schemas.
+	 * Get all schemas by Object ID.
 	 *
-	 * @param int $post_id Post id.
+	 * @param int    $object_id  Object ID.
+	 * @param string $table      Meta table name.
 	 *
 	 * @return array
 	 */
-	public static function get_schemas( $post_id ) {
-		$data = self::table()
+	public static function get_schemas( $object_id, $table = 'postmeta' ) {
+		// Add exception handler.
+		if ( is_null( $object_id ) ) {
+			return [];
+		}
+
+		$key  = 'termmeta' === $table ? 'term_id' : 'post_id';
+		$data = self::table( $table )
 			->select( 'meta_id' )
 			->select( 'meta_value' )
-			->where( 'post_id', $post_id )
+			->where( $key, $object_id )
 			->whereLike( 'meta_key', 'rank_math_schema', '' )
 			->get();
 
@@ -55,19 +64,28 @@ class DB {
 	}
 
 	/**
-	 * Get all schemas.
+	 * Get Schema types by Object ID.
 	 *
-	 * @param int $post_id Post id.
+	 * @param int  $object_id Object ID.
+	 * @param bool $sanitize  Sanitize schema types.
 	 *
 	 * @return array
 	 */
-	public static function get_schema_types( $post_id ) {
-		$schemas = self::get_schemas( $post_id );
+	public static function get_schema_types( $object_id, $sanitize = false ) {
+		$schemas = self::get_schemas( $object_id );
 		if ( empty( $schemas ) ) {
 			return false;
 		}
 
 		$types = wp_list_pluck( $schemas, '@type' );
+		if ( $sanitize ) {
+			$types = array_map(
+				function ( $type ) {
+					return Helper::sanitize_schema_title( $type );
+				},
+				$types
+			);
+		}
 		return implode( ', ', $types );
 	}
 
@@ -121,13 +139,56 @@ class DB {
 	}
 
 	/**
-	 * Delete Schema for template.
+	 * Delete Schema data using Post ID.
 	 *
-	 * @param int $post_id Post id.
+	 * @param int $post_id Post ID.
 	 *
 	 * @return string
 	 */
 	public static function delete_schema_data( $post_id ) {
 		return self::table()->where( 'post_id', $post_id )->whereLike( 'meta_key', 'rank_math_schema_' )->delete();
+	}
+
+	/**
+	 * Unpublish job posting when expired.
+	 *
+	 * @param JsonLD $jsonld  JsonLD Instance.
+	 * @param array  $schemas Array of JSON-LD entity.
+	 */
+	public static function unpublish_jobposting_post( $jsonld, $schemas ) {
+		if ( ! is_singular() ) {
+			return;
+		}
+
+		$job_postings = array_map(
+			function( $schema ) {
+				return isset( $schema['@type'] ) && 'JobPosting' === $schema['@type'] ? $schema : false;
+			},
+			$schemas
+		);
+
+		if ( empty( $job_postings ) ) {
+			return;
+		}
+
+		foreach ( $job_postings as $job_posting ) {
+			if (
+				empty( $job_posting['metadata']['unpublish'] ) ||
+				'on' !== $job_posting['metadata']['unpublish'] ||
+				empty( $job_posting['validThrough'] ) ||
+				date_create( 'now' )->getTimestamp() < strtotime( $job_posting['validThrough'] )
+			) {
+				continue;
+			}
+
+			wp_update_post(
+				[
+					'ID'          => $jsonld->post_id,
+					'post_status' => 'draft',
+				]
+			);
+
+			break;
+		}
 	}
 }

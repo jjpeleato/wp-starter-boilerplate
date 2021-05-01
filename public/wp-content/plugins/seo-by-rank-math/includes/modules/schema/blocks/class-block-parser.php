@@ -34,11 +34,11 @@ class Block_Parser {
 	 * The Constructor.
 	 */
 	public function __construct() {
-		$this->action( 'rank_math/json_ld', 'parse' );
+		$this->action( 'rank_math/json_ld', 'parse', 8 );
 	}
 
 	/**
-	 * Parse the blocks.
+	 * Filter function to add Blocks data in schema.
 	 *
 	 * @param array $data Array of JSON-LD data.
 	 *
@@ -50,7 +50,6 @@ class Block_Parser {
 		}
 
 		$this->get_parsed_blocks();
-
 		foreach ( $this->blocks as $block_type => $blocks ) {
 			foreach ( $blocks as $block ) {
 				/**

@@ -3,13 +3,13 @@
  * Rank Math SEO Plugin.
  *
  * @package      RANK_MATH
- * @copyright    Copyright (C) 2019-2020, Rank Math - support@rankmath.com
+ * @copyright    Copyright (C) 2019-2021, Rank Math - support@rankmath.com
  * @link         https://rankmath.com
  * @since        0.9.0
  *
  * @wordpress-plugin
  * Plugin Name:       Rank Math SEO
- * Version:           1.0.55
+ * Version:           1.0.63
  * Plugin URI:        https://s.rankmath.com/home
  * Description:       Rank Math is a revolutionary SEO product that combines the features of many SEO tools and lets you multiply your traffic in the easiest way possible.
  * Author:            Rank Math
@@ -34,7 +34,7 @@ final class RankMath {
 	 *
 	 * @var string
 	 */
-	public $version = '1.0.55';
+	public $version = '1.0.63';
 
 	/**
 	 * Rank Math database version.
@@ -55,7 +55,7 @@ final class RankMath {
 	 *
 	 * @var string
 	 */
-	private $php_version = '5.6';
+	private $php_version = '7.2';
 
 	/**
 	 * Holds various class instances.
@@ -184,9 +184,6 @@ final class RankMath {
 		// Instantiate classes.
 		$this->instantiate();
 
-		// Initialize the action and filter hooks.
-		$this->init_actions();
-
 		// Loaded action.
 		do_action( 'rank_math/loaded' );
 	}
@@ -300,6 +297,9 @@ final class RankMath {
 		// Frontend SEO Score.
 		$this->container['frontend_seo_score'] = new \RankMath\Frontend_SEO_Score();
 		$this->load_3rd_party();
+
+		// Initialize the action and filter hooks.
+		$this->init_actions();
 	}
 
 	/**
@@ -342,6 +342,7 @@ final class RankMath {
 		$controllers = [
 			new \RankMath\Rest\Admin(),
 			new \RankMath\Rest\Front(),
+			new \RankMath\Rest\Shared(),
 			new \RankMath\Rest\Post(),
 		];
 
@@ -376,10 +377,33 @@ final class RankMath {
 	 * Load 3rd party modules.
 	 */
 	private function load_3rd_party() {
+		if ( ! function_exists( 'is_plugin_active' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
 
-		if ( defined( 'ELEMENTOR_VERSION' ) ) {
+		// Elementor.
+		if ( is_plugin_active( 'elementor/elementor.php' ) ) {
 			new \RankMath\Elementor\Elementor();
 		}
+
+		// Divi theme.
+		add_action(
+			'after_setup_theme',
+			function() {
+				if ( defined( 'ET_CORE' ) ) {
+					new \RankMath\Divi\Divi();
+				}
+			},
+			11
+		);
+		add_action(
+			'current_screen',
+			function() {
+				if ( defined( 'ET_CORE' ) ) {
+					new \RankMath\Divi\Divi_Admin();
+				}
+			}
+		);
 	}
 
 	/**
@@ -467,6 +491,7 @@ final class RankMath {
 			$this->container['json']->add( 'endpoint', esc_url_raw( rest_url( 'rankmath/v1' ) ), 'rankMath' );
 			$this->container['json']->add( 'security', wp_create_nonce( 'rank-math-ajax-nonce' ), 'rankMath' );
 			$this->container['json']->add( 'restNonce', ( wp_installing() && ! is_multisite() ) ? '' : wp_create_nonce( 'wp_rest' ), 'rankMath' );
+			$this->container['json']->add( 'modules', \RankMath\Helper::get_active_modules(), 'rankMath' );
 		}
 	}
 

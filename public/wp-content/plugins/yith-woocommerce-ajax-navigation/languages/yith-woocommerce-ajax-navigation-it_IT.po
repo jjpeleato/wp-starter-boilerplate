@@ -1,662 +1,1400 @@
+# Translation of YITH WooCommerce Ajax Product Filter in Italian
+# This file is distributed under the same license as the YITH WooCommerce Ajax Product Filter package.
 msgid ""
 msgstr ""
 "Project-Id-Version: YITH WooCommerce Ajax Product Filter\n"
-"Report-Msgid-Bugs-To: http://wordpress.org/tag/init\n"
-"POT-Creation-Date: 2020-04-30 10:11:58+00:00\n"
-"PO-Revision-Date: 2019-06-06 10:16+0200\n"
-"Last-Translator: Your Inspiration Themes <plugins@yithemes.com>\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/yith-woocommerce-"
+"ajax-product-filter\n"
+"POT-Creation-Date: 2021-04-20 14:45:48+00:00\n"
+"PO-Revision-Date: 2021-03-03 10:36+0100\n"
+"Last-Translator: \n"
 "Language-Team: \n"
-"Language: it_IT\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 2.2\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
-"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
-"X-Poedit-Basepath: ..\n"
-"X-Textdomain-Support: yes\n"
-"X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: plugin-fw\n"
+"X-Generator: Poedit 2.4.2\n"
 
-#: includes/class.yith-wcan-admin.php:126
-msgid "Front end"
-msgstr "Front end"
+#: includes/data-stores/class.yith-wcan-preset-data-store.php:56
+msgid "Draft Preset"
+msgstr "Preset bozza"
 
-#: includes/class.yith-wcan-admin.php:127 settings/custom-style-options.php:12
-msgid "Custom Style"
-msgstr "Stile personalizzato"
-
-#: includes/class.yith-wcan-admin.php:128
-msgid "Premium Version"
-msgstr "Versione Premium"
-
-#: includes/class.yith-wcan-admin.php:134
-#: includes/class.yith-wcan-admin.php:135
-msgid "Ajax Product Filter"
-msgstr "Ajax Product Filter"
-
-# @ yit
-#: includes/functions.yith-wcan.php:88 includes/functions.yith-wcan.php:104
-#: includes/functions.yith-wcan.php:126
+#: includes/functions.yith-wcan.php:98 includes/functions.yith-wcan.php:112
+#: includes/functions.yith-wcan.php:132
 msgid "Term"
 msgstr "Proprietà"
 
-# @ yit
-#: includes/functions.yith-wcan.php:88
-#: widgets/class.yith-wcan-navigation-widget.php:875
+#: includes/functions.yith-wcan.php:98
+#: includes/widgets/class.yith-wcan-navigation-widget.php:434
 msgid "Color"
 msgstr "Colore"
 
-#: includes/functions.yith-wcan.php:104
-msgctxt "For multicolor: I.E. white and red T-Shirt"
-msgid "Color 1"
-msgstr "Colore 1"
-
-#: includes/functions.yith-wcan.php:104
-msgctxt "For multicolor: I.E. white and red T-Shirt"
-msgid "Color 2"
-msgstr "Colore 2"
-
-# @ yit
-#: includes/functions.yith-wcan.php:126
+#: includes/functions.yith-wcan.php:132
 msgid "Labels"
+msgstr "Etichette "
+
+#: includes/widgets/class.yith-wcan-navigation-widget.php:47
+msgid "Filter the list of products without reloading the page"
+msgstr "Filtra la lista dei prodotti senza dover ricaricare la pagina"
+
+#: includes/widgets/class.yith-wcan-navigation-widget.php:201
+msgid "Filters:"
+msgstr "Filtri:"
+
+#: includes/widgets/class.yith-wcan-navigation-widget.php:433
+msgid "List"
+msgstr "Lista"
+
+#: includes/widgets/class.yith-wcan-navigation-widget.php:435
+msgid "Label"
 msgstr "Etichetta"
 
-#: init.php:49
-msgid ""
-"YITH WooCommerce Ajax Product Filter is enabled but not effective. It "
-"requires WooCommerce in order to work."
-msgstr ""
-"YITH WooCommerce Ajax Product Filter è attivo, ma non operativo. Richiede "
-"WooCommerce  affinché possa funzionare correttamente."
+#: includes/widgets/class.yith-wcan-navigation-widget.php:436
+msgid "Dropdown"
+msgstr "Dropdown"
 
-#: init.php:58
+#: includes/widgets/class.yith-wcan-navigation-widget.php:443
+#: includes/widgets/class.yith-wcan-reset-navigation-widget.php:194
+msgid "Title"
+msgstr "Titolo"
+
+#: includes/widgets/class.yith-wcan-navigation-widget.php:449
+msgid "Type:"
+msgstr "Tipo:"
+
+#: includes/widgets/class.yith-wcan-navigation-widget.php:460
+msgid "Query Type:"
+msgstr "Tipo Query:"
+
+#: includes/widgets/class.yith-wcan-navigation-widget.php:463
+msgid "OR"
+msgstr "O"
+
+#: includes/widgets/class.yith-wcan-navigation-widget.php:468
+msgid "Attribute:"
+msgstr "Attributo:"
+
+#: includes/widgets/class.yith-wcan-navigation-widget.php:475
+msgid "Display (default All):"
+msgstr "Mostra (default Tutti)"
+
+#: includes/widgets/class.yith-wcan-navigation-widget.php:477
+msgid "All (no hierarchical)"
+msgstr "Tutti (non gerarchico)"
+
+#: includes/widgets/class.yith-wcan-navigation-widget.php:478
+msgid "All (hierarchical)"
+msgstr "Tutti (gerarchico)"
+
+#: includes/widgets/class.yith-wcan-navigation-widget.php:479
+msgid "Only Parent"
+msgstr "Solo Principali"
+
+#: includes/widgets/class.yith-wcan-navigation-widget.php:486
+msgid "CSS custom class"
+msgstr "Classe CSS custom"
+
+#: includes/widgets/class.yith-wcan-reset-navigation-widget.php:37
+msgid "YITH AJAX Reset Filter"
+msgstr "YITH AJAX Reset Filter"
+
+#: includes/widgets/class.yith-wcan-reset-navigation-widget.php:187
+msgid "Reset All Filters"
+msgstr "Resetta tutti i filtri"
+
+#: includes/widgets/class.yith-wcan-reset-navigation-widget.php:200
+msgid "Button Label"
+msgstr "Etichetta Pulsante"
+
+#: init.php:145
 msgid ""
 "You can't activate the free version of YITH WooCommerce Ajax Product Filter "
 "while you are using the premium one."
 msgstr ""
+"Non è possibile attivare la versione gratuita di YITH WooCommerce Ajax "
+"Product Filter se stai già utilizzando la versione premium."
 
-#: settings/custom-style-options.php:24
-msgid "Enter here your custom CSS rules:"
-msgstr "Inserisci qui le tue regole CSS:"
-
-#: settings/frontend-options.php:12
-msgid "Frontend Settings"
-msgstr "Impostazioni frontend"
-
-#: settings/frontend-options.php:25
-msgctxt "Admin panel: option description"
-msgid "How To:"
-msgstr "Descrizione"
-
-#: settings/frontend-options.php:27
-msgctxt "Admin: Panel section description"
+#: init.php:163
 msgid ""
-"If your theme is using WooCommerce standard templates, you don't need to "
-"change the following values.\n"
-"                                Otherwise, add the classes used in the "
-"templates of your theme.\n"
-"                                If you don't know how to do, please contact "
-"the developer of your theme to be correctly instructed."
+"YITH WooCommerce Ajax Product Filter is enabled but not effective. It "
+"requires WooCommerce in order to work."
 msgstr ""
-"Se il tuo tema utilizza i template standard di WooCommerce, non servirà "
-"modificare i seguenti valori.\n"
-"In caso contrario, aggiungi le classi utilizzate nei template del tuo tema.\n"
-"Se non sai come fare, contatta lo sviluppatore del tuo tema per ricevere "
-"informazione adeguate."
-
-#: settings/frontend-options.php:33
-msgid "Product Container"
-msgstr "Contenitore Prodotti"
-
-#: settings/frontend-options.php:34
-msgid "Enter here the CSS class or id for the product container"
-msgstr "Inserisci qui la classe CSS or l'ID del contenitore prodotto"
-
-#: settings/frontend-options.php:41
-msgid "Shop Pagination Container"
-msgstr "Contenitore Paginazione"
-
-#: settings/frontend-options.php:42
-msgid "Enter here the CSS class or id for the shop pagination container"
-msgstr ""
-"Inserisci qui la classe CSS o l'ID del contenitore della paginazione shop"
-
-#: settings/frontend-options.php:49
-msgid "Result Count Container"
-msgstr "Contenitore Conteggio Prodotti"
-
-#: settings/frontend-options.php:50
-msgid "Enter here the CSS class or id for the results count container"
-msgstr "Inserisci qui la classe CSS o l'ID dei risultati del conteggio"
-
-#: settings/frontend-options.php:57
-#, fuzzy
-msgid "Scroll up to top anchor"
-msgstr "Tag html per la funzione Scroll Top"
-
-#: settings/frontend-options.php:58
-#, fuzzy
-msgid "Enter here the HTML tag for the scroll up to to top feature"
-msgstr "Inserisci qui il tag HTML per la funzionalità \"Torna su\" su mobile"
-
-#: settings/frontend-options.php:65
-msgid "Order by"
-msgstr "Ordina per"
-
-#: settings/frontend-options.php:66
-msgid "Sort by number of products contained or alphabetically"
-msgstr "Ordina per numero di prodotti contenuti or in ordine alfabetico"
-
-#: settings/frontend-options.php:70
-msgid "Alphabetically"
-msgstr "In ordine alfabetico"
-
-#: settings/frontend-options.php:71
-msgid "WooCommerce Default"
-msgstr ""
-
-#: templates/admin/premium.php:203 templates/admin/premium.php:441
-msgid ""
-"Upgrade to %1$spremium version%2$s of %1$sYITH WooCommerce Ajax Product "
-"Filter%2$s to benefit from all features!"
-msgstr ""
-
-#: templates/admin/premium.php:206 templates/admin/premium.php:444
-msgid "UPGRADE"
-msgstr ""
-
-#: templates/admin/premium.php:207 templates/admin/premium.php:445
-msgid "to the premium version"
-msgstr ""
-
-#: templates/admin/premium.php:213
-msgid "Premium Features"
-msgstr ""
-
-#: templates/admin/premium.php:221
-msgid "Two more layouts"
-msgstr ""
-
-#: templates/admin/premium.php:224
-msgid ""
-"The YITH WooCommerce Ajax product Filter widget get richer with 2 new "
-"layouts to filter the products of your shop.%1$sBicolor%2$s: the perfect "
-"choice for those attributes related to two different colors at the same time "
-"(white/black), for a simple visual impact for the final user. Pick the "
-"%1$sTag%2$s typology, on the contrary, if you want to filter your products "
-"by product tag. And if you are using also the %1$sYITH WooCommerce Brand Add-"
-"On%2$s plugin, you will be able to offer the freedom to filter your shop "
-"products by brands thanks to the ajax technology."
-msgstr ""
-
-#: templates/admin/premium.php:234
-msgid "Price range"
-msgstr ""
-
-#: templates/admin/premium.php:237
-msgid ""
-"One of the most requested filter for e-commerce sites is the one that let "
-"you select products by their prices. Thanks to YITH WooCommerce Ajax List "
-"Price Filter, %1$syou can set unlimited price ranges:%2$s your users will be "
-"able to filter products selecting on the ranges you have set."
-msgstr ""
-
-#: templates/admin/premium.php:253
-msgid "Ajax Stock/On Sale Filters"
-msgstr ""
-
-#: templates/admin/premium.php:256
-msgid ""
-"A new widget for the premium version of the plugin. Whoever will surf the "
-"pages of your shop will be able to display only the products on sale and/or "
-"the available ones.%3$s %1$sAn additional feature for an e-commerce site "
-"that is worthy!%2$s"
-msgstr ""
-
-#: templates/admin/premium.php:266
-msgid "Product sorting"
-msgstr ""
-
-#: templates/admin/premium.php:269
-msgid ""
-"With the new %1$sYITH WooCommerce Ajax Sort By%2$s widget, you can give your "
-"users the freedom to sort products with the ajax technology, without the "
-"need to reload the page. Products can be sorted by rate, sales, price or "
-"publication date."
-msgstr ""
-
-#: templates/admin/premium.php:285
-msgid "Customized loader"
-msgstr ""
-
-#: templates/admin/premium.php:288
-msgid ""
-"From the plugin option panel, you can choose to upload a new icon for your "
-"loader: in this way, it will better meet your needs."
-msgstr ""
-
-#: templates/admin/premium.php:298
-msgid "WooCommerce Price Filter"
-msgstr ""
-
-#: templates/admin/premium.php:301
-msgid ""
-"Take advantage of the premium version of the plugin to edit the default "
-"behavior of WooCommerce Price Filter. Change the %1$slayout of the filter"
-"%2$s and activate the %1$sAjax mode%2$s to apply the filter immediately, "
-"without reloading the page."
-msgstr ""
-
-#: templates/admin/premium.php:317
-msgid "SEO"
-msgstr "SEO"
-
-#: templates/admin/premium.php:320
-msgid ""
-"The Ajax management of the plugin adds specific queries to the URLs of the "
-"current page. Choose whether to allow search engines to index the URLs "
-"generated by the plugin, or not: with the latter, you will be free to avoid "
-"possible penalizations that may apply to your site."
-msgstr ""
-
-#: templates/admin/premium.php:330
-msgid " Filter by category"
-msgstr ""
-
-#: templates/admin/premium.php:333
-msgid ""
-"Configure the widget to let your users filter product by a %1$sselected "
-"category%2$s. Your users will be even happier to browse your shop."
-msgstr ""
-
-#: templates/admin/premium.php:349
-msgid "FILTER ORDERING"
-msgstr ""
-
-#: templates/admin/premium.php:352
-msgid ""
-"Choose one of the two solutions  for a better filter ordering of your "
-"product archieve pages: classic alphabetical order or decreasing order, "
-"based on the number of products contained in each filter."
-msgstr ""
-
-#: templates/admin/premium.php:362
-msgid "Filter style"
-msgstr "Stile filtro"
-
-#: templates/admin/premium.php:365
-msgid ""
-"In addition to the classic visualization style, the premium version of this "
-"plugin gives you the possibility to show filters in \"checkbox\" style. "
-"Users will experience a new look of your pages while filtering products."
-msgstr ""
-
-#: templates/admin/premium.php:381
-msgid "Page url"
-msgstr ""
-
-#: templates/admin/premium.php:384
-msgid ""
-"Each applied filter generates a new url for the page. You can decide to keep "
-"the same url or let it get automatically updated every time user applies a "
-"filter to the products list of your shop."
-msgstr ""
-
-#: templates/admin/premium.php:394
-msgid "Filter by tag"
-msgstr ""
-
-#: templates/admin/premium.php:397
-msgid ""
-"If you use tags as a powerful tool to classify your products, you can "
-"configure an ad-hoc filter to be used on your products also by tag. In "
-"addition, you could organize your tags in a hierarchy and have appropriate "
-"tools for a better management of your products."
-msgstr ""
-
-#: templates/admin/premium.php:413
-msgid "Reset"
-msgstr ""
-
-#: templates/admin/premium.php:416
-msgid ""
-"User experience on the site requires handiness and insight. This is why it "
-"is unreasonable to deselect filters one by one to go back to the main view "
-"when multiple filters have been applied to the product list. The plugin also "
-"manages this action by a specific button which reset filters and by other "
-"two which refresh the main view of categories and/or tags."
-msgstr ""
-
-#: templates/admin/premium.php:426
-msgid "Scroll to top"
-msgstr ""
-
-#: templates/admin/premium.php:429
-msgid ""
-"Scroll to top is a feature to improve user experience on your site. Soon "
-"after filtering the product list, the page will be automatically scrolled to "
-"the top so the user can immediately see the filtered list. "
-msgstr ""
-
-#: widgets/class.yith-wcan-navigation-widget.php:36
-msgid "Filter the list of products without reloading the page"
-msgstr "Filtra la lista dei prodotti senza dover ricaricare la pagina"
-
-#: widgets/class.yith-wcan-navigation-widget.php:39
-#, fuzzy
-msgctxt "[Plugin Name] Admin: Widget Title"
-msgid "YITH Ajax Product Filter"
-msgstr "Ajax Product Filter"
-
-#: widgets/class.yith-wcan-navigation-widget.php:154
-msgid "Filters:"
-msgstr "Filtri:"
-
-# @ yit
-#: widgets/class.yith-wcan-navigation-widget.php:874
-msgid "List"
-msgstr "Lista"
-
-# @ yit
-#: widgets/class.yith-wcan-navigation-widget.php:876
-msgid "Label"
-msgstr "Etichetta"
-
-#: widgets/class.yith-wcan-navigation-widget.php:877
-msgid "Dropdown"
-msgstr "Menu a tendina"
-
-# @ yit
-#: widgets/class.yith-wcan-navigation-widget.php:884
-#: widgets/class.yith-wcan-reset-navigation-widget.php:126
-msgid "Title"
-msgstr "Titolo"
-
-# @ yit
-#: widgets/class.yith-wcan-navigation-widget.php:890
-msgid "Type:"
-msgstr "Tipo:"
-
-# @ yit
-#: widgets/class.yith-wcan-navigation-widget.php:901
-msgid "Query Type:"
-msgstr "Tipo Query:"
-
-# @ yit
-#: widgets/class.yith-wcan-navigation-widget.php:903
-msgid "AND"
-msgstr "E"
-
-# @ yit
-#: widgets/class.yith-wcan-navigation-widget.php:904
-msgid "OR"
-msgstr "O"
-
-# @ yit
-#: widgets/class.yith-wcan-navigation-widget.php:910
-msgid "Attribute:"
-msgstr "Attributo:"
-
-#: widgets/class.yith-wcan-navigation-widget.php:917
-msgid "Display (default All):"
-msgstr "Visualizza (default Tutti)"
-
-#: widgets/class.yith-wcan-navigation-widget.php:919
-msgid "All (no hierarchical)"
-msgstr "Tutti (non gerarchico)"
-
-#: widgets/class.yith-wcan-navigation-widget.php:920
-msgid "All (hierarchical)"
-msgstr "Tutti (gerarchico)"
-
-#: widgets/class.yith-wcan-navigation-widget.php:921
-msgid "Only Parent"
-msgstr "Solo Principali"
-
-#: widgets/class.yith-wcan-navigation-widget.php:928
-msgid "CSS custom class"
-msgstr "Classe CSS custom"
-
-#: widgets/class.yith-wcan-reset-navigation-widget.php:23
-#, fuzzy
-msgctxt "[Plugin Name]"
-msgid "Reset all filters set by YITH WooCommerce Ajax Product Filter"
-msgstr ""
-"Resetta tutti i filtri impostati da YITH WooCommerce Ajax Product Filter"
-
-#: widgets/class.yith-wcan-reset-navigation-widget.php:25
-#, fuzzy
-msgid "YITH Ajax Reset Filter"
-msgstr "YITH WooCommerce Filtro Ajax Reset"
-
-#: widgets/class.yith-wcan-reset-navigation-widget.php:119
-msgid "Reset All Filters"
-msgstr "Resetta tutti i filtri"
-
-#: widgets/class.yith-wcan-reset-navigation-widget.php:132
-msgid "Button Label"
-msgstr "Etichetta Pulsante"
-
-#. Plugin Name of the plugin/theme
-msgid "YITH WooCommerce Ajax Product Filter"
-msgstr "YITH WooCommerce Ajax Product Filter"
-
-#. Plugin URI of the plugin/theme
-msgid "https://wordpress.org/plugins/yith-woocommerce-ajax-navigation/"
-msgstr ""
+"YITH WooCommerce Ajax Product Filter è attivo, ma non operativo. Il suo "
+"funzionamento richiede WooCommerce."
 
 #. Description of the plugin/theme
+#, fuzzy
 msgid ""
 "<code><strong>YITH WooCommerce AJAX Product Filter</strong></code> allows "
 "your users to find the product they are looking for as quickly as possible. "
 "Thanks to the plugin you will be able to set up one or more search filters "
-"for your WooCommerce products, improve the user experience and give the "
-"impression of being in a big and reliable store. <a href=\"https://yithemes."
-"com/\" target=\"_blank\">Get more plugins for your e-commerce shop on "
-"<strong>YITH</strong></a>"
+"for your WooCommerce products and improve the user experience of your shop. "
+"<a href=\"https://yithemes.com/\" target=\"_blank\">Get more plugins for "
+"your e-commerce shop on <strong>YITH</strong></a>"
+msgstr ""
+"<code><strong>YITH WooCommerce AJAX Product Filter</strong></code> permette "
+"ai tuoi utenti di trovare il più velocemente possibile il prodotto che "
+"stanno cercando. Grazie al plugin potrai impostare uno o più filtri di "
+"ricerca per i tuoi prodotti WooCommerce, migliorare la user experience del "
+"tuo shop e risultare uno store grande ed affidabile. <a href=\"https://"
+"yithemes.com/\" target=\"_blank\">Scopri altri plugin per il tuo e-commerce "
+"su <strong>YITH</strong></a>"
+
+#: includes/class.yith-wcan-admin.php:107
+msgctxt "[Admin] Copy confirmation message"
+msgid "Content copied to your clipboard"
+msgstr "Contenuto copiato negli appunti"
+
+#: includes/class.yith-wcan-admin.php:108
+msgctxt "[Admin] Confirm filter delete message"
+msgid "Are you sure you want to delete this item?"
+msgstr "Sei sicuro di voler eliminare questo termine?"
+
+#. translators: 1. Number of items that will be added.
+#: includes/class.yith-wcan-admin.php:110
+msgctxt "[Admin] Confirm add all terms message"
+msgid "Are you sure you want to proceed? This operation will add %s items"
+msgstr "Sei sicuro di voler procedere? Questa azione aggiungerà %s elementi"
+
+#: includes/class.yith-wcan-admin.php:113 templates/admin/preset-filter.php:31
+msgctxt "[Admin] Message shown when filter has empty title"
+msgid "&lt; no title &gt;"
+msgstr "&lt; nessun titolo &gt;"
+
+#: includes/class.yith-wcan-admin.php:114
+msgctxt "[Admin] Media library title, when selecting images"
+msgid "Select media you want to use"
+msgstr "Seleziona i media da usare"
+
+#: includes/class.yith-wcan-admin.php:115
+msgctxt "[Admin] Media library confirm button, when selecting images"
+msgid "Use this media"
+msgstr "Usa questo media"
+
+#: includes/class.yith-wcan-admin.php:181
+msgctxt "[Admin] tab name"
+msgid "Filter presets"
+msgstr "Preset filtri"
+
+#: includes/class.yith-wcan-admin.php:182
+msgctxt "[Admin] tab name"
+msgid "General settings"
+msgstr "Impostazioni generali"
+
+#: includes/class.yith-wcan-admin.php:183
+msgctxt "[Admin] tab name"
+msgid "SEO"
+msgstr "SEO"
+
+#: includes/class.yith-wcan-admin.php:184
+msgctxt "[Admin] tab name"
+msgid "Premium Version"
+msgstr "Versione Premium"
+
+#: includes/class.yith-wcan-admin.php:188
+msgctxt "[Admin] tab name"
+msgid "Legacy"
+msgstr "Legacy"
+
+#: includes/class.yith-wcan-admin.php:194
+#: includes/class.yith-wcan-admin.php:195
+msgctxt "[Admin] Menu title"
+msgid "Ajax Product Filter"
+msgstr "Ajax Product Filter"
+
+#: includes/class.yith-wcan-admin.php:196
+msgctxt "[Admin] Plugin description"
+msgid ""
+"It allows your users to find the product they are looking for as quickly as "
+"possible."
+msgstr ""
+"Permette ai tuoi utenti di trovare il prodotto che stanno cercando il più "
+"velocemente possibile."
+
+#: includes/class.yith-wcan-admin.php:309
+msgctxt "[Admin] Generic item name, in \"You have no x yet\""
+msgid "item"
+msgstr "elemento"
+
+#: includes/class.yith-wcan-admin.php:310
+msgctxt "[Admin] Preset table empty message second line"
+msgid "But don't worry, here you can create your first one!"
+msgstr "Ma non preoccuparti. Puoi iniziare a crearli qui!"
+
+#: includes/class.yith-wcan-admin.php:458
+msgctxt "[ADMIN] WooCommerce Tools tab, name of the tool"
+msgid "Clear Product Filter transients"
+msgstr "Cancella i transient Product Filter"
+
+#: includes/class.yith-wcan-admin.php:464
+msgctxt "[ADMIN] WooCommerce Tools tab, name of the tool"
+msgid "Run filter widgets upgrade"
+msgstr "Avvia l'upgrade dei widget dei filtri"
+
+#: includes/class.yith-wcan-admin.php:459
+msgctxt "[ADMIN] WooCommerce Tools tab, button for the tool"
+msgid "Clear"
+msgstr "Cancella"
+
+#: includes/class.yith-wcan-admin.php:465
+msgctxt "[ADMIN] WooCommerce Tools tab, button for the tool"
+msgid "Run"
+msgstr "Avvia"
+
+#: includes/class.yith-wcan-admin.php:460
+msgctxt "[ADMIN] WooCommerce Tools tab, description of the tool"
+msgid ""
+"This will clear all transients related to the YITH WooCommerce AJAX Product "
+"Filter plugin. It may be useful if you changed your product's configuration, "
+"and filters do not display the expected results."
+msgstr ""
+"Questo cancellerà tutti i transient relativi al plugin YITH WooCommerce AJAX "
+"Product Filter. Utile se hai cambiato la configurazione del prodotto e i "
+"filtri non mostrano i risultati previsti. "
+
+#: includes/class.yith-wcan-admin.php:466
+msgctxt "[ADMIN] WooCommerce Tools tab, description of the tool"
+msgid ""
+"This will create a preset for any sidebar of your shop containing filter "
+"widgets; preset will be configured to match widgets specifications"
+msgstr ""
+"Questo creerà un preset con i widget dei filtri per qualsiasi barra laterale "
+"del tuo shop. Il preset sarà configurato in base alle specifiche dei widget"
+
+#: includes/class.yith-wcan-filter-factory.php:72
+msgctxt "[Admin] Filter edit form"
+msgid "Taxonomy"
+msgstr "Tassonomia"
+
+#: plugin-options/filter-options.php:28
+msgctxt "[Admin] Filter edit form"
+msgid "Filter name"
+msgstr "Nome filtro"
+
+#: plugin-options/filter-options.php:31
+msgctxt "[Admin] Filter edit form"
+msgid "Enter a name to identify this filter"
+msgstr "Inserisci un nome per definire questo filtro"
+
+#: plugin-options/filter-options.php:37
+msgctxt "[Admin] Filter edit form"
+msgid "Filter for"
+msgstr "Filtro per"
+
+#: plugin-options/filter-options.php:41
+msgctxt "[Admin] Filter edit form"
+msgid "Select the parameters you wish to filter for"
+msgstr "Seleziona il parametro per il filtro"
+
+#: plugin-options/filter-options.php:47
+msgctxt "[Admin] Filter edit form"
+msgid "Choose taxonomy"
+msgstr "Scegli tassonomia"
+
+#: plugin-options/filter-options.php:51
+msgctxt "[Admin] Filter edit form"
+msgid "Select which taxonomy to use for this filter"
+msgstr "Seleziona quale tassonomia usare per questo filtro"
+
+#: plugin-options/filter-options.php:56
+msgctxt "[Admin] Filter edit form"
+msgid "Choose terms"
+msgstr "Scegli termini"
+
+#: plugin-options/filter-options.php:61
+msgctxt "[Admin] Filter edit form"
+msgid "Select which terms to use for filtering"
+msgstr "Seleziona quali termini usare per i filtri"
+
+#: plugin-options/filter-options.php:65
+msgctxt "[Admin] Filter edit form"
+msgid "Filter type"
+msgstr "Tipo filtro"
+
+#: plugin-options/filter-options.php:71
+msgctxt "[Admin] Filter edit form"
+msgid "Checkbox"
+msgstr "Checkbox"
+
+#: plugin-options/filter-options.php:72
+msgctxt "[Admin] Filter edit form"
+msgid "Select"
+msgstr "Select"
+
+#: plugin-options/filter-options.php:73
+msgctxt "[Admin] Filter edit form"
+msgid "Text"
+msgstr "Testo"
+
+#: plugin-options/filter-options.php:74
+msgctxt "[Admin] Filter edit form"
+msgid "Color Swatches"
+msgstr "Campioni colore"
+
+#: plugin-options/filter-options.php:75
+msgctxt "[Admin] Filter edit form"
+msgid "Label"
+msgstr "Etichetta"
+
+#: plugin-options/filter-options.php:78
+msgctxt "[Admin] Filter edit form"
+msgid "Select the filter type for this filter"
+msgstr "Seleziona il tipo di filtro"
+
+#: plugin-options/filter-options.php:82
+msgctxt "[Admin] Filter edit form"
+msgid "Columns number"
+msgstr "Numero colonne"
+
+#: plugin-options/filter-options.php:87
+msgctxt "[Admin] Filter edit form"
+msgid "Set the number of items per row you want to show for this design"
+msgstr "Scegli il numero di elementi per riga da mostrare "
+
+#: plugin-options/filter-options.php:91
+msgctxt "[Admin] Filter edit form"
+msgid "Customize terms"
+msgstr "Personalizza termini"
+
+#: plugin-options/filter-options.php:97
+msgctxt "[Admin] Filter edit form"
+msgid "Show hierarchy"
+msgstr "Mostra gerarchia"
+
+#: plugin-options/filter-options.php:100
+msgctxt "[Admin] Filter edit form"
+msgid "No, show all terms in same level"
+msgstr "No, mostra tutti i termini nello stesso livello"
+
+#: plugin-options/filter-options.php:101
+msgctxt "[Admin] Filter edit form"
+msgid "No, show only parent terms"
+msgstr "No, mostra solo termini genitore"
+
+#: plugin-options/filter-options.php:102
+msgctxt "[Admin] Filter edit form"
+msgid "Yes"
 msgstr ""
 
-#. Author of the plugin/theme
-msgid "YITH"
-msgstr ""
+#: plugin-options/filter-options.php:104
+msgctxt "[Admin] Filter edit form"
+msgid "Choose how to show terms hierarchy"
+msgstr "Decidi come mostrare la gerarchia dei termini"
 
-#. Author URI of the plugin/theme
-msgid "https://yithemes.com/"
-msgstr ""
+#: plugin-options/filter-options.php:108
+msgctxt "[Admin] Filter edit form"
+msgid "Allow multiple selection"
+msgstr "Abilita selezione multipla"
 
+#: plugin-options/filter-options.php:110
+msgctxt "[Admin] Filter edit form"
+msgid "Enable if the user can select multiple terms when filtering products"
+msgstr "Abilita la selezione multipla dei termini per filtrare i prodotti"
+
+#: plugin-options/filter-options.php:114
+msgctxt "[Admin] Filter edit form"
+msgid "Multiselect relation"
+msgstr "Relazione seleziona multipla"
+
+#: plugin-options/filter-options.php:120
+msgctxt "[Admin] Filter edit form"
+msgid "Choose how multiple terms selection should behave"
+msgstr "Decidi il comportamento della selezione multipla dei termini"
+
+#: includes/class.yith-wcan-filter-factory.php:86
+msgctxt "[Admin] Filter edit form, sorting options"
+msgid "Default sorting"
+msgstr "Ordinamento predefinito "
+
+#: includes/class.yith-wcan-filter-factory.php:87
+msgctxt "[Admin] Filter edit form, sorting options"
+msgid "Sort by popularity"
+msgstr "Ordina per popolarità"
+
+#: includes/class.yith-wcan-filter-factory.php:88
+msgctxt "[Admin] Filter edit form, sorting options"
+msgid "Sort by average rating"
+msgstr "Ordina per valutazione media"
+
+#: includes/class.yith-wcan-filter-factory.php:89
+msgctxt "[Admin] Filter edit form, sorting options"
+msgid "Sort by latest"
+msgstr "Ordina per più recenti"
+
+#: includes/class.yith-wcan-filter-factory.php:90
+msgctxt "[Admin] Filter edit form, sorting options"
+msgid "Sort by price: low to high"
+msgstr "Ordina per prezzo: crescente"
+
+#: includes/class.yith-wcan-filter-factory.php:91
+msgctxt "[Admin] Filter edit form, sorting options"
+msgid "Sort by price: high to low"
+msgstr "Ordina per prezzo: decrescente"
+
+#: includes/class.yith-wcan-filter.php:75
+msgctxt "[Admin] Default filter title"
+msgid "New filter"
+msgstr "Nuovo filtro"
+
+#: includes/class.yith-wcan-frontend.php:576
+msgctxt "[FRONTEND] \"All\" label shown when no term is selected"
+msgid "All"
+msgstr "Tutte"
+
+#: includes/class.yith-wcan-frontend.php:577
+msgctxt "[FRONTEND] Search placeholder shown in terms dropdown"
+msgid "Search..."
+msgstr "Cerca..."
+
+#: includes/class.yith-wcan-frontend.php:578
+msgctxt "[FRONTEND] Empty items list in the dropdown"
+msgid "No item found"
+msgstr "Nessun elemento trovato"
+
+#. translators: 1. Number of items to show.
+#: includes/class.yith-wcan-frontend.php:580
+msgctxt "[FRONTEND] Show more link on terms dropdown"
+msgid "Show %d more"
+msgstr "Mostra altri %d"
+
+#: includes/class.yith-wcan-frontend.php:581
+msgctxt "[FRONTEND] Alt text for modal close button on mobile"
+msgid "Close"
+msgstr "Chiudi"
+
+#: includes/class.yith-wcan-frontend.php:582
+msgctxt "[FRONTEND] Label for filter button, on mobile modal"
+msgid "Show results"
+msgstr "Mostra risultati"
+
+#: includes/class.yith-wcan-frontend.php:583
+msgctxt ""
+"[FRONTEND] Label for clear selection link, that appears above filter after "
+"selection"
+msgid "Clear"
+msgstr "Cancella"
+
+#: includes/class.yith-wcan-frontend.php:584
+msgctxt ""
+"[FRONTEND] Label for clear selection link, that appears above filter after "
+"selection"
+msgid "Clear All"
+msgstr "Cancella tutti"
+
+#: includes/class.yith-wcan-install.php:95
+msgctxt "[ADMIN] Name of default preset that is installed with the plugin"
+msgid "Default preset"
+msgstr "Preset predefinito"
+
+#. translators: 1. Taxonomy name.
+#: includes/class.yith-wcan-install.php:271
+msgctxt "[ADMIN] Name of default taxonomy filter created by plugin"
+msgid "Filter by %s"
+msgstr "Filtra per %s"
+
+#: includes/class.yith-wcan-presets.php:95
+#: includes/class.yith-wcan-presets.php:100
+msgctxt "[Admin] name of presets custom post type"
+msgid "Filter presets"
+msgstr "Preset filtri"
+
+#: includes/class.yith-wcan-presets.php:96
+msgctxt "[Admin] singular name of presets custom post type"
+msgid "Filter preset"
+msgstr "Preset filtri"
+
+#: includes/class.yith-wcan-presets.php:97
+msgctxt "[Admin] add new filter preset label"
+msgid "Add new preset"
+msgstr "Aggiungi nuovo preset"
+
+#: includes/class.yith-wcan-presets.php:139
+msgctxt "[ADMIN] Convert widgets tools, in preset tab"
+msgid "Convert widgets in a preset"
+msgstr "Converti widget in preset"
+
+#: includes/data-stores/class.yith-wcan-preset-data-store.php:107
+msgctxt ""
+"[Generic] Error that happens when trying to read a filter preset that does "
+"not exist"
+msgid "Invalid preset."
+msgstr "Preset non valido."
+
+#. translators: 1. Title of original preset.
+#: includes/data-stores/class.yith-wcan-preset-data-store.php:234
+msgctxt "[ADMIN] Title of the cloned preset"
+msgid "%s - Copy"
+msgstr "%s - Copia"
+
+#: includes/elementor/class.yith-wcan-elementor-filters.php:48
+msgctxt "[ADMIN] Name of the preset elementor widget"
+msgid "YITH AJAX Filters Preset"
+msgstr "YITH AJAX Filters Preset"
+
+#: includes/elementor/class.yith-wcan-elementor-reset-button.php:48
+msgctxt "[ADMIN] Name of the preset elementor widget"
+msgid "YITH AJAX Filters Reset Button"
+msgstr "YITH AJAX Filters Reset Button"
+
+#: includes/elementor/class.yith-wcan-elementor-filters.php:89
+#: includes/shortcodes/class.yith-wcan-shortcode-filters.php:60
+msgctxt "[ELEMENTOR] Default preset option"
+msgid "Choose an option"
+msgstr "Scegli un'opzione"
+
+#: includes/elementor/class.yith-wcan-elementor-filters.php:97
+msgctxt "[ELEMENTOR] Section title"
+msgid "Filters"
+msgstr "Filtri"
+
+#: includes/elementor/class.yith-wcan-elementor-reset-button.php:89
+msgctxt "[ELEMENTOR] Section title"
+msgid "General"
+msgstr "Generale"
+
+#: includes/elementor/class.yith-wcan-elementor-filters.php:105
+msgctxt "[ELEMENTOR] Control label"
+msgid "Preset"
+msgstr "Preset"
+
+#: includes/elementor/class.yith-wcan-elementor-reset-button.php:100
+msgctxt "[ELEMENTOR] Widget description"
+msgid ""
+"This widget will display \"Filters reset\" button, wherever it is placed"
+msgstr "Questo widget mostrerà il pulsante \"Filters reset\" dove posizionato"
+
+#: includes/elementor/class.yith-wcan-elementor-reset-button.php:103
+msgctxt "[ELEMENTOR] Widget description"
+msgid ""
+"It will allow users to reset the filer selection; it will only appear when "
+"there is an active filter."
+msgstr ""
+"Permetterà ai tuoi utenti di resettare i filtri selezionati. Verrà mostrato "
+"solo se c'è almeno un filtro attivo. "
+
+#: includes/elementor/class.yith-wcan-elementor-reset-button.php:107
+msgctxt "[ELEMENTOR] Widget description"
+msgid ""
+"You can use this block to place \"Reset filters\" button inside your page, "
+"when \"Reset button position\" option won't work for your product's loop"
+msgstr ""
+"Puoi usare questo blocco per posizionare il pulsante \"Reset filters\" "
+"all'interno della tua pagina se l'opzione \"Posizione pulsante reset\" non "
+"funziona per il loop del prodotto"
+
+#: includes/functions.yith-wcan.php:112
+msgctxt "For multicolor: I.E. white and red T-Shirt"
+msgid "Color 1"
+msgstr "Colore 1"
+
+#: includes/functions.yith-wcan.php:112
+msgctxt "For multicolor: I.E. white and red T-Shirt"
+msgid "Color 2"
+msgstr "Colore 2"
+
+#: includes/functions.yith-wcan.php:988
+msgctxt "[FRONTEND] Star rating template"
+msgid "star"
+msgid_plural "stars"
+msgstr[0] "stella"
+msgstr[1] "stelle"
+
+#. translators: 1. Rating.
+#: includes/functions.yith-wcan.php:1003
+msgctxt "[FRONTEND] Star rating label"
+msgid "Rated %s out of 5"
+msgstr "Valutato %s su 5"
+
+#: includes/shortcodes/class.yith-wcan-shortcode-filters.php:69
+msgctxt "[GUTENBERG]: block name"
+msgid "YITH AJAX Filters Preset"
+msgstr "YITH AJAX Filters Preset"
+
+#: includes/shortcodes/class.yith-wcan-shortcode-reset-button.php:49
+msgctxt "[GUTENBERG]: block name"
+msgid "YITH Reset Filters Button"
+msgstr "YITH Reset Filters Button"
+
+#: includes/shortcodes/class.yith-wcan-shortcode-filters.php:70
+msgctxt "[GUTENBERG]: block description"
+msgid "Show filters from a preset"
+msgstr "Mostra filtri da un preset"
+
+#: includes/shortcodes/class.yith-wcan-shortcode-reset-button.php:50
+msgctxt "[GUTENBERG]: block description"
+msgid ""
+"Show reset filters button, when a filter is applied and button is enabled in "
+"plugins settings. You can use this block to place \"Reset filters\" button "
+"inside your page, when \"Reset button position\" option won't work for your "
+"product's loop"
+msgstr ""
+"Mostra il pulsante di reset dei filtri quando viene applicato un filtro e il "
+"pulsante è stato attivato nelle impostazioni del plugin. Puoi usare questo "
+"blocco per posizionare il pulsante \"Reset filters\" all'interno della tua "
+"pagina se l'opzione \"Posizione pulsante reset\" non funziona per il loop "
+"del prodotto"
+
+#: includes/shortcodes/class.yith-wcan-shortcode-filters.php:75
+msgctxt "[GUTENBERG]: attribute description"
+msgid "Preset"
+msgstr "Preset"
+
+#: includes/tables/class.yith-wcan-filter-presets-table.php:115
+msgctxt "[Admin] Preset table column header"
+msgid "Preset name"
+msgstr "Nome preset"
+
+#: includes/tables/class.yith-wcan-filter-presets-table.php:116
+msgctxt "[Admin] Preset table column header"
+msgid "Shortcode"
+msgstr "Shortcode"
+
+#: includes/tables/class.yith-wcan-filter-presets-table.php:134
+msgctxt "[Admin] Preset edit action label"
+msgid "Edit this preset"
+msgstr "Modifica questo preset"
+
+#: includes/tables/class.yith-wcan-filter-presets-table.php:147
+msgctxt "[Admin] Preset clone action label"
+msgid "Clone this preset"
+msgstr "Clona questo preset"
+
+#: includes/tables/class.yith-wcan-filter-presets-table.php:160
+msgctxt "[Admin] Preset delete action label"
+msgid "Delete this preset"
+msgstr "Elimina questo preset"
+
+#: includes/tables/class.yith-wcan-filter-presets-table.php:161
+msgctxt "[Admin] Preset delete confirm label"
+msgid "Are you sure you want to delete this preset?"
+msgstr "Sei sicuro di voler eliminare questo preset?"
+
+#: includes/tables/class.yith-wcan-filter-presets-table.php:174
+msgctxt "[Admin] on-off yes"
+msgid "YES"
+msgstr "SI"
+
+#: includes/tables/class.yith-wcan-filter-presets-table.php:174
+msgctxt "[Admin] on-off no"
+msgid "NO"
+msgstr "NO"
+
+#: includes/tables/class.yith-wcan-filter-presets-table.php:194
+msgctxt ""
+"[Admin] Name of the item missing, shown in preset-empty-content template"
+msgid "filter preset"
+msgstr "preset filtri"
+
+#: templates/admin/preset-filters.php:29
+msgctxt ""
+"[Admin] Name of the item missing, shown in preset-empty-content template"
+msgid "filter"
+msgstr "filtro"
+
+#: includes/tables/class.yith-wcan-filter-presets-table.php:195
+msgctxt "[Admin] New preset button label"
+msgid "Create a new preset"
+msgstr "Crea nuovo preset"
+
+#: includes/widgets/class.yith-wcan-filters-widget.php:34
+msgctxt "[ADMIN] Name of the preset widget"
+msgid "YITH AJAX Filters Preset"
+msgstr "YITH AJAX Filters Preset"
+
+#: includes/widgets/class.yith-wcan-filters-widget.php:52
+msgctxt "[ADMIN] Preset widget options"
+msgid "Preset"
+msgstr "Preset"
+
+#. translators: 1. Url to Ajax Product filter admin panel.
+#: includes/widgets/class.yith-wcan-filters-widget.php:65
+msgctxt "[ADMIN] Preset widget options"
+msgid ""
+"Please, go to <a href=\"%s\">WP Dashboard -> YITH -> Ajax Product Filter -> "
+"Presets</a> and create your first preset"
+msgstr ""
+"Vai su <a href=\"%s\">Bacheca WP -> YITH -> Ajax Product Filter -> Preset</"
+"a> e crea il tuo primo preset"
+
+#: includes/widgets/class.yith-wcan-navigation-widget.php:54
+msgctxt "[Plugin Name] Admin: Widget Title"
+msgid "YITH AJAX Product Filter"
+msgstr "YITH AJAX Product Filter"
+
+#: includes/widgets/class.yith-wcan-navigation-widget.php:462
 #, fuzzy
-#~| msgid "YITH WooCommerce Ajax Product Filter"
-#~ msgctxt "[Plugin Name] Admin: Widget Title"
-#~ msgid "YITH WooCommerce Ajax Product Filter"
-#~ msgstr "YITH WooCommerce Ajax Product Filter"
+msgctxt ""
+"[ADMIN] Ajax Filter Widget; logical operator that affects query behaviour"
+msgid "AND"
+msgstr "E"
 
-#~ msgid "Premium live demo"
-#~ msgstr "Anteprima versione premium"
+#: includes/widgets/class.yith-wcan-reset-navigation-widget.php:30
+msgctxt "[Plugin Name]"
+msgid "Reset all filters set by YITH WooCommerce AJAX Product Filter"
+msgstr ""
+"Resetta tutti i filtri impostati da YITH WooCommerce AJAX Product Filter"
 
-#~ msgid "Live demo"
-#~ msgstr "Anteprima"
+#: plugin-options/filter-options.php:117
+#, fuzzy
+msgctxt ""
+"[Admin] Filter edit form; logical operator that affects query behaviour"
+msgid "AND - Results need to match all selected terms at the same time"
+msgstr "AND - I risultati devono combaciare con tutti i termini selezionati "
 
-#~ msgid "Plugin Documentation"
-#~ msgstr "Documentazione Plugin"
+#: plugin-options/filter-options.php:118
+#, fuzzy
+msgctxt ""
+"[Admin] Filter edit form; logical operator that affects query behaviour"
+msgid "OR - Results need to match at least one of the selected terms"
+msgstr ""
+"OR - I risultati devono combaciare con almeno uno dei termini selezionati"
 
-#~ msgctxt "Admin: Widget Title"
-#~ msgid "YITH WooCommerce Ajax Product Filter"
-#~ msgstr "YITH WooCommerce Filtro Prodotti Ajax"
+#: plugin-options/filter-preset-options.php:32
+msgctxt "[Admin] Filter Presets tab"
+msgid "Filter Presets"
+msgstr "Preset filtri"
 
-#~ msgid "Settings"
-#~ msgstr "Impostazioni"
+#: plugin-options/filter-preset-options.php:38
+msgctxt "[Admin] Filter Presets table title"
+msgid "Filter Presets"
+msgstr "Preset filtri"
 
-#~ msgid "Widget Title Tag"
-#~ msgstr "Tag titolo del widget"
+#: plugin-options/filter-preset-options.php:44
+msgctxt "[Admin] Add Preset button"
+msgid "Add preset"
+msgstr "Aggiungi preset"
 
-#~ msgid "Enter here the HTML tag for the widget title"
-#~ msgstr "Inserisci qui il tag HTML per il titolo del widget"
+#: plugin-options/general-options.php:16
+msgctxt "[ADMIN] General settings page"
+msgid "General settings"
+msgstr "Impostazioni generali"
 
-#~ msgid "Number of products"
-#~ msgstr "Numero di prodotti"
+#: plugin-options/general-options.php:23
+msgctxt "[ADMIN] General settings page"
+msgid "Show reset button"
+msgstr "Mostra pulsante reset"
 
-#~ msgid "Select the filter style"
-#~ msgstr "Seleziona lo stile del filtro"
+#: plugin-options/general-options.php:24
+msgctxt "[ADMIN] General settings page"
+msgid ""
+"Enable to show the \"Reset filter\" button to allow the user to cancel the "
+"filter selection in one click"
+msgstr ""
+"Abilita per mostrare il pulsante di reset e permettere agli utenti di "
+"eliminare la selezione dei filtri con un solo clic"
 
-#~ msgid "\"x\" icon before activated filter"
-#~ msgstr "\"x\" davanti al filtro attivato"
+#: plugin-options/general-options.php:32
+msgctxt "[ADMIN] General settings page"
+msgid "Reset button position"
+msgstr "Posizione pulsante reset"
 
-#~ msgid "Checkboxes"
-#~ msgstr "Checkbox"
+#: plugin-options/general-options.php:33
+msgctxt "[ADMIN] General settings page"
+msgid "Choose the default position for reset button"
+msgstr "Scegli la posizione predefinita per il pulsante di reset"
 
-#~ msgid "Enable ajax shop pagination"
-#~ msgstr "Abilita paginazione shop AJAX"
+#: plugin-options/general-options.php:39
+msgctxt "[ADMIN] General settings page"
+msgid "Before filters"
+msgstr "Prima dei filtri"
 
-#~ msgid "Enable AJAX WooCommerce pagination"
-#~ msgstr "Abilita paginazione WooCommerce AJAX"
+#: plugin-options/general-options.php:40
+msgctxt "[ADMIN] General settings page"
+msgid "After filters"
+msgstr "Dopo i filtri"
 
-#~ msgid "Shop Pagination Container Anchor"
-#~ msgstr "Ancora contenitore paginazione shop"
+#: plugin-options/general-options.php:41
+msgctxt "[ADMIN] General settings page"
+msgid ""
+"Above products list<small>When using WooCommerce's Gutenberg product blocks, "
+"this may not work as expected; in these cases you can place Reset Button "
+"anywhere in the page using <code>[yith_wcan_reset_button]</code> shortcode "
+"or <code>YITH Filters Reset Button</code> block</small>"
+msgstr ""
+"Sopra la lista prodotti<small>Potrebbe non funzionare come previsto usando i "
+"blocchi Gutenberg di WooCommerce. In  questo caso puoi posizionare il "
+"pulsante di reset in qualsiasi punto della pagina usando lo shortcode "
+"<code>[yith_wcan_reset_button]</code> o il blocco <code>YITH Filters Reset "
+"Button</code></small>"
 
-#~ msgid "Enter here the HTML tag for the shop pagination anchor"
-#~ msgstr "Inserisci qui il tag HTML per l'ancora della paginazione shop"
+#: plugin-options/legacy-options.php:16
+msgctxt "[ADMIN] Legacy settings page"
+msgid "Frontend options"
+msgstr "Opzioni frontend"
 
-#~ msgid "Show current categories"
-#~ msgstr "Mostra categorie attive"
+#: plugin-options/legacy-options.php:23
+msgctxt "[ADMIN] Legacy settings page"
+msgid "Product container"
+msgstr "Contenitore prodotti"
 
-#~ msgid ""
-#~ "This option allows whether to show or hide the current category when you "
-#~ "are on it. For example, if I am on “Jeans” category page, the \"Jeans\" "
-#~ "filter is automatically hidden."
-#~ msgstr ""
-#~ "Questa opzione permette di mostrare o nascondere la categoria in cui ci "
-#~ "si trova. Per esempio, se sei nella pagina della categoria \"Jeans\", il "
-#~ "filtro \"Jeans\" sarà automaticamente nascosto."
+#: plugin-options/legacy-options.php:24
+msgctxt "[ADMIN] Legacy settings page"
+msgid "Enter here the CSS selector (class or ID) of the product container"
+msgstr "Inserisci qui la classe CSS o l'ID del contenitore prodotto"
 
-#~ msgid "Show \"All Categories\" link"
-#~ msgstr "Mostra link a \"Tutte le categorie\""
+#: plugin-options/legacy-options.php:32
+msgctxt "[ADMIN] Legacy settings page"
+msgid "Shop pagination container"
+msgstr "Contenitore paginazione Shop"
 
-#~ msgid "Add a link \"See all categories\" after a filter is applied"
-#~ msgstr ""
-#~ "Aggiungi un link \"Visualizza tutte le categorie\" dopo aver applicato un "
-#~ "filtro"
+#: plugin-options/legacy-options.php:33
+msgctxt "[ADMIN] Legacy settings page"
+msgid ""
+"Enter here the CSS selector (class or ID) of the shop pagination container"
+msgstr ""
+"Inserisci qui la classe CSS o l'ID del contenitore della paginazione shop"
 
-#~ msgid "\"All Categories\" link text"
-#~ msgstr "Testo link \"Tutte le categorie\""
+#: plugin-options/legacy-options.php:41
+msgctxt "[ADMIN] Legacy settings page"
+msgid "Result count container"
+msgstr "Contenitore conteggio risultati"
 
-#~ msgid "Enter here the text for the link \"See all categories\""
-#~ msgstr ""
-#~ "Inserisci qui il testo per il link \"Visualizza tutte le categorie\""
+#: plugin-options/legacy-options.php:42
+msgctxt "[ADMIN] Legacy settings page"
+msgid ""
+"Enter here the CSS selector (class or ID) of the results count container"
+msgstr "Inserisci qui la classe CSS o l'ID dei risultati del conteggio"
 
-#~ msgid "See all categories"
-#~ msgstr "Visualizza tutte le categorie"
+#: plugin-options/legacy-options.php:50
+msgctxt "[ADMIN] Legacy settings page"
+msgid "\"Scroll to top\" anchor selector"
+msgstr "Ancoraggio Torna su"
 
-#~ msgid "Show \"All Tags\" link"
-#~ msgstr "Mostra link \"Tutti i tag\""
+#: plugin-options/legacy-options.php:51
+msgctxt "[ADMIN] Legacy settings page"
+msgid ""
+"Enter here the CSS selector (class or ID) of the \"Scroll to to top\" anchor"
+msgstr "Inserisci qui la classe CSS o l'ID dell'ancora Torna su"
 
-#~ msgid "Add a link \"See all tags\" after a filter is applied"
-#~ msgstr "Aggiungi un link \"Tutti i tag\" dopo aver applicato un filtro"
+#: plugin-options/legacy-options.php:59
+msgctxt "[ADMIN] Legacy settings page"
+msgid "Terms sorting"
+msgstr "Ordinamento termini"
 
-#~ msgid "\"All Tags\" link text"
-#~ msgstr "Testo link \"Tutti i tag\""
+#: plugin-options/legacy-options.php:60
+msgctxt "[ADMIN] Legacy settings page"
+msgid "Choose how to sort terms inside filters"
+msgstr "Decidi come ordinare i termini all'interno dei filtri"
 
-#~ msgid "Text for \"See all tags\" link"
-#~ msgstr "Testo per il link \"Tutti i tag\""
+#: plugin-options/legacy-options.php:66
+msgctxt "[ADMIN] Legacy settings page"
+msgid "Product count"
+msgstr "Conteggio prodotti"
 
-#~ msgid "See all tags"
-#~ msgstr "Tutti i tag"
+#: plugin-options/legacy-options.php:67
+msgctxt "[ADMIN] Legacy settings page"
+msgid "Alphabetical"
+msgstr "Ordine alfabetico"
 
-#~ msgid "Enable Hierarchical Management for Product Tags"
-#~ msgstr "Abilita la gestione gerarchica dei tag prodotto"
+#: plugin-options/legacy-options.php:68
+msgctxt "[ADMIN] Legacy settings page"
+msgid "Default"
+msgstr "Predefinito"
 
-#~ msgid "Hack the standard WooCommerce non-hierarchical product tags"
-#~ msgstr "Rendi i tag standard di WooCommerce gerarchici"
+#: plugin-options/seo-options.php:16
+msgctxt "[ADMIN] Seo settings page"
+msgid "SEO"
+msgstr "SEO"
 
-#~ msgid "General Settings"
-#~ msgstr "Impostazioni Generali"
+#: plugin-options/seo-options.php:23
+msgctxt "[ADMIN] Seo settings page"
+msgid "Enable SEO option"
+msgstr "Abilita opzione SEO"
 
-#~ msgid "Ajax Loader"
-#~ msgstr "Loader Ajax"
+#: plugin-options/seo-options.php:24
+msgctxt "[ADMIN] Seo settings page"
+msgid ""
+"Add \"robots\" meta tag in head tag of HTML page if filters have been "
+"activated."
+msgstr ""
+"Aggiungi il meta tag \"robot\" nel tag head della pagina HTML se sono stati "
+"attivati i filtri."
 
-#~ msgid "Customize the AJAX loader icon"
-#~ msgstr "Personalizza l'icona di caricamento AJAX"
+#: plugin-options/seo-options.php:31
+msgctxt "[ADMIN] Seo settings page"
+msgid "Meta tag"
+msgstr "Meta tag"
 
-#~ msgctxt "Referer to original WooCommerce Price Filter Widget"
-#~ msgid "Ajax WooCommerce Price Filter"
-#~ msgstr "Filtro prezzi di WooCommerce in AJAX"
+#: plugin-options/seo-options.php:32
+msgctxt "[ADMIN] Seo settings page"
+msgid "Select which tag to use on filtered pages"
+msgstr "Selezione il tag da usare sulle pagine filtrate"
 
-#~ msgid "Use AJAX WooCommerce price filter"
-#~ msgstr "Utilizza il filtro prezzo di WooCommerce in AJAX"
+#: plugin-options/seo-options.php:38
+msgctxt "[ADMIN] Seo settings page"
+msgid "Disabled"
+msgstr "Disabilitato"
 
-#~ msgctxt "Referer to original WooCommerce Price Filter Widget"
-#~ msgid "WooCommerce Price Filter slider"
-#~ msgstr "Slider filtro prezzi WooCommerce"
+#: plugin-options/seo-options.php:51
+msgctxt "[ADMIN] Seo settings page"
+msgid "Add \"nofollow\" to filter anchors"
+msgstr "Aggiungi \"nofollow\" alle ancore filtri"
 
-#~ msgid "Use WooCommerce price filter with slider"
-#~ msgstr "Utilizza il Filtro prezzi di WooCommerce con slider"
+#: plugin-options/seo-options.php:52
+msgctxt "[ADMIN] Seo settings page"
+msgid ""
+"When enabled, adds re=\"nofollow\" attribute to all the filter anchors "
+"across the plugin"
+msgstr ""
+"Se attivata, aggiunge l'attributo re=\"nofollow\" a tutte le ancore dei "
+"filtri del plugin "
 
-#~ msgctxt "Referer to original WooCommerce Price Filter Widget"
-#~ msgid "Instant WooCommerce Price Filter slider"
-#~ msgstr "Slider filtro prezzi WooCommerce istantaneo"
+#: plugin-options/seo-options.php:63
+msgctxt "[ADMIN] Seo settings page"
+msgid "URL permalinks"
+msgstr "Permalink URL"
 
-#~ msgid ""
-#~ "Use WooCommerce price filter with ajax slider without \"Filter\" button"
-#~ msgstr ""
-#~ "Usa il filtro prezzi di WooCommerce in Ajax senza il pulsante \"Filtra\""
+#: plugin-options/seo-options.php:64
+msgctxt "[ADMIN] Seo settings page"
+msgid "Choose how to manage browser URL during filtering"
+msgstr "Scegli come gestire l'URL del browser quando si applicano i filtri"
 
-#~ msgctxt "Referer to original WooCommerce Price Filter Widget"
-#~ msgid "Dropdown for WooCommerce Price Filter"
-#~ msgstr "Menu a tendina per il Filtro prezzi di WooCommerce"
+#: plugin-options/seo-options.php:70
+msgctxt "[ADMIN] Seo settings page"
+msgid "Add filters parameters to default URL"
+msgstr "Aggiungi parametri filtri all'URL di default"
 
-#~ msgid "Add dropdown effect to original WooCommerce Price Filter widget"
-#~ msgstr ""
-#~ "Aggiunge l'effetto di menu a tendina all'originale Filtro prezzi di "
-#~ "WooCommerce"
+#: plugin-options/seo-options.php:71
+msgctxt "[ADMIN] Seo settings page"
+msgid "Don't change URL"
+msgstr "Non modificare l'URL"
 
-#~ msgctxt "Referer to original WooCommerce Price Filter Widget"
-#~ msgid "Open/Close for WooCommerce Price Filter"
-#~ msgstr "Apri/Chiudi il menu di Price Filter di WooCommerce"
+#. translators: HIGHLIGHT content should be placed between square brackets [].
+#: templates/admin/premium.php:221 templates/admin/premium.php:432
+msgctxt "[ADMIN] Premium tab"
+msgid ""
+"Upgrade to [premium version] of<br/>[YITH WooCommerce Ajax Product Filter] "
+"to benefit<br/>from all features!"
+msgstr ""
+"Aggiorna alla [versione premium] di<br/>[YITH WooCommerce Ajax Product "
+"Filter] per usufruire<br/>di tutte le funzionalità!"
 
-#~ msgid ""
-#~ "Select this option if you want to show the dropdown as opened or closed "
-#~ "when the page is loaded"
-#~ msgstr ""
-#~ "Seleziona questa opzione se vuoi mostrare il menu a tendina come aperto o "
-#~ "chiuso al caricamento della pagina"
+#: templates/admin/premium.php:225 templates/admin/premium.php:436
+msgctxt "[ADMIN] Premium tab"
+msgid "UPGRADE"
+msgstr "AGGIORNA"
 
-#~ msgid "Opened"
-#~ msgstr "Aperto"
+#: templates/admin/premium.php:232
+msgctxt "[ADMIN] Premium tab"
+msgid "Premium Features"
+msgstr "Caratteristiche premium"
 
-#~ msgid "Closed"
-#~ msgstr "Chiuso"
+#: templates/admin/premium.php:239
+msgctxt "[ADMIN] Premium tab"
+msgid ""
+"Show filters in a modal view which is purposely designed for users visiting "
+"your site by smartphones or tablets"
+msgstr ""
+"Mostra i filtri in una modale appositamente progettata per gli utenti che "
+"visitano il tuo sito da smartphone o tablet"
 
-#~ msgid "Enable SEO option"
-#~ msgstr "Abilita SEO"
+#: templates/admin/premium.php:242
+msgctxt "[ADMIN] Premium tab"
+msgid ""
+"An ever-increasing number of users that visit e-commerce sites and purchase "
+"products online will do so using mobile devices.<br>That's why we have "
+"carefully developed a filter modal view, specifically optimized for users "
+"visiting the shop using a smartphone or tablet. When filtering of your "
+"products is required, it will open in a modal view and the user will be able "
+"to select them as recommended by the main guidelines about usability and "
+"user experience."
+msgstr ""
+"Un numero sempre maggiore di utenti che visita un sito e-commerce e acquista "
+"prodotti online lo fa usando dispositivi mobili.<br>Per questo abbiamo "
+"progettato con cura una versione dei filtri ottimizzata per chi visiterà il "
+"tuo shop da smartphone o tablet. I filtri si apriranno in una modale e "
+"l’utente potrà selezionarli come consigliato dalle principali linee guida "
+"sull’usabilità e la user experience."
 
-#~ msgid ""
-#~ "Add \"robots\" meta tag in head tag of HTML page if filters have been "
-#~ "activated."
-#~ msgstr ""
-#~ "Aggiungi il meta tag \"robot\" nel tag head della pagina HTML se sono "
-#~ "stati attivati i filtri."
+#: templates/admin/premium.php:251
+msgctxt "[ADMIN] Premium tab"
+msgid "An astonishing filter library that you can activate"
+msgstr "Un’incredibile libreria di filtri che puoi attivare"
 
-#~ msgid "Meta tag options"
-#~ msgstr "Opzione meta tag"
+#: templates/admin/premium.php:254
+msgctxt "[ADMIN] Premium tab"
+msgid ""
+"Based on the research made by the Baymard Institute, there are five "
+"essential filters for e-buyers: before buying they want to filter by price, "
+"brand, size, color, and rating. YITH WooCommerce Ajax Product Filter "
+"includes these and more filters to extensively meet your needs and your "
+"customers’ demands too"
+msgstr ""
+"Secondo le ricerche del Baymard Institute, i filtri indispensabili per gli "
+"utenti che comprano in un e-commerce sono cinque: gli utenti prima di "
+"acquistare un prodotto vogliono filtrare per prezzo, brand, taglia, colore e "
+"valutazione. YITH WooCommerce Ajax Product Filter include questi filtri e "
+"molti altri ancora per rispondere a 360 gradi alle tue esigenze e a quelle "
+"degli utenti che acquistano sul tuo shop"
 
-#~ msgid "Change browser URL"
-#~ msgstr "Cambia l'URL del browser"
+#: templates/admin/premium.php:266
+msgctxt "[ADMIN] Premium tab"
+msgid "The plugin includes:"
+msgstr "Il plugin include:"
 
-#~ msgid ""
-#~ "Enable this option if you want to update the URL after applying a filter."
-#~ msgstr ""
-#~ "Abilita questa opzione se vuoi aggiornare l'URL dopo aver applicato un "
-#~ "filtro."
+#: templates/admin/premium.php:271
+msgctxt "[ADMIN] Premium tab"
+msgid ""
+"<b>Filter by category</b>: to let users choose which product category to "
+"view<br/>\r\n"
+"<b>Filter by tag</b>: to let users filter products by tag<br/>\r\n"
+"<b>Filter by price</b>: to let users filter products by a specific price "
+"range (based on their budget availability)<br/>\r\n"
+"<b>Filter by color and size</b>: you can create filters for all the "
+"attributes available in your store, like color and size. For the color "
+"filter, you can either choose square or circular color swatches or use "
+"custom images to recall a specific pattern, shade or fabric texture<br/>\r\n"
+"<b>Filter by rating</b>: to let your users filter products based on other "
+"customers’ reviews (most e-buyers want to skip low-rated products and "
+"concentrate only on high-rated ones)<br/>\r\n"
+"<b>Filter by brand</b>: thanks to the integration with our YITH Brands Add-"
+"on plugin, you can also filter products by specific brands<br/>\r\n"
+"<b>Show only on-sale products</b>: thanks to this option, your users can "
+"filter products and view only those with a discount<br/>\r\n"
+"<b>Show only in-stock products</b>: thanks to this option, your users can "
+"filter products based on their needs and exclude out-of-stock products from "
+"the list"
+msgstr ""
+"<b>Filtra per categoria:</b>per consentire agli utenti di scegliere quale "
+"categoria di prodotto visualizzare<br/>\r\n"
+"<b>Filtra per tag:</b>per consentire agli utenti di filtrare i prodotti in "
+"base al tag<br/>\r\n"
+"<b>Filtra per prezzo:</b>per consentire agli utenti di filtrare i prodotti "
+"per una determinata fascia di prezzo (in base alla loro disponibilità di "
+"budget)<br/>\r\n"
+"<b>Filtra per colore e taglia:</b>puoi creare filtri per tutti gli attributi "
+"disponibili nel tuo negozio, come colore e taglia. Per il filtro colore, è "
+"possibile scegliere campioni di colore quadrati o circolari o utilizzare "
+"immagini personalizzate per richiamare un motivo, una tonalità o una trama "
+"di tessuto specifici<br/>\r\n"
+"<b>Filtra per valutazione:</b>per consentire ai tuoi utenti di filtrare i "
+"prodotti in base alle recensioni degli altri clienti (la maggior parte degli "
+"acquirenti online preferisce saltare i prodotti con valutazione bassa e "
+"concentrarsi solo su quelli di alto livello)<br/>\r\n"
+"<b>Filtra per brand:</b>grazie all'integrazione con il nostro plugin YITH "
+"Brands Add-on puoi anche filtrare i prodotti per brand specifici<br/>\r\n"
+"<b>Mostra solo prodotti in offerta:</b>grazie a questa opzione, i tuoi "
+"utenti possono filtrare i prodotti e visualizzare solo quelli con uno "
+"sconto<br/>\r\n"
+"<b>Mostra solo prodotti in stock:</b>grazie a questa opzione, i tuoi utenti "
+"possono filtrare i prodotti in base alle loro esigenze ed escludere "
+"dall'elenco i prodotti non disponibili"
 
-#~ msgctxt "Price filter option: price starts from"
-#~ msgid "From"
-#~ msgstr "Da"
+#: templates/admin/premium.php:294
+msgctxt "[ADMIN] Premium tab"
+msgid "Choose the style of your filters"
+msgstr "Scegli lo stile dei tuoi filtri"
 
-#~ msgctxt "Price filter option: price ends to"
-#~ msgid "To"
-#~ msgstr "A"
+#: templates/admin/premium.php:297
+msgctxt "[ADMIN] Premium tab"
+msgid ""
+"Choose whether to show filters as checkboxes, radio buttons, select "
+"dropdowns, multi-select, labels or images. For example, for the color "
+"filter, you can use a text list, color swatches or upload custom images that "
+"better represent the product color shades or specific patterns. For product "
+"categories, you can also use textual labels or use custom icons to visually "
+"represent each of your categories"
+msgstr ""
+"Scegli se mostrare i filtri come checkbox, radio button, select, "
+"multiselect, etichette o immagini. Per esempio, per il filtro colore puoi "
+"utilizzare un elenco testuale, dei campioni colore o caricare immagini che "
+"possano rappresentare al meglio sfumature di colore o pattern particolari. "
+"Per le categorie prodotto puoi utilizzare label testuali o icone "
+"personalizzate che rappresentino ogni categoria"
+
+#: templates/admin/premium.php:313
+msgctxt "[ADMIN] Premium tab"
+msgid "Choose whether to show the filters in a toggle or not"
+msgstr "Decidi se mostrare o meno i filtri come toggle"
+
+#: templates/admin/premium.php:317
+msgctxt "[ADMIN] Premium tab"
+msgid ""
+"For every filter you can choose whether to show it in a toggle — open or "
+"collapsed to optimize the available space — or simply show all the options "
+"on the page"
+msgstr ""
+"Per ogni filtro puoi decidere se mostrarlo in toggle, aperto o chiuso per "
+"ottimizzare lo spazio, o se mostrare le opzioni semplicemente nella pagina"
+
+#: templates/admin/premium.php:328
+msgctxt "[ADMIN] Premium tab"
+msgid "Make filters work in AJAX"
+msgstr "Fai funzionare i filtri in AJAX"
+
+#: templates/admin/premium.php:331
+msgctxt "[ADMIN] Premium tab"
+msgid ""
+"Allow your users to view the results of the filters and to get feedback in "
+"real-time. Or, if you want to, disable the AJAX option and show a button "
+"“Apply filters” to show the filtered products"
+msgstr ""
+"Permetti ai tuoi utenti di visualizzare i risultati e ottenere un feedback "
+"in tempo reale. Oppure, se preferisci, puoi disabilitare l'opzione AJAX e "
+"mostrare il pulsante \"Applica filtri\" per mostrare i prodotti filtrati"
+
+#: templates/admin/premium.php:347
+msgctxt "[ADMIN] Premium tab"
+msgid "Choose where to show the filtered results"
+msgstr "Decidi dove mostrare i risultati dei filtri"
+
+#: templates/admin/premium.php:351
+msgctxt "[ADMIN] Premium tab"
+msgid ""
+"Choose whether to show the filter results on the same page or redirect the "
+"user to a new page"
+msgstr ""
+"Decidi se mostrare i risultati dei filtri sulla stessa pagina o se "
+"reindirizzare l'utente su una nuova pagina"
+
+#: templates/admin/premium.php:362
+msgctxt "[ADMIN] Premium tab"
+msgid ""
+"Choose if and where to show the “Reset Filters” button and the selected "
+"filters"
+msgstr ""
+"Decidi se e dove mostrare il pulsante \"Resetta filtri\" e i filtri "
+"selezionati"
+
+#: templates/admin/premium.php:365
+msgctxt "[ADMIN] Premium tab"
+msgid ""
+"To improve the user experience on your shop you can show the active filters "
+"(and choose whether they should appear in the filters panel on top, above "
+"the list of products) and a button that allows resetting all the filters in "
+"one click and to go back to the original product list"
+msgstr ""
+"Per migliorare la user experience sul tuo shop puoi mostrare i filtri attivi "
+"(e scegliere se mostrarli nel pannello dei filtri in alto, sopra la lista "
+"dei prodotti) e un pulsante che permetta con un solo clic di cancellare "
+"tutti i filtri e tornare alla lista dei prodotti nello stato originale"
+
+#: templates/admin/premium.php:381
+msgctxt "[ADMIN] Premium tab"
+msgid "Customize the colors of the filters area"
+msgstr "Personalizza i colori dell'area filtri"
+
+#: templates/admin/premium.php:385
+msgctxt "[ADMIN] Premium tab"
+msgid ""
+"If you choose the plugin style, you can further customize it and choose the "
+"background color of the filters area, the text colors and the accent color "
+"through which the active options are highlighted"
+msgstr ""
+"Se scegli di utilizzare lo stile del plugin, puoi personalizzarlo "
+"ulteriormente modificando il colore di sfondo dell’area filtri, i colori dei "
+"testi e il colore “in risalto” con cui vengono evidenziate le opzioni attive"
+
+#: templates/admin/premium.php:396
+msgctxt "[ADMIN] Premium tab"
+msgid "Customize the loader"
+msgstr "Personalizza il loader"
+
+#: templates/admin/premium.php:399
+msgctxt "[ADMIN] Premium tab"
+msgid ""
+"Use the default loader image or upload your own one, if you want to give it "
+"your personal touch"
+msgstr ""
+"Utilizza il loader predefinito del plugin o caricane uno personalizzato per "
+"dargli un tocco originale"
+
+#: templates/admin/premium.php:415
+msgctxt "[ADMIN] Premium tab"
+msgid ""
+"Choose how to configure the permalinks of the page with the filtered results"
+msgstr ""
+"Decidi come configurare i permalink della pagina con i risultati filtrati"
+
+#: templates/admin/premium.php:419
+msgctxt "[ADMIN] Premium tab"
+msgid ""
+"Configure the URL pattern of the pages with active filters: you can choose "
+"whether to keep the page URL unchanged, to add the selected filters, or to "
+"edit it from the plugin permalinks (this will make the URLs shorter and "
+"easier to share)"
+msgstr ""
+"Configura il pattern dell’URL delle pagine con i filtri attivi: puoi "
+"decidere di lasciare invariato l’URL della pagina, di modificarlo "
+"aggiungendo i filtri applicati o di modificarlo attraverso i permalink del "
+"plugin (in questo modo gli URL saranno più brevi e semplici da condividere)"
+
+#: templates/admin/preset-edit.php:28
+msgctxt "[Admin] Back link in new preset page"
+msgid "< back to preset list"
+msgstr "< Torna all'elenco preset"
+
+#: templates/admin/preset-edit.php:34
+msgctxt "[ADMIN] Title for new preset page"
+msgid "Edit filter preset"
+msgstr "Modifica preset filtri"
+
+#: templates/admin/preset-edit.php:36
+msgctxt "[ADMIN] Title for new preset page"
+msgid "Add new filter preset"
+msgstr "Aggiungi nuovo preset filtri"
+
+#: templates/admin/preset-edit.php:47
+msgctxt "[Admin] Label in new preset page"
+msgid "Preset name"
+msgstr "Nome preset"
+
+#: templates/admin/preset-edit.php:54
+msgctxt "[Admin] Label in new preset page"
+msgid "Enter a name to identify this filter preset"
+msgstr "Inserisci un nome per definire questo preset di filtri"
+
+#: templates/admin/preset-filters.php:20
+msgctxt "[Admin] Label in new preset page"
+msgid "Filters of this preset"
+msgstr "Filtri di questo preset"
+
+#: templates/admin/preset-edit.php:68
+msgctxt "[Admin] Preset save button, in new/edit preset page"
+msgid "Save preset"
+msgstr "Salva preset"
+
+#: templates/admin/preset-empty-content.php:27
+msgctxt "Alt text for empty preset image"
+msgid "Empty preset"
+msgstr "Preset vuoto"
+
+#. translators: 1. Missing item name.
+#: templates/admin/preset-empty-content.php:33
+msgctxt "[Admin] Preset table empty message"
+msgid "You don't have any %s yet."
+msgstr "Non hai ancora nessun %s."
+
+#: templates/admin/preset-filter-term.php:28
+msgctxt "[Admin] Term edit field label (preset edit page)"
+msgid "Label"
+msgstr "Etichetta"
+
+#: templates/admin/preset-filter-term.php:33
+msgctxt "[Admin] Term edit field label (preset edit page)"
+msgid "Tooltip"
+msgstr "Tooltip"
+
+#: templates/admin/preset-filter-term.php:39
+msgctxt "[Admin] Term edit field label (preset edit page)"
+msgid "Color"
+msgstr "Colore"
+
+#: templates/admin/preset-filter.php:89
+msgctxt "[Admin] Save filter button, in new/edit preset page"
+msgid "Save Filter"
+msgstr "Salva filtro "
+
+#: templates/admin/preset-filter.php:90
+msgctxt "[Admin] Delete filter button, in new/edit preset page"
+msgid "Delete Filter"
+msgstr "Elimina filtro"
+
+#: templates/admin/preset-filters.php:31
+msgctxt "[Admin] New filter button label"
+msgid "Add a new filter"
+msgstr "Aggiungi nuovo filtro"
+
+#: templates/admin/preset-filters.php:55
+msgctxt "[Admin] Add new filter in new preset page"
+msgid "+ Add filter"
+msgstr "+ Aggiungi filtro"
+
+#. translators: 1. number of items to show.
+#: templates/admin/preset-load-more-filters.php:18
+#, fuzzy
+msgctxt "[Admin] Add new filter in new preset page"
+msgid "See %d more filters"
+msgstr "Prima dei filtri"
+
+#: templates/admin/upgrade-note-modal.php:31
+msgctxt "[ADMIN] Upgrade note modal title"
+msgid "Use the new filter preset feature for your filters"
+msgstr "Usa la nuova funzionalità preset per i tuoi filtri"
+
+#: templates/admin/upgrade-note-modal.php:36
+msgctxt "[ADMIN] Upgrade note modal content"
+msgid ""
+"From the version 4.0 we built a powerful system that allows you to create "
+"unlimited preset of filters. After the preset configuration, you can "
+"incorporate it in your shop using the widget, the shortcode, the Gutenberg "
+"block or the Elementor widget."
+msgstr ""
+"Dalla versione 4.0 abbiamo creato un potente sistema che ti permette di "
+"creare preset di filtri illimitati. Dopo aver configurato il preset, puoi "
+"incorporarlo nel tuo shop usando il widget, lo shortcode, il blocco "
+"Gutenberg o il widget di Elementor."
+
+#. translators: 1. Url to demo video. 2. Url to docs.
+#: templates/admin/upgrade-note-modal.php:49
+msgctxt "[ADMIN] Upgrade note modal content"
+msgid ""
+"We suggest you to <a href=\"%1$s\">check this video</a> or <a href=\"%2$s"
+"\">read the documentation</a> to learn how to use this new feature."
+msgstr ""
+"Ti consigliamo di <a href=\"%1$s\">guardare questo video</a> o <a href=\"%2$s"
+"\">leggere la documentazione</a> per capire come usare questa nuova "
+"funzionalità. "
+
+#. translators: 1. Url to docs.
+#: templates/admin/upgrade-note-modal.php:62
+msgctxt "[ADMIN] Upgrade note modal content"
+msgid ""
+"We suggest you to <a href=\"%1$s\">read the documentation</a> to learn how "
+"to use this new feature."
+msgstr ""
+"Ti consigliamo di <a href=\"%1$s\">leggere la documentazione</a> per capire "
+"come usare questa nuova funzionalità. "
+
+#: templates/admin/upgrade-note-modal.php:76
+#, fuzzy
+msgctxt "[ADMIN] Upgrade note modal content"
+msgid ""
+"We offer a tool to automatically convert the widget filters of your shop in "
+"a preset. If you convert the widgets now all the settings of your widget "
+"will be moved inside the filter presets table.<br/><b>Don’t worry, no data "
+"will be lost during the process.</b>"
+msgstr ""
+"Offriamo uno strumento per convertire i filtri widget del tuo shop in "
+"preset. Se converti i widget adesso, tutte le impostazioni verranno spostate "
+"nella tabella dei preset filtri.<br/><b>Non preoccuparti: non perderai "
+"nessun dato con questa procedura.</b>"
+
+#: templates/admin/upgrade-note-modal.php:87
+msgctxt "[ADMIN] Upgrade note modal content"
+msgid ""
+"After converting the widgets into presets, go to <b>WordPress Dashboard -> "
+"Appearance -> Widgets</b> and replace classic widgets with new <b>YITH AJAX "
+"Filter Preset</b>, selecting the appropriate preset for current sidebar."
+msgstr ""
+
+#: templates/admin/upgrade-note-modal.php:96
+msgctxt "[ADMIN] Upgrade note modal button label"
+msgid "Convert your widgets in a preset now"
+msgstr "Converti subito i tuoi widget in preset"
+
+#: templates/admin/upgrade-note-modal.php:97
+msgctxt "[ADMIN] Upgrade note modal dismiss label"
+msgid "No thanks"
+msgstr "No grazie"
+
+#: templates/filters/filter-tax/filter-start.php:26
+msgctxt "[FRONTEND] General option for terms dropdown"
+msgid "All"
+msgstr "Tutti"
+
+#: templates/filters/global/reset-filters.php:23
+msgctxt "[FRONTEND] Reset button for preset shortcode"
+msgid "Reset filters"
+msgstr "Resetta filtri"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Yes, without toggles"
+#~ msgstr "Sì, senza toggle"
+
+#~ msgid "Parent tag"
+#~ msgstr "Tag genitore"
 
 #~ msgid ""
 #~ "Show a price filter widget with a list of preset price ranges that users "
@@ -666,19 +1404,17 @@ msgstr ""
 #~ "preimpostati che gli utenti possono usare per migliorare la loro ricerca "
 #~ "dei prodotti"
 
-#~ msgid "YITH WooCommerce Ajax Price List Filter"
-#~ msgstr "YITH WooCommerce Filtro Ajax Elenco Prezzi"
-
-#~ msgctxt "refer to: product price"
-#~ msgid "Price Filter"
-#~ msgstr "Filtro Prezzo"
+#~ msgid "YITH AJAX Price List Filter"
+#~ msgstr "YITH AJAX Price List Filter"
 
 #~ msgid "Show widget dropdown"
-#~ msgstr "Mostra il menu a tendina del widget"
+#~ msgstr "Mostra il dropdown del widget"
 
-#~ msgctxt "Select this if you want to show the widget as open or closed"
-#~ msgid "Dropdown style:"
-#~ msgstr "Stile menu a tendina:"
+#~ msgid "Opened"
+#~ msgstr "Aperto"
+
+#~ msgid "Closed"
+#~ msgstr "Chiuso"
 
 #~ msgid "Price Range"
 #~ msgstr "Intervallo Prezzo"
@@ -704,10 +1440,6 @@ msgstr ""
 #~ msgid "No tags found."
 #~ msgstr "Nessun tag trovato."
 
-#~ msgctxt "Admin: Section title"
-#~ msgid "Tag List"
-#~ msgstr "Elenco Tag"
-
 #~ msgid "Show Selected"
 #~ msgstr "Mostra i selezionati"
 
@@ -720,21 +1452,11 @@ msgstr ""
 #~ msgid "Unselect all"
 #~ msgstr "Deseleziona tutto"
 
-#~ msgctxt "Admin: user note"
-#~ msgid ""
-#~ "Note: tags with no products assigned will not be showed in the front end"
-#~ msgstr ""
-#~ "Nota bene: i tag che non contengono prodotti non appariranno nel frontend"
-
 #~ msgid "Tag name"
 #~ msgstr "Nome tag"
 
 #~ msgid "Count"
 #~ msgstr "Conteggio"
-
-#~ msgctxt "Select if you want to show round color box or square color box"
-#~ msgid "Color Style:"
-#~ msgstr "Stile Colori"
 
 #~ msgid "Square"
 #~ msgstr "Quadrati"
@@ -776,26 +1498,22 @@ msgstr ""
 #~ msgstr "Colore testo al passaggio del mouse"
 
 #~ msgid "Border color"
-#~ msgstr "Colore dei bordi"
+#~ msgstr "Colore del bordo"
 
 #~ msgid "Border color on hover"
 #~ msgstr "Colore bordo al passaggio del mouse"
 
 #~ msgid "Choose how to sort WooCommerce products"
-#~ msgstr "Scegli l'ordinamento dei prodotti WooCommerce"
+#~ msgstr "Decidi l'ordinamento dei prodotti WooCommerce"
 
-#~ msgid "YITH WooCommerce Ajax Sort By"
-#~ msgstr "YITH WooCommerce Disposizione Ajax"
-
-#~ msgctxt "Product sorting"
-#~ msgid "Sort by"
-#~ msgstr "Ordina per"
+#~ msgid "YITH AJAX Sort By"
+#~ msgstr "YITH AJAX Sort By"
 
 #~ msgid "Display on sale and in stock WooCommerce products"
 #~ msgstr "Mostra i prodotti WooCommerce disponibili e in sconto"
 
-#~ msgid "YITH WooCommerce Ajax In Stock/On Sale Filters"
-#~ msgstr "YITH WooCommerce Filtri Ajax Disponibili/In Saldo"
+#~ msgid "YITH AJAX In Stock/On Sale Filters"
+#~ msgstr "YITH AJAX In Stock/On Sale Filters"
 
 #~ msgid "Show only \"On Sale\" products"
 #~ msgstr "Mostra solo prodotti \"In sconto\""
@@ -803,261 +1521,945 @@ msgstr ""
 #~ msgid "Show only \"In Stock\" products"
 #~ msgstr "Mostra solo prodotti \"Disponibili\""
 
-#~ msgctxt "Product sorting"
-#~ msgid "Stock/On sale"
-#~ msgstr "Disponibili/In sconto"
-
 #~ msgid "Show \"On Sale\" filter"
 #~ msgstr "Mostra filtro \"In sconto\""
 
 #~ msgid "Show \"In Stock\" filter"
 #~ msgstr "Mostra filtro \"Disponibili\""
 
-#~ msgid "Put here the HTML tag for the widget title"
-#~ msgstr "Inserisci qui il tag HTML per il titolo del widget"
+#~ msgid "Text"
+#~ msgstr "Testo"
 
-#~ msgid "Put here your custom CSS rules:"
-#~ msgstr "Inserisci qui le tue regole CSS personalizzate:"
+#~ msgid "Text hover"
+#~ msgstr "Hover testo"
 
-#~ msgctxt "Admin: Panel section description"
+#~ msgid "Text active"
+#~ msgstr "Testo attivo"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Show search field"
+#~ msgstr "Mostra campo ricerca"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Enable if you want to show search field inside dropdown"
+#~ msgstr "Abilita per mostrare il campo di ricerca all'interno del dropdown"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Slider min value"
+#~ msgstr "Valore min slider"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Set the minimum value for the price slider"
+#~ msgstr "Imposta il valore minimo per lo slider prezzi"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Slider max value"
+#~ msgstr "Valore max slider"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Set the maximum value for the price slider"
+#~ msgstr "Imposta il valore massimo per lo slider prezzi"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Slider step"
+#~ msgstr "Step slider"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Set the value for each increment of the price slider"
+#~ msgstr "Imposta il valore per gli incrementi dello slider prezzi"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Order options"
+#~ msgstr "Opzioni ordinamento"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Select sorting options to show"
+#~ msgstr "Seleziona le opzioni di ordinamento da mostrare"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Customize price ranges"
+#~ msgstr "Personalizza intervalli prezzo"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Show stock filter"
+#~ msgstr "Mostra filtro \"In stock\""
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Enable if you want to show \"In Stock\" filter"
+#~ msgstr "Abilita per mostrare il filtro \"In stock\""
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Show sale filter"
+#~ msgstr "Mostra filtro \"In sconto\""
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Enable if you want to show \"On Sale\" filter"
+#~ msgstr "Abilita per mostrare il filtro \"In sconto\""
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Show as toggle"
+#~ msgstr "Mostra come toggle"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Enable if you want to show this filter as a toggle"
+#~ msgstr "Abilita per mostrare questo filtro come toggle"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Toggle style"
+#~ msgstr "Stile toggle"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Closed by default"
+#~ msgstr "Chiuso"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Opened by default"
+#~ msgstr "Aperto "
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Choose if toggle has to closed or opened by default"
+#~ msgstr "Decidi se il toggle deve essere aperto o chiuso di default"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Order by"
+#~ msgstr "Ordina per"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Name"
+#~ msgstr "Nome"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Slug"
+#~ msgstr "Slug"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Term count"
+#~ msgstr "Conteggio termine"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Term order"
+#~ msgstr "Ordinamento termini"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Order type"
+#~ msgstr "Ordinamento"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "ASC"
+#~ msgstr "ASC"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "DESC"
+#~ msgstr "DECR"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Select the default order for terms of this filter"
+#~ msgstr "Seleziona l'ordinamento predefinito per i termini di questo filtro"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Show count of items"
+#~ msgstr "Mostra conteggio elementi"
+
+#~ msgctxt "[Admin] Filter edit form"
 #~ msgid ""
-#~ "If your theme use the WooCommerce standard templates, you don't need to "
-#~ "change the following values.\n"
-#~ "                                Otherwise, add the classes used in the "
-#~ "template of your theme.\n"
-#~ "                                If you don't know them, please contact "
-#~ "the developer of your theme to receive the correct classes."
+#~ "Enable if you want to show how many items are available for each term"
 #~ msgstr ""
-#~ "Se il tuo tema utilizza i template standard diWooCommerce, non devi "
-#~ "modificare i seguenti valori.\n"
-#~ "                                In caso contrario, aggiungi le classe "
-#~ "utilizzate nel template del tuo tema.\n"
-#~ "                                Se non le conosci, contatta lo "
-#~ "sviluppatore del tuo tema per ottenere le classi corrette."
+#~ "Abilita per mostrare il numero di articoli disponibili per ogni termine"
 
-#~ msgid "Put here the CSS class or id for the product container"
-#~ msgstr "Inserisci qui la classe CSS o l'ID per il contenitore del prodotto"
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Adoptive filtering"
+#~ msgstr "Filtri adottivi (selezione senza risultati)"
 
-#~ msgid "Put here the CSS class or id for the shop pagination container"
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Terms will be hidden"
+#~ msgstr "I termini saranno nascosti"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid ""
+#~ "Decide how to manage filter options that show no results when applying "
+#~ "filters. Choose to hide them or make them visible (this will show them in "
+#~ "lighter grey and not clickable)"
 #~ msgstr ""
-#~ "Inserisci qui la classe CSS o l'ID per il contenitore della paginazione "
-#~ "del negozio"
+#~ "Scegli come gestire le opzioni che non hanno risultati durante il "
+#~ "filtraggio. Puoi decidere se nasconderle o lasciarle visibili (in questo "
+#~ "caso appariranno opache e non saranno cliccabili)"
 
-#~ msgid "Put here the CSS class or id for the result count container"
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Yes, with terms collapsed"
+#~ msgstr "Sì, con termini chiusi"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Yes, with terms expanded"
+#~ msgstr "Sì, con termini aperti"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Price Range"
+#~ msgstr "Intervallo prezzo"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Price Slider"
+#~ msgstr "Slider prezzo"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Review"
+#~ msgstr "Recensione"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "In stock/On sale"
+#~ msgstr "In stock/In sconto"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Label/Image"
+#~ msgstr "Etichetta/Immagine"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Radio"
+#~ msgstr "Radio"
+
+#~ msgctxt "[Admin] Filter edit form"
+#~ msgid "Add range"
+#~ msgstr "Aggiungi intervallo"
+
+#~ msgctxt "yith-woocommerce-ajax-navigation"
+#~ msgid "Select the default order for terms of this filter"
+#~ msgstr "Seleziona l'ordinamento predefinito per i termini di questo filtro"
+
+#~ msgctxt "yith-woocommerce-ajax-navigation"
+#~ msgid "Terms will be visible, but not clickable"
+#~ msgstr "I termini saranno visibili ma non cliccabili"
+
+#~ msgctxt "[Admin] tab name"
+#~ msgid "Customization"
+#~ msgstr "Personalizzazione"
+
+#~ msgctxt "[ADMIN] WooCommerce Tools tab, name of the tool"
+#~ msgid "Clear Product Filter sessions"
+#~ msgstr "Cancella sessioni Product Filter"
+
+#~ msgctxt "[ADMIN] WooCommerce Tools tab, description of the tool"
+#~ msgid ""
+#~ "This will clear all filter sessions on your site. It may be useful if you "
+#~ "want to free some space (previously shared sessions won't be reachable "
+#~ "any longer)."
 #~ msgstr ""
-#~ "Inserisci qui la classe CSS o l'ID per il contenitore del conteggio dei "
-#~ "prodotti"
+#~ "Questo cancellerà tutte le sezioni filtri sul tuo sito. Utile per "
+#~ "liberare un po' di spazio (le sessioni condivise in precedenza non "
+#~ "saranno più raggiungibili). "
 
-#~ msgid "Customize the ajax loader"
-#~ msgstr "Personalizza il loader ajax"
+#~ msgctxt "[FRONTEND] Default modal title - mobile only"
+#~ msgid "Filter products"
+#~ msgstr "Filtra prodotti"
 
-#~ msgid "Use WooCommerce price filter in ajax"
-#~ msgstr "Utilizza il Price Filter di WooCommerce in ajax"
+#~ msgctxt "[FRONTEND] Active filters title"
+#~ msgid "Active filters"
+#~ msgstr "Filtri attivi"
 
-#~ msgid "Select if you want to show the dropdown opened or closed"
-#~ msgstr "Scegli se mostrare il menu a tendina aperto o chiuso"
+#~ msgctxt "[FRONTEND] Label for the Filters button on mobile"
+#~ msgid "Filters"
+#~ msgstr "Filtri"
 
-#~ msgctxt "Select if you want to show the widget open or closed"
+#~ msgctxt "[ADMIN] Name of default price filter created by plugin"
+#~ msgid "Filter by price"
+#~ msgstr "Filtra per prezzo"
+
+#~ msgctxt "[ADMIN] Name of default review filter created by plugin"
+#~ msgid "Filter by review"
+#~ msgstr "Filtra per recensione"
+
+#~ msgctxt "[ADMIN] Name of default stock/sale filter created by plugin"
+#~ msgid "Additional filters"
+#~ msgstr "Filtri aggiuntivi"
+
+#~ msgctxt "[ADMIN] Name of default order by filter created by plugin"
+#~ msgid "Order by"
+#~ msgstr "Ordina per"
+
+#~ msgctxt "[FRONTEND] Active filter labels"
+#~ msgid "Price"
+#~ msgstr "Prezzo"
+
+#~ msgctxt "[FRONTEND] Active filter labels"
+#~ msgid "Order by"
+#~ msgstr "Ordina per"
+
+#~ msgctxt "[FRONTEND] Active filter labels"
+#~ msgid "Rating"
+#~ msgstr "Valutazione"
+
+#~ msgctxt "[FRONTEND] Active filter labels"
+#~ msgid "On sale"
+#~ msgstr "In sconto"
+
+#~ msgctxt "[FRONTEND] Active filter labels"
+#~ msgid "In stock"
+#~ msgstr "In stock"
+
+#~ msgctxt "[FRONTEND] Active price filter label"
+#~ msgid "%1$s - %2$s"
+#~ msgstr "%1$s - %2$s"
+
+#~ msgctxt "[FRONTEND] Active price filter label"
+#~ msgid "%1$s & above"
+#~ msgstr "%1$s & oltre"
+
+#~ msgctxt ""
+#~ "[DEV] Debug message triggered when unable to create filter session."
+#~ msgid "Unable to create session. Missing required params."
+#~ msgstr "Impossibile creare sessione. Parametri necessari mancanti."
+
+#~ msgctxt "[DEV] Debug message triggered when unable to find filter session."
+#~ msgid "Invalid session."
+#~ msgstr "Sessione non valida."
+
+#~ msgctxt "[ADMIN] Name of the preset elementor widget"
+#~ msgid "YITH AJAX Active Filters Labels"
+#~ msgstr "YITH AJAX Active Filters Labels"
+
+#~ msgctxt "[ADMIN] Name of the preset elementor widget"
+#~ msgid "YITH AJAX Mobile Filters Modal Opener"
+#~ msgstr "YITH AJAX Mobile Filters Modal Opener"
+
+#~ msgctxt "[ELEMENTOR] Widget description"
+#~ msgid ""
+#~ "This widget will display one label for each active product filter, "
+#~ "wherever it is placed"
+#~ msgstr ""
+#~ "Questo widget mostrerà un'etichetta per ogni filtro prodotto attivo dove "
+#~ "lo posizioni"
+
+#~ msgctxt "[ELEMENTOR] Widget description"
+#~ msgid ""
+#~ "It will allow your users to quickly review and remove filters applied to "
+#~ "current product selection; it will only appear when there is an active "
+#~ "filter."
+#~ msgstr ""
+#~ "Permetterà ai tuoi utenti di controllare e rimuovere i filtri applicati "
+#~ "alla selezione prodotti corrente. Verrà mostrata solo se c'è almeno un "
+#~ "filtro attivo."
+
+#~ msgctxt "[ELEMENTOR] Widget description"
+#~ msgid ""
+#~ "You can use this block to place \"Active filters\" labels inside your "
+#~ "page, when \"Active filters labels position\" option won't work for your "
+#~ "product's loop"
+#~ msgstr ""
+#~ "Puoi usare questo blocco per posizionare le etichette \"Active filters\" "
+#~ "all'interno della tua pagina se l'opzione \"Posizione etichette filtri "
+#~ "attivi non funziona per il loop del prodotto"
+
+#~ msgctxt "[ELEMENTOR] Widget description"
+#~ msgid "This widget will display button to open mobile filters modal opener"
+#~ msgstr ""
+#~ "Questo widget mostrerà il pulsante per aprire la modale dei filtri su "
+#~ "dispositivo mobile"
+
+#~ msgctxt "[ELEMENTOR] Widget description"
+#~ msgid ""
+#~ "It will only appear when this feature is enable in plugin settings; "
+#~ "please, note that you'll need to place a valid preset widget in the same "
+#~ "page, for the modal to correctly work."
+#~ msgstr ""
+#~ "Verrà mostrato se è stata attivata questa funzionalità dalle impostazioni "
+#~ "del plugin. N.B.- per far sì che la modale funzioni correttamente dovrai "
+#~ "posizionare un widget preset valido nella stessa pagina."
+
+#~ msgctxt "[ELEMENTOR] Widget description"
+#~ msgid ""
+#~ "You can use this block to place \"Mobile filters modal opener\" inside "
+#~ "your page, when \"Show as modal on mobile\" option won't work for your "
+#~ "product's loop"
+#~ msgstr ""
+#~ "Puoi usare questo blocco per posizionare \"Mobile filters modal opener\" "
+#~ "all'interno della tua pagina se l'opzione \"Mostra come modale su "
+#~ "dispositivi mobili\" non funziona per il loop del prodotto"
+
+#~ msgctxt "[FRONTEND] Price range option: 1. Min value."
+#~ msgid "%1$s & above"
+#~ msgstr "%1$s & oltre"
+
+#~ msgctxt "[FRONTEND] Price range option: 1. Min value. 2. Max value"
+#~ msgid "%1$s - %2$s"
+#~ msgstr "%1$s - %2$s"
+
+#~ msgctxt "[GUTENBERG]: block name"
+#~ msgid "YITH Active Filters Labels"
+#~ msgstr "YITH Active Filters Labels"
+
+#~ msgctxt "[GUTENBERG]: block name"
+#~ msgid "YITH Mobile Filters Modal Opener"
+#~ msgstr "YITH Mobile Filters Modal Opener"
+
+#~ msgctxt "[GUTENBERG]: block description"
+#~ msgid ""
+#~ "Show active filters in current selection, as labels. You can use this "
+#~ "block to place \"Active filters\" labels inside your page, when \"Active "
+#~ "filters labels position\" option won't work for your product's loop"
+#~ msgstr ""
+#~ "Mostra i filtri attivi come etichette nella selezione corrente. Puoi "
+#~ "usare questo blocco per posizionare le etichette \"Active filters\" "
+#~ "all'interno della tua pagina se l'opzione \"Posizione etichette filtri "
+#~ "attivi\" non funziona per il loop del prodotto"
+
+#~ msgctxt "[GUTENBERG]: block description"
+#~ msgid ""
+#~ "Show button to open filters modal on mobile. Note that you need to have a "
+#~ "valid preset in the same page where you use this block. Content will only "
+#~ "appear at mobile. You can use this block to place \"Mobile filters modal "
+#~ "opener\" inside your page, when \"Show as modal on mobile\" option won't "
+#~ "work for your product's loop"
+#~ msgstr ""
+#~ "Mostra il pulsante per aprire la modale dei filtri su dispositivo mobile. "
+#~ "Devi avere un preset valido nella stessa pagina in cui usi questo blocco. "
+#~ "Il contenuto verrà mostrato solo su dispositivo mobile. Puoi usare questo "
+#~ "blocco per posizionare \"Mobile filters modal opener\" all'interno della "
+#~ "tua pagina quando l'opzione \"Mostra come modale su dispositivi mobili\" "
+#~ "non funziona per il loop del prodotto"
+
+#~ msgctxt "refer to: product price"
+#~ msgid "Price Filter"
+#~ msgstr "Filtro Prezzo"
+
+#~ msgctxt "Select this if you want to show the widget as open or closed"
 #~ msgid "Dropdown style:"
-#~ msgstr "Stile menu a tendina:"
-
-#~ msgctxt "Admin: user note"
-#~ msgid ""
-#~ "Note: tags with no assigned products will not be showed in the front end"
-#~ msgstr ""
-#~ "N.B.: i tag che non sono assegnati ad alcun prodotto non saranno mostrati "
-#~ "nel front end "
-
-#~ msgid "Filter the product list without reloading the page"
-#~ msgstr "Filtra l'elenco prodotti senza ricaricare la pagina"
-
-#~ msgid "Background color in hover"
-#~ msgstr "Colore di sfondo al passaggio del mouse"
-
-#~ msgid "Text color in hover"
-#~ msgstr "Colore del testo al passaggio del mouse"
-
-#~ msgid "Border color in hover"
-#~ msgstr "Colore dei bordi al passaggio del mouse"
-
-#~ msgid "Display the sorting of the WooCommerce products"
-#~ msgstr "Mostra l'ordinamento dei prodotti WooCommerce"
-
-#~ msgid "Index and Follow option"
-#~ msgstr "Opzione index e follow"
-
-#~ msgid ""
-#~ "Add the \"robots\" meta tag in the head of the page if filters have been "
-#~ "activeted."
-#~ msgstr "Aggiungi"
-
-#~ msgctxt "Referer to original WooCommerce Price Filter Widget"
-#~ msgid "WooCommerce Price Filter Slider"
-#~ msgstr "Price Filter di WooCommerce con slider"
-
-#~ msgid ""
-#~ "Dear users,\n"
-#~ "                            we would like to inform you that the YITH "
-#~ "WooCommerce Ajax Navigation plugin will change its name in YITH "
-#~ "WooCommerce Ajax Product Filter from the next update. Also, the plugin "
-#~ "textdomain will change too from \"yit\" to \"yith_wc_ajxnav\".\n"
-#~ "                            This modification solves the issues about "
-#~ "textdomain conflicts generated by some translation/multilanguage plugins "
-#~ "you have identified in the past weeks.\n"
-#~ "                            If updating the plugin some language files "
-#~ "are no more recognized by WordPress, you will just have to rename the "
-#~ "language files in the correct format. After renaming the files, you can "
-#~ "update/translate the .po file following the classic procedure for "
-#~ "translations."
-#~ msgstr ""
-#~ "Cari utenti,\n"
-#~ "                            comunichiamo che il plugin YITH WooCommerce "
-#~ "Ajax Navigation cambierà il proprio nome in YITH WooCommerce Ajax Product "
-#~ "Filter dal prossimo aggiornamento. Per di più, anche il textdomain del "
-#~ "plugin cambierà da \"yit\" a \"yith_wc_ajxnav\".\n"
-#~ "                            Questa modifica risolve i problemi "
-#~ "riguardanti i conflitti di textdomain generati da alcuni plugin di "
-#~ "traduzione/multilingua che avete identificato nelle settimane "
-#~ "precedenti.\n"
-#~ "                            Se alcuni file di lingua non fossero più "
-#~ "riconosciuti da WordPress una volta effettuato l'aggiornamento, basterà "
-#~ "rinominare i file di lingua nel formato corretto. Dopo averli rinominati, "
-#~ "è possibile aggiornare/tradurre il file .po seguendo la procedura "
-#~ "classica di traduzione."
-
-#~ msgctxt "Admin(Pointers): Plugin Title"
-#~ msgid "YITH WooCommerce Ajax Product Filter"
-#~ msgstr "YITH WooCommerce Ajax Product Filter"
-
-#~ msgid ""
-#~ "YITH WooCommerce Product Filter has been updated with new available "
-#~ "options"
-#~ msgstr ""
-#~ "YITH WooCommerce Product Filter è stato aggiornato con delle nuove opzioni"
-
-#~ msgid "discover the PREMIUM version"
-#~ msgstr "scopri la versione PREMIUM"
-
-#~ msgctxt "Admin: user tooltip"
-#~ msgid ""
-#~ "Activating the filter type \"Tag \" you can choose which tags show in"
-#~ msgstr "Attivando il filtro \"Tag\", puoi scegliere quali tag mostrare in"
-
-#~ msgctxt "Label link"
-#~ msgid "YIT Plugins -> Ajax Product Filter -> Filter by Tag"
-#~ msgstr "YIT Plugins -> Ajax Product Filter -> Filtra per tag"
-
-#~ msgctxt "Label link"
-#~ msgid "Please take note of the following Widgets ID"
-#~ msgstr "Si prega di prender nota dei seguenti ID dei widget"
-
-#~ msgid "YITH WooCommerce Ajax List Price Filter"
-#~ msgstr "YITH WooCommerce Filtro Ajax List Price Filter"
-
-#~ msgid "Frontend"
-#~ msgstr "Front end"
+#~ msgstr "Stile dropdown:"
 
 #~ msgctxt "Admin: Section title"
-#~ msgid "Tags List"
+#~ msgid "Tag List"
 #~ msgstr "Elenco Tag"
 
 #~ msgctxt "Admin: user note"
 #~ msgid ""
-#~ "Note: tags with no assigned products will not be showed in the frontend"
+#~ "Note: tags with no products assigned will not be showed in the front end"
 #~ msgstr ""
-#~ "N.B.: i tag che non sono assegnati ad alcun prodotto non saranno mostrati "
-#~ "nel front end "
+#~ "Nota bene: i tag che non contengono prodotti non appariranno a frontend"
 
-#~ msgid "Tags"
-#~ msgstr "Tag"
+#~ msgctxt "Select if you want to show round color box or square color box"
+#~ msgid "Color Style:"
+#~ msgstr "Stile Colori:"
 
-#~ msgid "Brands"
-#~ msgstr "Brand"
+#~ msgctxt "Product sorting"
+#~ msgid "Sort by"
+#~ msgstr "Ordina per"
 
-#~ msgid "Product filter"
-#~ msgstr "Filtro prodotto"
+#~ msgctxt "Product sorting"
+#~ msgid "Stock/On sale"
+#~ msgstr "Disponibili/In sconto"
 
-#~ msgid "Filter the products list without reloading the page"
-#~ msgstr "Filtra l'elenco dei prodotti senza ricaricare la pagina"
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "Customization"
+#~ msgstr "Personalizzazione"
 
-#~ msgid "All Hierarchical"
-#~ msgstr "Tutti (gerarchico)"
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "Filters area title"
+#~ msgstr "Titolo area filtri"
 
-# @ yit
-#~ msgid "Narrow down the products list without reloading the page"
-#~ msgstr "Filtra la lista dei prodotti senza ricaricare la pagina"
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "Enter a title to identify the “AJAX filter Preset” section"
+#~ msgstr "Inserisci un titolo per definire la sezione “AJAX filter Preset”"
 
-# @ yit
-#~ msgid "YITH WooCommerce Ajax Navigation"
-#~ msgstr "YITH WooCommerce Ajax Navigation"
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "Filters area colors"
+#~ msgstr "Colori area filtri"
 
-#~ msgid "Filters List:"
-#~ msgstr "Lista Filtri:"
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "Titles"
+#~ msgstr "Titoli"
 
-# @ yit
-#~ msgid "Reset all filters set by YITH WooCommerce Ajax Navigation"
-#~ msgstr "Resetta tutti i filtri settati da YITH WooCommerce Ajax Navigation"
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "Background"
+#~ msgstr "Sfondo"
 
-# @ yit
-#~ msgid "YITH WooCommerce Ajax Reset Navigation"
-#~ msgstr "YITH WooCommerce Ajax Navigation"
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "Accent color"
+#~ msgstr "Colore in risalto"
 
-# @ yit
-#~ msgid "Upload"
-#~ msgstr "Upload"
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "Options style"
+#~ msgstr "Stile opzioni"
 
-# @ yit
-#~ msgid "px"
-#~ msgstr "px"
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid ""
+#~ "Choose which preset of style options you'd like to apply to your filters"
+#~ msgstr "Scegli quali opzioni di stile applicare ai tuoi filtri"
 
-# @ yit
-#~ msgid "em"
-#~ msgstr "em"
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "Theme style"
+#~ msgstr "Stile tema"
 
-# @ yit
-#~ msgid "pt"
-#~ msgstr "pt"
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "Custom style"
+#~ msgstr "Stile personalizzato"
 
-# @ yit
-#~ msgid "rem"
-#~ msgstr "rem"
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "Color swatch style"
+#~ msgstr "Stile campione colore"
 
-# @ yit
-#~ msgid "Regular"
-#~ msgstr "Regular"
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "Choose the style for color thumbnails"
+#~ msgstr "Scegli lo stile per le miniature colore"
 
-# @ yit
-#~ msgid "Bold"
-#~ msgstr "Bold"
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "Rounded"
+#~ msgstr "Rotondo"
 
-# @ yit
-#~ msgid "Extra bold"
-#~ msgstr "Extra bold"
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "Square"
+#~ msgstr "Quadrato"
 
-# @ yit
-#~ msgid "Italic"
-#~ msgstr "Italic"
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "Color swatch size"
+#~ msgstr "Dimensione campione colore"
 
-# @ yit
-#~ msgid "Italic bold"
-#~ msgstr "Italic bold"
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "The size for color thumbnails"
+#~ msgstr "Dimensione per le miniature colore"
 
-# @ yit
-#~ msgid "Select a date"
-#~ msgstr "Seleziona una data"
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "Labels style color"
+#~ msgstr "Colore stile etichette"
 
-# @ yit
-#~ msgid "Hours"
-#~ msgstr "Ore"
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "Background Hover"
+#~ msgstr "Sfondo (hover)"
 
-# @ yit
-#~ msgid "Minutes"
-#~ msgstr "Minuti"
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "Background Active"
+#~ msgstr "Sfondo attiva"
 
-# @ yit
-#~ msgid "Select a font family"
-#~ msgstr "Seleziona un font"
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "Text"
+#~ msgstr "Testo"
 
-# @ yit
-#~ msgid "Click to preview"
-#~ msgstr "Clicca per anteprima"
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "Text Hover"
+#~ msgstr "Hover testo"
+
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "Text Active"
+#~ msgstr "Testo attiva"
+
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "Textual terms color"
+#~ msgstr "Colore termine testo"
+
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "AJAX loader"
+#~ msgstr "Loader AJAX"
+
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "Choose the style for AJAX loader icon"
+#~ msgstr "Scegli lo stile per l'icona di caricamento AJAX"
+
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "Use default loader"
+#~ msgstr "Usa loader predefinito"
+
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "Upload custom loader"
+#~ msgstr "Carica loader personalizzato"
+
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "Custom AJAX loader"
+#~ msgstr "Caricatore AJAX personalizzato"
+
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid ""
+#~ "Upload an icon you'd like to use as AJAX Loader (suggested 50px x 50px)"
+#~ msgstr "Carica un'icona da usare come loader AJAX (consigliato 50px x 50px)"
+
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "Scroll top after filtering"
+#~ msgstr "Torna su dopo filtri"
+
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "Enable this option if you want to scroll to top after filtering."
+#~ msgstr ""
+#~ "Abilita questa opzione per utilizzare la funzionalità Torna su dopo aver "
+#~ "selezionato i filtri."
+
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid "Show as modal on mobile"
+#~ msgstr "Mostra come modale su dispositivo mobile"
+
+#~ msgctxt "[ADMIN] Customization settings page"
+#~ msgid ""
+#~ "Enable this option if you want to show filter section as a modal on "
+#~ "mobile devices.<small>The modal opener will appear before products. When "
+#~ "using WooCommerce's Gutenberg product blocks, this may not work as "
+#~ "expected. If this is the case, you can place the Modal opener button "
+#~ "anywhere in the page using <code>[yith_wcan_mobile_modal_opener]</code> "
+#~ "shortcode or <code>YITH Mobile Filters Modal Opener</code> block</small>"
+#~ msgstr ""
+#~ "Abilita questa opzione per mostrare la sezione filtri come modale sui "
+#~ "dispositivi mobili. <small>Il pulsante di apertura della modale verrà "
+#~ "mostrato prima dei prodotti. Questo potrebbe non funzionare come previsto "
+#~ "se si utilizzano i blocchi Gutenberg di WooCommerce. In questo caso puoi "
+#~ "posizionare il pulsante in qualsiasi punto della pagina usando lo "
+#~ "shortcode <code>[yith_wcan_mobile_modal_opener]</code> o il blocco "
+#~ "<code>YITH Mobile Filters Modal Opener</code></small>"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid "Filter mode"
+#~ msgstr "Modalità applicazione filtri"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid ""
+#~ "Choose to apply filters in real time using AJAX or whether to show a "
+#~ "button to apply all filters"
+#~ msgstr ""
+#~ "Scegli se applicare i filtri in tempo reale in AJAX o se mostrare il "
+#~ "pulsante Applica filtri"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid "Instant result"
+#~ msgstr "Risultato istantaneo (AJAX)"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid "By clicking \"Apply filters\" button"
+#~ msgstr "Facendo clic sul pulsante \"Applica filtri\""
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid "Show results"
+#~ msgstr "Mostra risultati"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid "In same page using AJAX"
+#~ msgstr "Nella stessa pagina usando AJAX"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid "Reload on a new page"
+#~ msgstr "Ricarica in una nuova pagina"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid "Hide empty terms"
+#~ msgstr "Nascondi termini vuoti"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid "Enable to hide empty terms from filters section"
+#~ msgstr "Abilita per nascondere i termini vuoti dalla sezione filtri"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid "Hide out of stock products"
+#~ msgstr "Nascondi prodotti non disponibili"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid "Enable to hide \"out of stock\" products from the results."
+#~ msgstr "Abilita per nascondere i prodotti non disponibili nei risultati."
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid "Inline with active filters"
+#~ msgstr "In linea con i filtri attivi"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid "Show \"Clear\" above each filter"
+#~ msgstr "Mostra \"Cancella\" sopra ogni filtro"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid "Enable to show the \"Clear\" link above each filter of the preset"
+#~ msgstr ""
+#~ "Abilita per mostrare il link \"Cancella\" sopra ogni filtro del preset"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid "Show active filters as labels"
+#~ msgstr "Mostra filtri attivi come etichette"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid ""
+#~ "Enable to show the active filters as labels. Labels show the current "
+#~ "filters selection, and can be used to remove any active filter."
+#~ msgstr ""
+#~ "Abilita per mostrare i filtri attivi come etichette. Le etichette "
+#~ "mostrano la selezione corrente dei filtri e possono essere usate per "
+#~ "rimuovere qualsiasi filtro attivo."
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid "Active filters labels position"
+#~ msgstr "Posizione etichetta filtri attivi"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid "Choose the default position for Active Filters labels"
+#~ msgstr "Scegli la posizione predefinita per le etichette dei filtri attivi"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid ""
+#~ "Above products list<small>When using WooCommerce's Gutenberg product "
+#~ "blocks, this may not work as expected; in these cases you can place Reset "
+#~ "Button anywhere in the page using "
+#~ "<code>[yith_wcan_active_filters_labels]</code> shortcode or <code>YITH "
+#~ "Mobile Filters Modal Opener</code> block</small>"
+#~ msgstr ""
+#~ "Sopra la lista prodotti<small>Potrebbe non funzionare come previsto "
+#~ "usando i blocchi Gutenberg di WooCommerce. In  questo caso puoi "
+#~ "posizionare il pulsante di reset in qualsiasi punto della pagina usando "
+#~ "lo shortcode <code>[yith_wcan_active_filters_labels]</code> o il blocco "
+#~ "<code>YITH Mobile Filters Modal Opener</code></small>"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid "Show titles for active filter labels"
+#~ msgstr "Mostra titoli per etichette filtri attivi"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid ""
+#~ "Enable to show labels subdivided by filter, and to show a title for each "
+#~ "group"
+#~ msgstr ""
+#~ "Abilita per mostrare le etichette suddivise per filtro e per mostrare un "
+#~ "titolo per ogni gruppo"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid "Filter by price using AJAX"
+#~ msgstr "Filtra per prezzo in AJAX"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid "Filter products via AJAX when using WooCommerce price filter widget"
+#~ msgstr ""
+#~ "Filtra i prodotti in AJAX  usando il widget filtro prezzi di WooCommerce"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid "Use slider for price filtering"
+#~ msgstr "Utilizza lo slider per il filtro prezzi"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid "Transform default WooCommerce price filter into a slider"
+#~ msgstr "Trasforma il filtro prezzi predefinito di WooCommerce in uno slider"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid "Filter by price using AJAX slider"
+#~ msgstr "Filtra per prezzo con slider AJAX"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid "Add toggle for price filter widget"
+#~ msgstr "Aggiungi toggle per widget filtro prezzo"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid "Show price filtering widget as a toggle"
+#~ msgstr "Mostra il widget filtro prezzi come toggle"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid "Chose how to show price filter toggle"
+#~ msgstr "Decidi come mostrare il toggle del filtro prezzi"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid "Enable ajax pagination"
+#~ msgstr "Abilita paginazione AJAX"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid "Make shop pagination anchors load new page via ajax"
+#~ msgstr ""
+#~ "Fa' sì che le ancore di paginazione shop carichino una nuova pagina via "
+#~ "Ajax"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid "Show current categories"
+#~ msgstr "Mostra categorie correnti"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid ""
+#~ "Enable if you want to show link to current category in the filter, when "
+#~ "visiting category page"
+#~ msgstr ""
+#~ "Abilita per mostrare il link alla categoria corrente nel filtro quando si "
+#~ "visita la pagina categoria"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid "Show \"All categories\" anchor"
+#~ msgstr "Mostra link \"Tutte le categorie\""
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid ""
+#~ "Enable if you want to show a link to retrieve products from all "
+#~ "categories, after a category filter is applied"
+#~ msgstr ""
+#~ "Abilita per mostrare un link per recuperare i prodotti da tutte le "
+#~ "categorie dopo aver applicato un filtro categoria"
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid "Show \"All tags\" anchor"
+#~ msgstr "Mostra link \"Tutti i tag\""
+
+#~ msgctxt "[ADMIN] General settings page"
+#~ msgid ""
+#~ "Enable if you want to show a link to retrieve products from all tags, "
+#~ "after a category filter is applied"
+#~ msgstr ""
+#~ "Abilita per mostrare un link per recuperare i prodotti da tutti i tag "
+#~ "dopo aver applicato un filtro categoria"
+
+#~ msgctxt "[ADMIN] Legacy settings page"
+#~ msgid "Scroll to top after filtering"
+#~ msgstr "Torna su dopo aver filtrato"
+
+#~ msgctxt "[ADMIN] Legacy settings page"
+#~ msgid ""
+#~ "Choose whether you want to enable the \"Scroll to top\" option on "
+#~ "Desktop, Mobile, or on both of them"
+#~ msgstr ""
+#~ "Scegli se vuoi attivare l'opzione Torna su per desktop, dispositivo "
+#~ "mobile o per entrambi "
+
+#~ msgctxt "[ADMIN] Legacy settings page"
+#~ msgid "Disabled"
+#~ msgstr "Disabilitato"
+
+#~ msgctxt "[ADMIN] Legacy settings page"
+#~ msgid "Mobile"
+#~ msgstr "Dispositivo mobile"
+
+#~ msgctxt "[ADMIN] Legacy settings page"
+#~ msgid "Desktop"
+#~ msgstr "Desktop"
+
+#~ msgctxt "[ADMIN] Legacy settings page"
+#~ msgid "Mobile and Desktop"
+#~ msgstr "Dispositivo mobile e desktop"
+
+#~ msgctxt "[ADMIN] Legacy settings page"
+#~ msgid "Widget title selector"
+#~ msgstr "Selettore titolo widget"
+
+#~ msgctxt "[ADMIN] Legacy settings page"
+#~ msgid "Enter here the CSS selector (class or ID) of the widget title"
+#~ msgstr "Inserisci qui il selettore CSS (classe o ID) del titolo del widget"
+
+#~ msgctxt "[ADMIN] Legacy settings page"
+#~ msgid "Widget container"
+#~ msgstr "Contenitore widget"
+
+#~ msgctxt "[ADMIN] Legacy settings page"
+#~ msgid "Enter here the CSS selector (class or ID) of the widget container"
+#~ msgstr ""
+#~ "Inserisci qui il selettore CSS (classe o ID) del contenitore del widget"
+
+#~ msgctxt "[ADMIN] Legacy settings page"
+#~ msgid "Filter style"
+#~ msgstr "Stile filtro"
+
+#~ msgctxt "[ADMIN] Legacy settings page"
+#~ msgid "\"x\" icon before active filters"
+#~ msgstr "\"x\" davanti al filtro attivato"
+
+#~ msgctxt "[ADMIN] Legacy settings page"
+#~ msgid "Checkboxes"
+#~ msgstr "Checkbox"
+
+#~ msgctxt "[ADMIN] Legacy settings page"
+#~ msgid "General options"
+#~ msgstr "Opzioni generali"
+
+#~ msgctxt "[ADMIN] Legacy settings page"
+#~ msgid "Ajax Loader"
+#~ msgstr "Loader Ajax"
+
+#~ msgctxt "[ADMIN] Legacy settings page"
+#~ msgid "Choose loading icon you want to use for your widget filters"
+#~ msgstr "Scegli l'icona di caricamento da usare per i tuoi filtri widget"
+
+#~ msgctxt "[ADMIN] Legacy settings page"
+#~ msgid "Opened"
+#~ msgstr "Aperto"
+
+#~ msgctxt "[ADMIN] Legacy settings page"
+#~ msgid "Closed"
+#~ msgstr "Chiuso"
+
+#~ msgctxt "[ADMIN] Legacy settings page"
+#~ msgid "Shop pagination selector"
+#~ msgstr "Selettore paginazione Shop"
+
+#~ msgctxt "[ADMIN] Legacy settings page"
+#~ msgid "Enter here the CSS selector (class or ID) of the shop pagination"
+#~ msgstr "Inserisci qui il selettore CSS (classe o ID) della paginazione shop"
+
+#~ msgctxt "[ADMIN] Legacy settings page"
+#~ msgid "\"All categories\" anchor label"
+#~ msgstr "Testo del link \"Tutte le categorie\""
+
+#~ msgctxt "[ADMIN] Legacy settings page"
+#~ msgid "Enter here the text you want to use for \"All categories\" anchor"
+#~ msgstr ""
+#~ "Inserisci qui il testo per il link \"Visualizza tutte le categorie\""
+
+#~ msgctxt "[ADMIN] Legacy settings page"
+#~ msgid "See all categories"
+#~ msgstr "Visualizza tutte le categorie"
+
+#~ msgctxt "[ADMIN] Legacy settings page"
+#~ msgid "\"All tags\" anchor label"
+#~ msgstr "Testo link \"Tutti i tag\""
+
+#~ msgctxt "[ADMIN] Legacy settings page"
+#~ msgid "Enter here the text you want to use for \"All tags\" anchor"
+#~ msgstr "Inserisci qui il testo per il link \"Visualizza tutti i tag\""
+
+#~ msgctxt "[ADMIN] Legacy settings page"
+#~ msgid "See all tags"
+#~ msgstr "Visualizza tutti i tag"
+
+#~ msgctxt "[ADMIN] Legacy settings page"
+#~ msgid "Hierarchical tags"
+#~ msgstr "Tag (gerarchico)"
+
+#~ msgctxt "[ADMIN] Legacy settings page"
+#~ msgid "Make product tag taxonomy hierarchical"
+#~ msgstr "Rendi gerarchica la tassonomia tag prodotto"
+
+#~ msgctxt "[ADMIN] Seo settings page"
+#~ msgid "Use plugin customized permalinks"
+#~ msgstr "Usa permalink personalizzati del plugin"
+
+#~ msgctxt "[Admin] Range min (preset edit page)"
+#~ msgid "Min"
+#~ msgstr "Min"
+
+#~ msgctxt ""
+#~ "[Admin] Range option that allows to skip max selection (preset edit page)"
+#~ msgid "Show \"& Above\" in last range"
+#~ msgstr "Mostra \"& oltre\" nell'ultimo intervallo"
+
+#~ msgctxt "[Admin] Range max (preset edit page)"
+#~ msgid "Max"
+#~ msgstr "Max"
+
+#~ msgctxt "[Admin] Term edit field label (preset edit page)"
+#~ msgid "or"
+#~ msgstr "o"
+
+#~ msgctxt "[Admin] Term edit field label (preset edit page)"
+#~ msgid "Image"
+#~ msgstr "Immagine"
+
+#~ msgctxt "[Admin] Term edit field label (preset edit page)"
+#~ msgid "+ Add color"
+#~ msgstr "+ Aggiungi colore"
+
+#~ msgctxt "[Admin] Term edit field label (preset edit page)"
+#~ msgid "Clear"
+#~ msgstr "Cancella"
+
+#~ msgctxt "[Admin] Label to term image uploader"
+#~ msgid "Click to upload image"
+#~ msgstr "Carica immagine"
+
+#~ msgctxt "[FRONTEND] General option for reviews dropdown"
+#~ msgid "Any rating"
+#~ msgstr "Qualsiasi valutazione"
+
+#~ msgctxt "[FRONTEND] On sale filter label"
+#~ msgid "On sale"
+#~ msgstr "In sconto"
+
+#~ msgctxt "[FRONTEND] On sale filter label"
+#~ msgid "In stock"
+#~ msgstr "In stock"
+
+#~ msgctxt "[FRONTEND] Filter button for preset shortcode"
+#~ msgid "Apply filters"
+#~ msgstr "Applica filtri"
+
+#~ msgctxt "Price filter option: price starts from"
+#~ msgid "From"
+#~ msgstr "Da"
+
+#~ msgctxt "Price filter option: price ends to"
+#~ msgid "To"
+#~ msgstr "A"

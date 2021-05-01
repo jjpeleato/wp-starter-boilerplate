@@ -28,7 +28,7 @@ class URE_Advertisement {
       * 
       * @return int
       */
-     private function rand_unique( $used = array(-1), $max_ind ) {
+     private function rand_unique( $max_ind, $used = array(-1)  ) {
         if ( $max_ind<0 ) {
             $max_ind = 0;
         }
@@ -49,7 +49,7 @@ class URE_Advertisement {
         $this->slots = array();
         $used = array(-1);
         $max_ind = $this->slots_quantity - 1;
-        $index = $this->rand_unique( $used, $max_ind );
+        $index = $this->rand_unique( $max_ind, $used );
         $this->slots[$index] = $this->admin_menu_editor();
         /*
         $used[] = $index;        

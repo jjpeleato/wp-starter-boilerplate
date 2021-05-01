@@ -77,7 +77,9 @@ class GTag {
 			return;
 		}
 
-		// for AMP and non-AMP.
+		$this->action( 'wp_head', 'print_tracking_opt_out', 0 ); // For non-AMP and AMP.
+		$this->action( 'web_stories_story_head', 'print_tracking_opt_out', 0 ); // For Web Stories plugin.
+
 		if ( $this->is_amp() ) {
 			$this->action( 'amp_print_analytics', 'print_amp_gtag' ); // For all AMP modes.
 			$this->action( 'wp_footer', 'print_amp_gtag', 20 ); // For AMP Standard and Transitional.
@@ -87,8 +89,12 @@ class GTag {
 			// Load amp-analytics component for AMP Reader.
 			$this->filter( 'amp_post_template_data', 'amp_analytics_component_data' );
 		} else {
-			// For non-AMP.
-			$this->action( 'wp_enqueue_scripts', 'enqueue_gtag_js' );
+			// For non-AMP. If current WordPress verion is 5.7 or above, use core function introducted from WordPress 5.7 and add async loading to gtag script.
+			if ( version_compare( get_bloginfo( 'version' ), '5.7', '<' ) ) {
+				$this->action( 'wp_enqueue_scripts', 'enqueue_gtag_js' );
+			} else {
+				$this->action( 'wp_head', 'add_gtag_js' );
+			}
 		}
 	}
 
@@ -142,60 +148,45 @@ class GTag {
 	}
 
 	/**
-	 * Print gtag snippet for non-amp.
+	 * Print gtag snippet for non-amp. Used only for WordPress 5.7 or above.
+	 */
+	public function add_gtag_js() {
+		$gtag_script_info = $this->get_gtag_info();
+
+		wp_print_script_tag(
+			[
+				'id'    => 'google_gtagjs',
+				'src'   => $gtag_script_info['url'],
+				'async' => true,
+			]
+		);
+
+		wp_print_inline_script_tag(
+			$gtag_script_info['inline'],
+			[
+				'id' => 'google_gtagjs-inline',
+			]
+		);
+	}
+
+	/**
+	 * Print gtag snippet for non-amp. Used for below WordPress 5.7.
 	 */
 	public function enqueue_gtag_js() {
-		$property_id = $this->get( 'property_id' );
+		$gtag_script_info = $this->get_gtag_info();
+
 		wp_enqueue_script( // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 			'google_gtagjs',
-			'https://www.googletagmanager.com/gtag/js?id=' . esc_attr( $property_id ),
+			$gtag_script_info['url'],
 			false,
 			null,
 			false
 		);
-		wp_script_add_data( 'google_gtagjs', 'script_execution', 'async' );
 
 		wp_add_inline_script(
 			'google_gtagjs',
-			'window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}'
+			$gtag_script_info['inline']
 		);
-
-		$gtag_opt = [];
-		if ( $this->get_amp_mode() ) {
-			$gtag_opt['linker'] = [
-				'domains' => [ $this->get_home_domain() ],
-			];
-		}
-
-		if ( $this->get( 'anonymize_ip' ) ) {
-			// See https://developers.google.com/analytics/devguides/collection/gtagjs/ip-anonymization.
-			$gtag_opt['anonymize_ip'] = true;
-		}
-
-		if ( ! empty( $gtag_opt['linker'] ) ) {
-			wp_add_inline_script(
-				'google_gtagjs',
-				'gtag(\'set\', \'linker\', ' . wp_json_encode( $gtag_opt['linker'] ) . ' );'
-			);
-		}
-		unset( $gtag_opt['linker'] );
-
-		wp_add_inline_script(
-			'google_gtagjs',
-			'gtag(\'js\', new Date());'
-		);
-
-		if ( empty( $gtag_opt ) ) {
-			wp_add_inline_script(
-				'google_gtagjs',
-				'gtag(\'config\', \'' . esc_attr( $property_id ) . '\');'
-			);
-		} else {
-			wp_add_inline_script(
-				'google_gtagjs',
-				'gtag(\'config\', \'' . esc_attr( $property_id ) . '\', ' . wp_json_encode( $gtag_opt ) . ' );'
-			);
-		}
 	}
 
 	/**
@@ -309,6 +300,52 @@ class GTag {
 	}
 
 	/**
+	 * Get gtag script info
+	 *
+	 * @return mixed
+	 */
+	protected function get_gtag_info() {
+		// Get Google Analytics Property ID.
+		$property_id = $this->get( 'property_id' );
+
+		// Get main gtag script Url.
+		$url = 'https://www.googletagmanager.com/gtag/js?id=' . esc_attr( $property_id );
+
+		$gtag_opt = [];
+		if ( $this->get_amp_mode() ) {
+			$gtag_opt['linker'] = [
+				'domains' => [ $this->get_home_domain() ],
+			];
+		}
+
+		$gtag_inline_linker_script = '';
+		if ( ! empty( $gtag_opt['linker'] ) ) {
+			$gtag_inline_linker_script = 'gtag(\'set\', \'linker\', ' . wp_json_encode( $gtag_opt['linker'] ) . ' );';
+		}
+		unset( $gtag_opt['linker'] );
+
+		// Get Google Analytics Property ID.
+		$gtag_config = [];
+		$gtag_config = $this->do_filter( 'analytics/gtag_config', $gtag_config );
+
+		// Construct inline scripts.
+		$gtag_inline_script  = 'window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}';
+		$gtag_inline_script .= $gtag_inline_linker_script;
+		$gtag_inline_script .= 'gtag(\'js\', new Date());';
+		$gtag_inline_script .= 'gtag(\'config\', \'' . esc_attr( $property_id ) . '\', {' . join( ', ', $gtag_config ) . '} );';
+
+		$gtag = $this->do_filter(
+			'analytics/gtag',
+			[
+				'url'    => $url,
+				'inline' => $gtag_inline_script,
+			]
+		);
+
+		return $gtag;
+	}
+
+	/**
 	 * Normalize option data
 	 *
 	 * @param mixed $options Array to normalize.
@@ -320,5 +357,26 @@ class GTag {
 		}
 
 		return $options;
+	}
+
+	/**
+	 * Print the user tracking opt-out code
+	 *
+	 * This script opts out of all Google Analytics tracking, for all measurement IDs, regardless of implementation.
+	 *
+	 * @link https://developers.google.com/analytics/devguides/collection/analyticsjs/user-opt-out
+	 */
+	public function print_tracking_opt_out() {
+		if ( ! $this->is_tracking_disabled() ) {
+			return;
+		}
+
+		if ( $this->is_amp() ) :
+			?>
+		<script type="application/ld+json" id="__gaOptOutExtension"></script>
+		<?php else : ?>
+		<script type="text/javascript">window['ga-disable-<?php echo esc_js( $this->get( 'property_id' ) ); ?>'] = true;</script>
+			<?php
+		endif;
 	}
 }

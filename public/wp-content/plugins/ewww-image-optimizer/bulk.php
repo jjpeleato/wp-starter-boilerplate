@@ -91,6 +91,15 @@ function ewww_image_optimizer_display_tools() {
 		"</form>\n</div>\n";
 
 	echo '<hr class="ewww-tool-divider">';
+	echo "<div>\n<p id='ewww-clean-originals-info' class='ewww-tool-info'>" .
+		esc_html__( 'When WordPress scales down large images, it keeps the original on disk for thumbnail generation. You may delete them to save disk space.', 'ewww-image-optimizer' ) . "</p>\n";
+	echo "<form id='ewww-clean-originals' class='ewww-tool-form' method='post' action=''>\n" .
+		"<input type='submit' class='button-secondary action' value='" . esc_attr__( 'Delete Originals', 'ewww-image-optimizer' ) . "' />\n" .
+		"</form>\n</div>\n";
+	echo "<div id='ewww-clean-originals-progressbar' style='display:none;'></div>";
+	echo "<div id='ewww-clean-originals-progress' style='display:none;'></div>";
+
+	echo '<hr class="ewww-tool-divider">';
 	echo "<div>\n<p id='ewww-clean-converted-info' class='ewww-tool-info'>" .
 		esc_html__( 'If you have converted images (PNG to JPG and friends) without deleting the originals, you may remove them when ready.', 'ewww-image-optimizer' ) . "<br>\n" .
 		'<i>' . esc_html__( 'Please perform a site backup before proceeding.', 'ewww-image-optimizer' ) . "</i></p>\n";
@@ -184,7 +193,7 @@ function ewww_image_optimizer_tool_script( $hook ) {
 	if ( 'tools_page_ewww-image-optimizer-tools' !== $hook ) {
 		return;
 	}
-	wp_enqueue_script( 'ewwwtoolscript', plugins_url( '/includes/eio-tools.js', __FILE__ ), array( 'jquery', 'jquery-ui-progressbar' ), EWWW_IMAGE_OPTIMIZER_VERSION );
+	wp_enqueue_script( 'ewww-tool-script', plugins_url( '/includes/eio-tools.js', __FILE__ ), array( 'jquery', 'jquery-ui-progressbar' ), EWWW_IMAGE_OPTIMIZER_VERSION, true );
 	// Number of images in the ewwwio_table (previously optimized images).
 	$image_count = ewww_image_optimizer_aux_images_table_count();
 	// Submit a couple variables for our javascript to work with.
@@ -196,7 +205,7 @@ function ewww_image_optimizer_tool_script( $hook ) {
 	global $wpdb;
 	$attachment_count = $wpdb->get_var( "SELECT count(ID) FROM $wpdb->posts WHERE (post_type = 'attachment' OR post_type = 'ims_image') AND (post_mime_type LIKE '%%image%%' OR post_mime_type LIKE '%%pdf%%') ORDER BY ID DESC" );
 	wp_localize_script(
-		'ewwwtoolscript',
+		'ewww-tool-script',
 		'ewww_vars',
 		array(
 			'_wpnonce'          => wp_create_nonce( 'ewww-image-optimizer-tools' ),
@@ -216,6 +225,7 @@ function ewww_image_optimizer_tool_script( $hook ) {
 			/* translators: used for Table Cleanup progress bar, like so: batch 32/346 */
 			'batch'             => esc_html__( 'batch', 'ewww-image-optimizer' ),
 			'erase_warning'     => $erase_warning,
+			'tool_warning'      => esc_html__( 'Please be sure to backup your site before proceeding. Do you wish to continue?', 'ewww-image-optimizer' ),
 		)
 	);
 	// Load the stylesheet for the jquery progressbar.
@@ -350,7 +360,7 @@ function ewww_image_optimizer_bulk_head_output() {
 			<?php ewww_image_optimizer_bulk_variant_option(); ?>
 			<?php ewww_image_optimizer_bulk_webp_only(); ?>
 			<p>
-				<label for="ewww-delay" style="font-weight: bold"><?php esc_html_e( 'Pause between images', 'ewww-image-optimizer' ); ?></label>&emsp;<input type="text" id="ewww-delay" name="ewww-delay" value="<?php echo (int) $delay; ?>"> <?php esc_html_e( 'in seconds, 0 = disabled', 'ewww-image-optimmizer' ); ?>
+				<label for="ewww-delay" style="font-weight: bold"><?php esc_html_e( 'Pause between images', 'ewww-image-optimizer' ); ?></label>&emsp;<input type="text" id="ewww-delay" name="ewww-delay" value="<?php echo (int) $delay; ?>"> <?php esc_html_e( 'in seconds, 0 = disabled', 'ewww-image-optimizer' ); ?>
 			</p>
 			<div id="ewww-delay-slider"></div>
 		</form>
@@ -703,13 +713,14 @@ function ewww_image_optimizer_bulk_script( $hook ) {
 		update_option( 'ewww_image_optimizer_bulk_resume', '' );
 		update_option( 'ewww_image_optimizer_aux_resume', '' );
 	}
-	wp_enqueue_script( 'ewwwbulkscript', plugins_url( '/includes/eio.js', __FILE__ ), array( 'jquery', 'jquery-ui-slider', 'jquery-ui-progressbar', 'postbox', 'dashboard' ), EWWW_IMAGE_OPTIMIZER_VERSION );
+	wp_enqueue_script( 'ewww-beacon-script', plugins_url( '/includes/eio-beacon.js', __FILE__ ), array( 'jquery' ), EWWW_IMAGE_OPTIMIZER_VERSION );
+	wp_enqueue_script( 'ewww-bulk-script', plugins_url( '/includes/eio-bulk.js', __FILE__ ), array( 'jquery', 'jquery-ui-slider', 'jquery-ui-progressbar', 'postbox', 'dashboard' ), EWWW_IMAGE_OPTIMIZER_VERSION );
 	// Number of images in the ewwwio_table (previously optimized images).
 	$image_count = ewww_image_optimizer_aux_images_table_count();
 	// Submit a couple variables for our javascript to work with.
 	$loading_image = plugins_url( '/images/wpspin.gif', __FILE__ );
 	wp_localize_script(
-		'ewwwbulkscript',
+		'ewww-bulk-script',
 		'ewww_vars',
 		array(
 			'_wpnonce'              => wp_create_nonce( 'ewww-image-optimizer-bulk' ),
@@ -1117,12 +1128,11 @@ function ewww_image_optimizer_media_scan( $hook = '' ) {
 				ewwwio_debug_message( "missing mime for $selected_id" );
 			}
 
-			if ( ! in_array( $mime, $enabled_types, true ) ) {
+			if ( ! in_array( $mime, $enabled_types, true ) && empty( $ewww_webp_only ) ) {
 				$skipped_ids[] = $selected_id;
 				continue;
 			}
 			ewwwio_debug_message( "id: $selected_id and type: $mime" );
-			ewww_image_optimizer_debug_log();
 			$attached_file = ( ! empty( $attachment_meta[ $selected_id ]['_wp_attached_file'] ) ? $attachment_meta[ $selected_id ]['_wp_attached_file'] : '' );
 
 			list( $file_path, $upload_path ) = ewww_image_optimizer_attachment_path( $meta, $selected_id, $attached_file, false );
@@ -1131,7 +1141,6 @@ function ewww_image_optimizer_media_scan( $hook = '' ) {
 			if ( class_exists( 'Amazon_S3_And_CloudFront' ) && ewww_image_optimizer_stream_wrapped( $file_path ) ) {
 				ewww_image_optimizer_check_table_as3cf( $meta, $selected_id, $file_path );
 			}
-			ewww_image_optimizer_debug_log();
 			if (
 				( ewww_image_optimizer_stream_wrapped( $file_path ) || ! ewwwio_is_file( $file_path ) ) &&
 				(
@@ -1164,6 +1173,14 @@ function ewww_image_optimizer_media_scan( $hook = '' ) {
 			} elseif ( ! $file_path ) {
 				ewwwio_debug_message( "no file path for $selected_id" );
 				$skipped_ids[] = $selected_id;
+				continue;
+			}
+
+			// Early check for bypass based on full-size path.
+			if ( apply_filters( 'ewww_image_optimizer_bypass', false, $file_path ) === true ) {
+				ewwwio_debug_message( "skipping $file_path as instructed" );
+				$skipped_ids[] = $selected_id;
+				ewww_image_optimizer_debug_log();
 				continue;
 			}
 
@@ -1897,13 +1914,15 @@ function ewww_image_optimizer_bulk_loop( $hook = '', $delay = 0 ) {
 		}
 		list( $file, $msg, $converted, $original ) = ewww_image_optimizer( $image->file, 1, false, false, 'full' === $image->resize );
 		// Gotta make sure we don't delete a pending record if the license is exceeded, so the license check goes first.
-		$ewww_status = get_transient( 'ewww_image_optimizer_cloud_status' );
-		if ( ! empty( $ewww_status ) && preg_match( '/exceeded/', $ewww_status ) ) {
-			$output['error'] = '<a href="https://ewww.io/buy-credits/" target="_blank">' . esc_html__( 'License Exceeded', 'ewww-image-optimizer' ) . '</a>';
-			delete_transient( 'ewww_image_optimizer_bulk_counter_measures' );
-			delete_transient( 'ewww_image_optimizer_bulk_current_image' );
-			ewwwio_ob_clean();
-			die( wp_json_encode( $output ) );
+		if ( ewww_image_optimizer_get_option( 'ewww_image_optimizer_cloud_key' ) ) {
+			$ewww_status = get_transient( 'ewww_image_optimizer_cloud_status' );
+			if ( ! empty( $ewww_status ) && preg_match( '/exceeded/', $ewww_status ) ) {
+				$output['error'] = '<a href="https://ewww.io/buy-credits/" target="_blank">' . esc_html__( 'License Exceeded', 'ewww-image-optimizer' ) . '</a>';
+				delete_transient( 'ewww_image_optimizer_bulk_counter_measures' );
+				delete_transient( 'ewww_image_optimizer_bulk_current_image' );
+				ewwwio_ob_clean();
+				die( wp_json_encode( $output ) );
+			}
 		}
 		// Delete a pending record if the optimization failed for whatever reason.
 		if ( ! $file && $image->id ) {

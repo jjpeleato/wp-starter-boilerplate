@@ -16,7 +16,7 @@ class Screen {
 	/**
 	 * Class instance.
 	 *
-	 * @var Menu instance
+	 * @var Screen instance
 	 */
 	protected static $instance = null;
 
@@ -33,6 +33,13 @@ class Screen {
 	 * @var array
 	 */
 	protected static $post_types = array();
+
+	/**
+	 * Registered taxonomies.
+	 *
+	 * @var array
+	 */
+	protected static $taxonomies = array();
 
 	/**
 	 * Get class instance.
@@ -66,12 +73,28 @@ class Screen {
 	}
 
 	/**
+	 * Returns an array of registered post types.
+	 */
+	public static function get_taxonomies() {
+		return apply_filters( 'woocommerce_navigation_taxonomies', self::$taxonomies );
+	}
+
+	/**
 	 * Check if we're on a WooCommerce page
 	 *
 	 * @return bool
 	 */
 	public static function is_woocommerce_page() {
 		global $pagenow;
+
+		// Get taxonomy if on a taxonomy screen.
+		$taxonomy = '';
+		if ( in_array( $pagenow, array( 'edit-tags.php', 'term.php' ), true ) ) {
+			if ( isset( $_GET['taxonomy'] ) ) { // phpcs:ignore CSRF ok.
+				$taxonomy = sanitize_text_field( wp_unslash( $_GET['taxonomy'] ) ); // phpcs:ignore CSRF ok.
+			}
+		}
+		$taxonomies = self::get_taxonomies();
 
 		// Get post type if on a post screen.
 		$post_type = '';
@@ -91,8 +114,28 @@ class Screen {
 
 		if (
 			in_array( $post_type, $post_types, true ) ||
+			in_array( $taxonomy, $taxonomies, true ) ||
+			self::is_woocommerce_core_taxonomy( $taxonomy ) ||
 			in_array( $current_screen_id, $screen_ids, true )
 		) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Check if a given taxonomy is a WooCommerce core related taxonomy.
+	 *
+	 * @param string $taxonomy Taxonomy.
+	 * @return bool
+	 */
+	public static function is_woocommerce_core_taxonomy( $taxonomy ) {
+		if ( in_array( $taxonomy, array( 'product_cat', 'product_tag' ), true ) ) {
+			return true;
+		}
+
+		if ( 'pa_' === substr( $taxonomy, 0, 3 ) ) {
 			return true;
 		}
 
@@ -108,6 +151,15 @@ class Screen {
 	public function add_body_class( $classes ) {
 		if ( self::is_woocommerce_page() ) {
 			$classes .= ' has-woocommerce-navigation';
+
+			/**
+			 * Adds the ability to skip disabling of the WP toolbar.
+			 *
+			 * @param boolean $bool WP Toolbar disabled.
+			 */
+			if ( apply_filters( 'woocommerce_navigation_wp_toolbar_disabled', true ) ) {
+				$classes .= ' is-wp-toolbar-disabled';
+			}
 		}
 
 		return $classes;
@@ -170,6 +222,19 @@ class Screen {
 	 * @param string $post_type Post type to add.
 	 */
 	public static function register_post_type( $post_type ) {
-		self::$post_types[] = $post_type;
+		if ( ! in_array( $post_type, self::$post_types, true ) ) {
+			self::$post_types[] = $post_type;
+		}
+	}
+
+	/**
+	 * Register taxonomy for use in WooCommerce Navigation screens.
+	 *
+	 * @param string $taxonomy Taxonomy to add.
+	 */
+	public static function register_taxonomy( $taxonomy ) {
+		if ( ! in_array( $taxonomy, self::$taxonomies, true ) ) {
+			self::$taxonomies[] = $taxonomy;
+		}
 	}
 }

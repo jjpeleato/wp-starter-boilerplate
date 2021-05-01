@@ -1,6 +1,6 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName
 /**
- * The Sitemap xml and stylesheet contract
+ * The Sitemap xml and stylesheet abstract class.
  *
  * @since      0.9.0
  * @package    RankMath
@@ -35,22 +35,29 @@ abstract class XML {
 	protected $output_charset = 'UTF-8';
 
 	/**
-	 * Send file headers
+	 * Send file headers.
 	 *
 	 * @param array $headers Array of headers.
+	 * @param bool  $is_xsl True if sending headers are for XSL.
 	 */
-	protected function send_headers( $headers = [] ) {
-		$expires  = gmdate( 'D, d M Y H:i:s', ( time() + YEAR_IN_SECONDS ) );
+	protected function send_headers( $headers = [], $is_xsl = false ) {
 		$defaults = [
 			'X-Robots-Tag'  => 'noindex',
 			'Content-Type'  => 'text/xml; charset=' . $this->get_output_charset(),
 			'Pragma'        => 'public',
-			'Cache-Control' => 'maxage=' . YEAR_IN_SECONDS,
-			'Expires'       => $expires . ' GMT',
-			'Etag'          => md5( $expires . $this->type ),
+			'Cache-Control' => 'no-cache, no-store, must-revalidate, max-age=0',
+			'Expires'       => 0,
 		];
 
 		$headers = wp_parse_args( $headers, $defaults );
+
+		/**
+		 * Filter the sitemap HTTP headers.
+		 *
+		 * @param array $headers HTTP headers.
+		 * @param bool  $is_xsl Whether these headers are for XSL.
+		 */
+		$headers = $this->do_filter( 'sitemap/http_headers', $headers, $is_xsl );
 
 		header( $this->get_protocol() . ' 200 OK', true, 200 );
 
@@ -60,7 +67,7 @@ abstract class XML {
 	}
 
 	/**
-	 * Get HTTP protocol
+	 * Get HTTP protocol.
 	 *
 	 * @return string
 	 */

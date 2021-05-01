@@ -7,20 +7,21 @@ namespace Automattic\WooCommerce\Admin;
 
 defined( 'ABSPATH' ) || exit;
 
+use \Automattic\WooCommerce\Admin\Notes\LearnMoreAboutVariableProducts;
 use \Automattic\WooCommerce\Admin\Notes\Notes;
-use \Automattic\WooCommerce\Admin\Notes\HistoricalData;
 use \Automattic\WooCommerce\Admin\Notes\OrderMilestones;
 use \Automattic\WooCommerce\Admin\Notes\WooSubscriptionsNotes;
 use \Automattic\WooCommerce\Admin\Notes\TrackingOptIn;
 use \Automattic\WooCommerce\Admin\Notes\WooCommercePayments;
 use \Automattic\WooCommerce\Admin\Notes\InstallJPAndWCSPlugins;
 use \Automattic\WooCommerce\Admin\Notes\DrawAttention;
-use \Automattic\WooCommerce\Admin\Notes\CouponPageMoved;
 use \Automattic\WooCommerce\Admin\RemoteInboxNotifications\RemoteInboxNotificationsEngine;
-use \Automattic\WooCommerce\Admin\Notes\HomeScreenFeedback;
 use \Automattic\WooCommerce\Admin\Notes\SetUpAdditionalPaymentTypes;
 use \Automattic\WooCommerce\Admin\Notes\TestCheckout;
 use \Automattic\WooCommerce\Admin\Notes\SellingOnlineCourses;
+use \Automattic\WooCommerce\Admin\Notes\MerchantEmailNotifications\MerchantEmailNotifications;
+use \Automattic\WooCommerce\Admin\Notes\WelcomeToWooCommerceForStoreUsers;
+use \Automattic\WooCommerce\Admin\Notes\ManageStoreActivityFromHomeScreen;
 
 /**
  * Feature plugin main class.
@@ -153,7 +154,7 @@ class FeaturePlugin {
 		$this->define( 'WC_ADMIN_PLUGIN_FILE', WC_ADMIN_ABSPATH . 'woocommerce-admin.php' );
 		// WARNING: Do not directly edit this version number constant.
 		// It is updated as part of the prebuild process from the package.json value.
-		$this->define( 'WC_ADMIN_VERSION_NUMBER', '1.7.3' );
+		$this->define( 'WC_ADMIN_VERSION_NUMBER', '2.1.5' );
 	}
 
 	/**
@@ -183,19 +184,23 @@ class FeaturePlugin {
 		// Admin note providers.
 		// @todo These should be bundled in the features/ folder, but loading them from there currently has a load order issue.
 		new WooSubscriptionsNotes();
-		new HistoricalData();
 		new OrderMilestones();
 		new TrackingOptIn();
 		new WooCommercePayments();
 		new InstallJPAndWCSPlugins();
 		new DrawAttention();
-		new HomeScreenFeedback();
 		new SetUpAdditionalPaymentTypes();
 		new TestCheckout();
 		new SellingOnlineCourses();
+		new LearnMoreAboutVariableProducts();
+		new WelcomeToWooCommerceForStoreUsers();
+		new ManageStoreActivityFromHomeScreen();
 
 		// Initialize RemoteInboxNotificationsEngine.
 		RemoteInboxNotificationsEngine::init();
+
+		// Initialize MerchantEmailNotifications.
+		MerchantEmailNotifications::init();
 	}
 
 	/**
@@ -215,8 +220,8 @@ class FeaturePlugin {
 	protected function get_dependency_errors() {
 		$errors                      = array();
 		$wordpress_version           = get_bloginfo( 'version' );
-		$minimum_wordpress_version   = '5.3';
-		$minimum_woocommerce_version = '3.6';
+		$minimum_wordpress_version   = '5.4';
+		$minimum_woocommerce_version = '4.8';
 		$wordpress_minimum_met       = version_compare( $wordpress_version, $minimum_wordpress_version, '>=' );
 		$woocommerce_minimum_met     = class_exists( 'WooCommerce' ) && version_compare( WC_VERSION, $minimum_woocommerce_version, '>=' );
 

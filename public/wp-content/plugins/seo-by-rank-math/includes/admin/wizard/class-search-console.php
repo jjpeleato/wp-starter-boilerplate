@@ -11,9 +11,6 @@
 namespace RankMath\Wizard;
 
 use RankMath\KB;
-use RankMath\Helper;
-
-use RankMath\Search_Console\Data_Fetcher;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -36,7 +33,7 @@ class Search_Console implements Wizard_Step {
 			<p>
 				<?php
 				/* translators: Link to How to Setup Google Search Console KB article */
-				printf( esc_html__( 'Rank Math automates everything, use below button to connect your site with Google Search Console and Google Analytics. It will verify your site and submit sitemaps automatically. %s', 'rank-math' ), '<a href="' . KB::get( 'analytics' ) . '" target="_blank">' . esc_html__( 'Read more about it here.', 'rank-math' ) . '</a>' );
+				printf( esc_html__( 'Rank Math automates everything, use below button to connect your site with Google Search Console and Google Analytics. It will verify your site and submit sitemaps automatically. %s', 'rank-math' ), '<a href="' . esc_url( KB::get( 'sw-analytics-kb' ) ) . '" target="_blank">' . esc_html__( 'Read more about it here.', 'rank-math' ) . '</a>' );
 				?>
 			</p>
 		</header>

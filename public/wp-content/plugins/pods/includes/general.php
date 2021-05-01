@@ -824,6 +824,7 @@ function pods_shortcode_run( $tags, $content = null ) {
 		'filters_label'       => null,
 		'filters_location'    => 'before',
 		'pagination_label'    => null,
+		'pagination_type'     => null,
 		'pagination_location' => 'after',
 	);
 
@@ -882,9 +883,18 @@ function pods_shortcode_run( $tags, $content = null ) {
 
 		// Only allow revert to current object if there are no query tags.
 		if ( ! $has_query_tags ) {
+			/**
+			 * Allow filtering whether to detect the pod name / item ID from the current post object.
+			 *
+			 * @since 2.7.26
+			 *
+			 * @param bool  $detect_from_current  Whether to detect the pod name / item ID from the current post object.
+			 * @param array $shortcode_attributes The list of attributes used for the shortcode.
+			 */
+			$detect_from_current = apply_filters( 'pods_shortcode_detect_from_current_post', in_the_loop(), $tags );
 
 			// Archives, Post type archives, singular posts.
-			if ( in_the_loop() ) {
+			if ( $detect_from_current ) {
 				$pod = pods( get_post_type(), get_the_ID(), false );
 
 				if ( ! empty( $pod ) ) {
@@ -963,6 +973,7 @@ function pods_shortcode_run( $tags, $content = null ) {
 	}
 
 	$found = 0;
+	$filters = false;
 
 	$is_singular = ( ! empty( $id ) || $tags['use_current'] );
 
@@ -1007,6 +1018,11 @@ function pods_shortcode_run( $tags, $content = null ) {
 				$params['join'] = $tags['join'];
 			}
 		}//end if
+
+		// Load filters and return HTML for later use.
+		if ( false !== $tags['filters'] ) {
+			$filters = $pod->filters( $tags['filters'], $tags['filters_label'] );
+		}
 
 		// Forms require params set
 		if ( ! empty( $params ) || empty( $tags['form'] ) ) {
@@ -1099,19 +1115,27 @@ function pods_shortcode_run( $tags, $content = null ) {
 		return $return;
 	}//end if
 
-	ob_start();
+	$pagination = false;
 
-	if ( ! $is_singular && false !== $tags['filters'] && 'before' === $tags['filters_location'] ) {
-		echo $pod->filters( $tags['filters'], $tags['filters_label'] );
+	// Only handle pagination on non-singular shortcodes where items were found.
+	if ( ! $is_singular && 0 < $found && $tags['pagination'] ) {
+		$pagination = array(
+			'label' => pods_v( 'pagination_label', $tags, null ),
+			'type'  => pods_v( 'pagination_type', $tags, null ),
+		);
+
+		// Remove empty params.
+		$pagination = array_filter( $pagination );
 	}
 
-	if ( ! $is_singular && 0 < $found && true === $tags['pagination'] && in_array(
-		$tags['pagination_location'], array(
-			'before',
-			'both',
-		), true
-	) ) {
-		echo $pod->pagination( $tags['pagination_label'] );
+	ob_start();
+
+	if ( $filters && 'before' === $tags['filters_location'] ) {
+		echo $filters;
+	}
+
+	if ( false !== $pagination && in_array( $tags['pagination_location'], array( 'before', 'both', ), true ) ) {
+		echo $pod->pagination( $pagination );
 	}
 
 	$content = $pod->template( $tags['template'], $content );
@@ -1123,17 +1147,12 @@ function pods_shortcode_run( $tags, $content = null ) {
 	// phpcs:ignore
 	echo $content;
 
-	if ( ! $is_singular && 0 < $found && true === $tags['pagination'] && in_array(
-		$tags['pagination_location'], array(
-			'after',
-			'both',
-		), true
-	) ) {
-		echo $pod->pagination( $tags['pagination_label'] );
+	if ( false !== $pagination && in_array( $tags['pagination_location'], array( 'after', 'both', ), true ) ) {
+		echo $pod->pagination( $pagination );
 	}
 
-	if ( ! $is_singular && false !== $tags['filters'] && 'after' === $tags['filters_location'] ) {
-		echo $pod->filters( $tags['filters'], $tags['filters_label'] );
+	if ( $filters && 'after' === $tags['filters_location'] ) {
+		echo $filters;
 	}
 
 	$return = ob_get_clean();

@@ -83,7 +83,7 @@ class WPCF7SAdmin
                 <option value="0"><?php _e('Contact Form', 'contact-form-submissions'); ?></option>
                 <?php foreach ($forms as $post) {
                 ?>
-                    <?php $selected = ($post->ID == esc_attr($_GET['wpcf7_contact_form'])) ? 'selected' : ''; ?>
+                    <?php $selected = ($post->ID == filter_var($_GET['wpcf7_contact_form'], FILTER_SANITIZE_NUMBER_INT)) ? 'selected' : ''; ?>
                     <option value="<?php echo $post->ID; ?>" <?php echo $selected; ?>><?php echo $post->post_title; ?></option>
                 <?php
             } ?>
@@ -128,7 +128,7 @@ class WPCF7SAdmin
         global $post_type;
         if ($query->is_admin && 'wpcf7s' === $post_type && $query->is_main_query()) {
             if(isset($_GET['wpcf7_contact_form'])){
-                $form_id = esc_attr($_GET['wpcf7_contact_form']);
+                $form_id = filter_var($_GET['wpcf7_contact_form'], FILTER_SANITIZE_NUMBER_INT);
             }
             if (!empty($form_id)) {
                 $query->set('meta_query', array(
@@ -155,7 +155,7 @@ class WPCF7SAdmin
 
         // dynamically add cols if the user selects a form
         if (isset($_GET['wpcf7_contact_form']) && !empty($_GET['wpcf7_contact_form'])) {
-            $form_id = esc_attr($_GET['wpcf7_contact_form']);
+            $form_id = filter_var($_GET['wpcf7_contact_form'], FILTER_SANITIZE_NUMBER_INT);
 
             $wpcf7s_columns = $this->get_available_columns($form_id);
 
@@ -344,7 +344,7 @@ class WPCF7SAdmin
 
             <div id="misc-publishing-actions">
                 <div class="misc-pub-section curtime misc-pub-curtime">
-                    <span id="timestamp"><?php _e('Submitted', 'contact-form-submissions'); ?> : <b><?php echo $date; ?></b></span>
+                    <span id="timestamp"><?php _e('Submitted', 'contact-form-submissions'); ?> : <strong><?php echo $date; ?></strong></span>
                 </div>
             </div>
             <div class="clear"></div>
@@ -454,7 +454,7 @@ class WPCF7SAdmin
             $output = fopen('php://output', 'w');
 
             // add BOM to fix UTF-8 in Excel
-            fputs($output, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
+            fputs($output, ( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
 
             // use the existing query but get all posts
             global $wp_query;

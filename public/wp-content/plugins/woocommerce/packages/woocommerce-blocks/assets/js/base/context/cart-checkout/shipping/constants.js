@@ -1,6 +1,6 @@
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').ShippingErrorTypes} ShippingErrorTypes
- * @typedef {import('@woocommerce/type-defs/cart').CartShippingAddress} CartShippingAddress
+ * @typedef {import('@woocommerce/type-defs/shipping').ShippingAddress} ShippingAddress
  * @typedef {import('@woocommerce/type-defs/contexts').ShippingDataContext} ShippingDataContext
  */
 
@@ -20,7 +20,7 @@ export const shippingErrorCodes = {
 };
 
 /**
- * @type {CartShippingAddress}
+ * @type {ShippingAddress}
  */
 export const DEFAULT_SHIPPING_ADDRESS = {
 	first_name: '',
@@ -47,7 +47,6 @@ export const DEFAULT_SHIPPING_CONTEXT_DATA = {
 	dispatchErrorStatus: () => null,
 	shippingErrorTypes: ERROR_TYPES,
 	shippingRates: [],
-	setShippingRates: () => null,
 	shippingRatesLoading: false,
 	selectedRates: [],
 	setSelectedRates: () => null,

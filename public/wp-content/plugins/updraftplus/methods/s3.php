@@ -76,7 +76,7 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 		$opts = $this->get_config();
 		// UpdraftPlus_S3 is used when not accessing Amazon Web Services
 		$class_to_use = 'UpdraftPlus_S3';
-		if (version_compare(PHP_VERSION, '5.3.3', '>=') && !empty($opts['key']) && ('s3' == $opts['key'] || 'updraftvault' == $opts['key']) && (!defined('UPDRAFTPLUS_S3_OLDLIB') || !UPDRAFTPLUS_S3_OLDLIB)) {
+		if (version_compare(PHP_VERSION, '5.5', '>=') && !empty($opts['key']) && ('s3' == $opts['key'] || 'updraftvault' == $opts['key']) && (!defined('UPDRAFTPLUS_S3_OLDLIB') || !UPDRAFTPLUS_S3_OLDLIB)) {
 			$class_to_use = 'UpdraftPlus_S3_Compat';
 		}
 
@@ -99,7 +99,7 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 	 * @param  Null|String $endpoint 	   S3 endpoint to use
 	 * @param  Boolean	   $sse 		   A flag to use server side encryption
 	 * @param  String	   $session_token  The session token returned by AWS for temporary credentials access
-	 * @return array
+	 * @return Array
 	 */
 	public function getS3($key, $secret, $useservercerts, $disableverify, $nossl, $endpoint = null, $sse = false, $session_token = null) {
 		$storage = $this->get_storage();
@@ -167,7 +167,7 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 
 			// The use of calling use_dns_bucket_name method here is to switch the storage from using path-style to dns style.
 			// regardless of what the $storage object is instantiated from (UpdraftPlus_S3_Compat class (S3compat.php) or UpdraftPlus_S3 class (S3.php)), the method doesn't use the bucket name for any purpose so it's not needed to pass it
-			if ('s3' === $config['key']) $this->use_dns_bucket_name($storage, '');
+			$this->maybe_use_dns_bucket_name($storage, $config);
 
 			$signature_version = empty($this->use_v4) ? 'v2' : 'v4';
 			$signature_version = apply_filters('updraftplus_s3_signature_version', $signature_version, $this->use_v4, $this);
@@ -193,7 +193,7 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 				$storage = new $use_s3_class($key, $secret, $use_ssl, $ssl_ca, $endpoint, $session_token);
 				// The use of calling use_dns_bucket_name method here is to switch the storage from using path-style to dns style.
 				// regardless of what the $storage object is instantiated from (UpdraftPlus_S3_Compat class (S3compat.php) or UpdraftPlus_S3 class (S3.php)), the method doesn't use the bucket name for any purpose so it's not needed to pass it
-				if ('s3' === $config['key']) $this->use_dns_bucket_name($storage, '');
+				$this->maybe_use_dns_bucket_name($storage, $config);
 			} catch (Exception $e) {
 				$this->log(__('Error: Failed to initialise', 'updraftplus').": ".$e->getMessage().' (line: '.$e->getLine().', file: '.$e->getFile().')');
 				$this->log(__('Error: Failed to initialise', 'updraftplus'));
@@ -224,9 +224,16 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 		return $storage;
 	}
 
+	/**
+	 * Given an S3 object, possibly set the region on it
+	 *
+	 * @param Object $obj		  - like UpdraftPlus_S3
+	 * @param String $region
+	 * @param String $bucket_name
+	 */
 	protected function set_region($obj, $region, $bucket_name = '') {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found - $bucket_name
 
-		// AWS Regions: https://docs.aws.amazon.com/general/latest/gr/rande.html
+	// AWS Regions: https://docs.aws.amazon.com/general/latest/gr/rande.html
 		switch ($region) {
 			case 'EU':
 			case 'eu-west-1':
@@ -271,9 +278,9 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 			$this->log("Set region: $region");
 			$obj->setRegion($region);
 
-			if (! is_a($obj, 'UpdraftPlus_S3_Compat')) {
+			if (!is_a($obj, 'UpdraftPlus_S3_Compat')) {
 				$this->log("Set endpoint: $endpoint");
-				return $obj->setEndpoint($endpoint);
+				$obj->setEndpoint($endpoint);
 			}
 		}
 	}
@@ -574,10 +581,10 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 	/**
 	 * The purpose of splitting this into a separate method, is to also allow listing with a different path
 	 *
-	 * @param  string  $path 			   Path to check
-	 * @param  string  $match 			   THe match for idetifying the bucket name
-	 * @param  boolean $include_subfolders Check if list file need to include sub folders
-	 * @return array
+	 * @param  String  $path 			   Path to check
+	 * @param  String  $match 			   THe match for idetifying the bucket name
+	 * @param  Boolean $include_subfolders Check if list file need to include sub folders
+	 * @return Array
 	 */
 	public function listfiles_with_path($path, $match = 'backup_', $include_subfolders = false) {
 		
@@ -622,7 +629,7 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 			$this->set_region($storage, $region, $bucket_name);
 		} else {
 			# Final thing to attempt - see if it was just the location request that failed
-			$storage = $this->use_dns_bucket_name($storage, $bucket_name);
+			$storage = $this->maybe_use_dns_bucket_name($storage, $config);
 			if (false === ($gb = @$storage->getBucket($bucket_name, $bucket_path, null, 1))) {
 				$updraftplus->log("$whoweare Error: Failed to access bucket $bucket_name. Check your permissions and credentials.");
 				return new WP_Error('bucket_not_accessed', sprintf(__('%s Error: Failed to access bucket %s. Check your permissions and credentials.','updraftplus'),$whoweare, $bucket_name));
@@ -671,7 +678,7 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 		if (is_string($files)) $files = array($files);
 
 		$config = $this->get_config();
-		$sse = (empty($config['server_side_encryption'])) ? false : true;
+		$sse = empty($config['server_side_encryption']) ? false : true;
 		if (empty($config['sessiontoken'])) $config['sessiontoken'] = null;
 
 		if ($s3arr) {
@@ -744,6 +751,11 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 
 	}
 
+	/**
+	* Download a file from the remote storage
+	*
+	* @param String $file The specific file to be downloaded
+	*/
 	public function download($file) {
 
 		global $updraftplus;
@@ -855,12 +867,12 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 	/**
 	 * Get pre configuration template engine for remote method which is S3 Compatible
 	 *
-	 * @param string $key             Remote storage method key which is unique
-	 * @param string $whoweare_short  Remote storage method short name which is prefix of field label generally
-	 * @param string $whoweare_long   Remote storage method long name which is generally used in instructions
-	 * @param string $console_descrip Remote storage method console description. It is used console link text like "from your %s console"
-	 * @param string $console_url     Remote storage method console url. It is used for get credential instruction
-	 * @param string $img_html        Image html tag
+	 * @param String $key             Remote storage method key which is unique
+	 * @param String $whoweare_short  Remote storage method short name which is prefix of field label generally
+	 * @param String $whoweare_long   Remote storage method long name which is generally used in instructions
+	 * @param String $console_descrip Remote storage method console description. It is used console link text like "from your %s console"
+	 * @param String $console_url     Remote storage method console url. It is used for get credential instruction
+	 * @param String $img_html        Image html tag
 	 */
 	public function get_pre_configuration_template_engine($key, $whoweare_short, $whoweare_long, $console_descrip, $console_url, $img_html = '') {
 		$classes = $this->get_css_classes(false);
@@ -925,7 +937,7 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 	 * Modifies handerbar template options
 	 *
 	 * @param array $opts
-	 * @return array - Modified handerbar template options
+	 * @return Array - Modified handerbar template options
 	 */
 	public function transform_options_for_template($opts) {
 		return apply_filters('updraftplus_options_s3_options', $opts);
@@ -934,14 +946,14 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 	/**
 	 * Get configuration template engine for remote method which is S3 Compatible
 	 *
-	 * @param string $key             Remote storage method key which is unique
-	 * @param string $whoweare_short  Remote storage method short name which is prefix of field label generally
-	 * @param string $whoweare_long   Remote storage method long name which is generally used in instructions
-	 * @param string $console_descrip Remote storage method console description. It is used console link text like "from your %s console"
-	 * @param string $console_url     Remote storage method console url. It is used for get credential instruction
-	 * @param string $img_html        Image html tag
+	 * @param String $key             Remote storage method key which is unique
+	 * @param String $whoweare_short  Remote storage method short name which is prefix of field label generally
+	 * @param String $whoweare_long   Remote storage method long name which is generally used in instructions
+	 * @param String $console_descrip Remote storage method console description. It is used console link text like "from your %s console"
+	 * @param String $console_url     Remote storage method console url. It is used for get credential instruction
+	 * @param String $img_html        Image html tag
 	 *
-	 * @return string $template_str handlebars template string
+	 * @return String $template_str handlebars template string
 	 */
 	public function get_configuration_template_engine($key, $whoweare_short, $whoweare_long, $console_descrip, $console_url, $img_html = '') {// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- $whoweare_long, $console_descrip, $console_url, $img_html unused
 		ob_start();
@@ -963,11 +975,11 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 
 		<tr class="<?php echo $classes;?>">
 			<th><?php echo sprintf(__('%s access key', 'updraftplus'), $whoweare_short);?>:</th>
-			<td><input class="updraft_input--wide" data-updraft_settings_test="apikey" type="text" autocomplete="off" <?php $this->output_settings_field_name_and_id('accesskey');?> value="{{accesskey}}" /></td>
+			<td><input class="updraft_input--wide" data-updraft_settings_test="accesskey" type="text" autocomplete="off" <?php $this->output_settings_field_name_and_id('accesskey');?> value="{{accesskey}}" /></td>
 		</tr>
 		<tr class="<?php echo $classes;?>">
 			<th><?php echo sprintf(__('%s secret key', 'updraftplus'), $whoweare_short);?>:</th>
-			<td><input class="updraft_input--wide" data-updraft_settings_test="apisecret" type="<?php echo apply_filters('updraftplus_admin_secret_field_type', 'password'); ?>" autocomplete="off" <?php $this->output_settings_field_name_and_id('secretkey');?> value="{{secretkey}}" /></td>
+			<td><input class="updraft_input--wide" data-updraft_settings_test="secretkey" type="<?php echo apply_filters('updraftplus_admin_secret_field_type', 'password'); ?>" autocomplete="off" <?php $this->output_settings_field_name_and_id('secretkey');?> value="{{secretkey}}" /></td>
 		</tr>
 		<tr class="<?php echo $classes;?>">
 			<th><?php echo sprintf(__('%s location', 'updraftplus'), $whoweare_short);?>:</th>
@@ -990,16 +1002,34 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 		return '';
 	}
 	
+	/**
+	 * Perform a test of user-supplied credentials, and echo the result
+	 *
+	 * @param Array $posted_settings - settings to test
+	 */
 	public function credentials_test($posted_settings) {
 		return $this->credentials_test_engine($this->get_config(), $posted_settings);
 	}
 
 	/**
+	 * Look at the config, and decide whether or not to call self::use_dns_bucket_name()
+	 *
+	 * @param Object $storage S3 Name
+	 * @param Array	 $config  an array of specific options for particular S3 remote storage module
+	 *
+	 * @return Boolean - looking use_dns_bucket_name(), this should apparently always be true
+	 */
+	protected function maybe_use_dns_bucket_name($storage, $config) {
+		if ('s3' === $config['key']) return $this->use_dns_bucket_name($storage, '');
+		return true;
+	}
+	
+	/**
 	 * This is not pretty, but is the simplest way to accomplish the task within the pre-existing structure (no need to re-invent the wheel of code with corner-cases debugged over years)
 	 *
 	 * @param  object $storage S3 Name
-	 * @param  string $bucket  S3 Bucket
-	 * @return boolean
+	 * @param  String $bucket  S3 Bucket
+	 * @return Boolean
 	 */
 	public function use_dns_bucket_name($storage, $bucket) {
 		return is_a($storage, 'UpdraftPlus_S3_Compat') ? true : $storage->useDNSBucketName(true, $bucket);
@@ -1049,9 +1079,8 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 				// We want to distinguish between an empty region (null), and an exception or missing bucket (false)
 				if (empty($region) && false !== $region) $region = null;
 			} catch (Exception $e) {
-			
 				$region = false;
-			
+		
 				// On this 'first try', we trap this particular condition. So, whatever S3 network call it happens on, we'll eventually get it here on the resumption.
 				if (false !== strpos($e->getMessage(), 'The provided token has expired')) {
 				
@@ -1088,15 +1117,13 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 							}
 						}
 					}
-				
 				}
-			
 				
 			}
 			$storage->setExceptions(false);
 		} else {
 			$region = 'n/a';
-			if ('s3generic' == $config['key'] && $endpoint) $this->set_region($storage, $endpoint);
+			if ('s3generic' == $config['key'] && $endpoint) $this->set_region($storage, $endpoint, $bucket);
 		}
 		
 		// See if we can detect the region (which implies the bucket exists and is ours), or if not create it
@@ -1110,7 +1137,7 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 			} catch (Exception $e) {
 				$this->s3_exception = $e;
 				try {
-					if ('s3' == $config['key'] && $this->use_dns_bucket_name($storage, $bucket) && false !== @$storage->getBucket($bucket, $path, null, 1)) {// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+					if ($this->maybe_use_dns_bucket_name($storage, $config) && false !== @$storage->getBucket($bucket, $path, null, 1)) {// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
 						$bucket_exists = true;
 					}
 				} catch (Exception $e) {
@@ -1145,7 +1172,7 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 		
 		// For a region-less S3 system, we set this to true so that we can carry on trying anyway, since the behaviour of different S3-compatible systems can vary. e.g. DigitalOcean spaces API keys allow you to create a bucket.
 		if ('n/a' == $region) $bucket_exists = true;
-		
+
 		if ($bucket_exists) {
 			if ('s3' != $config['key'] && 'updraftvault' != $config['key']) {
 				if (!$endpoint || 's3generic' != $config['key']) $this->set_region($storage, $endpoint, $bucket);
@@ -1158,19 +1185,25 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 		
 	}
 
+	/**
+	 * Perform a test of user-supplied credentials, and echo the result
+	 *
+	 * @param Array $config
+	 * @param Array $posted_settings - settings to test
+	 */
 	public function credentials_test_engine($config, $posted_settings) {
 
-		if (empty($posted_settings['apikey'])) {
+		if (empty($posted_settings['accesskey'])) {
 			printf(__("Failure: No %s was given.", 'updraftplus'), __('API key', 'updraftplus'));
 			return;
 		}
-		if (empty($posted_settings['apisecret'])) {
+		if (empty($posted_settings['secretkey'])) {
 			printf(__("Failure: No %s was given.", 'updraftplus'), __('API secret', 'updraftplus'));
 			return;
 		}
 
-		$key = $posted_settings['apikey'];
-		$secret = $posted_settings['apisecret'];
+		$key = $posted_settings['accesskey'];
+		$secret = $posted_settings['secretkey'];
 		$path = $posted_settings['path'];
 		$useservercerts = isset($posted_settings['useservercerts']) ? absint($posted_settings['useservercerts']) : 0;
 		$disableverify = isset($posted_settings['disableverify']) ? absint($posted_settings['disableverify']) : 0;
@@ -1200,6 +1233,19 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 				echo $msg."\n";
 			}
 			return;
+		}
+
+		if (method_exists($storage, 'useDNSBucketName')) {
+			if (!empty($posted_settings['bucket_access_style']) && 'virtual_host_style' === $posted_settings['bucket_access_style']) {
+				// due to the merge of S3-generic bucket access style MR on March 2021, if virtual-host bucket access style is selected, connecting to an amazonaws bucket location where the user doesn't have an access to it will throw an S3 InvalidRequest exception. It requires the signature to be set to version 4
+				if (!is_a($storage, 'UpdraftPlus_S3_Compat') && preg_match('/\.amazonaws\.com$/i', $endpoint)) {
+					$this->use_v4 = true;
+					$storage->setSignatureVersion('v4');
+				}
+				$storage->useDNSBucketName(true, $bucket);
+			} else {
+				$storage->useDNSBucketName(false, $bucket);
+			}
 		}
 
 		list($storage, $config, $bucket_exists, $region) = $this->get_bucket_access($storage, $config, $bucket, $path, $endpoint);

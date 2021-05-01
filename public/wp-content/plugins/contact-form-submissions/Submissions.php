@@ -186,10 +186,14 @@ class WPCF7Submissions
 
                      foreach ($attachments as $name => $file_path) {
                          if (!empty($file_path)) {
+                             if(is_array($file_path)){
+                                 $file_path = current($file_path);
+                             }
+
                              // get the file name
                              $file_name = basename($file_path);
 
-                             $copied = copy($file_path, $wpcf7s_dir . '/' . $file_name);
+                             copy($file_path,$wpcf7s_dir . '/' . $file_name);
 
                              add_post_meta($post_id, 'wpcf7s_file-' . $name, $file_name, false);
                          }
@@ -208,9 +212,7 @@ class WPCF7Submissions
      */
     public function get_wpcf7s_dir(){
         $upload_dir = wp_upload_dir();
-        $wpcf7s_dir = apply_filters('wpcf7s_dir', $upload_dir['basedir'] .'/wpcf7-submissions');
-
-        return $wpcf7s_dir;
+        return apply_filters('wpcf7s_dir', $upload_dir['basedir'] .'/wpcf7-submissions');
     }
 
     /**
@@ -220,8 +222,6 @@ class WPCF7Submissions
      */
     public function get_wpcf7s_url(){
         $upload_dir = wp_upload_dir();
-        $wpcf7s_url = apply_filters('wpcf7s_url', $upload_dir['baseurl'] .'/wpcf7-submissions');
-
-        return $wpcf7s_url;
+        return apply_filters('wpcf7s_url', $upload_dir['baseurl'] .'/wpcf7-submissions');
     }
 }

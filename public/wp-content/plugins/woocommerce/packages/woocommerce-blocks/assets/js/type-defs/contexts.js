@@ -1,7 +1,7 @@
 /**
  * @typedef {import('./billing').BillingData} BillingData
  * @typedef {import('./cart').CartShippingOption} CartShippingOption
- * @typedef {import('./cart').CartShippingAddress} CartShippingAddress
+ * @typedef {import('./shipping').ShippingAddress} CartShippingAddress
  * @typedef {import('./cart').CartData} CartData
  * @typedef {import('./checkout').CheckoutDispatchActions} CheckoutDispatchActions
  * @typedef {import('./add-to-cart-form').AddToCartFormDispatchActions} AddToCartFormDispatchActions
@@ -9,10 +9,12 @@
  */
 
 /**
- * @typedef {Object} BillingDataContext
+ * @typedef {Object} CustomerDataContext
  *
- * @property {BillingData} billingData    The current billing data, including address and email.
- * @property {Function}    setBillingData A function for setting billing data.
+ * @property {BillingData}          billingData        The current billing data, including address and email.
+ * @property {CartShippingAddress}  shippingAddress    The current set address for shipping.
+ * @property {Function}             setBillingData     A function for setting billing data.
+ * @property {Function}             setShippingAddress A function for setting shipping address.
  */
 
 /**
@@ -23,7 +25,6 @@
  * @property {ShippingErrorTypes}   shippingErrorTypes          The error type constants for the shipping rate error
  *                                                              status.
  * @property {CartShippingOption[]} shippingRates               An array of available shipping rates.
- * @property {Function}             setShippingRates            Used to set the available shipping rates.
  * @property {boolean}              shippingRatesLoading        Whether or not the shipping rates are being loaded.
  * @property {string[]}             selectedRates               The ids of the rates that are selected.
  * @property {Function}             setSelectedRates            Function for setting the selected rates.
@@ -39,6 +40,7 @@
  * @property {function()}           onShippingRateFail          Used to register a callback to be invoked when there is
  *                                                              an error with retrieving shipping rates.
  * @property {boolean}              needsShipping               True if the cart has items requiring shipping.
+ * @property {boolean}              hasCalculatedShipping       True if the cart has calculated shipping costs.
  */
 
 /**
@@ -56,22 +58,6 @@
  * @property {string} NONE            No shipping error.
  * @property {string} INVALID_ADDRESS Error due to an invalid address for calculating shipping.
  * @property {string} UNKNOWN         When an unknown error has occurred in calculating/retrieving shipping rates.
- */
-
-/**
- * @typedef {Object} PaymentMethodCurrentStatus
- *
- * This contains status information for the current active payment method in the checkout.
- *
- * @property {boolean} isPristine   If true then the payment method state in checkout is pristine.
- * @property {boolean} isStarted    If true then the payment method has been initialized and has started.
- * @property {boolean} isProcessing If true then the payment method is processing payment.
- * @property {boolean} isFinished   If true then the payment method is in a finished state (which may mean it's status
- *                                  is either error, failed, or success).
- * @property {boolean} hasError     If true then the payment method is in an error state.
- * @property {boolean} hasFailed    If true then the payment method has failed (usually indicates a problem with the
- *                                  payment method used, not logic error)
- * @property {boolean} isSuccessful If true then the payment method has  completed it's processing successfully.
  */
 
 /**
@@ -93,16 +79,6 @@
  */
 
 /**
- * A Saved Customer Payment methods object
- *
- * This is an object where the keys are payment gateway slugs and the values are an array of CustomerPaymentMethod
- * objects.
- *
- * @typedef {Object} SavedCustomerPaymentMethods
- * @property {any} any Various payment methods
- */
-
-/**
  * @typedef {Object} PaymentStatusDispatchers
  *
  * @property {function()}                        started    Sets started status.
@@ -115,41 +91,6 @@
 
 /**
  * @typedef {function():PaymentStatusDispatchers} PaymentStatusDispatch
- */
-
-/**
- * @typedef {Object} PaymentMethodDataContext
- *
- * @property {PaymentStatusDispatch}       setPaymentStatus                 Sets the payment status for the payment
- *                                                                          method.
- * @property {PaymentMethodCurrentStatus}  currentStatus                    The current payment status.
- * @property {Object}                      paymentStatuses                  An object of payment status constants.
- * @property {Object}                      paymentMethodData                Arbitrary data to be passed along for
- *                                                                          processing by the payment method on the
- *                                                                          server.
- * @property {string}                      errorMessage                     An error message provided by the payment
- *                                                                          method if there is an error.
- * @property {string}                      activePaymentMethod              The active payment method slug.
- * @property {function(string)}            setActivePaymentMethod           A function for setting the active payment
- *                                                                          method.
- * @property {SavedCustomerPaymentMethods} customerPaymentMethods           Returns the customer payment for the
- *                                                                          customer if it exists.
- * @property {Object}                      paymentMethods                   Registered payment methods.
- * @property {Object}                      expressPaymentMethods            Registered express payment methods.
- * @property {boolean}                     paymentMethodsInitialized        True when all registered payment methods
- *                                                                          have been initialized.
- * @property {boolean}                     expressPaymentMethodsInitialized True when all registered express payment
- *                                                                          methods have been initialized.
- * @property {function(function())}        onPaymentProcessing              Event registration callback for registering
- *                                                                          observers for the payment processing event.
- * @property {function(string)}            setExpressPaymentError           A function used by express payment methods
- *                                                                          to indicate an error for checkout to handle.
- *                                                                          It receives an error message string.
- *                                                                          Does not change payment status.
- * @property {function(boolean):void}      setShouldSavePayment             A function used to set the shouldSavePayment
- *                                                                          value.
- * @property {boolean}                     shouldSavePayment                True means that the configured payment
- *                                                                          method option is saved for the customer.
  */
 
 /**
@@ -212,6 +153,7 @@
  * @property {boolean} isEditor      Indicates whether in the editor context.
  * @property {number}  currentPostId The post ID being edited.
  * @property {Object}  previewData   Object containing preview data for the editor.
+ * @property {function(string):Object} getPreviewData Get data by name.
  */
 
 /**

@@ -1,6 +1,6 @@
 <?php
 /**
- * The Sitemap Module
+ * The Sitemap module admin side functionality.
  *
  * @since      0.9.0
  * @package    RankMath
@@ -41,7 +41,6 @@ class Admin extends Base {
 		$this->action( 'init', 'register_setting_page', 999 );
 		$this->filter( 'rank_math/settings/sitemap', 'post_type_settings' );
 		$this->filter( 'rank_math/settings/sitemap', 'taxonomy_settings' );
-		$this->filter( 'rank_math/settings/sitemap', 'special_seprator' );
 
 		// Attachment.
 		$this->filter( 'media_send_to_editor', 'media_popup_html', 10, 2 );
@@ -92,9 +91,9 @@ class Admin extends Base {
 	}
 
 	/**
-	 * Add post type tabs into sitemap option panel
+	 * Add post type tabs in the Sitemap Settings options panel.
 	 *
-	 * @param array $tabs Hold tabs for optional panel.
+	 * @param array $tabs Hold tabs for the options panel.
 	 *
 	 * @return array
 	 */
@@ -146,9 +145,9 @@ class Admin extends Base {
 	}
 
 	/**
-	 * Add taxonomy tabs into sitemap option panel
+	 * Add taxonomy tabs in the Sitemap Settings options panel.
 	 *
-	 * @param array $tabs Hold tabs for optional panel.
+	 * @param array $tabs Hold tabs for the options panel.
 	 *
 	 * @return array
 	 */
@@ -199,25 +198,7 @@ class Admin extends Base {
 	}
 
 	/**
-	 * Add Special seprator into sitemap option panel
-	 *
-	 * @param array $tabs Hold tabs for optional panel.
-	 *
-	 * @return array
-	 */
-	public function special_seprator( $tabs ) {
-		if ( Helper::is_module_active( 'news-sitemap' ) || Helper::is_module_active( 'video-sitemap' ) ) {
-			$tabs['special'] = [
-				'title' => esc_html__( 'Special Sitemaps:', 'rank-math' ),
-				'type'  => 'seprator',
-			];
-		}
-
-		return $tabs;
-	}
-
-	/**
-	 * Adds new "exclude from sitemap" checkbox to media popup in the post editor.
+	 * Adds new "exclude from sitemap" checkbox to the media popup in the post editor.
 	 *
 	 * @param array  $form_fields Default form fields.
 	 * @param object $post        Current post.
@@ -235,7 +216,7 @@ class Admin extends Base {
 	}
 
 	/**
-	 * Saves new "exclude from sitemap" field as post meta to attachment.
+	 * Saves new "exclude from sitemap" field as post meta for the attachment.
 	 *
 	 * @param array $post       Attachment ID.
 	 * @param array $attachment Attachment data.
@@ -256,8 +237,8 @@ class Admin extends Base {
 	}
 
 	/**
-	 * Adds html attribute data-sitemapexclude to img tag in the post editor
-	 * when necessary.
+	 * Adds the "data-sitemapexclude" HTML attribute to the img tag in the post
+	 * editor when necessary.
 	 *
 	 * @param string $html          Original img HTML tag.
 	 * @param int    $attachment_id Attachment ID.
@@ -273,7 +254,7 @@ class Admin extends Base {
 	}
 
 	/**
-	 * Get notice start html div
+	 * Get opening tags for the notice HTML.
 	 *
 	 * @return string
 	 */

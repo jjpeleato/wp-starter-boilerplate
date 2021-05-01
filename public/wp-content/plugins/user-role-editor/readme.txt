@@ -3,8 +3,8 @@ Contributors: shinephp
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=vladimir%40shinephp%2ecom&lc=RU&item_name=ShinePHP%2ecom&item_number=User%20Role%20Editor%20WordPress%20plugin&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
 Tags: user, role, editor, security, access, permission, capability
 Requires at least: 4.0
-Tested up to: 5.6
-Stable tag: 4.57.1
+Tested up to: 5.7
+Stable tag: 4.59
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -80,31 +80,30 @@ https://translate.wordpress.org/projects/wp-plugins/user-role-editor/
 
 
 == Changelog =
-= [4.57.1] 10.12.2020 =
-* Fix: Nextgen Gallery's user capabilities were not shown as granted after current role change via roles selection dropdown list.
-* Fix: PHP Warning:  The magic method __wakeup() must have public visibility. __wakeup() method was defined as private as a part of the Singleton design partern. Method was redefined as public but with exception inside to prevent its usage.
-* Update: jQuery [MultiSelect](http://multiple-select.wenzhixin.net.cn/) plugin  was updated to version 1.5.2
 
-= [4.57] 09.11.2020 =
-* Update: Marked as compatible with WordPress 5.6.
-* Update: " jQuery( document ).ready( handler ) " was replaced globally with " jQuery( handler ) " for compatibility with [jQuery 3.0](https://api.jquery.com/ready/) and WordPress 5.6.
-* Update: jQuery UI CSS was updated to version 1.12.1
-* Fix: "Grant Roles" button produced JavaScript error, if single user without any role granted (None) was selected.
+= [4.59] 05.04.2021 =
+* Update: PHP constant URE_WP_ADMIN_URL was replaced with direct 'admin_url()' call to respect the 'admin_url' filter applied by the get_admin_url() WordPress API function.
+* Update: Editing roles and capabilities granted to selected user ("Capabilities" link under user row at the "Users" list) executes 'add_user_role' or 'remove_user_role' actions only in case it really grants or revokes roles and/or capabilities.
+  Previous versions fully revoked and granted again all roles during user permissions update even in case roles list was not changed. It was leaded to the false execution of the mentioned add/remove role actions.
 
-= [4.56.1] 05.09.2020 =
-* New: WordPress multisite: Main site: Users->User Role Editor->Apply to All->Update: 'ure_after_network_roles_update' action hook was added. It is executed after all roles were replicated from the main site to the all other subsites of the network.
-* Fix: "Granted Only" filter did not work.
-* Fix: Warning was fixed: wp-content/plugins/user-role-editor/js/ure.js: jQuery.fn.attr('checked') might use property instead of attribute.
+= [4.58.3] 02.03.2021 =
+* Update: URE automatically adds custom taxonomies user capabilities to administrator role before opening "Users->User Role Editor" page.
+* Fix: Role changes were not saved with option "Confirm role update" switched off.
 
-= [4.56] 09.08.2020 =
-* New: User capabilities 'install_languages', 'resume_plugins', 'resume_themes', 'view_site_health_checks' were added to the list of supported WordPress built-in user capabilities.
-* Update: Single site WordPress installation: URE automatically grants all existing user capabilities to WordPress built-in 'administrator' role before opening its page "Users->User Role Editor". 
-* Fix: Extra slash was removed between URE_PLUGIN_URL and the image resource when outputting URE_PLUGIN_URL .'/images/ajax-loader.gif' at 'Users->User Role Editor' page.
-* Info: Marked as compatible with WordPress 5.5.
+= [4.58.2] 15.01.2021 =
+* Fix: Additional options turned ON for a role was not saved during role update.
+* Update: All JavaScript files are loaded with URE plugin version number as a query string for cache busting purpose.
 
-= [4.55.1] 06.06.2020 =
-* Security fix: User with 'edit_users' capability could assign to another user a role not included into the editable roles list. This fix is required to install ASAP for all sites which have user(s) with 'edit_users' capability granted not via 'administrator' role.
-* Update: URE_Uninstall class properties were made 'protected' to be accessible in URE_Uninstall_Pro class included into the Pro version.
+= [4.58.1] 11.01.2021 =
+* Fix: User lost assigned role(s) after click "Update" at the user permissions page, opened via "Selected user->Capabilities" or "User Profile->Capabilities->Edit" link.
+
+= [4.58] 11.01.2021 =
+* Update: Users->User Role Editor: Update button saves changes via AJAX without full page reload.
+* Fix: New user registered via frontend (wp-login.php?action=register) automatically receives additional (other) default role(s) according to selection made at User Role Editor settings "Other default roles" tab.
+* Fix: "PHP Deprecated: Required parameter $max_ind follows optional parameter $used in ..\wp-content\plugins\user-role-editor\includes\classes\advertisement.php on line 31" PHP 8.0 notice was fixed.
+* Fix: "JQMIGRATE: jquery.fn.resize() event shorthand is deprecated" notice was fixed.
+* Fix: "JQMIGRATE: jQuery.fn.click() event shorthand is deprecated" notice was fixed.
+* Fix: "JQMIGRATE: Number-typed values are deprecated for jQuery.fn.css( (property name), value )" notice was fixed.
 
 File changelog.txt contains the full list of changes.
 

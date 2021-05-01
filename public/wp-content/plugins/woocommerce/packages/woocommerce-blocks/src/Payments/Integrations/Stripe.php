@@ -4,6 +4,7 @@ namespace Automattic\WooCommerce\Blocks\Payments\Integrations;
 use Exception;
 use WC_Stripe_Payment_Request;
 use WC_Stripe_Helper;
+use WC_Gateway_Stripe;
 use Automattic\WooCommerce\Blocks\Assets\Api;
 use Automattic\WooCommerce\Blocks\Payments\PaymentContext;
 use Automattic\WooCommerce\Blocks\Payments\PaymentResult;
@@ -84,6 +85,7 @@ final class Stripe extends AbstractPaymentMethodType {
 			'stripeTotalLabel'    => $this->get_total_label(),
 			'publicKey'           => $this->get_publishable_key(),
 			'allowPrepaidCard'    => $this->get_allow_prepaid_card(),
+			'title'               => $this->get_title(),
 			'button'              => [
 				'type'   => $this->get_button_type(),
 				'theme'  => $this->get_button_theme(),
@@ -92,8 +94,10 @@ final class Stripe extends AbstractPaymentMethodType {
 			],
 			'inline_cc_form'      => $this->get_inline_cc_form(),
 			'icons'               => $this->get_icons(),
-			'allowSavedCards'     => $this->get_allow_saved_cards(),
+			'showSavedCards'      => $this->get_show_saved_cards(),
 			'allowPaymentRequest' => $this->get_allow_payment_request(),
+			'showSaveOption'      => $this->get_show_save_option(),
+			'supports'            => $this->get_supported_features(),
 		];
 	}
 
@@ -102,8 +106,17 @@ final class Stripe extends AbstractPaymentMethodType {
 	 *
 	 * @return bool True if merchant allows shopper to save card (payment method) during checkout).
 	 */
-	private function get_allow_saved_cards() {
-		$saved_cards = isset( $this->settings['saved_cards'] ) ? $this->settings['saved_cards'] : false;
+	private function get_show_saved_cards() {
+		return isset( $this->settings['saved_cards'] ) ? 'yes' === $this->settings['saved_cards'] : false;
+	}
+
+	/**
+	 * Determine if the checkbox to enable the user to save their payment method should be shown.
+	 *
+	 * @return bool True if the save payment checkbox should be displayed to the user.
+	 */
+	private function get_show_save_option() {
+		$saved_cards = $this->get_show_saved_cards();
 		// This assumes that Stripe supports `tokenization` - currently this is true, based on
 		// https://github.com/woocommerce/woocommerce-gateway-stripe/blob/master/includes/class-wc-gateway-stripe.php#L95 .
 		// See https://github.com/woocommerce/woocommerce-gateway-stripe/blob/ad19168b63df86176cbe35c3e95203a245687640/includes/class-wc-gateway-stripe.php#L271 and
@@ -138,6 +151,15 @@ final class Stripe extends AbstractPaymentMethodType {
 	 */
 	private function get_allow_prepaid_card() {
 		return apply_filters( 'wc_stripe_allow_prepaid_card', true );
+	}
+
+	/**
+	 * Returns the title string to use in the UI (customisable via admin settings screen).
+	 *
+	 * @return string Title / label string
+	 */
+	private function get_title() {
+		return isset( $this->settings['title'] ) ? $this->settings['title'] : __( 'Credit / Debit Card', 'woocommerce' );
 	}
 
 	/**
@@ -246,7 +268,7 @@ final class Stripe extends AbstractPaymentMethodType {
 			// phpcs:ignore WordPress.Security.NonceVerification
 			$post_data = $_POST;
 			$_POST     = $context->payment_data;
-			WC_Stripe_Payment_Request::add_order_meta( $context->order->id, $context->payment_data );
+			$this->add_order_meta( $context->order, $data['payment_request_type'] );
 			$_POST = $post_data;
 		}
 
@@ -258,7 +280,7 @@ final class Stripe extends AbstractPaymentMethodType {
 				'wc_gateway_stripe_process_payment_error',
 				function( $error ) use ( &$result ) {
 					$payment_details                 = $result->payment_details;
-					$payment_details['errorMessage'] = $error->getLocalizedMessage();
+					$payment_details['errorMessage'] = wp_strip_all_tags( $error->getLocalizedMessage() );
 					$result->set_payment_details( $payment_details );
 				}
 			);
@@ -294,5 +316,33 @@ final class Stripe extends AbstractPaymentMethodType {
 			$result->set_payment_details( $payment_details );
 			$result->set_status( 'success' );
 		}
+	}
+
+	/**
+	 * Handles adding information about the payment request type used to the order meta.
+	 *
+	 * @param \WC_Order $order The order being processed.
+	 * @param string    $payment_request_type The payment request type used for payment.
+	 */
+	private function add_order_meta( \WC_Order $order, string $payment_request_type ) {
+		if ( 'apple_pay' === $payment_request_type ) {
+			$order->set_payment_method_title( 'Apple Pay (Stripe)' );
+			$order->save();
+		}
+
+		if ( 'payment_request_api' === $payment_request_type ) {
+			$order->set_payment_method_title( 'Chrome Payment Request (Stripe)' );
+			$order->save();
+		}
+	}
+
+	/**
+	 * Returns an array of supported features.
+	 *
+	 * @return string[]
+	 */
+	public function get_supported_features() {
+		$gateway = new WC_Gateway_Stripe();
+		return array_filter( $gateway->supports, array( $gateway, 'supports' ) );
 	}
 }
