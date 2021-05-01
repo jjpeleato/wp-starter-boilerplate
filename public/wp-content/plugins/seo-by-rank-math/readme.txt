@@ -1,19 +1,19 @@
-=== Rank Math - SEO Plugin for WordPress ===
+=== Rank Math SEO - Best SEO Plugin for WordPress ===
 Contributors: rankmath
 Plugin link: https://rankmath.com/?utm_source=LP&utm_campaign=WP
-Tags: seo, sitemap, google search console, schema, redirection
-Tested up to: 5.6
-Requires at least: 5.2
-Requires PHP: 7.0
-Stable tag: 1.0.55
+Tags: seo, sitemap, google search console, schema, redirection, WordPress SEO
+Tested up to: 5.7
+Requires at least: 5.6
+Requires PHP: 7.2
+Stable tag: 1.0.63
 License: GPL-2.0+
 License URI: https://www.gnu.org/licenses/gpl-2.0.txt
 
-Rank Math is a revolutionary WordPress SEO plugin that combines the features of many SEO tools in a single package & helps you multiply your traffic.
+Rank Math SEO is a revolutionary WordPress SEO plugin that combines the features of many SEO tools in a single package & helps you multiply your traffic.
 
 == Description ==
 
-**SEO Plugin For WordPress**
+**Rank Math SEO - Best SEO Plugin for WordPress**
 ★★★★★<br>
 
 **SEO is the most consistent source of traffic for any website.** We created <a href="https://rankmath.com/wordpress/plugin/seo-suite/?utm_source=LP&utm_campaign=WP" target="_blank">**Rank Math, a WordPress SEO plugin**</a>, to help every website owner get access to the SEO tools they need to improve their SEO and attract more traffic to their website.
@@ -27,7 +27,7 @@ SEO might be the best and most **consistent source of traffic** for one's websit
 
 Its host of **intelligent features** brings top SEO capabilities in your hands that were previously out of reach. The **smart automation** features give you the **power of an entire SEO team** with just a few clicks. A **well thought out design, powerful features, and years of development** by the MyThemeShop squad make Rank Math a game-changing SEO plugin that will level the SEO playing field in your favor to help increase traffic.
 
-###  Rank Math beats the competition with hands tied behind its back. ###
+### Rank Math beats all of its competitors hands down. ###
 
 See the features which are exclusive to Rank Math SEO plugin and to understand why Rank Math is possibly the **Best SEO Plugin for WordPress**.
 
@@ -379,7 +379,7 @@ No, you won't. When you install Rank Math, it will seamlessly import your settin
 If you setup Rank Math from scratch, then your search engine rankings will depend on how you configure it. But please be advised that Google and other search engines prefer good, useful content over anything else.
 
 = What are the technical requirements for using Rank Math? =
-Rank Math requires at least PHP 5.6, cURL lib, cron jobs, to be installed and enabled on the server. Those things are mostly installed on every good hosting server. When you initiate Rank Math's setup process, Rank Math will also perform a compatibility check to confirm if your server can run Rank Math. If your server has a lower configuration of any Software, please ask your hosting to update it to the latest version.
+Rank Math requires at least PHP 7.2, cURL lib, cron jobs, to be installed and enabled on the server. Those things are mostly installed on every good hosting server. When you initiate Rank Math's setup process, Rank Math will also perform a compatibility check to confirm if your server can run Rank Math. If your server has a lower configuration of any Software, please ask your hosting to update it to the latest version.
 
 = Can I use Rank Math on a WordPress.com website? =
 Yes, as the plugin is provided through WordPress.org, it is available on WordPress.com as well. However, you might be required to opt for the Business plan of WordPress.com
@@ -475,15 +475,15 @@ Please drop us an email at support@rankmath.com and we would be more than happy 
 
 == Changelog ==
 
-= 1.0.55 [Dec 22, 2020] =
-* Added: Reset option in the [Role Manager](https://rankmath.com/kb/role-manager/)
-* Added: Compatibility with the Nitro CDN plugin for the [Image SEO](https://rankmath.com/kb/image-seo/)
-* Improved: Randomize [Analytics'](https://rankmath.com/kb/analytics/) cron jobs time instead of resetting on the GMT+0
-* Improved: Error reporting in the [SEO Analyzer](https://rankmath.com/kb/seo-analysis/), if the tool does not work on some installation
-* Fixed: Taxonomy pages were showing the social preview twice
-* Fixed: Conflict with [Elementor](https://rankmath.com/blog/elementor-seo/) page builder when 'Remove Product Base' option was enabled in the Rank Math's [WooCommerce Settings](https://rankmath.com/blog/woocommerce-seo/)
-* Fixed: [Advanced Robots](https://rankmath.com/kb/advanced-tab/) options were not picking the default values set in the [Global Settings](https://rankmath.com/kb/titles-and-meta/)
-* Fixed: Contact & About Page defined in the [Local setting](https://rankmath.com/kb/local-seo/) were not printing the proper [Schema codes](https://rankmath.com/kb/rich-snippets/)
-* Fixed: `Undefined index: @type` error on the Product Category pages
+= 1.0.63 [Apr 28, 2021] =
+* Added: [HUGE!] [Divi SEO](https://rankmath.com/blog/divi-seo/) is HERE! Complete Divi Page Builder/Theme integration. Now you can configure all the [SEO](https://rankmath.com/kb/general-settings/) settings from the frontend
+* Improved: [Elementor SEO](https://rankmath.com/blog/elementor-seo/) is made better by improving the update button behavior
+* Improved: Removed old [analytics](https://rankmath.com/kb/analytics/) table as it was not required anymore after we revamped [Google Analytics](https://rankmath.com/kb/install-google-analytics/) integration in [Rank Math SEO](https://rankmath.com/wordpress/plugin/seo-suite/)
+* Fixed: Fatal error happening on some installations when `action_schedular` tables were missing
+* Fixed: [Star rating](https://rankmath.com/kb/review-schema/) showing two times in the preview area for the [Event Schema](https://rankmath.com/kb/event-schema/)
+* Fixed: Missing line break in [robots.txt](https://rankmath.com/kb/how-to-edit-robots-txt-with-rank-math/) after `Sitemap:` rule
+* Fixed: `Undefined offset: 0` warning when the [featured thumbnail](https://rankmath.com/kb/watermark-for-social-sharing/) didn't exist
+* Fixed: Analytics-related database table was not getting removed after the [complete uninstallation](https://rankmath.com/kb/uninstall/)
+* Fixed: The [filter to change the Sitemap `http_headers`](http://rankmath.com/kb/filters-hooks-api-developer/#sitemap-headers) was not working
 
-Full changelog can be found here - **[Rank Math SEO changelog](https://rankmath.com/changelog/?utm_source=LP&utm_campaign=WP)**
+Full changelog can be found here - **[Rank Math SEO changelog](https://rankmath.com/changelog/?utm_source=Plugin&utm_medium=Changelog&utm_campaign=WP)**

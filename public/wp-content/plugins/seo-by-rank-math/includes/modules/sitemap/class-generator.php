@@ -1,6 +1,6 @@
 <?php
 /**
- * The Sitemap Generator
+ * The sitemap generator.
  *
  * @since      0.9.0
  * @package    RankMath
@@ -297,9 +297,7 @@ class Generator extends XML {
 		$output  = $this->newline( '<url>', 1 );
 		$output .= $this->newline( '<loc>' . $this->encode_url_rfc3986( htmlspecialchars( $url['loc'] ) ) . '</loc>', 2 );
 		$output .= empty( $date ) ? '' : $this->newline( '<lastmod>' . htmlspecialchars( $date ) . '</lastmod>', 2 );
-		if ( ! empty( $url['images'] ) ) {
-			$output .= $this->sitemap_images( $url );
-		}
+		$output .= $this->sitemap_images( $url );
 		$output .= $this->newline( '</url>', 1 );
 
 		/**
@@ -318,6 +316,10 @@ class Generator extends XML {
 	 * @return string
 	 */
 	public function sitemap_images( $url ) {
+		if ( empty( $url['images'] ) ) {
+			return '';
+		}
+
 		$output = '';
 		foreach ( $url['images'] as $img ) {
 
@@ -414,9 +416,9 @@ class Generator extends XML {
 		parse_str( $query, $parsed_query );
 
 		if ( defined( 'PHP_QUERY_RFC3986' ) ) { // PHP 5.4+.
-			$parsed_query = http_build_query( $parsed_query, null, '&amp;', PHP_QUERY_RFC3986 );
+			$parsed_query = http_build_query( $parsed_query, '', '&amp;', PHP_QUERY_RFC3986 );
 		} else {
-			$parsed_query = http_build_query( $parsed_query, null, '&amp;' );
+			$parsed_query = http_build_query( $parsed_query, '', '&amp;' );
 			$parsed_query = str_replace( '+', '%20', $parsed_query );
 			$parsed_query = str_replace( '%7E', '~', $parsed_query );
 		}

@@ -65,7 +65,7 @@ class Singular implements Snippet {
 	}
 
 	/**
-	 * Get Rich Snippet type.
+	 * Get Schema type.
 	 *
 	 * @param JsonLD $jsonld JsonLD Instance.
 	 *
@@ -78,8 +78,13 @@ class Singular implements Snippet {
 
 		$schemas = DB::get_schemas( $jsonld->post_id );
 		if ( ! empty( $schemas ) ) {
-			$schema_data = current( $schemas );
-			return ! empty( $schema_data['@type'] ) && in_array( $schema_data['@type'], [ 'WooCommerceProduct', 'EDDProduct' ], true ) ? 'product' : false;
+			$has_product = array_filter(
+				$schemas,
+				function( $schema ) {
+					return ! empty( $schema['@type'] ) && in_array( $schema['@type'], [ 'WooCommerceProduct', 'EDDProduct' ], true );
+				}
+			);
+			return ! empty( $has_product ) ? 'product' : false;
 		}
 
 		if ( metadata_exists( 'post', $jsonld->post_id, 'rank_math_rich_snippet' ) ) {
@@ -101,7 +106,7 @@ class Singular implements Snippet {
 	 * @return string
 	 */
 	private function get_default_schema( $jsonld ) {
-		$schema = Helper::get_default_schema_type( $jsonld->post->post_type );
+		$schema = Helper::get_default_schema_type( $jsonld->post_id, true );
 		if ( ! $schema ) {
 			return false;
 		}

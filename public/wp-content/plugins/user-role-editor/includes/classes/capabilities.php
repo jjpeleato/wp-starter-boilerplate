@@ -247,6 +247,30 @@ class URE_Capabilities {
     }
     // end of add_custom_post_type_caps()
     
+            
+    protected function add_custom_taxonomies_caps( &$full_list ) {
+        
+        $taxonomies = $this->lib->get_custom_taxonomies( 'objects' );
+        if ( empty( $taxonomies ) ) {
+            return;
+        }
+        
+        $multisite = $this->lib->get( 'multisite' );
+        // admin should be capable to edit any taxonomy
+        $cpt_editor_roles0 = !$multisite ? array('administrator') : array();
+        $caps_to_check = array('manage_terms', 'edit_terms', 'delete_terms', 'assign_terms');
+        foreach( $taxonomies as $taxonomy ) {
+            $cpt_editor_roles = apply_filters( 'ure_cpt_editor_roles', $cpt_editor_roles0, $taxonomy->name );
+            foreach( $caps_to_check as $capability ) {
+                $cap_to_check = $taxonomy->cap->$capability;
+                $this->add_capability_to_full_caps_list( $cap_to_check, $full_list );                
+                self::add_cap_to_roles( $cpt_editor_roles, $cap_to_check );
+            }
+        }
+                
+    }
+    // end of add_custom_taxonomies_caps()
+    
     
     /**
      * Add capabilities for URE permissions system in case some were excluded from Administrator role
@@ -318,6 +342,7 @@ class URE_Capabilities {
         }        
         $this->add_wordpress_caps( $full_list );
         $this->add_custom_post_type_caps( $full_list );
+        $this->add_custom_taxonomies_caps( $full_list );
         $this->add_ure_caps( $full_list );        
         asort( $full_list );        
         $full_list = apply_filters('ure_full_capabilites', $full_list);

@@ -4,9 +4,9 @@ Contributors: WPServeur, NicolasKulka, wpformation
 Donate link : https://www.paypal.me/donateWPServeur
 Tags: rename, login, wp-login, wp-login.php, custom login url, jetpack, wpserveur
 Requires at least: 4.1
-Tested up to: 5.6
+Tested up to: 5.7
 Requires PHP: 7.0
-Stable tag: 1.6.1
+Stable tag: 1.8.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -147,6 +147,27 @@ Ce cas peut provenir de plugins modifiant vos fichiers .htaccess pour ajouter ou
 La première étape consiste à vérifier votre fichier .htaccess et à le comparer à un fichier .htaccess normal, pour voir si le problème provient de ce fichier.
 
 == Changelog ==
+
+= 1.8.5 =
+* Fix : Force refresh permalinks update option 'whl_page'
+
+= 1.8.4 =
+* Tested up to 5.7
+
+= 1.8.3 =
+* Fix : remove WP_Review
+
+= 1.8.2 =
+* Fix notice "Notice: Trying to get property 'href' of non-object"
+
+= 1.8.1 =
+* Fix fatal error with vendor wp-dismissible-notices-handler and wp-review-me
+
+= 1.8 =
+* Fix multisite subdomain for website menu (Thanks Eric Celeste)
+
+= 1.7 =
+* Fix vulnerability (Thanks Sebastian Schmitt) : Posting "post_password" with arbitrary content to /wp-login.php reveals the normal wordpress login page.
 
 = 1.6.1 =
 * Fix : loopback request site-health

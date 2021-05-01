@@ -21,9 +21,9 @@ defined( 'ABSPATH' ) || exit;
 class Webpage implements Snippet {
 
 	/**
-	 * Outputs code to allow recognition of the internal search engine.
+	 * Generate WebPage JSON-LD.
 	 *
-	 * @link https://developers.google.com/structured-data/site-name
+	 * @link https://schema.org/WebPage
 	 *
 	 * @param array  $data   Array of JSON-LD data.
 	 * @param JsonLD $jsonld JsonLD Instance.
@@ -41,6 +41,10 @@ class Webpage implements Snippet {
 		if ( is_singular() ) {
 			$entity['datePublished'] = $jsonld->parts['published'];
 			$entity['dateModified']  = $jsonld->parts['modified'];
+		}
+
+		if ( ! empty( $data['ProfilePage'] ) ) {
+			$entity['author'] = [ '@id' => $data['ProfilePage']['@id'] ];
 		}
 
 		if ( is_home() ) {
@@ -61,7 +65,7 @@ class Webpage implements Snippet {
 	}
 
 	/**
-	 * Get WebPage type.
+	 * Get WebPage type depending on the current page.
 	 *
 	 * @return string
 	 */

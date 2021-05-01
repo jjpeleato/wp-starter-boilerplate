@@ -5,8 +5,31 @@ import config from './../config';
 import concat from 'gulp-concat';
 import gulp from 'gulp';
 import jshint from 'gulp-jshint';
+import map from 'map-stream';
 import terser from 'gulp-terser';
 import util from 'gulp-util';
+
+/**
+ * Custom reporters don't interact when there are some error
+ * @type {Stream}
+ */
+const reporterJs = map(function (file, cb) {
+	if (file.jshint.success) {
+		return cb(null, file);
+	}
+
+	console.log('JSHINT fail in', file.path);
+	file.jshint.results.forEach(function (result) {
+		if (!result.error) {
+			return;
+		}
+
+		const err = result.error
+		console.log(`  line ${err.line}, col ${err.character}, code ${err.code}, ${err.reason}`);
+	});
+
+	cb(null, file);
+});
 
 /**
  * Validate JS with JSHint (https://jshint.com/)
@@ -18,6 +41,8 @@ function validateJs()
         .src(config.paths.jsAssets.src)
         .pipe(config.jshint === true ? jshint() : util.noop())
         .pipe(config.jshint === true ? jshint.reporter('default') : util.noop())
+        .pipe(config.jshint === true ? jshint.reporter('fail') : util.noop())
+		.pipe(reporterJs)
 }
 
 exports.validateJs = validateJs;

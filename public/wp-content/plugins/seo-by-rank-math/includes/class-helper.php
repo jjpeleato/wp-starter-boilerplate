@@ -18,6 +18,7 @@ use RankMath\Helpers\Post_Type;
 use RankMath\Helpers\Options;
 use RankMath\Helpers\Taxonomy;
 use RankMath\Helpers\WordPress;
+use RankMath\Helpers\Schema;
 use RankMath\Replace_Variables\Replacer;
 
 defined( 'ABSPATH' ) || exit;
@@ -27,7 +28,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class Helper {
 
-	use Api, Attachment, Conditional, Choices, Post_Type, Options, Taxonomy, WordPress;
+	use Api, Attachment, Conditional, Choices, Post_Type, Options, Taxonomy, WordPress, Schema;
 
 	/**
 	 * Replace `%variables%` with context-dependent value.
@@ -44,6 +45,36 @@ class Helper {
 	public static function replace_vars( $content, $args = [], $exclude = [] ) {
 		$replace = new Replacer();
 		return $replace->replace( $content, $args, $exclude );
+	}
+
+	/**
+	 * Replace `%variables%` with context-dependent value.
+	 *
+	 * @param string $content The string containing the %variables%.
+	 * @param array  $post    Context object, can be post, taxonomy or term.
+	 *
+	 * @return string
+	 */
+	public static function replace_seo_fields( $content, $post ) {
+		if ( empty( $post ) || ! in_array( $content, [ '%seo_title%', '%seo_description%', '%url%' ], true ) ) {
+			return self::replace_vars( $content, $post );
+		}
+
+		if ( '%seo_title%' === $content ) {
+			$default = self::get_settings( "titles.pt_{$post->post_type}_title", '%title% %sep% %sitename%' );
+			$title   = self::get_post_meta( 'title', $post->ID, $default );
+
+			return self::replace_vars( $title, $post );
+		}
+
+		if ( '%seo_description%' === $content ) {
+			$default = self::get_settings( "titles.pt_{$post->post_type}_description", '%excerpt%' );
+			$desc    = self::get_post_meta( 'description', $post->ID, $default );
+
+			return self::replace_vars( $desc, $post );
+		}
+
+		return self::get_post_meta( 'canonical', $post->ID, get_the_permalink( $post->ID ) );
 	}
 
 	/**
@@ -141,7 +172,7 @@ class Helper {
 	/**
 	 * Modify module status.
 	 *
-	 * @param string $modules Modules to modify.
+	 * @param array $modules Modules to modify.
 	 */
 	public static function update_modules( $modules ) {
 		$stored = get_option( 'rank_math_modules', [] );
@@ -155,9 +186,32 @@ class Helper {
 			}
 
 			$stored[] = $module;
+			Installer::create_tables( [ $module ] );
 		}
 
 		update_option( 'rank_math_modules', array_unique( $stored ) );
+	}
+
+	/**
+	 * Get list of currently active modules.
+	 *
+	 * @return array
+	 */
+	public static function get_active_modules() {
+		$registered_modules = rank_math()->manager->modules;
+		$stored             = array_values( get_option( 'rank_math_modules', [] ) );
+		foreach ( $stored as $key => $value ) {
+			if (
+				! isset( $registered_modules[ $value ] )
+				|| ! is_object( $registered_modules[ $value ] )
+				|| ! method_exists( $registered_modules[ $value ], 'is_disabled' )
+				|| $registered_modules[ $value ]->is_disabled()
+			) {
+				unset( $stored[ $key ] );
+			}
+		}
+
+		return $stored;
 	}
 
 	/**

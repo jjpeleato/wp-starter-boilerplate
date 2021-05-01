@@ -2,7 +2,7 @@
 Contributors: SuperPWA
 Tags: pwa, progressive web apps, manifest, web manifest, android app, chrome app, add to homescreen, mobile web
 Requires at least: 3.6.0
-Tested up to: 5.5
+Tested up to: 5.7.1
 Requires PHP: 5.3
 Stable tag: trunk
 License: GPLv2 or later
@@ -66,6 +66,7 @@ Here are the current features of Super Progressive Web Apps:
 * New in version 2.0: SuperPWA is now compatible with WordPress installed in a sub-folder. 
 * New in version 2.0: You can now set [display property](https://superpwa.com/doc/web-app-manifest-display-modes/?utm_source=wordpress.org&utm_medium=description) from SuperPWA settings.
 * New in version 2.1.1: SuperPWA now supports Maskable Icons.
+* [Full changelog](https://superpwa.com/changelog/) 
 
 **Upcoming features:**
 
@@ -74,6 +75,7 @@ Here are the current features of Super Progressive Web Apps:
 **PRO Version** support additional [advance feature](https://superpwa.com/docs/)
 * Call To Action (CTA) [More Info](https://superpwa.com/doc/call-to-action-cta-add-on-for-superpwa/)
 * Android APK APP Generator [More Info](https://superpwa.com/doc/android-apk-app-generator-add-on-for-superpwa/)
+* Data Analytics [More Info](https://superpwa.com/doc/data-analytics-add-on-for-superpwa/)
 
 ### Progressive Web App Minimum Requirements
 
@@ -183,6 +185,38 @@ Feel free to get in touch if you have any questions.
 1. Settings page in WordPress Admin > SuperPWA > Settings
 
 == Changelog ==
+= 2.1.9 =
+* Date: [17.April.2021](https://superpwa.com/changelog/)
+Minor Improvment: Added Data Analytics Addon Array #152
+
+= 2.1.8 =
+* Date: [15.March.2021](https://superpwa.com/superpwa-2-1-8/?utm_source=wordpress.org&utm_medium=changelog)
+BugFixed: manifest json file taking a long time to load #130
+Enhancement: Compatibility with Onesignal on multisite #94
+
+
+= 2.1.7 =
+* Date: [16.February.2021](https://superpwa.com/superpwa-2-1-7/?utm_source=wordpress.org&utm_medium=changelog)
+BugFixed: Manifest shortcut icons json issue resolve image size 192x192  #163
+Enhancement: iOS application splash screen support for all screens #160
+Enhancement: Feature of caching, multiple strategies  #138
+
+= 2.1.6 =
+* Date: [04.February.2021](https://superpwa.com/superpwa-2-1/?utm_source=wordpress.org&utm_medium=changelog)
+BugFixed: Manifest shows start URL is out of the scope URL in Specific cases #162
+BugFixed: Offline analytics undefined variable #99
+Enhancement: iOS application icons are blur overwrite by WordPress #161
+BugFixed: Quick action feature for PWA icons need to specify size #147
+
+
+= 2.1.5 =
+* Date: [06.January.2021](https://superpwa.com/superpwa-2-1/?utm_source=wordpress.org&utm_medium=changelog)
+Enhancement: Added the support of google analytics #149
+Enhancement: Disabling “Add to home screen” #150
+Enhancement: Support for Yandex manifest #146
+Enhancement: Addex Quick action (shortcut) feature for PWA #147
+Enhancement: Improve user interface #142
+Enhancement: Added the tutorial link for Call To Action and Android APK APP Generator #145
 
 = 2.1.4 =
 * Date: [18.December.2020](https://superpwa.com/superpwa-2-1/?utm_source=wordpress.org&utm_medium=changelog)

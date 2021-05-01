@@ -126,11 +126,17 @@ a.button {
 	}
 }
 
-.woocommerce-breadcrumb {
-	margin-bottom: 5rem;
-	font-size: 0.88889em;
-	font-family: $headings;
+.site-main {
+	.woocommerce-breadcrumb {
+		margin-bottom: var(--global--spacing-vertical);
+		font-size: 0.88889em;
+		font-family: $headings;
+	}
+	.woocommerce-products-header {
+		margin-top: var(--global--spacing-vertical);
+	}
 }
+
 
 .woocommerce-pagination {
 	font-family: $headings;
@@ -295,11 +301,11 @@ a.button {
 
 .woocommerce-store-notice__dismiss-link {
 	float: right;
-	color: #fff;
+	color: #000;
 
 	&:hover {
-		text-decoration: underline;
-		color: #fff;
+		text-decoration: none;
+		color: #000;
 	}
 }
 
@@ -350,6 +356,10 @@ a.button {
 			border-left: none;
 			border-right: none;
 		}
+
+		.product-thumbnail {
+			max-width: 120px;
+		}
 	}
 }
 
@@ -375,6 +385,7 @@ ul.products {
 		.woocommerce-loop-product__link {
 			display: block;
 			text-decoration: none;
+			position: relative;
 		}
 
 		.woocommerce-loop-product__title {
@@ -537,11 +548,16 @@ dl.variation,
 		display: none;
 	}
 
-	.entry-title {
-		margin: 0 0 2.5rem;
 
-		&::before {
-			margin-top: 0;
+	&.singular { // Needed for higher specificity to target the entry title font size
+		.entry-title {
+			font-size: var(--global--font-size-xl);
+			font-weight: normal;
+			margin: 0 0 2.5rem;
+
+			&::before {
+				margin-top: 0;
+			}
 		}
 	}
 
@@ -829,7 +845,7 @@ a.reset_variations {
 		}
 
 		h2:first-of-type {
-			font-size: 3rem;
+			font-size: var(--global--font-size-lg);
 			margin: 0 0 2rem !important;
 		}
 	}
@@ -1424,10 +1440,6 @@ a.reset_variations {
 
 	#main {
 
-		.entry-header {
-			padding: 3vw 0 1.5vw;
-		}
-
 		.woocommerce {
 			max-width: var(--responsive--alignwide-width);
 			margin: 0 auto;
@@ -1469,6 +1481,10 @@ a.reset_variations {
 		input {
 			border: 1px solid #ddd;
 		}
+	}
+
+	table.cart img.woocommerce-placeholder {
+		height: auto !important;
 	}
 }
 
@@ -1860,6 +1876,10 @@ a.reset_variations {
 			}
 		}
 	}
+
+	tfoot {
+		text-align: left;
+	}
 }
 
 .woocommerce-order-received {
@@ -1962,6 +1982,7 @@ a.reset_variations {
 		}
 
 		input[type=radio] {
+
 			& + label::before {
 				background: #fff !important;
 				border: var(--form--border-width) solid #000 !important;
@@ -2010,6 +2031,7 @@ a.reset_variations {
 		}
 
 		&:checked + label {
+
 			&::before {
 				background: var(--global--color-border);
 			}
@@ -2785,11 +2807,6 @@ a.reset_variations {
 }
 
 .woocommerce-account {
-
-	.entry-header {
-
-		padding-bottom: 20px !important;
-	}
 
 	.woocommerce-MyAccount-content {
 

@@ -12,6 +12,7 @@ namespace RankMath\Helpers;
 
 use RankMath\Helper;
 use RankMath\Admin\Admin_Helper;
+use MyThemeShop\Helpers\Param;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -40,13 +41,22 @@ trait Conditional {
 	 * @param  string $id Module ID.
 	 * @return boolean
 	 */
-	public static function is_module_active( $id ) {
+	public static function is_module_active( $id, $check_registered = true ) {
 		$active_modules = get_option( 'rank_math_modules', [] );
-		if ( ! is_array( $active_modules ) || ! isset( rank_math()->manager ) || is_null( rank_math()->manager ) ) {
+		if ( ! is_array( $active_modules ) || ( $check_registered && ! self::is_plugin_ready() ) ) {
 			return false;
 		}
 
-		return in_array( $id, $active_modules, true ) && array_key_exists( $id, rank_math()->manager->modules );
+		return in_array( $id, $active_modules, true ) && ( ! $check_registered || array_key_exists( $id, rank_math()->manager->modules ) );
+	}
+
+	/**
+	 * Check if Rank Math manager is ready.
+	 *
+	 * @return boolean
+	 */
+	public static function is_plugin_ready() {
+		return ( isset( rank_math()->manager ) && ! is_null( rank_math()->manager ) );
 	}
 
 	/**
@@ -161,7 +171,29 @@ trait Conditional {
 	 * @return boolean
 	 */
 	public static function is_elementor_editor() {
-		return 'elementor' === \MyThemeShop\Helpers\Param::get( 'action' );
+		return 'elementor' === Param::get( 'action' );
+	}
+
+	/**
+	 * Is UX Builder (used in Flatsome theme).
+	 *
+	 * @since 1.0.60
+	 *
+	 * @return boolean
+	 */
+	public static function is_ux_builder() {
+		return 'uxbuilder' === Param::get( 'app' ) && ! empty( Param::get( 'type' ) );
+	}
+
+	/**
+	 * Is on Divi frontend editor.
+	 *
+	 * @since TODO: Add version.
+	 *
+	 * @return boolean
+	 */
+	public static function is_divi_frontend_editor() {
+		return function_exists( 'et_core_is_fb_enabled' ) && et_core_is_fb_enabled();
 	}
 
 	/**

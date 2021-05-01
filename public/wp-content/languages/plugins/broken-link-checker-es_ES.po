@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - Broken Link Checker - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2020-11-03 06:55:50+0000\n"
+"PO-Revision-Date: 2021-03-12 17:41:29+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -10,6 +10,10 @@ msgstr ""
 "X-Generator: GlotPress/3.0.0-alpha.2\n"
 "Language: es\n"
 "Project-Id-Version: Plugins - Broken Link Checker - Stable (latest release)\n"
+
+#. Author URI of the plugin
+msgid "https://wpmudev.com/"
+msgstr "https://wpmudev.com/"
 
 #: core/core.php:974
 msgid "It's used on over 80,000 sites just like yours."
@@ -55,10 +59,6 @@ msgstr "Utiliza tu propia %1$sclave api%2$s para comprobar los enlaces de youtub
 #: core/core.php:1124
 msgid "YouTube API Key"
 msgstr "Clave API de YouTube"
-
-#. Author URI of the plugin
-msgid "https://premium.wpmudev.org/"
-msgstr "https://premium.wpmudev.org/"
 
 #. Author of the plugin
 msgid "WPMU DEV"
@@ -148,11 +148,11 @@ msgstr "Lista de reproducción de YouTube incrustada"
 msgid "YouTube Playlist"
 msgstr "Lista de reproducción de YouTube"
 
-#: modules/extras/youtube-embed.php:25 modules/extras/youtube-iframe.php:26
+#: modules/extras/youtube-iframe.php:26 modules/extras/youtube-embed.php:25
 msgid "Embedded YouTube video"
 msgstr "Vídeo de YouTube incrustado"
 
-#: modules/extras/youtube-embed.php:24 modules/extras/youtube-iframe.php:25
+#: modules/extras/youtube-iframe.php:25 modules/extras/youtube-embed.php:24
 msgid "YouTube Video"
 msgstr "Vídeo de YouTube"
 
@@ -192,8 +192,8 @@ msgstr "Usando la API de RapidShare"
 msgid "Permission Denied"
 msgstr "Permiso denegado"
 
-#: modules/extras/rapidshare.php:139 modules/extras/mediafire.php:97
-#: modules/extras/mediafire.php:103
+#: modules/extras/mediafire.php:97 modules/extras/mediafire.php:103
+#: modules/extras/rapidshare.php:139
 msgid "Not Found"
 msgstr "No encontrado"
 
@@ -221,19 +221,19 @@ msgstr "Vídeo de DailyMotion"
 msgid "I don't know how to edit a '%1$s' [%2$d]."
 msgstr "Desconozco como puedo editar un '%1$s' [%2$d]."
 
-#: modules/containers/custom_field.php:272 modules/containers/acf_field.php:258
+#: modules/containers/acf_field.php:258 modules/containers/custom_field.php:272
 msgid "View \"%s\""
 msgstr "Ver \"%s\""
 
-#: modules/containers/custom_field.php:238 modules/containers/acf_field.php:234
+#: modules/containers/acf_field.php:234 modules/containers/custom_field.php:238
 msgid "Edit this post"
 msgstr "Modificar esta entrada"
 
-#: modules/containers/custom_field.php:137 modules/containers/acf_field.php:132
+#: modules/containers/acf_field.php:132 modules/containers/custom_field.php:137
 msgid "Failed to delete the meta field '%1$s' on %2$s [%3$d]"
 msgstr "Fallo para borrar el campo meta '%1$s' en %2$s [%3$d]"
 
-#: modules/containers/custom_field.php:107 modules/containers/acf_field.php:102
+#: modules/containers/acf_field.php:102 modules/containers/custom_field.php:107
 msgid "Failed to update the meta field '%1$s' on %2$s [%3$d]"
 msgstr "Fallo en la actualización del campo meta '%1$s' en %2$s [%3$d]"
 
@@ -423,9 +423,9 @@ msgstr "Falso positivo"
 msgid "Not checked"
 msgstr "Sin seleccionar"
 
-#: modules/checkers/http.php:312 modules/checkers/http.php:316
-#: modules/extras/youtube.php:135 modules/extras/youtube.php:230
-#: modules/extras/mediafire.php:115 includes/links.php:1029
+#: modules/extras/mediafire.php:115 modules/extras/youtube.php:135
+#: modules/extras/youtube.php:230 modules/checkers/http.php:312
+#: modules/checkers/http.php:316 includes/links.php:1029
 msgid "Unknown Error"
 msgstr "Error desconocido"
 
@@ -674,17 +674,17 @@ msgid_plural "%d posts deleted."
 msgstr[0] " %d entrada borrada."
 msgstr[1] "%d entradas borradas"
 
-#: modules/containers/custom_field.php:379 modules/containers/acf_field.php:353
+#: modules/containers/acf_field.php:353 modules/containers/custom_field.php:379
 #: includes/any-post.php:713
 msgid "Failed to move post \"%1$s\" (%2$d) to the trash"
 msgstr "Error al trasladar la entrada \"%1$s\" (%2$d) a la papelera"
 
-#: modules/containers/custom_field.php:360 modules/containers/acf_field.php:341
+#: modules/containers/acf_field.php:341 modules/containers/custom_field.php:360
 #: includes/any-post.php:693
 msgid "Can't move post \"%1$s\" (%2$d) to the trash because the trash feature is disabled"
 msgstr "No se ha podido trasladar la entrada \"%1$s\" (%2$d) a la papelera porque esa característica está desactivada"
 
-#: modules/containers/custom_field.php:341 modules/containers/acf_field.php:327
+#: modules/containers/acf_field.php:327 modules/containers/custom_field.php:341
 #: includes/any-post.php:674
 msgid "Failed to delete post \"%1$s\" (%2$d)"
 msgstr "Error al borrar la entrada \"%1$s\" (%2$d)"
@@ -698,13 +698,13 @@ msgstr "Actualizando mensaje %d falló"
 msgid "Nothing to update"
 msgstr "Nada que actualizar"
 
-#: modules/containers/custom_field.php:252 modules/containers/acf_field.php:248
+#: modules/containers/acf_field.php:248 modules/containers/custom_field.php:252
 #: includes/any-post.php:535
 msgid "Edit this item"
 msgstr "Modificar este elemento"
 
-#: modules/containers/custom_field.php:272 modules/containers/comment.php:172
-#: modules/containers/acf_field.php:258 includes/any-post.php:516
+#: modules/containers/acf_field.php:258 modules/containers/comment.php:172
+#: modules/containers/custom_field.php:272 includes/any-post.php:516
 msgid "View"
 msgstr "Ver"
 
@@ -720,28 +720,28 @@ msgstr "Vista previa"
 msgid "Preview &#8220;%s&#8221;"
 msgstr "Vista previa &#8220;%s&#8221;"
 
-#: modules/containers/custom_field.php:267 modules/containers/acf_field.php:254
-#: modules/containers/blogroll.php:47 includes/any-post.php:494
+#: modules/containers/acf_field.php:254 modules/containers/blogroll.php:47
+#: modules/containers/custom_field.php:267 includes/any-post.php:494
 msgid "Delete"
 msgstr "Borrar"
 
-#: modules/containers/custom_field.php:265 modules/containers/acf_field.php:254
+#: modules/containers/acf_field.php:254 modules/containers/custom_field.php:265
 #: includes/any-post.php:492
 msgid "Delete this item permanently"
 msgstr "Borrar permanentemente este elemento"
 
-#: modules/containers/custom_field.php:260 modules/containers/acf_field.php:252
+#: modules/containers/acf_field.php:252 modules/containers/custom_field.php:260
 #: includes/any-post.php:487
 msgid "Trash"
 msgstr "Basura"
 
-#: modules/containers/custom_field.php:258 modules/containers/acf_field.php:252
+#: modules/containers/acf_field.php:252 modules/containers/custom_field.php:258
 #: includes/any-post.php:485
 msgid "Move this item to the Trash"
 msgstr "Mover este elemento a la papelera"
 
-#: modules/containers/custom_field.php:252 modules/containers/comment.php:159
-#: modules/containers/acf_field.php:248 modules/containers/blogroll.php:46
+#: modules/containers/acf_field.php:248 modules/containers/comment.php:159
+#: modules/containers/blogroll.php:46 modules/containers/custom_field.php:252
 #: includes/any-post.php:477
 msgid "Edit"
 msgstr "Editar"
@@ -858,7 +858,7 @@ msgstr "%2.3f segundos"
 msgid "Response time"
 msgstr "Tiempo de respuesta"
 
-#: core/core.php:1500 includes/admin/table-printer.php:548
+#: includes/admin/table-printer.php:548 core/core.php:1500
 msgid "Never"
 msgstr "Nunca"
 
@@ -983,7 +983,7 @@ msgstr "URL"
 msgid "Link text"
 msgstr "Texto del enlace"
 
-#: includes/link-query.php:81 includes/admin/search-form.php:32
+#: includes/admin/search-form.php:32 includes/link-query.php:81
 msgid "Search"
 msgstr "Buscar"
 
@@ -1337,7 +1337,7 @@ msgstr "Resalta los vínculos rotos desde hace al menos %s días"
 msgid "Misc"
 msgstr "Varios"
 
-#: core/core.php:2625 includes/admin/table-printer.php:175
+#: includes/admin/table-printer.php:175 core/core.php:2625
 msgid "Apply"
 msgstr "Aplicar"
 
@@ -1589,7 +1589,7 @@ msgstr "Los enlaces que tarden más de este tiempo en cargar se marcarán como r
 msgid "%s seconds"
 msgstr "%s segundos"
 
-#: core/core.php:1266 includes/links.php:1033
+#: includes/links.php:1033 core/core.php:1266
 msgid "Timeout"
 msgstr "Fallo en la conexión"
 
@@ -1712,11 +1712,11 @@ msgstr "Cada %s horas"
 msgid "Check each link"
 msgstr "Comprobar cada enlace"
 
-#: core/core.php:860 includes/admin/options-page-js.php:56
+#: includes/admin/options-page-js.php:56 core/core.php:860
 msgid "Show debug info"
 msgstr "Mostrar información de depuración"
 
-#: core/core.php:858 includes/admin/table-printer.php:215
+#: includes/admin/table-printer.php:215 core/core.php:858
 msgid "Status"
 msgstr "Estado"
 
@@ -1756,33 +1756,33 @@ msgstr "¡Gracias por tu donación!"
 msgid "Settings saved."
 msgstr "Ajustes guardados."
 
-#: core/core.php:482 includes/admin/table-printer.php:747
+#: includes/admin/table-printer.php:747 core/core.php:482
 msgctxt "link action; replace one redirect with a direct link"
 msgid "Fix redirect"
 msgstr "Corregir redirección"
 
-#: core/core.php:481 includes/admin/table-printer.php:293
-#: includes/admin/table-printer.php:739
+#: includes/admin/table-printer.php:293 includes/admin/table-printer.php:739
+#: core/core.php:481
 msgid "Recheck"
 msgstr "Volver a comprobar"
 
-#: core/core.php:480 includes/admin/table-printer.php:296
-#: includes/admin/table-printer.php:727
+#: includes/admin/table-printer.php:296 includes/admin/table-printer.php:727
+#: core/core.php:480
 msgid "Dismiss"
 msgstr "Descartar"
 
-#: core/core.php:479 includes/admin/links-page-js.php:111
-#: includes/admin/table-printer.php:719
+#: includes/admin/links-page-js.php:111 includes/admin/table-printer.php:719
+#: core/core.php:479
 msgid "Not broken"
 msgstr "No roto"
 
-#: core/core.php:478 includes/admin/links-page-js.php:716
-#: includes/admin/table-printer.php:297 includes/admin/table-printer.php:713
+#: includes/admin/links-page-js.php:716 includes/admin/table-printer.php:297
+#: includes/admin/table-printer.php:713 core/core.php:478
 msgid "Unlink"
 msgstr "Quitar enlace"
 
-#: core/core.php:477 includes/admin/table-printer.php:292
-#: includes/admin/table-printer.php:710
+#: includes/admin/table-printer.php:292 includes/admin/table-printer.php:710
+#: core/core.php:477
 msgid "Edit URL"
 msgstr "Editar URL"
 
@@ -1798,7 +1798,7 @@ msgstr "Ir a los enlaces rotos"
 msgid "View Broken Links"
 msgstr "Ver enlaces rotos"
 
-#: core/core.php:389 includes/link-query.php:37
+#: includes/link-query.php:37 core/core.php:389
 msgid "Broken Links"
 msgstr "Enlaces rotos"
 
@@ -1814,10 +1814,10 @@ msgstr "Ajustes del comprobador de enlaces"
 msgid "Automatically expand the widget if broken links have been detected"
 msgstr "Expandir automáticamente el widget si de detectan enlaces rotos"
 
-#: core/core.php:243 includes/admin/options-page-js.php:18
+#: includes/admin/options-page-js.php:18 core/core.php:243
 msgid "[ Network error ]"
 msgstr "[ Error de red ]"
 
-#: core/core.php:219 includes/admin/links-page-js.php:45
+#: includes/admin/links-page-js.php:45 core/core.php:219
 msgid "Loading..."
 msgstr "Cargando..."

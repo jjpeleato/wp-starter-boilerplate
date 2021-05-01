@@ -1,6 +1,6 @@
 <?php
 /**
- * The Sitemap Module
+ * The Sitemap module.
  *
  * @since      0.9.0
  * @package    RankMath
@@ -33,6 +33,9 @@ class Sitemap {
 
 		if ( is_admin() ) {
 			new Admin();
+		}
+
+		if ( is_admin() || wp_doing_cron() ) {
 			new Cache_Watcher();
 		}
 

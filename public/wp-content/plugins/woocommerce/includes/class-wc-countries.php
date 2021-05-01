@@ -58,6 +58,17 @@ class WC_Countries {
 	}
 
 	/**
+	 * Check if a given code represents a valid ISO 3166-1 alpha-2 code for a country known to us.
+	 *
+	 * @since 5.1.0
+	 * @param string $country_code The country code to check as a ISO 3166-1 alpha-2 code.
+	 * @return bool True if the country is known to us, false otherwise.
+	 */
+	public function country_exists( $country_code ) {
+		return isset( $this->get_countries()[ $country_code ] );
+	}
+
+	/**
 	 * Get all continents.
 	 *
 	 * @return array
@@ -358,9 +369,6 @@ class WC_Countries {
 
 		if ( 'eu_vat' === $type ) {
 			$countries[] = 'MC';
-			$countries[] = 'IM';
-			// The UK is still part of the EU VAT zone.
-			$countries[] = 'GB';
 		}
 
 		return apply_filters( 'woocommerce_european_union_countries', $countries, $type );
@@ -594,7 +602,12 @@ class WC_Countries {
 				array(
 					'{first_name}'       => $args['first_name'],
 					'{last_name}'        => $args['last_name'],
-					'{name}'             => $args['first_name'] . ' ' . $args['last_name'],
+					'{name}'             => sprintf(
+						/* translators: 1: first name 2: last name */
+						_x( '%1$s %2$s', 'full name', 'woocommerce' ),
+						$args['first_name'],
+						$args['last_name']
+					),
 					'{company}'          => $args['company'],
 					'{address_1}'        => $args['address_1'],
 					'{address_2}'        => $args['address_2'],
@@ -604,7 +617,14 @@ class WC_Countries {
 					'{country}'          => $full_country,
 					'{first_name_upper}' => wc_strtoupper( $args['first_name'] ),
 					'{last_name_upper}'  => wc_strtoupper( $args['last_name'] ),
-					'{name_upper}'       => wc_strtoupper( $args['first_name'] . ' ' . $args['last_name'] ),
+					'{name_upper}'       => wc_strtoupper(
+						sprintf(
+							/* translators: 1: first name 2: last name */
+							_x( '%1$s %2$s', 'full name', 'woocommerce' ),
+							$args['first_name'],
+							$args['last_name']
+						)
+					),
 					'{company_upper}'    => wc_strtoupper( $args['company'] ),
 					'{address_1_upper}'  => wc_strtoupper( $args['address_1'] ),
 					'{address_2_upper}'  => wc_strtoupper( $args['address_2'] ),
@@ -650,10 +670,14 @@ class WC_Countries {
 	 * @return array
 	 */
 	public function get_default_address_fields() {
+		$address_2_label = __( 'Apartment, suite, unit, etc.', 'woocommerce' );
+
+		// If necessary, append '(optional)' to the placeholder: we don't need to worry about the
+		// label, though, as woocommerce_form_field() takes care of that.
 		if ( 'optional' === get_option( 'woocommerce_checkout_address_2_field', 'optional' ) ) {
 			$address_2_placeholder = __( 'Apartment, suite, unit, etc. (optional)', 'woocommerce' );
 		} else {
-			$address_2_placeholder = __( 'Apartment, suite, unit, etc.', 'woocommerce' );
+			$address_2_placeholder = $address_2_label;
 		}
 
 		$fields = array(
@@ -696,6 +720,8 @@ class WC_Countries {
 				'priority'     => 50,
 			),
 			'address_2'  => array(
+				'label'        => $address_2_label,
+				'label_class'  => array( 'screen-reader-text' ),
 				'placeholder'  => esc_attr( $address_2_placeholder ),
 				'class'        => array( 'form-row-wide', 'address-field' ),
 				'autocomplete' => 'address-line2',
@@ -922,7 +948,7 @@ class WC_Countries {
 						),
 						'state'    => array(
 							'required' => false,
-							'hidden' => true,
+							'hidden'   => true,
 						),
 					),
 					'DK' => array(
@@ -931,7 +957,7 @@ class WC_Countries {
 						),
 						'state'    => array(
 							'required' => false,
-							'hidden' => true,
+							'hidden'   => true,
 						),
 					),
 					'EE' => array(
@@ -981,6 +1007,15 @@ class WC_Countries {
 							'required' => false,
 						),
 					),
+					'GT' => array(
+						'postcode' => array(
+							'required' => false,
+							'hidden'   => true,
+						),
+						'state'    => array(
+							'label' => __( 'Department', 'woocommerce' ),
+						),
+					),
 					'HK' => array(
 						'postcode' => array(
 							'required' => false,
@@ -993,7 +1028,7 @@ class WC_Countries {
 						),
 					),
 					'HU' => array(
-						'last_name' => array(
+						'last_name'  => array(
 							'class'    => array( 'form-row-first' ),
 							'priority' => 10,
 						),
@@ -1001,20 +1036,20 @@ class WC_Countries {
 							'class'    => array( 'form-row-last' ),
 							'priority' => 20,
 						),
-						'postcode' => array(
+						'postcode'   => array(
 							'class'    => array( 'form-row-first', 'address-field' ),
 							'priority' => 65,
 						),
-						'city' => array(
+						'city'       => array(
 							'class' => array( 'form-row-last', 'address-field' ),
 						),
-						'address_1' => array(
+						'address_1'  => array(
 							'priority' => 71,
 						),
-						'address_2' => array(
+						'address_2'  => array(
 							'priority' => 72,
 						),
-						'state' => array(
+						'state'      => array(
 							'label' => __( 'County', 'woocommerce' ),
 						),
 					),
@@ -1230,13 +1265,13 @@ class WC_Countries {
 					),
 					'RS' => array(
 						'city'     => array(
-							'required' => false,
+							'required' => true,
 						),
 						'postcode' => array(
-							'required' => false,
+							'required' => true,
 						),
 						'state'    => array(
-							'label' => __( 'District', 'woocommerce' ),
+							'label'    => __( 'District', 'woocommerce' ),
 							'required' => false,
 						),
 					),
@@ -1308,7 +1343,7 @@ class WC_Countries {
 						),
 						'state'    => array(
 							'required' => false,
-							'hidden' => true,
+							'hidden'   => true,
 						),
 					),
 					'TR' => array(

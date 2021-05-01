@@ -97,7 +97,8 @@ class Installer {
 		$tables[] = $wpdb->prefix . 'rank_math_redirections_cache';
 		$tables[] = $wpdb->prefix . 'rank_math_internal_links';
 		$tables[] = $wpdb->prefix . 'rank_math_internal_meta';
-		$tables[] = $wpdb->prefix . 'rank_math_sc_analytics';
+		$tables[] = $wpdb->prefix . 'rank_math_analytics_gsc';
+		$tables[] = $wpdb->prefix . 'rank_math_analytics_objects';
 
 		return $tables;
 	}
@@ -137,7 +138,6 @@ class Installer {
 		$current_version    = get_option( 'rank_math_version', null );
 		$current_db_version = get_option( 'rank_math_db_version', null );
 
-		self::create_tables();
 		$this->create_options();
 		$this->set_capabilities();
 		$this->create_cron_jobs();
@@ -183,14 +183,18 @@ class Installer {
 
 	/**
 	 * Set up the database tables.
+	 *
+	 * @param mixed $modules Modules to create tables for.
+	 * @return void
 	 */
-	public static function create_tables() {
+	public static function create_tables( $modules = [] ) {
 		global $wpdb;
 
 		$collate      = $wpdb->get_charset_collate();
-		$table_schema = [
+		$table_schema = [];
 
-			"CREATE TABLE IF NOT EXISTS {$wpdb->prefix}rank_math_404_logs (
+		if ( in_array( '404-monitor', $modules, true ) ) {
+			$table_schema[] = "CREATE TABLE {$wpdb->prefix}rank_math_404_logs (
 				id BIGINT(20) unsigned NOT NULL AUTO_INCREMENT,
 				uri VARCHAR(255) NOT NULL,
 				accessed DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -198,11 +202,13 @@ class Installer {
 				ip VARCHAR(50) NOT NULL DEFAULT '',
 				referer VARCHAR(255) NOT NULL DEFAULT '',
 				user_agent VARCHAR(255) NOT NULL DEFAULT '',
-				PRIMARY KEY (id),
+				PRIMARY KEY id (id),
 				KEY uri (uri(191))
-			) $collate;",
+			) $collate;";
+		}
 
-			"CREATE TABLE IF NOT EXISTS {$wpdb->prefix}rank_math_redirections (
+		if ( in_array( 'redirections', $modules, true ) ) {
+			$table_schema[] = "CREATE TABLE {$wpdb->prefix}rank_math_redirections (
 				id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 				sources TEXT CHARACTER SET {$wpdb->charset} COLLATE {$wpdb->charset}_bin NOT NULL,
 				url_to TEXT NOT NULL,
@@ -212,41 +218,43 @@ class Installer {
 				created DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
 				updated DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
 				last_accessed DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-				PRIMARY KEY (id),
-				KEY (status)
-			) $collate;",
+				PRIMARY KEY id (id),
+				KEY status (status)
+			) $collate;";
 
-			"CREATE TABLE IF NOT EXISTS {$wpdb->prefix}rank_math_redirections_cache (
+			$table_schema[] = "CREATE TABLE {$wpdb->prefix}rank_math_redirections_cache (
 				id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 				from_url TEXT CHARACTER SET {$wpdb->charset} COLLATE {$wpdb->charset}_bin NOT NULL,
 				redirection_id BIGINT(20) UNSIGNED NOT NULL,
 				object_id BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
 				object_type VARCHAR(10) NOT NULL DEFAULT 'post',
 				is_redirected TINYINT(1) NOT NULL DEFAULT '0',
-				PRIMARY KEY (id),
-				KEY (redirection_id)
-			) $collate;",
+				PRIMARY KEY id (id),
+				KEY redirection_id (redirection_id)
+			) $collate;";
+		}
 
-			// Link Storage.
-			"CREATE TABLE IF NOT EXISTS {$wpdb->prefix}rank_math_internal_links (
+		if ( in_array( 'link-counter', $modules, true ) ) {
+			$table_schema[] = "CREATE TABLE {$wpdb->prefix}rank_math_internal_links (
 				id BIGINT(20) unsigned NOT NULL AUTO_INCREMENT,
 				url VARCHAR(255) NOT NULL,
 				post_id bigint(20) unsigned NOT NULL,
 				target_post_id bigint(20) unsigned NOT NULL,
 				type VARCHAR(8) NOT NULL,
-				PRIMARY KEY (id),
+				PRIMARY KEY id (id),
 				KEY link_direction (post_id, type)
-			) $collate;",
+			) $collate;";
 
-			// Link meta.
-			"CREATE TABLE IF NOT EXISTS {$wpdb->prefix}rank_math_internal_meta (
+			$table_schema[] = "CREATE TABLE {$wpdb->prefix}rank_math_internal_meta (
 				object_id BIGINT(20) UNSIGNED NOT NULL,
 				internal_link_count int(10) UNSIGNED NULL DEFAULT 0,
 				external_link_count int(10) UNSIGNED NULL DEFAULT 0,
 				incoming_link_count int(10) UNSIGNED NULL DEFAULT 0,
-				PRIMARY KEY (object_id)
-			) $collate;",
-		];
+				PRIMARY KEY object_id (object_id)
+			) $collate;";
+		}
+
+		$table_schema = apply_filters( 'rank_math/admin/create_tables', $table_schema, $modules );
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		foreach ( $table_schema as $table ) {
@@ -300,6 +308,7 @@ class Installer {
 		}
 
 		add_option( 'rank_math_modules', $modules );
+		self::create_tables( $modules );
 	}
 
 	/**

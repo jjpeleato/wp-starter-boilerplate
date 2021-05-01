@@ -311,16 +311,6 @@ class Paper {
 	 * @return string
 	 */
 	public function get_keywords() {
-		/**
-		 * Passing a truthy value to the filter will effectively short-circuit the
-		 * set keywords process.
-		 *
-		 * @param bool $return Short-circuit return value. Either false or true.
-		 */
-		if ( ! $this->do_filter( 'frontend/show_keywords', false ) ) {
-			return false;
-		}
-
 		if ( ! is_null( $this->keywords ) ) {
 			return $this->keywords;
 		}
@@ -341,7 +331,8 @@ class Paper {
 	private function respect_settings_for_robots() {
 		// Force override to respect the WP settings.
 		if ( 0 === absint( get_option( 'blog_public' ) ) || isset( $_GET['replytocom'] ) ) {
-			$this->robots['index'] = 'noindex';
+			$this->robots['index']  = 'noindex';
+			$this->robots['follow'] = 'nofollow';
 		}
 
 		// Noindex for sub-pages.

@@ -120,6 +120,13 @@ class UpdraftPlus_Commands {
 			add_filter('updraftplus_initial_jobdata', array($updraftplus, 'updraftplus_clone_backup_jobdata'), 10, 3);
 		}
 
+		if (!empty($params['db_anon_all']) || !empty($params['db_anon_non_staff'])) {
+			if (!class_exists('UpdraftPlus_Anonymisation_Functions')) include_once(UPDRAFTPLUS_DIR.'/addons/anonymisation.php');
+
+			add_filter('updraft_backupnow_options', 'UpdraftPlus_Anonymisation_Functions::updraftplus_backup_anonymisation_options', 10, 2);
+			add_filter('updraftplus_initial_jobdata', 'UpdraftPlus_Anonymisation_Functions::updraftplus_backup_anonymisation_jobdata', 10, 2);
+		}
+
 		$background_operation_started_method_name = empty($params['background_operation_started_method_name']) ? '_updraftplus_background_operation_started' : $params['background_operation_started_method_name'];
 		$updraftplus_admin->request_backupnow($params, array($this->_uc_helper, $background_operation_started_method_name));
 		
@@ -738,6 +745,21 @@ class UpdraftPlus_Commands {
 
 		$state = isset($auth_data['state']) ? urldecode($auth_data['state']) : '';
 		$code = isset($auth_data['code']) ? urldecode($auth_data['code']) : '';
+
+		if (empty($code) && isset($auth_data['access_token']) && isset($auth_data['user_id'])) {
+			// If there is no code, but the access_token and user_id is set then this is for Google Drive so create a code array using these values
+			$access_token = urldecode($auth_data['access_token']);
+			$user_id = urldecode($auth_data['user_id']);
+			$code = array(
+				'access_token' => $access_token,
+				'user_id' => $user_id
+			);
+		} elseif (empty($code) && isset($auth_data['token'])) {
+			// If there is no code, but a token is set then this is for OneDrive so assign token to code
+			$encoded_token = stripslashes($auth_data['token']);
+			$token = json_decode($encoded_token);
+			$code = $token;
+		}
 
 		if (empty($state) || empty($code)) {
 			$response['result'] = 'error';

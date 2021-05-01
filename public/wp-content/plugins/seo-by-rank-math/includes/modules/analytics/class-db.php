@@ -12,7 +12,9 @@ namespace RankMath\Analytics;
 
 use RankMath\Helper;
 use RankMath\Google\Api;
+use RankMath\Google\Console;
 use MyThemeShop\Helpers\Str;
+use MyThemeShop\Helpers\DB as DB_Helper;
 use MyThemeShop\Database\Database;
 
 defined( 'ABSPATH' ) || exit;
@@ -34,7 +36,7 @@ class DB {
 	}
 
 	/**
-	 * Get analytics table.
+	 * Get console data table.
 	 *
 	 * @return \MyThemeShop\Database\Query_Builder
 	 */
@@ -57,15 +59,19 @@ class DB {
 	 * @param  int $days Decide whether to delete all or delete 90 days data.
 	 */
 	public static function delete_by_days( $days ) {
-		if ( -1 === $days ) {
-			self::analytics()->truncate();
-		} else {
-			$start = date_i18n( 'Y-m-d H:i:s', strtotime( '-1 days' ) );
-			$end   = date_i18n( 'Y-m-d H:i:s', strtotime( '-' . $days . ' days' ) );
+		// Delete console data.
+		if ( Console::is_console_connected() ) {
+			if ( -1 === $days ) {
+				self::analytics()->truncate();
+			} else {
+				$start = date_i18n( 'Y-m-d H:i:s', strtotime( '-1 days' ) );
+				$end   = date_i18n( 'Y-m-d H:i:s', strtotime( '-' . $days . ' days' ) );
 
-			self::analytics()->whereBetween( 'created', [ $end, $start ] )->delete();
+				self::analytics()->whereBetween( 'created', [ $end, $start ] )->delete();
+			}
 		}
 
+		// Delete analytics, adsense data.
 		do_action( 'rank_math/analytics/delete_by_days', $days );
 		self::purge_cache();
 
@@ -78,10 +84,12 @@ class DB {
 	public static function delete_data_log() {
 		$days = Helper::get_settings( 'general.console_caching_control', 90 );
 
+		// Delete old console data more than 2 times ago of specified number of days to keep the data.
 		$start = date_i18n( 'Y-m-d H:i:s', strtotime( '-' . ( $days * 2 ) . ' days' ) );
 
 		self::analytics()->where( 'created', '<', $start )->delete();
 
+		// Delete old analytics and adsense data.
 		do_action( 'rank_math/analytics/delete_data_log', $start );
 	}
 
@@ -128,8 +136,9 @@ class DB {
 			->getVar();
 
 		$size = $wpdb->get_var( 'SELECT SUM((data_length + index_length)) AS size FROM information_schema.TABLES WHERE table_schema="' . $wpdb->dbname . '" AND (table_name="' . $wpdb->prefix . 'rank_math_analytics_gsc")' ); // phpcs:ignore
-
 		$data = compact( 'days', 'rows', 'size' );
+
+		$data = apply_filters( 'rank_math/analytics/analytics_tables_info', $data );
 
 		set_transient( $key, $data, DAY_IN_SECONDS );
 
@@ -148,44 +157,40 @@ class DB {
 		}
 
 		$id = self::objects()
-			->select( 'id' )
-			->limit( 1 )
-			->getVar();
+		->select( 'id' )
+		->limit( 1 )
+		->getVar();
 
 		$rank_math_gsc_has_data = $id > 0 ? true : false;
 		return $rank_math_gsc_has_data;
 	}
 
 	/**
-	 * Check if a date exists in the sysyem.
+	 * Check if console data exists at specified date.
 	 *
-	 * @param string $date Date.
-	 *
+	 * @param  string $date   Date to check data existence.
+	 * @param  string $action Action name to filter data type.
 	 * @return boolean
 	 */
-	public static function date_exists( $date ) {
-		$is_console   = \RankMath\Google\Console::is_console_connected();
-		$is_analytics = \RankMath\Google\Analytics::is_analytics_connected();
+	public static function date_exists( $date, $action = 'console' ) {
+		$table['console'] = DB_Helper::check_table_exists( 'rank_math_analytics_gsc' ) ? 'rank_math_analytics_gsc' : '';
 
-		if ( ! $is_console && ! $is_analytics ) {
-			return true;
+		if ( empty( $table[ $action ] ) ) {
+			return true; // Should return true to avoid further data fetch action.
 		}
 
-		$id = self::analytics();
-		if ( ! $is_console && $is_analytics ) {
-			$id = self::table( 'rank_math_analytics_ga' );
-		}
+		$table = self::table( $table[ $action ] );
 
-		$id = $id
+		$id = $table
 			->select( 'id' )
-			->where( 'created', $date )
+			->where( 'DATE(created)', $date )
 			->getVar();
 
 		return $id > 0 ? true : false;
 	}
 
 	/**
-	 * Add a new record.
+	 * Add a new record into objects table.
 	 *
 	 * @param array $args Values to insert.
 	 *
@@ -195,6 +200,8 @@ class DB {
 		if ( empty( $args ) ) {
 			return false;
 		}
+
+		unset( $args['id'] );
 
 		$args = wp_parse_args(
 			$args,
@@ -216,7 +223,7 @@ class DB {
 	}
 
 	/**
-	 * Update a record.
+	 * Add/Update a record into/from objects table.
 	 *
 	 * @param array $args Values to update.
 	 *
@@ -227,6 +234,7 @@ class DB {
 			return false;
 		}
 
+		// If object exists, try to update.
 		$old_id = absint( $args['id'] );
 		if ( ! empty( $old_id ) ) {
 			unset( $args['id'] );
@@ -241,6 +249,7 @@ class DB {
 			}
 		}
 
+		// In case of new object or failed to update, try to add.
 		return self::add_object( $args );
 	}
 
@@ -259,7 +268,7 @@ class DB {
 	}
 
 	/**
-	 * Bulk inserts records into a table using WPDB.  All rows must contain the same keys.
+	 * Bulk inserts records into a console table using WPDB.  All rows must contain the same keys.
 	 *
 	 * @param  string $date        Date.
 	 * @param  array  $rows        Rows to insert.
@@ -325,7 +334,7 @@ class DB {
 	}
 
 	/**
-	 * Remove hash part.
+	 * Remove hash part from Url.
 	 *
 	 * @param  string $url Url to process.
 	 * @return string

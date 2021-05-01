@@ -143,7 +143,7 @@ class URE_Role_View extends URE_View {
         ob_start();
 ?>        
     <form name="ure_remove_caps_form" id="ure_remove_caps_form" method="POST"
-      action="<?php echo URE_WP_ADMIN_URL . ($network_admin ? 'network/':'') . URE_PARENT .'?page=users-'.URE_PLUGIN_FILE;?>" >
+      action="<?php echo admin_url() . ($network_admin ? 'network/':'') . URE_PARENT .'?page=users-'.URE_PLUGIN_FILE;?>" >
         <table id="ure_remove_caps_table">    
             <tr>
                 <th>

@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
 // phpcs:disable
 $actions = \as_get_scheduled_actions(
 	[
-		'hook' => 'rank_math/analytics/get_analytics',
+		'hook' => 'rank_math/analytics/clear_cache',
 		'status' => \ActionScheduler_Store::STATUS_PENDING,
 	]
 );
@@ -36,25 +36,27 @@ if ( ! empty( $db_info ) ) {
 $actions = as_get_scheduled_actions(
 	[
 		'order'  => 'DESC',
-		'hook'   => 'rank_math/analytics/daily_tasks',
+		'hook'   => 'rank_math/analytics/data_fetch',
 		'status' => \ActionScheduler_Store::STATUS_PENDING,
 	]
 );
 if ( Authentication::is_authorized() && ! empty( $actions ) ) {
-	$action         = current( $actions );
-	$schedule       = $action->get_schedule();
-	$next_timestamp = $schedule->get_date()->getTimestamp();
-	$cmb->add_field(
-		[
-			'id'      => 'console_data_empty',
-			'type'    => 'raw',
-			/* translators: date */
-			'content' => sprintf(
-				'<span class="next-fetch">' . __( 'Next data fetch on %s', 'rank-math' ),
-				date_i18n( 'd M, Y H:m:i', $next_timestamp ) . '</span>'
-			),
-		]
-	);
+	$action    = current( $actions );
+	$schedule  = $action->get_schedule();
+	$next_date = $schedule->get_date();
+	if ( $next_date ) {
+		$cmb->add_field(
+			[
+				'id'      => 'console_data_empty',
+				'type'    => 'raw',
+				/* translators: date */
+				'content' => sprintf(
+					'<span class="next-fetch">' . __( 'Next data fetch on %s', 'rank-math' ),
+					date_i18n( 'd M, Y H:m:i', $next_date->getTimestamp() ) . '</span>'
+				),
+			]
+		);
+	}
 }
 // phpcs:enable
 
@@ -66,13 +68,25 @@ $cmb->add_field(
 	]
 );
 
+$is_fetching = 'fetching' === get_option( 'rank_math_analytics_first_fetch' );
+$buttons     = '<br>' .
+	'<button class="button button-small console-cache-delete" data-days="-1">' . esc_html__( 'Delete Data', 'rank-math' ) . '</button>' .
+	'&nbsp;&nbsp;<button class="button button-small console-cache-update-manually"' . ( $disable ? ' disabled="disabled"' : '' ) . '>' . ( $is_queue_empty ? esc_html__( 'Update Data manually', 'rank-math' ) : esc_html__( 'Fetching in Progress', 'rank-math' ) ) . '</button>' .
+	'&nbsp;&nbsp;<button class="button button-link-delete button-small cancel-fetch"' . disabled( $is_fetching, false, false ) . '>' . esc_html__( 'Cancel Fetching', 'rank-math' ) . '</button>';
+
+$buttons .= '<br>' . join( '', $db_info );
+
+$description = sprintf( __( 'Enter the number of days to keep Analytics data in your database. The maximum allowed days are 90 in the %s. Though, 2x data will be stored in the DB for calculating the difference properly.', 'rank-math' ), '<a href="https://rankmath.com/pricing/?utm_source=Plugin&utm_medium=Analytics%20DB%20Option&utm_campaign=WP" target="_blank" rel="noopener noreferrer">' . __( 'free version', 'rank-math' ) . '</a>' );
+$description = apply_filters_deprecated( 'rank_math/analytics/options/cahce_control/description', [ $description ], '1.0.61.1', 'rank_math/analytics/options/cache_control/description' );
+$description = apply_filters( 'rank_math/analytics/options/cache_control/description', $description );
+
 $cmb->add_field(
 	[
 		'id'              => 'console_caching_control',
 		'type'            => 'text',
 		'name'            => __( 'Analytics Database', 'rank-math' ),
 		// translators: Anchor text 'free version', linking to pricing page.
-		'description'     => apply_filters( 'rank_math/analytics/options/cahce_control/description', sprintf( __( 'Enter the number of days to keep Analytics data in your database. The maximum allowed days are 90 in the %s. Though, 2x data will be stored in the DB for calculating the difference properly.', 'rank-math' ), '<a href="https://rankmath.com/pricing/?utm_source=Plugin&utm_medium=Analytics%20DB%20Option&utm_campaign=WP" target="_blank" rel="noopener noreferrer">' . __( 'free version', 'rank-math' ) . '</a>' ) ),
+		'description'     => $description,
 		'default'         => 90,
 		'sanitization_cb' => function( $value ) {
 			$max   = apply_filters( 'rank_math/analytics/max_days_allowed', 90 );
@@ -83,10 +97,6 @@ $cmb->add_field(
 
 			return $value;
 		},
-		'after_field'     => '<br>' .
-		'<button class="button button-small console-cache-delete console-cache-delete-custom"  data-days="15" title="' . esc_html__( 'Delete Recent Data (last %d days)', 'rank-math' ) . '">' . esc_html__( 'Delete Recent Data (last 15 days)', 'rank-math' ) . '</button>' .
-		'&nbsp;&nbsp;<button class="button button-small console-cache-delete" data-days="-1">' . esc_html__( 'Delete Data', 'rank-math' ) . '</button>' .
-		'&nbsp;&nbsp;<button class="button button-small console-cache-update-manually"' . ( $disable ? ' disabled="disabled"' : '' ) . '>' . ( $is_queue_empty ? esc_html__( 'Update Data manually', 'rank-math' ) : esc_html__( 'Fetching in Progress', 'rank-math' ) ) . '</button><br>' .
-		join( '', $db_info ),
+		'after_field'     => $buttons,
 	]
 );

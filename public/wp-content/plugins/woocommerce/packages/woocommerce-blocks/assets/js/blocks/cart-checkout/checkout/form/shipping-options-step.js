@@ -7,10 +7,10 @@ import {
 	ShippingRatesControl,
 } from '@woocommerce/base-components/cart-checkout';
 import {
-	getCurrencyFromPriceResponse,
 	getShippingRatesPackageCount,
 	getShippingRatesRateCount,
 } from '@woocommerce/base-utils';
+import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import {
 	useCheckoutContext,
@@ -19,6 +19,8 @@ import {
 } from '@woocommerce/base-context';
 import { decodeEntities } from '@wordpress/html-entities';
 import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
+import { Notice } from 'wordpress-components';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -55,6 +57,7 @@ const ShippingOptionsStep = () => {
 		shippingRates,
 		shippingRatesLoading,
 		needsShipping,
+		hasCalculatedShipping,
 	} = useShippingDataContext();
 
 	if ( ! needsShipping ) {
@@ -80,10 +83,27 @@ const ShippingOptionsStep = () => {
 				<NoShippingPlaceholder />
 			) : (
 				<ShippingRatesControl
-					noResultsMessage={ __(
-						'There are no shipping options available. Please ensure that your address has been entered correctly, or contact us if you need any help.',
-						'woocommerce'
-					) }
+					noResultsMessage={
+						hasCalculatedShipping ? (
+							<Notice
+								isDismissible={ false }
+								className={ classnames(
+									'wc-block-components-shipping-rates-control__no-results-notice',
+									'woocommerce-error'
+								) }
+							>
+								{ __(
+									'There are no shipping options available. Please ensure that your address has been entered correctly, or contact us if you need any help.',
+									'woocommerce'
+								) }
+							</Notice>
+						) : (
+							__(
+								'Shipping options will appear here after entering your full shipping address.',
+								'woocommerce'
+							)
+						)
+					}
 					renderOption={ renderShippingRatesControlOption }
 					shippingRates={ shippingRates }
 					shippingRatesLoading={ shippingRatesLoading }

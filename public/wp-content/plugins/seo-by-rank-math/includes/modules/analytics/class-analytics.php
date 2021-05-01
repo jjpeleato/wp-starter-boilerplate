@@ -10,19 +10,20 @@
 
 namespace RankMath\Analytics;
 
-use Exception;
 use RankMath\KB;
 use RankMath\Helper;
-use RankMath\Module\Base;
 use RankMath\Google\Api;
-use RankMath\SEO_Analysis\SEO_Analyzer;
+use RankMath\Module\Base;
 use MyThemeShop\Admin\Page;
 use MyThemeShop\Helpers\Arr;
 use MyThemeShop\Helpers\Str;
-use MyThemeShop\Helpers\Conditional;
 use RankMath\Google\Console;
 use RankMath\Google\Authentication;
-use RankMath\Schema\Admin as SchemaHelper;
+use MyThemeShop\Helpers\Conditional;
+use MyThemeShop\Helpers\Param;
+use RankMath\Analytics\Workflow\Jobs;
+use RankMath\Analytics\Workflow\OAuth;
+use RankMath\Analytics\Workflow\Workflow;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -54,24 +55,46 @@ class Analytics extends Base {
 
 		new AJAX();
 		Api::get();
-		Data_Fetcher::get();
 		Watcher::get();
 		Stats::get();
+		Jobs::get();
+		Workflow::get();
 
 		$this->action( 'admin_notices', 'render_notice' );
 		$this->action( 'rank_math/admin/enqueue_scripts', 'enqueue' );
+		$this->action( 'admin_enqueue_scripts', 'options_panel_messages' );
 		$this->action( 'wp_helpers_notification_dismissed', 'analytic_first_fetch_dismiss' );
 
 		if ( is_admin() ) {
 			$this->filter( 'rank_math/database/tools', 'add_tools' );
 			$this->filter( 'rank_math/settings/general', 'add_settings' );
 			$this->action( 'admin_init', 'refres_token_missing', 25 );
+			$this->action( 'admin_init', 'cancel_fetch', 5 );
 
 			// Show Analytics block in the Dashboard widget only if account is connected or user has permissions.
 			if ( Helper::has_cap( 'analytics' ) && Authentication::is_authorized() ) {
 				$this->action( 'rank_math/dashboard/widget', 'dashboard_widget', 9 );
 			}
+
+			new OAuth();
 		}
+	}
+
+	/**
+	 * Cancel Fetching of Google.
+	 */
+	public function cancel_fetch() {
+		$cancel = Param::get( 'cancel-fetch', false );
+		if (
+			empty( $cancel ) ||
+			! Param::get( '_wpnonce' ) ||
+			! wp_verify_nonce( Param::get( '_wpnonce' ), 'rank_math_cancel_fetch' ) ||
+			! Helper::has_cap( 'analytics' )
+		) {
+			return;
+		}
+
+		Workflow::kill_workflows();
 	}
 
 	/**
@@ -118,11 +141,10 @@ class Analytics extends Base {
 	}
 
 	/**
-	 * Add stats into admin dashboard.
-	 *
-	 * @codeCoverageIgnore
+	 * Add stats widget into admin dashboard.
 	 */
 	public function dashboard_widget() {
+		// Get stats info within last 30 days.
 		Stats::get()->set_date_range( '-30 days' );
 		$data                   = Stats::get()->get_widget();
 		$analytics              = get_option( 'rank_math_google_analytic_options' );
@@ -176,7 +198,7 @@ class Analytics extends Base {
 					<?php esc_html_e( 'Average Position', 'rank-math' ); ?>
 					<span class="rank-math-tooltip"><em class="dashicons-before dashicons-editor-help"></em><span><?php esc_html_e( 'This is the number of pageviews carried out by visitors from Google.', 'rank-math' ); ?></span></span>
 				</h4>
-				<?php $this->get_analytic_block( $data->position ); ?>
+				<?php $this->get_analytic_block( $data->position, true ); ?>
 			</div>
 
 		</div>
@@ -186,18 +208,19 @@ class Analytics extends Base {
 	/**
 	 * Get analytic block
 	 *
-	 * @param object $item Item.
+	 * @param object  $item   Item.
+	 * @param boolean $revert Flag whether to revert difference icon or not.
 	 */
-	private function get_analytic_block( $item ) {
+	private function get_analytic_block( $item, $revert = false ) {
 		$is_negative = absint( $item['difference'] ) !== $item['difference'];
-		$diff_class  = $is_negative ? 'down' : 'up';
-		if ( ! $is_negative && $item['difference'] > 0 ) {
+		$diff_class  = ( ! $revert && $is_negative ) || ( $revert && ! $is_negative && $item['difference'] > 0 ) ? 'down' : 'up';
+		if ( ( ! $revert && ! $is_negative && $item['difference'] > 0 ) || ( $revert && $is_negative ) ) {
 			$diff_class = 'up';
 		}
 		?>
 		<div class="rank-math-item-numbers">
 			<strong class="text-large" title="<?php echo esc_html( Str::human_number( $item['total'] ) ); ?>"><?php echo esc_html( Str::human_number( $item['total'] ) ); ?></strong>
-			<span class="rank-math-item-difference <?php echo esc_attr( $diff_class ); ?>" title="<?php echo esc_html( Str::human_number( $item['difference'] ) ); ?>"><?php echo esc_html( Str::human_number( $item['difference'] ) ); ?></span>
+			<span class="rank-math-item-difference <?php echo esc_attr( $diff_class ); ?>" title="<?php echo esc_html( Str::human_number( abs( $item['difference'] ) ) ); ?>"><?php echo esc_html( Str::human_number( abs( $item['difference'] ) ) ); ?></span>
 		</div>
 		<?php
 	}
@@ -211,10 +234,11 @@ class Analytics extends Base {
 			$actions = as_get_scheduled_actions(
 				[
 					'order'  => 'DESC',
-					'hook'   => 'rank_math/analytics/get_analytics',
+					'hook'   => 'rank_math/analytics/clear_cache',
 					'status' => \ActionScheduler_Store::STATUS_PENDING,
 				]
 			);
+
 			if ( empty( $actions ) ) {
 				update_option( 'rank_math_analytics_first_fetch', 'hidden' );
 				return;
@@ -223,9 +247,16 @@ class Analytics extends Base {
 			$action         = current( $actions );
 			$schedule       = $action->get_schedule();
 			$next_timestamp = $schedule->get_date()->getTimestamp();
+			// phpcs:disable
 			$notification   = new \MyThemeShop\Notification(
 				/* translators: delete counter */
-				sprintf( '<i class="rm-icon rm-icon-rank-math"></i>' . esc_html__( 'Rank Math is importing latest data from connected Google Services, %s remaining.', 'rank-math' ), $this->human_interval( $next_timestamp - gmdate( 'U' ) ) ),
+				sprintf(
+					'<svg style="vertical-align: middle; margin-right: 5px" viewBox="0 0 462.03 462.03" xmlns="http://www.w3.org/2000/svg" width="20"><g><path d="m462 234.84-76.17 3.43 13.43 21-127 81.18-126-52.93-146.26 60.97 10.14 24.34 136.1-56.71 128.57 54 138.69-88.61 13.43 21z"></path><path d="m54.1 312.78 92.18-38.41 4.49 1.89v-54.58h-96.67zm210.9-223.57v235.05l7.26 3 89.43-57.05v-181zm-105.44 190.79 96.67 40.62v-165.19h-96.67z"></path></g></svg>' .
+					esc_html__( 'Rank Math is importing latest data from connected Google Services, %1$s remaining.', 'rank-math' ) .
+					'&nbsp;<a href="%2$s">' . esc_html__( 'Cancel Fetch', 'rank-math' ) . '</a>',
+					$this->human_interval( $next_timestamp - gmdate( 'U' ) ),
+					esc_url( wp_nonce_url( add_query_arg( 'cancel-fetch', 1 ), 'rank_math_cancel_fetch' ) )
+				),
 				[
 					'type'    => 'info',
 					'id'      => 'rank_math_analytics_first_fetch',
@@ -233,7 +264,7 @@ class Analytics extends Base {
 				]
 			);
 
-			echo $notification; // phpcs:ignore
+			echo $notification;
 		}
 	}
 
@@ -313,10 +344,30 @@ class Analytics extends Base {
 	}
 
 	/**
+	 * Add l18n for the Settings.
+	 *
+	 * @return void
+	 */
+	public function options_panel_messages() {
+		$screen = get_current_screen();
+
+		if ( 'rank-math_page_rank-math-options-general' !== $screen->id ) {
+			return;
+		}
+
+		Helper::add_json( 'confirmAction', esc_html__( 'Are you sure you want to do this?', 'rank-math' ) );
+		Helper::add_json( 'confirmClearImportedData', esc_html__( 'You are about to delete all the previously imported data.', 'rank-math' ) );
+		Helper::add_json( 'confirmClear90DaysCache', esc_html__( 'You are about to delete your 90 days cache.', 'rank-math' ) );
+		Helper::add_json( 'confirmDisconnect', esc_html__( 'Are you sure you want to disconnect Google services from your site?', 'rank-math' ) );
+		Helper::add_json( 'feedbackCacheDeleted', esc_html__( 'Cache deleted.', 'rank-math' ) );
+	}
+
+	/**
 	 * Enqueue scripts for the metabox.
 	 */
 	public function enqueue() {
 		$screen = get_current_screen();
+
 		if ( 'rank-math_page_rank-math-analytics' !== $screen->id ) {
 			return;
 		}
@@ -426,16 +477,6 @@ class Analytics extends Base {
 		Helper::add_json( 'lastUpdated', $updated );
 
 		Helper::add_json( 'singleImage', rank_math()->plugin_url() . 'includes/modules/analytics/assets/img/single-post-report.jpg' );
-
-		// Global Schema.
-		$post_types     = Helper::get_accessible_post_types();
-		$global_schemas = [];
-		foreach ( $post_types as $post_type ) {
-			$global_schemas[ $post_type ] = SchemaHelper::sanitize_schema_title(
-				Helper::get_default_schema_type( $post_type )
-			);
-		}
-		Helper::add_json( 'globalSchemaTypes', array_filter( $global_schemas ) );
 	}
 
 	/**
