@@ -65,7 +65,7 @@ For more information visit:
 ├─ package.json
 ├─ phpcs.xml.dist
 ├─ README.md
-└─ script_local.sh
+└─ validate.sh
 ```
 
 ### Installing
