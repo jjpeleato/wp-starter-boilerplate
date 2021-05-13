@@ -68,11 +68,11 @@ define("DEPLOY_CONFIG", [
 		],
 	],
 	'dev' => [
-		'hostname' => $_ENV['DEV_PRE_HOSTNAME'],
-		'port' => (int) $_ENV['DEV_PRE_PORT'],
-		'user' => $_ENV['DEV_PRE_USER'],
-		'http_user' => $_ENV['DEV_PRE_HTTP_USER'],
-		'deploy_path' => $_ENV['DEV_PRE_DEPLOY_PATH'],
+		'hostname' => $_ENV['DEP_DEV_HOSTNAME'],
+		'port' => (int) $_ENV['DEP_DEV_PORT'],
+		'user' => $_ENV['DEP_DEV_USER'],
+		'http_user' => $_ENV['DEP_DEV_HTTP_USER'],
+		'deploy_path' => $_ENV['DEP_DEV_DEPLOY_PATH'],
 	],
 	'pre' => [
 		'hostname' => $_ENV['DEP_PRE_HOSTNAME'],
