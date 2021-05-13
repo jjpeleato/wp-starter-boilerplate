@@ -26,7 +26,9 @@ public/wp-content/uploads
 public/wp-content/plugins/hello.php
 
 public/.htaccess
+public/.htpasswd
 public/license.txt
+public/licencia.txt
 public/readme.html
 
 ###################################
@@ -50,6 +52,7 @@ public/sitemap.xml.gz
 #############################
 *.log
 *.sql
+!private/database/*.sql
 *.sqlite
 *.sass-cache
 .bash_history
@@ -125,3 +128,9 @@ public/wp-content/aiowps_backups
 # WP Rocket #
 #############
 public/wp-content/wp-rocket-config
+
+##############################
+# Super Progressive Web Apps #
+##############################
+public/superpwa-manifest.json
+public/superpwa-sw.js

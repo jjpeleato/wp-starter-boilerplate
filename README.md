@@ -2,6 +2,15 @@
 
 WordPress base repository for any project.
 
+## Environment
+
+- LOCAL: ~
+- LOCAL ADMIN: ~
+- PRE: ~
+- PRE ADMIN: ~
+- PRO: ~
+- PRO ADMIN: ~
+
 ## Project
 
 Built with WordPress platform using the following technologies: HTML 5, Bootstrap 4, JavaScript, jQuery, CSS3, SASS & Compass, Lando (Docker), NPM or Yarn, Gulp v.4 and Deployer.
