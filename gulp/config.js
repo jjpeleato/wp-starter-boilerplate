@@ -35,7 +35,6 @@ const paths = {
             './node_modules/photoswipe/dist/photoswipe.min.js',
             './node_modules/photoswipe/dist/photoswipe-ui-default.min.js',
             './node_modules/salvattore/dist/salvattore.min.js',
-            './node_modules/skrollr/dist/skrollr.min.js',
             './node_modules/tiny-slider/dist/min/tiny-slider.js',
             './node_modules/vanilla-lazyload/dist/lazyload.min.js',
         ],
