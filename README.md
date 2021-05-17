@@ -45,6 +45,7 @@ For more information visit:
 ### Project skeleton
 
 ```
+├─ .husky/ # Husky directory (git-hooks)
 ├─ assets/ # Front-end directory
 │  ├─ font/
 │  ├─ img/
@@ -69,6 +70,8 @@ For more information visit:
 ├─ .stylelintrc
 ├─ composer.json
 ├─ deploy.php
+├─ deploy.sh
+├─ deploy-exclude-list.txt
 ├─ gulpfile.babel.js
 ├─ LICENSE
 ├─ package.json
