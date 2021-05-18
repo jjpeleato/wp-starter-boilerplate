@@ -84,15 +84,11 @@ For more information visit:
 
 1. Open the `README.md` and rename the name of client, name of project and description.
 2. Open the `lando.yml` and rename the project and proxy name.
-3. Open your terminal and browse to the root location of your project.
-4. Run `$lando start`.
-	- The project has a .lando.yml file with all the environment settings.
-	- The command starts the installation process when it finishes, you can see all the URLs to access.
-5. If required.
+3. If required.
 	- Download and install the main theme. Recommended: https://underscores.me/
-6. Add the following path `public/wp-content/themes/[theme]/assets` into `.gitignore` file.
-7. Open the `gulp/config.js` and rename the `theme` const according theme path.
-8. Copy the `public/wp-config-sample.php` to `public/wp-config.php`.
+4. Add the following path `public/wp-content/themes/[theme]/assets` into `.gitignore` file.
+5. Open the `gulp/config.js` and rename the `theme` const according theme path.
+6. Copy the `public/wp-config-sample.php` to `public/wp-config.php`.
     - Add the following code:
     ```php
    <?php
@@ -115,20 +111,23 @@ For more information visit:
         - `define( 'DB_COLLATE', 'utf8mb4_general_ci' );`
     - Change Authentication Unique Keys and Salts. Open the link `https://api.wordpress.org/secret-key/1.1/salt/`, copy and replace in the correct section.
     - Change table prefix. Only numbers, letters, and underscores. For example: `$table_prefix = 'j28p_';`
-9. Copy the `assets/.htaccess.dist` to `public/.htaccess`.
-10. Copy the `phpcs.xml.dist` to `phpcs.xml` and rename the `ao-apolo` according theme path.
-11. Copy the `.env.dist` to `.env` and look the vars according Deployer file `deploy.php`.
-12. Open your terminal and browse to the root location of your project.
-13. Run `$lando start`.
+7. Copy the `assets/.htaccess.dist` to `public/.htaccess` and to remove the code that you do not need.
+8. Copy the `phpcs.xml.dist` to `phpcs.xml` and rename the `ao-apolo` according theme path.
+9. If required. Copy the `.env.dist` to `.env` and look the vars according Deployer file `deploy.php`.
+10. Open your terminal and browse to the root location of your project.
+11. Run `$lando start`.
 	- The project has a .lando.yml file with all the environment settings.
 	- The command starts the installation process when it finishes, you can see all the URLs to access.
-14. End. Happy developing.
+12. Run: `$lando composer install`.
+13. Run: `$lando npm install --save-dev` or `$lando yarn install --dev`.
+14. Run: `$lando npm run prepare`.
+15. End. Happy developing.
 
 ### Developing with NPM or Yarn, Gulp. PHP_CodeSniffer and Deployer
 
 - Open your terminal and browse to the root location of your project.
-- If required. Run: `$lando npm install --save-dev` or `$lando yarn install --dev` then: `$lando gulp [action]`
-- To work with and compile your Sass and JS files on the fly start: `$lando gulp`
+- If required. Run: `$lando npm install --save-dev` or `$lando yarn install --dev` then: `$lando npm run prepare`
+- To work with and compile your Sass and JS files on the fly start: `$lando gulp` or `$lando npm run gulp:dev`
 - Gulp actions commands list:
     - `$lando gulp clean` Delete all files.
     - `$lando gulp css` Compile SASS to CSS and validate SASS according Stylelint (https://stylelint.io/). Not concat.
@@ -145,12 +144,15 @@ For more information visit:
     - `$lando gulp validateScss` Validate SCSS according Stylint (https://stylelint.io/).
     - `$lando gulp watch` Compile SASS to CSS and concat and minify JS files in real-time.
 - NPM actions commands list:
-    - `$lando npm run gulp:dev` Compile for development environment
-    - `$lando npm run gulp:prod` Compile for production environment
-- If required. Run: `$lando composer install` then: `$lando dep [action]`.
+	- `$lando npm run prepare` Enable Git hooks. **Important: Run always after npm install.**
+	- `$lando npm run gulp:dev` Compile for development environment.
+	- `$lando npm run gulp:prod` Compile for production environment.
+	- `$lando npm run gulp:validate` Run validate JS and SCSS files.
+- If required. Run: `$lando composer install`.
 - If you deploy with Deployer. Copy the `.env.dist` to `.env` and you add the server credentials and git repository.
 - Deployer actions commands list:
     - `$lando dep deploy local` Deploy to the local machine in the docker container.
+    - `$lando dep deploy dev` Deploy to the dev production server.
     - `$lando dep deploy pre` Deploy to the pre production server.
     - `$lando dep deploy pro` Deploy to the production server.
 - If you work with PHP CodeSniffer. If required run `$lando phpcs --config-set installed_paths /path/to/wpcs`
