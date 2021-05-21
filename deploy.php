@@ -61,7 +61,6 @@ define("DEPLOY_CONFIG", [
 			'LICENSE',
 			'package.json',
 			'package-lock.json',
-			'phpcs.xml',
 			'phpcs.xml.dist',
 			'README.md',
 			'validate.sh',
