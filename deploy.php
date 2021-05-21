@@ -61,6 +61,7 @@ define("DEPLOY_CONFIG", [
 			'LICENSE',
 			'package.json',
 			'package-lock.json',
+			'phpcs.xml',
 			'phpcs.xml.dist',
 			'README.md',
 			'validate.sh',
@@ -263,7 +264,7 @@ task('deploy', [
 after('deploy:failed', 'deploy:unlock');
 
 // If deploy is in progress
-after('deploy:vendors', 'deploy:phpcs');
+//after('deploy:vendors', 'deploy:phpcs');
 after('deploy:vendors', 'deploy:build:dev');
 after('deploy:vendors', 'deploy:build:pre');
 after('deploy:vendors', 'deploy:build:pro');
