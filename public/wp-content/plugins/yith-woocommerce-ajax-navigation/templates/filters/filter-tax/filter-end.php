@@ -3,7 +3,7 @@
  * Filters Tax End
  *
  * @author  YITH
- * @package YITH WooCommerce Ajax Product Filter
+ * @package YITH\AjaxProductFilter\Templates\Filters
  * @version 4.0.0
  */
 
@@ -19,7 +19,7 @@ if ( ! defined( 'YITH_WCAN' ) ) {
 } // Exit if accessed directly
 ?>
 
-<?php if ( 'select' == $filter->get_filter_design() ) : ?>
+<?php if ( 'select' === $filter->get_filter_design() ) : ?>
 	</select><!-- .filter-dropdown -->
 <?php else : ?>
 	</ul><!-- .filter-items -->

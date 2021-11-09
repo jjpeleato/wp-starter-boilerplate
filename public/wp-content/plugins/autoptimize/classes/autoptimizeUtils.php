@@ -394,4 +394,114 @@ class autoptimizeUtils
 
         return ( substr( $str, -$length, $length ) === $test );
     }
+
+    /**
+     * Returns true if a pagecache is found, false if not.
+     * Now used to show notice, might be used later on to (un)hide page caching in AO if no page cache found.
+     *
+     * @return bool
+     */    
+    public static function find_pagecache() {
+        static $_found_pagecache = null;
+
+        if ( null === $_found_pagecache ) {
+            $_page_cache_constants   = array( 'NGINX_HELPER_BASENAME', 'KINSTA_CACHE_ZONE', 'PL_INSTANCE_REF', 'WP_NINUKIS_WP_NAME', 'CACHE_ENABLER_VERSION', 'SBP_PLUGIN_NAME', 'SERVEBOLT_PLUGIN_FILE', 'SWCFPC_PLUGIN_PATH', 'CACHIFY_CACHE_DIR', 'WP_ROCKET_CACHE_PATH', 'WPO_VERSION', 'NGINX_HELPER_BASEURL' );
+            $_page_cache_classes     = array( 'Swift_Performance_Cache', 'WpFastestCache', 'c_ws_plugin__qcache_purging_routines', 'zencache', 'comet_cache', 'WpeCommon', 'FlywheelNginxCompat', 'PagelyCachePurge' );
+            $_page_cache_functions   = array( 'wp_cache_clear_cache', 'w3tc_pgcache_flush', 'wp_fast_cache_bulk_delete_all', 'rapidcache_clear_cache', 'sg_cachepress_purge_cache', 'prune_super_cache' );
+            $_ao_pagecache_transient = 'autoptimize_pagecache_check';
+            $_found_pagecache        = get_transient( $_ao_pagecache_transient );
+
+            if ( current_user_can( 'manage_options' ) && false === $_found_pagecache ) {
+                // loop through known pagecache constants.
+                foreach ( $_page_cache_constants as $_constant ) {
+                    if ( defined( $_constant ) ) {
+                        $_found_pagecache = true;
+                        break;
+                    }
+                }
+                // and loop through known pagecache classes.
+                if ( false === $_found_pagecache ) {
+                    foreach ( $_page_cache_classes as $_class ) {
+                        if ( class_exists( $_class ) ) {
+                            $_found_pagecache = true;
+                            break;
+                        }
+                    }
+                }
+                // and loop through known pagecache functions.
+                if ( false === $_found_pagecache ) {
+                    foreach ( $_page_cache_functions as $_function ) {
+                        if ( function_exists( $_function ) ) {
+                            $_found_pagecache = true;
+                            break;
+                        }
+                    }
+                }
+                
+                // store in transient for 1 week if pagecache found.
+                if ( true === $_found_pagecache ) {
+                    set_transient( $_ao_pagecache_transient, true, WEEK_IN_SECONDS );
+                }
+            }
+        }
+
+        return $_found_pagecache;
+    }
+
+    /**
+     * Returns true if on one of the AO settings tabs, false if not.
+     * Used to limit notifications to AO settings pages.
+     *
+     * @return bool
+     */    
+    public static function is_ao_settings() {
+        $_is_ao_settings = ( str_replace( array( 'autoptimize', 'autoptimize_imgopt', 'ao_critcss', 'autoptimize_extra', 'ao_partners' ), '', $_SERVER['REQUEST_URI'] ) !== $_SERVER['REQUEST_URI'] ? true : false );
+        return $_is_ao_settings;
+    }
+
+    /**
+     * Returns false if no conflicting plugins are found, the name if the plugin if found.
+     *
+     * @return bool|string
+     */
+    public static function find_potential_conflicts() {
+        if ( defined( 'WPFC_WP_CONTENT_BASENAME' ) ) {
+            $_wpfc_options =  json_decode( get_option( 'WpFastestCache' ) );
+            foreach ( array( 'wpFastestCacheMinifyCss', 'wpFastestCacheCombineCss','wpFastestCacheCombineJs' ) as $_wpfc_conflicting ) {
+                if ( isset( $_wpfc_options->$_wpfc_conflicting ) && $_wpfc_options->$_wpfc_conflicting === 'on' ) {
+                    return 'WP Fastest Cache';
+                }
+            }
+        } elseif ( defined( 'W3TC_VERSION' ) ) {
+            $w3tcConfig     = file_get_contents( WP_CONTENT_DIR . '/w3tc-config/master.php' );
+            $w3tc_minify_on = strpos( $w3tcConfig, '"minify.enabled": true' );
+            if ( $w3tc_minify ) {
+                return 'W3 Total Cache';
+            }
+        } elseif ( defined('SiteGround_Optimizer\VERSION') ) {
+            if ( get_option('siteground_optimizer_optimize_css') == 1 || get_option('siteground_optimizer_optimize_javascript') == 1 || get_option('siteground_optimizer_combine_javascript') == 1 || get_option('siteground_optimizer_combine_css') == 1 ) {
+                return 'Siteground Optimizer';
+            }
+        } elseif ( defined( 'WPO_VERSION' ) ) {
+            $_wpo_options = get_site_option( 'wpo_minify_config' );
+            if ( is_array( $_wpo_options ) && $_wpo_options['enabled'] == 1 && ( $_wpo_options['enable_css'] == 1 || $_wpo_options['enable_js'] == 1 ) ) {
+                return 'WP Optimize';
+            }
+        } elseif ( defined( 'WPACU_PLUGIN_VERSION' ) || defined( 'WPACU_PRO_PLUGIN_VERSION' ) ) {
+            $wpacuSettingsClass = new \WpAssetCleanUp\Settings();
+            $wpacuSettings      = $wpacuSettingsClass->getAll();
+
+            if ( $wpacuSettings['minify_loaded_css'] || $wpacuSettings['minify_loaded_js'] || $wpacuSettings['combine_loaded_js'] || $wpacuSettings['combine_loaded_css'] ) {
+                return 'Asset Cleanup';
+            }
+        } elseif ( defined( 'WP_ROCKET_VERSION' ) && function_exists( 'get_rocket_option' ) ) {
+            if ( get_rocket_option( 'minify_js' ) || get_rocket_option( 'minify_concatenate_js' ) || get_rocket_option( 'minify_css' ) || get_rocket_option( 'minify_concatenate_css' ) || get_rocket_option('async_css' ) ) {
+                return 'WP Rocket';
+            }
+        } elseif ( function_exists( 'fvm_get_settings' ) ) {
+            return 'Fast Velocity Minify';
+        }
+
+        return false;
+    }
 }

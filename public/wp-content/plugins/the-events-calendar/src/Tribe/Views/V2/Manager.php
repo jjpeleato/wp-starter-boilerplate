@@ -43,6 +43,44 @@ class Manager {
 	public static $option_mobile_default = 'mobile_default_view';
 
 	/**
+	 * Registration objects for auto-registered views.
+	 *
+	 * @since 5.7.0
+	 *
+	 * @var array
+	 */
+	private $view_registration = [];
+
+	/**
+	 * Registers a view such that sensible defaults are registered and hooked.
+	 *
+	 * @since 5.7.0
+	 * @since 5.10.0 Added optional route slug parameter to decouple from the view slug.
+	 *
+	 * @param string $slug View slug for locating the view file.
+	 * @param string $name View name.
+	 * @param string $class View class.
+	 * @param int $priority View registration priority.
+	 * @param string $route_slug The slug applied to the route for this view.
+	 *
+	 * @return View_Register
+	 */
+	public function register_view( $slug, $name, $class, $priority = 30, $route_slug = null ) {
+		return $this->view_registration[ $slug ] = new View_Register( $slug, $name, $class, $priority, $route_slug );
+	}
+
+	/**
+	 * Gets all generated View_Register objects.
+	 *
+	 * @since 5.7.0
+	 *
+	 * @return array
+	 */
+	public function get_view_registration_objects() {
+		return $this->view_registration;
+	}
+
+	/**
 	 * Returns an associative array of Views currently registered.
 	 *
 	 * @since  4.9.4

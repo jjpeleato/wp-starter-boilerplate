@@ -5,7 +5,7 @@
 
 namespace Automattic\WooCommerce\Admin\Notes;
 
-use Automattic\WooCommerce\Admin\Loader;
+use Automattic\WooCommerce\Admin\Features\Features;
 use Automattic\WooCommerce\Admin\Survey;
 
 defined( 'ABSPATH' ) || exit;
@@ -30,12 +30,12 @@ class NavigationFeedbackFollowUp {
 	 * @return Note
 	 */
 	public static function get_note() {
-		if ( ! Loader::is_feature_enabled( 'navigation' ) ) {
+		if ( ! Features::is_enabled( 'navigation' ) ) {
 			return;
 		}
 
 		// Check that the first note was created.
-		$data_store = \WC_Data_Store::load( 'admin-note' );
+		$data_store = Notes::load_data_store();
 		$note_ids   = $data_store->get_notes_with_name( 'wc-admin-navigation-feedback' );
 		if ( empty( $note_ids ) ) {
 			return;

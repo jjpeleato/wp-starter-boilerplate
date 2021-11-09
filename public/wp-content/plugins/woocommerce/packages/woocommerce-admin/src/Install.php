@@ -57,6 +57,18 @@ class Install {
 			'wc_admin_update_170_homescreen_layout',
 			'wc_admin_update_170_db_version',
 		),
+		'2.7.0'  => array(
+			'wc_admin_update_270_delete_report_downloads',
+			'wc_admin_update_270_db_version',
+		),
+		'2.7.1'  => array(
+			'wc_admin_update_271_update_task_list_options',
+			'wc_admin_update_271_db_version',
+		),
+		'2.8.0'  => array(
+			'wc_admin_update_280_order_status',
+			'wc_admin_update_280_db_version',
+		),
 	);
 
 	/**
@@ -298,6 +310,8 @@ class Install {
 			status varchar(255) NOT NULL,
 			is_primary boolean DEFAULT 0 NOT NULL,
 			actioned_text varchar(255) NOT NULL,
+			nonce_action varchar(255) NULL DEFAULT NULL,
+			nonce_name varchar(255) NULL DEFAULT NULL,
 			PRIMARY KEY (action_id),
 			KEY note_id (note_id)
 		) $collate;
@@ -425,6 +439,8 @@ class Install {
 
 		foreach ( self::get_db_update_callbacks() as $version => $update_callbacks ) {
 			if ( version_compare( $current_db_version, $version, '<' ) ) {
+				$completed_version_updates = 0;
+
 				foreach ( $update_callbacks as $update_callback ) {
 					$pending_jobs = WC()->queue()->search(
 						array(
@@ -446,6 +462,8 @@ class Install {
 						)
 					);
 
+					$completed_version_updates += count( $complete_jobs );
+
 					if ( empty( $pending_jobs ) && empty( $complete_jobs ) ) {
 						WC()->queue()->schedule_single(
 							time() + $loop,
@@ -457,6 +475,15 @@ class Install {
 					}
 
 					$loop++;
+
+				}
+
+				// Users have experienced concurrency issues where all update callbacks
+				// have run but the version option hasn't been updated. If all the updates
+				// for a version are complete, update the version option to reflect that.
+				// See: https:// github.com/woocommerce/woocommerce-admin/issues/5058.
+				if ( count( $update_callbacks ) === $completed_version_updates ) {
+					self::update_db_version( $version );
 				}
 			}
 		}
@@ -496,6 +523,8 @@ class Install {
 			'wc-admin-historical-data',
 			'wc-admin-review-shipping-settings',
 			'wc-admin-home-screen-feedback',
+			'wc-admin-effortless-payments-by-mollie',
+			'wc-admin-google-ads-and-marketing',
 		);
 
 		$additional_obsolete_notes_names = apply_filters(

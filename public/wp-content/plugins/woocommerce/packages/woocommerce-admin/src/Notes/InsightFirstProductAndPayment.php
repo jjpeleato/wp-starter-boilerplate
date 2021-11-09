@@ -32,13 +32,13 @@ class InsightFirstProductAndPayment {
 	 */
 	public static function get_note() {
 		// We want to show the note after 1 day.
-		if ( ! self::wc_admin_active_for( DAY_IN_SECONDS ) ) {
+		if ( ! self::is_wc_admin_active_in_date_range( 'week-1', DAY_IN_SECONDS ) ) {
 			return;
 		}
 
 		$note = new Note();
 		$note->set_title( __( 'Insight', 'woocommerce' ) );
-		$note->set_content( __( 'More than 80% of new merchants add the first product and have at least one payment method set up during the first week. We\'re here to help your business succeed! Do you find this type of insight useful?', 'woocommerce' ) );
+		$note->set_content( __( 'More than 80% of new merchants add the first product and have at least one payment method set up during the first week.<br><br>Do you find this type of insight useful?', 'woocommerce' ) );
 		$note->set_type( Note::E_WC_ADMIN_NOTE_SURVEY );
 		$note->set_name( self::NOTE_NAME );
 		$note->set_content_data( (object) array() );
@@ -46,6 +46,15 @@ class InsightFirstProductAndPayment {
 		$note->add_action(
 			'affirm-insight-first-product-and-payment',
 			__( 'Yes', 'woocommerce' ),
+			false,
+			Note::E_WC_ADMIN_NOTE_ACTIONED,
+			false,
+			__( 'Thanks for your feedback', 'woocommerce' )
+		);
+
+		$note->add_action(
+			'affirm-insight-first-product-and-payment',
+			__( 'No', 'woocommerce' ),
 			false,
 			Note::E_WC_ADMIN_NOTE_ACTIONED,
 			false,

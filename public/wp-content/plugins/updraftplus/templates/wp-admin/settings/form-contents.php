@@ -85,7 +85,7 @@ foreach ($default_options as $k => $v) {
 		<th></th>
 		<td><div>
 		<?php
-			echo apply_filters('updraftplus_fixtime_ftinfo', '<p>'.__('To fix the time at which a backup should take place,', 'updraftplus').' ('.__('e.g. if your server is busy at day and you want to run overnight', 'updraftplus').'), '.__('to take incremental backups', 'updraftplus').', '.__('or to configure more complex schedules', 'updraftplus').', <a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/shop/updraftplus-premium/").'" target="_blank">'.htmlspecialchars(__('use UpdraftPlus Premium', 'updraftplus')).'</a></p>');
+			echo apply_filters('updraftplus_fixtime_ftinfo', '<p>'.__('To fix the time at which a backup should take place,', 'updraftplus').' ('.__('e.g. if your server is busy at day and you want to run overnight', 'updraftplus').'), '.__('to take incremental backups', 'updraftplus').', '.__('or to configure more complex schedules', 'updraftplus').', <a href="'.$updraftplus->get_url('premium').'" target="_blank">'.htmlspecialchars(__('use UpdraftPlus Premium', 'updraftplus')).'</a></p>');
 		?>
 		</div></td>
 	</tr>
@@ -123,7 +123,7 @@ foreach ($default_options as $k => $v) {
 		<?php
 			if (false === apply_filters('updraftplus_storage_printoptions', false, $active_service)) {
 				echo '</div>';
-				echo '<p><a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/shop/morestorage/").'" target="_blank">'.htmlspecialchars(__('You can send a backup to more than one destination with an add-on.', 'updraftplus')).'</a></p>';
+				echo '<p><a href="'.$updraftplus->get_url('premium').'" target="_blank">'.htmlspecialchars(__('You can send a backup to more than one destination with Premium.', 'updraftplus')).'</a></p>';
 			}
 		?>
 		
@@ -145,7 +145,7 @@ foreach ($default_options as $k => $v) {
 		<th><?php _e('Include in files backup', 'updraftplus');?>:</th>
 		<td>
 			<?php echo $updraftplus_admin->files_selector_widgetry('', true, true); ?>
-			<p><?php echo apply_filters('updraftplus_admin_directories_description', __('The above directories are everything, except for WordPress core itself which you can download afresh from WordPress.org.', 'updraftplus').' <a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/shop/").'" target="_blank">'.htmlspecialchars(__('See also the "More Files" add-on from our shop.', 'updraftplus')).'</a>'); ?></p>
+			<p><?php echo apply_filters('updraftplus_admin_directories_description', __('The above directories are everything, except for WordPress core itself which you can download afresh from WordPress.org.', 'updraftplus').' <a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/shop/").'" target="_blank">'.htmlspecialchars(__('See also the Premium version from our shop.', 'updraftplus')).'</a>'); ?></p>
 		</td>
 	</tr>
 </table>
@@ -278,7 +278,7 @@ foreach ($default_options as $k => $v) {
 				</div>
 			</label>
 			<?php
-				if (!class_exists('UpdraftPlus_Addon_Reporting')) echo '<a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/shop/reporting/").'" target="_blank">'.__('For more reporting features, use the Reporting add-on.', 'updraftplus').'</a>';
+				if (!class_exists('UpdraftPlus_Addon_Reporting')) echo '<a href="'.$updraftplus->get_url('premium').'" target="_blank">'.__('For more reporting features, use the Premium version', 'updraftplus').'</a>';
 			?>
 		</td>
 	</tr>
@@ -288,8 +288,7 @@ foreach ($default_options as $k => $v) {
 ?>
 </table>
 
-<script type="text/javascript">
-/* <![CDATA[ */
+<script>
 <?php
 	$storage_objects_and_ids = UpdraftPlus_Storage_Methods_Interface::get_storage_objects_and_ids(array_keys($updraftplus->backup_methods));
 	// In PHP 5.5+, there's array_column() for this
@@ -300,7 +299,6 @@ foreach ($default_options as $k => $v) {
 
 	echo $updraftplus_admin->get_settings_js($method_objects, $really_is_writable, $updraft_dir, $active_service);
 ?>
-/* ]]> */
 </script>
 <table class="form-table width-900">
 	<tr>

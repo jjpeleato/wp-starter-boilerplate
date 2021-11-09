@@ -2,8 +2,10 @@
 /**
  * The Template for displaying meta-box tabs.
  *
- * @var array  $tabs  The tabs.
- * @var string $class The CSS Class.
+ * @var array  $tabs        The tabs.
+ * @var string $class       The CSS Class.
+ * @var string $meta_box_id The ID of the meta-box.
+ *
  * @package YITH\PluginFramework\Templates
  */
 
@@ -15,6 +17,66 @@ $classes  = yith_plugin_fw_remove_duplicate_classes( $classes );
 $ul_style = count( $tabs ) <= 1 ? 'display:none;' : '';
 $i        = 0;
 do_action( 'yit_before_metaboxes_tab' );
+
+// Allow SVGs.
+$label_extra_allowed_tags = array(
+	'svg'      => array(
+		'class'           => true,
+		'aria-hidden'     => true,
+		'aria-labelledby' => true,
+		'role'            => true,
+		'xmlns'           => true,
+		'width'           => true,
+		'height'          => true,
+		'viewbox'         => true,
+		'version'         => true,
+		'x'               => true,
+		'y'               => true,
+		'style'           => true,
+	),
+	'circle'   => array(
+		'class' => true,
+		'cx'    => true,
+		'cy'    => true,
+		'r'     => true,
+	),
+	'g'        => array( 'fill' => true ),
+	'polyline' => array(
+		'class'  => true,
+		'points' => true,
+	),
+	'polygon'  => array(
+		'class'  => true,
+		'points' => true,
+	),
+	'line'     => array(
+		'class' => true,
+		'x1'    => true,
+		'x2'    => true,
+		'y1'    => true,
+		'y2'    => true,
+	),
+	'title'    => array( 'title' => true ),
+	'path'     => array(
+		'class' => true,
+		'd'     => true,
+		'fill'  => true,
+	),
+	'rect'     => array(
+		'class'  => true,
+		'x'      => true,
+		'y'      => true,
+		'fill'   => true,
+		'width'  => true,
+		'height' => true,
+	),
+	'style'    => array(
+		'type' => true,
+	),
+);
+
+$label_allowed_tags = array_merge( wp_kses_allowed_html( 'post' ), $label_extra_allowed_tags );
+$label_allowed_tags = apply_filters( 'yith_plugin_fw_metabox_label_allowed_tags', $label_allowed_tags, $meta_box_id );
 
 ?>
 	<div class="yith-plugin-fw metaboxes-tab <?php echo esc_attr( $classes ); ?>">
@@ -46,11 +108,7 @@ do_action( 'yit_before_metaboxes_tab' );
 				?>
 				<li id="<?php echo esc_attr( $anchor_id ); ?>" class="<?php echo esc_attr( $class ); ?>" <?php echo yith_field_deps_data( $_tab ); ?>>
 					<a href="#<?php echo esc_attr( urldecode( $key ) ); ?>">
-						<?php
-						// This is not escaped to allow, for example, svg icons and custom html in the tab title.
-						// TODO: escape it and provide a specific way to add icons.
-						echo $_tab['label']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-						?>
+						<?php echo wp_kses( $_tab['label'], $label_allowed_tags ); ?>
 					</a>
 				</li>
 			<?php endforeach; ?>
@@ -84,7 +142,23 @@ do_action( 'yit_before_metaboxes_tab' );
 					if ( $pos ) {
 						$field_name = substr_replace( $field_name, '', $pos, 1 );
 					}
-					$value                  = yit_get_post_meta( $post->ID, $field_name );
+
+					/**
+					 * APPLY_FILTER: yith_plugin_fw_metabox_{meta_box_id}_field_pre_get_value
+					 * Allow filtering values for meta-box fields instead of retrieving them by post_meta(s).
+					 *
+					 * @param mixed|null $value      The value to be filtered. Set 'null' to retrieve it by the related post_meta (Default: null).
+					 * @param int        $post_id    The post ID.
+					 * @param string     $field_name The field name.
+					 * @param array      $field      The field.
+					 *
+					 * @since 3.7.6
+					 */
+					$value = apply_filters( "yith_plugin_fw_metabox_{$meta_box_id}_field_pre_get_value", null, $post->ID, $field_name, $field );
+					if ( is_null( $value ) ) {
+						$value = yit_get_post_meta( $post->ID, $field_name );
+					}
+
 					$field['value']         = false === $value ? ( isset( $field['std'] ) ? $field['std'] : '' ) : $value;
 					$field['checkboxgroup'] = ( 'checkbox' === $field['type'] && isset( $field['checkboxgroup'] ) ) ? ' ' . $field['checkboxgroup'] : '';
 					$container_classes      = 'the-metabox ' . $field['type'] . $field['checkboxgroup'] . ' clearfix ';

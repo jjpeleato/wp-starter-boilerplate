@@ -51,7 +51,7 @@ function ao_ccss_render_adv() {
                             <?php _e( 'Force Include CSS selectors', 'autoptimize' ); ?>
                         </th>
                         <td>
-                            <textarea id="autoptimize_ccss_finclude" name="autoptimize_ccss_finclude" rows='3' maxlenght='500' style="width:100%;" placeholder="<?php _e( '.button-special,//#footer', 'autoptimize' ); ?>"><?php echo trim( $ao_ccss_finclude ); ?></textarea>
+                            <textarea id="autoptimize_ccss_finclude" name="autoptimize_ccss_finclude" rows='3' maxlenght='500' style="width:100%;" placeholder="<?php _e( '.button-special,//#footer', 'autoptimize' ); ?>"><?php echo trim( esc_textarea( $ao_ccss_finclude ) ); ?></textarea>
                             <p class="notes">
                                 <?php _e( 'Force include CSS selectors can be used to style dynamic content that is not part of the HTML that is seen during the Critical CSS generation. To use this feature, add comma separated values with both simple strings and/or regular expressions to match the desired selectors. Regular expressions must be preceeded by two forward slashes. For instance: <code>.button-special,//#footer</code>. In this example <code>.button-special</code> will match <code>.button-special</code> selector only, while <code>//#footer</code> will match <code>#footer</code>, <code>#footer-address</code> and <code>#footer-phone</code> selectors in case they exist.<br />Do take into account that changing this setting will only affect new/ updated rules, so you might want to remove old rules and clear your page cache to expedite the forceIncludes becoming used.', 'autoptimize' ); ?>
                             </p>
@@ -103,12 +103,13 @@ function ao_ccss_render_adv() {
                     </tr>
                     <tr>
                         <th scope="row">
-                            <?php _e( 'Defer jQuery and other non-aggregated JS-files?', 'autoptimize' ); ?>
+                            <?php _e( 'Defer jQuery and other non-aggregated JS-files? (deprecated)', 'autoptimize' ); ?>
                         </th>
                         <td>
                             <input type="checkbox" id="autoptimize_ccss_deferjquery" name="autoptimize_ccss_deferjquery" value="1" <?php checked( 1 == $ao_ccss_deferjquery ); ?>>
                             <p class="notes">
                                 <?php _e( 'Defer all non-aggregated JS, including jQuery and inline JS to fix remaining render-blocking issues. Make sure to test your site thoroughly when activating this option!', 'autoptimize' ); ?>
+                                <?php _e( '<b>This functionality will be removed in a next major version of Autoptimize</b>, being replaced by the combination of the "do not aggregate but defer JS" + "defer inline JS" options on the main settings page.', 'autoptimize' ); ?>
                             </p>
                         </td>
                     </tr>
@@ -128,7 +129,7 @@ function ao_ccss_render_adv() {
                             <?php _e( 'Bound domain', 'autoptimize' ); ?>
                         </th>
                         <td>
-                            <input type="text" id="autoptimize_ccss_domain" name="autoptimize_ccss_domain" style="width:100%;" placeholder="<?php _e( 'Don\'t leave this empty, put e.g. https://example.net/ or simply \'none\' to disable domain binding.', 'autoptimize' ); ?>" value="<?php echo trim( $ao_ccss_domain ); ?>">
+                            <input type="text" id="autoptimize_ccss_domain" name="autoptimize_ccss_domain" style="width:100%;" placeholder="<?php _e( 'Don\'t leave this empty, put e.g. https://example.net/ or simply \'none\' to disable domain binding.', 'autoptimize' ); ?>" value="<?php echo trim( esc_attr( $ao_ccss_domain ) ); ?>">
                             <p class="notes">
                                 <?php _e( 'Only requests from this domain will be sent for Critical CSS generation (pricing is per domain/ month).', 'autoptimize' ); ?>
                             </p>

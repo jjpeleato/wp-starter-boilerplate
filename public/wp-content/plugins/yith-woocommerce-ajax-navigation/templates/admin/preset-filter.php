@@ -3,14 +3,16 @@
  * Preset filter - Admin view
  *
  * @author  YITH
- * @package YITH WooCommerce Ajax Product Filter
+ * @package YITH\AjaxProductFilter\Templates\Admin
  * @version 4.0.0
  */
 
 /**
- * @var $preset bool|YITH_WCAN_Preset
- * @var $filter YITH_WCAN_Filter
- * @var $id     int
+ * Variables available for this template:
+ *
+ * @var $preset    bool|YITH_WCAN_Preset
+ * @var $filter    YITH_WCAN_Filter
+ * @var $filter_id int
  */
 
 if ( ! defined( 'YITH_WCAN' ) ) {
@@ -18,47 +20,47 @@ if ( ! defined( 'YITH_WCAN' ) ) {
 } // Exit if accessed directly
 ?>
 
-<div id="filter_<?php echo esc_attr( $id ); ?>" class="yith-toggle-row ui-sortable-handle" data-item_key="<?php echo esc_attr( $id ); ?>">
+<div id="filter_<?php echo esc_attr( $filter_id ); ?>" class="yith-toggle-row ui-sortable-handle" data-item_key="<?php echo esc_attr( $filter_id ); ?>">
 	<div class="yith-toggle-title">
 		<span class="title-arrow material-icons">keyboard_arrow_right</span>
 		<h3 class="title">
 				<?php
-				$title = $filter->get_title();
+				$filter_title = $filter->get_title();
 
-				if ( $title ) {
-					echo esc_html( $title );
+				if ( $filter_title ) {
+					echo esc_html( $filter_title );
 				} else {
-					echo sprintf( '<span class="no-title">%s</span>', _x( '&lt; no title &gt;', '[Admin] Message shown when filter has empty title', 'yith-woocommerce-ajax-navigation' ) );
+					echo wp_kses_post( sprintf( '<span class="no-title">%s</span>', _x( '&lt; no title &gt;', '[Admin] Message shown when filter has empty title', 'yith-woocommerce-ajax-navigation' ) ) );
 				}
 				?>
 		</h3>
 		<?php
 		yith_plugin_fw_get_field(
 			array(
-				'id'    => "filters_{$id}_enabled",
-				'name'  => "filters[{$id}][enabled]",
+				'id'    => "filters_{$filter_id}_enabled",
+				'name'  => "filters[{$filter_id}][enabled]",
 				'value' => $filter->is_enabled() ? 'yes' : 'no',
 				'type'  => 'onoff',
 			),
 			true
 		);
 		?>
-		<span class="show-on-hover delete material-icons">delete_outline</span>
-		<span class="show-on-hover clone material-icons">filter_none</span>
+		<span class="show-on-hover delete yith-icon-trash"></span>
+		<span class="show-on-hover clone yith-icon-edit"></span>
 	</div>
 	<div class="yith-toggle-content">
 		<?php
-		$fields = $filter->get_fields();
+		$fields = YITH_WCAN_Filter::get_fields();
 
 		if ( ! empty( $fields ) ) :
 			foreach ( $fields as $field_slug => $field ) :
-				$field_id = "filters_{$id}_{$field_slug}";
-				$field_name = "filters[{$id}][{$field_slug}]";
+				$field_id   = "filters_{$filter_id}_{$field_slug}";
+				$field_name = "filters[{$filter_id}][{$field_slug}]";
 
 				$field_args = array_merge(
 					$field,
 					array(
-						'index'  => $id,
+						'index'  => $filter_id,
 						'id'     => $field_id,
 						'name'   => $field_name,
 						'filter' => $filter,
@@ -67,7 +69,7 @@ if ( ! defined( 'YITH_WCAN' ) ) {
 				);
 
 				// special case for terms.
-				if ( 'terms' === $field_slug ) {
+				if ( 'term_ids' === $field_slug ) {
 					$field_args['options'] = $filter->get_terms( 'id=>name' );
 				}
 
@@ -77,7 +79,7 @@ if ( ! defined( 'YITH_WCAN' ) ) {
 					<?php yith_plugin_fw_get_field( $field_args, true ); ?>
 
 					<?php if ( ! empty( $field['desc'] ) ) : ?>
-						<span class="description"><?php echo esc_html( $field['desc'] ); ?></span>
+						<span class="description"><?php echo wp_kses_post( $field['desc'] ); ?></span>
 					<?php endif; ?>
 				</div>
 				<?php

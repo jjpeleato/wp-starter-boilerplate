@@ -37,6 +37,7 @@ class Admin_Init {
 		rank_math()->admin_assets = new Assets();
 
 		$this->load_review_reminders();
+		$this->load_pro_notice();
 		$this->load_setup_wizard();
 		$this->load_post_columns_and_filters();
 
@@ -87,6 +88,21 @@ class Admin_Init {
 	}
 
 	/**
+	 * Load Pro reminder notice.
+	 */
+	private function load_pro_notice() {
+		if ( ! is_main_site() ) {
+			return;
+		}
+
+		if ( defined( 'RANK_MATH_PRO_FILE' ) || get_option( 'rank_math_already_upgraded' ) ) {
+			return;
+		}
+
+		$this->run( [ new Pro_Notice() ] );
+	}
+
+	/**
 	 * Run all the runners.
 	 *
 	 * @param array $runners Instances of runner classes.
@@ -101,7 +117,7 @@ class Admin_Init {
 	 * Load setup wizard.
 	 */
 	private function load_setup_wizard() {
-		if ( filter_input( INPUT_GET, 'page' ) === 'rank-math-wizard' || filter_input( INPUT_POST, 'action' ) === 'rank_math_save_wizard' ) {
+		if ( Helper::is_wizard() ) {
 			new Setup_Wizard();
 		}
 	}

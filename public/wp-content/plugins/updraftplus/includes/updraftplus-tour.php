@@ -159,7 +159,7 @@ class UpdraftPlus_Tour {
 				'text' => __('Thank you for taking the tour.', 'updraftplus')
 					.'<div class="ud-notice">'
 					.'<h3>'.__('UpdraftPlus Premium and addons', 'updraftplus').'</h3>'
-					.__('UpdraftPlus Premium has many more exciting features!', 'updraftplus').' <a href="'.apply_filters('updraftplus_com_link', 'https://updraftplus.com/shop/updraftplus-premium/').'" target="_blank">'.__('Find out more here.', 'updraftplus').'</a>'
+					.__('UpdraftPlus Premium has many more exciting features!', 'updraftplus').' <a href="'.$updraftplus->get_url('premium').'" target="_blank">'.__('Find out more here.', 'updraftplus').'</a>'
 					.'</div>',
 				'attach_to' => '#updraft-navtab-addons top',
 				'button' => __('Finish', 'updraftplus')

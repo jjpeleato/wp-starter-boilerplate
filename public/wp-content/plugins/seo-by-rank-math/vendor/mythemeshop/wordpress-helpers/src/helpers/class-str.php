@@ -160,11 +160,12 @@ class Str {
 	/**
 	 * Convert a number to K, M, B, etc.
 	 *
-	 * @param int|double $number Number which to convert to pretty string.
+	 * @param int|double $number    Number which to convert to pretty string.
+	 * @param int        $precision Decimal places in the human-readable format.
 	 *
 	 * @return string
 	 */
-	public static function human_number( $number ) {
+	public static function human_number( $number, $precision = 1 ) {
 
 		if ( ! is_numeric( $number ) ) {
 			return 0;
@@ -184,7 +185,7 @@ class Str {
 		$units = array( '', 'K', 'M', 'B', 'T', 'Q' );
 
 		if ( array_key_exists( $unit, $units ) ) {
-			return sprintf( '%s%s%s', $negative, rtrim( number_format( $number / pow( 1000, $unit ), 1 ), '.0' ), $units[ $unit ] );
+			return sprintf( '%s%s%s', $negative, rtrim( number_format( $number / pow( 1000, $unit ), $precision ), '.0' ), $units[ $unit ] );
 		}
 
 		return $number;
@@ -195,11 +196,13 @@ class Str {
 	 *
 	 * @param {string} $str    Text to truncate.
 	 * @param {number} $length Length to truncate for.
+	 * @param {string} $append Append to the end if string is truncated.
 	 *
 	 * @return {string} Truncated text.
 	 */
-	public static function truncate( $str, $length = 110 ) {
+	public static function truncate( $str, $length = 110, $append = '' ) {
 		$str     = wp_strip_all_tags( $str, true );
+		$strlen  = mb_strlen( $str );
 		$excerpt = mb_substr( $str, 0, $length );
 
 		// Remove part of an entity at the end.
@@ -207,6 +210,10 @@ class Str {
 		if ( $str !== $excerpt ) {
 			$strrpos = function_exists( 'mb_strrpos' ) ? 'mb_strrpos' : 'strrpos';
 			$excerpt = mb_substr( $str, 0, $strrpos( trim( $excerpt ), ' ' ) );
+		}
+
+		if ( $strlen > $length ) {
+			$excerpt .= $append;
 		}
 
 		return $excerpt;

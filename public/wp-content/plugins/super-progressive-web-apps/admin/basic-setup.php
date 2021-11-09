@@ -36,6 +36,9 @@ if ( ! defined('ABSPATH') ) exit;
  * @since 1.6 Added checks for multisite compatibility.
  */
 function superpwa_activate_plugin( $network_active ) {
+    
+    // Adding option to show/hide newsletter form
+	add_option( 'superpwa_hide_newsletter', 'no' );
 	
 	// Not network active i.e. plugin is activated on a single install (normal WordPress install) or a single site on a multisite network
 	if ( ! $network_active ) {
@@ -48,6 +51,7 @@ function superpwa_activate_plugin( $network_active ) {
 		
 	// If we are here, then plugin is network activated on a multisite. Set transient for activation notice on network admin.
 	set_transient( 'superpwa_network_admin_notice_activation', true, 60 );
+
 }
 register_activation_hook( SUPERPWA_PATH_ABS . 'superpwa.php', 'superpwa_activate_plugin' );
 
@@ -437,6 +441,14 @@ function superpwa_generate_sw_and_manifest_on_fly( $query ) {
 		echo json_encode( superpwa_manifest_template() );
 		exit();
 	}
+    // Needed new query_vars of pagename for Wp Fastest Cache 
+	if(class_exists('WpFastestCache')){
+		$query_vars_as_string = isset($query->query_vars['pagename']) ? $query->query_vars['pagename'] : false;
+		if($query_vars_as_string == false){
+		$query_vars_as_string = isset($query->query_vars['name']) ? $query->query_vars['name'] : '';
+	    }
+    }
+
 	if ( strpos( $query_vars_as_string, $sw_filename ) !== false ) {
 		header( 'Content-Type: text/javascript' );
 		echo superpwa_sw_template();

@@ -16,13 +16,13 @@ if (!defined('I_AM_TESTING') || !I_AM_TESTING) die('Please define I_AM_TESTING.'
 require_once(dirname(__FILE__).'/class-updraft-semaphore.php');
 
 class Test_Logger_1 {
-	function log($level, $message) {
+	function log($message, $level) {
 		echo "Test_Logger_1::log(level=$level, message=$message)\n";
 	}
 }
 
 class Test_Logger_2 {
-	function log($level, $message) {
+	function log($message, $level) {
 		echo "Test_Logger_2::log(level=$level, message=$message)\n";
 	}
 }

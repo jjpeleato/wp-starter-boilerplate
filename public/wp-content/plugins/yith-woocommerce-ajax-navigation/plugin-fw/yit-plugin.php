@@ -25,6 +25,7 @@ require_once 'includes/class-yit-plugin-common.php';
 require_once 'includes/class-yit-gradients.php';
 require_once 'includes/class-yit-plugin-licence.php';
 require_once 'includes/class-yit-theme-licence.php';
+require_once 'includes/class-yit-help-desk.php';
 require_once 'includes/class-yit-video.php';
 require_once 'includes/class-yit-upgrade.php';
 require_once 'includes/class-yit-pointers.php';
@@ -34,8 +35,8 @@ require_once 'includes/class-yith-debug.php';
 require_once 'includes/class-yith-dashboard.php';
 require_once 'includes/privacy/class-yith-privacy.php';
 require_once 'includes/privacy/class-yith-privacy-plugin-abstract.php';
-require_once 'includes/promo/yith-promo.php';
 require_once 'includes/class-yith-system-status.php';
+require_once 'includes/class-yith-post-type-admin.php';
 
 // Gutenberg Support.
 if ( class_exists( 'WP_Block_Type_Registry' ) ) {
@@ -45,9 +46,9 @@ if ( class_exists( 'WP_Block_Type_Registry' ) ) {
 require_once 'includes/builders/elementor/class-yith-elementor.php';
 
 // load from theme folder...
-load_textdomain( 'yith-plugin-fw', get_template_directory() . '/core/plugin-fw/yith-plugin-fw-' . apply_filters( 'plugin_locale', get_locale(), 'yith-plugin-fw' ) . '.mo' ) ||
+load_textdomain( 'yith-plugin-fw', get_template_directory() . '/core/plugin-fw/yith-plugin-fw-' . apply_filters( 'plugin_locale', determine_locale(), 'yith-plugin-fw' ) . '.mo' ) ||
 // ...or from plugin folder.
-load_textdomain( 'yith-plugin-fw', dirname( __FILE__ ) . '/languages/yith-plugin-fw-' . apply_filters( 'plugin_locale', get_locale(), 'yith-plugin-fw' ) . '.mo' );
+load_textdomain( 'yith-plugin-fw', dirname( __FILE__ ) . '/languages/yith-plugin-fw-' . apply_filters( 'plugin_locale', determine_locale(), 'yith-plugin-fw' ) . '.mo' );
 
 add_filter( 'plugin_row_meta', 'yit_plugin_fw_row_meta', 20, 4 );
 
@@ -65,6 +66,11 @@ if ( ! function_exists( 'yit_plugin_fw_row_meta' ) ) {
 	 * @since  3.0.17
 	 */
 	function yit_plugin_fw_row_meta( $plugin_meta, $plugin_file, $plugin_data, $status ) {
+		if ( false === strstr( $plugin_file, 'yith' ) ) {
+			// Not an YITH plugin.
+			return $plugin_meta;
+		}
+
 		$base_uri = array(
 			'live_demo'       => 'https://plugins.yithemes.com/',
 			'documentation'   => 'https://docs.yithemes.com/',
@@ -107,6 +113,8 @@ if ( ! function_exists( 'yit_plugin_fw_row_meta' ) ) {
 		$fields            = isset( $new_row_meta_args['to_show'] ) ? $new_row_meta_args['to_show'] : array();
 		$slug              = isset( $new_row_meta_args['slug'] ) ? $new_row_meta_args['slug'] : '';
 		$is_premium        = isset( $new_row_meta_args['is_premium'] ) ? $new_row_meta_args['is_premium'] : '';
+		$utm_campaign      = 'plugin-version-author-uri';
+		$utm_source        = $is_premium ? 'wp-premium-dashboard' : 'wp-free-dashboard';
 
 		if ( ! ! $is_premium ) {
 			$to_remove = array_search( 'premium_version', $fields, true );
@@ -155,13 +163,20 @@ if ( ! function_exists( 'yit_plugin_fw_row_meta' ) ) {
 			}
 
 			if ( ! empty( $url ) && ! empty( $label ) ) {
-				$url           = trailingslashit( $url );
+				$url           = yith_plugin_fw_add_utm_data( $url, $slug, $utm_campaign, $utm_source );
 				$plugin_meta[] = sprintf( '<a href="%s" target="_blank"><span class="%s"></span>%s</a>', $url, $icon, $label );
 			}
 		}
 
-		// Author Name Hack.
-		$plugin_meta = preg_replace( '/>YITHEMES</', '>YITH<', $plugin_meta );
+		if ( isset( $plugin_meta[1] ) ) {
+			$utm_author_uri = yith_plugin_fw_add_utm_data( $plugin_data['AuthorURI'], $slug, $utm_campaign, $utm_source );
+			$plugin_meta[1] = str_replace( $plugin_data['AuthorURI'], $utm_author_uri, $plugin_meta[1] );
+		}
+
+		if ( isset( $plugin_meta[2] ) ) {
+			$utm_plugin_uri = yith_plugin_fw_add_utm_data( $plugin_data['PluginURI'], $slug, $utm_campaign, $utm_source );
+			$plugin_meta[2] = str_replace( $plugin_data['PluginURI'], $utm_plugin_uri, $plugin_meta[2] );
+		}
 
 		return $plugin_meta;
 	}

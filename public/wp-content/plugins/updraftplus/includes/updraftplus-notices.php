@@ -189,6 +189,16 @@ class UpdraftPlus_Notices extends Updraft_Notices {
 				'dismiss_time' => 'dismissautobackup',
 				'supported_positions' => $this->autobackup_bottom_or_report,
 			),
+			'subscriben' => array(
+				'prefix' => '',
+				'title' => 'Subscriben ' .__('by', 'updraftplus'). ' UpdraftPlus',
+				'text' => __("The WordPress subscription extension for WooCommerce store owners.", "updraftplus"),
+				'image' => 'notices/subscriben.png',
+				'button_link' => 'https://subscribenplugin.com',
+				'button_meta' => 'read_more',
+				'dismiss_time' => 'dismiss_notice',
+				'supported_positions' => $this->anywhere,
+			),
 			'wp-optimize' => array(
 				'prefix' => '',
 				'title' => 'WP-Optimize',

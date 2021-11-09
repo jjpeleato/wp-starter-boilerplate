@@ -1,6 +1,6 @@
 <?php
 /**
- * Search console ui.
+ * Search console UI.
  *
  * @package    RankMath
  * @subpackage RankMath\Admin\Wizard
@@ -168,7 +168,7 @@ $analytic_classes = Helper::classnames(
 			</div>
 		</div>
 
-		<div class="cmb-row cmb-type-toggle">
+		<div class="cmb-row cmb-type-toggle <?php echo ! $is_pro_active ? 'cmb-redirector-element' : ''; ?>" <?php echo ! $is_pro_active ? 'data-url="https://rankmath.com/free-vs-pro/?utm_source=Plugin&utm_medium=Anonymize%20IP&utm_campaign=WP"' : ''; ?>>
 			<div class="cmb-td">
 				<label class="cmb2-toggle">
 					<input type="checkbox" class="regular-text notrack" name="anonymize-ip" id="anonymize-ip" value="on"<?php checked( $analytics['anonymize_ip'] ); ?><?php disabled( ! $is_pro_active ); ?>>
@@ -193,7 +193,7 @@ $analytic_classes = Helper::classnames(
 			</div>
 		</div>
 
-		<div class="cmb-row cmb-type-toggle">
+		<div class="cmb-row cmb-type-toggle <?php echo ! $is_pro_active ? 'cmb-redirector-element' : ''; ?>" <?php echo ! $is_pro_active ? 'data-url="https://rankmath.com/pricing/?utm_source=Plugin&utm_medium=Cookieless%20IP&utm_campaign=WP"' : ''; ?>>
 			<div class="cmb-td">
 				<label class="cmb2-toggle">
 					<input type="checkbox" class="regular-text notrack" name="cookieless-ga" id="cookieless-ga" value="on"<?php checked( $analytics['cookieless_ga'] ); ?><?php disabled( ! $is_pro_active ); ?>>
@@ -218,7 +218,7 @@ $analytic_classes = Helper::classnames(
 			</div>
 		</div>
 
-		<div class="cmb-row cmb-type-toggle">
+		<div class="cmb-row cmb-type-toggle <?php echo ! $is_pro_active ? 'cmb-redirector-element' : ''; ?>" <?php echo ! $is_pro_active ? 'data-url="https://rankmath.com/pricing/?utm_source=Plugin&utm_medium=Localjs%20IP&utm_campaign=WP"' : ''; ?>>
 			<div class="cmb-td">
 				<label class="cmb2-toggle">
 					<input type="checkbox" class="regular-text notrack" name="local-ga-js" id="local-ga-js" value="on"<?php checked( $analytics['local_ga_js'] ); ?><?php disabled( ! $is_pro_active ); ?>>
@@ -316,3 +316,21 @@ $adsense_classes = Helper::classnames(
 </div>
 <?php
 // phpcs:enable
+
+if ( Helper::is_wizard() && ! RankMath\Analytics\Email_Reports::are_fields_hidden() ) {
+	?>
+	<div class="cmb-row email-reports-header text-center" style="border-top:0;">
+		<h1><?php esc_html_e( 'Email Reports', 'rank-math' ); ?></h1>
+		<div class="email-reports-desc text-center"><?php esc_html_e( 'Receive Analytics reports periodically in email.', 'rank-math' ); ?> <a href="#" target="_blank"><?php esc_html_e( 'Learn more about Email Reports.', 'rank-math' ); ?></a></div>
+	</div>
+	<div class="cmb-row cmb-type-toggle cmb2-id-console-email-reports" data-fieldtype="toggle">
+		<div class="cmb-th">
+			<label for="console_email_reports"><?php esc_html_e( 'Email Reports', 'rank-math' ); ?></label>
+		</div>
+		<div class="cmb-td">
+			<label class="cmb2-toggle"><input type="checkbox" class="regular-text" name="console_email_reports" id="console_email_reports" value="on" <?php checked( Helper::get_settings( 'general.console_email_reports' ) ); ?> data-hash="7e0rimtbvig0"><span class="cmb2-slider"><svg width="3" height="8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 6" class="toggle_on" role="img" aria-hidden="true" focusable="false"><path d="M0 0h2v6H0z"></path></svg><svg width="8" height="8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 6 6" class="toggle_off" role="img" aria-hidden="true" focusable="false"><path d="M3 1.5c.8 0 1.5.7 1.5 1.5S3.8 4.5 3 4.5 1.5 3.8 1.5 3 2.2 1.5 3 1.5M3 0C1.3 0 0 1.3 0 3s1.3 3 3 3 3-1.3 3-3-1.3-3-3-3z"></path></svg></span></label>
+		</div>
+	</div>
+	<?php
+	do_action( 'rank_math/analytics/options/wizard_after_email_report' );
+}

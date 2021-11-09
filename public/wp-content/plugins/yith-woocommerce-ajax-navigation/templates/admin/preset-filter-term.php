@@ -3,11 +3,13 @@
  * Preset filter - Term edit
  *
  * @author  YITH
- * @package YITH WooCommerce Ajax Product Filter
+ * @package YITH\AjaxProductFilter\Templates\Admin
  * @version 4.0.0
  */
 
 /**
+ * Variables available for this template:
+ *
  * @var $id           int
  * @var $term         WP_Term
  * @var $term_id      int
@@ -40,15 +42,15 @@ if ( ! defined( 'YITH_WCAN' ) ) {
 			<?php
 			yith_plugin_fw_get_field(
 				array(
-					'id' => "filters_{$id}_terms_{$term_id}_color_1",
-					'name' => "filters[$id][terms][{$term_id}][color_1]",
-					'value' => ! empty( $term_options['color_1'] ) ? $term_options['color_1'] : '#007694',
-					'type' => 'colorpicker',
+					'id'      => "filters_{$id}_terms_{$term_id}_color_1",
+					'name'    => "filters[$id][terms][{$term_id}][color_1]",
+					'value'   => ! empty( $term_options['color_1'] ) ? $term_options['color_1'] : '#007694',
+					'type'    => 'colorpicker',
 					'default' => '#007694',
 				),
 				true
 			);
-		?>
+			?>
 		</p>
 	</div>
 

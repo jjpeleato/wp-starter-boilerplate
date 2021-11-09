@@ -33,25 +33,28 @@ $item_row_hover_border: #c4cfd3;
 }
 
 @mixin show_on_hover {
+	align-items: center;
 	background: #fff;
+	box-shadow: 0px 2px 7px rgb(170 198 222 / 50%);
 	border-radius: 100%;
 	color: #20659d;
-	display: none;
+	display: flex;
 	float: right;
-	font-size: 21px;
+	font-size: 17px;
 	height: 35px;
 	margin-right: 8px;
+	opacity: 0;
+	transform: translate( 0, -70px );
+	transition: all ease .3s;
 	width: 35px;
 	justify-content: center;
-	align-items: center;
-	box-shadow: 0 0 10px 0 rgba(167, 217, 236, 0.6);
 
 	i {
-		font-size: 21px;
+		font-size: 17px;
 	}
 
 	&:hover {
-		box-shadow: 0 0 10px 0 rgba(167, 217, 236, 1);
+		background: #f3f3f3;
 	}
 
 	&.delete {
@@ -186,22 +189,26 @@ $item_row_hover_border: #c4cfd3;
 							position: relative;
 
 							input {
-								background: #fff;
+								background: #f1f1f1;
+								color: #999;
+								border: 1px dashed #ccc;
 								cursor: pointer;
 							}
 
 							&:after {
 								color: #9d9d9d;
-								content: 'link';
-								font-family: 'Material Icons';
-								font-size: 21px;
+								content: '\f101';
+								font-family: 'yith-icon';
+								font-size: 14px;
 								position: absolute;
-								right: 10px;
-								top: 6px;
+								right: 15px;
+								top: 10px;
 							}
 						}
 
 						&.actions {
+							overflow: hidden;
+
 							a {
 								float: right;
 
@@ -219,7 +226,8 @@ $item_row_hover_border: #c4cfd3;
 
 					&:hover td {
 						&.actions a.show-on-hover {
-							display: flex;
+							opacity: 1;
+							transform: none;
 						}
 					}
 				}
@@ -352,6 +360,23 @@ $item_row_hover_border: #c4cfd3;
 		font-size: 14px;
 	}
 
+	// currency label
+	[data-currency] + .currency {
+		margin-left: 10px;
+	}
+
+	// validation
+	input.validation-error {
+		border-color: red!important;
+	}
+
+	input.validation-error + span.validation-message {
+		color: red;
+		display: block;
+		margin-top: 5px;
+	}
+
+	// filters row
 	.yith-toggle-row {
 		@include item_row;
 
@@ -367,6 +392,7 @@ $item_row_hover_border: #c4cfd3;
 		.yith-toggle-title {
 			cursor: pointer;
 			padding: 20px 15px;
+			overflow: hidden;
 
 			.no-title {
 				color: #757575;
@@ -387,7 +413,8 @@ $item_row_hover_border: #c4cfd3;
 			}
 
 			&:hover .show-on-hover {
-				display: flex;
+				opacity: 1;
+				transform: none;
 			}
 
 			.yith-plugin-fw-field-wrapper {
@@ -401,6 +428,10 @@ $item_row_hover_border: #c4cfd3;
 		.yith-toggle-content-row {
 			width: 100%;
 
+			&.disabled {
+				display: none!important;
+			}
+
 			& > label {
 				width: 180px;
 			}
@@ -412,6 +443,10 @@ $item_row_hover_border: #c4cfd3;
 
 			span.description {
 				max-width: 100%;
+
+				& > span {
+					display: block;
+				}
 			}
 
 			.add-price-range {
@@ -610,6 +645,7 @@ $item_row_hover_border: #c4cfd3;
 		}
 	}
 
+	// add new filter button
 	.add-new-filter {
 		background-color: $item_row_background;
 		border: 1px solid $item_row_border;
@@ -626,6 +662,7 @@ $item_row_hover_border: #c4cfd3;
 		}
 	}
 
+	// load more filters button
 	.load-more-filters {
 		display: block;
 		font-weight: 700;
@@ -640,11 +677,49 @@ $item_row_hover_border: #c4cfd3;
 		}
 	}
 
+	// wpml div
 	#icl_div {
 		background-color: #f7f7f7;
 		padding: 20px 15px;
 		border-radius: 4px;
 		margin: 20px 0;
+	}
+
+	// success message
+	.preset-saved {
+		background: var(--yith-success-lightest)!important;
+		border-radius: 5px;
+		border: 1px solid var(--yith-success-light);
+		box-shadow: 1px 1px 2px var(--yith-success-lighter);
+		color: var(--yith-content-text);
+		font-size: 14px;
+		margin: 15px 0 20px!important;
+		padding: 15px 40px 15px 45px!important;
+		position: relative;
+		text-align: left;
+
+		p {
+			background: none!important;
+			font-weight: 600!important;
+			margin: 0;
+			padding: 0!important;
+
+			&:before {
+				display: none!important;
+			}
+		}
+
+		&:before {
+			color: var(--yith-success);
+			content: "\e921";
+			font-family: yith-icon;
+			font-weight: 400;
+			font-size: 21px;
+			left: 13px;
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+		}
 	}
 }
 

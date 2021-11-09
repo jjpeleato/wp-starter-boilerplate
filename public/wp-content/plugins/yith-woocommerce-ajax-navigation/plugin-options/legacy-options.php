@@ -3,7 +3,7 @@
  * Legacy options
  *
  * @author  YITH
- * @package YITH WooCommerce Ajax Product Filter
+ * @package YITH\AjaxProductFilter\Options
  * @version 4.0.0
  */
 
@@ -19,7 +19,7 @@ return apply_filters(
 				'id'   => 'yith_wcan_legacy_frontend_settings',
 			),
 
-			'product_container' => array(
+			'product_container'     => array(
 				'name'      => _x( 'Product container', '[ADMIN] Legacy settings page', 'yith-woocommerce-ajax-navigation' ),
 				'desc'      => _x( 'Enter here the CSS selector (class or ID) of the product container', '[ADMIN] Legacy settings page', 'yith-woocommerce-ajax-navigation' ),
 				'id'        => 'yit_wcan_options[yith_wcan_ajax_shop_container]',
@@ -28,7 +28,7 @@ return apply_filters(
 				'default'   => '.products',
 			),
 
-			'pagination_container' => array(
+			'pagination_container'  => array(
 				'name'      => _x( 'Shop pagination container', '[ADMIN] Legacy settings page', 'yith-woocommerce-ajax-navigation' ),
 				'desc'      => _x( 'Enter here the CSS selector (class or ID) of the shop pagination container', '[ADMIN] Legacy settings page', 'yith-woocommerce-ajax-navigation' ),
 				'id'        => 'yit_wcan_options[yith_wcan_ajax_shop_pagination]',
@@ -37,7 +37,7 @@ return apply_filters(
 				'default'   => 'nav.woocommerce-pagination',
 			),
 
-			'count_container' => array(
+			'count_container'       => array(
 				'name'      => _x( 'Result count container', '[ADMIN] Legacy settings page', 'yith-woocommerce-ajax-navigation' ),
 				'desc'      => _x( 'Enter here the CSS selector (class or ID) of the results count container', '[ADMIN] Legacy settings page', 'yith-woocommerce-ajax-navigation' ),
 				'id'        => 'yit_wcan_options[yith_wcan_ajax_shop_result_container]',
@@ -46,7 +46,7 @@ return apply_filters(
 				'default'   => 'nav.woocommerce-pagination',
 			),
 
-			'scroll_top_selector' => array(
+			'scroll_top_selector'   => array(
 				'name'      => _x( '"Scroll to top" anchor selector', '[ADMIN] Legacy settings page', 'yith-woocommerce-ajax-navigation' ),
 				'desc'      => _x( 'Enter here the CSS selector (class or ID) of the "Scroll to to top" anchor', '[ADMIN] Legacy settings page', 'yith-woocommerce-ajax-navigation' ),
 				'id'        => 'yit_wcan_options[yith_wcan_ajax_scroll_top_class]',
@@ -55,7 +55,7 @@ return apply_filters(
 				'default'   => 'nav.woocommerce-pagination',
 			),
 
-			'order_by' => array(
+			'order_by'              => array(
 				'name'      => _x( 'Terms sorting', '[ADMIN] Legacy settings page', 'yith-woocommerce-ajax-navigation' ),
 				'desc'      => _x( 'Choose how to sort terms inside filters', '[ADMIN] Legacy settings page', 'yith-woocommerce-ajax-navigation' ),
 				'id'        => 'yit_wcan_options[yith_wcan_ajax_shop_terms_order]',
@@ -69,9 +69,9 @@ return apply_filters(
 				),
 			),
 
-			'legacy_frontend_end' => array(
+			'legacy_frontend_end'   => array(
 				'type' => 'sectionend',
-				'id' => 'yith_wcan_legacy_frontend_settings',
+				'id'   => 'yith_wcan_legacy_frontend_settings',
 			),
 
 		),

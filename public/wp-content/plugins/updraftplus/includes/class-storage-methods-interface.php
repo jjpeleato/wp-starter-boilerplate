@@ -17,6 +17,8 @@ class UpdraftPlus_Storage_Methods_Interface {
 	 */
 	public static function get_storage_object($method) {
 	
+		if (!preg_match('/^[\-a-z0-9]+$/i', $method)) return new WP_Error('no_such_storage_class', "The specified storage method ($method) was not found");
+	
 		static $objects = array();
 	
 		if (!empty($objects[$method])) return $objects[$method];
@@ -365,7 +367,7 @@ class UpdraftPlus_Storage_Methods_Interface {
 				$log_message = 'Exception ('.get_class($e).') occurred during download: '.$e->getMessage().' (Code: '.$e->getCode().', line '.$e->getLine().' in '.$e->getFile().')';
 				error_log($log_message);
 				// @codingStandardsIgnoreLine
-				if (function_exists('wp_debug_backtrace_summary')) $log_message .= ' Backtrace: '.wp_debug_backtrace_summary();
+				$log_message .= ' Backtrace: '.str_replace(array(ABSPATH, "\n"), array('', ', '), $e->getTraceAsString());
 				$updraftplus->log($log_message);
 				$updraftplus->log(sprintf(__('A PHP exception (%s) has occurred: %s', 'updraftplus'), get_class($e), $e->getMessage()), 'error');
 				return false;
@@ -374,7 +376,7 @@ class UpdraftPlus_Storage_Methods_Interface {
 				$log_message = 'PHP Fatal error ('.get_class($e).') has occurred during download. Error Message: '.$e->getMessage().' (Code: '.$e->getCode().', line '.$e->getLine().' in '.$e->getFile().')';
 				error_log($log_message);
 				// @codingStandardsIgnoreLine
-				if (function_exists('wp_debug_backtrace_summary')) $log_message .= ' Backtrace: '.wp_debug_backtrace_summary();
+				$log_message .= ' Backtrace: '.str_replace(array(ABSPATH, "\n"), array('', ', '), $e->getTraceAsString());
 				$updraftplus->log($log_message);
 				$updraftplus->log(sprintf(__('A PHP fatal error (%s) has occurred: %s', 'updraftplus'), get_class($e), $e->getMessage()), 'error');
 				return false;

@@ -226,16 +226,15 @@ class JsonLD {
 	 */
 	public function add_context_data( $data ) {
 		$is_product_archive = $this->is_product_archive_page();
-		$can_add_global     = $this->can_add_global_entities( $data );
+		$can_add_global     = $this->can_add_global_entities( $data, $is_product_archive );
 		$snippets           = [
 			'\\RankMath\\Schema\\Publisher'     => ! isset( $data['publisher'] ) && $can_add_global,
 			'\\RankMath\\Schema\\Website'       => $can_add_global,
-			'\\RankMath\\Schema\\PrimaryImage'  => ! post_password_required() && $can_add_global,
+			'\\RankMath\\Schema\\PrimaryImage'  => is_singular() && ! post_password_required() && $can_add_global,
 			'\\RankMath\\Schema\\Breadcrumbs'   => $this->can_add_breadcrumb(),
 			'\\RankMath\\Schema\\Author'        => is_author() || ( is_singular() && $can_add_global ),
 			'\\RankMath\\Schema\\Webpage'       => $can_add_global,
 			'\\RankMath\\Schema\\Products_Page' => $is_product_archive,
-			'\\RankMath\\Schema\\ItemListPage'  => ! $is_product_archive && ( is_category() || is_tag() || is_tax() ),
 			'\\RankMath\\Schema\\Singular'      => ! post_password_required() && is_singular(),
 		];
 
@@ -321,7 +320,8 @@ class JsonLD {
 		$new_schemas = [];
 
 		foreach ( $schemas as $key => $schema ) {
-			$type = strtolower( $schema['@type'] );
+			$type = is_array( $schema['@type'] ) ? $schema['@type'][0] : $schema['@type'];
+			$type = strtolower( $type );
 			$type = in_array( $type, [ 'musicgroup', 'musicalbum' ], true )
 				? 'music'
 				: ( in_array( $type, [ 'blogposting', 'newsarticle' ], true ) ? 'article' : $type );
@@ -346,10 +346,16 @@ class JsonLD {
 	/**
 	 * Whether to add global schema entities.
 	 *
-	 * @param array $data Array of json-ld data.
+	 * @param array $data               Array of json-ld data.
+	 * @param bool  $is_product_archive Whether the current page is a Product archive.
 	 * @return bool
 	 */
-	public function can_add_global_entities( $data = [] ) {
+	public function can_add_global_entities( $data = [], $is_product_archive = false ) {
+		if ( ! $is_product_archive && ( is_category() || is_tag() || is_tax() ) ) {
+			$queried_object = get_queried_object();
+			return ! Helper::get_settings( 'titles.remove_' . $queried_object->taxonomy . '_snippet_data' ) && ! $this->do_filter( 'snippet/remove_taxonomy_data', false, $queried_object->taxonomy );
+		}
+
 		if ( is_front_page() || ! is_singular() || ! Helper::can_use_default_schema( $this->post_id ) || ! empty( $data ) ) {
 			return true;
 		}
@@ -379,7 +385,7 @@ class JsonLD {
 		 *
 		 * @param bool $unsigned Default: true
 		 */
-		return ! is_front_page() && Helper::get_settings( 'general.breadcrumbs' ) && $this->do_filter( 'json_ld/breadcrumbs_enabled', true );
+		return ! is_front_page() && Helper::is_breadcrumbs_enabled() && $this->do_filter( 'json_ld/breadcrumbs_enabled', true );
 	}
 
 	/**
@@ -717,6 +723,11 @@ class JsonLD {
 		// Author.
 		$author          = Helper::get_post_meta( 'snippet_author' );
 		$parts['author'] = $author ? $author : get_the_author_meta( 'display_name', $this->post->post_author );
+
+		// Modified date cannot be before publish date.
+		if ( strtotime( $this->post->post_modified ) < strtotime( $this->post->post_date ) ) {
+			$parts['modified'] = $parts['published'];
+		}
 
 		$this->parts = $parts;
 	}

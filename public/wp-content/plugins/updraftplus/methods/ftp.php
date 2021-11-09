@@ -321,6 +321,7 @@ class UpdraftPlus_BackupModule_ftp extends UpdraftPlus_BackupModule {
 	public function get_pre_configuration_template() {
 
 		global $updraftplus_admin;
+		global $updraftplus;
 
 		$classes = $this->get_css_classes(false);
 		
@@ -346,7 +347,7 @@ class UpdraftPlus_BackupModule_ftp extends UpdraftPlus_BackupModule {
 
 				?>
 
-				<em><?php echo '<p>' . apply_filters('updraft_sftp_ftps_notice', '<strong>'.htmlspecialchars(__('Only non-encrypted FTP is supported by regular UpdraftPlus.')).'</strong> <a href="'.apply_filters("updraftplus_com_link", "https://updraftplus.com/shop/sftp/").'" target="_blank">'.__('If you want encryption (e.g. you are storing sensitive business data), then an add-on is available.', 'updraftplus')).'</a></p>'; ?></em>
+				<em><?php echo '<p>' . apply_filters('updraft_sftp_ftps_notice', '<strong>'.htmlspecialchars(__('Only non-encrypted FTP is supported by regular UpdraftPlus.')).'</strong> <a href="'.$updraftplus->get_url('premium').'" target="_blank">'.__('If you want encryption (e.g. you are storing sensitive business data), then an add-on is available in the Premium version.', 'updraftplus')).'</a></p>'; ?></em>
 			</td>
 		</tr>
 

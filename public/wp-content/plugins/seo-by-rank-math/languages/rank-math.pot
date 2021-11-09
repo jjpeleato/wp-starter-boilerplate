@@ -29,6 +29,16 @@ msgstr ""
 msgid "Setup Wizard"
 msgstr ""
 
+#. translators: 1. Bold text 2. Bold text
+msgid "%1$s A filter to remove the Rank Math data from the database is present. Deactivating & Deleting this plugin will remove everything related to the Rank Math plugin. %2$s"
+msgstr ""
+
+msgid "CAUTION:"
+msgstr ""
+
+msgid "This action is IRREVERSIBLE."
+msgstr ""
+
 msgid "Getting Started"
 msgstr ""
 
@@ -46,15 +56,6 @@ msgid "Powered by %s"
 msgstr ""
 
 msgid "SEO Score"
-msgstr ""
-
-msgid "Show SEO Score on Front-end"
-msgstr ""
-
-msgid "Off"
-msgstr ""
-
-msgid "On"
 msgstr ""
 
 msgid "Home"
@@ -120,6 +121,9 @@ msgid "Homepage SEO"
 msgstr ""
 
 msgid "Edit Homepage SEO Settings"
+msgstr ""
+
+msgid "Pages"
 msgstr ""
 
 #. translators: Post Type Singular Name
@@ -202,6 +206,9 @@ msgstr ""
 msgid "Import &amp; Export"
 msgstr ""
 
+msgid "Rank Math Knowledge Base"
+msgstr ""
+
 msgid "Search Options"
 msgstr ""
 
@@ -274,7 +281,7 @@ msgid "You are not authorized to perform this action."
 msgstr ""
 
 #. translators: placeholder is the plugin name.
-msgid "Hey, we noticed you've been using %s for more than two weeks now – that's awesome!"
+msgid "Hey, we noticed you've been using %s for more than a week now – that's awesome!"
 msgstr ""
 
 msgctxt "plugin name inside the review notice"
@@ -294,19 +301,6 @@ msgid "No, maybe later"
 msgstr ""
 
 msgid "I already did"
-msgstr ""
-
-#. translators: placeholder is a wp.org review link
-msgid "If you like Rank Math, please take a minute to rate it on WordPress.org: %s"
-msgstr ""
-
-msgid "Rate Rank Math SEO"
-msgstr ""
-
-msgid "Hey, we noticed you've been using Rank Math SEO for more than two weeks now – <em>that's awesome!</em> <br>Could you please do us a BIG favor and give it a rating on WordPress to help us spread the word and boost our motivation?"
-msgstr ""
-
-msgid "I already did. Please don't show this message again."
 msgstr ""
 
 msgid "Please use the correct format."
@@ -355,6 +349,12 @@ msgstr ""
 msgid "Link Title"
 msgstr ""
 
+msgid "Off"
+msgstr ""
+
+msgid "On"
+msgstr ""
+
 msgid "Snippet"
 msgstr ""
 
@@ -391,7 +391,7 @@ msgstr ""
 msgid "Are you sure you want to delete this backup?"
 msgstr ""
 
-msgid "Are you sure you want erase traces of plugin?"
+msgid "Are you sure you want erase all traces of this plugin?"
 msgstr ""
 
 #. translators: Plugin name
@@ -431,6 +431,9 @@ msgstr ""
 msgid "Backup restored successfully."
 msgstr ""
 
+msgid "Uploaded file could not be read."
+msgstr ""
+
 msgid "Settings successfully imported. Your old configuration has been saved as a backup."
 msgstr ""
 
@@ -443,11 +446,18 @@ msgstr ""
 msgid "Settings could not be imported: Upload failed."
 msgstr ""
 
-#. translators: post names
-msgid "We detected new post type(s) (%1$s), and you would want to check the settings of <a href=\"%2$s\">Titles &amp; Meta page</a>."
+#. translators: placeholder is the post type name.
+msgid "Rank Math has detected a new post type: %1$s. You may want to check the settings of the <a href=\"%2$s\">Titles &amp; Meta page</a>."
+msgstr ""
+
+#. translators: placeholder is the post type names separated with commas.
+msgid "Rank Math has detected new post types: %1$s. You may want to check the settings of the <a href=\"%2$s\">Titles &amp; Meta page</a>."
 msgstr ""
 
 msgid "Please activate the WPML String Translation plugin to convert Rank Math Setting values in different languages."
+msgstr ""
+
+msgid "<b>Rank Math Warning:</b> Changing the permalinks on a live, indexed site may result in serious loss of traffic if done incorrectly. Consider adding a new redirection from the old URL format to the new one."
 msgstr ""
 
 msgid "Links"
@@ -470,7 +480,7 @@ msgstr ""
 msgid "Learn more"
 msgstr ""
 
-msgid "Use the following code in your theme template files to display breadcrumbs:"
+msgid "Use the following code in your theme template files to display breadcrumbs."
 msgstr ""
 
 msgid "Webmaster Tools"
@@ -628,9 +638,6 @@ msgstr ""
 msgid "Not Set"
 msgstr ""
 
-msgid "All Posts"
-msgstr ""
-
 msgid "SEO Score: Good"
 msgstr ""
 
@@ -647,6 +654,32 @@ msgid "Articles noindexed"
 msgstr ""
 
 msgid "Pillar Content"
+msgstr ""
+
+msgid "Upgrade to Rank Math PRO and unlock advanced features"
+msgstr ""
+
+#. translators: placeholder is the words "advanced SEO features".
+#. translators: placeholder is the words "advanced SEO features".
+msgid "By upgrading to Rank Math PRO you get access to %s like more Schema Markups, Schema Generator, Advanced Analytics, Email Reporting and much more!"
+msgstr ""
+
+msgid "advanced SEO features"
+msgstr ""
+
+msgid "Yes, I want to learn more"
+msgstr ""
+
+msgid "No, I don't want it"
+msgstr ""
+
+msgid "I already upgraded"
+msgstr ""
+
+msgid "Yes, I want better SEO"
+msgstr ""
+
+msgid "I already purchased"
 msgstr ""
 
 msgid "Rank Math Product Registration"
@@ -784,7 +817,7 @@ msgstr ""
 msgid "Schema Markup"
 msgstr ""
 
-msgid "Advance Options"
+msgid "Advanced Options"
 msgstr ""
 
 msgid "Deactivated"
@@ -1089,6 +1122,9 @@ msgstr ""
 msgid "South Korea"
 msgstr ""
 
+msgid "Spain"
+msgstr ""
+
 msgid "Sweden"
 msgstr ""
 
@@ -1116,246 +1152,136 @@ msgstr ""
 msgid "Vietnam"
 msgstr ""
 
+msgid "Algeria"
+msgstr ""
+
+msgid "Armenia"
+msgstr ""
+
+msgid "Azerbaijan"
+msgstr ""
+
+msgid "Bahrain"
+msgstr ""
+
+msgid "Bangladesh"
+msgstr ""
+
+msgid "Belarus"
+msgstr ""
+
+msgid "Bolivia, Plurinational State Of"
+msgstr ""
+
+msgid "Bulgaria"
+msgstr ""
+
+msgid "Cambodia"
+msgstr ""
+
+msgid "Costa Rica"
+msgstr ""
+
+msgid "Croatia"
+msgstr ""
+
+msgid "Cyprus"
+msgstr ""
+
+msgid "Ecuador"
+msgstr ""
+
+msgid "El Salvador"
+msgstr ""
+
+msgid "Estonia"
+msgstr ""
+
+msgid "Ghana"
+msgstr ""
+
+msgid "Guatemala"
+msgstr ""
+
+msgid "Jordan"
+msgstr ""
+
+msgid "Kazakhstan"
+msgstr ""
+
+msgid "Korea, Republic Of"
+msgstr ""
+
+msgid "Latvia"
+msgstr ""
+
+msgid "Lithuania"
+msgstr ""
+
+msgid "Macedonia, The Former Yugoslav Republic Of"
+msgstr ""
+
+msgid "Malta"
+msgstr ""
+
+msgid "Morocco"
+msgstr ""
+
+msgid "Myanmar"
+msgstr ""
+
+msgid "Nicaragua"
+msgstr ""
+
+msgid "Pakistan"
+msgstr ""
+
+msgid "Paraguay"
+msgstr ""
+
+msgid "Peru"
+msgstr ""
+
+msgid "Russian Federation"
+msgstr ""
+
+msgid "Senegal"
+msgstr ""
+
+msgid "Serbia"
+msgstr ""
+
+msgid "Slovakia"
+msgstr ""
+
+msgid "Slovenia"
+msgstr ""
+
+msgid "Sri Lanka"
+msgstr ""
+
+msgid "Tunisia"
+msgstr ""
+
+msgid "United Arab Emirates"
+msgstr ""
+
+msgid "United States Of America"
+msgstr ""
+
+msgid "Uruguay"
+msgstr ""
+
+msgid "Venezuela, Bolivarian Republic Of"
+msgstr ""
+
+msgid "Viet Nam"
+msgstr ""
+
 msgid "WooCommerce Product"
 msgstr ""
 
 msgid "EDD Product"
-msgstr ""
-
-msgid "Robots Meta"
-msgstr ""
-
-msgid "Custom values for robots meta tag."
-msgstr ""
-
-msgid "Advanced Robots Meta"
-msgstr ""
-
-msgid "Canonical URL"
-msgstr ""
-
-msgid "The canonical URL informs search crawlers which page is the main page if you have double content."
-msgstr ""
-
-msgid "Breadcrumb Title"
-msgstr ""
-
-msgid "Breadcrumb Title to use for this post"
-msgstr ""
-
-msgid "Edit Snippet"
-msgstr ""
-
-msgid "Close Editor"
-msgstr ""
-
-msgid "This is what will appear in the first line when this post shows up in the search results."
-msgstr ""
-
-msgid "Permalink"
-msgstr ""
-
-msgid "Editing Homepage permalink is not possible."
-msgstr ""
-
-msgid "This is the unique URL of this page, displayed below the post title in the search results."
-msgstr ""
-
-msgid "Description"
-msgstr ""
-
-msgid "This is what will appear as the description when this post shows up in the search results."
-msgstr ""
-
-msgid "Trends"
-msgstr ""
-
-#. translators: Link to kb article
-msgid "Insert keywords you want to rank for. Try to <a href=\"%s\" target=\"_blank\">attain 100/100 points</a> for better chances of ranking."
-msgstr ""
-
-#. translators: link to pricing page.
-msgid "Want more? %s version"
-msgstr ""
-
-msgid "Upgrade today to the PRO"
-msgstr ""
-
-msgid "Example: Rank Math SEO"
-msgstr ""
-
-msgid "This post is Pillar Content"
-msgstr ""
-
-msgid "Select one or more Pillar Content posts for each post tag or category to show them in the Link Suggestions meta box."
-msgstr ""
-
-msgid "Facebook"
-msgstr ""
-
-msgid "Twitter"
-msgstr ""
-
-msgid "Facebook Preview"
-msgstr ""
-
-msgid "Twitter Preview"
-msgstr ""
-
-msgid "2 hrs"
-msgstr ""
-
-msgid "2h"
-msgstr ""
-
-#. translators: Link to global title setting
-msgid "Set your default image for Facebook & Twitter by adding <a href=\"%s\" target=\"_blank\">OpenGraph Thumbnail</a>"
-msgstr ""
-
-#. translators: link to title setting screen
-msgid "Customize the title, description and images of your post used while sharing on Facebook and Twitter. <a href=\"%s\" target=\"_blank\">Read more</a>"
-msgstr ""
-
-msgid "Image"
-msgstr ""
-
-msgid "Add Image"
-msgstr ""
-
-msgid "Upload at least 600x315px image. Recommended size is 1200x630px."
-msgstr ""
-
-msgid "Image is smaller than the minimum size, please select a different image."
-msgstr ""
-
-msgid "Add icon overlay to thumbnail"
-msgstr ""
-
-msgid "Please be careful with this option. Although this option will help increase CTR on Facebook, it might get you penalised if over-used."
-msgstr ""
-
-msgid "Icon overlay"
-msgstr ""
-
-msgid "Author Profile URL"
-msgstr ""
-
-#. translators: option page link
-msgid "Insert a Facebook profile URL to display author name when the page is shared on Facebook.<br>The author name will be clickable if the profile is set to allow public followers.<br>You can set up default URL for fallback in <a href=\"%s\" target=\"_blank\">SEO &raquo; Titles &amp; Meta &raquo; Social</a>."
-msgstr ""
-
-msgid "Use Data from Facebook Tab"
-msgstr ""
-
-msgid "Summary Card with Large Image"
-msgstr ""
-
-msgid "Summary Card"
-msgstr ""
-
-msgid "App Card"
-msgstr ""
-
-msgid "Player Card"
-msgstr ""
-
-msgid "Card type"
-msgstr ""
-
-#. translators: Link to twitter player card doc
-msgid "Video clips and audio streams have a special place on the Twitter platform thanks to the Player Card. Player Cards must be submitted for approval before they can be used. More information: %s"
-msgstr ""
-
-#. translators: Link to twitter app card doc
-msgid "The App Card is a great way to represent mobile applications on Twitter and to drive installs. More information: %s"
-msgstr ""
-
-msgid "Images for this Card support an aspect ratio of 2:1 with minimum dimensions of 300x157 or maximum of 4096x4096 pixels. Images must be less than 5MB in size."
-msgstr ""
-
-msgid "Please be careful with this option. Although this option will help increace CTR on Facebook, it might get you penalised if over-used."
-msgstr ""
-
-msgid "Author Twitter Username"
-msgstr ""
-
-#. translators: option page link
-msgid "Insert Twitter username to add twitter:creator tag to posts when the page is shared on Twitter.<br>You can set up default username for fallback in <a href=\"%s\" target=\"_blank\">SEO &raquo; Titles &amp; Meta &raquo; Social</a>."
-msgstr ""
-
-msgid "Player URL"
-msgstr ""
-
-msgid "HTTPS URL to iFrame player. This must be a HTTPS URL which does not generate active mixed content warnings in a web browser. The audio or video player must not require plugins such as Adobe Flash."
-msgstr ""
-
-msgid "Player Size"
-msgstr ""
-
-msgid "iFrame width and height, specified in pixels in the following format: 600x400."
-msgstr ""
-
-msgid "Stream URL"
-msgstr ""
-
-msgid "Optional URL to raw stream that will be rendered in Twitter’s mobile applications directly. If provided, the stream must be delivered in the MPEG-4 container format (the .mp4 extension). The container can store a mix of audio and video with the following codecs: Video: H.264, Baseline Profile (BP), Level 3.0, up to 640 x 480 at 30 fps. Audio: AAC, Low Complexity Profile (LC)."
-msgstr ""
-
-msgid "Stream Content Type"
-msgstr ""
-
-msgid "The MIME type/subtype combination that describes the content contained in twitter:player:stream. Takes the form specified in RFC 6381. Currently supported content_type values are those defined in RFC 4337 (MIME Type Registration for MP4)."
-msgstr ""
-
-msgid "App Description"
-msgstr ""
-
-msgid "You can use this as a more concise description than what you may have on the app store. This field has a maximum of 200 characters. (optional)"
-msgstr ""
-
-msgid "iPhone App Name"
-msgstr ""
-
-msgid "The name of your app to show."
-msgstr ""
-
-msgid "iPhone App ID"
-msgstr ""
-
-msgid "The numeric representation of your app ID in the App Store."
-msgstr ""
-
-msgid "iPhone App URL"
-msgstr ""
-
-msgid "Your app's custom URL scheme (must include \"://\")."
-msgstr ""
-
-msgid "iPad App Name"
-msgstr ""
-
-msgid "iPad App ID"
-msgstr ""
-
-msgid "iPad App URL"
-msgstr ""
-
-msgid "Google Play App Name"
-msgstr ""
-
-msgid "Google Play App ID"
-msgstr ""
-
-msgid "Your app ID in the Google Play (.i.e. \"com.android.app\")"
-msgstr ""
-
-msgid "Google Play App URL"
-msgstr ""
-
-msgid "App Country"
-msgstr ""
-
-msgid "If your application is not available in the US App Store, you must set this value to the two-letter country code for the App Store that contains your application."
 msgstr ""
 
 msgid "Items per page"
@@ -1407,6 +1333,12 @@ msgid "Instant Indexing"
 msgstr ""
 
 msgid "Directly notify search engines(Bing) when pages are added, updated or removed."
+msgstr ""
+
+msgid "Content AI"
+msgstr ""
+
+msgid "Get sophisticated AI suggestions for related Keywords, Questions & Links to include in the SEO meta & Content Area. Supports 80+ Countries."
 msgstr ""
 
 #. translators: Link to kb article
@@ -1487,6 +1419,15 @@ msgid "Make any Story created with the Web Stories WordPress plugin SEO-Ready wi
 msgstr ""
 
 msgid "Please activate Web Stories plugin to use this module."
+msgstr ""
+
+msgid "You cant access this page."
+msgstr ""
+
+msgid "PRO"
+msgstr ""
+
+msgid "NEW!"
 msgstr ""
 
 msgid "Post ID"
@@ -1871,6 +1812,12 @@ msgstr ""
 msgid "Invalid post ID."
 msgstr ""
 
+msgid "Sorry, you are not allowed to edit this term."
+msgstr ""
+
+msgid "Invalid term ID."
+msgstr ""
+
 msgid "Sorry, field is empty which is not allowed."
 msgstr ""
 
@@ -1891,6 +1838,10 @@ msgstr ""
 
 #. translators: placeholders are the opening and closing anchor tags.
 msgid "Thank you for updating Rank Math! We've completely revamped our Analytics module with Google Analytics & Google Search Console integrations. For a seamless experience, please re-authenticate your Google account. %1$sClick here to Connect%2$s"
+msgstr ""
+
+#. translators: placeholders are the opening and closing anchor tags.
+msgid "Rank Math: Introducing SEO Performance Reports via Email. %1$sClick here to enable it%2$s."
 msgstr ""
 
 #. translators: %1$s: post type label, %2$s: edit redirection URL.
@@ -1933,7 +1884,7 @@ msgstr ""
 msgid "Import Redirections"
 msgstr ""
 
-msgid "Import all the redirections you have already set up in."
+msgid "Import all the redirections you have already set up in Yoast Premium."
 msgstr ""
 
 msgid "Import Blocks"
@@ -1976,6 +1927,12 @@ msgid "Import meta information of your posts/pages like the titles, descriptions
 msgstr ""
 
 msgid "Import meta information of your terms like the titles, descriptions, robots meta, OpenGraph info, etc."
+msgstr ""
+
+msgid "Import all the redirections you have already set up in AIO SEO Premium."
+msgstr ""
+
+msgid "Import Locations Settings."
 msgstr ""
 
 msgid "Settings imported successfully."
@@ -2043,28 +2000,16 @@ msgstr ""
 msgid "We can't show any link suggestions for this post. Try selecting categories and tags for this post, and mark other posts as Pillar Content to make them show up here."
 msgstr ""
 
-msgid "General"
-msgstr ""
-
-msgid "This tab contains general options."
-msgstr ""
-
-msgid "Advanced"
-msgstr ""
-
-msgid "This tab contains advance options."
-msgstr ""
-
-msgid "Social"
-msgstr ""
-
-msgid "This tab contains social options."
-msgstr ""
-
 msgid "The featured image should be at least 200 by 200 pixels to be picked up by Facebook and other social media sites."
 msgstr ""
 
+msgid "Upgrade"
+msgstr ""
+
 msgid "username"
+msgstr ""
+
+msgid "Description"
 msgstr ""
 
 msgid "Next steps&hellip;"
@@ -2367,7 +2312,7 @@ msgstr ""
 msgid "Default Social Share Image"
 msgstr ""
 
-msgid "When a featured image is not set, this image will be used as a thumbnail when your post is shared on Facebook. <strong>Recommended image size 1200 x 630 pixels.</strong>"
+msgid "When a featured image or an OpenGraph Image is not set for individual posts/pages/CPTs, this image will be used as a fallback thumbnail when your post is shared on Facebook. <strong>The recommended image size is 1200 x 630 pixels.</strong>"
 msgstr ""
 
 msgid "Personal Blog"
@@ -2527,6 +2472,9 @@ msgstr ""
 msgid "Average Position"
 msgstr ""
 
+msgid "Average position of all the ranking keywords below 100 position."
+msgstr ""
+
 msgid "Rank Math is importing latest data from connected Google Services, %1$s remaining."
 msgstr ""
 
@@ -2594,7 +2542,7 @@ msgid "Cache deleted."
 msgstr ""
 
 #. translators: Link to kb article
-msgid "See your Google Search Console, Analyitcs and AdSense data without leaving your WP dashboard. %s."
+msgid "See your Google Search Console, Analytics and AdSense data without leaving your WP dashboard. %s."
 msgstr ""
 
 msgid "Purge Analytics Cache"
@@ -2620,6 +2568,21 @@ msgstr ""
 msgid "Rebuild Index"
 msgstr ""
 
+#. translators: placeholder is "rankmath.com" as a link.
+msgid "This email was sent to you as a registered member of %s."
+msgstr ""
+
+#. translators: placeholder is "click here" as a link.
+msgid "To update your email preferences, %s."
+msgstr ""
+
+msgid "click here"
+msgstr ""
+
+#. translators: placeholder is the site URL.
+msgid "Rank Math [SEO Report] - %s"
+msgstr ""
+
 msgid "Sorry, no post found for given id."
 msgstr ""
 
@@ -2642,6 +2605,18 @@ msgid "Group Description."
 msgstr ""
 
 msgid "Group description of the current group"
+msgstr ""
+
+msgid "Rank Math Content AI"
+msgstr ""
+
+msgid "Sorry, only authenticated users can research the keyword."
+msgstr ""
+
+msgid "Content AI is not enabled on this Post type."
+msgstr ""
+
+msgid "No data found for the researched keyword."
 msgstr ""
 
 msgid "No Rank Math transients found."
@@ -2677,11 +2652,7 @@ msgstr ""
 msgid "Redirection rules successfully deleted."
 msgstr ""
 
-msgid "No review posts found."
-msgstr ""
-
-#. translators: Number of posts updated
-msgid "%1$d review Posts updated. You can find the list of all converted posts %2$s."
+msgid "Table re-creation started. It might take a couple of minutes."
 msgstr ""
 
 msgid "No posts found to convert."
@@ -2690,7 +2661,10 @@ msgstr ""
 msgid "Conversion started. A success message will be shown here once the process completes. You can close this page."
 msgstr ""
 
-msgid "Table re-creation started. It might take a couple of minutes."
+msgid "No data found to delete."
+msgstr ""
+
+msgid "Deletion started. A success message will be shown here once the process completes. You can close this page."
 msgstr ""
 
 msgid "Flush SEO Analysis Data"
@@ -2729,18 +2703,6 @@ msgstr ""
 msgid "Re-create Tables"
 msgstr ""
 
-msgid "Schema Converter"
-msgstr ""
-
-msgid "If you are using v1.0.48 or higher, and if some of the Schema data from previous versions is missing, then use this tool. Please note: Use this tool only if our support staff asked you to run it."
-msgstr ""
-
-msgid "Are you sure you want to do this? This is not recommended until and unless you are facing any issues with the revamped Schema Generator."
-msgstr ""
-
-msgid "Convert Schema"
-msgstr ""
-
 msgid "Yoast Block Converter"
 msgstr ""
 
@@ -2777,19 +2739,20 @@ msgstr ""
 msgid "Delete Redirections"
 msgstr ""
 
-msgid "Convert Review Schema into Article"
+msgid "Delete Old Schema Data"
 msgstr ""
 
-#. translators: 1. Review Schema documentation link
-msgid "Before using this converter, please read our Knowledge Base Article from %s."
+msgid "Delete the schema data from the old format (<1.0.48). Note: This process is irreversible and will delete all the metadata prefixed with rank_math_snippet."
 msgstr ""
 
-#. translators: Number of posts to update
-msgid "Are you sure you want to convert %d posts with review schema into new schema type? This action is irreversible."
+msgid "Are you sure you want to delete the old schema data? This action is irreversible."
 msgstr ""
 
-msgid "Convert"
-msgstr ""
+#. translators: placeholder is the number of modified posts.
+msgid "Blocks successfully converted in %d post."
+msgid_plural "Blocks successfully converted in %d posts."
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Images"
 msgstr ""
@@ -2969,18 +2932,6 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
-msgid "Edit redirection for the URL of this post."
-msgstr ""
-
-msgid "Create new redirection for the URL of this post."
-msgstr ""
-
-msgid "Redirection"
-msgstr ""
-
-msgid "Publish or update the post to save the redirection."
-msgstr ""
-
 msgid "Redirection successfully deleted."
 msgstr ""
 
@@ -3067,7 +3018,7 @@ msgid "Empty Trash"
 msgstr ""
 
 #. translators: 1. url to new screen, 2. old trashed post permalink
-msgid "<strong>SEO Notice:</strong> A previously published %1$s has been moved to trash. You may redirect it <code>%2$s</code> to <a href=\"%3$s\">new url</a>."
+msgid "<strong>SEO Notice:</strong> A previously published %1$s has been moved to trash. You may redirect <code>%2$s</code> to <a href=\"%3$s\">a new url</a>."
 msgstr ""
 
 msgid "Edit robots.txt"
@@ -3080,10 +3031,13 @@ msgstr ""
 msgid "Leave the field empty to let WordPress handle the contents dynamically. If an actual robots.txt file is present in the root folder of your site, this option won't take effect and you have to edit the file directly, or delete it and then edit from here."
 msgstr ""
 
-msgid "robots.txt file is not writable."
+msgid "Contents are locked because a robots.txt file is present in the root folder."
 msgstr ""
 
-msgid "Contents are locked because robots.txt file is present in the root folder."
+msgid "Rank Math could not detect if a robots.txt file exists or not because of a filesystem issue. The file contents entered here may not be applied."
+msgstr ""
+
+msgid "robots.txt file is not writable."
 msgstr ""
 
 #. translators: placeholder is the Settings page URL.
@@ -3345,6 +3299,9 @@ msgstr ""
 msgid "You have not linked Google Search Console yet."
 msgstr ""
 
+msgid "Could not check Focus Keywords in posts - the post meta table exceeds the size limit."
+msgstr ""
+
 msgid "All published posts have focus keywords set."
 msgstr ""
 
@@ -3373,6 +3330,9 @@ msgid "Attention: Search Engines can't see your website."
 msgstr ""
 
 msgid "Your site is accessible by search engine."
+msgstr ""
+
+msgid "General"
 msgstr ""
 
 msgid "This tab contains General settings related to the XML sitemaps."
@@ -3423,8 +3383,8 @@ msgstr ""
 msgid "Exclude this image from sitemap"
 msgstr ""
 
-#. translators: sitemap base url
-msgid "Since you are using NGINX, add this code to your NGINX %s <strong>if your Sitemap pages are not loading</strong> or you can ask your hosting support to add it."
+#. translators: the placeholder is for the sitemap base url.
+msgid "Since you are using an NGINX server, you may need to add the following code to your %s <strong>if your Sitemap pages are not loading</strong>. If you are unsure how to do it, please contact your hosting provider."
 msgstr ""
 
 msgid "configuration file"
@@ -3433,8 +3393,15 @@ msgstr ""
 msgid "Click here to see the code."
 msgstr ""
 
-#. translators: post names
-msgid "We detected new post type(s) (%1$s), and you would want to check the settings of <a href=\"%2$s\">Titles &amp; Meta page</a> and <a href=\"%3$s\">the Sitemap</a>."
+msgid "I already added"
+msgstr ""
+
+#. translators: placeholder is the post type name.
+msgid "Rank Math has detected a new post type: %1$s. You may want to check the settings of the <a href=\"%2$s\">Titles &amp; Meta page</a> and <a href=\"%3$s\">the Sitemap</a>."
+msgstr ""
+
+#. translators: placeholder is the post type names separated with commas.
+msgid "Rank Math has detected new post types: %1$s. You may want to check the settings of the <a href=\"%2$s\">Titles &amp; Meta page</a> and <a href=\"%3$s\">the Sitemap</a>."
 msgstr ""
 
 #. translators: 1. separator, 2. blogname
@@ -3595,10 +3562,7 @@ msgstr ""
 msgid "Database Table: Keyword Manager"
 msgstr ""
 
-msgid "Created"
-msgstr ""
-
-msgid "Doesn't exists"
+msgid "Not found"
 msgstr ""
 
 msgid "This update will install a beta version of Rank Math."
@@ -3649,6 +3613,10 @@ msgid "Enable breadcrumbs function"
 msgstr ""
 
 msgid "Turning off breadcrumbs will hide breadcrumbs inserted in template files too."
+msgstr ""
+
+#. translators: Code to add support for Rank Math Breadcrumbs.
+msgid "This option cannot be changed since your theme has added the support for Rank Math Breadcrumbs using: %s"
 msgstr ""
 
 msgid "Separator character or string that appears between breadcrumb items."
@@ -3985,13 +3953,19 @@ msgstr ""
 msgid "Author archive meta description. SEO options for specific author archives can be set with the meta box in the user profiles."
 msgstr ""
 
-msgid "Add SEO Meta Box for Users"
+msgid "Add SEO Controls"
 msgstr ""
 
-msgid "Add SEO Meta Box for user profile pages. Access to the Meta Box can be fine tuned with code, using a special filter hook."
+msgid "Add SEO Controls for user profile pages. Access to the Meta Box can be fine tuned with code, using a special filter hook."
+msgstr ""
+
+msgid "Robots Meta"
 msgstr ""
 
 msgid "Default values for robots meta tag. These can be changed for individual posts, taxonomies, etc."
+msgstr ""
+
+msgid "Advanced Robots Meta"
 msgstr ""
 
 msgid "You can use the separator character in titles by inserting <code>%separator%</code> or <code>%sep%</code> in the title fields."
@@ -4006,19 +3980,25 @@ msgstr ""
 msgid "Capitalize Titles"
 msgstr ""
 
-msgid "Automatically capitalize the first character of all title tags."
+msgid "Automatically capitalize the first character of each word in the titles."
 msgstr ""
 
 msgid "OpenGraph Thumbnail"
 msgstr ""
 
-msgid "When a featured image is not set, this image will be used as a thumbnail when your post is shared on Facebook. Recommended image size 1200 x 630 pixels."
+msgid "When a featured image or an OpenGraph Image is not set for individual posts/pages/CPTs, this image will be used as a fallback thumbnail when your post is shared on Facebook. The recommended image size is 1200 x 630 pixels."
 msgstr ""
 
 msgid "Twitter Card Type"
 msgstr ""
 
 msgid "Card type selected when creating a new post. This will also be applied for posts without a card type selected."
+msgstr ""
+
+msgid "Summary Card with Large Image"
+msgstr ""
+
+msgid "Summary Card"
 msgstr ""
 
 #. translators: something
@@ -4094,7 +4074,8 @@ msgstr ""
 msgid "Date Archives"
 msgstr ""
 
-msgid "Enable or disable the date archive (_e.g: domain.com/2019/06/_). If this option is disabled, the date archives will be redirected to the homepage."
+#. translators: placeholder is an example URL.
+msgid "Enable or disable the date archives (e.g: %s). If this option is disabled, the date archives will be redirected to the homepage."
 msgstr ""
 
 msgid "Date Archive Title"
@@ -4235,10 +4216,7 @@ msgstr ""
 msgid "Image displayed when your page is shared on Facebook and other social networks. Use images that are at least 1200 x 630 pixels for the best display on high resolution devices."
 msgstr ""
 
-msgid "Add SEO Meta Box"
-msgstr ""
-
-msgid "Add the SEO Meta Box for the editor screen to customize SEO options for posts in this post type."
+msgid "Add SEO controls for the editor screen to customize SEO options for posts in this post type."
 msgstr ""
 
 msgid "Bulk Editing"
@@ -4328,7 +4306,7 @@ msgstr ""
 msgid "%s Archives Advanced Robots Meta"
 msgstr ""
 
-msgid "Add the SEO Meta Box for the term editor screen to customize SEO options for individual terms in this taxonomy."
+msgid "Add the SEO Controls for the term editor screen to customize SEO options for individual terms in this taxonomy."
 msgstr ""
 
 msgid "Remove Snippet Data"
@@ -4404,13 +4382,13 @@ msgid "Less"
 msgstr ""
 
 #. translators: php version
-msgid "Your PHP Version: %s | Recommended version: 7.2 | Minimal required: 5.4"
+msgid "Your PHP Version: %s | Recommended version: 7.4 | Minimal required: 7.2"
 msgstr ""
 
 msgid "Your PHP Version: %s"
 msgstr ""
 
-msgid "Recommended: PHP 7.2 or later"
+msgid "Recommended: PHP 7.4 or later"
 msgstr ""
 
 msgid "Rank Math is compatible with your PHP version but we recommend updating to PHP 7.2 for increased speed and security."
@@ -4422,7 +4400,7 @@ msgstr ""
 msgid "This plugin is compatible with your PHP version but we recommend updating to PHP 7.2 for increased speed and security."
 msgstr ""
 
-msgid "You are using minimum recommended WordPress version."
+msgid "You are using the recommended WordPress version."
 msgstr ""
 
 msgid "PHP DOM Extension installed"
@@ -4536,13 +4514,13 @@ msgstr ""
 msgid "Proceed to Settings"
 msgstr ""
 
-msgid "Join FREE Facebook Group"
-msgstr ""
-
-msgid "Rank Math Knowledge Base"
-msgstr ""
-
 msgid "Subscribe to Our YouTube Channel"
+msgstr ""
+
+msgid "Know more about the PRO version"
+msgstr ""
+
+msgid "Join FREE Facebook Group"
 msgstr ""
 
 msgid "Get 24x7 Support"
@@ -4578,9 +4556,6 @@ msgstr ""
 msgid "Anonymize IP addresses"
 msgstr ""
 
-msgid "PRO"
-msgstr ""
-
 msgid "Enable Cookieless Tracking. Want to make Analytics GDPR ready? %s"
 msgstr ""
 
@@ -4599,6 +4574,15 @@ msgstr ""
 msgid "Google AdSense support is only available in Rank Math Pro's Advanced Analytics module."
 msgstr ""
 
+msgid "Email Reports"
+msgstr ""
+
+msgid "Receive Analytics reports periodically in email."
+msgstr ""
+
+msgid "Learn more about Email Reports."
+msgstr ""
+
 #. translators: sitename
 msgid "Your Website: %s"
 msgstr ""
@@ -4607,7 +4591,7 @@ msgid "Let us know a few things about your site&hellip;"
 msgstr ""
 
 #. translators: help link
-msgid "If you are new to Rank Math, <a href=\"#\" data-target=\"rank-math-wizard-tabs\" class=\"rank-math-collapsible-trigger\">click here</a> to learn more."
+msgid "If you are new to Rank Math, %s to learn more."
 msgstr ""
 
 msgid "Setup Tutorial"
@@ -4677,6 +4661,9 @@ msgid "The Simple mode only logs URI and access time, while the Advanced mode cr
 msgstr ""
 
 msgid "Simple"
+msgstr ""
+
+msgid "Advanced"
 msgstr ""
 
 msgid "Log Limit"
@@ -4750,6 +4737,7 @@ msgstr ""
 msgid "Cancel Fetching"
 msgstr ""
 
+#. translators: placeholder is a link to rankmath.com, with "free version" as the anchor text.
 msgid "Enter the number of days to keep Analytics data in your database. The maximum allowed days are 90 in the %s. Though, 2x data will be stored in the DB for calculating the difference properly."
 msgstr ""
 
@@ -4757,6 +4745,22 @@ msgid "free version"
 msgstr ""
 
 msgid "Analytics Database"
+msgstr ""
+
+#. translators: Placeholders are the opening and closing tag for the link.
+msgid "Receive periodic SEO Performance reports via email. Once enabled and options are saved, you can see %1$s the preview here%2$s."
+msgstr ""
+
+msgid "Turn on email reports."
+msgstr ""
+
+msgid "Email Frequency"
+msgstr ""
+
+msgid "Email report frequency."
+msgstr ""
+
+msgid "Every 30 days"
 msgstr ""
 
 msgid "Group Title"
@@ -4781,6 +4785,19 @@ msgid "Custom values for robots meta tag on groups page."
 msgstr ""
 
 msgid "Group Advanced Robots Meta"
+msgstr ""
+
+msgid "Default Country"
+msgstr ""
+
+msgid "Select Post Type"
+msgstr ""
+
+msgid "Select the post type you use for Content AI."
+msgstr ""
+
+#. translators: 1. Credits left 2. Buy more credits link
+msgid "%1$s credits left. Upgrade to get more credits from %2$s."
 msgstr ""
 
 #. translators: daily quota
@@ -4957,7 +4974,7 @@ msgstr ""
 msgid "Here you can set up custom redirections. It is important to choose the right type of redirection."
 msgstr ""
 
-msgid "301 redirections are <em>permananent</em>. The old URL will be removed in search engines and replaced by the new one, passing on SearchRank and other SEO scores. Browsers may also store the new URL in cache and redirect to it even after the redirection is deleted from the list here."
+msgid "301 redirections are <em>permanent</em>. The old URL will be removed in search engines and replaced by the new one, passing on SearchRank and other SEO scores. Browsers may also store the new URL in cache and redirect to it even after the redirection is deleted from the list here."
 msgstr ""
 
 msgid "Using a 302 <em>temporary</em> redirection is useful when you want to test a new page for client feedback temporarily without affecting the SEO scores of the original page."
@@ -5004,6 +5021,9 @@ msgid "Reset"
 msgstr ""
 
 msgid "Update Capabilities"
+msgstr ""
+
+msgid "Toggle All"
 msgstr ""
 
 #. translators: %s expands to a unit of time (e.g. 1 day).
@@ -5460,4 +5480,42 @@ msgid "Brand"
 msgstr ""
 
 msgid "Select Product Brand Taxonomy to use in Schema.org & OpenGraph markup."
+msgstr ""
+
+msgid "Rank Math PRO"
+msgstr ""
+
+msgid "SEO Report of Your Website"
+msgstr ""
+
+msgid "FULL REPORT"
+msgstr ""
+
+msgid "External Link Icon"
+msgstr ""
+
+msgid "Uh-oh"
+msgstr ""
+
+msgid "It seems that there are no stats to show right now."
+msgstr ""
+
+#. translators: placeholders are anchor opening and closing tags.
+msgid "If you can see the site data in your Search Console and Analytics accounts, but not here, then %1$s try reconnecting your account %2$s and make sure that the correct properties are selected in the %1$s Analytics Settings%2$s."
+msgstr ""
+
+#. translators: don't translate the variable names between the #hashes#.
+msgid "Last ###PERIOD_DAYS### Days"
+msgstr ""
+
+msgid "Data Chart"
+msgstr ""
+
+msgid "Top 3 Positions"
+msgstr ""
+
+msgid "4-10 Positions"
+msgstr ""
+
+msgid "11-50 Positions"
 msgstr ""

@@ -20,8 +20,30 @@ class OptionRuleProcessor implements RuleProcessorInterface {
 	 * @return bool The result of the operation.
 	 */
 	public function process( $rule, $stored_state ) {
-		$default      = isset( $rule->default ) ? $rule->default : false;
-		$option_value = get_option( $rule->option_name, $default );
+		$is_contains   = $rule->operation && strpos( $rule->operation, 'contains' ) !== false;
+		$default_value = $is_contains ? array() : false;
+		$default       = isset( $rule->default ) ? $rule->default : $default_value;
+		$option_value  = get_option( $rule->option_name, $default );
+
+		if ( $is_contains && ! is_array( $option_value ) ) {
+			$logger = wc_get_logger();
+			$logger->warning(
+				sprintf(
+					'ComparisonOperation "%s" option value "%s" is not an array, defaulting to empty array.',
+					$rule->operation,
+					$rule->option_name
+				),
+				array(
+					'option_value' => $option_value,
+					'rule'         => $rule,
+				)
+			);
+			$option_value = array();
+		}
+
+		if ( isset( $rule->transformers ) && is_array( $rule->transformers ) ) {
+			$option_value = TransformerService::apply( $option_value, $rule->transformers, $rule->default );
+		}
 
 		return ComparisonOperation::compare(
 			$option_value,
@@ -48,6 +70,15 @@ class OptionRuleProcessor implements RuleProcessorInterface {
 
 		if ( ! isset( $rule->operation ) ) {
 			return false;
+		}
+
+		if ( isset( $rule->transformers ) && is_array( $rule->transformers ) ) {
+			foreach ( $rule->transformers as $transform_args ) {
+				$transformer = TransformerService::create_transformer( $transform_args->use );
+				if ( ! $transformer->validate( $transform_args->arguments ) ) {
+					return false;
+				}
+			}
 		}
 
 		return true;

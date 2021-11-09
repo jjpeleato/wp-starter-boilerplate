@@ -15,7 +15,7 @@ use RankMath\Traits\Ajax;
 use RankMath\Traits\Hooker;
 use MyThemeShop\Helpers\Str;
 use RankMath\Sitemap\Router;
-
+use MyThemeShop\Helpers\Param;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -31,6 +31,7 @@ class KML_File {
 	 */
 	public function __construct() {
 		$this->action( 'init', 'init', 1 );
+		$this->filter( 'rank_math/sitemap/http_headers', 'remove_x_robots_tag' );
 		$this->filter( 'rank_math/sitemap/index', 'add_local_sitemap' );
 		$this->filter( 'rank_math/sitemap/local/content', 'local_sitemap_content' );
 		$this->filter( 'rank_math/sitemap/locations/content', 'kml_file_content' );
@@ -41,7 +42,26 @@ class KML_File {
 	 * Set up rewrite rules.
 	 */
 	public function init() {
-		add_rewrite_rule( 'locations\.kml$', 'index.php?sitemap=locations', 'top' );
+		add_rewrite_rule( Router::get_sitemap_base() . 'locations\.kml$', 'index.php?sitemap=locations', 'top' );
+	}
+
+	/**
+	 * Filter function to remove x-robots tag from Locations KML file.
+	 *
+	 * @param array $headers HTTP headers.
+	 */
+	public function remove_x_robots_tag( $headers ) {
+		if ( ! isset( $headers['X-Robots-Tag'] ) ) {
+			return $headers;
+		}
+
+		$url = array_filter( explode( '/', Param::server( 'REQUEST_URI' ) ) );
+		if ( 'locations.kml' !== end( $url ) ) {
+			return $headers;
+		}
+
+		unset( $headers['X-Robots-Tag'] );
+		return $headers;
 	}
 
 	/**

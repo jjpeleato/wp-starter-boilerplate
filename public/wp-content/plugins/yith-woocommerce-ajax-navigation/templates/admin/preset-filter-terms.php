@@ -3,11 +3,13 @@
  * Preset filter - Term options
  *
  * @author  YITH
- * @package YITH WooCommerce Ajax Product Filter
+ * @package YITH\AjaxProductFilter\Templates\Admin
  * @version 4.0.0
  */
 
 /**
+ * Variables available for this template:
+ *
  * @var $id int
  * @var $taxonomy string
  * @var $terms array
@@ -23,15 +25,15 @@ if ( ! defined( 'YITH_WCAN' ) ) {
 	<?php
 	if ( ! empty( $terms ) ) :
 		foreach ( $terms as $term_id => $term_options ) :
-			$term = get_term( $term_id, $taxonomy );
+			$filter_term = get_term( $term_id, $taxonomy );
 
-			if ( ! $term || is_wp_error( $term ) ) {
+			if ( ! $filter_term || is_wp_error( $filter_term ) ) {
 				continue;
 			}
 
-			$term_name = $term->name;
+			$term_name = $filter_term->name;
 
-			YITH_WCAN()->admin->filter_term_field( $id, $term_id, $term->name, $term_options );
+			YITH_WCAN()->admin->filter_term_field( $id, $term_id, $filter_term->name, $term_options );
 		endforeach;
 	endif;
 	?>

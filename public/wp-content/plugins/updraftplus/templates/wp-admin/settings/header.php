@@ -8,7 +8,7 @@
 		<?php
 			if (!defined('UPDRAFTPLUS_NOADS_B')) {
 				?>
-				<a href="<?php echo apply_filters('updraftplus_com_link', 'https://updraftplus.com/shop/updraftplus-premium/');?>" target="_blank"><?php _e("Premium", 'updraftplus'); ?></a> |
+				<a href="<?php echo $updraftplus->get_url('premium');?>" target="_blank"><?php _e("Premium", 'updraftplus'); ?></a> |
 			<?php
 			}
 		?>

@@ -3,7 +3,7 @@
  * Filters Tax Item - Text
  *
  * @author  YITH
- * @package YITH WooCommerce Ajax Product Filter
+ * @package YITH\AjaxProductFilter\Templates\Filters
  * @version 4.0.0
  */
 
@@ -28,7 +28,7 @@ if ( ! defined( 'YITH_WCAN' ) ) {
 ?>
 
 <li class="filter-item text <?php echo $filter->is_term_active( $term ) ? 'active' : ''; ?> <?php echo esc_attr( $additional_classes ); ?>">
-	<a href="<?php echo esc_url( $filter->get_term_url( $term ) ); ?>" <?php yith_wcan_add_rel_nofollow_to_url( true, true ); ?> role="button" data-term-id="<?php echo esc_attr( $term->term_id ); ?>" data-term-slug="<?php echo esc_attr( $term->slug ); ?>" class="term-label" <?php echo ! empty( $tooltip ) ? 'data-title="' . esc_attr( $tooltip ) . '"' : ''; ?>>
+	<a href="<?php echo esc_url( $filter->get_term_url( $term ) ); ?>" <?php yith_wcan_add_rel_nofollow_to_url( true, true ); ?> role="button" data-term-id="<?php echo esc_attr( $term->term_id ); ?>" data-term-slug="<?php echo esc_attr( yith_wcan_esc_term_slug( $term->slug ) ); ?>" class="term-label" <?php echo ! empty( $tooltip ) ? 'data-title="' . esc_attr( $tooltip ) . '"' : ''; ?>>
 		<?php echo esc_html( ! empty( $label ) ? $label : $term->name ); ?>
 		<?php echo $filter->render_term_count( $term, $count ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 	</a>

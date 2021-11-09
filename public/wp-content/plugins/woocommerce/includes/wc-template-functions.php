@@ -36,7 +36,7 @@ function wc_template_redirect() {
 
 	// Logout.
 	if ( isset( $wp->query_vars['customer-logout'] ) && ! empty( $_REQUEST['_wpnonce'] ) && wp_verify_nonce( sanitize_key( $_REQUEST['_wpnonce'] ), 'customer-logout' ) ) {
-		wp_safe_redirect( str_replace( '&amp;', '&', wp_logout_url( wc_get_page_permalink( 'myaccount' ) ) ) );
+		wp_safe_redirect( str_replace( '&amp;', '&', wp_logout_url( apply_filters( 'woocommerce_logout_default_redirect_url', wc_get_page_permalink( 'myaccount' ) ) ) ) );
 		exit;
 	}
 
@@ -1259,7 +1259,54 @@ if ( ! function_exists( 'woocommerce_product_archive_description' ) ) {
 		if ( is_post_type_archive( 'product' ) && in_array( absint( get_query_var( 'paged' ) ), array( 0, 1 ), true ) ) {
 			$shop_page = get_post( wc_get_page_id( 'shop' ) );
 			if ( $shop_page ) {
-				$description = wc_format_content( wp_kses_post( $shop_page->post_content ) );
+
+				$allowed_html = wp_kses_allowed_html( 'post' );
+
+				// This is needed for the search product block to work.
+				$allowed_html = array_merge(
+					$allowed_html,
+					array(
+						'form'   => array(
+							'action'         => true,
+							'accept'         => true,
+							'accept-charset' => true,
+							'enctype'        => true,
+							'method'         => true,
+							'name'           => true,
+							'target'         => true,
+						),
+
+						'input'  => array(
+							'type'        => true,
+							'id'          => true,
+							'class'       => true,
+							'placeholder' => true,
+							'name'        => true,
+							'value'       => true,
+						),
+
+						'button' => array(
+							'type'  => true,
+							'class' => true,
+							'label' => true,
+						),
+
+						'svg'    => array(
+							'hidden'    => true,
+							'role'      => true,
+							'focusable' => true,
+							'xmlns'     => true,
+							'width'     => true,
+							'height'    => true,
+							'viewbox'   => true,
+						),
+						'path'   => array(
+							'd' => true,
+						),
+					)
+				);
+
+				$description = wc_format_content( wp_kses( $shop_page->post_content, $allowed_html ) );
 				if ( $description ) {
 					echo '<div class="page-description">' . $description . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				}
@@ -2753,8 +2800,9 @@ if ( ! function_exists( 'woocommerce_form_field' ) ) {
 					$field .= '<input type="hidden" name="' . esc_attr( $key ) . '" id="' . esc_attr( $args['id'] ) . '" value="' . current( array_keys( $countries ) ) . '" ' . implode( ' ', $custom_attributes ) . ' class="country_to_state" readonly="readonly" />';
 
 				} else {
+					$data_label = ! empty( $args['label'] ) ? 'data-label="' . esc_attr( $args['label'] ) . '"' : '';
 
-					$field = '<select name="' . esc_attr( $key ) . '" id="' . esc_attr( $args['id'] ) . '" class="country_to_state country_select ' . esc_attr( implode( ' ', $args['input_class'] ) ) . '" ' . implode( ' ', $custom_attributes ) . ' data-placeholder="' . esc_attr( $args['placeholder'] ? $args['placeholder'] : esc_attr__( 'Select a country / region&hellip;', 'woocommerce' ) ) . '"><option value="">' . esc_html__( 'Select a country / region&hellip;', 'woocommerce' ) . '</option>';
+					$field = '<select name="' . esc_attr( $key ) . '" id="' . esc_attr( $args['id'] ) . '" class="country_to_state country_select ' . esc_attr( implode( ' ', $args['input_class'] ) ) . '" ' . implode( ' ', $custom_attributes ) . ' data-placeholder="' . esc_attr( $args['placeholder'] ? $args['placeholder'] : esc_attr__( 'Select a country / region&hellip;', 'woocommerce' ) ) . '" ' . $data_label . '><option value="">' . esc_html__( 'Select a country / region&hellip;', 'woocommerce' ) . '</option>';
 
 					foreach ( $countries as $ckey => $cvalue ) {
 						$field .= '<option value="' . esc_attr( $ckey ) . '" ' . selected( $value, $ckey, false ) . '>' . esc_html( $cvalue ) . '</option>';
@@ -2779,8 +2827,9 @@ if ( ! function_exists( 'woocommerce_form_field' ) ) {
 					$field .= '<input type="hidden" class="hidden" name="' . esc_attr( $key ) . '" id="' . esc_attr( $args['id'] ) . '" value="" ' . implode( ' ', $custom_attributes ) . ' placeholder="' . esc_attr( $args['placeholder'] ) . '" readonly="readonly" data-input-classes="' . esc_attr( implode( ' ', $args['input_class'] ) ) . '"/>';
 
 				} elseif ( ! is_null( $for_country ) && is_array( $states ) ) {
+					$data_label = ! empty( $args['label'] ) ? 'data-label="' . esc_attr( $args['label'] ) . '"' : '';
 
-					$field .= '<select name="' . esc_attr( $key ) . '" id="' . esc_attr( $args['id'] ) . '" class="state_select ' . esc_attr( implode( ' ', $args['input_class'] ) ) . '" ' . implode( ' ', $custom_attributes ) . ' data-placeholder="' . esc_attr( $args['placeholder'] ? $args['placeholder'] : esc_html__( 'Select an option&hellip;', 'woocommerce' ) ) . '"  data-input-classes="' . esc_attr( implode( ' ', $args['input_class'] ) ) . '">
+					$field .= '<select name="' . esc_attr( $key ) . '" id="' . esc_attr( $args['id'] ) . '" class="state_select ' . esc_attr( implode( ' ', $args['input_class'] ) ) . '" ' . implode( ' ', $custom_attributes ) . ' data-placeholder="' . esc_attr( $args['placeholder'] ? $args['placeholder'] : esc_html__( 'Select an option&hellip;', 'woocommerce' ) ) . '"  data-input-classes="' . esc_attr( implode( ' ', $args['input_class'] ) ) . '" ' . $data_label . '>
 						<option value="">' . esc_html__( 'Select an option&hellip;', 'woocommerce' ) . '</option>';
 
 					foreach ( $states as $ckey => $cvalue ) {

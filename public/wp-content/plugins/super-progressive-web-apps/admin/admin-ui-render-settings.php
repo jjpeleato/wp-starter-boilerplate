@@ -474,6 +474,59 @@ function superpwa_analytics_support_cb() {
 	<?php
 }
 
+/**
+ * Enable or disable cache external urls support
+ *
+ * @since 2.1.6
+ */ 
+function superpwa_cache_external_urls_support_cb() {
+	// Get Settings
+	$settings = superpwa_get_settings(); 
+	?><input type="checkbox" name="superpwa_settings[cache_external_urls]" id="superpwa_settings[cache_external_urls]" value="1" 
+	<?php if ( isset( $settings['cache_external_urls'] ) ) { checked( '1', $settings['cache_external_urls'] ); } ?>>
+	<br>
+	<?php
+}
+
+/**
+ * Exclude Urls from Cache list of service worker
+ *
+ * @since 2.1.2
+ */
+
+function superpwa_exclude_url_cache_cb(){
+	// Get Settings
+	$settings = superpwa_get_settings(); 
+	?>
+        <label><textarea placeholder="https://example.com/contact-us/, https://example.com/checkout/"  rows="4" cols="70" id="superpwa_settings[excluded_urls]" name="superpwa_settings[excluded_urls]"><?php echo (isset($settings['excluded_urls']) ? esc_attr($settings['excluded_urls']): ''); ?></textarea></label>
+        <p><?php echo esc_html__('Note: Seperate the URLs using a Comma(,)', 'super-progressive-web-apps'); ?></p>
+	<p><?php echo esc_html__('Place the list of URLs which you do not want to cache by service worker', 'super-progressive-web-apps'); ?></p>	
+	
+	<?php
+}
+
+/**
+ * Force Update Service Worker
+ *
+ * @since 2.1.6
+ */
+
+function superpwa_force_update_sw_cb(){
+	// Get Settings
+	$settings = superpwa_get_settings(); 
+	?>
+         <label><input type="text" id="superpwa_settings[force_update_sw_setting]" name="superpwa_settings[force_update_sw_setting]" value="<?php if(isset($settings['force_update_sw_setting'])){ 
+        	if(!version_compare($settings['force_update_sw_setting'],SUPERPWA_VERSION, '>=') ){
+				$settings['force_update_sw_setting'] = SUPERPWA_VERSION;
+			}
+        	echo esc_attr($settings['force_update_sw_setting']);
+        }else{ echo SUPERPWA_VERSION; } ?>"></label>      
+        <code>Current Version <?php echo SUPERPWA_VERSION; ?></code>
+	<p><?php echo esc_html__('Update the version number. It will automatically re-install the service worker for all the users', 'super-progressive-web-apps'); ?></p>
+	
+	<?php
+}
+
 
 /**
  * Admin interface renderer
@@ -499,20 +552,44 @@ function superpwa_admin_interface_render() {
 	}
 	
 	?>
-	<style type="text/css">.spwa-tab {overflow: hidden;border: 1px solid #ccc;background-color: #f1f1f1;margin-top: 15px;}.spwa-tab a {background-color: inherit;text-decoration: none;float: left;border: none;outline: none;cursor: pointer;padding: 14px 16px;transition: 0.3s; }.spwa-tab a:hover {background-color: #ddd; }.spwa-tab a.active {background-color: #ccc;}.spwa-tabcontent {display: none;padding: 6px 12px;border-top: none; animation: fadeEffect 1s; } @keyframes fadeEffect { from {opacity: 0;} to {opacity: 1;} }</style>
+	<style type="text/css">.spwa-tab {overflow: hidden;border: 1px solid #ccc;background-color: #fff;margin-top: 15px;}.spwa-tab a {background-color: inherit;text-decoration: none;float: left;border: none;outline: none;cursor: pointer;padding: 14px 16px;transition: 0s;font-size: 15px;color: #2271b1;}.spwa-tab a:hover {color: #0a4b78;}.spwa-tab a.active {box-shadow: none;border-bottom: 4px solid #646970;color: #1d2327;}.spwa-tab a:focus {box-shadow: none;outline: none;}.spwa-tabcontent {display: none;padding: 6px 12px;border-top: none; animation: fadeEffect 1s; }p.support-cont {font-size: 14px;font-weight: 500;color: #646970;}#support{margin-top: 1em;} @keyframes fadeEffect { from {opacity: 0;} to {opacity: 1;} }</style>
 
 	<div class="wrap">	
+		<?php
+        if ( defined('SUPERPWA_PRO_VERSION') ) {
+        	wp_enqueue_script('superpwa-pro-admin', trailingslashit(SUPERPWA_PRO_PATH_SRC).'assets/js/admin.js', array('jquery'), SUPERPWA_PRO_VERSION, true);
+        	$array = array('security_nonce'=>wp_create_nonce('superpwa_pro_post_nonce'));
+		wp_localize_script('superpwa-pro-admin', 'superpwa_pro_var', $array);
+            $license_info = get_option("superpwa_pro_upgrade_license");
+            if ( defined('SUPERPWA_PRO_PLUGIN_DIR_NAME') && !empty($license_info) ){
+            $superpwa_pro_manager = SUPERPWA_PRO_PLUGIN_DIR_NAME.'/assets/inc/superpwa-pro-license-data.php';                
+                if( file_exists($superpwa_pro_manager) ){
+                    require_once $superpwa_pro_manager;
+                    if( $_GET['page'] == 'superpwa' ) {
+                wp_enqueue_style( 'superpwa-license-panel-css', SUPERPWA_PRO_PATH_SRC . '/assets/inc/css/superpwa-pro-license-data.css', array() , SUPERPWA_PRO_VERSION );
+            }
+        }
+    }
+} ?>
 		<h1>Super Progressive Web Apps <sup><?php echo SUPERPWA_VERSION; ?></sup></h1>
 		
 		<form action="options.php" method="post" enctype="multipart/form-data">		
 			<?php
 			// Output nonce, action, and option_page fields for a settings page.
 			settings_fields( 'superpwa_settings_group' );
+			$addon_page = admin_url( 'admin.php?page=superpwa-addons');
 			?>
 			<div class="spwa-tab">
-			  <a id="spwa-default" class="spwa-tablinks" onclick="openCity(event, 'settings')">Settings</a>
-			  <a class="spwa-tablinks" onclick="openCity(event, 'advance')">Advance</a>
+			  <a id="spwa-default" class="spwa-tablinks" data-href="no" href="#general-settings" onclick="openCity(event, 'settings')">Settings</a>
+			  <a class="spwa-tablinks" id="spwa-feature" href="<?php echo $addon_page;  ?>" data-href="yes">Features (Addons)</a>
+			  <a class="spwa-tablinks" id="spwa-advance" href="#advance-settings" onclick="openCity(event, 'advance')" data-href="no">Advanced</a>
+			  <a class="spwa-tablinks" id="spwa-support" href="#support-settings" onclick="openCity(event, 'support')" data-href="no">Help & Support</a>
+			  <?php if( defined('SUPERPWA_PRO_VERSION') ){ ?>
+			  <!-- <a class="spwa-tablinks" id="spwa-license" href="<?php echo admin_url('admin.php?page=superpwa-upgrade')?> " data-href="no">License</a> -->
+			  <a class="spwa-tablinks" id="spwa-license" href="#license-settings" onclick="openCity(event, 'superpwa_pro_license')" data-href="no">License</a>
+			<?php } ?>
 			</div>
+			<span id="alert-warning" style=" margin-top: 10px; display: none; padding: 10px;background-color: #ff9800;color: white;"> Please Save the settings before moving to other tabs </span>
 			<div id="settings" class="spwa-tabcontent">
 			 <?php
 			  	// Basic Application Settings
@@ -540,8 +617,50 @@ function superpwa_admin_interface_render() {
 				}
 			?>
 			</div>
-		</form>
+			<div id="support" class="spwa-tabcontent">
+
+			 <?php
+              //1)Docs 2)Find new or whats new in superpwa(Blog Post Link)
+			 //3)Technical issue (supportLink) 4)Report a Bug(Support Link)
+
+			  ?>
+			 <h1>1) Documentation</h1>
+			 <p class="support-cont">All the documents regarding SuperPWA Setup, it's settings detail and also about add-ons setup all you can go through this <b><a href="https://superpwa.com/docs/" target="_blank">Docs link</a></b></p>
+
+			 <h1>2) What's New</h1>
+			 <p class="support-cont">We will be continuously working on new features whereas also fixing the bugs and at the sametime releasing new feature add-ons, So to catch all those things just check this link <b><a href="https://superpwa.com/blog/" target="_blank">What's new in SuperPWA</a></b></p>
+
+			 <h1>3) Technical Issue</h1>
+			 <p class="support-cont">If you are facing any issues or unable to Setup, you can directly connect us using this link <b><a href="https://superpwa.com/contact/" target="_blank">Contact us</a></b></p>
+
+			 <h1>4) Report a Bug</h1>
+			 <p class="support-cont">If you found any bug or having issues with any third party plugins you can contact us <b><a href="https://superpwa.com/contact/" target="_blank">Bug Report</a></b></p>
+			</div>
+
+			<div id="superpwa_pro_license" class="spwa-tabcontent">
+
+			 <?php
+			 if ( function_exists('superpwa_pro_upgrade_license_page') ) {
+			 	superpwa_pro_upgrade_license_page();
+			 }
+			 ?>
+			 
+			</div>
+ 
+</form>
 	</div>
-	<script type="text/javascript">function openCity(evt, cityName) {var i, tabcontent, tablinks;tabcontent = document.getElementsByClassName("spwa-tabcontent");for (i = 0; i < tabcontent.length; i++) { tabcontent[i].style.display = "none"; } tablinks = document.getElementsByClassName("spwa-tablinks"); for (i = 0; i < tablinks.length; i++) { tablinks[i].className = tablinks[i].className.replace(" active", ""); } document.getElementById(cityName).style.display = "block"; evt.currentTarget.className += " active"; }document.getElementById("spwa-default").click();</script>
+	<?php superpwa_newsletter_form(); ?>
+	<script type="text/javascript">function openCity(evt, cityName) {var i, tabcontent, tablinks;tabcontent = document.getElementsByClassName("spwa-tabcontent");for (i = 0; i < tabcontent.length; i++) { tabcontent[i].style.display = "none"; } tablinks = document.getElementsByClassName("spwa-tablinks"); for (i = 0; i < tablinks.length; i++) { tablinks[i].className = tablinks[i].className.replace(" active", ""); } document.getElementById(cityName).style.display = "block"; evt.currentTarget.className += " active"; }
+	     var url = window.location.href; 
+	    if(url.indexOf('#advance-settings') > -1){
+            document.getElementById("spwa-advance").click();
+	    }else if(url.indexOf('#support-settings') > -1){
+            document.getElementById("spwa-support").click();
+	    }else if(url.indexOf('#license-settings') > -1){
+            document.getElementById("spwa-license").click();
+	    }else{	
+        	document.getElementById("spwa-default").click();
+	    }
+        </script>
 	<?php
 }

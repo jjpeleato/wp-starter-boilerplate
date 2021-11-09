@@ -306,7 +306,7 @@ class UpdraftPlus_BackupModule_dropbox extends UpdraftPlus_BackupModule {
 				if (empty($response['code']) || "200" != $response['code']) {
 					$this->log('Unexpected HTTP code returned from Dropbox: '.$response['code']." (".serialize($response).")");
 					if ($response['code'] >= 400) {
-						if ($response['code'] == 401) {
+						if (401 == $response['code']) {
 							$this->log('HTTP code 401 returned from Dropbox, refreshing access token');
 							$dropbox->refreshAccessToken();
 						}
@@ -563,10 +563,10 @@ class UpdraftPlus_BackupModule_dropbox extends UpdraftPlus_BackupModule {
 	 */
 	public function chunked_download($file, $headers, $data, $fh) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 
-		$opts = $this->get_options();
+		$opts = $this->get_options();// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- filter use
 		$storage = $this->get_storage();
 
-		$try_the_other_one = false;
+		$try_the_other_one = false;// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- filter use
 
 		$ufile = apply_filters('updraftplus_dropbox_modpath', $file, $this);
 
@@ -625,9 +625,7 @@ class UpdraftPlus_BackupModule_dropbox extends UpdraftPlus_BackupModule {
 		ob_start();
 		$classes = $this->get_css_classes();
 
-		$defmsg = '<tr class="'.$classes.'"><td></td><td><strong>'.__('Need to use sub-folders?', 'updraftplus').'</strong> '.__('Backups are saved in', 'updraftplus').' apps/UpdraftPlus. '.__('If you backup several sites into the same Dropbox and want to organize with sub-folders, then ', 'updraftplus').'<a href="https://updraftplus.com/shop/" target="_blank">'.__("there's an add-on for that.", 'updraftplus').'</a></td></tr>';
-
-		$defmsg = '<tr class="'.$classes.'"><td></td><td><strong>'.__('Need to use sub-folders?', 'updraftplus').'</strong> '.__('Backups are saved in', 'updraftplus').' apps/UpdraftPlus. '.__('If you backup several sites into the same Dropbox and want to organize with sub-folders, then ', 'updraftplus').'<a href="'.apply_filters("updraftplus_com_link", "https://updraftplus.com/shop/").'" target="_blank">'.__("there's an add-on for that.", 'updraftplus').'</a></td></tr>';
+		$defmsg = '<tr class="'.$classes.'"><td></td><td><strong>'.__('Need to use sub-folders?', 'updraftplus').'</strong> '.sprintf(__('Backups are saved in %s.', 'updraftplus'), 'apps/UpdraftPlus').' '.sprintf(__('If you backup several sites into the same Dropbox and want to organize with sub-folders, then %scheck out Premium%s', 'updraftplus'), '<a href="'.apply_filters("updraftplus_com_link", "https://updraftplus.com/shop/").'" target="_blank">', '</a>').'</td></tr>';
 				
 		$extra_config = apply_filters('updraftplus_dropbox_extra_config_template', $defmsg, $this);
 		echo $extra_config;

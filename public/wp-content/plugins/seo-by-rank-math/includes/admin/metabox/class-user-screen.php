@@ -26,9 +26,7 @@ class User_Screen implements IScreen {
 	/**
 	 * Class construct
 	 */
-	public function __construct() {
-		$this->action( 'rank_math/metabox/process_fields', 'save_general_meta' );
-	}
+	public function __construct() {}
 
 	/**
 	 * Get object ID.
@@ -62,7 +60,9 @@ class User_Screen implements IScreen {
 	/**
 	 * Enqueue Styles and Scripts required for screen.
 	 */
-	public function enqueue() {}
+	public function enqueue() {
+		wp_enqueue_media();
+	}
 
 	/**
 	 * Get analysis to run.
@@ -85,7 +85,10 @@ class User_Screen implements IScreen {
 	 * @return array
 	 */
 	public function get_values() {
-		return [];
+		global $wp_rewrite;
+		return [
+			'permalinkFormat' => ! empty( $wp_rewrite->author_structure ) ? home_url( $wp_rewrite->author_structure ) : home_url(),
+		];
 	}
 
 	/**
@@ -94,7 +97,10 @@ class User_Screen implements IScreen {
 	 * @return array
 	 */
 	public function get_object_values() {
-		return [];
+		return [
+			'titleTemplate'       => Helper::get_settings( 'titles.author_archive_title', '%name% %sep% %sitename% %page%' ),
+			'descriptionTemplate' => Helper::get_settings( 'titles.author_archive_description', '%user_description%' ),
+		];
 	}
 
 	/**
@@ -106,18 +112,5 @@ class User_Screen implements IScreen {
 		return false === Helper::get_settings( 'titles.disable_author_archives' ) &&
 			Helper::get_settings( 'titles.author_add_meta_box' ) &&
 			Admin_Helper::is_user_edit();
-	}
-
-	/**
-	 * Save handler for metadata.
-	 *
-	 * @param CMB2 $cmb CMB2 instance.
-	 */
-	public function save_general_meta( $cmb ) {
-		if ( Helper::get_settings( 'titles.author_archive_title' ) === $cmb->data_to_save['rank_math_title'] ) {
-			$cmb->data_to_save['rank_math_title'] = '';
-		}
-
-		return $cmb;
 	}
 }

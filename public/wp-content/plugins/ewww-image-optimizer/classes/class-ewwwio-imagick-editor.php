@@ -38,7 +38,7 @@ if ( class_exists( 'WP_Thumb_Image_Editor_Imagick' ) ) {
 			}
 			if ( ( ! defined( 'EWWWIO_EDITOR_OVERWRITE' ) || ! EWWWIO_EDITOR_OVERWRITE ) && ewwwio_is_file( $filename ) ) {
 				ewwwio_debug_message( "detected existing file: $filename" );
-				$current_size = getimagesize( $filename );
+				$current_size = wp_getimagesize( $filename );
 				if ( $current_size && (int) $this->size['width'] === (int) $current_size[0] && (int) $this->size['height'] === (int) $current_size[1] ) {
 					ewwwio_debug_message( "existing file has same dimensions, not saving $filename" );
 					return array(
@@ -96,7 +96,7 @@ if ( class_exists( 'WP_Thumb_Image_Editor_Imagick' ) ) {
 			}
 			if ( ( ! defined( 'EWWWIO_EDITOR_OVERWRITE' ) || ! EWWWIO_EDITOR_OVERWRITE ) && ewwwio_is_file( $filename ) ) {
 				ewwwio_debug_message( "detected existing file: $filename" );
-				$current_size = getimagesize( $filename );
+				$current_size = wp_getimagesize( $filename );
 				if ( $current_size && (int) $this->size['width'] === (int) $current_size[0] && (int) $this->size['height'] === (int) $current_size[1] ) {
 					ewwwio_debug_message( "existing file has same dimensions, not saving $filename" );
 					return array(
@@ -155,7 +155,7 @@ if ( class_exists( 'WP_Thumb_Image_Editor_Imagick' ) ) {
 			}
 			if ( ( ! defined( 'EWWWIO_EDITOR_OVERWRITE' ) || ! EWWWIO_EDITOR_OVERWRITE ) && ewwwio_is_file( $filename ) ) {
 				ewwwio_debug_message( "detected existing file: $filename" );
-				$current_size = getimagesize( $filename );
+				$current_size = wp_getimagesize( $filename );
 				if ( $current_size && (int) $this->size['width'] === (int) $current_size[0] && (int) $this->size['height'] === (int) $current_size[1] ) {
 					ewwwio_debug_message( "existing file has same dimensions, not saving $filename" );
 					return array(
@@ -181,7 +181,6 @@ if ( class_exists( 'WP_Thumb_Image_Editor_Imagick' ) ) {
 					$image_size = ewww_image_optimizer_filesize( $filename );
 					ewwwio_debug_message( "image editor size: $image_size" );
 				}
-				ewww_image_optimizer_debug_log();
 			}
 			ewwwio_memory( __FUNCTION__ );
 			return $saved;
@@ -211,7 +210,7 @@ if ( class_exists( 'WP_Thumb_Image_Editor_Imagick' ) ) {
 		 * @return true|WP_Error
 		 */
 		public function resize( $max_w, $max_h, $crop = false ) {
-			ewwwio_debug_message( '<b>wp_image_editor_gd::' . __FUNCTION__ . '()</b>' );
+			ewwwio_debug_message( '<b>wp_image_editor_imagick::' . __FUNCTION__ . '()</b>' );
 			if ( (int) $this->size['width'] === (int) $max_w && (int) $this->size['height'] === (int) $max_h ) {
 				return true;
 			}
@@ -256,7 +255,7 @@ if ( class_exists( 'WP_Thumb_Image_Editor_Imagick' ) ) {
 		 * @return bool|WP_Error
 		 */
 		protected function _resize( $dims, $crop ) {
-			ewwwio_debug_message( '<b>wp_image_editor_gd::' . __FUNCTION__ . '()</b>' );
+			ewwwio_debug_message( '<b>wp_image_editor_imagick::' . __FUNCTION__ . '()</b>' );
 			list( $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h ) = $dims;
 			if ( defined( 'EWWWIO_EDITOR_AGR' ) && ! EWWWIO_EDITOR_AGR ) {
 				ewwwio_debug_message( 'AGR disabled' );
@@ -300,7 +299,7 @@ if ( class_exists( 'WP_Thumb_Image_Editor_Imagick' ) ) {
 			}
 			// TODO: Possibly handle crop, rotate, and flip down the road.
 			if ( ! empty( $this->modified ) ) {
-				ewwwio_debug_message( 'GIF already altered, leave it alone' );
+				ewwwio_debug_message( 'image already altered, leave it alone' );
 				$return_parent = true;
 			}
 			if ( ! $this->file || ewww_image_optimizer_stream_wrapped( $this->file ) || 0 === strpos( $this->file, 'http' ) || 0 === strpos( $this->file, 'ftp' ) || ! ewwwio_is_file( $this->file ) ) {
@@ -503,7 +502,7 @@ if ( class_exists( 'WP_Thumb_Image_Editor_Imagick' ) ) {
 			global $ewww_preempt_editor;
 			if ( ( ! defined( 'EWWWIO_EDITOR_OVERWRITE' ) || ! EWWWIO_EDITOR_OVERWRITE ) && ewwwio_is_file( $filename ) && empty( $ewww_preempt_editor ) ) {
 				ewwwio_debug_message( "detected existing file: $filename" );
-				$current_size = getimagesize( $filename );
+				$current_size = wp_getimagesize( $filename );
 				if ( $current_size && (int) $this->size['width'] === (int) $current_size[0] && (int) $this->size['height'] === (int) $current_size[1] ) {
 					ewwwio_debug_message( "existing file has same dimensions, not saving $filename" );
 					return array(
@@ -564,7 +563,7 @@ if ( class_exists( 'WP_Thumb_Image_Editor_Imagick' ) ) {
 			}
 			if ( ( ! defined( 'EWWWIO_EDITOR_OVERWRITE' ) || ! EWWWIO_EDITOR_OVERWRITE ) && ewwwio_is_file( $filename ) ) {
 				ewwwio_debug_message( "detected existing file: $filename" );
-				$current_size = getimagesize( $filename );
+				$current_size = wp_getimagesize( $filename );
 				if ( $current_size && (int) $this->size['width'] === (int) $current_size[0] && (int) $this->size['height'] === (int) $current_size[1] ) {
 					ewwwio_debug_message( "existing file has same dimensions, not saving $filename" );
 					return array(
