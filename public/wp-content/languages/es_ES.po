@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 5.7.x - Development package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-04-24 16:46:30+0000\n"
+"PO-Revision-Date: 2021-05-12 12:43:41+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -576,15 +576,15 @@ msgstr "%1$s debe ser un múltiplo de %2$s."
 #: wp-includes/rest-api.php:2311
 msgid "%1$s must contain at most %2$s property."
 msgid_plural "%1$s must contain at most %2$s properties."
-msgstr[0] "%1$s debe contener, como máximo, %2$s propiedad."
-msgstr[1] "%1$s debe contener, como máximo, %2$s propiedades."
+msgstr[0] "%1$s debe contener como máximo %2$s propiedad."
+msgstr[1] "%1$s debe contener como máximo %2$s propiedades."
 
 #. translators: 1: Parameter, 2: Number.
 #: wp-includes/rest-api.php:2295
 msgid "%1$s must contain at least %2$s property."
 msgid_plural "%1$s must contain at least %2$s properties."
-msgstr[0] "%1$s debe contener, al menos, %2$s propiedad."
-msgstr[1] "%1$s debe contener, al menos, %2$s propiedades."
+msgstr[0] "%1$s debe contener al menos %2$s propiedad."
+msgstr[1] "%1$s debe contener al menos %2$s propiedades."
 
 #. translators: %s: Parameter.
 #: wp-includes/rest-api.php:1893
@@ -661,7 +661,7 @@ msgstr "Las contraseñas de aplicación no están disponibles."
 
 #: wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php:561
 msgid "Sorry, you are not allowed to manage application passwords for this user."
-msgstr "Lo siento, no tienes permitido gestionar las contraseñas de aplicación para este usuario."
+msgstr "Lo siento, no tienes permisos para gestionar las contraseñas de aplicación para este usuario."
 
 #: wp-includes/rest-api/endpoints/class-wp-rest-site-health-controller.php:368
 msgid "HTML containing an action to direct the user to where they can resolve the issue."
@@ -12722,7 +12722,7 @@ msgstr "Página %s"
 
 #: wp-includes/load.php:283
 msgid "Briefly unavailable for scheduled maintenance. Check back in a minute."
-msgstr "No disponible temporalmente por un mantenimiento programado. Vuelve a comprobarlo en unos minutos."
+msgstr "No disponible temporalmente por mantenimiento programado. Vuelve a comprobarlo en unos minutos."
 
 #: wp-includes/load.php:284
 msgid "Maintenance"
