@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - Autoptimize - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-04-03 08:13:54+0000\n"
+"PO-Revision-Date: 2021-08-30 07:36:33+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11,61 +11,221 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: Plugins - Autoptimize - Stable (latest release)\n"
 
+#: classes/critcss-inc/admin_settings_rules.php:164
+msgid "How To Use Autoptimize CriticalCSS Rules"
+msgstr "Cómo usar las reglas del CSS crítico de Autoptimize"
+
+#: classes/critcss-inc/admin_settings_rules.js.php:414
+msgid "For path based rules, paste your specific and minified critical CSS. If you want to create a rule to exclude from critical CSS injection, enter \\\"none\\\""
+msgstr "Para reglas basadas en rutas, pega tu CSS crítico específico y minimizado. Si quieres crear una regla para excluir de la inyección de CSS crítico, introduce «none»"
+
+#. Translators: before the 1st word a number + a space will be displayed, as in
+#. e.g. "2 of above rules".
+#: classes/critcss-inc/admin_settings_rules.js.php:91
+msgid "of the above rules got flagged by criticalcss.com as to be reviewed. This is often due to font-related issues which can be safely ignored, but you can log in to your account at https://criticalcss.com and compare screenshots for rules by clicking the red exclamation mark to confirm if all is OK."
+msgstr "de las reglas anteriores han sido marcadas por criticalcss.com para ser revisadas. Esto suele ser debido a problemas relacionados con las fuentes, que pueden ser ignorados con seguridad, pero puedes acceder a tu cuenta en https://criticalcss.com y comparar las capturas de pantalla de las reglas haciendo clic en el signo de exclamación rojo para confirmar si todo está correcto."
+
+#: classes/critcss-inc/admin_settings_queue.php:55
+msgid "How To Use Autoptimize CriticalCSS Queue"
+msgstr "Cómo usar la cola de CSS crítico de Autoptimize"
+
+#: classes/autoptimizeMetabox.php:183
+msgid "Sorry, something went wrong."
+msgstr "Lo siento, algo ha salido mal."
+
+#: classes/autoptimizeMetabox.php:180
+msgid "Could not add to CCSS job queue."
+msgstr "No se pudo añadir a la cola de trabajos de CCSS."
+
+#: classes/autoptimizeMetabox.php:178
+msgid "Added to CCSS job queue."
+msgstr "Añadido a la cola de trabajos de CCSS."
+
+#: classes/autoptimizeMetabox.php:139
+msgid "Generate Critical CSS"
+msgstr "Generar CSS crítico"
+
+#. Translators: the sentence will be finished with the name of the offending
+#. plugin and a final stop.
+#: classes/autoptimizeMain.php:748
+msgid "It looks like you have <strong>another plugin also doing CSS and/ or JS optimization</strong>, which can result in hard to troubleshoot <strong>conflicts</strong>. For this reason it is recommended to disable this functionality in"
+msgstr "Parece que tienes <strong>otro plugin haciendo también optimización de CSS y/o JS</strong>, lo que puede ocasionar <strong>conflictos</strong> difíciles de solucionar. Por esta razón, se recomienda desactivar esta funcionalidad en"
+
+#: classes/autoptimizeMain.php:726
+msgid "It looks like your site might not have <strong>page caching</strong> which is a <strong>must-have for performance</strong>. If you are sure you have a page cache, you can close this notice, but when in doubt check with your host if they offer this or install a page caching plugin like for example"
+msgstr "Parece que tu sitio puede no tener <strong>caché de páginas</strong>, que es algo <strong>imprescindible para el rendimiento</strong>. Si estás seguro de que tienes caché de páginas, puedes cerrar este aviso, pero, si tienes dudas, consúltalo a tu alojamiento si lo ofrece o instala un plugin de caché de páginas como, por ejemplo,"
+
+#: classes/autoptimizeCriticalCSSSettings.php:154
+msgid "The \"Eliminate render-blocking CSS\" option was activated to allow critical CSS to be used."
+msgstr "La opción «Eliminar el CSS que bloquea la visualización» se activó para permitir usar el CSS crítico."
+
+#: classes/critcss-inc/admin_settings_queue.php:84
+msgid "Manually process the job queue"
+msgstr "Procesar la cola de tareas manualmente"
+
+#: classes/critcss-inc/admin_settings_queue.js.php:231
+msgid "Could not process queue."
+msgstr "No se pudo procesar la cola."
+
+#: classes/critcss-inc/admin_settings_queue.js.php:229
+msgid "The queue is locked, retry in a couple of minutes. If this problem persists and the queue is not moving at all remove the <code>wp-content/uploads/ao_ccss/queue.lock</code> file."
+msgstr "La cola está bloqueada, reinténtalo en un par de minutos. Si persiste este problema y la cola no se mueve nada elimina el archivo <code>wp-content/uploads/ao_ccss/queue.lock</code>."
+
+#: classes/critcss-inc/admin_settings_queue.js.php:226
+msgid "Queue processed, reloading page."
+msgstr "Cola procesada, recargando la página."
+
+#: classes/critcss-inc/admin_settings_adv.php:112
+msgid "<b>This functionality will be removed in a next major version of Autoptimize</b>, being replaced by the combination of the \"do not aggregate but defer JS\" + \"defer inline JS\" options on the main settings page."
+msgstr "<b>Esta funcionalidad se eliminará en la siguiente versión mayor de Autoptimize</b>, para reemplazarla con la combinación de las opciones de «No agregar, sino aplazar» + «Aplazar también el JS incrustado» en la página de los ajustes principales."
+
+#: classes/critcss-inc/admin_settings_adv.php:106
+msgid "Defer jQuery and other non-aggregated JS-files? (deprecated)"
+msgstr "¿Aplazar jQuery y otros archivos JS no agregados? (obsoleto)"
+
+#: classes/autoptimizeMetabox.php:113
+msgid "Lazyload images?"
+msgstr "¿Carga diferida de las imágenes?"
+
+#: classes/autoptimizeMetabox.php:101
+msgid "Inline critical CSS?"
+msgstr "¿Incrustar el CSS crítico?"
+
+#: classes/autoptimizeMetabox.php:86
+msgid "Optimize CSS?"
+msgstr "¿Optimizar el CSS?"
+
+#: classes/autoptimizeMetabox.php:74
+msgid "Optimize JS?"
+msgstr "¿Optimizar el JS?"
+
+#: classes/autoptimizeMetabox.php:62
+msgid "Optimize this page?"
+msgstr "¿Optimizar esta página?"
+
+#: classes/autoptimizeMetabox.php:35
+msgid "Autoptimize this page"
+msgstr "Autoptimizar esta página"
+
+#: classes/autoptimizeImages.php:1196
+msgid "Automatically serve AVIF image format to any browser that supports it."
+msgstr "Servir automáticamente el formato de imagen AVIF a cualquier navegador que sea compatible."
+
+#: classes/autoptimizeCriticalCSSSettings.php:186
+msgid "You have \"defer jQuery and other non-aggregated JS-files\" active (under Advanced Settings), but that functionality is deprecated and will be removed in the next major version of Autoptimize. Consider using the new \"Do not aggregate but defer\" and \"Also defer inline JS\" options on the main settings page instead."
+msgstr "Tienes activo «aplazar jQuery u otros archivos JS no agregados» (en los ajustes avanzados) pero esta funcionalidad está obsoleta y se eliminará en la siguiente versión mayor de Autoptimize. Plantéate usar en su lugar las nuevas opciones «No agregar, sino aplazar» y «Aplazar también el JS incrustado» en la página de los ajustes principales."
+
+#: classes/autoptimizeConfig.php:465
+msgid "Add a \"metabox\" to the post/ page edit screen allowing different optimizations to be turned off on a per post/ page level?"
+msgstr "¿Añadimos una «caja meta» a la pantalla de edición de entradas/páginas para permitir desactivar distintas optimizacciones en cada entrada/página? "
+
+#: classes/autoptimizeConfig.php:463
+msgid "Enable configuration per post/ page?"
+msgstr "¿Activamos la configuración por entrada/página?"
+
+#: classes/autoptimizeConfig.php:357
+msgid "If Google Pagespeed Insights detects unused CSS, consider using %s to <strong>reduce your site's CSS size to up to 90&#37;</strong>, resulting in a slimmer, faster site!"
+msgstr "Si Google PageSpeed Insights detecta CSS sin usar, plantéate usar %s para <strong>reducir el tamaño del CSS de tu sitio hasta un 90 &#37;</strong>, ¡lo que supondrá un sitio más fino y rápido!"
+
+#: classes/autoptimizeConfig.php:353
+msgid "Remove Unused CSS?"
+msgstr "¿Eliminar el CSS sin usar?"
+
+#: classes/autoptimizeConfig.php:323
+msgid "Eliminate render-blocking CSS?"
+msgstr "¿Elimina el CSS que bloquea la visualización?"
+
+#: classes/autoptimizeConfig.php:283
+msgid "Autoptimize combines your theme & plugins' JavaScript, but does not know what is used and what not. If Google Pagespeed Insights detects unused JavaScript, consider using a plugin like \"Plugin Organizer\" or similar to manage what JavaScript is added where."
+msgstr "Autoptimize combina el JavaScript de tu tema y plugins, pero no sabe qué se usa y qué no. Si Google PageSpeed Insights detecta JavaScript no usado, plantéate usar un plugin como «Plugin Organizer» o similar para gestionar qué JavaScript se añade y dónde."
+
+#: classes/autoptimizeConfig.php:282
+msgid "Remove Unused JavaScript?"
+msgstr "¿Eliminar el JavaScript sin usar?"
+
+#: classes/autoptimizeConfig.php:277
+msgid "Important: when \"aggregate JS-files\" is on, excluded non-minified files are still minified by Autoptimize unless that option under \"misc\" is disabled."
+msgstr "Importante: cuando está activo «agregar archivos JS» los archivos excluidos no minimizados continúan siendo minimizados por Autoptimize, salvo que esa opción esté desactivada en «varios»."
+
+#: classes/autoptimizeConfig.php:277
+msgid "A comma-separated list of scripts you do not want optimized, for example 'whatever.js, my_var' (without the quotes)."
+msgstr "Una lista de scripts, separada por comas, que no quieres optimizar. Por ejemplo, «cualquiercosa.js, otracosa.js» (sin las comillas)."
+
+#: classes/autoptimizeConfig.php:259
+msgid "Also defer inline JS. Generally this will allow all JS to be deferred, so you should remove default exclusions, test and only exclude specific items if still needed."
+msgstr "Aplazar también el JS incrustado. Normalmente esto permitirá aplazar todo el JS, así que deberías eliminar las exclusiones por defecto, haz pruebas y excluye elementos específicos solo si es aún necesario."
+
+#: classes/autoptimizeConfig.php:257
+msgid "Also defer inline JS?"
+msgstr "¿Aplazar también el JS incrustado?"
+
+#: classes/autoptimizeConfig.php:254
+msgid "Individual JS-files will be minified and deferred, making them non-render-blocking."
+msgstr "Los archivos JS individuales serán minimizados y aplazados, haciendo que no bloqueen la visualización."
+
+#: classes/autoptimizeConfig.php:249
+msgid "If your aggregated scripts break because of a JS-error, you might want to try this, but generally discouraged."
+msgstr "Si se rompen tus scripts agregados debido a un error de JS, puede que quieras probar esto, pero normalmente no se recomienda."
+
+#: classes/autoptimizeConfig.php:244
+msgid "Load JavaScript early (discouraged as it makes the JS render blocking)"
+msgstr "Cargar pronto el JavaScript (no recomendable ya que hace que el JS bloquee la visualización)"
+
+#: classes/autoptimizeConfig.php:239
+msgid "Let Autoptimize also extract JS from the HTML (discouraged as it can make Autoptimize's cache size grow quickly)"
+msgstr "Permite que Autoptimize también extraiga el JS del HTML (no recomendable ya que puede hacer que la caché de Autoptimize crezca rápidamente)"
+
+#: classes/autoptimizeConfig.php:234
+msgid "Aggregate all linked JS-files to have them loaded non-render blocking?"
+msgstr "¿Agregamos todos los archivos JS enlazados para que hacer que se carguen sin bloquear la visualización?"
+
 #. translators: "here to refresh" links to the Autoptimize Extra page and
 #. forces a refresh of the img opt stats.
-#: classes/autoptimizeImages.php:1280
+#: classes/autoptimizeImages.php:1288
 msgid "you can click %1$shere to refresh your quota status%2$s"
-msgstr "puedes hacer click %1$saquí para recargar el estado de tu cuota%2$s"
+msgstr "puedes hacer clic %1$saquí para recargar el estado de tu cuota%2$s"
 
 #. translators: link points to shortpixel.
-#: classes/autoptimizeImages.php:1131
+#: classes/autoptimizeImages.php:1146
 msgid "%1$sSign-up now%2$s to receive x2 more CDN traffic or image optimization credits for free! This offer also applies to any future plan that you'll choose to purchase."
 msgstr "¡%1$sRegístrate ahora%2$s para recibir más del doble de tráfico de la CDN o créditos de optimización de imágenes gratis x2 more CDN traffic or image optimization credits! Esa oferta también se aplica a cualquier plan futuro que elijas comprar."
 
 #. translators: link points to shortpixel.
-#: classes/autoptimizeImages.php:1126
+#: classes/autoptimizeImages.php:1141
 msgid "Get more Google love by speeding up your website. Start serving on-the-fly optimized images (also in the \"next-gen\" <strong>WebP</strong> and <strong>AVIF</strong> image formats) by %1$sShortPixel%2$s. The optimized images are cached and served from %3$sShortPixel's global CDN%2$s."
 msgstr "Obtén más amor de Google acelerando tu web. Empieza a servir sobre la marcha imágenes optimizadas (también en los formatos de imagen de nueva generación  <strong>WebP</strong> y <strong>AVIF</strong>) a través de %1$sShortPixel%2$s. Las imágenes optimizadas se cachean y sirven desde la %3$sCDN global de ShortPixel%2$s."
 
-#: classes/autoptimizeImages.php:1199
+#: classes/autoptimizeImages.php:1214
 msgid "Don't lazyload the first X images, '0' lazyloads all."
 msgstr "No cargar de forma diferida las primeras «X» imágenes, «0» las cargará todas de forma diferida."
 
-#: classes/autoptimizeImages.php:1197
+#: classes/autoptimizeImages.php:1212
 msgid "Lazy-load from nth image"
 msgstr "Cargar de forma diferida desde la enésima imagen"
 
-#: classes/autoptimizeImages.php:1147
+#: classes/autoptimizeImages.php:1162
 msgid "Comma-separated list of image classes or filenames that should not be optimized."
 msgstr "Lista separada por comas de las clases o nombres de archivo que no deberían optimizarse. "
 
-#: classes/autoptimizeImages.php:1145
+#: classes/autoptimizeImages.php:1160
 msgid "Optimization exclusions"
 msgstr "Exclusiones de la optimización"
 
-#: classes/autoptimizeConfig.php:235
-msgid "When JS is not aggregated, all linked JS-files can be deferred instead, making them non-render-blocking."
-msgstr "Cuando no se agrega el JS, todos los archivos JS se pueden aplazar en su lugar, haciendo que no bloqueen la visualización."
-
-#: classes/autoptimizeConfig.php:233
+#: classes/autoptimizeConfig.php:252
 msgid "Do not aggregate but defer?"
 msgstr "¿No agregar sino aplazar?"
 
-#: classes/autoptimizeCriticalCSSSettings.php:262
+#: classes/autoptimizeCriticalCSSSettings.php:273
 msgid "It looks like the amount of Critical CSS rules is very high, it is recommended to reconfigure Autoptimize (e.g. by manually creating broader rules) to ensure less rules are created."
 msgstr "Parece que la cantidad de reglas de CSS crítico es muy alta, se recomienda volver a configurar Autoptimize (p.ej.: creando manualmente reglas más amplias) para asegurar que se creen menos reglas."
 
-#: classes/autoptimizeCriticalCSSSettings.php:238
+#: classes/autoptimizeCriticalCSSSettings.php:249
 msgid "In the meantime you might want to <strong>edit default rule CSS now</strong>, to avoid all CSS being inlined when no (applicable) rules are found."
 msgstr "Mientras puede que quieras <strong>editar ahora la regla de CSS por defecto</strong>, para evitar que todo el CSS se aplique integrado cuando no haya reglas (aplicables)."
 
 #: classes/autoptimizeCriticalCSSSettings.php:163
-msgid "Oops! Please <strong>activate the \"Inline and Defer CSS\" option</strong> on Autoptimize's main settings page to ensure critical CSS is used on the front-end."
-msgstr "¡Vaya! Por favor, <strong>activa la opción «Integrar y aplazar CSS»</strong> en la página principal de ajustes de Autoptimize para asegurar que el CSS crítico es usado en la portada."
-
-#: classes/autoptimizeCriticalCSSSettings.php:154
-msgid "The \"Inline and Defer CSS\" option was activated to allow critical CSS to be used."
-msgstr "La opción «Integrar y aplazar CSS» se activó para permitir usar el CSS crítico."
+msgid "Please <strong>activate the \"Eliminate render-blocking CSS\" option</strong> on Autoptimize's main settings page to ensure critical CSS is used on the front-end."
+msgstr "Por favor, <strong>activa la opción «Eliminar el CSS que bloquea la visualización»</strong> en la página principal de ajustes de Autoptimize para asegurar que el CSS crítico se usa en la portada."
 
 #: classes/critcss-inc/admin_settings_adv.php:67
 msgid "The cronned queue processing is an asynchronous process triggerd by (WordPress) cron. To avoid this process from running too long and potentially getting killed, you can set the number of seconds here, 0 means no limit."
@@ -76,23 +236,19 @@ msgid "Queue processing time limit"
 msgstr "Límite de tiempo de procesamiento de la cola"
 
 #. translators: "associate your domain" will appear in a "a href".
-#: classes/autoptimizeImages.php:1257
+#: classes/autoptimizeImages.php:1265
 msgid "If you have enough CDN quota remaining, then you may need to %1$sassociate your domain%2$s to your Shortpixel account."
 msgstr "Si te quedan suficientes créditos o cuota CDN, entonces puede que necesites %1$sasociar tu dominio%2$s a tu cuenta de Shortpixel."
 
-#: classes/autoptimizeImages.php:1179
-msgid "Load WebP or AVIF in supported browsers?"
-msgstr "¿Cargar los formatos WebP o AVIF en los navegadores compatibles?"
-
-#: classes/autoptimizeConfig.php:418
+#: classes/autoptimizeConfig.php:440
 msgid "Enable 404 fallbacks?"
 msgstr "¿Activar los respaldos 404?"
 
-#: classes/critcss-inc/admin_settings_adv.php:122
+#: classes/critcss-inc/admin_settings_adv.php:123
 msgid "In rare cases the critical CSS needs to be removed once the full CSS loads, this option makes it so!"
 msgstr "En casos excepcionales, el CSS crítico tiene que ser eliminado una vez que se carga el CSS completo, ¡esta opción lo hace!"
 
-#: classes/critcss-inc/admin_settings_adv.php:117
+#: classes/critcss-inc/admin_settings_adv.php:118
 msgid "Unload critical CSS after page load?"
 msgstr "¿Descargar el CSS crítico después de la carga de la página?"
 
@@ -100,38 +256,38 @@ msgstr "¿Descargar el CSS crítico después de la carga de la página?"
 msgid "<h2>Fix render-blocking CSS!</h2><p>Significantly improve your first-paint times by making CSS non-render-blocking.</p><p>The next step is to sign up at <a href=\"https://criticalcss.com/?aff=1\" target=\"_blank\">https://criticalcss.com</a> (this is a premium service, priced 2 GBP/month for membership and 5 GBP/month per domain) <strong>and get the API key, which you can copy from <a href=\"https://criticalcss.com/account/api-keys?aff=1\" target=\"_blank\">the API-keys page</a></strong> and paste below.</p><p>If you have any questions or need support, head on over to <a href=\"https://wordpress.org/support/plugin/autoptimize\" target=\"_blank\">our support forum</a> and we'll help you get up and running in no time!</p>"
 msgstr "<h2>¡Corregir el bloqueo del proceso de CSS!</h2><p>Mejora significativamente tus primeros tiempos de presentación haciendo que el CSS no bloquee el proceso.</p><p>El siguiente paso es registrarse en <a href=\"https://criticalcss.com/?aff=1\" target=\"_blank\">https://criticalcss.com</a> (este es un servicio premium, con un precio de 2 GBP/mes para los miembros y 5 GBP/mes por dominio) <strong>y obtener la clave de la API, que puedes copiar en <a href=\"https://criticalcss.com/account/api-keys?aff=1\" target=\"_blank\">la página de las claves de la API</a></strong> y pegarla a continuación.</p><p>Si tienes cualquier pregunta o necesitas ayuda, dirígete a <a href=\"https://wordpress.org/support/plugin/autoptimize\" target=\"_blank\">nuestro foro de soporte</a> y ¡te ayudaremos a ponerte en marcha en poco tiempo!</p>"
 
-#: classes/autoptimizeCriticalCSSCore.php:422
+#: classes/autoptimizeCriticalCSSCore.php:428
 msgid "Please enter a valid <a href=\"https://criticalcss.com/?aff=1\" target=\"_blank\">criticalcss.com</a> API key to start."
 msgstr "Por favor, introduce una clave API válida de <a href=\"https://criticalcss.com/?aff=1\" target=\"_blank\">criticalcss.com</a> para empezar."
 
-#: classes/autoptimizeCriticalCSSCore.php:413
+#: classes/autoptimizeCriticalCSSCore.php:419
 msgid "Something went wrong when checking your API key, make sure you server can communicate with https://criticalcss.com and/ or try again later."
 msgstr "Algo fue mal al comprobar tu clave API, asegúrate de que tu servidor puede comunicarse con https://criticalcss.com y/o inténtalo de nuevo más tarde."
 
-#: classes/autoptimizeCriticalCSSCore.php:393
-#: classes/autoptimizeCriticalCSSCore.php:411
+#: classes/autoptimizeCriticalCSSCore.php:399
+#: classes/autoptimizeCriticalCSSCore.php:417
 msgid "Your API key is invalid. Please enter a valid <a href=\"https://criticalcss.com/?aff=1\" target=\"_blank\">criticalcss.com</a> key."
 msgstr "Tu clave API no es válida. Por favor, introduce una clave válida de <a href=\"https://criticalcss.com/?aff=1\" target=\"_blank\">criticalcss.com</a>."
 
-#: classes/autoptimizeCriticalCSSCore.php:391
-#: classes/autoptimizeCriticalCSSCore.php:408
+#: classes/autoptimizeCriticalCSSCore.php:397
+#: classes/autoptimizeCriticalCSSCore.php:414
 msgid "Invalid"
 msgstr "No válida"
 
-#: classes/autoptimizeCriticalCSSCore.php:384
-#: classes/autoptimizeCriticalCSSCore.php:402
+#: classes/autoptimizeCriticalCSSCore.php:390
+#: classes/autoptimizeCriticalCSSCore.php:408
 msgid "Valid"
 msgstr "Válida"
 
-#: classes/autoptimizeConfig.php:420
+#: classes/autoptimizeConfig.php:442
 msgid "Sometimes Autoptimized JS/ CSS is referenced in cached HTML but is already removed, resulting in broken sites. With this option on, Autoptimize will try to redirect those not-found files to \"fallback\"-versions, keeping the page/ site somewhat intact. In some cases this will require extra web-server level configuration to ensure <code>wp-content/autoptimize_404_handler.php</code> is set to handle 404's in <code>wp-content/cache/autoptimize</code>."
 msgstr "A veces el JS/CSS optimizado automáticamente se referencia en el HTML de la caché aunque ya esté eliminado, lo que provoca sitios rotos. Con esta opción activada, Autoptimize intentará redirigir esos archivos no encontrados a versiones «de respaldo», dejando la página/sitio intactos. En algunos casos, esto requerirá configuración adicional en el servidor web para asegurar que <code>wp-content/autoptimize_404_handler.php</code> está configurado para manejar las páginas 404 en <code>wp-content/cache/autoptimize</code>."
 
-#: classes/autoptimizeConfig.php:328
+#: classes/autoptimizeConfig.php:341
 msgid "Inlining all CSS is an easy way to stop the CSS from being render-blocking, but is generally not recommended because the size of the HTML increases significantly. Additionally it might push meta-tags down to a position where e.g. Facebook and Whatsapp will not find them any more, breaking thumbnails when sharing."
 msgstr "Incrustar todo el CSS es un modo sencillo de frenar el CSS que bloquea la visualización, pero normalmente no se recomienda debido a que el tamaño del HTML se incrementa significativamente. Adicionalmente, podría mover las etiquetas meta a una posición en la que, por ejemplo, Facebook y Whatsapp no las encontrarían, rompiendo las miniaturas al compartir."
 
-#: classes/autoptimizeConfig.php:189
+#: classes/autoptimizeConfig.php:193
 msgid "Autoptimize now includes the criticalcss.com integration that was previously part of the separate power-up. If you want you can simply disable the power-up and Autoptimize will take over immediately."
 msgstr "Autoptimize ahora incluye la integración con criticalcss.com, que previamente era parte de una mejora por separado. Si quieres puedes simplemente desactivar la mejora y Autoptimize la quitará de inmediato."
 
@@ -139,69 +295,57 @@ msgstr "Autoptimize ahora incluye la integración con criticalcss.com, que previ
 msgid "Autoptimize CriticalCSS"
 msgstr "Autoptimizar CSS crítico"
 
-#: classes/critcss-inc/admin_settings_rules.php:199
+#: classes/critcss-inc/admin_settings_rules.php:196
 msgid "Remove all rules"
 msgstr "Eliminar todas las reglas"
 
-#: classes/critcss-inc/admin_settings_rules.php:196
+#: classes/critcss-inc/admin_settings_rules.php:193
 msgid "Add CSS To All Rules"
 msgstr "Añadir CSS a todas las reglas"
 
-#: classes/critcss-inc/admin_settings_rules.php:195
+#: classes/critcss-inc/admin_settings_rules.php:192
 msgid "Edit Default Rule CSS"
 msgstr "Editar la regla CSS por defecto"
 
-#: classes/critcss-inc/admin_settings_rules.php:194
+#: classes/critcss-inc/admin_settings_rules.php:191
 msgid "Add New Rule"
 msgstr "Añadir nueva regla"
 
-#: classes/critcss-inc/admin_settings_rules.php:184
+#: classes/critcss-inc/admin_settings_rules.php:178
 msgid "At any time you can delete an <span class=\"badge auto\">AUTO</span> or <span class=\"badge manual\">MANUAL</span> rule by cliking on \"Remove\" button of the desired rule and saving your changes."
 msgstr "En cualquier momento puedes borrar una regla <span class=\"badge auto\">AUTO</span> o <span class=\"badge manual\">MANUAL</span> haciendo clic en el botón de «Eliminar» de la regla deseada y guardando tus cambios."
 
-#: classes/critcss-inc/admin_settings_rules.php:183
-msgid "If you see an <span class='badge auto'>AUTO</span> rule with a <span class='badge review'>R</span> besides it (R is after REVIEW), it means that the fetched critical CSS for that rule is not 100% guaranteed to work according to <a href='https://criticalcss.com/?aff=1' target='_blank'>criticalcss.com</a> analysis. It's advised that you edit and review that rule to make any required adjustments."
-msgstr "Si ves una regla <span class='badge auto'>AUTO</span> con una <span class='badge review'>R</span> a su lado (R es por REVISIÓN), significa que el CSS crítico obtenido para esa regla no está 100% garantizado que funcione según el análisis de <a href='https://criticalcss.com/?aff=1' target='_blank'>criticalcss.com</a>. Se recomienda que edites y revises esa regla para hacer cualquier ajuste requerido."
-
-#: classes/critcss-inc/admin_settings_rules.php:182
-msgid "You can also create an <span class=\"badge auto\">AUTO</span> rule for a path by leaving its critical CSS content empty. The critical CSS for that path will be automatically fetched from <a href=\"https://criticalcss.com/?aff=1\" target=\"_blank\">criticalcss.com</a> for you and updated whenever it changes."
-msgstr "También puedes crear una regla <span class=\"badge auto\">AUTO</span> para una ruta dejando vacío el contenido de su CSS crítico. El CSS crítico de esa ruta se recuperará automáticamente desde <a href=\"https://criticalcss.com/?aff=1\" target=\"_blank\">criticalcss.com</a> para ti y se actualizará cada vez que cambie."
-
-#: classes/critcss-inc/admin_settings_rules.php:181
+#: classes/critcss-inc/admin_settings_rules.php:177
 msgid "You can create <span class=\"badge manual\">MANUAL</span> rules for specific page paths (URL). Longer, more specific paths have higher priority over shorter ones, which in turn have higher priority over <span class=\"badge auto\">AUTO</span> rules. Also, critical CSS files from <span class=\"badge manual\">MANUAL</span> <strong>rules are NEVER updated automatically.</strong>"
 msgstr "Puedes crear reglas <span class=\"badge manual\">MANUAL</span> para rutas de páginas específicas (URL). Las rutas más largas y específicas tienen mayor prioridad que las más cortas, que tendrán a su vez mayor prioridad que las reglas <span class=\"badge auto\">AUTO</span>. Además, los archivos de CSS crítico de reglas <span class=\"badge manual\">MANUAL</span> <strong>NUNCA se actualizan automáticamente.</strong>"
 
-#: classes/critcss-inc/admin_settings_rules.php:180
+#: classes/critcss-inc/admin_settings_rules.php:176
 msgid "If you want to make any fine tunning in the critical CSS file of an <span class=\"badge auto\">AUTO</span> rule, click on \"Edit\" button of that rule, change what you need, submit and save it. The rule you've just edited becomes a <span class=\"badge manual\">MANUAL</span> rule then."
 msgstr "Si quieres hacer algún ajuste fino en el archivo de CSS crítico de una regla <span class=\"badge auto\">AUTO</span> haz clic en el botón «Editar» de esa regla, cambia lo que necesites, envíalo y guárdalo. La regla que acabes de editar se convierte entonces en una regla <span class=\"badge manual\">MANUAL</span>."
 
-#: classes/critcss-inc/admin_settings_rules.php:179
+#: classes/critcss-inc/admin_settings_rules.php:175
 msgid "These requests also creates an <span class=\"badge auto\">AUTO</span> rule for you. The critical CSS files from <span class=\"badge auto\">AUTO</span> <strong>rules are updated automatically</strong> when a CSS file in your theme or frontend plugins changes."
 msgstr "Estas peticiones también crean una regla <span class=\"badge auto\">AUTO</span> para ti. Los archivos de CSS crítico a partir de reglas <span class=\"badge auto\">AUTO</span> <strong>se actualizan automáticamente</strong> cuando cambia un archivo CSS de tu tema o plugins con efecto en portada."
 
-#: classes/critcss-inc/admin_settings_rules.php:178
+#: classes/critcss-inc/admin_settings_rules.php:174
 msgid "Upon a request to any of the frontend pages made by a <strong>not logged in user</strong>, it will <strong>asynchronously</strong> fetch and update the critical CSS from <a href=\"https://criticalcss.com/?aff=1\" target=\"_blank\">criticalcss.com</a> for conditional tags you have on your site (e.g. is_page, is_single, is_archive etc.)"
 msgstr "En cada petición en cualquier página visible hecha por un <strong>usuario no conectado</strong> se recuperará <strong>de manera asíncrona</strong> y se actualizará el CSS crítico desde <a href=\"https://criticalcss.com/?aff=1\" target=\"_blank\">criticalcss.com</a> para las etiquetas condicionales que tengas en tu sitio (p.ej. is_page, is_single, is_archive etc.)"
 
-#: classes/critcss-inc/admin_settings_rules.php:177
-msgid "When a valid <a href=\"https://criticalcss.com/?aff=1\" target=\"_blank\">criticalcss.com</a> API key is in place, Autoptimize CriticalCSS Power-Up starts to operate <strong>automatically</strong>."
-msgstr "Cuando hay una clave API válida de <a href=\"https://criticalcss.com/?aff=1\" target=\"_blank\">criticalcss.com</a>, el CSS crítico de Autoptimize empieza a operar <strong>automáticamente</strong>."
+#: classes/critcss-inc/admin_settings_rules.php:173
+msgid "When a valid <a href=\"https://criticalcss.com/?aff=1\" target=\"_blank\">criticalcss.com</a> API key is in place, Autoptimize starts to operate <strong>automatically</strong>."
+msgstr "Cuando hay una clave válida de la API de <a href=\"https://criticalcss.com/?aff=1\" target=\"_blank\">criticalcss.com</a>, Autoptimize empieza a operar <strong>automáticamente</strong>."
 
-#: classes/critcss-inc/admin_settings_rules.php:175
+#: classes/critcss-inc/admin_settings_rules.php:171
 msgid "TL;DR:<br />Critical CSS files from <span class='badge auto'>AUTO</span> <strong>rules are updated automatically</strong> while from <span class='badge manual'>MANUAL</span> <strong>rules are not.</strong>"
 msgstr "TL;DR:<br />Los archivos de CSS crítico en <span class='badge auto'>AUTO</span> <strong>a partir de reglas se actualizan automáticamente</strong> mientras que los realizados a partir de reglas en <span class='badge manual'>MANUAL</span> <strong>no.</strong>"
 
-#: classes/critcss-inc/admin_settings_rules.php:168
-msgid "How To Use Autoptimize CriticalCSS Power-Up Rules"
-msgstr "Cómo usar las reglas del CSS crítico de Autoptimize"
-
 #: classes/critcss-inc/admin_settings_rules.php:158
-msgid "Paste your MINIFIED additional critical CSS here and hit submit to save. This is the CSS to be added AT THE END of every critical CSS provided by a matching rule, or the default one."
-msgstr "Pega aquí tu CSS crítico adicional MINIMIZADO y pulsa en enviar para guardarlo. Este es el CSS que se añadirá AL FINAL de cada CSS crítico facilitado por una regla coincidente, o la regla por defecto."
+msgid "Paste your minified additional critical CSS here and hit submit to save. This is the CSS to be added AT THE END of every critical CSS provided by a matching rule, or the default one."
+msgstr "Pega aquí tu CSS crítico adicional minimizado y pulsa en enviar para guardarlo. Este es el CSS que se añadirá AL FINAL de cada CSS crítico proporcionado por una regla coincidente o por la regla por defecto."
 
 #: classes/critcss-inc/admin_settings_rules.php:153
-msgid "Paste your MINIFIED default critical CSS here and hit submit to save. This is the critical CSS to be used for every page NOT MATCHING any rule."
-msgstr "Pega aquí tu CSS crítico adicional MINIMIZADO y pulsa en enviar para guardarlo. Este es el CSS que se usará en toda página que NO COINCIDA con ninguna regla."
+msgid "Paste your minified default critical CSS here and hit submit to save. This is the critical CSS to be used for every page not matching any rule."
+msgstr "Pega aquí tu CSS crítico por defecto minimizado y pulsa en enviar para guardarlo. Este es el CSS que se usará en cada página que no coincida con ninguna regla."
 
 #: classes/critcss-inc/admin_settings_rules.php:148
 msgid "All Critical CSS rules will be deleted immediately and cannot be recovered.<br /><br /><strong>Are you sure?</strong>"
@@ -311,120 +455,115 @@ msgstr "Opciones"
 msgid "Debug Information"
 msgstr "Información de depuración"
 
-#: classes/critcss-inc/admin_settings_rules.js.php:292
+#: classes/critcss-inc/admin_settings_rules.js.php:314
 msgid "Additional Critical CSS"
 msgstr "CSS crítico adicional"
 
-#: classes/critcss-inc/admin_settings_rules.js.php:271
+#: classes/critcss-inc/admin_settings_rules.js.php:293
 msgid "Default Critical CSS"
 msgstr "CSS crítico por defecto"
 
-#: classes/critcss-inc/admin_settings_rules.js.php:251
+#: classes/critcss-inc/admin_settings_rules.js.php:273
 msgid "RULE VALIDATION ERROR!\\n\\nType based rules REQUIRES a minified critical CSS."
 msgstr "El tipo de ERROR DE VALIDACIÓN DE REGLA!\\n\\nbasado en reglas REQUIERE un CSS crítico minimizado."
 
-#: classes/critcss-inc/admin_settings_rules.js.php:249
+#: classes/critcss-inc/admin_settings_rules.js.php:271
 msgid "RULE VALIDATION ERROR!\\n\\nBased on your rule type, you SHOULD set a path or conditional tag."
 msgstr "ERROR DE VALIDACIÓN DE REGLA!\\n\\nbasado en  tu tipo de regla, DEBERÍAS establecer una ruta o etiqueta condicional."
 
-#: classes/critcss-inc/admin_settings_rules.js.php:243
-#: classes/critcss-inc/admin_settings_rules.js.php:274
-#: classes/critcss-inc/admin_settings_rules.js.php:295
+#: classes/critcss-inc/admin_settings_rules.js.php:265
+#: classes/critcss-inc/admin_settings_rules.js.php:296
+#: classes/critcss-inc/admin_settings_rules.js.php:317
 msgid "Submit"
 msgstr "Enviar"
 
-#: classes/critcss-inc/admin_settings_rules.js.php:231
-#: classes/critcss-inc/admin_settings_rules.js.php:370
+#: classes/critcss-inc/admin_settings_rules.js.php:253
 msgid "For path based rules, paste your specific and minified critical CSS here or leave this empty to fetch it from criticalcss.com and hit submit to save. If you want to create a rule to exclude from critical CSS injection, enter \\\"none\\\""
 msgstr "Para reglas basadas en rutas, pega aquí tu CSS crítico específico y minimizado o deja esto vacío para recuperarlo desde criticalcss.com y pulsa en enviar para guardar. Si quieres crear una regla para excluir de la inyección de CSS crítico introduce \\\"none\\\""
 
-#: classes/critcss-inc/admin_settings_rules.js.php:227
+#: classes/critcss-inc/admin_settings_rules.js.php:249
 msgid "For type based rules, paste your specific and minified critical CSS here and hit submit to save. If you want to create a rule to exclude from critical CSS injection, enter \\\"none\\\"."
 msgstr "Para reglas basadas en rutas, pega aquí tu CSS crítico específico y minimizado y pulsa en enviar para guardar. Si quieres crear una regla para excluir de la inyección de CSS crítico introduce \\\"none\\\""
 
-#: classes/critcss-inc/admin_settings_rules.js.php:216
+#: classes/critcss-inc/admin_settings_rules.js.php:238
 msgid "Add Critical CSS Rule"
 msgstr "Añadir regla de CSS crítico"
 
-#: classes/critcss-inc/admin_settings_rules.js.php:187
+#: classes/critcss-inc/admin_settings_rules.js.php:209
 msgid "Loading critical CSS..."
 msgstr "Cargando CSS crítico…"
 
-#: classes/critcss-inc/admin_settings_rules.js.php:176
+#: classes/critcss-inc/admin_settings_rules.js.php:198
 msgid "Edit Critical CSS Rule"
 msgstr "Editar regla de CSS crítico"
 
-#: classes/critcss-inc/admin_settings_rules.js.php:111
+#: classes/critcss-inc/admin_settings_rules.js.php:133
 msgid "Delete All"
 msgstr "Borrar todas"
 
-#: classes/critcss-inc/admin_settings_rules.js.php:80
+#: classes/critcss-inc/admin_settings_rules.js.php:79
 msgid "Remove"
 msgstr "Eliminar"
 
-#: classes/critcss-inc/admin_settings_rules.js.php:80
+#: classes/critcss-inc/admin_settings_rules.js.php:79
 msgid "Edit"
 msgstr "Editar"
 
-#: classes/critcss-inc/admin_settings_rules.js.php:64
+#: classes/critcss-inc/admin_settings_rules.js.php:65
 msgid "AUTO"
 msgstr "AUTOMÁTICO"
 
-#: classes/critcss-inc/admin_settings_rules.js.php:61
+#: classes/critcss-inc/admin_settings_rules.js.php:62
 msgid "MANUAL"
 msgstr "MANUAL"
 
-#: classes/critcss-inc/admin_settings_rules.js.php:58
+#: classes/critcss-inc/admin_settings_rules.js.php:59
 msgid "To be fetched from criticalcss.com in the next queue run..."
 msgstr "Para recuperarlo de criticalcss.com en la siguiente cola ejecuta…"
 
-#: classes/critcss-inc/admin_settings_rules.js.php:48
+#: classes/critcss-inc/admin_settings_rules.js.php:49
 msgid "Critical CSS File"
 msgstr "Archivo de CSS crítico"
 
-#: classes/critcss-inc/admin_settings_rules.js.php:48
+#: classes/critcss-inc/admin_settings_rules.js.php:49
 msgid "Target"
 msgstr "Objetivo"
 
-#: classes/critcss-inc/admin_settings_rules.js.php:48
+#: classes/critcss-inc/admin_settings_rules.js.php:49
 msgid "Type"
 msgstr "Tipo"
 
-#: classes/critcss-inc/admin_settings_rules.js.php:44
+#: classes/critcss-inc/admin_settings_rules.js.php:45
 msgid "Conditional Tags, Custom Post Types and Page Templates Rules"
 msgstr "Reglas de etiquetas condicionales, tipos de contenido personalizados y plantillas de página"
 
-#: classes/critcss-inc/admin_settings_rules.js.php:42
+#: classes/critcss-inc/admin_settings_rules.js.php:43
 msgid "Path Based Rules"
 msgstr "Reglas basadas en rutas"
 
-#: classes/critcss-inc/admin_settings_adv.php:145
+#: classes/critcss-inc/admin_settings_adv.php:146
 msgid "<strong>CAUTION! Only use debug mode on production/live environments for ad-hoc troubleshooting and remember to turn it back off after</strong>, as this generates a lot of log-data.<br />Check the box above to enable Autoptimize CriticalCSS Power-Up debug mode. It provides debug facilities in this screen, to the browser console and to this file: "
 msgstr "<strong>¡PRECAUCIÓN! Solo utiliza el modo de depuración en entornos de producción/directo para diagnósticos en vivo y recuerda después volver a desactivarlo</strong>, pues esto genera un montón de datos de registro.<br />Revisa la casilla de arriba para activar el modo de depuración de la mejora de CSS crítico de Autoptimize. Ofrece funcionalidades de depuración en esta pantalla, en la consola del navegador y en este archivo: "
 
-#: classes/critcss-inc/admin_settings_adv.php:139
+#: classes/critcss-inc/admin_settings_adv.php:140
 msgid "Debug Mode"
 msgstr "Modo de depuración"
 
-#: classes/critcss-inc/admin_settings_adv.php:133
+#: classes/critcss-inc/admin_settings_adv.php:134
 msgid "Only requests from this domain will be sent for Critical CSS generation (pricing is per domain/ month)."
 msgstr "Solo se enviarán para la generación de CSS crítico las peticiones desde este dominio (el precio es por dominio y mes)"
 
-#: classes/critcss-inc/admin_settings_adv.php:131
+#: classes/critcss-inc/admin_settings_adv.php:132
 msgid "Don't leave this empty, put e.g. https://example.net/ or simply 'none' to disable domain binding."
 msgstr "No dejes esto vacío, pon, por ejemplo, https://ejemplo.net/ o simplemente 'none' para desactivar la vinculación al dominio. "
 
-#: classes/critcss-inc/admin_settings_adv.php:128
+#: classes/critcss-inc/admin_settings_adv.php:129
 msgid "Bound domain"
 msgstr "Vincular dominio"
 
 #: classes/critcss-inc/admin_settings_adv.php:111
 msgid "Defer all non-aggregated JS, including jQuery and inline JS to fix remaining render-blocking issues. Make sure to test your site thoroughly when activating this option!"
 msgstr "Aplaza todos los JS no agregados, incluyendo jQuery y el JS incrustado, para corregir problemas de bloqueo de la visualización pendientes. ¡Asegúrate de probar tu sitio en profundidad cuando actives esta opción!"
-
-#: classes/critcss-inc/admin_settings_adv.php:106
-msgid "Defer jQuery and other non-aggregated JS-files?"
-msgstr "¿Aplazar jQuery y otros archivos JS no agregados?"
 
 #: classes/critcss-inc/admin_settings_adv.php:100
 msgid "By default for each page a separate rule is generated. If your pages have (semi-)identical above the fold look and feel and you want to keep the rules lean, you can disable that so one rule is created to all pages."
@@ -482,109 +621,109 @@ msgstr "Tamaño del viewport"
 msgid "Advanced Settings"
 msgstr "Ajustes avanzados"
 
-#: classes/critcss-inc/admin_settings_queue.js.php:175
+#: classes/critcss-inc/admin_settings_queue.js.php:181
 msgid "Retry"
 msgstr "Reintentar"
 
-#: classes/critcss-inc/admin_settings_queue.js.php:155
+#: classes/critcss-inc/admin_settings_queue.js.php:161
 msgid "Delete all jobs?"
 msgstr "¿Borrar todos los trabajos?"
 
-#: classes/critcss-inc/admin_settings_queue.js.php:142
-#: classes/critcss-inc/admin_settings_queue.js.php:160
-#: classes/critcss-inc/admin_settings_queue.js.php:190
-#: classes/critcss-inc/admin_settings_rules.js.php:98
-#: classes/critcss-inc/admin_settings_rules.js.php:118
-#: classes/critcss-inc/admin_settings_rules.js.php:257
+#: classes/critcss-inc/admin_settings_queue.js.php:148
+#: classes/critcss-inc/admin_settings_queue.js.php:166
+#: classes/critcss-inc/admin_settings_queue.js.php:196
+#: classes/critcss-inc/admin_settings_rules.js.php:120
+#: classes/critcss-inc/admin_settings_rules.js.php:140
 #: classes/critcss-inc/admin_settings_rules.js.php:279
-#: classes/critcss-inc/admin_settings_rules.js.php:300
+#: classes/critcss-inc/admin_settings_rules.js.php:301
+#: classes/critcss-inc/admin_settings_rules.js.php:322
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: classes/critcss-inc/admin_settings_queue.js.php:137
-#: classes/critcss-inc/admin_settings_rules.js.php:93
+#: classes/critcss-inc/admin_settings_queue.js.php:143
+#: classes/critcss-inc/admin_settings_rules.js.php:115
 msgid "Delete"
 msgstr "Borrar"
 
-#: classes/critcss-inc/admin_settings_queue.js.php:114
+#: classes/critcss-inc/admin_settings_queue.js.php:120
 msgid "Job status is "
 msgstr "El estado del trabajo es"
 
-#: classes/critcss-inc/admin_settings_queue.js.php:108
+#: classes/critcss-inc/admin_settings_queue.js.php:114
 msgid "N/A"
 msgstr "N/D"
 
-#: classes/critcss-inc/admin_settings_queue.js.php:100
+#: classes/critcss-inc/admin_settings_queue.js.php:106
 msgid "UNKNOWN"
 msgstr "DESCONOCIDO"
 
-#: classes/critcss-inc/admin_settings_queue.js.php:92
-#: classes/critcss-inc/admin_settings_queue.js.php:101
+#: classes/critcss-inc/admin_settings_queue.js.php:98
+#: classes/critcss-inc/admin_settings_queue.js.php:107
 msgid "Get Help"
 msgstr "Obtener ayuda"
 
-#: classes/critcss-inc/admin_settings_queue.js.php:91
+#: classes/critcss-inc/admin_settings_queue.js.php:97
 msgid "ERROR"
 msgstr "ERROR"
 
-#: classes/critcss-inc/admin_settings_queue.js.php:84
+#: classes/critcss-inc/admin_settings_queue.js.php:90
 msgid "DONE"
 msgstr "HECHO"
 
-#: classes/critcss-inc/admin_settings_queue.js.php:77
-#: classes/critcss-inc/admin_settings_queue.js.php:91
-#: classes/critcss-inc/admin_settings_queue.js.php:100
+#: classes/critcss-inc/admin_settings_queue.js.php:83
+#: classes/critcss-inc/admin_settings_queue.js.php:97
+#: classes/critcss-inc/admin_settings_queue.js.php:106
 msgid "- Validation: "
 msgstr "- Validación:"
 
-#: classes/critcss-inc/admin_settings_queue.js.php:77
-#: classes/critcss-inc/admin_settings_queue.js.php:91
-#: classes/critcss-inc/admin_settings_queue.js.php:100
+#: classes/critcss-inc/admin_settings_queue.js.php:83
+#: classes/critcss-inc/admin_settings_queue.js.php:97
+#: classes/critcss-inc/admin_settings_queue.js.php:106
 msgid "- Result: "
 msgstr "- Resultado:"
 
-#: classes/critcss-inc/admin_settings_queue.js.php:77
-#: classes/critcss-inc/admin_settings_queue.js.php:91
-#: classes/critcss-inc/admin_settings_queue.js.php:100
+#: classes/critcss-inc/admin_settings_queue.js.php:83
+#: classes/critcss-inc/admin_settings_queue.js.php:97
+#: classes/critcss-inc/admin_settings_queue.js.php:106
 msgid "- Status: "
 msgstr "- Estado:"
 
-#: classes/critcss-inc/admin_settings_queue.js.php:77
-#: classes/critcss-inc/admin_settings_queue.js.php:91
-#: classes/critcss-inc/admin_settings_queue.js.php:100
+#: classes/critcss-inc/admin_settings_queue.js.php:83
+#: classes/critcss-inc/admin_settings_queue.js.php:97
+#: classes/critcss-inc/admin_settings_queue.js.php:106
 msgid "- Job ID: "
 msgstr "- ID del trabajo:"
 
-#: classes/critcss-inc/admin_settings_queue.js.php:77
-#: classes/critcss-inc/admin_settings_queue.js.php:91
-#: classes/critcss-inc/admin_settings_queue.js.php:100
+#: classes/critcss-inc/admin_settings_queue.js.php:83
+#: classes/critcss-inc/admin_settings_queue.js.php:97
+#: classes/critcss-inc/admin_settings_queue.js.php:106
 msgid "Info from criticalcss.com:"
 msgstr "Información desde criticalcss.com:"
 
-#: classes/critcss-inc/admin_settings_queue.js.php:77
+#: classes/critcss-inc/admin_settings_queue.js.php:83
 msgid "REVIEW"
 msgstr "REVISIÓN"
 
-#: classes/critcss-inc/admin_settings_queue.js.php:71
+#: classes/critcss-inc/admin_settings_queue.js.php:77
 msgid "PENDING"
 msgstr "PENDIENTE"
 
-#: classes/critcss-inc/admin_settings_queue.js.php:66
+#: classes/autoptimizeCriticalCSSCore.php:426
 #: classes/critcss-inc/admin_settings_queue.js.php:72
-#: classes/autoptimizeCriticalCSSCore.php:420
+#: classes/critcss-inc/admin_settings_queue.js.php:78
 msgid "None"
 msgstr "Ninguna"
 
-#: classes/critcss-inc/admin_settings_queue.js.php:65
+#: classes/critcss-inc/admin_settings_queue.js.php:71
 msgid "New"
 msgstr "Nuevo"
 
-#: classes/critcss-inc/admin_settings_queue.php:84
+#: classes/critcss-inc/admin_settings_queue.php:87
 msgid "Remove all jobs"
 msgstr "Eliminar todos los trabajos"
 
 #: classes/critcss-inc/admin_settings_queue.php:77
-#: classes/critcss-inc/admin_settings_rules.js.php:48
+#: classes/critcss-inc/admin_settings_rules.js.php:49
 msgid "Actions"
 msgstr "Acciones"
 
@@ -613,8 +752,8 @@ msgid "Status"
 msgstr "Estado"
 
 #: classes/critcss-inc/admin_settings_queue.php:71
-msgid "<strong>A word about WordPress cron:</strong> Autoptimize CriticalCSS Power-Up watch the queue by using WordPress Cron (or WP-Cron for short.) It <a href=\"https://www.smashingmagazine.com/2013/10/schedule-events-using-wordpress-cron/#limitations-of-wordpress-cron-and-solutions-to-fix-em\" target=\"_blank\">could be faulty</a> on very light or very heavy loads. If your site receives just a few or thousands visits a day, it might be a good idea to <a href=\"https://developer.wordpress.org/plugins/cron/hooking-wp-cron-into-the-system-task-scheduler/\" target=\"_blank\">turn WP-Cron off and use your system task scheduler</a> to fire it instead."
-msgstr "<strong>Unas palabras sobre el programador de tareas de WordPress:</strong> La mejora de CSS crítico de Autoptimize mira la cola de espera usando el programador de tareas de WordPress (o WP-Cron por acortar). Podría <a href=\"https://www.smashingmagazine.com/2013/10/schedule-events-using-wordpress-cron/#limitations-of-wordpress-cron-and-solutions-to-fix-em\" target=\"_blank\">fallar</a> en cargas muy ligeras o muy pesadas. Si tu sitio recibe solo unas pocas o miles de visitas al día, podría ser buena idea <a href=\"https://developer.wordpress.org/plugins/cron/hooking-wp-cron-into-the-system-task-scheduler/\" target=\"_blank\">desactivar WP-Cron y usar en su lugar el programador de tareas de tu sistema</a> para lanzarlo."
+msgid "<strong>A word about WordPress cron:</strong> Autoptimize watches the queue by using WordPress Cron (or WP-Cron for short.) It <a href=\"https://www.smashingmagazine.com/2013/10/schedule-events-using-wordpress-cron/#limitations-of-wordpress-cron-and-solutions-to-fix-em\" target=\"_blank\">could be faulty</a> on very light or very heavy loads. If your site receives just a few or thousands visits a day, it might be a good idea to <a href=\"https://developer.wordpress.org/plugins/cron/hooking-wp-cron-into-the-system-task-scheduler/\" target=\"_blank\">turn WP-Cron off and use your system task scheduler</a> to fire it instead."
+msgstr "<strong>Unas palabras sobre el programador de tareas de WordPress:</strong> Autoptimize mira la cola de espera usando el programador de tareas de WordPress (o WP-Cron por acortar). <a href=\"https://www.smashingmagazine.com/2013/10/schedule-events-using-wordpress-cron/#limitations-of-wordpress-cron-and-solutions-to-fix-em\" target=\"_blank\">Podría fallar</a> en cargas muy ligeras o muy pesadas. Si tu sitio recibe solo unas pocas o miles de visitas al día, podría ser buena idea <a href=\"https://developer.wordpress.org/plugins/cron/hooking-wp-cron-into-the-system-task-scheduler/\" target=\"_blank\">desactivar WP-Cron y usar en su lugar el programador de tareas de tu sistema</a> para lanzarlo."
 
 #: classes/critcss-inc/admin_settings_queue.php:70
 msgid "To get more information about jobs statuses, specially the ones with <span class=\"badge error\">E</span> and <span class=\"badge unknown\">U</span> status, hover your mouse in the status badge of that job. This information might be crucial when contacting <a href=\"https://criticalcss.com/?aff=1\" target=\"_blank\">criticalcss.com</a> for assistance."
@@ -633,8 +772,8 @@ msgid "As soon as <a href=\"https://criticalcss.com/?aff=1\" target=\"_blank\">c
 msgstr "En el momento en que <a href=\"https://criticalcss.com/?aff=1\" target=\"_blank\">criticalcss.com</a> devuelve un archivo de CSS crítico válido el trabajo se finaliza y se elimina de la cola de espera."
 
 #: classes/critcss-inc/admin_settings_queue.php:66
-msgid "Autoptimize CriticalCSS Power-Up constantly query the queue for <span class='badge new'>N</span> jobs. When it finds one, gears spins and jobs becomes <span class='badge pending'>P</span> while they are running and <a href='https://criticalcss.com/?aff=1' target='_blank'>criticalcss.com</a> doesn't return a result."
-msgstr "La mejora de CSS crítico de Autoptimize consulta constantemente la cola de espera para encontrar trabajos con estado en <span class='badge new'>N</span>. Cuando encuentra uno gira el icono de la rueda y el trabajo pasa al estado de <span class='badge pending'>P</span> mientras se está ejecutando y <a href='https://criticalcss.com/?aff=1' target='_blank'>criticalcss.com</a> no devuelve un resultado."
+msgid "Autoptimize constantly queries the queue for <span class='badge new'>N</span> jobs. When it finds one, gears spins and jobs becomes <span class='badge pending'>P</span> while they are running and <a href='https://criticalcss.com/?aff=1' target='_blank'>criticalcss.com</a> doesn't return a result."
+msgstr "Autoptimize consulta constantemente la cola de espera para encontrar tareas con estado <span class='badge new'>N</span>. Cuando encuentra uno, gira el icono de la rueda y la tarea pasa al estado <span class='badge pending'>P</span> mientras se está ejecutando y <a href='https://criticalcss.com/?aff=1' target='_blank'>criticalcss.com</a> no devuelve un resultado."
 
 #: classes/critcss-inc/admin_settings_queue.php:65
 msgid "When the conditions to create a job are met (i.e. user not logged in, no matching <span class=\"badge manual\">MANUAL</span> rule or CSS files has changed for an <span class=\"badge auto\">AUTO</span> rule), a <span class=\"badge new\">N</span> job is created in the queue."
@@ -649,13 +788,9 @@ msgid "TL;DR:<br /><strong>Queue runs every 10 minutes.</strong> Job statuses ar
 msgstr "TL;DR:<br /><strong>La cola se ejecuta cada 10 minutos.</strong> Los estados de los trabajos son <span class=\"badge new\">N</span> para NUEVO, <span class=\"badge pending\">P</span> para PENDIENTE, <span class=\"badge error\">E</span> para ERROR y <span class=\"badge unknown\">U</span> para DESCONOCIDO."
 
 #: classes/critcss-inc/admin_settings_queue.php:56
-#: classes/critcss-inc/admin_settings_rules.php:169
+#: classes/critcss-inc/admin_settings_rules.php:165
 msgid "Click the side arrow to toggle instructions"
 msgstr "Haz clic en la flecha de al lado para mostrar las instrucciones"
-
-#: classes/critcss-inc/admin_settings_queue.php:55
-msgid "How To Use Autoptimize CriticalCSS Power-Up Queue"
-msgstr "Cómo usar la cola de CSS crítico de Autoptimize"
 
 #: classes/critcss-inc/admin_settings_queue.php:48
 msgid "This will delete all jobs, are you sure?"
@@ -669,11 +804,11 @@ msgstr "Borrar todos los trabajos"
 msgid "Are you sure you want to delete this job?"
 msgstr "¿Estás seguro de querer borrar este trabajo?"
 
+#: classes/critcss-inc/admin_settings_queue.js.php:84
+#: classes/critcss-inc/admin_settings_queue.js.php:91
+#: classes/critcss-inc/admin_settings_queue.js.php:98
+#: classes/critcss-inc/admin_settings_queue.js.php:107
 #: classes/critcss-inc/admin_settings_queue.php:42
-#: classes/critcss-inc/admin_settings_queue.js.php:78
-#: classes/critcss-inc/admin_settings_queue.js.php:85
-#: classes/critcss-inc/admin_settings_queue.js.php:92
-#: classes/critcss-inc/admin_settings_queue.js.php:101
 msgid "Delete Job"
 msgstr "Borrar trabajo"
 
@@ -681,8 +816,8 @@ msgstr "Borrar trabajo"
 msgid "Are you sure you want to retry this job?"
 msgstr "¿Estás seguro de querer reintentar este trabajo?"
 
+#: classes/critcss-inc/admin_settings_queue.js.php:98
 #: classes/critcss-inc/admin_settings_queue.php:37
-#: classes/critcss-inc/admin_settings_queue.js.php:92
 msgid "Retry Job"
 msgstr "Reintentar trabajo"
 
@@ -710,28 +845,28 @@ msgstr "Clave API"
 msgid "API key provided by your host/ WordPress administrator, no need to enter anything here. In case of problems with the API key, contact your host/ WordPress administrator."
 msgstr "Clave API facilitada por el administrador de tu servidor/WordPress, no es necesario introducir nada aquí. En caso de problemas con la clave API contacta con el administrador de tu servidor/WordPress."
 
-#: classes/autoptimizeCriticalCSSSettings.php:342
+#: classes/autoptimizeCriticalCSSSettings.php:353
 msgid "Import Settings"
 msgstr "Ajustes de importación"
 
-#: classes/autoptimizeCriticalCSSSettings.php:341
+#: classes/autoptimizeCriticalCSSSettings.php:352
 msgid "Export Settings"
 msgstr "Ajustes de exportación"
 
 #. translators: the placesholder is for a line of code in wp-config.php.
-#: classes/autoptimizeCriticalCSSSettings.php:283
+#: classes/autoptimizeCriticalCSSSettings.php:294
 msgid "<p>Critical CSS settings cannot be set at network level as critical CSS is specific to each sub-site.</p><p>You can however provide the critical CSS API key for use by all sites by adding this your wp-config.php as %s</p>"
 msgstr "<p>Los ajustes de CSS crítico no se pueden configurar para toda la red ya que el CSS crítico es específico de cada subsitio.</p><p>Puedes, sin embargo, ofrecer la clave API de CSS crítico para que la usen todos los sitios añadiendo esto a tu your wp-config.php como %s</p>"
 
-#: classes/autoptimizeCriticalCSSSettings.php:249
+#: classes/autoptimizeCriticalCSSSettings.php:260
 msgid "The critical CSS service has been reported to be down. Although no new rules will be created for now, this does not prevent existing rules from being applied."
 msgstr "Se ha informado que el servicio de CSS crítico está caído. Aunque no se crearán nuevas reglas de momento, esto no impide que se apliquen las reglas existentes."
 
-#: classes/autoptimizeCriticalCSSSettings.php:236
+#: classes/autoptimizeCriticalCSSSettings.php:247
 msgid "Great, Autoptimize will now automatically start creating new critical CSS rules, you should see those appearing below in the next couple of hours."
 msgstr "Fantástico, ahora Autoptimize empezará a crear automáticamente nuevas reglas de CSS crítico, deberías verlas aparecer abajo en las siguientes dos horas."
 
-#: classes/autoptimizeCriticalCSSSettings.php:228
+#: classes/autoptimizeCriticalCSSSettings.php:239
 msgid "It looks like there might be a problem with WordPress cron (task scheduling). Have a look at <a href=\"https://wordpress.org/plugins/autoptimize-criticalcss/faq/\" target=\"_blank\">the FAQ</a> or the info in the Job Queue instructions if all jobs remain in \"N\" status and no rules are created."
 msgstr "Parece que podría haber un problema con el cron de WordPress cron (programación de tareas). Echa un vistazo a <a href=\"https://wordpress.org/plugins/autoptimize-criticalcss/faq/\" target=\"_blank\">la FAQ</a> o a la información de las instrucciones de la cola de trabajos si todos los trabajos siguen en el estado «N» y no se crea ninguna regla."
 
@@ -743,119 +878,121 @@ msgstr "El cron de WordPress (para programar tareas) parece estar desactivado. E
 msgid "Could not create the required directory. Make sure the webserver can write to the wp-content directory."
 msgstr "No se pudo crear el directorio requerido. Asegúrate de que el servidor web puede escribir en el directorio wp-content."
 
-#: classes/autoptimizeExtra.php:535
+#: classes/autoptimizeExtra.php:536
 msgid "Comma-separated list with full URL's of to to-be-preloaded resources. To be used sparingly!"
 msgstr "Lista, separada por comas, con las URL completas de los recursos que deben ser precargados. ¡Para ser usado con moderación!"
 
-#: classes/autoptimizeExtra.php:533
+#: classes/autoptimizeExtra.php:534
 msgid "Preload specific requests <em>(advanced users)</em>"
 msgstr "Precarga de peticiones específicas <em>(usuarios avanzados)</em>"
 
 #. translators: "display:swap" should remain untranslated, will be shown in
 #. code tags.
-#: classes/autoptimizeExtra.php:508 classes/autoptimizeExtra.php:510
+#. translators: "display:swap" should remain untranslated, will be shown in
+#. code tags.
+#: classes/autoptimizeExtra.php:509 classes/autoptimizeExtra.php:511
 msgid "includes %1$sdisplay:swap%2$s."
 msgstr "incluye %1$sdisplay:swap%2$s."
 
-#: classes/critcss-inc/admin_settings_explain.php:15
 #: classes/autoptimizeCriticalCSSSettings.php:47
 #: classes/autoptimizeCriticalCSSSettings.php:110
+#: classes/critcss-inc/admin_settings_explain.php:15
 msgid "Critical CSS"
 msgstr "CSS crítico"
 
-#: classes/autoptimizeConfig.php:425
+#: classes/autoptimizeConfig.php:447
 msgid "By default Autoptimize is also active for logged on editors/ administrators, uncheck this option if you don't want Autoptimize to optimize when logged in e.g. to use a pagebuilder."
 msgstr "Por defecto, Autoptimize también está activo para usuarios editores/administradores conectados, desmarca esta opción si quieres que Autoptimize no optimice cuando estás conectado, por ejemplo, al usar un maquetador de páginas "
 
-#: classes/autoptimizeConfig.php:423
+#: classes/autoptimizeConfig.php:445
 msgid "Also optimize for logged in editors/ administrators?"
 msgstr "¿Optimizar también para usuarios editores/administradores conectados?"
 
-#: classes/autoptimizeConfig.php:323
+#: classes/autoptimizeConfig.php:336
 msgid "Paste the above the fold CSS here. You can leave this empty when using the automated Critical CSS integration."
 msgstr "Pega aquí el CSS anterior. Puedes dejarlo vacío cuando uses la integración automatizada de CSS crítico."
 
-#: classes/autoptimizeConfig.php:263 classes/autoptimizeConfig.php:334
+#: classes/autoptimizeConfig.php:347
 msgid "Important: excluded non-minified files are still minified by Autoptimize unless that option under \"misc\" is disabled."
 msgstr "Importante: los archivos excluidos no minimizados continúan siendo minimizados por Autoptimize, salvo que esa opción esté desactivada en «varios»."
 
-#: classes/autoptimizeConfig.php:212
+#: classes/autoptimizeConfig.php:216
 msgid "Enable Autoptimize configuration per site."
 msgstr "Activar la configuración de Autoptimize por sitio."
 
-#: classes/autoptimizeConfig.php:210
+#: classes/autoptimizeConfig.php:214
 msgid "Enable site configuration?"
 msgstr "¿Activar la configuración del sitio?"
 
-#: classes/autoptimizeConfig.php:207
+#: classes/autoptimizeConfig.php:211
 msgid "Multisite Options"
 msgstr "Opciones de multisitio"
 
-#: classes/autoptimizeConfig.php:92
+#: classes/autoptimizeConfig.php:96
 msgid "Autoptimize is enabled and configured on a WordPress network level. Please contact your network administrator if you need Autoptimize settings changed."
 msgstr "Autoptimize está activado y configurado a nivel de una red de WordPress. Por favor, contacta con tu administrador de red si necesitas cambiar los ajustes de Autoptimize."
 
 #. translators: "check the documentation here" will appear in a "a href".
-#: classes/autoptimizeImages.php:1260
+#: classes/autoptimizeImages.php:1268
 msgid "It seems ShortPixel image optimization is not able to fetch images from your site, %1$scheck the documentation here%2$s for more information"
 msgstr "Parece que la optimización de imágenes de ShortPixel no es capaz de obtener imágenes de tu web, %1$scomprueba aquí la documentación%2$s para más información"
 
 #. translators: link points to shortpixel FAQ.
-#: classes/autoptimizeImages.php:1137
+#: classes/autoptimizeImages.php:1152
 msgid "Only works for websites and images that are publicly available."
 msgstr "Solo funciona para sitios / imágenes que están disponibles públicamente."
 
-#: classes/autoptimizeConfig.php:888
+#: classes/autoptimizeConfig.php:929
 msgid "JS, CSS  &amp; HTML"
 msgstr "JS, CSS y HTML"
 
-#: classes/autoptimizeConfig.php:415
+#: classes/autoptimizeConfig.php:437
 msgid "When aggregating JS or CSS, excluded files that are not minified (based on filename) are by default minified by Autoptimize despite being excluded. Uncheck this option if anything breaks despite excluding."
 msgstr "Al agregar JS o CSS, los archivos excluidos que no se minimizan (basados en nombre de archivo) los minimiza por defecto Autoptimize aunque estén excluidos. Desmarca esta opción si algo se rompe a pesar de haberlo excluido."
 
-#: classes/autoptimizeConfig.php:413
+#: classes/autoptimizeConfig.php:435
 msgid "Minify excluded CSS and JS files?"
 msgstr "¿Minimizar archivos CSS y JS excluidos?"
 
-#: classes/autoptimizeImages.php:1193
+#: classes/autoptimizeImages.php:1208
 msgid "Comma-separated list of to be excluded image classes or filenames."
 msgstr "Lista separada por comas para excluir clases de imágenes o nombres de archivo."
 
-#: classes/autoptimizeImages.php:1191
+#: classes/autoptimizeImages.php:1206
 msgid "Lazy-load exclusions"
 msgstr "Exclusiones de la carga diferida"
 
-#: classes/autoptimizeImages.php:1187
+#: classes/autoptimizeImages.php:1202
 msgid "Image lazy-loading will delay the loading of non-visible images to allow the browser to optimally load all resources for the \"above the fold\"-page first."
 msgstr "La carga diferida de imágenes retrasará la carga de imágenes no visibles para permitir que el navegador cargue primero óptimamente todos los recursos de la página «antes de hacer scroll». "
 
-#: classes/autoptimizeImages.php:1185
+#: classes/autoptimizeImages.php:1200
 msgid "Lazy-load images?"
 msgstr "¿Carga diferida de imágenes?"
 
-#: classes/autoptimizeImages.php:1181
-msgid "Automatically serve \"next-gen\" WebP or AVIF image formats to any browser that supports it (requires lazy load to be active)."
-msgstr "Sirve automáticamente los formatos de imagen WebP o AVIF de «nueva generación» a cualquier navegador compatible (es necesario activar la carga diferida)."
+#: classes/autoptimizeImages.php:1194
+msgid "Load AVIF in supported browsers?"
+msgstr "¿Cargar AVIF en los navegadores compatibles?"
 
-#: classes/autoptimizeImages.php:1103
+#: classes/autoptimizeImages.php:1118
 msgid "Optimize images on the fly and serve them from Shortpixel's global CDN."
 msgstr "Optimiza imágenes sobre la marcha y sírvelas desde la CDN global de Shortpixel."
 
-#: classes/autoptimizeImages.php:1098
+#: classes/autoptimizeImages.php:1113
 msgid "Make your site significantly faster by just ticking a couple of checkboxes to optimize and lazy load your images, WebP and AVIF support included!"
 msgstr "Haz que tu sitio sea significativamente más rápido simplemente haciendo clic en un par de casillas para optimizar y hacer la carga diferida de tus imágenes, ¡incluida la compatibilidad con WebP y AVIF!"
 
-#: classes/autoptimizeImages.php:1097
+#: classes/autoptimizeImages.php:1112
 msgid "Image optimization"
 msgstr "Optimización de imágenes"
 
 #. translators: "disable  Jetpack's site accelerator for images" will appear in
 #. a "a href" linking to the jetpack settings page.
-#: classes/autoptimizeImages.php:1091
+#: classes/autoptimizeImages.php:1106
 msgid "Please %1$sdisable Jetpack's site accelerator for images%2$s to be able to use Autoptomize's advanced image optimization features below."
 msgstr "Por favor, %1$sdesactiva el acelerador de imágenes de Jetpack%2$s para poder usar las siguientes características de optimización de imágenes de Autoptimize."
 
-#: classes/autoptimizeImages.php:1047 classes/autoptimizeImages.php:1068
+#: classes/autoptimizeImages.php:1062 classes/autoptimizeImages.php:1083
 msgid "Images"
 msgstr "Imágenes"
 
@@ -863,113 +1000,109 @@ msgstr "Imágenes"
 msgid "Makes your site faster by optimizing CSS, JS, Images, Google fonts and more."
 msgstr "Haz tu sitio más rápido optimizando CSS, JS, imágenes, Google Fonts y más."
 
-#: classes/autoptimizeImages.php:1276
+#: classes/autoptimizeImages.php:1284
 msgid "based on previously fetched data"
 msgstr "basado en los datos recuperados previamente"
 
-#: classes/autoptimizeImages.php:1274
+#: classes/autoptimizeImages.php:1282
 msgid "based on status at "
 msgstr "basado en el estado en"
 
 #. Translators: the URL added points to the Autopmize Extra settings.
-#: classes/autoptimizeMain.php:687
+#: classes/autoptimizeMain.php:705
 msgid "Did you know Autoptimize includes on-the-fly image optimization (with support for WebP and AVIF) and CDN via ShortPixel? Check out the %1$sAutoptimize Image settings%2$s to activate this option."
 msgstr "¿Sabías que Autoptimize incluye optimización de imágenes al vuelo (compatible con WebP) y CDN a través de ShortPixel? Echa un vistazo a los %1$sajustes extra de Autoptimize%2$s para activar esta opción."
 
 #. translators: link points Async Javascript settings page.
-#: classes/autoptimizeExtra.php:544
+#: classes/autoptimizeExtra.php:545
 msgid "You have \"Async JavaScript\" installed, %1$sconfiguration of async javascript is best done there%2$s."
 msgstr "Tienes \"Async Javascript\" instalado, %1$sla configuración de javascript asíncrono se realiza mejor allí%2$s."
 
 #. translators: link points to shortpixel image test page.
-#: classes/autoptimizeImages.php:1173
+#: classes/autoptimizeImages.php:1188
 msgid "You can %1$stest compression levels here%2$s."
 msgstr "Puedes %1$scomprobar los niveles de compresión aquí%2$s."
 
 #. translators: links points to shortpixel TOS & Privacy Policy.
-#: classes/autoptimizeImages.php:1139
+#: classes/autoptimizeImages.php:1154
 msgid "Usage of this feature is subject to Shortpixel's %1$sTerms of Use%2$s and %3$sPrivacy policy%4$s."
 msgstr "El uso de esta característica está sujeto a los %1$stérminos de uso%2$s de Shortpixel's y su %3$spolítica de privacidad%4$s."
 
 #. translators: link points to shortpixel FAQ.
-#: classes/autoptimizeImages.php:1136
+#: classes/autoptimizeImages.php:1151
 msgid "<strong>Questions</strong>? Have a look at the %1$sAutoptimize + ShortPixel FAQ%2$s!"
 msgstr "¿<strong>Preguntas</strong>? ¡Dale un vistazo a las %1$sFAQ de ShortPixel%2$s!"
 
-#: classes/autoptimizeImages.php:1151
+#: classes/autoptimizeImages.php:1166
 msgid "Image Optimization quality"
 msgstr "Calidad de optimización de imágenes"
 
-#: classes/autoptimizeImages.php:1128
+#: classes/autoptimizeImages.php:1143
 msgid "For a limited time only, this service is offered free for all Autoptimize users, <b>don't miss the chance to test it</b> and see how much it could improve your site's speed."
 msgstr "Solo por tiempo limitado se ofrece este servicio totalmente gratis, <b>no te pierdas la oportunidad de probarlo</b> y comprobar cuanto puedes mejorar la velocidad de tu sitio."
 
-#: classes/autoptimizeImages.php:1123
+#: classes/autoptimizeImages.php:1138
 msgid "Shortpixel status: "
 msgstr "Estado de Shortpixel: "
 
-#: classes/autoptimizeImages.php:1101
+#: classes/autoptimizeImages.php:1116
 msgid "Optimize Images"
 msgstr "Optimizar imágenes"
 
 #. translators: "display:swap" should remain untranslated, will be shown in
 #. code tags.
-#: classes/autoptimizeExtra.php:510
+#: classes/autoptimizeExtra.php:511
 msgid "Combine and link deferred in head (fonts load late, but are not render-blocking)"
 msgstr "Combinación y enlazado aplazado en la cabecera (las fuentes cargan tarde pero no bloquean la presentación)"
 
 #. translators: "display:swap" should remain untranslated, will be shown in
 #. code tags.
-#: classes/autoptimizeExtra.php:508
+#: classes/autoptimizeExtra.php:509
 msgid "Combine and link in head (fonts load fast but are render-blocking)"
 msgstr "Combinar y enlazar en la cabecera (las fuentes cargan rápido pero bloquean la carga de la página)"
 
-#: classes/autoptimizeImages.php:1083
+#: classes/autoptimizeImages.php:1098
 msgid "The image optimization service is launching, but not yet available for this domain, it should become available in the next couple of days."
 msgstr "El servicio de optimización de imágenes está cargándose, pero aún no está disponible para este dominio. Estará disponible en un par de días."
 
 #. translators: "Autoptimize support forum" will appear in a "a href".
-#: classes/autoptimizeImages.php:1076
+#: classes/autoptimizeImages.php:1091
 msgid "The image optimization service is currently down, image optimization will be skipped until further notice. Check the %1$sAutoptimize support forum%2$s for more info."
 msgstr "El servicio de optimización de imágenes está actualmente caído, se omitirá la optimización de imágenes hasta nuevo aviso. Revisa el %1$sforo de soporte de Autoptimize%2$s para más información."
 
-#: classes/autoptimizeExtra.php:493
+#: classes/autoptimizeExtra.php:494
 msgid "Most of below Extra optimizations require at least one of HTML, JS, CSS or Image autoptimizations being active."
 msgstr "La mayoría de las siguientes optimizaciones adicionales requieren que al menos estén activas las autoptimizaciones de HTML, JS, CSS o imágenes."
 
 #. translators: "log in to check your account" will appear in a "a href".
-#: classes/autoptimizeImages.php:1264
+#: classes/autoptimizeImages.php:1272
 msgid "Your ShortPixel image optimization and CDN quota are in good shape, %1$slog in to check your account%2$s."
 msgstr "Tu cuota de optimización de imágenes y CDN de ShortPixel está en buena forma, %1$saccede para revisar tu cuenta%2$s."
 
 #. translators: "add more credits" will appear in a "a href".
-#: classes/autoptimizeImages.php:1255
+#: classes/autoptimizeImages.php:1263
 msgid "Your ShortPixel image optimization and CDN quota was used, %1$sadd more credits%2$s to keep fast serving optimized images on your site"
 msgstr "Tu cuota de optimización de imágenes y CDN de ShortPixel se ha consumido, %1$sañade más créditos%2$s para seguir sirviendo imágenes optimizadas y rápidas en tu sitio."
 
 #. translators: "add more credits" will appear in a "a href".
-#: classes/autoptimizeImages.php:1252
+#: classes/autoptimizeImages.php:1260
 msgid "Your ShortPixel image optimization and CDN quota is almost used, make sure you %1$sadd more credits%2$s to avoid slowing down your website."
 msgstr "Tu cuota de optimización de imágenes y CDN de ShortPixel está casi gastada, asegúrate de %1$sañadir más créditos%2$s para evitar que se ralentice tu web."
 
 #. translators: links "autoptimize critical CSS" tab.
-#: classes/autoptimizeConfig.php:317
+#: classes/autoptimizeConfig.php:330
 msgid "This can be fully automated for different types of pages on the %s tab."
 msgstr "Esto puede ser totalmente automatizado para diferentes tipos de páginas en la pestaña %s."
 
-#: classes/autoptimizeConfig.php:285
+#: classes/autoptimizeConfig.php:298
 msgid "Aggregate all linked CSS-files? If this option is off, the individual CSS-files will remain in place but will be minified."
 msgstr "¿Unificar todos los archivos CSS enlazados? Si esta opción está desactivada los archivos CSS seguirán en su lugar pero minimizados."
 
-#: classes/autoptimizeConfig.php:283
+#: classes/autoptimizeConfig.php:296
 msgid "Aggregate CSS-files?"
 msgstr "¿Unificar archivos CSS?"
 
-#: classes/autoptimizeConfig.php:230
-msgid "Aggregate all linked JS-files to have them loaded non-render blocking? If this option is off, the individual JS-files will remain in place but will be minified."
-msgstr "¿Unificar todos los archivos JS enlazados para que se carguen sin bloquear la carga de la página? Si esta opción está desactivada los archivos JS individuales seguirán en su lugar pero minimizados."
-
-#: classes/autoptimizeConfig.php:228
+#: classes/autoptimizeConfig.php:232
 msgid "Aggregate JS-files?"
 msgstr "¿Unificar archivos JS?"
 
@@ -982,84 +1115,84 @@ msgid "More info"
 msgstr "Más información"
 
 #. translators: %s will be replaced by a link to "wp youtube lyte" plugin.
-#: classes/autoptimizeExtra.php:569
+#: classes/autoptimizeExtra.php:570
 msgid "%s allows you to “lazy load” your videos, by inserting responsive “Lite YouTube Embeds\". "
 msgstr "%s te permite la \"carga diferida\" de tus vídeos, insertando los \"incrustados ligeros adaptables de YouTube\""
 
-#: classes/autoptimizeExtra.php:566
+#: classes/autoptimizeExtra.php:567
 msgid "Click here to configure it."
 msgstr "Haz clic aquí para configurarlo."
 
-#: classes/autoptimizeExtra.php:564
+#: classes/autoptimizeExtra.php:565
 msgid "Great, you have WP YouTube Lyte installed."
 msgstr "Genial, has instalado WP YouTube Lyte."
 
-#: classes/autoptimizeExtra.php:560
+#: classes/autoptimizeExtra.php:561
 msgid "Optimize YouTube videos"
 msgstr "Optimizar vídeos de YouTube"
 
-#: classes/autoptimizeExtra.php:554 classes/autoptimizeExtra.php:571
+#: classes/autoptimizeExtra.php:555 classes/autoptimizeExtra.php:572
 msgid "Click here to install and activate it."
 msgstr "Haz clic aquí para instalarlo y activarlo."
 
 #. translators: %s will be replaced by a link to the "async javascript" plugin.
-#: classes/autoptimizeExtra.php:552
+#: classes/autoptimizeExtra.php:553
 msgid "Configuration of async javascript is easier and more flexible using the %s plugin."
 msgstr "La configuración del javascript asíncrono es más fácil y más flexible usando el plugin %s."
 
-#: classes/autoptimizeExtra.php:550
+#: classes/autoptimizeExtra.php:551
 msgid "Comma-separated list of local or 3rd party JS-files that should loaded with the <code>async</code> flag. JS-files from your own site will be automatically excluded if added here. "
 msgstr "Lista separada por comas de otros archivos JS que deberían cargarse con la marca <code>async</code>. Los archivos JS de tu propio sitio se excluirán automáticamente si se añaden aquí."
 
-#: classes/autoptimizeExtra.php:539
+#: classes/autoptimizeExtra.php:540
 msgid "Async Javascript-files <em>(advanced users)</em>"
 msgstr "Archivos JavaScript asíncronos <em>(usuarios avanzados)</em>"
 
-#: classes/autoptimizeExtra.php:529
+#: classes/autoptimizeExtra.php:530
 msgid "Add 3rd party domains you want the browser to <a href=\"https://www.keycdn.com/support/preconnect/#primary\" target=\"_blank\">preconnect</a> to, separated by comma's. Make sure to include the correct protocol (HTTP or HTTPS)."
 msgstr "Añade los dominios de terceros a los que quieras que el navegador se <a href=\"https://www.keycdn.com/support/preconnect/#primary\" target=\"_blank\">preconecte</a>, separados por comas. Asegúrate de incluir el protocolo correcto (HTTP o HTTPS)."
 
-#: classes/autoptimizeExtra.php:527
+#: classes/autoptimizeExtra.php:528
 msgid "Preconnect to 3rd party domains <em>(advanced users)</em>"
 msgstr "Preconexión a dominios de terceros <em>(usuarios avanzados)</em>"
 
-#: classes/autoptimizeExtra.php:511
+#: classes/autoptimizeExtra.php:512
 msgid "Combine and load fonts asynchronously with <a href=\"https://github.com/typekit/webfontloader#readme\" target=\"_blank\">webfont.js</a>"
 msgstr "Combinar y cargar las fuentes asíncronamente con <a href=\"https://github.com/typekit/webfontloader#readme\" target=\"_blank\">webfont.js</a>"
 
-#: classes/autoptimizeExtra.php:505
+#: classes/autoptimizeExtra.php:506
 msgid "Leave as is"
 msgstr "Dejar tal cual"
 
-#: classes/autoptimizeExtra.php:503
+#: classes/autoptimizeExtra.php:504
 msgid "Google Fonts"
 msgstr "Google Fonts"
 
-#: classes/autoptimizeExtra.php:523
+#: classes/autoptimizeExtra.php:524
 msgid "Removing query strings (or more specifically the <code>ver</code> parameter) will not improve load time, but might improve performance scores."
 msgstr "Al quitar las cadenas de petición (o más en concreto el parámetro <code>ver</code>) no mejorará el tiempo de carga, pero mejorará las puntuaciones de rendimiento. "
 
-#: classes/autoptimizeExtra.php:521
+#: classes/autoptimizeExtra.php:522
 msgid "Remove query strings from static resources"
 msgstr "Quitar cadenas de petición de recursos estáticos"
 
-#: classes/autoptimizeExtra.php:517
+#: classes/autoptimizeExtra.php:518
 msgid "Removes WordPress' core emojis' inline CSS, inline JavaScript, and an otherwise un-autoptimized JavaScript file."
 msgstr "Quita el CSS incrustado de los emojis de WordPress, el JavaScript incrustado y cualquier otro archivo JavaScript no autoptimizado."
 
-#: classes/autoptimizeExtra.php:515
+#: classes/autoptimizeExtra.php:516
 msgid "Remove emojis"
 msgstr "Eliminar los emojis"
 
-#: classes/autoptimizeExtra.php:500
+#: classes/autoptimizeExtra.php:501
 msgid "The following settings can improve your site's performance even more."
 msgstr "Los siguientes ajustes pueden mejorar aún más el rendimiento de tu sitio."
 
-#: classes/autoptimizeExtra.php:499
+#: classes/autoptimizeExtra.php:500
 msgid "Extra Auto-Optimizations"
 msgstr "Auto-optimizaciones adicionales"
 
-#: classes/autoptimizeExtra.php:467 classes/autoptimizeExtra.php:487
+#: classes/autoptimizeExtra.php:468 classes/autoptimizeExtra.php:488
 msgid "Extra"
 msgstr "Extra"
 
@@ -1081,46 +1214,38 @@ msgstr "https://autoptimize.com/"
 msgid "Your Autoptimize cache might not have been purged successfully, please check on the <a href=%s>Autoptimize settings page</a>."
 msgstr "Puede que la caché de Autoptimize no haya sido vaciada correctamente, por favor, compruébalo en la <a href=%s>página de ajustes de Autoptimize</a>."
 
-#: classes/autoptimizeConfig.php:467
+#: classes/autoptimizeConfig.php:498
 msgid "Need help? <a href='https://wordpress.org/plugins/autoptimize/faq/'>Check out the FAQ here</a>."
 msgstr "¿Necesitas ayuda? <a href='https://wordpress.org/plugins/autoptimize/faq/'>Revis la FAQ aquí</a>."
 
-#: classes/autoptimizeConfig.php:433
+#: classes/autoptimizeConfig.php:455
 msgid "By default Autoptimize is also active on your shop's cart/ checkout, uncheck not to optimize those."
 msgstr "Por defecto, Autoptimize también está activo en tu carrito/pago de la tienda, desmarca para no optimizar esto."
 
-#: classes/autoptimizeConfig.php:431
+#: classes/autoptimizeConfig.php:453
 msgid "Also optimize shop cart/ checkout?"
 msgstr "¿Optimizar también el carrito/pago de la tienda?"
 
-#: classes/autoptimizeConfig.php:399
+#: classes/autoptimizeConfig.php:421
 msgid "Misc Options"
 msgstr "Otras opciones"
 
 #. translators: Kilobytes + timestamp shown.
-#: classes/autoptimizeConfig.php:390
+#: classes/autoptimizeConfig.php:412
 msgid "%1$s files, totalling %2$s (calculated at %3$s)"
 msgstr "%1$s archivos, con un total de %2$s (calculado a las %3$s)"
 
-#: classes/autoptimizeConfig.php:362
+#: classes/autoptimizeConfig.php:384
 msgid "Enter your CDN root URL to enable CDN for Autoptimized files. The URL can be http, https or protocol-relative (e.g. <code>//cdn.example.com/</code>). This is not needed for Cloudflare."
 msgstr "Introduce la URL raíz de tu CDN para activar la CDN en los archivos optimizados automáticamente. La URL puede ser HTTP, HTTPS o relativa al protocolo (por ejemplo: <code>//cdn.ejemplo.com/</code>). Esto no es necesario para Cloudflare."
 
-#: classes/autoptimizeConfig.php:240
-msgid "Let Autoptimize also extract JS from the HTML. <strong>Warning</strong>: this can make Autoptimize's cache size grow quickly, so only enable this if you know what you're doing."
-msgstr "Permite que Autoptimize también extraiga JS del HTML. <strong>Advertencia</strong>: esto puede hacer crecer rápidamente la caché de Autoptimize así que activa esto solo si sabes lo que estás haciendo."
-
-#: classes/autoptimizeConfig.php:252 classes/autoptimizeConfig.php:302
-#: classes/autoptimizeExtra.php:511
+#: classes/autoptimizeConfig.php:266 classes/autoptimizeConfig.php:315
+#: classes/autoptimizeExtra.php:512
 msgid "(deprecated)"
 msgstr "(obsoleto)"
 
-#: classes/autoptimizeConfig.php:245
-msgid "Load JavaScript early, this can potentially fix some JS-errors, but makes the JS render blocking."
-msgstr "Carga pronto el JavaScript, esto puede solucionar potencialmente algunos errores de JS, pero bloquea la carga de JS."
-
 #. Translators: %s is the cache directory location.
-#: classes/autoptimizeMain.php:666
+#: classes/autoptimizeMain.php:684
 msgid "Autoptimize cannot write to the cache directory (%s), please fix to enable CSS/ JS optimization!"
 msgstr "Autoptimize no puede escribir en el directorio de caché (%s), por favor, ¡soluciona esto para activar la optimización de CSS/ JS!"
 
@@ -1161,7 +1286,7 @@ msgstr "Archivos"
 msgid "Size"
 msgstr "Tamaño "
 
-#: classes/autoptimizeConfig.php:351
+#: classes/autoptimizeConfig.php:373
 msgid "Enable this if you want HTML comments to remain in the page."
 msgstr "Activa esta opción si deseas mantener los comentarios HTML en la página."
 
@@ -1170,35 +1295,35 @@ msgid "<strong>Autoptimize's cache size is getting big</strong>, consider purgin
 msgstr "<strong>El tamaño de caché de Autoptimize se está haciendo grande</strong>, plantéate vaciar la caché. Echa un vistazo a <a href=\"https://wordpress.org/plugins/autoptimize/faq/\" target=\"_blank\" rel=\"noopener noreferrer\">las preguntas más frecuentes de Autoptimize</a> para ver cómo se puede mantener el de tamaño de caché bajo control."
 
 #. translators: the variable contains a date.
-#: classes/autoptimizeConfig.php:874
+#: classes/autoptimizeConfig.php:915
 msgid "Posted %s"
 msgstr "Publicado el %s"
 
-#: classes/autoptimizeConfig.php:868
+#: classes/autoptimizeConfig.php:909
 msgid "No items"
 msgstr "Ningún elemento"
 
-#: classes/autoptimizeConfig.php:468
+#: classes/autoptimizeConfig.php:499
 msgid "Try my other plugins!"
 msgstr "¡Prueba mis otros plugins!"
 
-#: classes/autoptimizeConfig.php:468
+#: classes/autoptimizeConfig.php:499
 msgid "Happy with Autoptimize?"
 msgstr "¿Estás contento con Autoptimize?"
 
-#: classes/autoptimizeConfig.php:290
+#: classes/autoptimizeConfig.php:303
 msgid "Check this option for Autoptimize to also aggregate CSS in the HTML."
 msgstr "Marca esta opción para que Autoptimize también tenga en cuenta los CSS incrustados en el código HTML."
 
-#: classes/autoptimizeConfig.php:288
+#: classes/autoptimizeConfig.php:301
 msgid "Also aggregate inline CSS?"
 msgstr "¿Incluir CSS incrustados?"
 
-#: classes/autoptimizeExtra.php:506
+#: classes/autoptimizeExtra.php:507
 msgid "Remove Google Fonts"
 msgstr "Eliminar las Google Fonts"
 
-#: classes/autoptimizeConfig.php:238
+#: classes/autoptimizeConfig.php:237
 msgid "Also aggregate inline JS?"
 msgstr "¿Incluir JS incrustados?"
 
@@ -1206,190 +1331,178 @@ msgstr "¿Incluir JS incrustados?"
 msgid "Frank Goossens (futtta)"
 msgstr "Frank Goossens (futtta)"
 
-#: classes/autoptimizeConfig.php:726 classes/autoptimizeConfig.php:732
+#: classes/autoptimizeConfig.php:765 classes/autoptimizeConfig.php:771
 msgid "Settings"
 msgstr "Ajustes"
 
-#: classes/autoptimizeConfig.php:660 classes/autoptimizeConfig.php:663
-#: classes/autoptimizeConfig.php:666
+#: classes/autoptimizeConfig.php:697 classes/autoptimizeConfig.php:700
+#: classes/autoptimizeConfig.php:703
 msgid "Autoptimize Options"
 msgstr "Opciones de Autoptimize"
 
-#: classes/autoptimizeConfig.php:492
+#: classes/autoptimizeConfig.php:523
 msgid "Do not donate for this plugin!"
 msgstr "¡No dones a este plugin!"
 
-#: classes/autoptimizeConfig.php:477
+#: classes/autoptimizeConfig.php:508
 msgid "Web Technology"
 msgstr "Tecnología web"
 
-#: classes/autoptimizeConfig.php:476
+#: classes/autoptimizeConfig.php:507
 msgid "WordPress"
 msgstr "WordPress"
 
 #. Plugin Name of the plugin
-#: classes/autoptimizeToolbar.php:79 classes/autoptimizeCacheChecker.php:110
-#: classes/autoptimizeConfig.php:475
+#: classes/autoptimizeCacheChecker.php:110 classes/autoptimizeConfig.php:506
+#: classes/autoptimizeToolbar.php:79
 msgid "Autoptimize"
 msgstr "Autoptimize"
 
-#: classes/autoptimizeConfig.php:473
+#: classes/autoptimizeConfig.php:504
 msgid "futtta about"
 msgstr "Acerca de futtta"
 
-#: classes/autoptimizeConfig.php:444
+#: classes/autoptimizeConfig.php:475
 msgid "Save Changes and Empty Cache"
 msgstr "Guardar cambios y vaciar la caché"
 
-#: classes/autoptimizeImages.php:1203
-#: classes/autoptimizeCriticalCSSSettings.php:322
-#: classes/autoptimizeConfig.php:443 classes/autoptimizeExtra.php:577
+#: classes/autoptimizeConfig.php:474
+#: classes/autoptimizeCriticalCSSSettings.php:333
+#: classes/autoptimizeExtra.php:578 classes/autoptimizeImages.php:1218
 msgid "Save Changes"
 msgstr "Guardar cambios"
 
-#: classes/autoptimizeConfig.php:404
+#: classes/autoptimizeConfig.php:426
 msgid "By default files saved are static css/js, uncheck this option if your webserver doesn't properly handle the compression and expiry."
 msgstr "Por defecto los archivos JS y CSS se guardan como estáticos. Desactiva esta opción si tu servidor no realiza correctamente la compresión y la caducidad de los mismos."
 
-#: classes/autoptimizeConfig.php:402
+#: classes/autoptimizeConfig.php:424
 msgid "Save aggregated script/css as static files?"
 msgstr "¿Guardar los scripts y el CSS unificados como ficheros estáticos?"
 
-#: classes/autoptimizeConfig.php:379
+#: classes/autoptimizeConfig.php:401
 msgid "Cached styles and scripts"
 msgstr "Estilos y scripts en caché"
 
-#: classes/autoptimizeConfig.php:376
+#: classes/autoptimizeConfig.php:398
 msgid "No"
 msgstr "No"
 
-#: classes/autoptimizeConfig.php:376
+#: classes/autoptimizeConfig.php:398
 msgid "Yes"
 msgstr "Sí"
 
-#: classes/autoptimizeConfig.php:375
+#: classes/autoptimizeConfig.php:397
 msgid "Can we write?"
 msgstr "¿Podemos escribir?"
 
-#: classes/autoptimizeConfig.php:371
+#: classes/autoptimizeConfig.php:393
 msgid "Cache folder"
 msgstr "Carpeta de caché"
 
-#: classes/autoptimizeToolbar.php:87 classes/autoptimizeConfig.php:368
+#: classes/autoptimizeConfig.php:390 classes/autoptimizeToolbar.php:87
 msgid "Cache Info"
 msgstr "Información de la caché"
 
-#: classes/autoptimizeConfig.php:360
+#: classes/autoptimizeConfig.php:382
 msgid "CDN Base URL"
 msgstr "URL base de la CDN"
 
-#: classes/autoptimizeConfig.php:357
+#: classes/autoptimizeConfig.php:379
 msgid "CDN Options"
 msgstr "Opciones de la CDN"
 
-#: classes/autoptimizeConfig.php:334
+#: classes/autoptimizeConfig.php:347
 msgid "A comma-separated list of CSS you want to exclude from being optimized."
 msgstr "Una lista separada por comas del CSS que quieras excluir de la optimización."
 
-#: classes/autoptimizeConfig.php:331
+#: classes/autoptimizeConfig.php:344
 msgid "Exclude CSS from Autoptimize:"
 msgstr "CSS a excluir de Autoptimize:"
 
-#: classes/autoptimizeConfig.php:326
+#: classes/autoptimizeConfig.php:339
 msgid "Inline all CSS?"
 msgstr "¿Combinar todos los CSS?"
 
-#: classes/autoptimizeConfig.php:313
+#: classes/autoptimizeConfig.php:326
 msgid "Inline \"above the fold CSS\" while loading the main autoptimized CSS only after page load. <a href=\"https://wordpress.org/plugins/autoptimize/faq/\" target=\"_blank\">Check the FAQ</a> for more info."
 msgstr "Incrusta el «CSS antes de hacer scroll» mientras se carga el CSS principal optimizado automáticamente solo después de la carga de la página. <a href=\"https://wordpress.org/plugins/autoptimize/faq/\" target=\"_blank\">Comprueba la FAQ</a> para más información."
 
-#: classes/autoptimizeConfig.php:310
-msgid "Inline and Defer CSS?"
-msgstr "¿Incrustar y aplazar CSS?"
-
-#: classes/autoptimizeConfig.php:306
+#: classes/autoptimizeConfig.php:319
 msgid "Don't autoptimize CSS outside the head-section. If the cache gets big, you might want to enable this."
 msgstr "No autoptimizar el CSS que se encuentre fuera de la sección de cabecera. Si la caché crece mucho, es posible que quieras activar esta opción."
 
-#: classes/autoptimizeConfig.php:301
+#: classes/autoptimizeConfig.php:314
 msgid "Look for styles only in &lt;head&gt;?"
 msgstr "¿Buscar estilos sólo en el &lt;head&gt;?"
 
-#: classes/autoptimizeConfig.php:295
+#: classes/autoptimizeConfig.php:308
 msgid "Enable this to include small background-images in the CSS itself instead of as separate downloads."
 msgstr "Activa esto para incluir las imágenes de fondo pequeñas en el propio CSS en vez de como descargas separadas."
 
-#: classes/autoptimizeConfig.php:293
+#: classes/autoptimizeConfig.php:306
 msgid "Generate data: URIs for images?"
 msgstr "¿Crear data:URIs de imágenes?"
 
-#: classes/autoptimizeConfig.php:279
+#: classes/autoptimizeConfig.php:292
 msgid "Optimize CSS Code?"
 msgstr "¿Optimizar el código CSS?"
 
-#: classes/autoptimizeConfig.php:276
+#: classes/autoptimizeConfig.php:289
 msgid "CSS Options"
 msgstr "Opciones de CSS"
 
-#: classes/autoptimizeConfig.php:270
-msgid "If your scripts break because of a JS-error, you might want to try this."
-msgstr "Si los scripts se interrumpen debido a algún error de JavaScript, es posible que desees probar con esta opción."
-
-#: classes/autoptimizeConfig.php:268
+#: classes/autoptimizeConfig.php:247
 msgid "Add try-catch wrapping?"
 msgstr "¿Añadir bloques try-catch?"
 
-#: classes/autoptimizeConfig.php:263
-msgid "A comma-separated list of scripts you want to exclude from being optimized, for example 'whatever.js, another.js' (without the quotes) to exclude those scripts from being aggregated by Autoptimize."
-msgstr "Una lista separada por comas de los scripts que desees excluir de la optimización, por ejemplo, 'loquesea.js, otro.js' (sin las comillas) para excluir esos scripts de ser combinados y minimizados por Autoptimize."
-
-#: classes/autoptimizeConfig.php:260
+#: classes/autoptimizeConfig.php:274
 msgid "Exclude scripts from Autoptimize:"
 msgstr "Scripts a excluir de Autoptimize:"
 
-#: classes/autoptimizeConfig.php:256
+#: classes/autoptimizeConfig.php:270
 msgid "Mostly useful in combination with previous option when using jQuery-based templates, but might help keeping cache size under control."
 msgstr "Útil sobre todo en combinación con la opción anterior cuando se utilizan plantillas basadas en jQuery, pero también puede ayudar a mantener el tamaño de la caché bajo control."
 
-#: classes/autoptimizeConfig.php:251
+#: classes/autoptimizeConfig.php:265
 msgid "Look for scripts only in &lt;head&gt;?"
 msgstr "¿Buscar scripts solo en &lt;head&gt;?"
 
-#: classes/autoptimizeConfig.php:243
+#: classes/autoptimizeConfig.php:242
 msgid "Force JavaScript in &lt;head&gt;?"
 msgstr "¿Forzar JavaScript en &lt;head&gt;?"
 
-#: classes/autoptimizeConfig.php:224
+#: classes/autoptimizeConfig.php:228
 msgid "Optimize JavaScript Code?"
 msgstr "¿Optimizar el código JavaScript?"
 
-#: classes/autoptimizeConfig.php:221
+#: classes/autoptimizeConfig.php:225
 msgid "JavaScript Options"
 msgstr "Opciones de JavaScript"
 
-#: classes/autoptimizeConfig.php:349
+#: classes/autoptimizeConfig.php:371
 msgid "Keep HTML comments?"
 msgstr "¿Mantener comentarios HTML?"
 
-#: classes/autoptimizeConfig.php:345
+#: classes/autoptimizeConfig.php:367
 msgid "Optimize HTML Code?"
 msgstr "¿Optimizar el código HTML?"
 
-#: classes/autoptimizeConfig.php:342
+#: classes/autoptimizeConfig.php:364
 msgid "HTML Options"
 msgstr "Opciones de HTML"
 
-#: classes/autoptimizeImages.php:1070
+#: classes/autoptimizeConfig.php:94 classes/autoptimizeConfig.php:198
 #: classes/autoptimizeCriticalCSSSettings.php:114
-#: classes/autoptimizeConfig.php:90 classes/autoptimizeConfig.php:194
-#: classes/autoptimizeExtra.php:489 classes/autoptimizePartners.php:141
+#: classes/autoptimizeExtra.php:490 classes/autoptimizeImages.php:1085
+#: classes/autoptimizePartners.php:141
 msgid "Autoptimize Settings"
 msgstr "Ajustes de Autoptimize"
 
-#: classes/autoptimizeMain.php:680
+#: classes/autoptimizeMain.php:698
 msgid "Autoptimize has just been updated. Please <strong>test your site now</strong> and adapt Autoptimize config if needed."
 msgstr "Autoptimize acaba de actualizarse. Por favor, <strong>haz una prueba de tu sitio</strong> y adapta la configuración de Autoptimize si fuese necesario."
 
-#: classes/autoptimizeMain.php:673
+#: classes/autoptimizeMain.php:691
 msgid "Thank you for installing and activating Autoptimize. Please configure it under \"Settings\" -> \"Autoptimize\" to start improving your site's performance."
 msgstr "Gracias por instalar y activar Autoptimize. Por favor, ve a \"Ajustes\" -> \"Autoptimize\" para empezar a mejorar el rendimiento de tu sitio."

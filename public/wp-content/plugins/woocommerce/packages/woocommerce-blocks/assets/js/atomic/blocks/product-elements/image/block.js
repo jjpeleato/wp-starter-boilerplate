@@ -5,12 +5,13 @@ import PropTypes from 'prop-types';
 import { useState, Fragment } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import classnames from 'classnames';
-import { PLACEHOLDER_IMG_SRC } from '@woocommerce/block-settings';
+import { PLACEHOLDER_IMG_SRC } from '@woocommerce/settings';
 import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
+import { useStoreEvents } from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies
@@ -24,7 +25,7 @@ import './style.scss';
  * @param {Object} props                  Incoming props.
  * @param {string} [props.className]      CSS Class name for the component.
  * @param {string} [props.imageSizing]    Size of image to use.
- * @param {boolean} [props.productLink]   Whether or not to display a link to the product page.
+ * @param {boolean} [props.showProductLink]   Whether or not to display a link to the product page.
  * @param {boolean} [props.showSaleBadge] Whether or not to display the on sale badge.
  * @param {string} [props.saleBadgeAlign] How should the sale badge be aligned if displayed.
  * @return {*} The component.
@@ -32,13 +33,14 @@ import './style.scss';
 export const Block = ( {
 	className,
 	imageSizing = 'full-size',
-	productLink: showProductLink = true,
+	showProductLink = true,
 	showSaleBadge,
 	saleBadgeAlign = 'right',
 } ) => {
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
 	const [ imageLoaded, setImageLoaded ] = useState( false );
+	const { dispatchStoreEvent } = useStoreEvents();
 
 	if ( ! product.id ) {
 		return (
@@ -68,6 +70,11 @@ export const Block = ( {
 		href: product.permalink,
 		rel: 'nofollow',
 		...( ! hasProductImages && { 'aria-label': anchorLabel } ),
+		onClick: () => {
+			dispatchStoreEvent( 'product-view-link', {
+				product,
+			} );
+		},
 	};
 
 	return (
@@ -129,7 +136,7 @@ const Image = ( { image, onLoad, loaded, showFullSize, fallbackAlt } ) => {
 Block.propTypes = {
 	className: PropTypes.string,
 	fallbackAlt: PropTypes.string,
-	productLink: PropTypes.bool,
+	showProductLink: PropTypes.bool,
 	showSaleBadge: PropTypes.bool,
 	saleBadgeAlign: PropTypes.string,
 };

@@ -196,7 +196,7 @@ class Analytics extends Base {
 			<div>
 				<h4>
 					<?php esc_html_e( 'Average Position', 'rank-math' ); ?>
-					<span class="rank-math-tooltip"><em class="dashicons-before dashicons-editor-help"></em><span><?php esc_html_e( 'This is the number of pageviews carried out by visitors from Google.', 'rank-math' ); ?></span></span>
+					<span class="rank-math-tooltip"><em class="dashicons-before dashicons-editor-help"></em><span><?php esc_html_e( 'Average position of all the ranking keywords below 100 position.', 'rank-math' ); ?></span></span>
 				</h4>
 				<?php $this->get_analytic_block( $data->position, true ); ?>
 			</div>
@@ -532,7 +532,7 @@ class Analytics extends Base {
 					'icon'  => 'rm-icon rm-icon-search-console',
 					'title' => esc_html__( 'Analytics', 'rank-math' ),
 					/* translators: Link to kb article */
-					'desc'  => sprintf( esc_html__( 'See your Google Search Console, Analyitcs and AdSense data without leaving your WP dashboard. %s.', 'rank-math' ), '<a href="' . KB::get( 'analytics-settings' ) . '" target="_blank">' . esc_html__( 'Learn more', 'rank-math' ) . '</a>' ),
+					'desc'  => sprintf( esc_html__( 'See your Google Search Console, Analytics and AdSense data without leaving your WP dashboard. %s.', 'rank-math' ), '<a href="' . KB::get( 'analytics-settings' ) . '" target="_blank">' . esc_html__( 'Learn more', 'rank-math' ) . '</a>' ),
 					'file'  => $this->directory . '/views/options.php',
 				],
 			],

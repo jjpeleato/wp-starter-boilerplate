@@ -3,11 +3,13 @@
  * Preset empty content - Admin view
  *
  * @author  YITH
- * @package YITH WooCommerce Ajax Product Filter
+ * @package YITH\AjaxProductFilter\Templates\Admin
  * @version 4.0.0
  */
 
 /**
+ * Variables available for this template:
+ *
  * @var $show_icon bool
  * @var $item_name string
  * @var $subtitle string

@@ -177,7 +177,7 @@ class Form {
 			return $return;
 		}
 
-		if ( ! empty( Param::request( 'log' ) ) && is_array( Param::request( 'log' ) ) ) {
+		if ( ! empty( $_REQUEST['log'] ) && is_array( $_REQUEST['log'] ) ) {
 			return [
 				'sources' => $this->get_sources_for_log(),
 				'url_to'  => esc_url( home_url( '/' ) ),
@@ -193,11 +193,12 @@ class Form {
 	 * @return array
 	 */
 	private function get_sources_for_log() {
-		$logs = array_map( 'absint', Param::request( 'log' ) );
+		$logs = array_map( 'absint', $_REQUEST['log'] );
 		$logs = Monitor_DB::get_logs(
 			[
 				'ids'     => $logs,
 				'orderby' => '',
+				'limit'   => 1000,
 			]
 		);
 
@@ -232,12 +233,12 @@ class Form {
 		$redirection = Redirection::from( $values );
 		if ( false === $redirection->save() ) {
 			Helper::add_notification( __( 'Please add at least one valid source URL.', 'rank-math' ), [ 'type' => 'error' ] );
-			wp_safe_redirect( Param::post( '_wp_http_referer' ) );
+			Helper::redirect( Param::post( '_wp_http_referer' ) );
 			exit;
 		}
 
 		$this->do_action( 'redirection/saved', $redirection );
-		wp_safe_redirect( Helper::get_admin_url( 'redirections' ) );
+		Helper::redirect( Helper::get_admin_url( 'redirections' ) );
 		exit;
 	}
 

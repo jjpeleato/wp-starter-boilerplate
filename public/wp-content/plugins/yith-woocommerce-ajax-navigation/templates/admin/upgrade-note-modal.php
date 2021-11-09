@@ -3,11 +3,13 @@
  * Preset filters list - Upgrade note
  *
  * @author  YITH
- * @package YITH WooCommerce Ajax Product Filter
+ * @package YITH\AjaxProductFilter\Templates\Admin
  * @version 4.0.0
  */
 
 /**
+ * Variables available for this template:
+ *
  * @var $hide_upgrade_note_url string
  * @var $do_widget_upgrade_url string
  * @var $demo_video_url        string

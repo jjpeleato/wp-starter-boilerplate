@@ -1,20 +1,23 @@
 /**
  * External dependencies
  */
-import { __, sprintf } from '@wordpress/i18n';
+import { sprintf, _n } from '@wordpress/i18n';
 import Label from '@woocommerce/base-components/label';
 import ProductPrice from '@woocommerce/base-components/product-price';
 import ProductName from '@woocommerce/base-components/product-name';
-import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
+import {
+	getCurrencyFromPriceResponse,
+	formatPrice,
+} from '@woocommerce/price-format';
 import {
 	__experimentalApplyCheckoutFilter,
-	mustBeString,
 	mustContain,
 } from '@woocommerce/blocks-checkout';
 import PropTypes from 'prop-types';
 import Dinero from 'dinero.js';
-import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
-import { useCallback, useMemo } from '@wordpress/element';
+import { getSetting } from '@woocommerce/settings';
+import { useMemo } from '@wordpress/element';
+import { useStoreCart } from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies
@@ -24,34 +27,37 @@ import ProductImage from '../product-image';
 import ProductLowStockBadge from '../product-low-stock-badge';
 import ProductMetadata from '../product-metadata';
 
+const productPriceValidation = ( value ) => mustContain( value, '<price/>' );
+
 const OrderSummaryItem = ( { cartItem } ) => {
 	const {
 		images,
-		low_stock_remaining: lowStockRemaining = null,
-		show_backorder_badge: showBackorderBadge = false,
+		low_stock_remaining: lowStockRemaining,
+		show_backorder_badge: showBackorderBadge,
 		name: initialName,
 		permalink,
 		prices,
 		quantity,
 		short_description: shortDescription,
 		description: fullDescription,
-		item_data: itemData = [],
+		item_data: itemData,
 		variation,
 		totals,
 		extensions,
 	} = cartItem;
 
-	const productPriceValidation = useCallback(
-		( value ) => mustBeString( value ) && mustContain( value, '<price/>' ),
-		[]
-	);
+	// Prepare props to pass to the __experimentalApplyCheckoutFilter filter.
+	// We need to pluck out receiveCart.
+	// eslint-disable-next-line no-unused-vars
+	const { receiveCart, ...cart } = useStoreCart();
 
 	const arg = useMemo(
 		() => ( {
 			context: 'summary',
 			cartItem,
+			cart,
 		} ),
-		[ cartItem ]
+		[ cartItem, cart ]
 	);
 
 	const priceCurrency = getCurrencyFromPriceResponse( prices );
@@ -61,7 +67,6 @@ const OrderSummaryItem = ( { cartItem } ) => {
 		defaultValue: initialName,
 		extensions,
 		arg,
-		validation: mustBeString,
 	} );
 
 	const regularPriceSingle = Dinero( {
@@ -79,7 +84,7 @@ const OrderSummaryItem = ( { cartItem } ) => {
 	const totalsCurrency = getCurrencyFromPriceResponse( totals );
 
 	let lineSubtotal = parseInt( totals.line_subtotal, 10 );
-	if ( DISPLAY_CART_PRICES_INCLUDING_TAX ) {
+	if ( getSetting( 'displayCartPricesIncludingTax', false ) ) {
 		lineSubtotal += parseInt( totals.line_subtotal_tax, 10 );
 	}
 	const subtotalPrice = Dinero( {
@@ -111,7 +116,12 @@ const OrderSummaryItem = ( { cartItem } ) => {
 						label={ quantity }
 						screenReaderLabel={ sprintf(
 							/* translators: %d number of products of the same type in the cart */
-							__( '%d items', 'woocommerce' ),
+							_n(
+								'%d item',
+								'%d items',
+								quantity,
+								'woocommerce'
+							),
 							quantity
 						) }
 					/>
@@ -149,7 +159,24 @@ const OrderSummaryItem = ( { cartItem } ) => {
 					variation={ variation }
 				/>
 			</div>
-			<div className="wc-block-components-order-summary-item__total-price">
+			<span className="screen-reader-text">
+				{ sprintf(
+					/* translators: %1$d is the number of items, %2$s is the item name and %3$s is the total price including the currency symbol. */
+					_n(
+						'Total price for %1$d %2$s item: %3$s',
+						'Total price for %1$d %2$s items: %3$s',
+						quantity,
+						'woocommerce'
+					),
+					quantity,
+					name,
+					formatPrice( subtotalPrice, totalsCurrency )
+				) }
+			</span>
+			<div
+				className="wc-block-components-order-summary-item__total-price"
+				aria-hidden="true"
+			>
 				<ProductPrice
 					currency={ totalsCurrency }
 					format={ productPriceFormat }

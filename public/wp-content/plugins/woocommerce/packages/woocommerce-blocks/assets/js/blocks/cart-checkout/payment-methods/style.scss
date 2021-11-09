@@ -31,7 +31,7 @@
 		// Notice the min width ems value is smaller than flex-basis. That's because
 		// by default we want it to have the same width as `expiry-element`, but
 		// if available space is scarce, `cvc-element` should get smaller faster.
-		min-width: unquote("min( 5em, calc(16% - #{$gap-small}))");
+		min-width: unquote("min(5em, calc(16% - #{$gap-small}))");
 	}
 
 	.wc-block-gateway-input {
@@ -195,24 +195,30 @@
 		font-weight: bold;
 	}
 
-	.wc-block-components-radio-control__option:last-child,
-	.wc-block-components-radio-control-accordion-option:last-child {
+	.wc-block-components-radio-control-accordion-option,
+	.wc-block-components-radio-control__option {
+		@include with-translucent-border(1px 1px 0 1px);
+	}
+
+	.wc-block-components-radio-control__option:last-child::after,
+	.wc-block-components-radio-control-accordion-option:last-child::after {
 		border-width: 1px;
 	}
 
-	.wc-block-components-radio-control-accordion-option,
-	.wc-block-components-radio-control__option {
-		border-width: 1px 1px 0 1px;
-		border-style: solid;
-		border-color: $gray-200;
-	}
-
 	.wc-block-components-radio-control-accordion-option {
-		.wc-block-components-radio-control__option {
+		.wc-block-components-radio-control__option::after {
 			border-width: 0;
+		}
+		.wc-block-components-radio-control__label {
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
 		}
 		.wc-block-components-radio-control__label img {
 			height: 24px;
+			max-height: 24px;
+			object-fit: contain;
+			object-position: left;
 		}
 	}
 

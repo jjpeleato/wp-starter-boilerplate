@@ -38,7 +38,8 @@ trait Conditional {
 	/**
 	 * Check if module is active.
 	 *
-	 * @param  string $id Module ID.
+	 * @param  string  $id               Module ID.
+	 * @param  boolean $check_registered Whether to check if module is among registered modules or not.
 	 * @return boolean
 	 */
 	public static function is_module_active( $id, $check_registered = true ) {
@@ -188,12 +189,43 @@ trait Conditional {
 	/**
 	 * Is on Divi frontend editor.
 	 *
-	 * @since TODO: Add version.
+	 * @since 1.0.63
 	 *
 	 * @return boolean
 	 */
 	public static function is_divi_frontend_editor() {
 		return function_exists( 'et_core_is_fb_enabled' ) && et_core_is_fb_enabled();
+	}
+
+	/**
+	 * Get current editor, or false if we're not editing.
+	 *
+	 * @since 1.0.67
+	 *
+	 * @return mixed
+	 */
+	public static function get_current_editor() {
+		if ( self::is_elementor_editor() ) {
+			return 'elementor';
+		}
+
+		if ( self::is_divi_frontend_editor() ) {
+			return 'divi';
+		}
+
+		if ( self::is_block_editor() && \rank_math_is_gutenberg() ) {
+			return 'gutenberg';
+		}
+
+		if ( self::is_ux_builder() ) {
+			return 'uxbuilder';
+		}
+
+		if ( Admin_Helper::is_post_edit() ) {
+			return 'classic';
+		}
+
+		return false;
 	}
 
 	/**
@@ -205,5 +237,42 @@ trait Conditional {
 	 */
 	public static function is_advanced_mode() {
 		return 'advanced' === apply_filters( 'rank_math/setup_mode', Helper::get_settings( 'general.setup_mode', 'advanced' ) );
+	}
+
+	/**
+	 * Is Breadcrumbs Enabled.
+	 *
+	 * @since 1.0.64
+	 *
+	 * @return boolean
+	 */
+	public static function is_breadcrumbs_enabled() {
+		return \current_theme_supports( 'rank-math-breadcrumbs' ) || Helper::get_settings( 'general.breadcrumbs' );
+	}
+
+	/**
+	 * Is Wizard page.
+	 *
+	 * @since 1.0.64
+	 *
+	 * @return boolean
+	 */
+	public static function is_wizard() {
+		return ( filter_input( INPUT_GET, 'page' ) === 'rank-math-wizard' || filter_input( INPUT_POST, 'action' ) === 'rank_math_save_wizard' );
+	}
+
+	/**
+	 * Is filesystem method direct.
+	 *
+	 * @since 1.0.71.1
+	 *
+	 * @return boolean
+	 */
+	public static function is_filesystem_direct() {
+		if ( ! function_exists( 'get_filesystem_method' ) ) {
+			require_once ABSPATH . '/wp-admin/includes/file.php';
+		}
+
+		return 'direct' === get_filesystem_method();
 	}
 }

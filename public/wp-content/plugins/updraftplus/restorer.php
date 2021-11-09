@@ -3,6 +3,7 @@
 if (!defined('UPDRAFTPLUS_DIR')) die('No direct access allowed');
 
 if (!class_exists('Updraft_Restorer_Skin')) require_once(UPDRAFTPLUS_DIR.'/includes/updraft-restorer-skin.php');
+if (!class_exists('UpdraftPlus_Search_Replace')) require_once(UPDRAFTPLUS_DIR.'/includes/class-search-replace.php');
 
 class Updraft_Restorer {
 
@@ -81,6 +82,8 @@ class Updraft_Restorer {
 	private $stored_routine_supported = null;
 	
 	private $tables_to_skip = array();
+
+	public $search_replace_obj = null;
 	
 	// Constants for use with the move_backup_in method
 	// These can't be arbitrarily changed; there is legacy code doing bitwise operations and numerical comparisons, and possibly legacy code still using the values directly.
@@ -121,6 +124,8 @@ class Updraft_Restorer {
 		$this->continuation_data = $continuation_data;
 
 		$this->setup_database_objects();
+
+		$this->search_replace_obj = new UpdraftPlus_Search_Replace();
 		
 		if ($short_init) return;
 		
@@ -299,7 +304,7 @@ class Updraft_Restorer {
 			}
 
 			// Clear any cached pages after the restore
-			$this->clear_cache();
+			$this->clear_caches();
 
 			// Have seen a case where the current theme in the DB began with a capital, but not on disk - and this breaks migrating from Windows to a case-sensitive system
 			$template = get_option('template');
@@ -433,8 +438,8 @@ class Updraft_Restorer {
 					$updraftplus->log(__("The backup records do not contain information about the proper size of this file.", 'updraftplus'), 'notice-restore');
 				}
 				if (!is_readable($fullpath)) {
-					$updraftplus->log(__('Could not find one of the files for restoration', 'updraftplus')." ($file)", 'warning-restore');
-					$updraftplus->log("$file: ".__('Could not find one of the files for restoration', 'updraftplus'), 'error');
+					$updraftplus->log(__('Could not read one of the files for restoration', 'updraftplus')." ($file)", 'warning-restore');
+					$updraftplus->log("$file: ".__('Could not read one of the files for restoration', 'updraftplus'), 'error');
 					return false;
 				}
 			}
@@ -591,8 +596,7 @@ class Updraft_Restorer {
 					$display_log_message = sprintf(__('A PHP exception (%s) has occurred: %s', 'updraftplus'), get_class($e), $e->getMessage());
 					error_log($log_message);
 					// @codingStandardsIgnoreLine
-					if (function_exists('wp_debug_backtrace_summary')) $log_message .= ' Backtrace: '.wp_debug_backtrace_summary();
-					$updraftplus->log($log_message);
+					if (function_exists('wp_debug_backtrace_summary')) $log_message .= ' Backtrace: '.str_replace(array(ABSPATH, "\n"), array('', ', '), $e->getTraceAsString());
 					$updraftplus->log($display_log_message, 'notice-restore');
 					die();
 				// @codingStandardsIgnoreLine
@@ -600,8 +604,7 @@ class Updraft_Restorer {
 					$log_message = 'PHP Fatal error ('.get_class($e).') has occurred. Error Message: '.$e->getMessage().' (Code: '.$e->getCode().', line '.$e->getLine().' in '.$e->getFile().')';
 					error_log($log_message);
 					// @codingStandardsIgnoreLine
-					if (function_exists('wp_debug_backtrace_summary')) $log_message .= ' Backtrace: '.wp_debug_backtrace_summary();
-					$updraftplus->log($log_message);
+					if (function_exists('wp_debug_backtrace_summary')) $log_message .= ' Backtrace: '.str_replace(array(ABSPATH, "\n"), array('', ', '), $e->getTraceAsString());
 					$display_log_message = sprintf(__('A PHP fatal error (%s) has occurred: %s', 'updraftplus'), get_class($e), $e->getMessage());
 					$updraftplus->log($display_log_message, 'notice-restore');
 					die();
@@ -1877,14 +1880,77 @@ class Updraft_Restorer {
 	/**
 	 * First added in UD 1.9.47.
 	 */
-	public function clear_cache() {
+	private function clear_caches() {
+		global $updraftplus;
+		
 		// Functions called here need to not assume that the relevant plugin actually exists - they should check for any functions they intend to call, before calling them.
-		$this->clear_cache_wpsupercache();
+		$methods = array(
+			'clear_cache_wpsupercache',
+			'clear_avada_fusion_cache', // avada theme with its theme engine called fusion
+			'clear_elementor_cache',
+		);
+		
+		foreach ($methods as $method) {
+			try {
+				call_user_func(array($this, $method));
+			} catch (Exception $e) {
+				$log_message = 'Exception ('.get_class($e).") occurred when cleaning up third-party cache ($method) during post-restore: ".$e->getMessage().' (Code: '.$e->getCode().', line '.$e->getLine().' in '.$e->getFile().')';
+				error_log($log_message);
+				$updraftplus->log($log_message);
+			} catch (Error $e) { // phpcs:ignore PHPCompatibility.Classes.NewClasses.errorFound
+				$log_message = 'Error ('.get_class($e).") occurred when cleaning up third-party cache ($method) during post-restore: ".$e->getMessage().' (Code: '.$e->getCode().', line '.$e->getLine().' in '.$e->getFile().')';
+				error_log($log_message);
+				$updraftplus->log($log_message);
+			}
+		}
+			
 		// It should be harmless to just purge the standard directory anyway (it's not backed up by default), and any others from other plugins
 		$cache_sub_directories = array('cache', 'wphb-cache', 'endurance-page-cache');
 		foreach ($cache_sub_directories as $sub_dir) {
 			if (!is_dir(WP_CONTENT_DIR.'/'.$sub_dir)) continue;
 			UpdraftPlus_Filesystem_Functions::remove_local_directory(WP_CONTENT_DIR.'/'.$sub_dir, true);
+		}
+	}
+
+	/**
+	 * Clear cached Fusion-theme's Dynamic CSS
+	 */
+	private function clear_avada_fusion_cache() {
+		global $updraftplus;
+		$upload_dir = $updraftplus->wp_upload_dir();
+		$fusion_css_dir = realpath($upload_dir['basedir']).DIRECTORY_SEPARATOR.'fusion-styles';
+		if (is_dir($fusion_css_dir)) {
+			$updraftplus->log("Avada/Fusion's dynamic CSS folder exists, and will be emptied (so that it will be automatically regenerated)");
+			UpdraftPlus_Filesystem_Functions::remove_local_directory($fusion_css_dir, true);
+		}
+	}
+
+	/**
+	 * Clear cached Elementor styles that are saved in CSS files in the uploads folder. Clearing the caches will regenerate new CSS files, according to the most recent settings.
+	 */
+	private function clear_elementor_cache() {
+		global $updraftplus;
+		$cache_uncleared = true;
+		if (apply_filters('updraftplus_elementor_direct_clear_cache', $cache_uncleared)) {
+			if (class_exists('\Elementor\Plugin')) class_alias('\Elementor\Plugin', 'UpdraftPlus_Elementor_Plugin'); // phpcs:ignore PHPCompatibility.FunctionUse.NewFunctions.class_aliasFound
+			if (class_exists('UpdraftPlus_Elementor_Plugin') && isset(UpdraftPlus_Elementor_Plugin::$instance) && isset(UpdraftPlus_Elementor_Plugin::$instance->files_manager) && is_object(UpdraftPlus_Elementor_Plugin::$instance->files_manager) && method_exists(UpdraftPlus_Elementor_Plugin::$instance->files_manager, 'clear_cache')) {
+				$updraftplus->log("Elementor's clear cache method exists and will be executed");
+				UpdraftPlus_Elementor_Plugin::$instance->files_manager->clear_cache();
+				$cache_uncleared = false;
+			}
+		}
+		if (apply_filters('updraftplus_elementor_manual_clear_cache', $cache_uncleared)) {
+			$upload_dir = $updraftplus->wp_upload_dir();
+			$elementor_css_dir = realpath($upload_dir['basedir']).DIRECTORY_SEPARATOR.'elementor'.DIRECTORY_SEPARATOR.'css';
+			if (is_dir($elementor_css_dir)) {
+				$updraftplus->log("Elementor's CSS directory exists, and will be emptied (so that it will be automatically regenerated)");
+				UpdraftPlus_Filesystem_Functions::remove_local_directory($elementor_css_dir, true);
+			}
+			// deleting only the Elementor's CSS files won't make Elementor regenerate the new CSS files the next time the website is loaded/visited again
+			// Elementor will regenerate the files only if these meta and options get deleted as well
+			delete_post_meta_by_key('_elementor_css');
+			delete_option('_elementor_global_css');
+			delete_option('elementor-custom-breakpoints-files');
 		}
 	}
 
@@ -4259,6 +4325,14 @@ class UpdraftPlus_WP_Filesystem_Direct extends WP_Filesystem_Direct {
 			return true;
 
 		return false;
+	}
+}
+
+/**
+ * Plugin class that is used for Elementor's namespace aliasing or could also be used for a variety of purposes of Elementor need
+ */
+if (!class_exists('\Elementor\Plugin')) {
+	class UpdraftPlus_Elementor_Plugin {
 	}
 }
 

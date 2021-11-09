@@ -3,7 +3,7 @@
  * Ultimate member plugin support
  *
  * @author  YITH
- * @package YITH WooCommerce Ajax Product Filter
+ * @package YITH\AjaxProductFilter\Classes\Compatibility
  * @version 4.0.0
  */
 

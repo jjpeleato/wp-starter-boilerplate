@@ -1,7 +1,14 @@
 .wc-block-components-panel.has-border {
-	@include with-translucent-border( 1px 0 );
+	@include with-translucent-border(1px 0);
 
 	+ .wc-block-components-panel.has-border::after {
+		border-top-width: 0;
+	}
+}
+
+.wc-block-components-panel.has-border.no-top-border {
+	@include with-translucent-border(1px 0);
+	&::after {
 		border-top-width: 0;
 	}
 }
@@ -10,14 +17,18 @@
 	@include reset-box();
 	height: auto;
 	line-height: 1;
-	margin-bottom: em(6px);
 	margin-top: em(6px);
-	padding-bottom: em($gap-small - 6px);
 	padding-right: #{24px + $gap-smaller};
 	padding-top: em($gap-small - 6px);
 	position: relative;
 	text-align: left;
 	width: 100%;
+	word-break: break-word;
+
+	&[aria-expanded="true"] {
+		padding-bottom: em($gap-small - 6px);
+		margin-bottom: em(6px);
+	}
 
 	&,
 	&:hover,
@@ -56,6 +67,11 @@
 
 .theme-twentytwenty .wc-block-components-panel__button,
 .theme-twentyseventeen .wc-block-components-panel__button {
-	background: transparent;
+	background: none transparent;
 	color: inherit;
+
+	&.wc-block-components-panel__button:hover,
+	&.wc-block-components-panel__button:focus {
+		background: none transparent;
+	}
 }

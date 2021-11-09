@@ -130,19 +130,35 @@ class UpdraftCentral_Core_Commands extends UpdraftCentral_Commands {
 				'core' => untrailingslashit(ABSPATH)
 			);
 			
+			if ('translations' === $entity) {
+				// 'en_US' don't usually have the "languages" folder, thus, we
+				// check if there's a need to ask for filesystem credentials for that
+				// folder if it exists, most especially for locale other than 'en_US'.
+				$language_dir = WP_CONTENT_DIR.'/languages';
+				if ('en_US' !== get_locale() && is_dir($language_dir)) {
+					$entity_directories['translations'] = $language_dir;
+				}
+			}
+			
 			$url = wp_nonce_url(site_url());
-			$directory = $entity_directories[$entity];
 
-			// Check if credentials are valid and have sufficient
-			// privileges to create and delete (e.g. write)
-			ob_start();
-			$credentials = request_filesystem_credentials($url, '', false, $directory);
-			ob_end_clean();
+			$passed = false;
+			if (isset($entity_directories[$entity])) {
+				$directory = $entity_directories[$entity];
+	
+				// Check if credentials are valid and have sufficient
+				// privileges to create and delete (e.g. write)
+				ob_start();
+				$credentials = request_filesystem_credentials($url, '', false, $directory);
+				ob_end_clean();
+	
+				// The "WP_Filesystem" will suffice in validating the inputted credentials
+				// from UpdraftCentral, as it is already attempting to connect to the filesystem
+				// using the chosen transport (e.g. ssh, ftp, etc.)
+				$passed = WP_Filesystem($credentials, $directory);
+			}
 
-			// The "WP_Filesystem" will suffice in validating the inputted credentials
-			// from UpdraftCentral, as it is already attempting to connect to the filesystem
-			// using the chosen transport (e.g. ssh, ftp, etc.)
-			if (WP_Filesystem($credentials, $directory)) {
+			if ($passed) {
 				$result = array('error' => false, 'message' => 'credentials_ok', 'values' => array());
 			} else {
 				// We're adding some useful error information to help troubleshooting any problems
@@ -250,6 +266,7 @@ class UpdraftCentral_Core_Commands extends UpdraftCentral_Commands {
 	 * @param Array  $extra_info  - valid keys are user_id, which should be a numeric user ID to log in as.
 	 */
 	public function get_login_url($redirect_to, $extra_info) {
+
 		if (is_array($extra_info) && !empty($extra_info['user_id']) && is_numeric($extra_info['user_id'])) {
 		
 			$user_id = $extra_info['user_id'];
@@ -263,6 +280,7 @@ class UpdraftCentral_Core_Commands extends UpdraftCentral_Commands {
 					case 'updraftplus':
 						if ('initiate_restore' == $redirect_to['action'] && class_exists('UpdraftPlus_Options')) {
 							$redirect_url = UpdraftPlus_Options::admin_page_url().'?page=updraftplus&udaction=initiate_restore&entities='.urlencode($redirect_to['data']['entities']).'&showdata='.urlencode($redirect_to['data']['showdata']).'&backup_timestamp='.(int) $redirect_to['data']['backup_timestamp'];
+
 						} elseif ('download_file' == $redirect_to['action']) {
 							$findex = empty($redirect_to['data']['findex']) ? 0 : (int) $redirect_to['data']['findex'];
 							// e.g. ?udcentral_action=dl&action=updraftplus_spool_file&backup_timestamp=1455101696&findex=0&what=plugins
@@ -323,14 +341,13 @@ class UpdraftCentral_Core_Commands extends UpdraftCentral_Commands {
 	}
 	
 	public function site_info() {
-
 		global $wpdb;
 
 		// THis is included so we can get $wp_version
 		@include(ABSPATH.WPINC.'/version.php');// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
 
 		$ud_version = is_a($this->ud, 'UpdraftPlus') ? $this->ud->version : 'none';
-		
+
 		return $this->_response(array(
 			'versions' => array(
 				'ud' => $ud_version,
@@ -354,7 +371,6 @@ class UpdraftCentral_Core_Commands extends UpdraftCentral_Commands {
 	 */
 	public function call_wordpress_action($data) {
 		if (false === ($updraftplus_admin = $this->_load_ud_admin())) return $this->_generic_error_response('no_updraftplus');
-
 		$response = $updraftplus_admin->call_wp_action($data);
 
 		if (empty($data["wpaction"])) {
@@ -378,9 +394,7 @@ class UpdraftCentral_Core_Commands extends UpdraftCentral_Commands {
 	 * @return Array - response
 	 */
 	public function count($entity) {
-	
 		if (!class_exists('UpdraftPlus_Filesystem_Functions')) return $this->_generic_error_response('no_updraftplus');
-
 		$response = UpdraftPlus_Filesystem_Functions::get_disk_space_used($entity);
 
 		return $this->_response($response);

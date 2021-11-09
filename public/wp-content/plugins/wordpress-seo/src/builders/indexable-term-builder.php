@@ -6,6 +6,7 @@ use Yoast\WP\SEO\Exceptions\Indexable\Invalid_Term_Exception;
 use Yoast\WP\SEO\Exceptions\Indexable\Term_Not_Found_Exception;
 use Yoast\WP\SEO\Helpers\Taxonomy_Helper;
 use Yoast\WP\SEO\Models\Indexable;
+use Yoast\WP\SEO\Values\Indexables\Indexable_Builder_Versions;
 
 /**
  * Term Builder for the indexables.
@@ -13,6 +14,7 @@ use Yoast\WP\SEO\Models\Indexable;
  * Formats the term meta to indexable format.
  */
 class Indexable_Term_Builder {
+
 	use Indexable_Social_Image_Trait;
 
 	/**
@@ -20,17 +22,27 @@ class Indexable_Term_Builder {
 	 *
 	 * @var Taxonomy_Helper
 	 */
-	private $taxonomy;
+	protected $taxonomy_helper;
+
+	/**
+	 * The latest version of the Indexable_Term_Builder.
+	 *
+	 * @var int
+	 */
+	protected $version;
 
 	/**
 	 * Indexable_Term_Builder constructor.
 	 *
-	 * @param Taxonomy_Helper $taxonomy The taxonomy helper.
+	 * @param Taxonomy_Helper            $taxonomy_helper The taxonomy helper.
+	 * @param Indexable_Builder_Versions $versions        The latest version of each Indexable Builder.
 	 */
 	public function __construct(
-		Taxonomy_Helper $taxonomy
+		Taxonomy_Helper $taxonomy_helper,
+		Indexable_Builder_Versions $versions
 	) {
-		$this->taxonomy = $taxonomy;
+		$this->taxonomy_helper = $taxonomy_helper;
+		$this->version         = $versions->get_latest_version_for_type( 'term' );
 	}
 
 	/**
@@ -61,7 +73,7 @@ class Indexable_Term_Builder {
 			throw new Invalid_Term_Exception( $term_link->get_error_message() );
 		}
 
-		$term_meta = $this->taxonomy->get_term_meta( $term );
+		$term_meta = $this->taxonomy_helper->get_term_meta( $term );
 
 		$indexable->object_id       = $term_id;
 		$indexable->object_type     = 'term';
@@ -97,6 +109,8 @@ class Indexable_Term_Builder {
 		$indexable->is_robots_noimageindex = null;
 		$indexable->is_robots_nosnippet    = null;
 
+		$indexable->version = $this->version;
+
 		return $indexable;
 	}
 
@@ -125,7 +139,7 @@ class Indexable_Term_Builder {
 	 * @param string $keyword The focus keyword that is set.
 	 * @param int    $score   The score saved on the meta data.
 	 *
-	 * @return null|int Score to use.
+	 * @return int|null Score to use.
 	 */
 	protected function get_keyword_score( $keyword, $score ) {
 		if ( empty( $keyword ) ) {
@@ -165,7 +179,7 @@ class Indexable_Term_Builder {
 	 * @param string $meta_key  The key to extract.
 	 * @param array  $term_meta The meta data.
 	 *
-	 * @return null|string The meta value.
+	 * @return string|null The meta value.
 	 */
 	protected function get_meta_value( $meta_key, $term_meta ) {
 		if ( ! $term_meta || ! \array_key_exists( $meta_key, $term_meta ) ) {

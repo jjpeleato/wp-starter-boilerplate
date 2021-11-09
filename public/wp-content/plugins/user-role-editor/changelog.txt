@@ -1,6 +1,27 @@
 CHANGES LOG (full version).
 ===========================
 
+= [4.60.2] 20.09.2021 =
+* Update: Marked as compatible with WordPress 5.8.1
+* Fix: Multisite: URE_Editor::is_full_network_sync() returned FALSE, instead TRUE for the AJAX call, while call was made from the Network Admin (wp-admin/network/).
+
+= [4.60.1] 21.07.2021 =
+* Update: Marked as compatible with WordPress 5.8.
+* Fix: PHP Notice: Undefined property: URE_User_View::$multisite in /wp-content/plugins/user-role-editor/includes/classes/user-view.php on line 145
+
+= [4.60] 24.06.2021 =
+* New: Notification box was replaced with one based on the [jpillora/nofifyjs](https://notifyjs.jpillora.com/) jQuery plugin. It does not move down page content. It disappears automatically after 5 seconds. Click on it to remove it manually.
+* Fix: "Add capability" shows warning styled notification when needed (invalid characters, etc.) instead of a successful one.
+* Fix: Capabilities group uncheck and revert selection is blocked for the administrator role to exclude accident deletion of permissions from it.
+
+= [4.59.1] 11.05.2021 =
+* New: Multisite: When update role at the main site with "Apply to all sites" option and PHP constant URE_MULTISITE_DIRECT_UPDATE === 1 (update roles directly in database, not via WordPress API), 
+*   URE overwrites all subsite roles with roles from the main site. It's possible now to leave selected role(s) for selected subsite(s) unchanged: add filter 'ure_network_update_leave_roles' and  
+*   return from it the array like this one - array( (int) blog_id => array('role_id1', 'role_id2', ... );
+* Update: "Other roles" section at user profile is available now only for users with 'promote_users' capability.
+* Update: Notice at the top of URE page about action result is not removed automatically after 7 seconds as earlier.
+* Update: 'ure_sort_wp_roles_list' filter accepts these values for the single input parameter: false - leave roles list as it is; true, 'id' - sort roles list by role ID; 'name' - sort roles by role name.
+
 = [4.59] 02.04.2021 =
 * Update: PHP constant URE_WP_ADMIN_URL was replaced with direct 'admin_url()' call to respect the 'admin_url' filter applied by the get_admin_url() WordPress API function.
 * Update: Editing roles and capabilities granted to selected user ("Capabilities" link under user row at the "Users" list) executes 'add_user_role' or 'remove_user_role' actions only in case it really grants or revokes roles and/or capabilities.

@@ -1,9 +1,9 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName
 /**
  * WPML plugin support
  *
  * @author  YITH
- * @package YITH WooCommerce Ajax Product FIlter
+ * @package YITH\AjaxProductFilter\Classes\Compatibility
  * @version 4.0.1
  */
 
@@ -58,6 +58,21 @@ class WPML_Language_Metabox {
 		add_filter( 'wpml_link_to_translation', array( $this, 'link_to_translation' ), 10, 4 );
 		add_filter( 'wpml_admin_language_switcher_items', array( $this, 'admin_language_switcher_items' ) );
 		add_action( 'icl_make_duplicate', array( $this, 'fix_duplicated_preset' ), 10, 4 );
+		add_action( 'yith_wcan_save_preset', array( $this, 'process_save_post' ), 10, 2 );
+	}
+
+	/**
+	 * Save WPML meta box when saving the preset
+	 *
+	 * @param int              $preset_id Preset id.
+	 * @param YITH_WCAN_Preset $preset    Preset object.
+	 *
+	 * @return void
+	 */
+	public function process_save_post( $preset_id, $preset ) {
+		global $wpml_post_translations;
+
+		$wpml_post_translations->save_post_actions( $preset_id, $preset->get_post() );
 	}
 
 	/**
@@ -86,15 +101,17 @@ class WPML_Language_Metabox {
 
 		?>
 		<div id="<?php echo esc_attr( WPML_Meta_Boxes_Post_Edit_HTML::WRAPPER_ID ); ?>">
-			<?php
-			if ( $post ) {
-				add_filter( 'wpml_post_edit_can_translate', '__return_true' );
-				$this->sitepress->meta_box( $post );
-			} elseif ( $trid ) {
-				// Used by WPML for connecting new manual translations to their originals.
-				echo '<input type="hidden" name="icl_trid" value="' . esc_attr( $trid ) . '" />';
-			}
-			?>
+			<div class="inside">
+				<?php
+				if ( $post ) {
+					add_filter( 'wpml_post_edit_can_translate', '__return_true' );
+					$this->sitepress->meta_box( $post );
+				} elseif ( $trid ) {
+					// Used by WPML for connecting new manual translations to their originals.
+					echo '<input type="hidden" name="icl_trid" value="' . esc_attr( $trid ) . '" />';
+				}
+				?>
+			</div>
 		</div>
 		<?php
 	}
@@ -173,7 +190,7 @@ class WPML_Language_Metabox {
 			foreach ( $filters as $filter ) {
 				if ( $filter->has_terms() ) {
 					$terms_options = $filter->get_terms_options();
-					$new_terms = array();
+					$new_terms     = array();
 
 					foreach ( $terms_options as $term_id => $term_options ) {
 						$translated_term_id = apply_filters( 'wpml_object_id', $term_id, $filter->get_taxonomy(), false, $lang );
@@ -215,13 +232,11 @@ class WPML_Language_Metabox {
 	 * @return int
 	 */
 	private function is_preset_page() {
-		global $plugin_page;
-
 		if ( empty( $this->panel_slug ) ) {
 			$this->panel_slug = YITH_WCAN()->admin->get_panel_page();
 		}
 
-		return $this->get_panel_slug() === $plugin_page;
+		return ! empty( $_GET['page'] ) && ! empty( $_GET['preset'] ) && $this->get_panel_slug() === $_GET['page']; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	}
 
 	/**

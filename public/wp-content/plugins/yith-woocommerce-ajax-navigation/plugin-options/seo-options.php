@@ -3,7 +3,7 @@
  * SEO options
  *
  * @author  YITH
- * @package YITH WooCommerce Ajax Product Filter
+ * @package YITH\AjaxProductFilter\Options
  * @version 4.0.0
  */
 
@@ -19,7 +19,7 @@ return apply_filters(
 				'id'   => 'yith_wcan_seo_settings',
 			),
 
-			'enable_seo' => array(
+			'enable_seo'        => array(
 				'name'      => _x( 'Enable SEO option', '[ADMIN] Seo settings page', 'yith-woocommerce-ajax-navigation' ),
 				'desc'      => _x( 'Add "robots" meta tag in head tag of HTML page if filters have been activated.', '[ADMIN] Seo settings page', 'yith-woocommerce-ajax-navigation' ),
 				'id'        => 'yith_wcan_enable_seo',
@@ -27,7 +27,7 @@ return apply_filters(
 				'yith-type' => 'onoff',
 			),
 
-			'meta_tag' => array(
+			'meta_tag'          => array(
 				'name'      => _x( 'Meta tag', '[ADMIN] Seo settings page', 'yith-woocommerce-ajax-navigation' ),
 				'desc'      => _x( 'Select which tag to use on filtered pages', '[ADMIN] Seo settings page', 'yith-woocommerce-ajax-navigation' ),
 				'id'        => 'yith_wcan_seo_value',
@@ -47,7 +47,7 @@ return apply_filters(
 				),
 			),
 
-			'nofollow' => array(
+			'nofollow'          => array(
 				'name'      => _x( 'Add "nofollow" to filter anchors', '[ADMIN] Seo settings page', 'yith-woocommerce-ajax-navigation' ),
 				'desc'      => _x( 'When enabled, adds re="nofollow" attribute to all the filter anchors across the plugin', '[ADMIN] Seo settings page', 'yith-woocommerce-ajax-navigation' ),
 				'id'        => 'yith_wcan_seo_rel_nofollow',
@@ -59,7 +59,7 @@ return apply_filters(
 				),
 			),
 
-			'change_url' => array(
+			'change_url'        => array(
 				'name'      => _x( 'URL permalinks', '[ADMIN] Seo settings page', 'yith-woocommerce-ajax-navigation' ),
 				'desc'      => _x( 'Choose how to manage browser URL during filtering', '[ADMIN] Seo settings page', 'yith-woocommerce-ajax-navigation' ),
 				'id'        => 'yith_wcan_change_browser_url',
@@ -67,14 +67,14 @@ return apply_filters(
 				'yith-type' => 'radio',
 				'default'   => 'yes',
 				'options'   => array(
-					'yes'    => _x( 'Add filters parameters to default URL', '[ADMIN] Seo settings page', 'yith-woocommerce-ajax-navigation' ),
-					'no'     => _x( 'Don\'t change URL', '[ADMIN] Seo settings page', 'yith-woocommerce-ajax-navigation' ),
+					'yes' => _x( 'Add filters parameters to default URL', '[ADMIN] Seo settings page', 'yith-woocommerce-ajax-navigation' ),
+					'no'  => _x( 'Don\'t change URL', '[ADMIN] Seo settings page', 'yith-woocommerce-ajax-navigation' ),
 				),
 			),
 
-			'seo_section_end' => array(
+			'seo_section_end'   => array(
 				'type' => 'sectionend',
-				'id' => 'yith_wcan_seo_settings',
+				'id'   => 'yith_wcan_seo_settings',
 			),
 
 		),

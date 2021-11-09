@@ -24,7 +24,7 @@ class Checkout extends AbstractBlock {
 		$script = [
 			'handle'       => 'wc-' . $this->block_name . '-block',
 			'path'         => $this->asset_api->get_block_asset_build_path( $this->block_name ),
-			'dependencies' => [ 'wc-vendors', 'wc-blocks' ],
+			'dependencies' => [ 'wc-blocks' ],
 		];
 		return $key ? $script[ $key ] : $script;
 	}
@@ -71,12 +71,23 @@ class Checkout extends AbstractBlock {
 		}
 
 		// Deregister core checkout scripts and styles.
-		wp_deregister_script( 'wc-checkout' );
-		wp_deregister_script( 'wc-password-strength-meter' );
-		wp_deregister_script( 'selectWoo' );
-		wp_deregister_style( 'select2' );
+		wp_dequeue_script( 'wc-checkout' );
+		wp_dequeue_script( 'wc-password-strength-meter' );
+		wp_dequeue_script( 'selectWoo' );
+		wp_dequeue_style( 'select2' );
 
-		return $this->inject_html_data_attributes( $content . $this->get_skeleton(), $attributes );
+		// If the content is empty, we may have transformed from an older checkout block. Insert the default list of blocks.
+		$regex_for_empty_block = '/<div class="[a-zA-Z0-9_\- ]*wp-block-woocommerce-checkout[a-zA-Z0-9_\- ]*"><\/div>/mi';
+
+		$is_empty = preg_match( $regex_for_empty_block, $content );
+
+		if ( $is_empty ) {
+			$inner_blocks_html = '<div data-block-name="woocommerce/checkout-fields-block" class="wp-block-woocommerce-checkout-fields-block"></div><div data-block-name="woocommerce/checkout-totals-block" class="wp-block-woocommerce-checkout-totals-block"></div>';
+
+			$content = str_replace( '</div>', $inner_blocks_html . '</div>', $content );
+		}
+
+		return $this->inject_html_data_attributes( $content, $attributes );
 	}
 
 	/**
@@ -98,50 +109,143 @@ class Checkout extends AbstractBlock {
 	protected function enqueue_data( array $attributes = [] ) {
 		parent::enqueue_data( $attributes );
 
-		if ( ! $this->asset_data_registry->exists( 'allowedCountries' ) ) {
-			$this->asset_data_registry->add( 'allowedCountries', $this->deep_sort_with_accents( WC()->countries->get_allowed_countries() ) );
-		}
+		$this->asset_data_registry->add(
+			'allowedCountries',
+			function() {
+				return $this->deep_sort_with_accents( WC()->countries->get_allowed_countries() );
+			},
+			true
+		);
+		$this->asset_data_registry->add(
+			'allowedStates',
+			function() {
+				return $this->deep_sort_with_accents( WC()->countries->get_allowed_country_states() );
+			},
+			true
+		);
+		$this->asset_data_registry->add(
+			'shippingCountries',
+			function() {
+				return $this->deep_sort_with_accents( WC()->countries->get_shipping_countries() );
+			},
+			true
+		);
+		$this->asset_data_registry->add(
+			'shippingStates',
+			function() {
+				return $this->deep_sort_with_accents( WC()->countries->get_shipping_country_states() );
+			},
+			true
+		);
+		$this->asset_data_registry->add(
+			'countryLocale',
+			function() {
+				// Merge country and state data to work around https://github.com/woocommerce/woocommerce/issues/28944.
+				$country_locale = wc()->countries->get_country_locale();
+				$states         = wc()->countries->get_states();
 
-		if ( ! $this->asset_data_registry->exists( 'allowedStates' ) ) {
-			$this->asset_data_registry->add( 'allowedStates', $this->deep_sort_with_accents( WC()->countries->get_allowed_country_states() ) );
-		}
-
-		if ( ! $this->asset_data_registry->exists( 'shippingCountries' ) ) {
-			$this->asset_data_registry->add( 'shippingCountries', $this->deep_sort_with_accents( WC()->countries->get_shipping_countries() ) );
-		}
-
-		if ( ! $this->asset_data_registry->exists( 'shippingStates' ) ) {
-			$this->asset_data_registry->add( 'shippingStates', $this->deep_sort_with_accents( WC()->countries->get_shipping_country_states() ) );
-		}
-
-		if ( ! $this->asset_data_registry->exists( 'countryLocale' ) ) {
-			// Merge country and state data to work around https://github.com/woocommerce/woocommerce/issues/28944.
-			$country_locale = wc()->countries->get_country_locale();
-			$states         = wc()->countries->get_states();
-
-			foreach ( $states as $country => $states ) {
-				if ( empty( $states ) ) {
-					$country_locale[ $country ]['state']['required'] = false;
-					$country_locale[ $country ]['state']['hidden']   = true;
+				foreach ( $states as $country => $states ) {
+					if ( empty( $states ) ) {
+						$country_locale[ $country ]['state']['required'] = false;
+						$country_locale[ $country ]['state']['hidden']   = true;
+					}
 				}
-			}
-			$this->asset_data_registry->add( 'countryLocale', $country_locale );
-		}
+				return $country_locale;
+			},
+			true
+		);
+		$this->asset_data_registry->add( 'baseLocation', wc_get_base_location(), true );
+		$this->asset_data_registry->add(
+			'checkoutAllowsGuest',
+			false === filter_var(
+				WC()->checkout()->is_registration_required(),
+				FILTER_VALIDATE_BOOLEAN
+			),
+			true
+		);
+		$this->asset_data_registry->add(
+			'checkoutAllowsSignup',
+			filter_var(
+				WC()->checkout()->is_registration_enabled(),
+				FILTER_VALIDATE_BOOLEAN
+			),
+			true
+		);
+		$this->asset_data_registry->add( 'checkoutShowLoginReminder', filter_var( get_option( 'woocommerce_enable_checkout_login_reminder' ), FILTER_VALIDATE_BOOLEAN ), true );
+		$this->asset_data_registry->add( 'displayCartPricesIncludingTax', 'incl' === get_option( 'woocommerce_tax_display_cart' ), true );
+		$this->asset_data_registry->add( 'displayItemizedTaxes', 'itemized' === get_option( 'woocommerce_tax_total_display' ), true );
+		$this->asset_data_registry->add( 'taxesEnabled', wc_tax_enabled(), true );
+		$this->asset_data_registry->add( 'couponsEnabled', wc_coupons_enabled(), true );
+		$this->asset_data_registry->add( 'shippingEnabled', wc_shipping_enabled(), true );
+		$this->asset_data_registry->add( 'hasDarkEditorStyleSupport', current_theme_supports( 'dark-editor-style' ), true );
+		$this->asset_data_registry->register_page_id( isset( $attributes['cartPageId'] ) ? $attributes['cartPageId'] : 0 );
 
-		$permalink = ! empty( $attributes['cartPageId'] ) ? get_permalink( $attributes['cartPageId'] ) : false;
-
-		if ( $permalink && ! $this->asset_data_registry->exists( 'page-' . $attributes['cartPageId'] ) ) {
-			$this->asset_data_registry->add( 'page-' . $attributes['cartPageId'], $permalink );
-		}
+		$is_block_editor = $this->is_block_editor();
 
 		// Hydrate the following data depending on admin or frontend context.
-		if ( is_admin() && function_exists( 'get_current_screen' ) ) {
-			$screen = get_current_screen();
+		if ( $is_block_editor && ! $this->asset_data_registry->exists( 'shippingMethodsExist' ) ) {
+			$methods_exist = wc_get_shipping_method_count( false, true ) > 0;
+			$this->asset_data_registry->add( 'shippingMethodsExist', $methods_exist );
+		}
 
-			if ( $screen && $screen->is_block_editor() && ! $this->asset_data_registry->exists( 'shippingMethodsExist' ) ) {
-				$methods_exist = wc_get_shipping_method_count( false, true ) > 0;
-				$this->asset_data_registry->add( 'shippingMethodsExist', $methods_exist );
-			}
+		if ( $is_block_editor && ! $this->asset_data_registry->exists( 'globalShippingMethods' ) ) {
+			$shipping_methods           = WC()->shipping()->get_shipping_methods();
+			$formatted_shipping_methods = array_reduce(
+				$shipping_methods,
+				function( $acc, $method ) {
+					if ( $method->supports( 'settings' ) ) {
+						$acc[] = [
+							'id'          => $method->id,
+							'title'       => $method->method_title,
+							'description' => $method->method_description,
+						];
+					}
+					return $acc;
+				},
+				[]
+			);
+			$this->asset_data_registry->add( 'globalShippingMethods', $formatted_shipping_methods );
+		}
+
+		if ( $is_block_editor && ! $this->asset_data_registry->exists( 'activeShippingZones' ) && class_exists( '\WC_Shipping_Zones' ) ) {
+			$shipping_zones             = \WC_Shipping_Zones::get_zones();
+			$formatted_shipping_zones   = array_reduce(
+				$shipping_zones,
+				function( $acc, $zone ) {
+					$acc[] = [
+						'id'          => $zone['id'],
+						'title'       => $zone['zone_name'],
+						'description' => $zone['formatted_zone_location'],
+					];
+					return $acc;
+				},
+				[]
+			);
+			$formatted_shipping_zones[] = [
+				'id'          => 0,
+				'title'       => __( 'International', 'woocommerce' ),
+				'description' => __( 'Locations outside all other zones', 'woocommerce' ),
+			];
+			$this->asset_data_registry->add( 'activeShippingZones', $formatted_shipping_zones );
+		}
+
+		if ( $is_block_editor && ! $this->asset_data_registry->exists( 'globalPaymentMethods' ) ) {
+			$payment_methods           = WC()->payment_gateways->payment_gateways();
+			$formatted_payment_methods = array_reduce(
+				$payment_methods,
+				function( $acc, $method ) {
+					if ( 'yes' === $method->enabled ) {
+						$acc[] = [
+							'id'          => $method->id,
+							'title'       => $method->method_title,
+							'description' => $method->method_description,
+						];
+					}
+					return $acc;
+				},
+				[]
+			);
+			$this->asset_data_registry->add( 'globalPaymentMethods', $formatted_payment_methods );
 		}
 
 		if ( ! is_admin() && ! WC()->is_rest_api_request() ) {
@@ -150,6 +254,18 @@ class Checkout extends AbstractBlock {
 		}
 
 		do_action( 'woocommerce_blocks_checkout_enqueue_data' );
+	}
+
+	/**
+	 * Are we currently on the admin block editor screen?
+	 */
+	protected function is_block_editor() {
+		if ( ! is_admin() || ! function_exists( 'get_current_screen' ) ) {
+			return false;
+		}
+		$screen = get_current_screen();
+
+		return $screen && $screen->is_block_editor();
 	}
 
 	/**
@@ -195,78 +311,10 @@ class Checkout extends AbstractBlock {
 		// Controller and converted to exceptions.
 		wc_print_notices();
 
-		if ( ! $this->asset_data_registry->exists( 'cartData' ) ) {
-			$this->asset_data_registry->add( 'cartData', WC()->api->get_endpoint_data( '/wc/store/cart' ) );
-		}
-		if ( ! $this->asset_data_registry->exists( 'checkoutData' ) ) {
-			add_filter( 'woocommerce_store_api_disable_nonce_check', '__return_true' );
-			$this->asset_data_registry->add( 'checkoutData', WC()->api->get_endpoint_data( '/wc/store/checkout' ) );
-			remove_filter( 'woocommerce_store_api_disable_nonce_check', '__return_true' );
-		}
-	}
-
-	/**
-	 * Render skeleton markup for the checkout block.
-	 */
-	protected function get_skeleton() {
-		return '
-			<div class="wc-block-skeleton wc-block-components-sidebar-layout wc-block-checkout wc-block-checkout--is-loading wc-block-checkout--skeleton hidden" aria-hidden="true">
-				<div class="wc-block-components-main wc-block-checkout__main">
-					<div class="wc-block-components-express-payment wc-block-components-express-payment--checkout"></div>
-					<div class="wc-block-components-express-payment-continue-rule wc-block-components-express-payment-continue-rule--checkout"><span></span></div>
-					<form class="wc-block-checkout__form">
-						<fieldset class="wc-block-checkout__contact-fields wc-block-components-checkout-step">
-							<div class="wc-block-components-checkout-step__heading">
-								<div class="wc-block-components-checkout-step__title"></div>
-							</div>
-							<div class="wc-block-components-checkout-step__container">
-								<div class="wc-block-components-checkout-step__content">
-									<span></span>
-								</div>
-							</div>
-						</fieldset>
-						<fieldset class="wc-block-checkout__contact-fields wc-block-components-checkout-step">
-							<div class="wc-block-components-checkout-step__heading">
-								<div class="wc-block-components-checkout-step__title"></div>
-							</div>
-							<div class="wc-block-components-checkout-step__container">
-								<div class="wc-block-components-checkout-step__content">
-									<span></span>
-								</div>
-							</div>
-						</fieldset>
-						<fieldset class="wc-block-checkout__contact-fields wc-block-components-checkout-step">
-							<div class="wc-block-components-checkout-step__heading">
-								<div class="wc-block-components-checkout-step__title"></div>
-							</div>
-							<div class="wc-block-components-checkout-step__container">
-								<div class="wc-block-components-checkout-step__content">
-									<span></span>
-								</div>
-							</div>
-						</fieldset>
-						<fieldset class="wc-block-checkout__contact-fields wc-block-components-checkout-step">
-							<div class="wc-block-components-checkout-step__heading">
-								<div class="wc-block-components-checkout-step__title"></div>
-							</div>
-							<div class="wc-block-components-checkout-step__container">
-								<div class="wc-block-components-checkout-step__content">
-									<span></span>
-								</div>
-							</div>
-						</fieldset>
-					</form>
-				</div>
-				<div class="wc-block-components-sidebar wc-block-checkout__sidebar">
-					<div class="components-card"></div>
-				</div>
-				<div class="wc-block-components-main wc-block-checkout__main-totals">
-					<div class="wc-block-checkout__actions">
-						<button class="components-button button wc-block-button wc-block-components-checkout-place-order-button">&nbsp;</button>
-					</div>
-				</div>
-			</div>
-		' . $this->get_skeleton_inline_script();
+		add_filter( 'woocommerce_store_api_disable_nonce_check', '__return_true' );
+		$this->asset_data_registry->hydrate_api_request( '/wc/store/cart' );
+		$this->asset_data_registry->hydrate_api_request( '/wc/store/checkout' );
+		remove_filter( 'woocommerce_store_api_disable_nonce_check', '__return_true' );
 	}
 
 	/**

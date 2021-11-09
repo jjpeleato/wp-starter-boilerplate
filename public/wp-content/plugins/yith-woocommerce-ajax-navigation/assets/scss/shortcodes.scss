@@ -11,6 +11,7 @@ $border-radius: 4px;
 $disabled-color: #B4B4B4;
 $star-color: #e3a405;
 $light-grey: #eee;
+$background-gray: #f0f0f0;
 
 $z-index: 1001; // value is this high since modal must be on top of Proteo's sticky header
 
@@ -58,20 +59,24 @@ $z-index: 1001; // value is this high since modal must be on top of Proteo's sti
 @mixin pretty_scrollbar {
 	&::-webkit-scrollbar {
 		-webkit-appearance: none;
-		width: 7px;
+		width: 6px;
 	}
 
 	&::-webkit-scrollbar-thumb {
+		background-color: $accent-color;
 		border-radius: $border-radius;
-		background-color: $border-color;
 	}
 }
 
 @mixin close_button {
 	background-color: $accent-color;
+	background-image: url('../images/close.svg');
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 60%;
 	border-radius: 100%;
 	color: #fff;
-	content: "\d7";
+	content: '';
 	font-size: 16px;
 	height: 15px;
 	line-height: 15px;
@@ -123,6 +128,11 @@ $z-index: 1001; // value is this high since modal must be on top of Proteo's sti
 		top: calc(50% - 5px);
 		width: 0;
 	}
+
+	& > img {
+		min-width: 40px;
+		height: auto;
+	}
 }
 
 @mixin single_column( $columns_number ) {
@@ -164,6 +174,10 @@ $z-index: 1001; // value is this high since modal must be on top of Proteo's sti
 
 				&:after {
 					right: 5px;
+				}
+
+				&.collapsable.closed + .filter-content {
+					display: none;
 				}
 			}
 		}
@@ -246,6 +260,34 @@ $z-index: 1001; // value is this high since modal must be on top of Proteo's sti
 						position: relative;
 					}
 
+					&.no-color,
+					&.no-image {
+						font-size: 1rem;
+						text-align: center;
+					}
+
+					&.label-below,
+					&.label-right {
+						font-size: 1rem;
+					}
+
+					&.label-right {
+						display: block;
+						margin: 0 0 10px;
+						width: 100%;
+
+						.term-color,
+						.term-image {
+							margin-bottom: 0;
+							margin-right: 10px;
+						}
+
+						.term-label {
+							display: inline-block;
+							font-size: 1em;
+						}
+					}
+
 					.term-color {
 						border: 2px solid transparent;
 						border-radius: var( --yith-wcan-color_swatches_border_radius, $border-radius );
@@ -306,6 +348,10 @@ $z-index: 1001; // value is this high since modal must be on top of Proteo's sti
 						line-height: 1.4;
 						text-align: center;
 					}
+
+					&.label-hide .term-label {
+						display: none;
+					}
 				}
 
 				&.active.color {
@@ -313,7 +359,7 @@ $z-index: 1001; // value is this high since modal must be on top of Proteo's sti
 						border-color: $accent-color;
 					}
 
-					& > a:after {
+					&:not(.no-color):not(.no-image):not(.label-right) > a:after {
 						@include close_button;
 					}
 				}
@@ -333,7 +379,7 @@ $z-index: 1001; // value is this high since modal must be on top of Proteo's sti
 						height: 100%;
 					}
 
-					&.active.with-image > a {
+					&.active.with-image:not(.label-right) > a {
 						position: relative;
 
 						&:after {
@@ -372,6 +418,44 @@ $z-index: 1001; // value is this high since modal must be on top of Proteo's sti
 						}
 					}
 
+					&.label-right.with-image {
+						background: none;
+						box-shadow: none;
+						display: block;
+						margin: 0 0 10px;
+						padding: 0;
+						text-align: left;
+						width: 100%;
+
+						& > a {
+							display: inline-block;
+							color: $anchor-color;
+
+							&:hover {
+								color: var( --yith-wcan-anchors_style_text_hover, $default-accent );
+							}
+
+							&.active {
+
+							}
+						}
+
+						&.active > a {
+							color: var( --yith-wcan-anchors_style_text_active, $default-accent );
+						}
+
+						.term-image {
+							margin-right: 10px;
+							max-width: 70px;
+							vertical-align: middle;
+						}
+
+						.term-label {
+							display: inline-block;
+							vertical-align: middle;
+						}
+					}
+
 					.term-image {
 						display: inline-block;
 						font-size: 0;
@@ -386,6 +470,10 @@ $z-index: 1001; // value is this high since modal must be on top of Proteo's sti
 					.term-label {
 						display: block;
 						font-size: .8rem;
+					}
+
+					&.label-hide.with-image .term-label {
+						display: none;
 					}
 				}
 
@@ -444,6 +532,10 @@ $z-index: 1001; // value is this high since modal must be on top of Proteo's sti
 			}
 		}
 
+		&.label-design .filter-items {
+			font-size: 0;
+		}
+
 		// tooltips
 		.yith-wcan-tooltip {
 			@include tooltip;
@@ -482,7 +574,44 @@ $z-index: 1001; // value is this high since modal must be on top of Proteo's sti
 
 		// price slider
 		.price-slider {
-			padding: 20px 10px;
+			&.both {
+				padding: 20px 10px;
+
+				&:after {
+					content: '';
+					display: block;
+					clear: both;
+				}
+
+				.price-slider-min,
+				.price-slider-max {
+					min-width: 0;
+					width: 50px;
+				}
+
+				.irs {
+					margin-bottom: 20px;
+				}
+
+				.price-slider-min {
+					float: left;
+				}
+
+				.price-slider-max {
+					float: right;
+				}
+			}
+
+			&.fields {
+				padding: 20px 0;
+
+				.price-slider-min,
+				.price-slider-max {
+					min-width: 0;
+					width: 70px;
+					margin: 0 5px;
+				}
+			}
 
 			.irs-bar,
 			.irs-line{
@@ -806,7 +935,7 @@ $z-index: 1001; // value is this high since modal must be on top of Proteo's sti
 		.close-button {
 			color: $anchor-color;
 			cursor: pointer;
-			font-size: 2.5em;
+			font-size: 1.5em;
 			height: 35px;
 			line-height: 1;
 			position: absolute;
@@ -839,6 +968,112 @@ $z-index: 1001; // value is this high since modal must be on top of Proteo's sti
 			width: 100%;
 		}
 	}
+
+	// custom appearance for horizontal layout
+	&.horizontal:not(.filters-modal) {
+		text-align: left;
+
+		.yith-wcan-filter {
+			display: inline-block;
+			margin-bottom: 8px;
+			min-width: 200px;
+			position: relative;
+			vertical-align: top;
+
+			h4.collapsable {
+				border: 1px solid $border-color;
+				border-radius: $border-radius;
+				font-weight: 400;
+				margin-top: 0;
+				margin-bottom: 10px;
+				margin-right: 15px;
+				padding: 10px 40px 10px 20px;
+
+				&:after {
+					right: 15px;
+				}
+
+				span.filter-count {
+					border: 2px solid $accent-color;
+					padding: 0 5px;
+					font-size: .8em;
+					margin: 0 10px;
+				}
+			}
+
+			h4.collapsable.opened,
+			h4.collapsable.opened + .filter-content {
+				border: 1px solid rgba( var( --yith-wcan-filters_colors_accent_r, 73 ), var( --yith-wcan-filters_colors_accent_g, 139 ), var( --yith-wcan-filters_colors_accent_b, 162 ), .3 );
+				box-shadow: 0 0 7px 0 rgba( var( --yith-wcan-filters_colors_accent_r, 73 ), var( --yith-wcan-filters_colors_accent_g, 139 ), var( --yith-wcan-filters_colors_accent_b, 162 ), .3 );
+			}
+
+			h4.collapsable + .filter-content {
+				background-color: #fff;
+				border: 1px solid $border-color;
+				border-radius: $border-radius;
+				min-width: 300px;
+				position: absolute;
+				padding: 20px;
+				width: 100%;
+				z-index: $z-index;
+
+				.filter-content-footer {
+					background-color: $background-gray;
+					margin: 20px -20px -20px;
+					padding: 15px 20px;
+					text-align: right;
+
+					.apply-filters {
+						margin: 0;
+					}
+
+					.clear-selection {
+						background: #CBCBCB; // To be removed
+						border-color: #CBCBCB; // To be removed
+						color: #434343; // To be removed
+
+						margin-bottom: 0;
+						margin-right: 15px;
+					}
+				}
+			}
+
+			// filter items
+			.filter-content > .filter-items {
+				max-height: 200px;
+				overflow-y: scroll;
+				overflow-x: hidden;
+				padding: 5px 2px 0 0;
+
+				@include pretty_scrollbar;
+			}
+
+			&.label-design .filter-items {
+				padding-top: 8px;
+			}
+
+			// terms dropdown
+			.dropdown-wrapper {
+				.search-field-container {
+					margin-bottom: 20px;
+
+					input {
+						width: 100%;
+					}
+				}
+
+				.matching-items {
+					a {
+						cursor: pointer;
+					}
+				}
+			}
+		}
+
+		form > .apply-filters {
+			margin-top: 0;
+		}
+	}
 }
 
 body.admin-bar .yith-wcan-filters.filters-modal {
@@ -859,6 +1094,25 @@ body.yith-wcan-preset-modal-open:after {
 
 	&.admin-bar {
 		top: 32px;
+	}
+}
+
+body.rtl .yith-wcan-filters {
+	.yith-wcan-filter {
+		.filter-items {
+			&.level-0 {
+				ul {
+					padding-left: 0;
+					padding-right: 15px;
+				}
+			}
+		}
+	}
+}
+
+@media( max-width: 991px ) {
+	body.filters-in-modal .yith-wcan-filters {
+		display: none;
 	}
 }
 

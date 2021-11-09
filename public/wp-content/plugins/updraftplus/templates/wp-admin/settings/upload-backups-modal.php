@@ -14,7 +14,7 @@
 
 				foreach ($service as $value) {
 					if ('' == $value) continue;
-					echo '<input class="updraft_remote_storage_destination" id="updraft_remote_'.$value.'" checked="checked" type="checkbox" name="updraft_remote_storage_destination_'. $value . '" value="'.$value.'"> <label for="updraft_remote_'.$value.'">'.$updraftplus->backup_methods[$value].'</label><br>';
+					echo '<input class="updraft_remote_storage_destination" id="updraft_remote_'.esc_attr($value).'" checked="checked" type="checkbox" name="updraft_remote_storage_destination_'. esc_attr($value) . '" value="'.esc_attr($value).'"> <label for="updraft_remote_'.esc_attr($value).'">'.$updraftplus->backup_methods[$value].' <span style="display: none">('.__('already uploaded', 'updraftplus').')</span></label><br>';
 				}
 			?>
 		</fieldset>

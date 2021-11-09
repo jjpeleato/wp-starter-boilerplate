@@ -50,8 +50,40 @@ function superpwa_add_menu_links() {
 
 	// Upgrade to pro page
 	$textlicense = "<span style='color: #ff4c4c;font-weight: 700;font-size: 15px;'>".__( 'Upgrade to Pro', 'super-progressive-web-apps' )."</span>";
-	if(defined('SUPERPWA_PRO_VERSION')){ $textlicense = __( 'License', 'super-progressive-web-apps' ); }
+	if( defined('SUPERPWA_PRO_VERSION') ){
+
+		$license_alert = $days = '';
+		$license_info = get_option("superpwa_pro_upgrade_license");
+		if ($license_info) {
+
+		$license_exp = date('Y-m-d', strtotime($license_info['pro']['license_key_expires']));
+		$license_info_lifetime = $license_info['pro']['license_key_expires'];
+		$today = date('Y-m-d');
+		$exp_date = $license_exp;
+		$date1 = date_create($today);
+		$date2 = date_create($exp_date);
+		$diff = date_diff($date1,$date2);
+		$days = $diff->format("%a");
+		if( $license_info_lifetime == 'lifetime' ){
+			$days = 'Lifetime';
+			if ($days == 'Lifetime') {
+				$expire_msg = " Your License is Valid for Lifetime ";
+			}
+		}
+		else if($today > $exp_date){
+			$days = -$days;
+		}
+
+    
+
+        $license_alert = isset($days) && $days!==0 && $days<=30 && $days!=='Lifetime' ? "<span class='superpwa_pro_icon dashicons dashicons-warning superpwa_pro_alert' style='color: #ffb229;left: 3px;position: relative;'></span>": "" ;
+        }
+        $textlicense = __( 'License', 'super-progressive-web-apps' );
+
+        add_submenu_page( 'superpwa', __( 'Super Progressive Web Apps', 'super-progressive-web-apps' ), $textlicense.$license_alert, 'manage_options', 'superpwa#license-settings', 'superpwa_upgread_pro_interface_render' , 9999999);
+    }else{
 	add_submenu_page( 'superpwa', __( 'Super Progressive Web Apps', 'super-progressive-web-apps' ), $textlicense, 'manage_options', 'superpwa-upgrade', 'superpwa_upgread_pro_interface_render' , 9999999);
+}
 	
 }
 add_action( 'admin_menu', 'superpwa_add_menu_links' );
@@ -254,6 +286,30 @@ function superpwa_register_settings() {
 			'superpwa_analytics_support_cb',								// CB
 			'superpwa_pwa_advance_section',							// Page slug
 			'superpwa_pwa_advance_section'							// Settings Section ID
+		);
+		// Cache External Origin URLs
+		add_settings_field(
+			'superpwa_cache_external_urls_shortcut',								// ID
+			__('Cache External Origin URLs', 'super-progressive-web-apps'),				// Title
+			'superpwa_cache_external_urls_support_cb',								// CB
+			'superpwa_pwa_advance_section',							// Page slug
+			'superpwa_pwa_advance_section'							// Settings Section ID
+		);
+		// Force Update Service Worker	
+		add_settings_field(
+			'superpwa_force_update_sw_shortcut',								// ID
+			__('Re-Install Service Worker', 'super-progressive-web-apps'),				// Title
+			'superpwa_force_update_sw_cb',								// CB
+			'superpwa_pwa_advance_section',							// Page slug
+			'superpwa_pwa_advance_section'							// Settings Section ID
+		);	
+		// Exclude Urls from Cache list
+		add_settings_field(
+			'superpwa_exclude_url_cache_shortcut',								// ID
+			__('Exclude URLs from Cache list', 'super-progressive-web-apps'),				// Title
+			'superpwa_exclude_url_cache_cb',								// CB
+			'superpwa_pwa_advance_section',							// Page slug
+			'superpwa_pwa_advance_section'							// Settings Section ID
 		);	
 }
 add_action( 'admin_init', 'superpwa_register_settings' );
@@ -277,7 +333,11 @@ function superpwa_validater_and_sanitizer( $settings ) {
 	$settings['app_name'] = sanitize_text_field( $settings['app_name'] ) == '' ? get_bloginfo( 'name' ) : sanitize_text_field( $settings['app_name'] );
 	
 	// Sanitize Application Short Name
-	$settings['app_short_name'] = substr( sanitize_text_field( $settings['app_short_name'] ) == '' ? get_bloginfo( 'name' ) : sanitize_text_field( $settings['app_short_name'] ), 0, 15 );
+	if(function_exists('mb_substr')){
+	$settings['app_short_name'] = mb_substr( sanitize_text_field( $settings['app_short_name'] ) == '' ? get_bloginfo( 'name' ) : sanitize_text_field( $settings['app_short_name'] ), 0, 15 );
+	} else {
+	    $settings['app_short_name'] = substr( sanitize_text_field( $settings['app_short_name'] ) == '' ? get_bloginfo( 'name' ) : sanitize_text_field( $settings['app_short_name'] ), 0, 15 );
+	}
 	
 	// Sanitize description
 	$settings['description'] = sanitize_text_field( $settings['description'] );
@@ -330,7 +390,7 @@ function superpwa_get_settings() {
 
 	$defaults = array(
 				'app_name'			=> get_bloginfo( 'name' ),
-				'app_short_name'	=> substr( get_bloginfo( 'name' ), 0, 15 ),
+				'app_short_name'	=>  function_exists('mb_substr') ? mb_substr( get_bloginfo( 'name' ), 0, 15 ) : substr( get_bloginfo( 'name' ), 0, 15 ),
 				'description'		=> get_bloginfo( 'description' ),
 				'icon'				=> SUPERPWA_PATH_SRC . 'public/images/logo.png',
 				'splash_icon'		=> SUPERPWA_PATH_SRC . 'public/images/logo-512x512.png',
@@ -394,6 +454,11 @@ function superpwa_enqueue_css_js( $hook ) {
 	
 	// Main JS
     wp_enqueue_script( 'superpwa-main-js', SUPERPWA_PATH_SRC . 'admin/js/main.js', array( 'wp-color-picker' ), SUPERPWA_VERSION, true );
+    if( defined('SUPERPWA_PRO_VERSION') ){
+    	 if ($hook == 'toplevel_page_superpwa') {    	 	
+    wp_enqueue_style('superpwa-admin-panel-css', SUPERPWA_PATH_SRC . 'admin/css/admin-panel.css', array(), SUPERPWA_PRO_VERSION, 'all');
+    	 }
+}
 }
 add_action( 'admin_enqueue_scripts', 'superpwa_enqueue_css_js' );
 

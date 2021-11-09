@@ -262,16 +262,17 @@ class WC_Download_Handler {
 		 * via filters we can still do the string replacement on a HTTP file.
 		 */
 		$replacements = array(
-			$wp_uploads_url                  => $wp_uploads_dir,
-			network_site_url( '/', 'https' ) => ABSPATH,
+			$wp_uploads_url                                                   => $wp_uploads_dir,
+			network_site_url( '/', 'https' )                                  => ABSPATH,
 			str_replace( 'https:', 'http:', network_site_url( '/', 'http' ) ) => ABSPATH,
-			site_url( '/', 'https' )         => ABSPATH,
-			str_replace( 'https:', 'http:', site_url( '/', 'http' ) ) => ABSPATH,
+			site_url( '/', 'https' )                                          => ABSPATH,
+			str_replace( 'https:', 'http:', site_url( '/', 'http' ) )         => ABSPATH,
 		);
 
+		$count            = 0;
 		$file_path        = str_replace( array_keys( $replacements ), array_values( $replacements ), $file_path );
 		$parsed_file_path = wp_parse_url( $file_path );
-		$remote_file      = true;
+		$remote_file      = null === $count || 0 === $count; // Remote file only if there were no replacements.
 
 		// Paths that begin with '//' are always remote URLs.
 		if ( '//' === substr( $file_path, 0, 2 ) ) {
@@ -291,7 +292,7 @@ class WC_Download_Handler {
 			$file_path   = realpath( WP_CONTENT_DIR . substr( $file_path, 11 ) );
 
 			// Check if we have an absolute path.
-		} elseif ( ( ! isset( $parsed_file_path['scheme'] ) || ! in_array( $parsed_file_path['scheme'], array( 'http', 'https', 'ftp' ), true ) ) && isset( $parsed_file_path['path'] ) && file_exists( $parsed_file_path['path'] ) ) {
+		} elseif ( ( ! isset( $parsed_file_path['scheme'] ) || ! in_array( $parsed_file_path['scheme'], array( 'http', 'https', 'ftp' ), true ) ) && isset( $parsed_file_path['path'] ) ) {
 			$remote_file = false;
 			$file_path   = $parsed_file_path['path'];
 		}
@@ -314,7 +315,7 @@ class WC_Download_Handler {
 		/**
 		 * Fallback on force download method for remote files. This is because:
 		 * 1. xsendfile needs proxy configuration to work for remote files, which cannot be assumed to be available on most hosts.
-		 * 2. Force download method is more secure than redirect method if `allow_url_fopen` is enabled in `php.ini`. We fallback to redirect method in force download method anyway in case `allow_url_fopen` is not enabled.
+		 * 2. Force download method is more secure than redirect method if `allow_url_fopen` is enabled in `php.ini`.
 		 */
 		if ( $parsed_file_path['remote_file'] && ! apply_filters( 'woocommerce_use_xsendfile_for_remote', false ) ) {
 			do_action( 'woocommerce_download_file_force', $file_path, $filename );
@@ -340,6 +341,13 @@ class WC_Download_Handler {
 		}
 
 		// Fallback.
+		wc_get_logger()->warning(
+			sprintf(
+				/* translators: %1$s contains the filepath of the digital asset. */
+				__( '%1$s could not be served using the X-Accel-Redirect/X-Sendfile method. A Force Download will be used instead.', 'woocommerce' ),
+				$file_path
+			)
+		);
 		self::download_file_force( $file_path, $filename );
 	}
 
@@ -435,7 +443,14 @@ class WC_Download_Handler {
 		$start  = isset( $download_range['start'] ) ? $download_range['start'] : 0;
 		$length = isset( $download_range['length'] ) ? $download_range['length'] : 0;
 		if ( ! self::readfile_chunked( $parsed_file_path['file_path'], $start, $length ) ) {
-			if ( $parsed_file_path['remote_file'] ) {
+			if ( $parsed_file_path['remote_file'] && 'yes' === get_option( 'woocommerce_downloads_redirect_fallback_allowed' ) ) {
+				wc_get_logger()->warning(
+					sprintf(
+						/* translators: %1$s contains the filepath of the digital asset. */
+						__( '%1$s could not be served using the Force Download method. A redirect will be used instead.', 'woocommerce' ),
+						$file_path
+					)
+				);
 				self::download_file_redirect( $file_path );
 			} else {
 				self::download_error( __( 'File not found', 'woocommerce' ) );
@@ -620,6 +635,15 @@ class WC_Download_Handler {
 	 * @param integer $status  Error status.
 	 */
 	private static function download_error( $message, $title = '', $status = 404 ) {
+		/*
+		 * Since we will now render a message instead of serving a download, we should unwind some of the previously set
+		 * headers.
+		 */
+		header( 'Content-Type: ' . get_option( 'html_type' ) . '; charset=' . get_option( 'blog_charset' ) );
+		header_remove( 'Content-Description;' );
+		header_remove( 'Content-Disposition' );
+		header_remove( 'Content-Transfer-Encoding' );
+
 		if ( ! strstr( $message, '<a ' ) ) {
 			$message .= ' <a href="' . esc_url( wc_get_page_permalink( 'shop' ) ) . '" class="wc-forward">' . esc_html__( 'Go to shop', 'woocommerce' ) . '</a>';
 		}

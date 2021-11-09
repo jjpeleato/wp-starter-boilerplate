@@ -9,7 +9,12 @@ require_once(UPDRAFTPLUS_DIR.'/methods/s3.php');
  */
 class UpdraftPlus_BackupModule_dreamobjects extends UpdraftPlus_BackupModule_s3 {
 
+	// This gets populated in the constructor
 	private $dreamobjects_endpoints = array();
+	
+	protected $provider_can_use_aws_sdk = false;
+	
+	protected $provider_has_regions = true;
 
 	/**
 	 * Class constructor
@@ -30,10 +35,10 @@ class UpdraftPlus_BackupModule_dreamobjects extends UpdraftPlus_BackupModule_s3 
 	 * Given an S3 object, possibly set the region on it
 	 *
 	 * @param Object $obj		  - like UpdraftPlus_S3
-	 * @param String $region
+	 * @param String $region	  - or empty to fetch one from saved configuration
 	 * @param String $bucket_name
 	 */
-	protected function set_region($obj, $region = '', $bucket_name = '') {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found - $bucket_name
+	protected function set_region($obj, $region = '', $bucket_name = '') {// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- $bucket_name
 
 		$config = $this->get_config();
 		$endpoint = ('' != $region && 'n/a' != $region) ? $region : $config['endpoint'];
@@ -43,12 +48,7 @@ class UpdraftPlus_BackupModule_dreamobjects extends UpdraftPlus_BackupModule_s3 
 		
 			// Warning for objects-us-west-1 shutdown in Oct 2018
 			if ('objects-us-west-1.dream.io' == $endpoint) {
-				// Are we after the shutdown date?
-				if (time() >= 1538438400) {
-					$updraftplus->log("The objects-us-west-1.dream.io endpoint shut down on the 1st October 2018. The upload is expected to fail. Please see the following article for more information https://help.dreamhost.com/hc/en-us/articles/360002135871-Cluster-migration-procedure", 'warning', 'dreamobjects_west_shutdown');
-				} else {
-					$updraftplus->log("The objects-us-west-1.dream.io endpoint is scheduled to shut down on the 1st October 2018. You will need to switch to a different end-point and migrate your data before that date. Please see the following article for more information https://help.dreamhost.com/hc/en-us/articles/360002135871-Cluster-migration-procedure", 'warning', 'dreamobjects_west_shutdown');
-				}
+				$updraftplus->log("The objects-us-west-1.dream.io endpoint shut down on the 1st October 2018. The upload is expected to fail. Please see the following article for more information https://help.dreamhost.com/hc/en-us/articles/360002135871-Cluster-migration-procedure", 'warning', 'dreamobjects_west_shutdown');
 			}
 		}
 		
@@ -144,9 +144,5 @@ class UpdraftPlus_BackupModule_dreamobjects extends UpdraftPlus_BackupModule_s3 
 		$opts['endpoint'] = empty($opts['endpoint']) ? '' : $opts['endpoint'];
 		$opts['dreamobjects_endpoints'] = $this->dreamobjects_endpoints;
 		return $opts;
-	}
-	
-	public function credentials_test($posted_settings) {
-		$this->credentials_test_engine($this->get_config(), $posted_settings);
 	}
 }

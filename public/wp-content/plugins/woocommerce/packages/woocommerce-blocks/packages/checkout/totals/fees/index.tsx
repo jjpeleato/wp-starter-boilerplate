@@ -3,7 +3,7 @@
  */
 import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
-import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
+import { getSetting } from '@woocommerce/settings';
 import type { Currency } from '@woocommerce/price-format';
 import type { CartFeeItem } from '@woocommerce/type-defs/cart';
 import type { ReactElement } from 'react';
@@ -26,7 +26,7 @@ const TotalsFees = ( {
 }: TotalsFeesProps ): ReactElement | null => {
 	return (
 		<>
-			{ cartFees.map( ( { id, name, totals } ) => {
+			{ cartFees.map( ( { id, name, totals }, index ) => {
 				const feesValue = parseInt( totals.total, 10 );
 
 				if ( ! feesValue ) {
@@ -37,7 +37,7 @@ const TotalsFees = ( {
 
 				return (
 					<TotalsItem
-						key={ id }
+						key={ id || `${ index }-${ name }` }
 						className={ classnames(
 							'wc-block-components-totals-fees',
 							className
@@ -47,7 +47,7 @@ const TotalsFees = ( {
 							name || __( 'Fee', 'woo-gutenberg-products-block' )
 						}
 						value={
-							DISPLAY_CART_PRICES_INCLUDING_TAX
+							getSetting( 'displayCartPricesIncludingTax', false )
 								? feesValue + feesTaxValue
 								: feesValue
 						}

@@ -47,11 +47,11 @@ class Sitemap {
 		add_action( 'rank_math/sitemap/hit_index', [ __CLASS__, 'hit_sitemap_index' ] );
 		add_action( 'rank_math/sitemap/ping_search_engines', [ __CLASS__, 'ping_search_engines' ] );
 
-		$this->filter( 'rank_math/admin/notice/new_post_type', 'new_post_type_notice' );
+		$this->filter( 'rank_math/admin/notice/new_post_type', 'new_post_type_notice', 10, 2 );
 
 		if ( class_exists( 'SitePress' ) ) {
 			$this->filter( 'rank_math/sitemap/build_type', 'rank_math_build_sitemap_filter' );
-			$this->filter( 'rank_math/sitemap/xml_post_url', 'exclude_hidden_language_posts', 10, 2 );
+			$this->filter( 'rank_math/sitemap/entry', 'exclude_hidden_language_posts', 10, 3 );
 		}
 	}
 
@@ -61,11 +61,16 @@ class Sitemap {
 	 * @since 1.0.5
 	 *
 	 * @param string $url  Post URL.
+	 * @param string $type URL type.
 	 * @param object $post Object with some post information.
 	 *
 	 * @return string
 	 */
-	public function exclude_hidden_language_posts( $url, $post ) {
+	public function exclude_hidden_language_posts( $url, $type, $post ) {
+		if ( 'post' !== $type ) {
+			return $url;
+		}
+
 		global $sitepress;
 		// Check that at least ID is set in post object.
 		if ( ! isset( $post->ID ) ) {
@@ -117,11 +122,17 @@ class Sitemap {
 	 * Add new CPT notice.
 	 *
 	 * @param  string $notice New CPT notice.
+	 * @param  int    $count  Count of new post types detected.
 	 * @return string
 	 */
-	public function new_post_type_notice( $notice ) {
-		/* translators: post names */
-		$notice = __( 'We detected new post type(s) (%1$s), and you would want to check the settings of <a href="%2$s">Titles &amp; Meta page</a> and <a href="%3$s">the Sitemap</a>.', 'rank-math' );
+	public function new_post_type_notice( $notice, $count ) {
+		/* Translators: placeholder is the post type name. */
+		$notice = __( 'Rank Math has detected a new post type: %1$s. You may want to check the settings of the <a href="%2$s">Titles &amp; Meta page</a> and <a href="%3$s">the Sitemap</a>.', 'rank-math' );
+
+		if ( $count > 1 ) {
+			/* Translators: placeholder is the post type names separated with commas. */
+			$notice = __( 'Rank Math has detected new post types: %1$s. You may want to check the settings of the <a href="%2$s">Titles &amp; Meta page</a> and <a href="%3$s">the Sitemap</a>.', 'rank-math' );
+		}
 
 		return $notice;
 	}

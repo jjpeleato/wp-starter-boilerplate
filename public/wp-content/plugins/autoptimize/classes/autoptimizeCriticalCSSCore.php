@@ -36,8 +36,12 @@ class autoptimizeCriticalCSSCore {
             // Add the action to enqueue jobs for CriticalCSS cron.
             add_action( 'autoptimize_action_css_hash', array( 'autoptimizeCriticalCSSEnqueue', 'ao_ccss_enqueue' ), 10, 1 );
 
-            // conditionally add the filter to defer jquery and others.
-            if ( $ao_ccss_deferjquery ) {
+            // conditionally add the filter to defer jquery and others but only if not done so in autoptimizeScripts.
+            $_native_defer = false;
+            if ( 'on' === autoptimizeOptionWrapper::get_option( 'autoptimize_js_defer_not_aggregate' ) && 'on' === autoptimizeOptionWrapper::get_option( 'autoptimize_js_defer_inline' ) ) {
+                $_native_defer = true;
+            }
+            if ( $ao_ccss_deferjquery && ! $_native_defer ) {
                 add_filter( 'autoptimize_html_after_minify', array( $this, 'ao_ccss_defer_jquery' ), 11, 1 );
             }
 
@@ -74,7 +78,9 @@ class autoptimizeCriticalCSSCore {
         global $ao_ccss_loggedin;
         global $ao_ccss_debug;
         global $ao_ccss_keyst;
+
         $no_ccss = '';
+        $ao_ccss_additional = autoptimizeStyles::sanitize_css( $ao_ccss_additional );
 
         // Only if keystatus is OK and option to add CCSS for logged on users is on or user is not logged in.
         if ( ( $ao_ccss_keyst && 2 == $ao_ccss_keyst ) && ( $ao_ccss_loggedin || ! is_user_logged_in() ) ) {
@@ -83,7 +89,7 @@ class autoptimizeCriticalCSSCore {
             if ( ! empty( $ao_ccss_rules['paths'] ) ) {
                 foreach ( $ao_ccss_rules['paths'] as $path => $rule ) {
                     // explicit match OR partial match if MANUAL rule.
-                    if ( $req_path == $path || urldecode( $req_path ) == $path || ( false == $rule['hash'] && false != $rule['file'] && strpos( $req_path, str_replace( site_url(), '', $path ) ) !== false ) ) {
+                    if ( $req_path == $path || urldecode( $req_path ) == $path || ( apply_filters( 'autoptimize_filter_ccss_core_path_partial_match', true ) && false == $rule['hash'] && false != $rule['file'] && strpos( $req_path, str_replace( site_url(), '', $path ) ) !== false ) ) {
                         if ( file_exists( AO_CCSS_DIR . $rule['file'] ) ) {
                             $_ccss_contents = file_get_contents( AO_CCSS_DIR . $rule['file'] );
                             if ( 'none' != $_ccss_contents ) {
@@ -193,7 +199,7 @@ class autoptimizeCriticalCSSCore {
 
     public function ao_ccss_unloadccss( $html_in ) {
         // set media attrib of inline CCSS to none at onLoad to avoid it impacting full CSS (rarely needed).
-        $_unloadccss_js = apply_filters( 'autoptimize_filter_ccss_core_unloadccss_js', '<script>window.addEventListener("load", function(event) {document.getElementById("aoatfcss").media="none";})</script>' );
+        $_unloadccss_js = apply_filters( 'autoptimize_filter_ccss_core_unloadccss_js', '<script>window.addEventListener("load", function(event) {var el = document.getElementById("aoatfcss"); if(el) el.media = "none";})</script>' );
 
         if ( false !== strpos( $html_in, $_unloadccss_js . '</body>' ) ) {
             return $html_in;

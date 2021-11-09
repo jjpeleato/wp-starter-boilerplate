@@ -18,6 +18,7 @@ use RankMath\Redirections\Metabox;
 use RankMath\Rest\Rest_Helper;
 use RankMath\Rest\Sanitize;
 use RankMath\Traits\Meta;
+use RankMath\Schema\DB;
 use WP_REST_Controller;
 use WP_REST_Request;
 use WP_REST_Server;
@@ -88,6 +89,7 @@ class Shared extends WP_REST_Controller {
 		$metabox = new Metabox();
 
 		$cmb->object_id    = $request->get_param( 'objectID' );
+		$cmb->object_type  = null !== $request->get_param( 'objectType' ) ? $request->get_param( 'objectType' ) : 'post';
 		$cmb->data_to_save = [
 			'has_redirect'                 => $request->get_param( 'hasRedirect' ),
 			'redirection_id'               => $request->get_param( 'redirectionID' ),
@@ -120,9 +122,10 @@ class Shared extends WP_REST_Controller {
 		$object_type = $request->get_param( 'objectType' );
 		$meta        = apply_filters( 'rank_math/filter_metadata', $request->get_param( 'meta' ), $request );
 		$content     = $request->get_param( 'content' );
-		do_action( 'rank_math/pre_update_metadata', $object_id, $content );
+		do_action( 'rank_math/pre_update_metadata', $object_id, $object_type, $content );
+
 		$new_slug = true;
-		if ( isset( $meta['permalink'] ) && ! empty( $meta['permalink'] ) ) {
+		if ( isset( $meta['permalink'] ) && ! empty( $meta['permalink'] ) && 'post' === $object_type ) {
 			$post     = get_post( $object_id );
 			$new_slug = wp_unique_post_slug( $meta['permalink'], $post->ID, $post->post_status, $post->post_type, $post->post_parent );
 			wp_update_post(
@@ -142,8 +145,8 @@ class Shared extends WP_REST_Controller {
 		foreach ( $meta as $meta_key => $meta_value ) {
 			// Delete schema by meta id.
 			if ( Str::starts_with( 'rank_math_delete_', $meta_key ) ) {
-				\delete_metadata_by_mid( 'post', absint( \str_replace( 'rank_math_delete_schema-', '', $meta_key ) ) );
-				update_post_meta( $object_id, 'rank_math_rich_snippet', 'off' );
+				\delete_metadata_by_mid( $object_type, absint( \str_replace( 'rank_math_delete_schema-', '', $meta_key ) ) );
+				update_metadata( $object_type, $object_id, 'rank_math_rich_snippet', 'off' );
 				continue;
 			}
 
@@ -155,7 +158,10 @@ class Shared extends WP_REST_Controller {
 			$this->update_meta( $object_type, $object_id, $meta_key, $sanitizer->sanitize( $meta_key, $meta_value ) );
 		}
 
-		return $new_slug;
+		return [
+			'slug'    => $new_slug,
+			'schemas' => DB::get_schemas( $object_id ),
+		];
 	}
 
 	/**
@@ -193,25 +199,27 @@ class Shared extends WP_REST_Controller {
 	 * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function update_schemas( WP_REST_Request $request ) {
-		$object_id = $request->get_param( 'objectID' );
-		$schemas   = $request->get_param( 'schemas' );
-		$new_ids   = [];
+		$object_id   = $request->get_param( 'objectID' );
+		$object_type = $request->get_param( 'objectType' );
+		$schemas     = $request->get_param( 'schemas' );
+		$new_ids     = [];
 		foreach ( $schemas as $meta_id => $schema ) {
-			$meta_key = 'rank_math_schema_' . $schema['@type'];
+			$type     = is_array( $schema['@type'] ) ? $schema['@type'][0] : $schema['@type'];
+			$meta_key = 'rank_math_schema_' . $type;
 			$schema   = wp_kses_post_deep( $schema );
 
 			// Add new.
 			if ( Str::starts_with( 'new-', $meta_id ) ) {
-				$new_ids[ $meta_id ] = add_post_meta( $object_id, $meta_key, $schema );
+				$new_ids[ $meta_id ] = add_metadata( $object_type, $object_id, $meta_key, $schema );
 				continue;
 			}
 
 			// Update old.
 			$db_id      = absint( str_replace( 'schema-', '', $meta_id ) );
-			$prev_value = update_metadata_by_mid( 'post', $db_id, $schema, $meta_key );
+			$prev_value = update_metadata_by_mid( $object_type, $db_id, $schema, $meta_key );
 		}
 
-		do_action( 'rank_math/schema/update', $object_id, $schemas );
+		do_action( 'rank_math/schema/update', $object_id, $schemas, $object_type );
 
 		return $new_ids;
 	}

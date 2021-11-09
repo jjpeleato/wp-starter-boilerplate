@@ -1,6 +1,6 @@
 <?php
 /**
- * The WooCommerce Module
+ * The product permalink watcher class.
  *
  * @since      0.9.0
  * @package    RankMath
@@ -14,6 +14,7 @@ use RankMath\Helper;
 use RankMath\Traits\Hooker;
 use RankMath\Helpers\Sitepress;
 use MyThemeShop\Helpers\Str;
+use MyThemeShop\Helpers\Param;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -46,7 +47,7 @@ class Permalink_Watcher {
 		$this->remove_category_base = Helper::get_settings( 'general.wc_remove_category_base' );
 		$this->remove_parent_slugs  = Helper::get_settings( 'general.wc_remove_category_parent_slugs' );
 
-		if ( $this->remove_product_base ) {
+		if ( $this->remove_product_base && ! (bool) Param::get( 'elementor-preview' ) ) {
 			$this->filter( 'post_type_link', 'post_type_link', 1, 2 );
 		}
 
@@ -116,7 +117,7 @@ class Permalink_Watcher {
 	}
 
 	/**
-	 * Add rewrite rules for wp.
+	 * Add rewrite rules.
 	 *
 	 * @param array $rules The compiled array of rewrite rules.
 	 *
@@ -232,7 +233,7 @@ class Permalink_Watcher {
 	}
 
 	/**
-	 * Can change link
+	 * Check if the link can be changed or not.
 	 *
 	 * @param string $check   Check string.
 	 * @param string $against Against this.

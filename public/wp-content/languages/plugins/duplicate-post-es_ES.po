@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - Yoast Duplicate Post - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-03-23 08:56:38+0000\n"
+"PO-Revision-Date: 2021-10-14 08:14:07+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -35,15 +35,15 @@ msgstr "La herramienta a elegir para clonar entradas y páginas, incluyendo la p
 #. scheduled date and time.
 #: src/ui/class-classic-editor.php:271
 msgid "This rewritten page %1$s is now scheduled to replace the original page. It will be published on %2$s."
-msgstr "Esta página reescrita %1$s ahora está programada para reemplazar a la página original Se publicará el %2$s."
+msgstr "Esta página reescrita %1$s ahora está programada para reemplazar a la página original. Se publicará el %2$s."
 
 #. translators: 1: The post title with a link to the frontend page, 2: The
 #. scheduled date and time.
 #: src/ui/class-classic-editor.php:258
 msgid "This rewritten post %1$s is now scheduled to replace the original post. It will be published on %2$s."
-msgstr "Esta entrada reescrita %1$s ahora está programada para reemplazar a la entrada original Se publicará el %2$s."
+msgstr "Esta entrada reescrita %1$s ahora está programada para reemplazar a la entrada original. Se publicará el %2$s."
 
-#: src/ui/class-classic-editor.php:232
+#: src/ui/class-classic-editor.php:232 js/dist/duplicate-post-strings-412.js:1
 msgid "Schedule republish"
 msgstr "Programar re-publicación"
 
@@ -83,9 +83,9 @@ msgstr "Mostrar estos enlaces"
 msgid "Warning: users will be able to copy, rewrite and republish all posts, even those of other users."
 msgstr "Advertencia: los usuarios podrán copiar, reescribir y re-publicar todas las entradas, incluso las de otros usuarios."
 
-#: src/admin/class-options.php:284 src/ui/class-bulk-actions.php:80
-#: src/ui/class-admin-bar.php:110 src/ui/class-admin-bar.php:129
-#: src/ui/class-classic-editor.php:164
+#: src/admin/class-options.php:284 src/ui/class-admin-bar.php:110
+#: src/ui/class-admin-bar.php:129 src/ui/class-bulk-actions.php:80
+#: src/ui/class-classic-editor.php:164 js/dist/duplicate-post-edit-412.js:1
 msgid "Rewrite & Republish"
 msgstr "Reescribir y re-publicar"
 
@@ -99,14 +99,14 @@ msgstr "Formato de entrada"
 
 #: src/watchers/class-original-post-watcher.php:54
 msgid "The original post has been edited in the meantime. If you click \"Republish\", this rewritten post will replace the original post."
-msgstr "Mientras tanto se ha editado la entrada original. Si  haces clic en «Re-publicar» esa entrada re-publicada reemplazará la entrada original."
+msgstr "Mientras tanto se ha editado la entrada original. Si  haces clic en «Re-publicar», esa entrada re-publicada reemplazará la entrada original."
 
 #. translators: %s: Number of posts copied.
 #: src/watchers/class-bulk-actions-watcher.php:84
 msgid "%s post duplicated. You can now start rewriting your post in the duplicate of the original post. Once you choose to republish it your changes will be merged back into the original post."
 msgid_plural "%s posts duplicated. You can now start rewriting your posts in the duplicates of the original posts. Once you choose to republish them your changes will be merged back into the original post."
-msgstr[0] "%s entrada publicada. Ahora puedes empezar a reescribir tu entrada en el duplicado de la entrada original. Una vez elijas re-publicarla tus cambios se fusionarán de nuevo a la entrada original."
-msgstr[1] "%s entradas publicadas. Ahora puedes empezar a reescribir tus entradas en los duplicados de las entradas originales. Una vez elijas re-publicarlas tus cambios se fusionarán de nuevo a las entradas originales."
+msgstr[0] "%s entrada publicada. Ahora puedes empezar a reescribir tu entrada en el duplicado de la entrada original. Una vez elijas re-publicarla, tus cambios se fusionarán de nuevo en la entrada original."
+msgstr[1] "%s entradas publicadas. Ahora puedes empezar a reescribir tus entradas en los duplicados de las entradas originales. Una vez elijas re-publicarlas, tus cambios se fusionarán de nuevo en las entradas originales."
 
 #: src/watchers/class-republished-post-watcher.php:69
 msgid "Your original post has been replaced with the rewritten post. You are now viewing the (rewritten) original post."
@@ -128,17 +128,18 @@ msgstr "Solo puedes hacer un duplicado de reescribir y re-publicar a la vez, y y
 
 #: src/watchers/class-link-actions-watcher.php:118
 msgid "You can now start rewriting your post in this duplicate of the original post. If you click \"Republish\", this rewritten post will replace the original post."
-msgstr "Ahora puedes empezar a reescribir tu entrada en este duplicado de la entrada original. Si haces clic en «Re-publicar» esta entrada reescrita reemplazará la entrada original."
+msgstr "Ahora puedes empezar a reescribir tu entrada en este duplicado de la entrada original. Si haces clic en «Re-publicar», esta entrada reescrita reemplazará la entrada original."
 
 #: src/watchers/class-link-actions-watcher.php:102
 msgid "You can now start rewriting your post in this duplicate of the original post. If you click \"Republish\", your changes will be merged into the original post and you’ll be redirected there."
-msgstr "Ahora puedes empezar a reescribir tu entrada en el duplicado de la entrada original. Si haces clic en «Re-publicar» tus cambios se fusionarán de nuevo a la entrada original y serás redirigido ahí."
+msgstr "Ahora puedes empezar a reescribir tu entrada en este duplicado de la entrada original. Si haces clic en «Re-publicar», tus cambios se fusionarán en la entrada original y serás redirigido allí."
 
 #: src/class-post-republisher.php:334
 msgid "An error occurred while republishing the post."
 msgstr "Se ha producido un error al re-publicar la entrada."
 
 #: src/class-post-republisher.php:87 src/ui/class-classic-editor.php:210
+#: js/dist/duplicate-post-strings-412.js:1
 msgid "Republish"
 msgstr "Re-publicar"
 
@@ -355,8 +356,9 @@ msgid "Featured Image"
 msgstr "Imagen destacada"
 
 #. translators: %s: Number of posts copied.
-#: src/watchers/class-link-actions-watcher.php:78
+#. translators: %s: Number of posts copied.
 #: src/watchers/class-bulk-actions-watcher.php:60
+#: src/watchers/class-link-actions-watcher.php:78
 msgid "%s item copied."
 msgid_plural "%s items copied."
 msgstr[0] "%s elemento copiado."
@@ -410,13 +412,13 @@ msgstr "Adjuntos"
 msgid "Password"
 msgstr "Contraseña"
 
-#: src/handlers/class-check-changes-handler.php:128
 #: src/admin/class-options.php:124
+#: src/handlers/class-check-changes-handler.php:128
 msgid "Content"
 msgstr "Contenido"
 
-#: src/handlers/class-check-changes-handler.php:129
 #: src/admin/class-options.php:117
+#: src/handlers/class-check-changes-handler.php:129
 msgid "Excerpt"
 msgstr "Extracto"
 
@@ -432,8 +434,8 @@ msgstr "Estado"
 msgid "Date"
 msgstr "Fecha"
 
-#: src/handlers/class-check-changes-handler.php:127
 #: src/admin/class-options.php:89
+#: src/handlers/class-check-changes-handler.php:127
 msgid "Title"
 msgstr "Título"
 
@@ -538,8 +540,9 @@ msgstr "¡No se ha proporcionado ninguna entrada para duplicar!"
 msgid "New Draft"
 msgstr "Nuevo borrador"
 
-#: src/ui/class-admin-bar.php:102 src/ui/class-admin-bar.php:119
-#: src/ui/class-classic-editor.php:135 duplicate-post-common.php:77
+#: duplicate-post-common.php:77 src/ui/class-admin-bar.php:102
+#: src/ui/class-admin-bar.php:119 src/ui/class-classic-editor.php:135
+#: js/dist/duplicate-post-edit-412.js:1
 msgid "Copy to a new draft"
 msgstr "Copiar en un borrador nuevo"
 

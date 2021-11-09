@@ -3,7 +3,7 @@
  * Filters Count
  *
  * @author  YITH
- * @package YITH WooCommerce Ajax Product Filter
+ * @package YITH\AjaxProductFilter\Templates\Filters
  * @version 4.0.0
  */
 

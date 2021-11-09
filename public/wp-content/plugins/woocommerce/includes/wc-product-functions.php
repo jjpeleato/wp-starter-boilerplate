@@ -9,6 +9,8 @@
  */
 
 use Automattic\Jetpack\Constants;
+use Automattic\WooCommerce\Proxies\LegacyProxy;
+use Automattic\WooCommerce\Utilities\ArrayUtil;
 use Automattic\WooCommerce\Utilities\NumberUtil;
 
 defined( 'ABSPATH' ) || exit;
@@ -492,6 +494,19 @@ add_action( 'woocommerce_scheduled_sales', 'wc_scheduled_sales' );
  * @return array
  */
 function wc_get_attachment_image_attributes( $attr ) {
+	/*
+	 * If the user can manage woocommerce, allow them to
+	 * see the image content.
+	 */
+	if ( current_user_can( 'manage_woocommerce' ) ) {
+		return $attr;
+	}
+
+	/*
+	 * If the user does not have the right capabilities,
+	 * filter out the image source and replace with placeholder
+	 * image.
+	 */
 	if ( isset( $attr['src'] ) && strstr( $attr['src'], 'woocommerce_uploads/' ) ) {
 		$attr['src'] = wc_placeholder_img_src();
 
@@ -511,7 +526,19 @@ add_filter( 'wp_get_attachment_image_attributes', 'wc_get_attachment_image_attri
  * @return array
  */
 function wc_prepare_attachment_for_js( $response ) {
+	/*
+	 * If the user can manage woocommerce, allow them to
+	 * see the image content.
+	 */
+	if ( current_user_can( 'manage_woocommerce' ) ) {
+		return $response;
+	}
 
+	/*
+	 * If the user does not have the right capabilities,
+	 * filter out the image source and replace with placeholder
+	 * image.
+	 */
 	if ( isset( $response['url'] ) && strstr( $response['url'], 'woocommerce_uploads/' ) ) {
 		$response['full']['url'] = wc_placeholder_img_src();
 		if ( isset( $response['sizes'] ) ) {
@@ -1056,10 +1083,16 @@ function wc_get_price_excluding_tax( $product, $args = array() ) {
 	$line_price = $price * $qty;
 
 	if ( $product->is_taxable() && wc_prices_include_tax() ) {
-		$tax_rates      = WC_Tax::get_rates( $product->get_tax_class() );
-		$base_tax_rates = WC_Tax::get_base_tax_rates( $product->get_tax_class( 'unfiltered' ) );
-		$remove_taxes   = apply_filters( 'woocommerce_adjust_non_base_location_prices', true ) ? WC_Tax::calc_tax( $line_price, $base_tax_rates, true ) : WC_Tax::calc_tax( $line_price, $tax_rates, true );
-		$return_price   = $line_price - array_sum( $remove_taxes ); // Unrounded since we're dealing with tax inclusive prices. Matches logic in cart-totals class. @see adjust_non_base_location_price.
+		$order       = ArrayUtil::get_value_or_default( $args, 'order' );
+		$customer_id = $order ? $order->get_customer_id() : 0;
+		if ( apply_filters( 'woocommerce_adjust_non_base_location_prices', true ) || ! $customer_id ) {
+			$tax_rates = WC_Tax::get_base_tax_rates( $product->get_tax_class( 'unfiltered' ) );
+		} else {
+			$customer  = wc_get_container()->get( LegacyProxy::class )->get_instance_of( WC_Customer::class, $customer_id );
+			$tax_rates = WC_Tax::get_rates( $product->get_tax_class(), $customer );
+		}
+		$remove_taxes = WC_Tax::calc_tax( $line_price, $tax_rates, true );
+		$return_price = $line_price - array_sum( $remove_taxes ); // Unrounded since we're dealing with tax inclusive prices. Matches logic in cart-totals class. @see adjust_non_base_location_price.
 	} else {
 		$return_price = $line_price;
 	}

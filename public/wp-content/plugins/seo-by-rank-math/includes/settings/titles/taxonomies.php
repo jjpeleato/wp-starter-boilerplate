@@ -53,7 +53,7 @@ $cmb->add_field(
 		'classes'    => 'rank-math-supports-variables rank-math-description',
 		'attributes' => [
 			'class'                  => 'cmb2-textarea-small wp-exclude-emoji',
-			'data-gramm_editor'      => 'false',
+			'data-gramm'             => 'false',
 			'rows'                   => 2,
 			'data-exclude-variables' => 'seo_title,seo_description',
 		],
@@ -110,8 +110,8 @@ $cmb->add_field(
 	[
 		'id'      => 'tax_' . $taxonomy . '_add_meta_box',
 		'type'    => 'toggle',
-		'name'    => esc_html__( 'Add SEO Meta Box', 'rank-math' ),
-		'desc'    => esc_html__( 'Add the SEO Meta Box for the term editor screen to customize SEO options for individual terms in this taxonomy.', 'rank-math' ),
+		'name'    => esc_html__( 'Add SEO Controls', 'rank-math' ),
+		'desc'    => esc_html__( 'Add the SEO Controls for the term editor screen to customize SEO options for individual terms in this taxonomy.', 'rank-math' ),
 		'default' => $metabox_default,
 		'classes' => 'rank-math-advanced-option',
 	]

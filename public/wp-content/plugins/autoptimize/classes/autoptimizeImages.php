@@ -114,7 +114,9 @@ class autoptimizeImages
             if ( $this->should_lazyload() ) {
                 add_filter(
                     'wp_lazy_loading_enabled',
-                    '__return_false'
+                    array( $this, 'should_disable_core_lazyload' ),
+                    10,
+                    3
                 );
                 add_filter(
                     'autoptimize_html_after_minify',
@@ -166,7 +168,9 @@ class autoptimizeImages
         if ( $this->should_lazyload() ) {
             add_filter(
                 'wp_lazy_loading_enabled',
-                '__return_false'
+                array( $this, 'should_disable_core_lazyload' ),
+                10,
+                3
             );
             add_action(
                 'wp_footer',
@@ -175,6 +179,18 @@ class autoptimizeImages
                 0
             );
         }
+    }
+
+    /**
+     * Disables core's native lazyload for images, not for iframes.
+     *
+     * @return bool
+     */
+    public function should_disable_core_lazyload( $flag = true, $tag = '', $context = '' ) {
+        if ( 'img' === $tag ) {
+            return false;
+        }
+        return $flag;
     }
 
     /**
@@ -211,7 +227,7 @@ class autoptimizeImages
         static $imgopt_host = null;
 
         if ( null === $imgopt_host ) {
-            $imgopt_host  = 'https://cdn.shortpixel.ai/';
+            $imgopt_host  = 'https://sp-ao.shortpixel.ai/';
             $avail_imgopt = $this->options['availabilities']['extra_imgopt'];
             if ( ! empty( $avail_imgopt ) && array_key_exists( 'hosts', $avail_imgopt ) && is_array( $avail_imgopt['hosts'] ) ) {
                 $imgopt_host = array_rand( array_flip( $avail_imgopt['hosts'] ) );
@@ -375,7 +391,7 @@ class autoptimizeImages
     {
         $in = $this->normalize_img_url( $in );
 
-        if ( $this->can_optimize_image( $in ) ) {
+        if ( $this->can_optimize_image( $in ) && false === strpos( $in, $this->get_imgopt_host() ) ) {
             return $this->build_imgopt_url( $in, '', '' );
         } else {
             return $in;
@@ -390,7 +406,13 @@ class autoptimizeImages
             $imgopt_host     = $this->get_imgopt_host();
             $quality         = $this->get_img_quality_string();
             $ret_val         = apply_filters( 'autoptimize_filter_imgopt_wait', 'ret_img' ); // values: ret_wait, ret_img, ret_json, ret_blank.
-            $imgopt_base_url = $imgopt_host . 'client/' . $quality . ',' . $ret_val;
+            if ( $this->should_ngimg() ) {
+                $sp_to_string = 'to_auto';
+            } else {
+                $sp_to_string = 'to_webp';
+            }
+            $sp_to_string    = apply_filters( 'autoptimize_filter_imgopt_format', $sp_to_string ); // values: empty (= jpeg), to_webp (smart; webp or fallback), to_avif (avif or fallback) or to_auto (smart avif, webp or fallback).
+            $imgopt_base_url = $imgopt_host . 'client/' . $sp_to_string . ',' . $quality . ',' . $ret_val;
             $imgopt_base_url = apply_filters( 'autoptimize_filter_imgopt_base_url', $imgopt_base_url );
         }
 
@@ -724,6 +746,12 @@ class autoptimizeImages
         } else {
             $lazyload_return = false;
         }
+
+        // If page/ post check post_meta to see if lazyload is off for page.
+        if ( false === autoptimizeConfig::get_post_meta_ao_settings( 'ao_post_lazyload' ) ) {
+              $lazyload_return = false;
+        }
+
         $lazyload_return = apply_filters( 'autoptimize_filter_imgopt_should_lazyload', $lazyload_return, $context );
 
         return $lazyload_return;
@@ -856,21 +884,6 @@ class autoptimizeImages
         echo apply_filters( 'autoptimize_filter_imgopt_lazyload_cssoutput', '<noscript><style>.lazyload{display:none;}</style></noscript>' );
         echo apply_filters( 'autoptimize_filter_imgopt_lazyload_jsconfig', '<script' . $type_js . $noptimize_flag . '>window.lazySizesConfig=window.lazySizesConfig||{};window.lazySizesConfig.loadMode=1;</script>' );
         echo apply_filters( 'autoptimize_filter_imgopt_lazyload_js', '<script async' . $type_js . $noptimize_flag . ' src=\'' . $lazysizes_js . '\'></script>' );
-
-        // And add webp detection and loading JS.
-        if ( $this->should_ngimg() ) {
-            // Add AVIF code, can be disabled for now to only do webp.
-            if ( apply_filters( 'autoptimize_filter_imgopt_do_avif', true ) ) {
-                $_ngimg_detect = 'function c_img(a,b){src="avif"==b?"data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAADybWV0YQAAAAAAAAAoaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAGxpYmF2aWYAAAAADnBpdG0AAAAAAAEAAAAeaWxvYwAAAABEAAABAAEAAAABAAABGgAAABoAAAAoaWluZgAAAAAAAQAAABppbmZlAgAAAAABAABhdjAxQ29sb3IAAAAAamlwcnAAAABLaXBjbwAAABRpc3BlAAAAAAAAAAEAAAABAAAAEHBpeGkAAAAAAwgICAAAAAxhdjFDgQ0MAAAAABNjb2xybmNseAACAAIAAYAAAAAXaXBtYQAAAAAAAAABAAEEAQKDBAAAACJtZGF0EgAKCBgADsgQEAwgMgwf8AAAWAAAAACvJ+o=":"data:image/webp;base64,UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA==";var c=new Image;c.onload=function(){var d=0<c.width&&0<c.height;a(d,b)},c.onerror=function(){a(!1,b)},c.src=src}function s_img(a,b){w=window,"avif"==b?!1==a?c_img(s_img,"webp"):w.ngImg="avif":!1==a?w.ngImg=!1:w.ngImg="webp"}c_img(s_img,"avif");';
-                $_ngimg_load   = 'document.addEventListener("lazybeforeunveil",function({target:a}){window.ngImg&&["data-src","data-srcset"].forEach(function(b){attr=a.getAttribute(b),null!==attr&&-1==attr.indexOf("/client/to_")&&a.setAttribute(b,attr.replace(/\/client\//,"/client/to_"+window.ngImg+","))})});';
-            } else {
-                $_ngimg_detect = "function c_webp(A){var n=new Image;n.onload=function(){var e=0<n.width&&0<n.height;A(e)},n.onerror=function(){A(!1)},n.src='data:image/webp;base64,UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA=='}function s_webp(e){window.supportsWebP=e}c_webp(s_webp);";
-                $_ngimg_load   = "document.addEventListener('lazybeforeunveil',function({target:b}){window.supportsWebP&&['data-src','data-srcset'].forEach(function(c){attr=b.getAttribute(c),null!==attr&&-1==attr.indexOf('/client/to_webp')&&b.setAttribute(c,attr.replace(/\/client\//,'/client/to_webp,'))})});";
-            }
-            // Keeping autoptimize_filter_imgopt_webp_js filter for now, but it is deprecated as not only for webp any more.
-            $_ngimg_output = apply_filters( 'autoptimize_filter_imgopt_webp_js', '<script' . $type_js . $noptimize_flag . '>' . $_ngimg_detect . $_ngimg_load . '</script>' );
-            echo apply_filters( 'autoptimize_filter_imgopt_ngimg_js', $_ngimg_output );
-        }
     }
 
     public function get_cdn_url() {
@@ -929,8 +942,8 @@ class autoptimizeImages
         static $ngimg_return = null;
 
         if ( is_null( $ngimg_return ) ) {
-            // webp only works if imgopt and lazyload are also active.
-            if ( ! empty( $this->options['autoptimize_imgopt_checkbox_field_4'] ) && ! empty( $this->options['autoptimize_imgopt_checkbox_field_3'] ) && $this->imgopt_active() ) {
+            // nextgen img only works if imgopt is active.
+            if ( ! empty( $this->options['autoptimize_imgopt_checkbox_field_4'] ) && $this->imgopt_active() ) {
                 $ngimg_return = true;
             } else {
                 $ngimg_return = false;
@@ -993,8 +1006,10 @@ class autoptimizeImages
             // get placeholder & lazyload class strings.
             $placeholder    = apply_filters( 'autoptimize_filter_imgopt_lazyload_placeholder', $this->get_default_lazyload_placeholder( 500, 300 ) );
             $lazyload_class = apply_filters( 'autoptimize_filter_imgopt_lazyload_class', 'lazyload' );
+            // remove quotes from url() to be able to replace in next step.
+            $out = str_replace( array( "url('" . $matches[2] . "')", 'url("' . $matches[2] . '")' ), 'url(' . $matches[2] . ')', $matches[0] );
             // replace background-image URL with SVG placeholder.
-            $out = str_replace( 'url(' . $matches[2], 'url(' . $placeholder, $matches[0] );
+            $out = str_replace( 'url(' . $matches[2], 'url(' . $placeholder, $out );
             // sanitize bgimg src for quote sillyness.
             $bgimg_src = $this->fix_silly_bgimg_quotes( $matches[2] );
             // add data-bg attribute with real background-image URL for lazyload to pick up.
@@ -1176,9 +1191,9 @@ class autoptimizeImages
                 </td>
             </tr>
             <tr id='autoptimize_imgopt_ngimg' <?php if ( ! array_key_exists( 'autoptimize_imgopt_checkbox_field_1', $options ) || ( isset( $options['autoptimize_imgopt_checkbox_field_1'] ) && '1' !== $options['autoptimize_imgopt_checkbox_field_1'] ) ) { echo 'class="hidden"'; } ?>>
-                <th scope="row"><?php _e( 'Load WebP or AVIF in supported browsers?', 'autoptimize' ); ?></th>
+                <th scope="row"><?php _e( 'Load AVIF in supported browsers?', 'autoptimize' ); ?></th>
                 <td>
-                    <label><input type='checkbox' id='autoptimize_imgopt_ngimg_checkbox' name='autoptimize_imgopt_settings[autoptimize_imgopt_checkbox_field_4]' <?php if ( ! empty( $options['autoptimize_imgopt_checkbox_field_4'] ) && '1' === $options['autoptimize_imgopt_checkbox_field_3'] ) { echo 'checked="checked"'; } ?> value='1'><?php _e( 'Automatically serve "next-gen" WebP or AVIF image formats to any browser that supports it (requires lazy load to be active).', 'autoptimize' ); ?></label>
+                    <label><input type='checkbox' id='autoptimize_imgopt_ngimg_checkbox' name='autoptimize_imgopt_settings[autoptimize_imgopt_checkbox_field_4]' <?php if ( ! empty( $options['autoptimize_imgopt_checkbox_field_4'] ) && '1' === $options['autoptimize_imgopt_checkbox_field_3'] ) { echo 'checked="checked"'; } ?> value='1'><?php _e( 'Automatically serve AVIF image format to any browser that supports it.', 'autoptimize' ); ?></label>
                 </td>
             </tr>
             <tr>
@@ -1215,18 +1230,11 @@ class autoptimizeImages
                     jQuery("#autoptimize_imgopt_optimization_exclusions").hide("slow");
                 }
             });
-            jQuery("#autoptimize_imgopt_ngimg_checkbox").change(function() {
-                if (this.checked) {
-                    jQuery("#autoptimize_imgopt_lazyload_checkbox")[0].checked = true;
-                    jQuery(".autoptimize_lazyload_child").show("slow");
-                }
-            });
             jQuery("#autoptimize_imgopt_lazyload_checkbox").change(function() {
                 if (this.checked) {
                     jQuery(".autoptimize_lazyload_child").show("slow");
                 } else {
                     jQuery(".autoptimize_lazyload_child").hide("slow");
-                    jQuery("#autoptimize_imgopt_ngimg_checkbox")[0].checked = false;
                 }
             });
         });

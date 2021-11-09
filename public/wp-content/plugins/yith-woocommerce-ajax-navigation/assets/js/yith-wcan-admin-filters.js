@@ -13,29 +13,51 @@ function YITH_WCAN_Filters( $ ) {
 		taxonomy: {
 			type: 'tax',
 		},
-		terms: {
+		use_all_terms: {
 			type: 'tax',
 		},
-		filter_design: {
+		term_ids: {
 			type: 'tax',
+			use_all_terms: '!:checked',
+		},
+		filter_design: {
+			type: [ 'tax', 'review', 'price_range' ],
+		},
+		label_position: {
+			filter_design: [ 'label', 'color' ],
 		},
 		column_number: {
 			filter_design: [ 'label', 'color' ],
+			label_position: [ 'below', 'hide' ],
+		},
+		customize_terms: {
+			type: 'tax',
+			use_all_terms: '!:checked',
 		},
 		terms_options: {
-			terms: ( v ) => !! v,
+			term_ids: ( v ) => !! v,
+			customize_terms: ':checked',
 		},
 		show_search: {
+			type: 'tax',
 			filter_design: 'select',
 		},
 		price_ranges: {
 			type: 'price_range',
 		},
+		price_slider_adaptive_limits: {
+			type: 'price_slider',
+		},
+		price_slider_design: {
+			type: 'price_slider',
+		},
 		price_slider_min: {
 			type: 'price_slider',
+			price_slider_adaptive_limits: '!:checked',
 		},
 		price_slider_max: {
 			type: 'price_slider',
+			price_slider_adaptive_limits: '!:checked',
 		},
 		price_slider_step: {
 			type: 'price_slider',
@@ -47,6 +69,9 @@ function YITH_WCAN_Filters( $ ) {
 			type: 'stock_sale',
 		},
 		show_sale_filter: {
+			type: 'stock_sale',
+		},
+		show_featured_filter: {
 			type: 'stock_sale',
 		},
 		toggle_style: {
@@ -66,10 +91,11 @@ function YITH_WCAN_Filters( $ ) {
 			filter_design: [ 'checkbox', 'radio', 'text' ],
 		},
 		multiple: {
-			type: 'tax',
-			filter_design: '-radio',
+			type: [ 'tax', 'review', 'price_range' ],
+			filter_design: '!radio',
 		},
 		relation: {
+			type: 'tax',
 			multiple: ':checked',
 		},
 		adoptive: {
@@ -91,6 +117,8 @@ function YITH_WCAN_Filters( $ ) {
 
 	self.$filters = self.$filtersContainer.find( '.yith-toggle-row' );
 
+	self.$layout = $( '#preset_layout' );
+
 	self.$page = $( '#paged' );
 
 	self.$submit = $( '#submit' );
@@ -101,14 +129,13 @@ function YITH_WCAN_Filters( $ ) {
 		self.initFilters();
 		self.initAddFilter();
 		self.initLoadMoreFilters();
+		self.initLayout();
 		self.initSubmit();
 	};
 
-	// init filters
+	// general init
 
 	self.initAddFilter = function () {
-		self.updateRowIndex();
-
 		self.$addNewFilterButtons.on( 'click', function ( ev ) {
 			ev.preventDefault();
 
@@ -125,7 +152,27 @@ function YITH_WCAN_Filters( $ ) {
 	};
 
 	self.initSubmit = function () {
-		self.$submit.on( 'click', () => self.block( self.$form ) );
+		self.$submit.on( 'click', () => {
+			if ( ! self.$form.get( 0 ).reportValidity() ) {
+				return false;
+			}
+
+			if ( ! self.validateFilters() ) {
+				return false;
+			}
+
+			self.block( self.$form );
+		} );
+	};
+
+	self.initLayout = function () {
+		self.$layout
+			.on( 'change', 'input', () => {
+				self.afterLayoutChange();
+			} )
+			.find( 'input' )
+			.first()
+			.change();
 	};
 
 	self.initFilters = function () {
@@ -155,8 +202,8 @@ function YITH_WCAN_Filters( $ ) {
 
 		self.initFilterTitle( $filter );
 		self.initFilterToggle( $filter );
-		self.initFilterFields( $filter );
 		self.initFilterFieldsDependencies( $filter );
+		self.initFilterFields( $filter );
 		self.initFilterSave( $filter );
 		self.initFilterDelete( $filter );
 		self.initFilterClone( $filter );
@@ -168,7 +215,13 @@ function YITH_WCAN_Filters( $ ) {
 
 	self.initFilterFields = function ( $filter ) {
 		self.initFilterTermSearch( $filter );
+		self.initFilterCustomizeTerms( $filter );
+		self.initTaxonomy( $filter );
 		self.initFilterType( $filter );
+		self.initFilterDesign( $filter );
+		self.initFilterCurrencyFields( $filter );
+		self.clearFilterErrors( $filter );
+		self.initInvalidFields( $filter );
 	};
 
 	self.initFilterFieldsDependencies = function ( $filter ) {
@@ -230,11 +283,6 @@ function YITH_WCAN_Filters( $ ) {
 		// init terms select
 		$termSearch.selectWoo( select2_args );
 
-		// clear terms select when taxonomy is changed
-		$taxonomySelect.on( 'change', () => {
-			$termSearch.find( 'option' ).remove().end().change();
-		} );
-
 		// on term changes redraw Customize terms section
 		$termSearch.on( 'change', () => {
 			self.updateTerms( $filter );
@@ -254,7 +302,11 @@ function YITH_WCAN_Filters( $ ) {
 
 				$.get( ajaxurl, getAjaxParams( { term: '', all: 1 } ) ).then(
 					( data ) => {
-						const selected = $termSearch.val();
+						let selected = $termSearch.val();
+
+						if ( ! selected ) {
+							selected = [];
+						}
 
 						$termSearch
 							.find( 'option' )
@@ -293,12 +345,99 @@ function YITH_WCAN_Filters( $ ) {
 			} );
 	};
 
+	self.initFilterCustomizeTerms = function ( $filter ) {
+		const $customizeTerms = $filter
+				.find( '.customize-terms' )
+				.find( 'input' ),
+			$orderBy = $filter.find( '.order-by' );
+
+		$customizeTerms
+			.on( 'change', () => {
+				$orderBy
+					.find( '[value="include"]' )
+					.prop( 'disabled', ! $customizeTerms.is( ':checked' ) );
+				$orderBy
+					.removeClass( 'enhanced' )
+					.trigger( 'wc-enhanced-select-init' );
+				! $orderBy.val() && $orderBy.val( 'name' );
+
+				self.updateTerms( $filter );
+			} )
+			.change();
+	};
+
+	self.initTaxonomy = function ( $filter ) {
+		const $taxonomySelect = $filter.find( '.taxonomy' ).first(),
+			$filterDesign = $filter.find( '.filter-design' ).first();
+
+		$taxonomySelect.on( 'change', () => {
+			self.afterTaxonomyChange( $filter );
+		} );
+
+		$filterDesign.on( 'change', () => {
+			self.customizeTermsNotice( $filter );
+		} );
+	};
+
 	self.initFilterType = function ( $filter ) {
-		const $filterType = $filter.find( '[name*="filter_design"]' );
+		const $filterType = $filter.find( '.filter-type' ),
+			$filterDesign = $filter.find( '.filter-design' );
 
 		$filterType
 			.on( 'change', () => {
-				self.updateTermFields( $filter, $filterType.val() );
+				const filterType = $filterType.val();
+
+				switch ( filterType ) {
+					case 'review':
+					case 'price_range':
+						$filterDesign
+							.find( '[value="color"]' )
+							.remove()
+							.end()
+							.find( '[value="label"]' )
+							.remove();
+						break;
+					default:
+						for ( let design in yith_wcan_admin.supported_designs ) {
+							if (
+								! yith_wcan_admin.supported_designs.hasOwnProperty(
+									design
+								)
+							) {
+								continue;
+							}
+
+							if (
+								$filterDesign.find( `[value="${ design }"]` )
+									.length
+							) {
+								continue;
+							}
+
+							$filterDesign.append(
+								$( '<option/>', {
+									value: design,
+									text:
+										yith_wcan_admin.supported_designs[
+											design
+										],
+								} )
+							);
+						}
+						break;
+				}
+
+				$filterDesign.change();
+			} )
+			.change();
+	};
+
+	self.initFilterDesign = function ( $filter ) {
+		const $filterType = $filter.find( '.filter-design' );
+
+		$filterType
+			.on( 'change', () => {
+				self.updateTermFields( $filter, self.getTermsType( $filter ) );
 			} )
 			.change();
 	};
@@ -376,6 +515,38 @@ function YITH_WCAN_Filters( $ ) {
 		} );
 	};
 
+	self.initFilterCurrencyFields = function ( $filter ) {
+		$filter.find( '[data-currency]' ).each( function () {
+			const $field = $( this ),
+				$currencySpan = $( '<span/>', {
+					text: $field.data( 'currency' ),
+					class: 'currency',
+				} );
+
+			$field.after( $currencySpan );
+		} );
+	};
+
+	self.initInvalidFields = function ( $filter ) {
+		/**
+		 * Invalid event does not bubble, so we need to handle it for each filter added
+		 * https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/invalid_event
+		 */
+		$filter.find( ':input' ).on( 'invalid', ( ev ) => {
+			const target = ev.target,
+				$target = $( target );
+
+			ev.preventDefault();
+
+			self.goToFilter( $filter, $target ).done( () => {
+				self.addInputValidationMessage(
+					$target,
+					target.validationMessage
+				);
+			} );
+		} );
+	};
+
 	self.afterAddFilter = function ( $filter ) {
 		self.closeAllFilters();
 		self.openFilter( $filter );
@@ -395,6 +566,111 @@ function YITH_WCAN_Filters( $ ) {
 		if ( ! self.$filters.length ) {
 			self.$mainAddNewFilterButton.hide();
 		}
+	};
+
+	self.afterTaxonomyChange = function ( $filter ) {
+		const $termSearch = $filter.find( '.term-search' ).first();
+
+		// clear terms select when taxonomy is changed
+		$termSearch.find( 'option' ).remove().end().change();
+
+		// handle changes to Customize Terms description
+		self.customizeTermsNotice( $filter );
+	};
+
+	self.afterLayoutChange = function () {
+		const layout = self.$layout.find( ':checked' ).val();
+
+		self.$filters.each( ( i, v ) => {
+			const $filter = $( v ),
+				$showToggle = $filter.find( '.show-toggle' ),
+				$showToggleRow = $showToggle.closest(
+					'.yith-toggle-content-row'
+				);
+
+			if ( 'horizontal' === layout ) {
+				$showToggle
+					.find( ':input' )
+					.prop( 'checked', false )
+					.removeClass( 'onoffchecked' )
+					.change();
+				$showToggleRow.hide();
+
+				$filter.find( '.term-tooltip' ).hide();
+			} else {
+				$showToggleRow.show();
+
+				$filter.find( '.term-tooltip' ).show();
+			}
+		} );
+	};
+
+	self.customizeTermsNotice = function ( $filter ) {
+		const $taxonomySelect = $filter.find( '.taxonomy' ).first(),
+			$filterDesign = $filter.find( '.filter-design' ).first(),
+			$customizeTermsWrapper = $filter
+				.find( '.customize-terms' )
+				.parent(),
+			$customizeTermsRow = $customizeTermsWrapper.closest(
+				'.yith-toggle-content-row'
+			),
+			$customizeTermsDescription = $customizeTermsWrapper.next(
+				'.description'
+			),
+			$customizeTerms = $customizeTermsWrapper.find( 'input' ),
+			$wcclNotice = $customizeTermsDescription.find( '.wccl-notice' ),
+			$imagesNotice = $customizeTermsDescription.find( '.images-notice' ),
+			taxonomies = $taxonomySelect.data( 'taxonomies' ),
+			taxonomy = $taxonomySelect.val(),
+			filterDesign = $filterDesign.val();
+
+		// show Colors & Labels notice
+		if (
+			! yith_wcan_admin.yith_wccl_enabled ||
+			! taxonomies[ taxonomy ]?.is_attribute
+		) {
+			$wcclNotice.hide();
+		} else {
+			$wcclNotice.show();
+		}
+
+		// show images notice
+		if (
+			! taxonomies[ taxonomy ]?.supports_images ||
+			'label' !== filterDesign
+		) {
+			$imagesNotice.hide();
+		} else {
+			$imagesNotice.show();
+		}
+
+		// hide option if not needed
+		if (
+			'color' === filterDesign &&
+			( ! yith_wcan_admin.yith_wccl_enabled ||
+				! taxonomies[ taxonomy ]?.is_attribute )
+		) {
+			$customizeTerms.prop( 'checked', true );
+			$customizeTermsRow.addClass( 'disabled' );
+		} else {
+			$customizeTermsRow.removeClass( 'disabled' );
+		}
+	};
+
+	self.clearFilterErrors = function ( $filter ) {
+		$filter.on( 'change keydown', ':input', function () {
+			const $input = $( this );
+
+			if ( $input.hasClass( 'validation-error' ) ) {
+				// remove any validation class
+				$input
+					.removeClass( 'validation-error' )
+					.removeClass( 'required-field-empty' );
+
+				// remove any error message
+				$input.next( '.validation-message' ).remove();
+			}
+		} );
 	};
 
 	self._findFilterField = function (
@@ -468,7 +744,9 @@ function YITH_WCAN_Filters( $ ) {
 				result = condition( fieldValue );
 			} else if ( 0 === condition.indexOf( ':' ) ) {
 				result = $field.is( condition );
-			} else if ( 0 === condition.indexOf( '-' ) ) {
+			} else if ( 0 === condition.indexOf( '!:' ) ) {
+				result = ! $field.is( condition.toString().substring( 1 ) );
+			} else if ( 0 === condition.indexOf( '!' ) ) {
 				result = condition.toString().substring( 1 ) !== fieldValue;
 			} else {
 				result = condition.toString() === fieldValue;
@@ -489,11 +767,11 @@ function YITH_WCAN_Filters( $ ) {
 
 	self._confirmAddAllTerms = function ( $select ) {
 		let v = $select.val(),
-			counts = $select.data( 'counts' ),
+			details = $select.data( 'taxonomies' ),
 			message = yith_wcan_admin.messages.confirm_add_all_terms;
 
-		if ( counts[ v ] && counts[ v ] > 1 ) {
-			message = message.replace( '%s', counts[ v ] );
+		if ( details[ v ]?.terms_count && details[ v ]?.terms_count > 1 ) {
+			message = message.replace( '%s', details[ v ]?.terms_count );
 			return confirm( message );
 		}
 		return true;
@@ -535,9 +813,13 @@ function YITH_WCAN_Filters( $ ) {
 	self.populateFilter = function ( $filter, filterData ) {
 		for ( const i in filterData ) {
 			const row_id = self.getRowIndex( $filter ),
-				nameId = `filters_${ row_id }_${ i }`,
-				$input = $filter.find( `#${ nameId }` ),
 				value = filterData[ i ];
+
+			let nameId =
+					'terms' === i
+						? `filters_${ row_id }_term_ids`
+						: `filters_${ row_id }_${ i }`,
+				$input = $filter.find( `#${ nameId }` );
 
 			if ( ! $input.length && 'price_ranges' !== i ) {
 				continue;
@@ -545,6 +827,7 @@ function YITH_WCAN_Filters( $ ) {
 
 			if ( 'terms' === i ) {
 				const terms = value;
+
 				if ( 'object' !== typeof terms ) {
 					continue;
 				}
@@ -567,12 +850,12 @@ function YITH_WCAN_Filters( $ ) {
 				$input.change();
 
 				// update term boxes
-				self.updateTerms( $filter );
+				self.updateTerms( $filter, true );
 
 				// populate options for each filter
 				for ( const j in terms ) {
 					for ( const k in terms[ j ] ) {
-						const termId = `${ nameId }_${ j }_${ k }`,
+						const termId = `filters_${ row_id }_terms_${ j }_${ k }`,
 							$termInput = $filter.find( `#${ termId }` );
 
 						if ( ! $termInput.length ) {
@@ -699,16 +982,21 @@ function YITH_WCAN_Filters( $ ) {
 	};
 
 	self.saveFilter = function ( $filter ) {
+		if ( ! self.validateFilter( $filter ) ) {
+			return false;
+		}
+
 		self.ajaxSaveFilter( $filter ).done( ( data ) => {
 			self.maybeSetPresetId( data.id );
 			self.closeFilter( $filter );
 		} );
 	};
 
-	self.openFilter = function ( $filter ) {
-		// TODO: system doesn't know at this point correct filter offset; we will only know after animations
-		// $('html, body').animate( { scrollTop: $filter.offset().top - 100 }, 400 );
+	self.isFilterOpen = function ( $filter ) {
+		return $filter.hasClass( 'yith-toggle-row-opened' );
+	};
 
+	self.openFilter = function ( $filter ) {
 		// fix title
 		$filter
 			.find( '.yith-toggle-title' )
@@ -721,6 +1009,10 @@ function YITH_WCAN_Filters( $ ) {
 			.find( '.yith-toggle-content' )
 			.slideDown()
 			.promise();
+	};
+
+	self.isFilterClosed = function ( $filter ) {
+		return ! self.isFilterOpen( $filter );
 	};
 
 	self.closeFilter = function ( $filter ) {
@@ -787,12 +1079,92 @@ function YITH_WCAN_Filters( $ ) {
 				} else {
 					self.$page.val( page );
 				}
+
+				// update registered filters.
+				self.updateFilters();
 			}
 		} );
 	};
 
 	self.updateFilters = function () {
 		self.$filters = self.$filtersContainer.find( '.yith-toggle-row' );
+
+		self.updateRowIndex();
+	};
+
+	self.validateFilters = function () {
+		let valid = true;
+
+		self.$filters.each( function () {
+			if ( ! valid ) {
+				return;
+			}
+
+			let $filter = $( this );
+
+			valid = self.validateFilter( $filter );
+		} );
+
+		return valid;
+	};
+
+	self.validateFilter = function ( $filter ) {
+		const layout = self.$layout.find( ':checked' ).val(),
+			$title = $filter.find( '.filter-title' ),
+			title = $title?.val();
+
+		// horizontal layout needs title for each filter
+		if ( 'horizontal' === layout && ! title ) {
+			self.addInputValidationMessage(
+				$title,
+				yith_wcan_admin.messages.filter_title_required
+			);
+			self.goToFilter( $filter );
+
+			return false;
+		}
+
+		// trigger default browser validation.
+		let valid = true;
+
+		$filter.find( ':input' ).each( function () {
+			if ( ! valid ) {
+				return;
+			}
+			valid = this.reportValidity();
+		} );
+
+		return valid;
+	};
+
+	self.goToFilter = function ( $filter, $target ) {
+		if ( self.isFilterOpen( $filter ) ) {
+			$target = $target || $filter;
+
+			return $( 'html, body' )
+				.stop( true )
+				.animate( {
+					scrollTop: $target.offset().top - 100,
+				} )
+				.promise();
+		}
+		return $( 'html, body' )
+			.stop( true )
+			.animate( {
+				scrollTop: $filter.offset().top - 100,
+			} )
+			.promise()
+			.done( () => {
+				self.openFilter( $filter );
+
+				if ( ! $target || ! $target.length ) {
+					return;
+				}
+
+				$( 'html, body' ).animate( {
+					scrollTop: $target.offset().top - 100,
+				} );
+			} );
 	};
 
 	self.getRowIndex = function ( $row ) {
@@ -805,8 +1177,7 @@ function YITH_WCAN_Filters( $ ) {
 		let maxIndex = 0;
 
 		self.$filters.each( function ( i ) {
-			const id = this.id,
-				numericId = id.replace( 'filter_', '' );
+			const numericId = $( this ).data( 'item_key' );
 
 			maxIndex = maxIndex < numericId ? numericId : maxIndex;
 		} );
@@ -836,14 +1207,39 @@ function YITH_WCAN_Filters( $ ) {
 		return $filter.find( '.term-box' );
 	};
 
+	self.getTermsType = function ( $filter ) {
+		const $filterType = $filter.find( '.filter-design' ),
+			filterType = $filterType?.val();
+
+		if ( 'label' !== filterType && 'color' !== filterType ) {
+			return 'labels_only';
+		} else if ( 'color' === filterType ) {
+			return 'complete';
+		}
+
+		return 'image_only';
+	};
+
 	self.initTerms = function ( $filter ) {
-		const $terms = $filter.find( '.term-box' );
+		const $terms = $filter.find( '.term-box' ),
+			$orderBy = $filter.find( '.order-by' );
 
 		$terms.each( function () {
 			self.initTerm( $( this ) );
 		} );
 
-		self.initTermsDragDrop( $filter );
+		$orderBy
+			.on( 'change', function () {
+				const $t = $( this ),
+					v = $t.val(),
+					methodToRun =
+						'include' === v
+							? 'initTermsDragDrop'
+							: 'destroyTermsDragDrop';
+
+				self[ methodToRun ]( $filter );
+			} )
+			.change();
 	};
 
 	self.initTerm = function ( $term ) {
@@ -954,12 +1350,24 @@ function YITH_WCAN_Filters( $ ) {
 	};
 
 	self.initTermsDragDrop = function ( $filter ) {
-		$filter.find( '.terms-wrapper' ).sortable( {
-			cursor: 'move',
-			scrollSensitivity: 40,
-			forcePlaceholderSize: true,
-			helper: 'clone',
-		} );
+		try {
+			$filter.find( '.terms-wrapper' ).sortable( {
+				cursor: 'move',
+				scrollSensitivity: 40,
+				forcePlaceholderSize: true,
+				helper: 'clone',
+			} );
+		} catch ( e ) {
+			// do nothing.
+		}
+	};
+
+	self.destroyTermsDragDrop = function ( $filter ) {
+		try {
+			$filter.find( '.terms-wrapper' ).sortable( 'destroy' );
+		} catch ( e ) {
+			// do nothing.
+		}
 	};
 
 	self.showTermTab = function ( $term, tab, force ) {
@@ -1011,11 +1419,15 @@ function YITH_WCAN_Filters( $ ) {
 			.show();
 	};
 
-	self.updateTerms = function ( $filter ) {
+	self.updateTerms = function ( $filter, ignoreVisibility ) {
+		const $termsContainer = $filter.find( '.terms-wrapper' );
+
+		if ( ! ignoreVisibility && ! $termsContainer.is( ':visible' ) ) {
+			return;
+		}
+
 		const selectedTerms = self._getSelectedTerms( $filter ),
-			$termsContainer = $filter.find( '.terms-wrapper' ),
 			$existingTerms = $termsContainer.find( '.term-box' ),
-			$filterType = $filter.find( '[name*="filter_design"]' ),
 			newTerms = [];
 
 		if ( selectedTerms ) {
@@ -1053,7 +1465,7 @@ function YITH_WCAN_Filters( $ ) {
 			} );
 		}
 
-		self.updateTermFields( $filter, $filterType.val() );
+		self.updateTermFields( $filter, self.getTermsType( $filter ) );
 
 		$filter.trigger( 'yith_fields_init' );
 	};
@@ -1062,7 +1474,7 @@ function YITH_WCAN_Filters( $ ) {
 		const $terms = $filter.find( '.term-box' );
 
 		switch ( type ) {
-			case 'color':
+			case 'complete':
 				$terms
 					.find( '.term-tab-headers' )
 					.show()
@@ -1081,7 +1493,18 @@ function YITH_WCAN_Filters( $ ) {
 					);
 				} );
 				break;
-			case 'label':
+			case 'colors_only':
+				$terms
+					.find( '.term-tab-headers' )
+					.show()
+					.find( 'a[data-tab="image"], span' )
+					.hide();
+				$terms.find( '.tab.tab-color' ).show();
+				$terms.find( '.tab.tab-image' ).hide();
+
+				self.showTermTab( $terms, 'image', true );
+				break;
+			case 'image_only':
 				$terms
 					.find( '.term-tab-headers' )
 					.show()
@@ -1092,6 +1515,7 @@ function YITH_WCAN_Filters( $ ) {
 
 				self.showTermTab( $terms, 'image', true );
 				break;
+			case 'labels_only':
 			default:
 				$terms.find( '.term-tab-headers' ).hide();
 				$terms.find( '.tab.tab-color' ).hide();
@@ -1487,6 +1911,21 @@ function YITH_WCAN_Filters( $ ) {
 			.replace( /^(.*>)([^>]+)$/, '$2' )
 			.replace( '&amp;', '&' )
 			.trim();
+	};
+
+	self.addInputValidationMessage = function ( $input, message ) {
+		const $message = $( '<span/>', {
+			class: 'validation-message',
+			text: message,
+		} );
+
+		$input
+			.addClass( 'required-field-empty' )
+			.addClass( 'validation-error' )
+			.next( '.validation-message' )
+			.remove()
+			.end()
+			.after( $message );
 	};
 
 	// let's start the game

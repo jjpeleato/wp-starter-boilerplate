@@ -75,33 +75,38 @@ class URE_Capability {
     public static function add( $ure_object ) {
         global $wp_roles;
 
+        $response = array('result'=>'error', 'capability_id'=>'', 'html'=>'', 'message'=>'');
         if ( !current_user_can( 'ure_create_capabilities' ) ) {
-            return esc_html__( 'Insufficient permissions to work with User Role Editor', 'user-role-editor' );
+            $response['message'] = esc_html__( 'Insufficient permissions to work with User Role Editor', 'user-role-editor' );
+            return $response;
         }
         
         $mess = '';
-        if (!isset($_POST['capability_id']) || empty($_POST['capability_id'])) {
-            return esc_html__( 'Wrong Request', 'user-role-editor' );
+        if ( !isset( $_POST['capability_id'] ) || empty( $_POST['capability_id'] ) ) {
+            $response['message'] = esc_html__( 'Wrong Request', 'user-role-editor' );
+            return $response;
         }
         
         $data = self::validate( $_POST['capability_id'] );
         if ( !$data['result'] ) {
-            return $data['message'];
+            $response['message'] = $data['message'];
+            return $response;
         }
         
         $cap_id = $data['cap_id'];                
         $lib = URE_Lib::get_instance();
         $full_capabilities = $lib->init_full_capabilities( $ure_object );
         if ( !isset( $full_capabilities[$cap_id] ) ) {
-            $admin_role = $lib->get_admin_role();            
+            $admin_role = $lib->get_admin_role();
             $wp_roles->use_db = true;
             $wp_roles->add_cap( $admin_role, $cap_id );
-            $mess = sprintf( esc_html__( 'Capability %s was added successfully', 'user-role-editor' ), $cap_id );
+            $response['result'] = 'success';
+            $response['message'] = sprintf( esc_html__( 'Capability %s was added successfully', 'user-role-editor' ), $cap_id );
         } else {
-            $mess = sprintf( esc_html__( 'Capability %s exists already', 'user-role-editor' ), $cap_id );
+            $response['message']  = sprintf( esc_html__( 'Capability %s exists already', 'user-role-editor' ), $cap_id );
         }
         
-        return $mess;
+        return $response;
     }
     // end of add()
     

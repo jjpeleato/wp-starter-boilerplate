@@ -528,9 +528,19 @@ class Plugin {
 
 		if ( ! ( isset( $_GET['action'] ) && $_GET['action'] === 'postpass' && isset( $_POST['post_password'] ) ) ) {
 
-			if ( is_admin() && ! is_user_logged_in() && ! defined( 'DOING_AJAX' ) && $pagenow !== 'admin-post.php' && $request['path'] !== '/wp-admin/options.php' ) {
+			if ( is_admin() && ! is_user_logged_in() && ! defined( 'DOING_AJAX' ) && ! defined( 'DOING_CRON' ) && $pagenow !== 'admin-post.php' && $request['path'] !== '/wp-admin/options.php' ) {
 				wp_safe_redirect( $this->new_redirect_url() );
 				die();
+			}
+
+			if ( ! is_user_logged_in() && isset( $_GET['wc-ajax'] ) && $pagenow === 'profile.php' ) {
+				wp_safe_redirect( $this->new_redirect_url() );
+				die();
+			}
+
+			if ( ! is_user_logged_in() && $request['path'] === '/wp-admin/options.php' ) {
+				header('Location: ' . $this->new_redirect_url() );
+				die;
 			}
 
 			if ( $pagenow === 'wp-login.php'

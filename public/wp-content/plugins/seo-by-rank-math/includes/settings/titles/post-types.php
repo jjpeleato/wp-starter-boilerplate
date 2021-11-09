@@ -72,7 +72,7 @@ $cmb->add_field(
 		'default'    => '%excerpt%',
 		'attributes' => [
 			'class'                  => 'cmb2-textarea-small wp-exclude-emoji',
-			'data-gramm_editor'      => 'false',
+			'data-gramm'             => 'false',
 			'rows'                   => 2,
 			'data-exclude-variables' => 'seo_title,seo_description',
 		],
@@ -313,8 +313,8 @@ if ( 'attachment' === $post_type ) {
 		[
 			'id'      => 'pt_' . $post_type . '_add_meta_box',
 			'type'    => 'toggle',
-			'name'    => esc_html__( 'Add SEO Meta Box', 'rank-math' ),
-			'desc'    => esc_html__( 'Add the SEO Meta Box for the editor screen to customize SEO options for posts in this post type.', 'rank-math' ),
+			'name'    => esc_html__( 'Add SEO Controls', 'rank-math' ),
+			'desc'    => esc_html__( 'Add SEO controls for the editor screen to customize SEO options for posts in this post type.', 'rank-math' ),
 			'default' => 'on',
 			'classes' => 'rank-math-advanced-option',
 		]

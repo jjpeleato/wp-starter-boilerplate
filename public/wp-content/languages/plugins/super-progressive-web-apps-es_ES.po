@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - Super Progressive Web Apps - Development (trunk) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-02-16 13:36:37+0000\n"
+"PO-Revision-Date: 2021-09-29 11:10:09+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11,15 +11,52 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: Plugins - Super Progressive Web Apps - Development (trunk)\n"
 
+#: admin/admin-ui-setup.php:301
+msgid "Re-Install Service Worker"
+msgstr "Re-instalar el gestor del servicio"
+
+#: admin/admin-ui-setup.php:293
+msgid "Cache External Origin URLs"
+msgstr "Cachear URLs de origen externas"
+
+#: admin/admin-ui-render-settings.php:525
+msgid "Update the version number. It will automatically re-install the service worker for all the users"
+msgstr "Actualiza el número de versión. Reinstalará automáticamente el gestor del servicio para todos los usuarios"
+
+#: functions/common.php:325
+msgid "No thanks"
+msgstr "No, gracias"
+
+#: addons/apple-touch-icons.php:317
+msgid "Settings Saved."
+msgstr "Ajustes guardados."
+
+#: addons/apple-touch-icons.php:329 addons/apple-touch-icons.php:330
+#: addons/caching-strategies.php:460 addons/utm-tracking.php:372
+msgid "Docs"
+msgstr "Documentación"
+
+#: admin/admin-ui-render-addons.php:416
+msgid "Upgrade to PRO"
+msgstr "Actualizar a PRO"
+
+#: admin/admin-ui-render-settings.php:436
+msgid "Select Page"
+msgstr "Seleccionar página"
+
+#: admin/admin-ui-render-settings.php:414
+msgid "Remove default banner"
+msgstr "Eliminar el banner por defecto"
+
 #. Author URI of the plugin
 msgid "https://profiles.wordpress.org/superpwa/"
 msgstr "https://profiles.wordpress.org/superpwa/"
 
-#: admin/basic-setup.php:366 admin/admin-ui-setup.php:52
+#: admin/admin-ui-setup.php:52 admin/basic-setup.php:370
 msgid "Upgrade to Pro"
 msgstr "Actualizar a la versión Pro"
 
-#: admin/admin-ui-setup.php:53
+#: admin/admin-ui-setup.php:81
 msgid "License"
 msgstr "Licencia"
 
@@ -91,19 +128,15 @@ msgstr "Navegador"
 msgid "Full Screen"
 msgstr "Pantalla Completa"
 
-#: admin/basic-setup.php:113
+#: admin/basic-setup.php:117
 msgid "Your app is ready with the default settings. "
 msgstr "Tu aplicación está lista con los ajustes por defecto."
 
-#: admin/admin-ui-render-settings.php:380
-msgid "Service worker generated successfully. <a href=\"%s\" target=\"_blank\">See it here &rarr;</a>"
-msgstr "El service worker se ha generado satisfactoriamente. <a href=\"%s\" target=\"_blank\">Míralo aquí &rarr;</a>"
-
-#: admin/basic-setup.php:119 admin/basic-setup.php:153
+#: admin/basic-setup.php:123 admin/basic-setup.php:157
 msgid "Thank you for installing <strong>Super Progressive Web Apps!</strong> "
 msgstr "¡Gracias por instalar <strong>Super Progressive Web Apps!</strong> "
 
-#: admin/admin-ui-setup.php:174
+#: admin/admin-ui-setup.php:206
 msgid "Display"
 msgstr "Visualización"
 
@@ -119,13 +152,17 @@ msgstr "Aplicación independiente"
 msgid "Display mode decides what browser UI is shown when your app is launched. <code>Standalone</code> is default. <a href=\"%s\" target=\"_blank\">What's the difference? &rarr;</a>"
 msgstr "El modo de visualización decide que interfaz del navegador se muestra cuando se ejecuta tu aplicación. El valor por defecto <code>Aplicación independiente</code>. <a href=\"%s\" target=\"_blank\">¿Cuál es la diferencia? &rarr;</a>"
 
-#: admin/basic-setup.php:117
+#: admin/basic-setup.php:121
 msgid "<a href=\"%s\">Customize your app &rarr;</a>"
 msgstr "<a href=\"%s\">Personaliza tu aplicación &rarr;</a>"
 
 #: admin/admin-ui-render-settings.php:62
 msgid "Used when there is insufficient space to display the full name of the application. <span id=\"superpwa-app-short-name-limit\"><code>15</code> characters or less.</span>"
 msgstr "Usado cuando no hay suficiente espacio para visualizar el nombre completo de la aplicación. <span id=\"superpwa-app-short-name-limit\"><code>15</code> caracteres o menos.</span>"
+
+#: admin/admin-ui-render-settings.php:380
+msgid "Service worker generated successfully. <a href=\"%s\" target=\"_blank\">See it here &rarr;</a>"
+msgstr "El gestor del servicio se ha generado satisfactoriamente. <a href=\"%s\" target=\"_blank\">Míralo aquí &rarr;</a>"
 
 #: admin/admin-ui-render-settings.php:106
 #: admin/admin-ui-render-settings.php:129
@@ -140,11 +177,11 @@ msgstr "Habilita la compatibilidad de AMP para páginas en <a href=\"%s\">Ajuste
 msgid "<strong>SuperPWA</strong> is not compatible with OneSignal on multisites yet. Disable one of these plugins until the compatibility is available.<br>Please refer to the <a href=\"%s\" target=\"_blank\">OneSignal integration documentation</a> for more info. "
 msgstr "<strong>SuperPWA</strong> todavía no es compatible con OneSignal en multisios. Deshabilita uno de los plugins hasta que sean compatibles.<br>Por favor, consulta la <a href=\"%s\" target=\"_blank\">documentación de integración de OneSignal</a> para saber más."
 
-#: admin/admin-ui-render-addons.php:174
+#: admin/admin-ui-render-addons.php:185
 msgid "<strong>Add-On activated: %s.</strong> <a href=\"%s\"%s>%s</a>"
 msgstr "<strong>Extensión activada: %s.</strong> <a href=\"%s\"%s>%s</a>"
 
-#: admin/basic-setup.php:128 admin/basic-setup.php:162
+#: admin/basic-setup.php:132 admin/basic-setup.php:166
 msgid "<strong>SuperPWA</strong>: Successfully updated to version %s. Thank you! <a href=\"%s\" target=\"_blank\">Discover new features and read the story &rarr;</a>"
 msgstr "<strong>SuperPWA</strong>: Se ha actualizado correctamente a la versión %s. ¡Gracias! <a href=\"%s\" target=\"_blank\">Descubre las nuevas características y lee la historia &rarr;</a>"
 
@@ -166,23 +203,23 @@ msgstr "Establece el icono de la aplicación y el icono de la pantalla de presen
 msgid "https://superpwa.com/?utm_source=superpwa-plugin&utm_medium=plugin-uri"
 msgstr "https://superpwa.com/?utm_source=superpwa-plugin&utm_medium=plugin-uri"
 
-#: admin/admin-ui-render-addons.php:450
+#: admin/admin-ui-render-addons.php:420
 msgid "Install"
 msgstr "Instalar"
 
-#: admin/admin-ui-render-addons.php:250
+#: admin/admin-ui-render-addons.php:261
 msgid "More Details"
 msgstr "Más detalles"
 
-#: admin/admin-ui-render-addons.php:438
+#: admin/admin-ui-render-addons.php:408
 msgid "Activate"
 msgstr "Activar"
 
-#: admin/admin-ui-render-addons.php:182
+#: admin/admin-ui-render-addons.php:193
 msgid "Add-On deactivated"
 msgstr "Extensión desactivado"
 
-#: admin/admin-ui-render-addons.php:196
+#: admin/admin-ui-render-addons.php:207
 msgid "Add-Ons extend the functionality of SuperPWA."
 msgstr "Las extensiones amplían la funcionalidad de SuperPWA."
 
@@ -210,28 +247,28 @@ msgstr "Plazo de la campaña"
 msgid "Current Start URL"
 msgstr "URL de inicio actual"
 
-#: admin/admin-ui-render-addons.php:236 admin/admin-ui-render-addons.php:442
+#: admin/admin-ui-render-addons.php:247 admin/admin-ui-render-addons.php:412
 msgid "Deactivate"
 msgstr "Desactivar"
 
-#: admin/admin-ui-render-addons.php:298
+#: functions/common.php:321
 msgid "Enter your email"
 msgstr "Introduce tu correo electrónico"
 
-#: admin/admin-ui-render-addons.php:250
+#: admin/admin-ui-render-addons.php:261
 msgid "More information about %s"
 msgstr "Más información sobre %s"
 
-#: addons/caching-strategies.php:230 addons/apple-touch-icons.php:262
-#: addons/utm-tracking.php:360 admin/admin-ui-render-settings.php:495
+#: addons/caching-strategies.php:448 addons/utm-tracking.php:360
+#: admin/admin-ui-render-settings.php:548
 msgid "Settings saved."
 msgstr "Ajustes guardados."
 
-#: admin/admin-ui-render-addons.php:300
+#: functions/common.php:323
 msgid "Subscribe"
 msgstr "Suscribir"
 
-#: admin/admin-ui-render-addons.php:286
+#: functions/common.php:311
 msgid "SuperPWA Newsletter"
 msgstr "Boletín de SuperPWA"
 
@@ -243,12 +280,12 @@ msgstr "Esta extensión añade automáticamente los parámetros UTM de la campa�
 msgid "Track visits from your app by adding UTM tracking parameters to the Start Page URL."
 msgstr "Hace un seguimiento de las visitas desde tu aplicación añadiendo parámetros de seguimiento UTM a la URL de la página de inicio."
 
-#: addons/utm-tracking.php:371 admin/admin-ui-render-addons.php:49
+#: addons/utm-tracking.php:372 admin/admin-ui-render-addons.php:49
 #: admin/admin-ui-setup.php:38
 msgid "UTM Tracking"
 msgstr "Seguimiento UTM"
 
-#: admin/admin-ui-render-addons.php:302
+#: functions/common.php:327
 msgid "we'll share our <code>root</code> password before we share your email with anyone else."
 msgstr "compartiremos nuestra password de <code>root</code> antes que compartir tu correo electrónico con nadie."
 
@@ -256,11 +293,7 @@ msgstr "compartiremos nuestra password de <code>root</code> antes que compartir 
 msgid "Add-ons"
 msgstr "Extensiones"
 
-#: admin/admin-ui-render-addons.php:194
-msgid "Add-ons for"
-msgstr "Extensiones para"
-
-#: admin/admin-ui-render-addons.php:290
+#: functions/common.php:314
 msgid "Learn more about Progressive Web Apps and get latest updates about SuperPWA"
 msgstr "Aprende más sobre aplicaciones web progresivas y obtén las últimas actualizaciones sobre SuperPWA"
 
@@ -268,11 +301,11 @@ msgstr "Aprende más sobre aplicaciones web progresivas y obtén las últimas ac
 msgid "A brief description of what your app is about."
 msgstr "Una descripción breve de tu aplicación."
 
-#: admin/basic-setup.php:382
+#: admin/basic-setup.php:386
 msgid "Demo"
 msgstr "Demo"
 
-#: admin/admin-ui-setup.php:102
+#: admin/admin-ui-setup.php:134
 msgid "Description"
 msgstr "Descripción"
 
@@ -284,7 +317,7 @@ msgstr "No marques esto si tu página dde inicio es la portada, el índice del b
 msgid "Follow Device Orientation"
 msgstr "Seguir la orientación del dispositivo"
 
-#: admin/admin-ui-setup.php:415
+#: admin/admin-ui-setup.php:480
 msgid "If you like SuperPWA, please <a href=\"%s\" target=\"_blank\">make a donation</a> or leave a <a href=\"%s\" target=\"_blank\">&#9733;&#9733;&#9733;&#9733;&#9733;</a> rating to support continued development. Thanks a bunch!"
 msgstr "Si te gusta SuperPWA, por favor <a href=\"%s\" target=\"_blank\">haz una donación</a> o deja una<a href=\"%s\" target=\"_blank\">&#9733;&#9733;&#9733;&#9733;&#9733;</a> valoración para ayudar a continuar el desarrollo. ¡Un montón de gracias!"
 
@@ -292,7 +325,7 @@ msgstr "Si te gusta SuperPWA, por favor <a href=\"%s\" target=\"_blank\">haz una
 msgid "Landscape"
 msgstr "Horizontal"
 
-#: admin/admin-ui-setup.php:165
+#: admin/admin-ui-setup.php:197
 msgid "Orientation"
 msgstr "Orientación"
 
@@ -304,7 +337,7 @@ msgstr "Vertical"
 msgid "Set the orientation of your app on devices. When set to <code>Follow Device Orientation</code> your app will rotate as the device is rotated."
 msgstr "Establece la orientación de tu aplicación en los dispositivos. Cuando se establece a <code>seguir la orientación del dispositivo</code> tu aplicación rotará si el dispositivo se rota."
 
-#: admin/admin-ui-setup.php:138
+#: admin/admin-ui-setup.php:170
 msgid "Theme Color"
 msgstr "Color del tema"
 
@@ -312,7 +345,7 @@ msgstr "Color del tema"
 msgid "Theme color is used on supported devices to tint the UI elements of the browser and app switcher. When in doubt, use the same color as <code>Background Color</code>."
 msgstr "El color del tema se usa en los dispositivos compatibles para tintar los elementos de la interfaz del navegador y el selector de aplicaciones. Si tienes dudas, usa el mismo color que en <code>color de fondo</code>."
 
-#: admin/admin-ui-setup.php:120
+#: admin/admin-ui-setup.php:152
 msgid "Splash Screen Icon"
 msgstr "Icono de la pantalla de presentación"
 
@@ -328,11 +361,11 @@ msgstr "Las aplicaciones web progresivas requieren que tu web sea servida median
 msgid "&mdash; Homepage &mdash;"
 msgstr "&mdash; Página de inicio &mdash;"
 
-#: admin/admin-ui-setup.php:84
+#: admin/admin-ui-setup.php:116
 msgid "Application Name"
 msgstr "Nombre de la aplicación"
 
-#: admin/admin-ui-setup.php:93
+#: admin/admin-ui-setup.php:125
 msgid "Application Short Name"
 msgstr "Nombre corto de la aplicación"
 
@@ -340,7 +373,7 @@ msgstr "Nombre corto de la aplicación"
 msgid "Background color of the splash screen."
 msgstr "Color de fondo de la pantalla de presentación."
 
-#: admin/admin-ui-setup.php:209
+#: admin/admin-ui-setup.php:241
 msgid "HTTPS"
 msgstr "HTTPS"
 
@@ -348,7 +381,7 @@ msgstr "HTTPS"
 msgid "Offline page is displayed when the device is offline and the requested page is not already cached. Current offline page is <code>%s</code>"
 msgstr "La página sin conexión se muestra cuando el dispositivo está desconectado y la página solicitada todavía no está en caché. La página sin conexión actual es <code>%s</code>"
 
-#: admin/admin-ui-setup.php:200
+#: admin/admin-ui-setup.php:232
 msgid "Service Worker"
 msgstr "Service Worker"
 
@@ -356,11 +389,11 @@ msgstr "Service Worker"
 msgid "Specify the page to load when the application is launched from a device. Current start page is <code>%s</code>"
 msgstr "Indica la página a cargar cuando la aplicación se inicie desde un dispositivo. La página de inicio actual es <code>%s</code>"
 
-#: admin/admin-ui-setup.php:147
+#: admin/admin-ui-setup.php:179
 msgid "Start Page"
 msgstr "Página de inicio"
 
-#: admin/admin-ui-setup.php:183
+#: admin/admin-ui-setup.php:215
 msgid "Status"
 msgstr "Estado"
 
@@ -376,11 +409,11 @@ msgstr "Tu web se sirve mediante HTTPS"
 msgid "&mdash; Default &mdash;"
 msgstr "&mdash; Por defecto &mdash;"
 
-#: admin/admin-ui-setup.php:156
+#: admin/admin-ui-setup.php:188
 msgid "Offline Page"
 msgstr "Página sin conexión"
 
-#: admin/admin-ui-setup.php:111
+#: admin/admin-ui-setup.php:143
 msgid "Application Icon"
 msgstr "Icono de la aplicación"
 
@@ -388,7 +421,7 @@ msgstr "Icono de la aplicación"
 msgid "Convert your WordPress website into a Progressive Web App"
 msgstr "Transforma tu web WordPress en una aplicación web progresiva"
 
-#: admin/admin-ui-setup.php:191
+#: admin/admin-ui-setup.php:223
 msgid "Manifest"
 msgstr "Manifest"
 
@@ -396,14 +429,14 @@ msgstr "Manifest"
 msgid "Manifest generated successfully. You can <a href=\"%s\" target=\"_blank\">See it here &rarr;</a>"
 msgstr "Manifest generado correctamente. Puedes <a href=\"%s\" target=\"_blank\">verlo aquí &rarr;</a>"
 
-#: addons/caching-strategies.php:252 addons/apple-touch-icons.php:285
-#: addons/utm-tracking.php:382 admin/admin-ui-render-settings.php:525
-#: admin/admin-ui-render-settings.php:537
+#: addons/apple-touch-icons.php:344 addons/caching-strategies.php:473
+#: addons/utm-tracking.php:385 admin/admin-ui-render-settings.php:602
+#: admin/admin-ui-render-settings.php:614
 msgid "Save Settings"
 msgstr "Guardar ajustes"
 
-#: admin/basic-setup.php:365 admin/admin-ui-render-addons.php:241
-#: admin/admin-ui-setup.php:31
+#: admin/admin-ui-render-addons.php:252 admin/admin-ui-setup.php:31
+#: admin/basic-setup.php:369
 msgid "Settings"
 msgstr "Ajustes"
 
@@ -411,7 +444,7 @@ msgstr "Ajustes"
 #: admin/admin-ui-setup.php:28 admin/admin-ui-setup.php:31
 #: admin/admin-ui-setup.php:34 admin/admin-ui-setup.php:38
 #: admin/admin-ui-setup.php:43 admin/admin-ui-setup.php:48
-#: admin/admin-ui-setup.php:54
+#: admin/admin-ui-setup.php:83 admin/admin-ui-setup.php:85
 msgid "Super Progressive Web Apps"
 msgstr "Super Progressive Web Apps"
 
@@ -424,6 +457,6 @@ msgstr "SuperPWA"
 msgid "This will be the icon of your app when installed on the phone. Must be a <code>PNG</code> image exactly <code>192x192</code> in size."
 msgstr "Este será el icono de tu aplicación cuando sea instalada en el teléfono. Debe ser una imagen <code>PNG</code> con dimensiones exactas de <code>192x192</code>."
 
-#: admin/admin-ui-setup.php:129
+#: addons/apple-touch-icons.php:143 admin/admin-ui-setup.php:161
 msgid "Background Color"
 msgstr "Color de fondo"

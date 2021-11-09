@@ -5,7 +5,11 @@ if ( ! function_exists( 'wp_cache_phase2' ) ) {
 }
 
 // error_reporting(E_ERROR | E_PARSE); // uncomment to debug this file!
-if ( ! @include WP_CONTENT_DIR . '/wp-cache-config.php' ) {
+if ( !defined( 'WPCACHECONFIGPATH' ) ) {
+  define( 'WPCACHECONFIGPATH', WP_CONTENT_DIR );
+} 
+
+if ( ! @include WPCACHECONFIGPATH . '/wp-cache-config.php' ) {
 	return false;
 }
 
@@ -77,6 +81,13 @@ if ( wpsc_is_backend() ) {
 	return true;
 }
 
+if ( wpsc_is_rejected_cookie() ) {
+	define( 'DONOTCACHEPAGE', 1 );
+	$cache_enabled = false;
+	wp_cache_debug( 'Caching disabled because rejected cookie found.' );
+	return true;
+}
+
 if ( wpsc_is_caching_user_disabled() ) {
 	wp_cache_debug( 'Caching disabled for logged in users on settings page.' );
 	return true;
@@ -109,7 +120,7 @@ if ( function_exists( 'add_filter' ) ) { // loaded since WordPress 4.6
 	add_filter( 'supercache_filename_str', 'wp_cache_check_mobile' );
 }
 
-$wp_cache_request_uri = $_SERVER['REQUEST_URI']; // Cache this in case any plugin modifies it.
+$wp_cache_request_uri = wpsc_remove_tracking_params_from_uri( $_SERVER['REQUEST_URI'] ); // Cache this in case any plugin modifies it and filter out tracking parameters.
 
 if ( defined( 'DOING_CRON' ) ) {
 	extract( wp_super_cache_init() ); // $key, $cache_filename, $meta_file, $cache_file, $meta_pathname
