@@ -34,6 +34,7 @@ class URE_Own_Capabilities {
             $ure_caps['ure_meta_boxes_access'] = 1;
             $ure_caps['ure_other_roles_access'] = 1;
             $ure_caps['ure_edit_posts_access'] = 1;
+            $ure_caps['ure_edit_gravityforms_access'] = 1;
             $ure_caps['ure_plugins_activation_access'] = 1;   
             $ure_caps['ure_view_posts_access'] = 1;   
             $ure_caps['ure_front_end_menu_access'] = 1;  

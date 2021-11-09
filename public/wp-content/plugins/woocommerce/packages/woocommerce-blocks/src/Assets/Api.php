@@ -11,6 +11,12 @@ use Exception;
  * @since 2.5.0
  */
 class Api {
+	/**
+	 * Stores inline scripts already enqueued.
+	 *
+	 * @var array
+	 */
+	private $inline_scripts = [];
 
 	/**
 	 * Reference to the Package instance
@@ -55,40 +61,62 @@ class Api {
 	}
 
 	/**
-	 * Registers a script according to `wp_register_script`, additionally
-	 * loading the translations for the file.
+	 * Get src, version and dependencies given a script relative src.
 	 *
-	 * @since 2.5.0
+	 * @param string $relative_src Relative src to the script.
+	 * @param array  $dependencies Optional. An array of registered script handles this script depends on. Default empty array.
 	 *
-	 * @param string $handle        Name of the script. Should be unique.
-	 * @param string $relative_src  Relative url for the script to the path
-	 *                              from plugin root.
-	 * @param array  $dependencies  Optional. An array of registered script
-	 *                              handles this script depends on. Default
-	 *                              empty array.
-	 * @param bool   $has_i18n      Optional. Whether to add a script
-	 *                              translation call to this file. Default:
-	 *                              true.
-	 *
-	 * @throws Exception If the registered script has a dependency on itself.
+	 * @return array src, version and dependencies of the script.
 	 */
-	public function register_script( $handle, $relative_src, $dependencies = [], $has_i18n = true ) {
-		$src        = $this->get_asset_url( $relative_src );
-		$asset_path = $this->package->get_path(
-			str_replace( '.js', '.asset.php', $relative_src )
-		);
+	public function get_script_data( $relative_src, $dependencies = [] ) {
+		$src     = '';
+		$version = '1';
 
-		if ( file_exists( $asset_path ) ) {
-			$asset        = require $asset_path;
-			$dependencies = isset( $asset['dependencies'] ) ? array_merge( $asset['dependencies'], $dependencies ) : $dependencies;
-			$version      = ! empty( $asset['version'] ) ? $asset['version'] : $this->get_file_version( $relative_src );
-		} else {
-			$version = $this->get_file_version( $relative_src );
+		if ( $relative_src ) {
+			$src        = $this->get_asset_url( $relative_src );
+			$asset_path = $this->package->get_path(
+				str_replace( '.js', '.asset.php', $relative_src )
+			);
+
+			if ( file_exists( $asset_path ) ) {
+				$asset        = require $asset_path;
+				$dependencies = isset( $asset['dependencies'] ) ? array_merge( $asset['dependencies'], $dependencies ) : $dependencies;
+				$version      = ! empty( $asset['version'] ) ? $asset['version'] : $this->get_file_version( $relative_src );
+			} else {
+				$version = $this->get_file_version( $relative_src );
+			}
 		}
 
-		if ( in_array( $handle, $dependencies, true ) ) {
+		return array(
+			'src'          => $src,
+			'version'      => $version,
+			'dependencies' => $dependencies,
+		);
+	}
+
+	/**
+	 * Registers a script according to `wp_register_script`, adding the correct prefix, and additionally loading translations.
+	 *
+	 * When creating script assets, the following rules should be followed:
+	 *   1. All asset handles should have a `wc-` prefix.
+	 *   2. If the asset handle is for a Block (in editor context) use the `-block` suffix.
+	 *   3. If the asset handle is for a Block (in frontend context) use the `-block-frontend` suffix.
+	 *   4. If the asset is for any other script being consumed or enqueued by the blocks plugin, use the `wc-blocks-` prefix.
+	 *
+	 * @since 2.5.0
+	 * @throws Exception If the registered script has a dependency on itself.
+	 *
+	 * @param string $handle        Unique name of the script.
+	 * @param string $relative_src  Relative url for the script to the path from plugin root.
+	 * @param array  $dependencies  Optional. An array of registered script handles this script depends on. Default empty array.
+	 * @param bool   $has_i18n      Optional. Whether to add a script translation call to this file. Default: true.
+	 */
+	public function register_script( $handle, $relative_src, $dependencies = [], $has_i18n = true ) {
+		$script_data = $this->get_script_data( $relative_src, $dependencies );
+
+		if ( in_array( $handle, $script_data['dependencies'], true ) ) {
 			if ( $this->package->feature()->is_development_environment() ) {
-				$dependencies = array_diff( $dependencies, [ $handle ] );
+				$dependencies = array_diff( $script_data['dependencies'], [ $handle ] );
 					add_action(
 						'admin_notices',
 						function() use ( $handle ) {
@@ -103,34 +131,11 @@ class Api {
 			}
 		}
 
-		wp_register_script( $handle, $src, apply_filters( 'woocommerce_blocks_register_script_dependencies', $dependencies, $handle ), $version, true );
+		wp_register_script( $handle, $script_data['src'], apply_filters( 'woocommerce_blocks_register_script_dependencies', $script_data['dependencies'], $handle ), $script_data['version'], true );
 
 		if ( $has_i18n && function_exists( 'wp_set_script_translations' ) ) {
 			wp_set_script_translations( $handle, 'woocommerce', $this->package->get_path( 'languages' ) );
 		}
-	}
-
-	/**
-	 * Queues a block script in the frontend.
-	 *
-	 * @since 2.5.0
-	 * @since 2.6.0 Changed $name to $script_name and added $handle argument.
-	 * @since 2.9.0 Made it so scripts are not loaded in admin pages.
-	 * @deprecated 4.5.0 Block types register the scripts themselves.
-	 *
-	 * @param string $script_name  Name of the script used to identify the file inside build folder.
-	 * @param string $handle       Optional. Provided if the handle should be different than the script name. `wc-` prefix automatically added.
-	 * @param array  $dependencies Optional. An array of registered script handles this script depends on. Default empty array.
-	 */
-	public function register_block_script( $script_name, $handle = '', $dependencies = [] ) {
-		_deprecated_function( 'register_block_script', '4.5.0' );
-		if ( is_admin() ) {
-			return;
-		}
-		$relative_src = $this->get_block_asset_build_path( $script_name );
-		$handle       = '' !== $handle ? 'wc-' . $handle : 'wc-' . $script_name;
-		$this->register_script( $handle, $relative_src, $dependencies );
-		wp_enqueue_script( $handle );
 	}
 
 	/**
@@ -167,5 +172,25 @@ class Api {
 			? ''
 			: '-legacy';
 		return "build/$filename$suffix.$type";
+	}
+
+	/**
+	 * Adds an inline script, once.
+	 *
+	 * @param string $handle Script handle.
+	 * @param string $script Script contents.
+	 */
+	public function add_inline_script( $handle, $script ) {
+		if ( ! empty( $this->inline_scripts[ $handle ] ) && in_array( $script, $this->inline_scripts[ $handle ], true ) ) {
+			return;
+		}
+
+		wp_add_inline_script( $handle, $script );
+
+		if ( isset( $this->inline_scripts[ $handle ] ) ) {
+			$this->inline_scripts[ $handle ][] = $script;
+		} else {
+			$this->inline_scripts[ $handle ] = array( $script );
+		}
 	}
 }

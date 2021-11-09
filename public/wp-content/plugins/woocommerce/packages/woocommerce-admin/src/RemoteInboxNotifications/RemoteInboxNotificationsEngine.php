@@ -8,7 +8,6 @@ namespace Automattic\WooCommerce\Admin\RemoteInboxNotifications;
 defined( 'ABSPATH' ) || exit;
 
 use \Automattic\WooCommerce\Admin\PluginsProvider\PluginsProvider;
-use \Automattic\WooCommerce\Admin\Loader;
 use \Automattic\WooCommerce\Admin\Features\Onboarding;
 
 /**
@@ -19,11 +18,15 @@ use \Automattic\WooCommerce\Admin\Features\Onboarding;
 class RemoteInboxNotificationsEngine {
 	const SPECS_OPTION_NAME        = 'wc_remote_inbox_notifications_specs';
 	const STORED_STATE_OPTION_NAME = 'wc_remote_inbox_notifications_stored_state';
+	const WCA_UPDATED_OPTION_NAME  = 'wc_remote_inbox_notifications_wca_updated';
 
 	/**
 	 * Initialize the engine.
 	 */
 	public static function init() {
+		// Init things that need to happen before admin_init.
+		add_action( 'init', array( __CLASS__, 'on_init' ), 0, 0 );
+
 		// Continue init via admin_init.
 		add_action( 'admin_init', array( __CLASS__, 'on_admin_init' ) );
 
@@ -34,6 +37,10 @@ class RemoteInboxNotificationsEngine {
 			10,
 			2
 		);
+
+		// Hook into WCA updated. This is hooked up here rather than in
+		// on_admin_init because that runs too late to hook into the action.
+		add_action( 'woocommerce_admin_updated', array( __CLASS__, 'run_on_woocommerce_admin_updated' ) );
 	}
 
 	/**
@@ -62,16 +69,21 @@ class RemoteInboxNotificationsEngine {
 	 * condition and thus doesn't return any results.
 	 */
 	public static function on_admin_init() {
-		if ( ! Loader::is_feature_enabled( 'remote-inbox-notifications' ) ) {
-			return;
-		}
-
 		add_action( 'activated_plugin', array( __CLASS__, 'run' ) );
 		add_action( 'deactivated_plugin', array( __CLASS__, 'run_on_deactivated_plugin' ), 10, 1 );
-		StoredStateSetupForProducts::init();
+		StoredStateSetupForProducts::admin_init();
 
 		// Pre-fetch stored state so it has the correct initial values.
 		self::get_stored_state();
+	}
+
+	/**
+	 * An init hook is used here so that StoredStateSetupForProducts can set
+	 * up a hook that gets triggered by action-scheduler - this is needed
+	 * because the admin_init hook doesn't get triggered by WP Cron.
+	 */
+	public static function on_init() {
+		StoredStateSetupForProducts::init();
 	}
 
 	/**
@@ -97,6 +109,19 @@ class RemoteInboxNotificationsEngine {
 	}
 
 	/**
+	 * Set an option indicating that WooCommerce Admin has just been updated,
+	 * run the specs, then clear that option. This lets the
+	 * WooCommerceAdminUpdatedRuleProcessor trigger on WCA update.
+	 */
+	public static function run_on_woocommerce_admin_updated() {
+		update_option( self::WCA_UPDATED_OPTION_NAME, true, false );
+
+		self::run();
+
+		update_option( self::WCA_UPDATED_OPTION_NAME, false, false );
+	}
+
+	/**
 	 * Gets the stored state option, and does the initial set up if it doesn't
 	 * already exist.
 	 *
@@ -112,7 +137,12 @@ class RemoteInboxNotificationsEngine {
 				$stored_state
 			);
 
-			add_option( self::STORED_STATE_OPTION_NAME, $stored_state );
+			add_option(
+				self::STORED_STATE_OPTION_NAME,
+				$stored_state,
+				'',
+				false
+			);
 		}
 
 		return $stored_state;
@@ -137,6 +167,6 @@ class RemoteInboxNotificationsEngine {
 	 * @param object $stored_state The stored state.
 	 */
 	public static function update_stored_state( $stored_state ) {
-		update_option( self::STORED_STATE_OPTION_NAME, $stored_state );
+		update_option( self::STORED_STATE_OPTION_NAME, $stored_state, false );
 	}
 }

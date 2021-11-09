@@ -164,12 +164,11 @@ class autoptimizeStyles extends autoptimizeBase
     public function read( $options )
     {
         $noptimize_css = apply_filters( 'autoptimize_filter_css_noptimize', false, $this->content );
-        if ( $noptimize_css ) {
+        if ( $noptimize_css  || false === autoptimizeConfig::get_post_meta_ao_settings( 'ao_post_css_optimize' )) {
             return false;
         }
 
         $allowlist_css = apply_filters( 'autoptimize_filter_css_allowlist', '', $this->content );
-        $allowlist_css = apply_filters( 'autoptimize_filter_css_whitelist', $allowlist_css, $this->content ); // fixme: to be removed in next version.
         if ( ! empty( $allowlist_css ) ) {
             $this->allowlist = array_filter( array_map( 'trim', explode( ',', $allowlist_css ) ) );
         }
@@ -221,9 +220,14 @@ class autoptimizeStyles extends autoptimizeBase
         $this->defer = $options['defer'];
         $this->defer = apply_filters( 'autoptimize_filter_css_defer', $this->defer, $this->content );
 
+        // If page/ post check post_meta to see if optimize is off.
+        if ( $this->defer && false === autoptimizeConfig::get_post_meta_ao_settings( 'ao_post_ccss' ) ) {
+             $this->defer = false;
+        }
+
         // Should we inline while deferring?
         // value: inlined CSS.
-        $this->defer_inline = apply_filters( 'autoptimize_filter_css_defer_inline', $options['defer_inline'], $this->content );
+        $this->defer_inline = apply_filters( 'autoptimize_filter_css_defer_inline', $this->sanitize_css( $options['defer_inline'] ), $this->content );
 
         // Should we inline?
         // value: true / false.
@@ -272,14 +276,18 @@ class autoptimizeStyles extends autoptimizeBase
                     // Get the media.
                     if ( false !== strpos( $tag, 'media=' ) ) {
                         preg_match( '#media=(?:"|\')([^>]*)(?:"|\')#Ui', $tag, $medias );
-                        $medias = explode( ',', $medias[1] );
-                        $media  = array();
-                        foreach ( $medias as $elem ) {
-                            if ( empty( $elem ) ) {
-                                $elem = 'all';
-                            }
+                        if ( !empty( $medias ) ) {
+                            $medias = explode( ',', $medias[1] );
+                            $media  = array();
+                            foreach ( $medias as $elem ) {
+                                if ( empty( $elem ) ) {
+                                    $elem = 'all';
+                                }
 
-                            $media[] = $elem;
+                                $media[] = $elem;
+                            }
+                        } else {
+                            $media = array( 'all' );
                         }
                     } else {
                         // No media specified - applies to all.
@@ -355,6 +363,11 @@ class autoptimizeStyles extends autoptimizeBase
                         if ( '' !== $new_tag ) {
                             // Optionally defer (preload) non-aggregated CSS.
                             $new_tag = $this->optionally_defer_excluded( $new_tag, $url );
+                            
+                            // Check if we still need to CDN (esp. for already minified resources).
+                            if ( ! empty( $this->cdn_url ) || has_filter( 'autoptimize_filter_base_replace_cdn' ) ) {
+                                $new_tag = str_replace( $url, $this->url_replace_cdn( $url ), $new_tag );
+                            }
                         }
 
                         // And replace!
@@ -1208,6 +1221,13 @@ class autoptimizeStyles extends autoptimizeBase
         $contents = $this->prepare_minify_single( $filepath );
 
         if ( empty( $contents ) ) {
+            // if aggregate is off and CCSS is used but all files are minified already, then we
+            // must make sure the autoptimize_action_css_hash action still fires for CCSS's sake.
+            $ao_ccss_key = get_option( 'autoptimize_ccss_key', '' );
+            if ( false === $this->aggregate && isset( $ao_ccss_key ) && ! empty( $ao_ccss_key ) ) {
+               $hash = 'single_' . md5( file_get_contents( $filepath ) );
+               do_action( 'autoptimize_action_css_hash', $hash );
+            }
             return false;
         }
 
@@ -1274,5 +1294,25 @@ class autoptimizeStyles extends autoptimizeBase
     public function getOption( $name )
     {
         return $this->options[ $name ];
+    }
+
+    /**
+     * Sanitize user-provided CSS.
+     *
+     * For now just strip_tags (the WordPress way) and preg_replace to escape < in certain cases but might do full CSS escaping in the future, see:
+     * https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html#rule-4-css-encode-and-strictly-validate-before-inserting-untrusted-data-into-html-style-property-values
+     * https://github.com/twigphp/Twig/blob/3.x/src/Extension/EscaperExtension.php#L300-L319
+     * https://github.com/laminas/laminas-escaper/blob/2.8.x/src/Escaper.php#L205-L221
+     *
+     * @param string $css the to be sanitized CSS
+     * @return string sanitized CSS.
+     */
+    public static function sanitize_css( $css )
+    {
+        $css = wp_strip_all_tags( $css );
+        if ( strpos( $css, '<' ) !== false ) {
+            $css = preg_replace( '#<(\/?\w+)#', '\00003C$1', $css );
+        }
+        return $css;
     }
 }

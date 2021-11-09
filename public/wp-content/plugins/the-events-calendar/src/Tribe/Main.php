@@ -32,14 +32,14 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 		const VENUE_POST_TYPE     = 'tribe_venue';
 		const ORGANIZER_POST_TYPE = 'tribe_organizer';
 
-		const VERSION             = '5.6.0';
+		const VERSION             = '5.10.1';
 
 		/**
 		 * Min Pro Addon
 		 *
 		 * @deprecated 4.8
 		 */
-		const MIN_ADDON_VERSION   = '4.6-dev';
+		const MIN_ADDON_VERSION   = '5.7-dev';
 
 		/**
 		 * Min Common
@@ -338,7 +338,7 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 
 		/**
 		 * To avoid duplication of our own methods and to provide a underlying system
-		 * Modern Tribe maintains a Library called Common to store a base for our plugins
+		 * The Events Calendar maintains a Library called Common to store a base for our plugins
 		 *
 		 * Currently we will read the File `common/package.json` to determine which version
 		 * of the Common Lib we will pass to the Auto-Loader of PHP.
@@ -615,26 +615,19 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 			// The Views v2 service provider.
 			tribe_register_provider( Tribe\Events\Views\V2\Service_Provider::class );
 
-			// Register and start the Customizer Sections
+			// Register and start the legacy v2 Customizer Sections
+			// @todo: deprecate this when we deprecate v1 views!
 			if ( ! tribe_events_views_v2_is_enabled() ) {
+				tribe_singleton( 'tec.customizer.global-elements', new Tribe__Events__Customizer__Global_Elements() );
 				tribe_singleton( 'tec.customizer.general-theme', new Tribe__Events__Customizer__General_Theme() );
-			}
-
-			tribe_singleton( 'tec.customizer.global-elements', new Tribe__Events__Customizer__Global_Elements() );
-
-			if ( ! tribe_events_views_v2_is_enabled() ) {
 				tribe_singleton( 'tec.customizer.day-list-view', new Tribe__Events__Customizer__Day_List_View() );
 				tribe_singleton( 'tec.customizer.month-week-view', new Tribe__Events__Customizer__Month_Week_View() );
-			}
-
-			tribe_singleton( 'tec.customizer.single-event', new Tribe__Events__Customizer__Single_Event() );
-
-			if ( ! tribe_events_views_v2_is_enabled() ) {
 				tribe_singleton( 'tec.customizer.widget', new Tribe__Events__Customizer__Widget() );
 			}
 
 			// First boot.
 			tribe_register_provider( Tribe\Events\Service_Providers\First_Boot::class );
+
 
 			/**
 			 * Allows other plugins and services to override/change the bound implementations.
@@ -1017,7 +1010,8 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 			$this->singular_event_label_lowercase             = tribe_get_event_label_singular_lowercase();
 			$this->plural_event_label_lowercase               = tribe_get_event_label_plural_lowercase();
 
-			$this->post_type_args['rewrite']['slug']            = $rewrite->prepare_slug( $this->rewriteSlugSingular, self::POSTTYPE, false );
+			$this->post_type_args['rewrite']['slug']          = $rewrite->prepare_slug( $this->rewriteSlugSingular, self::POSTTYPE, false );
+			$this->post_type_args['show_in_rest']             = current_user_can( 'manage_options' );
 			$this->currentDay                                 = '';
 			$this->errors                                     = '';
 
@@ -1101,7 +1095,7 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 		}
 
 		/**
-		 * before_html_data_wrapper adds a persistant tag to wrap the event display with a
+		 * before_html_data_wrapper adds a persistent tag to wrap the event display with a
 		 * way for jQuery to maintain state in the dom. Also has a hook for filtering data
 		 * attributes for inclusion in the dom
 		 *
@@ -1156,7 +1150,7 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 		}
 
 		/**
-		 * after_html_data_wrapper close out the persistant dom wrapper
+		 * after_html_data_wrapper close out the persistent dom wrapper
 		 *
 		 * @param  string $html
 		 *
@@ -1207,7 +1201,7 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 		}
 
 		/**
-		 * Displays the Archive confict notice using Tribe__Admin__Notices code
+		 * Displays the Archive conflict notice using Tribe__Admin__Notices code
 		 *
 		 * @return string
 		 */
@@ -1280,7 +1274,7 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 			$show_tab = current_user_can( 'activate_plugins' );
 
 			/**
-			 * Provides an oppotunity to override the decision to show or hide the upgrade tab
+			 * Provides an opportunity to override the decision to show or hide the upgrade tab
 			 *
 			 * Normally it will only show if the current user has the "activate_plugins" capability
 			 * and there are some currently-activated premium plugins.
@@ -1830,7 +1824,7 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 		}
 
 		/**
-		 * Disable Pro from Running if TEC shutsdown because Event Tickets is an older version
+		 * Disable Pro from Running if TEC shuts down because Event Tickets is an older version
 		 *
 		 * @return bool
 		 */
@@ -1905,7 +1899,7 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 		 *
 		 * @param array  $posts
 		 * @param array  $args
-		 * @param string $post_type
+		 * @param object $post_type
 		 *
 		 * @return array
 		 */
@@ -2131,7 +2125,7 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 		}
 
 		/**
-		 * Generate custom post type lables
+		 * Generate custom post type labels
 		 */
 		protected function generatePostTypeLabels() {
 			/**
@@ -2181,6 +2175,14 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 					'item_updated'             => sprintf(
 						esc_html__( '%s updated.', 'the-events-calendar' ), $this->singular_event_label
 					),
+					'item_link'                => sprintf(
+						// Translators: %s: Event singular.
+						esc_html__( '%s Link', 'the-events-calendar' ), $this->singular_event_label
+					),
+					'item_link_description'    => sprintf(
+						// Translators: %s: Event singular.
+						esc_html__( 'A link to a particular %s.', 'the-events-calendar' ), $this->singular_event_label
+					),
 				]
 			);
 
@@ -2221,6 +2223,14 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 					),
 					'new_item_name'     => sprintf(
 						esc_html__( 'New %s Category Name', 'the-events-calendar' ), $this->singular_event_label
+					),
+					'item_link'         => sprintf(
+						// Translators: %s: Event singular.
+						esc_html__( '%s Category Link', 'the-events-calendar' ), $this->singular_event_label
+					),
+					'item_link_description' => sprintf(
+						// Translators: %s: Event singular.
+						esc_html__( 'A link to a particular %s category.', 'the-events-calendar' ), $this->singular_event_label
 					),
 				]
 			);
@@ -2575,7 +2585,7 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 		}
 
 		/**
-		 * Returns the default view, providing a fallback if the default is no longer availble.
+		 * Returns the default view, providing a fallback if the default is no longer available.
 		 *
 		 * This can be useful is for instance a view added by another plugin (such as PRO) is
 		 * stored as the default but can no longer be generated due to the plugin being deactivated.
@@ -2654,7 +2664,7 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 		}
 
 		/**
-		 * If a themer usees get_post_type_archive_link() to find the event archive URL, this
+		 * If a themer uses get_post_type_archive_link() to find the event archive URL, this
 		 * ensures they get the correct result.
 		 *
 		 * @param  string $link
@@ -3013,12 +3023,17 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 				'sprop'    => 'website:' . home_url(),
 			];
 
-			$timezone = Tribe__Events__Timezones::get_event_timezone_string( $post->ID );
-			$timezone = Tribe__Events__Timezones::maybe_get_tz_name( $timezone );
+			if ( Tribe__Timezones::is_mode( Tribe__Timezones::SITE_TIMEZONE ) ) {
+				$timezone = Tribe__Timezones::build_timezone_object();
+			} else {
+				$timezone = Tribe__Events__Timezones::get_timezone(
+					Tribe__Events__Timezones::get_event_timezone_string( $post->ID )
+				);
+			}
 
 			// If we have a good timezone string we setup it; UTC doesn't work on Google
-			if ( false !== $timezone ) {
-				$params['ctz'] = urlencode( $timezone );
+			if ( $timezone instanceof DateTimeZone) {
+				$params['ctz'] = urlencode( $timezone->getName() );
 			}
 
 			/**
@@ -3037,7 +3052,7 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 		/**
 		* Custom Escape for gCal Description to keep spacing characters in the url
 		*
-		* @return santized url
+		* @return sanitized url
 		*/
 		public function esc_gcal_url( $url ) {
 			$url = str_replace( '%0A', 'TRIBE-GCAL-LINEBREAK', $url );
@@ -3475,7 +3490,7 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 			/**
 			 * When a new venue is saved set the value for ShowMap and ShowMapLink if they are not present as if
 			 * a checkbox is set to false $_POST is not going to send the value and is not going to be present inside
-			 * of the array. This action is fired on update or creation from the admin so it's not goint to affect
+			 * of the array. This action is fired on update or creation from the admin so it's not going to affect
 			 * external components like Community Plugin.
 			 */
 			$data = wp_parse_args(
@@ -4237,7 +4252,7 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 		 */
 		public function dashboardWidget() {
 			wp_add_dashboard_widget(
-					'tribe_dashboard_widget', esc_html__( 'News from Modern Tribe', 'the-events-calendar' ),
+					'tribe_dashboard_widget', esc_html__( 'News from The Events Calendar', 'the-events-calendar' ),
 					[
 							$this,
 							'outputDashboardWidget',
@@ -4667,7 +4682,7 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 		 * a post parent).
 		 *
 		 * We're retaining this logic in core (rather than move it to PRO) since it's
-		 * posible for data from a site running PRO to be imported into a site running only
+		 * possible for data from a site running PRO to be imported into a site running only
 		 * core.
 		 *
 		 * @see Tribe__Events__Main::filter_wp_import_data_after()
@@ -5394,7 +5409,7 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 						],
 						self::$tecUrl . 'knowledgebase/version-compatibility/'
 				);
-				$output .= '<p>' . sprintf( esc_html__( 'The following plugins are out of date: %1$s. All add-ons contain dependencies on The Events Calendar and will not function properly unless paired with the right version. %2$sLearn More%3$s.', 'the-events-calendar' ), '<b>' . join( $out_of_date_addons, ', ' ) . '</b>', "<a href='" . esc_url( $link ) . "' target='_blank'>", '</a>' ) . '</p>';
+				$output .= '<p>' . sprintf( esc_html__( 'The following plugins are out of date: %1$s. All add-ons contain dependencies on The Events Calendar and will not function properly unless paired with the right version. %2$sLearn More%3$s.', 'the-events-calendar' ), '<b>' . join( ', ', $out_of_date_addons ) . '</b>', "<a href='" . esc_url( $link ) . "' target='_blank'>", '</a>' ) . '</p>';
 				$output .= '</div>';
 			}
 			// Make sure only to show the message if the user has the permissions necessary.
@@ -6065,7 +6080,7 @@ if ( ! class_exists( 'Tribe__Events__Main' ) ) {
 		 *
 		 * @since 4.9.2
 		 *
-		 * @return \Tribe__Autoloader Teh singleton common Autoloader instance.
+		 * @return \Tribe__Autoloader The singleton common Autoloader instance.
 		 */
 		public function get_autoloader_instance() {
 			if ( ! class_exists( 'Tribe__Autoloader' ) ) {

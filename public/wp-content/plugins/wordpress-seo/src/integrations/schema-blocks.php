@@ -3,6 +3,7 @@
 namespace Yoast\WP\SEO\Integrations;
 
 use WPSEO_Admin_Asset_Manager;
+use WPSEO_Admin_Asset_Yoast_Components_L10n;
 use Yoast\WP\SEO\Conditionals\Schema_Blocks_Conditional;
 use Yoast\WP\SEO\Helpers\Short_Link_Helper;
 
@@ -40,7 +41,7 @@ class Schema_Blocks implements Integration_Interface {
 	protected $short_link_helper;
 
 	/**
-	 * Returns the conditionals based in which this loadable should be active.
+	 * Returns the conditionals based on which this loadable should be active.
 	 *
 	 * @return array
 	 */
@@ -76,6 +77,7 @@ class Schema_Blocks implements Integration_Interface {
 	 */
 	public function register_hooks() {
 		\add_action( 'enqueue_block_editor_assets', [ $this, 'load' ] );
+		\add_action( 'enqueue_block_editor_assets', [ $this, 'load_translations' ] );
 		\add_action( 'admin_enqueue_scripts', [ $this, 'output' ] );
 	}
 
@@ -136,7 +138,7 @@ class Schema_Blocks implements Integration_Interface {
 		 * @param array $templates The templates to filter.
 		 */
 		$templates = \apply_filters( 'wpseo_load_schema_templates', $templates );
-		if ( ! is_array( $templates ) || empty( $templates ) ) {
+		if ( ! \is_array( $templates ) || empty( $templates ) ) {
 			return;
 		}
 
@@ -144,10 +146,19 @@ class Schema_Blocks implements Integration_Interface {
 			if ( ! \file_exists( $template ) ) {
 				continue;
 			}
-			$type = ( \substr( $template, - 10 ) === '.block.php' ) ? 'block' : 'schema';
+			// `.schema` and other suffixes become Schema (root) templates.
+			$type = ( \substr( $template, -10 ) === '.block.php' ) ? 'block' : 'schema';
 			echo '<script type="text/' . \esc_html( $type ) . '-template">';
 			include $template;
 			echo '</script>';
 		}
+	}
+
+	/**
+	 * Loads the translations and localizes the schema-blocks script file.
+	 */
+	public function load_translations() {
+		$yoast_components_l10n = new WPSEO_Admin_Asset_Yoast_Components_L10n();
+		$yoast_components_l10n->localize_script( 'schema-blocks' );
 	}
 }

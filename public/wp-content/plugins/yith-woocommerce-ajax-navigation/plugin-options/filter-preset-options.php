@@ -3,7 +3,7 @@
  * Filter preset options
  *
  * @author  YITH
- * @package YITH WooCommerce Ajax Product Filter
+ * @package YITH\AjaxProductFilter\Options
  * @version 4.0.0
  */
 
@@ -24,30 +24,30 @@ return apply_filters(
 			'filter_preset_section_start' => array(
 				'type' => 'title',
 				'desc' => '',
-				'id' => 'yith_wcan_filter_preset_settings',
+				'id'   => 'yith_wcan_filter_preset_settings',
 			),
 
-			'presets' => array_merge(
+			'presets'                     => array_merge(
 				array(
-					'name' => _x( 'Filter Presets', '[Admin] Filter Presets tab', 'yith-woocommerce-ajax-navigation' ),
-					'type' => 'yith-field',
-					'yith-type' => 'list-table',
+					'name'                 => _x( 'Filter Presets', '[Admin] Filter Presets tab', 'yith-woocommerce-ajax-navigation' ),
+					'type'                 => 'yith-field',
+					'yith-type'            => 'list-table',
 
-					'list_table_class' => 'YITH_WCAN_Filter_Presets_Table',
-					'list_table_class_dir' => YITH_WCAN_INC . 'tables/class.yith-wcan-filter-presets-table.php',
-					'title' => _x( 'Filter Presets', '[Admin] Filter Presets table title', 'yith-woocommerce-ajax-navigation' ),
-					'id' => 'filter_presets_table',
-					'class' => '',
-					'post_type' => YITH_WCAN_Presets()->get_post_type(),
+					'list_table_class'     => 'YITH_WCAN_Filter_Presets_Table',
+					'list_table_class_dir' => YITH_WCAN_INC . 'tables/class-yith-wcan-filter-presets-table.php',
+					'title'                => _x( 'Filter Presets', '[Admin] Filter Presets table title', 'yith-woocommerce-ajax-navigation' ),
+					'id'                   => 'filter_presets_table',
+					'class'                => '',
+					'post_type'            => YITH_WCAN_Presets()->get_post_type(),
 				),
 				YITH_WCAN_Preset_Factory::count_presets() ? array(
 					'add_new_button' => _x( 'Add preset', '[Admin] Add Preset button', 'yith-woocommerce-ajax-navigation' ),
 				) : array()
 			),
 
-			'lists_section_end' => array(
+			'lists_section_end'           => array(
 				'type' => 'sectionend',
-				'id' => 'yith_wcan_filter_preset_settings',
+				'id'   => 'yith_wcan_filter_preset_settings',
 			),
 		),
 	)

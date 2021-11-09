@@ -17,7 +17,11 @@ $cmb->add_field(
 		'id'      => 'disable_date_archives',
 		'type'    => 'switch',
 		'name'    => esc_html__( 'Date Archives', 'rank-math' ),
-		'desc'    => esc_html__( 'Enable or disable the date archive (_e.g: domain.com/2019/06/_). If this option is disabled, the date archives will be redirected to the homepage.', 'rank-math' ),
+		'desc'    => sprintf(
+			// Translators: placeholder is an example URL.
+			esc_html__( 'Enable or disable the date archives (e.g: %s). If this option is disabled, the date archives will be redirected to the homepage.', 'rank-math' ),
+			'<code>domain.com/2019/06/</code>'
+		),
 		'options' => [
 			'on'  => esc_html__( 'Disabled', 'rank-math' ),
 			'off' => esc_html__( 'Enabled', 'rank-math' ),
@@ -50,7 +54,7 @@ $cmb->add_field(
 		'dep'        => $dep,
 		'attributes' => [
 			'class'                  => 'cmb2-textarea-small wp-exclude-emoji',
-			'data-gramm_editor'      => 'false',
+			'data-gramm'             => 'false',
 			'rows'                   => 2,
 			'data-exclude-variables' => 'seo_title,seo_description',
 		],

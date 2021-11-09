@@ -1,23 +1,22 @@
 <?php
 /**
- * This file belongs to the YIT Plugin Framework.
+ * Filter options
  *
- * This source file is subject to the GNU GENERAL PUBLIC LICENSE (GPL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.gnu.org/licenses/gpl-3.0.txt
+ * @author  YITH
+ * @package YITH\AjaxProductFilter\Options
+ * @version 4.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-    exit;
+	exit;
 } // Exit if accessed directly
 
 
 return array(
-    'premium' => array(
-        'home' => array(
-            'type'   => 'custom_tab',
-            'action' => 'yith_wcan_premium_tab'
-        )
-    )
+	'premium' => array(
+		'home' => array(
+			'type'   => 'custom_tab',
+			'action' => 'yith_wcan_premium_tab',
+		),
+	),
 );

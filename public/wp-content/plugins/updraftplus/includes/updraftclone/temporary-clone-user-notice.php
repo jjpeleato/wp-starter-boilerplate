@@ -111,5 +111,5 @@ class UpdraftPlus_Temporary_Clone_User_Notice {
 }
 
 if (defined('UPDRAFTPLUS_THIS_IS_CLONE')) {
-	$updraftplus_temporary_clone_user_notice = new UpdraftPlus_Temporary_Clone_User_Notice();
+	new UpdraftPlus_Temporary_Clone_User_Notice();
 }

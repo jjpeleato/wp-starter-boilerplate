@@ -3,12 +3,14 @@
 namespace Yoast\WP\SEO\Builders;
 
 use WP_Error;
+use WP_Post;
 use WPSEO_Meta;
 use Yoast\WP\SEO\Exceptions\Indexable\Post_Not_Found_Exception;
 use Yoast\WP\SEO\Helpers\Post_Helper;
 use Yoast\WP\SEO\Helpers\Post_Type_Helper;
 use Yoast\WP\SEO\Models\Indexable;
 use Yoast\WP\SEO\Repositories\Indexable_Repository;
+use Yoast\WP\SEO\Values\Indexables\Indexable_Builder_Versions;
 
 /**
  * Post Builder for the indexables.
@@ -16,6 +18,7 @@ use Yoast\WP\SEO\Repositories\Indexable_Repository;
  * Formats the post meta to indexable format.
  */
 class Indexable_Post_Builder {
+
 	use Indexable_Social_Image_Trait;
 
 	/**
@@ -40,17 +43,27 @@ class Indexable_Post_Builder {
 	protected $post_type_helper;
 
 	/**
+	 * Knows the latest version of the Indexable post builder type.
+	 *
+	 * @var int
+	 */
+	protected $version;
+
+	/**
 	 * Indexable_Post_Builder constructor.
 	 *
-	 * @param Post_Helper      $post_helper      The post helper.
-	 * @param Post_Type_Helper $post_type_helper The post type helper.
+	 * @param Post_Helper                $post_helper      The post helper.
+	 * @param Post_Type_Helper           $post_type_helper The post type helper.
+	 * @param Indexable_Builder_Versions $versions         The indexable builder versions.
 	 */
 	public function __construct(
 		Post_Helper $post_helper,
-		Post_Type_Helper $post_type_helper
+		Post_Type_Helper $post_type_helper,
+		Indexable_Builder_Versions $versions
 	) {
 		$this->post_helper      = $post_helper;
 		$this->post_type_helper = $post_type_helper;
+		$this->version          = $versions->get_latest_version_for_type( 'post' );
 	}
 
 	/**
@@ -75,6 +88,10 @@ class Indexable_Post_Builder {
 	 * @throws Post_Not_Found_Exception When the post could not be found.
 	 */
 	public function build( $post_id, $indexable ) {
+		if ( ! $this->post_helper->is_post_indexable( $post_id ) ) {
+			return false;
+		}
+
 		$post = $this->post_helper->get_post( $post_id );
 
 		if ( $post === null ) {
@@ -135,14 +152,16 @@ class Indexable_Post_Builder {
 		$indexable->schema_page_type    = $this->get_meta_value( $post_id, 'schema_page_type' );
 		$indexable->schema_article_type = $this->get_meta_value( $post_id, 'schema_article_type' );
 
+		$indexable->version = $this->version;
+
 		return $indexable;
 	}
 
 	/**
 	 * Retrieves the permalink for a post with the given post type and ID.
 	 *
-	 * @param string  $post_type The post type.
-	 * @param integer $post_id   The post ID.
+	 * @param string $post_type The post type.
+	 * @param int    $post_id   The post ID.
 	 *
 	 * @return false|string|WP_Error The permalink.
 	 */
@@ -270,7 +289,7 @@ class Indexable_Post_Builder {
 	 * @param string $keyword The focus keyword that is set.
 	 * @param int    $score   The score saved on the meta data.
 	 *
-	 * @return null|int Score to use.
+	 * @return int|null Score to use.
 	 */
 	protected function get_keyword_score( $keyword, $score ) {
 		if ( empty( $keyword ) ) {
@@ -386,7 +405,7 @@ class Indexable_Post_Builder {
 	/**
 	 * Checks whether an indexable should be built for this post.
 	 *
-	 * @param \WP_Post $post The post for which an indexable should be built.
+	 * @param WP_Post $post The post for which an indexable should be built.
 	 *
 	 * @return bool `true` if the post should be excluded from building, `false` if not.
 	 */

@@ -2,9 +2,9 @@
 
 Contributors: yithemes
 Tags: woocommerce ajax product filter download, woocommerce, widget, ajax, ajax filtered nav, ajax navigation, ajax filtered navigation, woocommerce layered navigation, woocommerce layered nav, product filter, product filters, ajax product filter, woocommerce ajax product filter, woocommerce filters, sidebar filter, sidebar ajax filter, ajax price filter, price filter, product sorting, woocommerce filter, taxonomy filter, attribute filter, attributes filter, woocommerce product sort, ajax sort, woocommerce ajax product filter, advanced product filters, ajax product filters, filters, woocommerce ajax product filters, woocommerce product filters, woocommerce product filters, category filter, attribute filters, woocommerce products filter, woocommerce price filter, yit, yith, yithemes
-Requires at least: 5.3
-Tested up to: 5.7
-Stable tag: 4.0.3
+Requires at least: 5.6
+Tested up to: 5.8
+Stable tag: 4.3.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -151,6 +151,91 @@ If none of the previous listed actions helps you solve the problem, then, submit
 14. Gutenberg block
 
 == Changelog ==
+
+= 4.3.0 - Released on 10 October 2021 =
+
+* New: support for WooCommerce 5.8
+* Update: YITH Plugin Framework
+
+= 4.2.1 - Released on 27 September 2021 =
+
+* Update: YITH Plugin Framework
+* Fix: debug info feature removed for all logged in users
+
+= 4.2.0 - Released on 24 September 2021 =
+
+* New: support for WooCommerce 5.7
+* Update: YITH plugin framework
+* Tweak: improved plugin's internal cache management
+* Tweak: improved integration with YITH WooCommerce Color & Label Variations, when showing variations on loop
+* Tweak: suppress plugin's filters when retrieving in-stock products
+* Tweak: better compatibility with products query (supports queries with more than one post type)
+* Tweak: avoid duplicated ID for select filters
+* Tweak: add filtered body class via JS, immediately after filtering action takes place
+* Tweak: improved terms hierarchy appearance on RTL
+* Tweak: delete plugin transients when C&L configuration changes
+* Fix: apply changes to the query even when it retrieves a product taxonomy
+* Fix: set correct 'include' parameter when retrieving terms' children
+* Fix: prevent possible notice when handling terms hierarchy with use_all_terms enabled
+* Fix: allow system to retrieve C&L term configuration, when Use all Terms is enabled
+* Dev: Reset Filters button now has its own set of filters, distinct from ones used for Apply Filters button
+* Dev: added yith_wcan_filter_tax_label_image_size and yith_wcan_filter_tax_color_image_size filters
+* Dev: added yith_wcan_filter_tax_label_image_attr and yith_wcan_filter_tax_color_image_attr filters
+* Dev: added yith_wcan_supported_filters_parameters trigger
+* Dev: added yith_wcan_doing_filters function to check if system is performing filters
+* Dev: added yith_wcan_suppress_cache filter
+
+= 4.1.1 - Released on 04 August 2021 =
+
+* New: support for WordPress 5.8
+* New: support for WooCommerce 5.6
+* Update: YITH plugin framework
+* Tweak: code refactoring
+* Tweak: avoid caching query_vars until wp performed main query, to be sure to include all parameters available
+* Tweak: avoid possible error with Tax queries without terms
+* Fix: prevent possible error on preset edit page when running PHP 8
+* Fix: populateFilter method causing issues when loading more terms on backend
+* Fix: avoid possible notice when shop has product taxonomies with no rewrite defined
+* Fix: empty terms when using AutoPopulate options
+* Fix: plugin can now disable filters with numeric slugs
+* Dev: added second parameter to yith_wcan_filter_tax_additional_item_classes filter
+* Dev: added yith_wcan_pre_reduce_tax_query filter, to allow programmatically skip reduce_tax_query execution
+
+= 4.1.0 - Released on 18 June 2021 =
+
+* New: support for WooCommerce 5.4
+* New: auto-populate taxonomy filters
+* New: support for YITH WooCommerce Color and Label Variations
+* New: support for Hello Elementor theme
+* New: automatically use term image, when available
+* New: option to choose where to show term labels in color/label layouts
+* New: added cron to delete transient with the old cache version
+* Update: YITH plugin framework
+* Tweak: changed name of the flag used to suppress filters query processing
+* Tweak: use svg instead of text for x icon in filters
+* Tweak: improved compatibility with Porto theme
+* Fix: issue with query-vars processing, causing orderby option to break
+* Fix: avoid possible JS error Cannot use in operator to search in null
+* Fix: multiple selection for categories, tags and brands does not work on OR mode in old widgets
+* Fix: avoid filters overwriting after new page is loaded (index overriding)
+* Dev: use babel to make scripts work on older browsers/devices
+* Dev: added trigger yith_wcan_preset_initialized
+* Dev: added new yith_wcan_query_post_in filter, to programmatically change products used by our plugin
+
+= 4.0.4 - Released on 18 May 2021 =
+
+* New: support for WooCommerce 5.3
+* Update: YITH plugin framework
+* Tweak: improved WPML metabox handling
+* Tweak: added option to skip sanitization of url parameters
+* Fix: pass all slugs to rawurldecode before printing them as HTML
+* Fix: pass all terms coming from query string to sanitize_title
+* Fix: possible error when adding all terms on backend filter
+* Fix: cast both property-to-remove and term-slug to string before comparison, to avoid errors when deactivating filters
+* Dev: added method to retrieve original post in Preset object
+* Dev: added filter yith_wcan_all_filters_label to allow third party code to change All label in select filters
+* Dev: added trigger yith_wcan_filters_parameters
+* Dev: added filter yith_wcan_is_filter_active
 
 = 4.0.3 - Released on 20 April 2021 =
 

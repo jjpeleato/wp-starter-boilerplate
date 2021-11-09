@@ -1,4 +1,3 @@
-/* globals tribe, jQuery */
 /**
  * Makes sure we have all the required levels on the Tribe Object
  *
@@ -48,6 +47,18 @@ tribe.events.views.manager = {};
 		loader: '.tribe-events-view-loader',
 		loaderText: '.tribe-events-view-loader__text',
 		hiddenElement: '.tribe-common-a11y-hidden',
+	};
+
+	/**
+	 * Object with the details of the last location URL.
+	 *
+	 * @since 5.7.0
+	 *
+	 * @type {{origin: string, pathname: string}}
+	 */
+	obj.lastLocation = {
+		origin: '',
+		pathname: '',
 	};
 
 	/**
@@ -275,6 +286,8 @@ tribe.events.views.manager = {};
 
 		// Push browser history
 		window.history.pushState( null, data.title, data.url );
+		obj.lastLocation.pathname = document.location.pathname;
+		obj.lastLocation.origin = document.location.origin;
 	};
 
 	/**
@@ -315,7 +328,7 @@ tribe.events.views.manager = {};
 		};
 
 		if ( shortcodeId ) {
-			data[ 'shortcode' ] = shortcodeId;
+			data.shortcode = shortcodeId;
 		}
 
 		obj.request( data, $container );
@@ -376,6 +389,17 @@ tribe.events.views.manager = {};
 		var target = event.originalEvent.target;
 		var url = target.location.href;
 		var $container = obj.getLastContainer();
+
+		// We are at the same URL + path as before so not really a change on the
+		// actual URL happen, it might be just a hash change which shouldn't
+		// trigger and XHR request.
+		// eslint-disable-next-line max-len
+		if ( obj.lastLocation.origin === target.location.origin && obj.lastLocation.pathname === target.location.pathname ) {
+			return false;
+		}
+
+		obj.lastLocation.pathname = document.location.pathname;
+		obj.lastLocation.origin = document.location.origin;
 
 		if ( ! $container ) {
 			return false;
@@ -663,6 +687,10 @@ tribe.events.views.manager = {};
 	 */
 	obj.ready = function() {
 		obj.selectContainers().each( obj.setup );
+		obj.lastLocation = {
+			origin: document.location.origin,
+			pathname: document.location.pathname,
+		};
 	};
 
 	// Configure on document ready.

@@ -5,8 +5,8 @@
  * @package WooCommerce\Admin
  */
 
-use Automattic\WooCommerce\Admin\Loader;
 use Automattic\WooCommerce\Admin\PageController;
+use Automattic\WooCommerce\Admin\Features\Features;
 
 /**
  * Returns core WC pages to connect to WC-Admin.
@@ -23,7 +23,7 @@ function wc_admin_get_core_pages_to_connect() {
 
 	return array(
 		'wc-addons'   => array(
-			'title' => __( 'Extensions', 'woocommerce' ),
+			'title' => __( 'Marketplace', 'woocommerce' ),
 			'tabs'  => array(),
 		),
 		'wc-reports'  => array(
@@ -78,7 +78,9 @@ function wc_admin_filter_core_page_breadcrumbs( $breadcrumbs ) {
 					),
 				);
 
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 				if ( isset( $_GET['tab'] ) ) {
+					// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 					$current_tab = wc_clean( wp_unslash( $_GET['tab'] ) );
 				} else {
 					$current_tab = key( $page_data['tabs'] );
@@ -156,7 +158,7 @@ wc_admin_connect_page(
 wc_admin_connect_page(
 	array(
 		'id'        => 'woocommerce-coupons',
-		'parent'    => Loader::is_feature_enabled( 'coupons' ) ? 'woocommerce-marketing' : null,
+		'parent'    => Features::is_enabled( 'coupons' ) ? 'woocommerce-marketing' : null,
 		'screen_id' => 'edit-shop_coupon',
 		'title'     => __( 'Coupons', 'woocommerce' ),
 		'path'      => add_query_arg( 'post_type', 'shop_coupon', $posttype_list_base ),
@@ -290,5 +292,15 @@ wc_admin_connect_page(
 		'parent'    => 'woocommerce-products',
 		'screen_id' => 'product_page_product_attribute-edit',
 		'title'     => __( 'Edit attribute', 'woocommerce' ),
+	)
+);
+
+// WooCommerce > My Subscriptions.
+wc_admin_connect_page(
+	array(
+		'id'        => 'wc-subscriptions',
+		'screen_id' => 'woocommerce_page_wc-addons-browse-extensions-helper',
+		'title'     => __( 'My Subscriptions', 'woocommerce' ),
+		'path'      => 'admin.php?page=wc-addons&section=helper',
 	)
 );

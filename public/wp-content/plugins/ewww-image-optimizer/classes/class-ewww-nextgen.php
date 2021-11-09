@@ -229,6 +229,7 @@ if ( ! class_exists( 'EWWW_Nextgen' ) ) {
 		 * @param object $size The name of the size generated.
 		 */
 		function ewww_ngg_generated_image( $image, $size ) {
+			ewwwio_debug_message( '<b>' . __METHOD__ . '()</b>' );
 			global $ewww_image;
 			// Creating the 'registry' object for working with nextgen.
 			$registry = C_Component_Registry::get_instance();
@@ -250,6 +251,7 @@ if ( ! class_exists( 'EWWW_Nextgen' ) ) {
 		 * Manually process an image from the NextGEN Gallery.
 		 */
 		function ewww_ngg_manual() {
+			ewwwio_debug_message( '<b>' . __METHOD__ . '()</b>' );
 			// Check permission of current user.
 			$permissions = apply_filters( 'ewww_image_optimizer_manual_permissions', '' );
 			if ( false === current_user_can( $permissions ) ) {
@@ -286,12 +288,22 @@ if ( ! class_exists( 'EWWW_Nextgen' ) ) {
 			$image   = $storage->object->_image_mapper->find( $id );
 			$image   = $this->ewww_added_new_image( $image, $storage );
 			$success = $this->ewww_manage_image_custom_column( '', $image );
-			if ( get_transient( 'ewww_image_optimizer_cloud_status' ) === 'exceeded' || ewww_image_optimizer_get_option( 'ewww_image_optimizer_cloud_exceeded' ) > time() ) {
+			if ( 'exceeded' === get_transient( 'ewww_image_optimizer_cloud_status' ) || ewww_image_optimizer_get_option( 'ewww_image_optimizer_cloud_exceeded' ) > time() ) {
 				ewwwio_ob_clean();
 				wp_die(
 					wp_json_encode(
 						array(
 							'error' => '<a href="https://ewww.io/buy-credits/" target="_blank">' . esc_html__( 'License exceeded', 'ewww-image-optimizer' ) . '</a>',
+						)
+					)
+				);
+			}
+			if ( 'exceeded quota' === get_transient( 'ewww_image_optimizer_cloud_status' ) ) {
+				ewwwio_ob_clean();
+				wp_die(
+					wp_json_encode(
+						array(
+							'error' => '<a href="https://docs.ewww.io/article/101-soft-quotas-on-unlimited-plans" target="_blank">' . esc_html__( 'Soft quota reached, contact us for more', 'ewww-image-optimizer' ) . '</a>',
 						)
 					)
 				);
@@ -309,6 +321,7 @@ if ( ! class_exists( 'EWWW_Nextgen' ) ) {
 		 * Restore an image from the NextGEN Gallery.
 		 */
 		function ewww_ngg_cloud_restore() {
+			ewwwio_debug_message( '<b>' . __METHOD__ . '()</b>' );
 			// Check permission of current user.
 			$permissions = apply_filters( 'ewww_image_optimizer_manual_permissions', '' );
 			if ( false === current_user_can( $permissions ) ) {
@@ -619,8 +632,15 @@ if ( ! class_exists( 'EWWW_Nextgen' ) ) {
 		 */
 		function ewww_ngg_bulk_preview() {
 			if ( ! empty( $_REQUEST['doaction'] ) ) {
-				if ( empty( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_REQUEST['_wpnonce'] ), 'ngg_bulkgallery' ) ) {
-					return;
+				if (
+					empty( $_REQUEST['_wpnonce'] ) ||
+					(
+						! wp_verify_nonce( sanitize_key( $_REQUEST['_wpnonce'] ), 'ngg_bulkgallery' ) &&
+						! wp_verify_nonce( sanitize_key( $_REQUEST['_wpnonce'] ), 'ngg_updategallery' )
+					)
+				) {
+						ewwwio_debug_message( 'nonce verify failed' );
+						return;
 				}
 				// If there is no requested bulk action, do nothing.
 				if ( empty( $_REQUEST['bulkaction'] ) ) {
@@ -643,7 +663,7 @@ if ( ! class_exists( 'EWWW_Nextgen' ) ) {
 				<?php
 				if ( ewww_image_optimizer_get_option( 'ewww_image_optimizer_cloud_key' ) ) {
 					ewww_image_optimizer_cloud_verify( ewww_image_optimizer_get_option( 'ewww_image_optimizer_cloud_key' ) );
-					echo '<a id="ewww-bulk-credits-available" target="_blank" class="page-title-action" style="float:right;" href="https://ewww.io/my-account/">' . esc_html__( 'Image credits available:', 'ewww-image-optimizer' ) . ' ' . esc_html( ewww_image_optimizer_cloud_quota() ) . '</a>';
+					echo '<span id="ewww-bulk-credits-available">' . esc_html__( 'Image credits available:', 'ewww-image-optimizer' ) . ' ' . wp_kses_post( ewww_image_optimizer_cloud_quota() ) . '</span>';
 				}
 				echo '<div id="ewww-bulk-warning" class="ewww-bulk-info notice notice-warning"><p>' . esc_html__( 'Bulk Optimization will alter your original images and cannot be undone. Please be sure you have a backup of your images before proceeding.', 'ewww-image-optimizer' ) . '</p></div>';
 				// Retrieve the value of the 'bulk resume' option and set the button text for the form to use.
@@ -814,7 +834,7 @@ if ( ! class_exists( 'EWWW_Nextgen' ) ) {
 			// Store the image IDs to process in the db.
 			update_option( 'ewww_image_optimizer_bulk_ngg_attachments', $images, false );
 			// Add the EWWW IO script.
-			wp_enqueue_script( 'ewwwbulkscript', plugins_url( '/includes/eio.js', EWWW_IMAGE_OPTIMIZER_PLUGIN_FILE ), array( 'jquery', 'jquery-ui-progressbar', 'jquery-ui-slider', 'postbox', 'dashboard' ), EWWW_IMAGE_OPTIMIZER_VERSION );
+			wp_enqueue_script( 'ewwwbulkscript', plugins_url( '/includes/eio-bulk.js', EWWW_IMAGE_OPTIMIZER_PLUGIN_FILE ), array( 'jquery', 'jquery-ui-progressbar', 'jquery-ui-slider', 'postbox', 'dashboard' ), EWWW_IMAGE_OPTIMIZER_VERSION );
 			// Replacing the built-in nextgen styling rules for progressbar, partially because the bulk optimize page doesn't work without them.
 			wp_deregister_style( 'ngg-jqueryui' );
 			wp_deregister_style( 'ngg-jquery-ui' );
@@ -1027,7 +1047,14 @@ if ( ! class_exists( 'EWWW_Nextgen' ) ) {
 		 */
 		function ewww_ngg_bulk_action_handler() {
 			ewwwio_debug_message( '<b>' . __METHOD__ . '()</b>' );
-			if ( empty( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_REQUEST['_wpnonce'] ), 'ngg_bulkgallery' ) ) {
+			if (
+				empty( $_REQUEST['_wpnonce'] ) ||
+				(
+					! wp_verify_nonce( sanitize_key( $_REQUEST['_wpnonce'] ), 'ngg_bulkgallery' ) &&
+					! wp_verify_nonce( sanitize_key( $_REQUEST['_wpnonce'] ), 'ngg_updategallery' )
+				)
+			) {
+				ewwwio_debug_message( 'nonce verify failed' );
 				return;
 			}
 			// If the requested page is blank, or not a bulk_optimize, do nothing.
@@ -1054,7 +1081,7 @@ if ( ! class_exists( 'EWWW_Nextgen' ) ) {
 						'_wpnonce'   => sanitize_key( $_REQUEST['_wpnonce'] ),
 						'bulk_type'  => $type,
 						'bulkaction' => 'bulk_optimize',
-						'doaction'   => sanitize_key( $_REQUEST['doaction'] ),
+						'doaction'   => array_map( 'intval', wp_unslash( $_REQUEST['doaction'] ) ), // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 					),
 					admin_url( 'admin.php' )
 				)

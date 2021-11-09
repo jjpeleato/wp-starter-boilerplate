@@ -110,6 +110,19 @@ if ($updraftplus_checkout_embed) {
 				</tr>
 				<tr>
 					<td>
+						<img src="<?php echo UPDRAFTPLUS_URL.'/images/addons-images/anonymisation.png';?>" alt="<?php esc_attr_e('Anonymisation functions', 'updraftplus');?>" width="80" height="80" class="udp-premium-image">
+						<h4><?php _e('Anonymisation functions', 'updraftplus');?></h4>
+						<p><?php _e('Anonymise personal data in your database backups.', 'updraftplus');?></p>
+					</td>
+					<td>
+						<p><span class="dashicons dashicons-no-alt" aria-label="<?php esc_attr_e('No', 'updraftplus');?>"></span></p>
+					</td>
+					<td>
+						<p><span class="dashicons dashicons-yes" aria-label="<?php esc_attr_e('Yes', 'updraftplus');?>"></span></p>
+					</td>
+				</tr>
+				<tr>
+					<td>
 						<img src="<?php echo UPDRAFTPLUS_URL.'/images/addons-images/incremental.png';?>" alt="<?php esc_attr_e('Incremental backups', 'updraftplus');?>" width="80" height="80" class="udp-premium-image">
 						<h4><?php _e('Incremental backups', 'updraftplus');?></h4>
 						<p><?php _e('Allows you to only backup changes to your files (such as a new image) that have been made to your site since the last backup.', 'updraftplus');?></p>

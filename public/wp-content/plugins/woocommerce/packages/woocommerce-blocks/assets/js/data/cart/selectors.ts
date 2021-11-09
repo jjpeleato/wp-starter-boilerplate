@@ -7,7 +7,7 @@ import type { Cart, CartTotals, CartMeta, CartItem } from '@woocommerce/types';
  * Internal dependencies
  */
 import { CartState, defaultCartState } from '../default-states';
-import { ResponseError } from '../types';
+import type { ResponseError } from '../types';
 
 /**
  * Retrieves cart data from state.
@@ -46,7 +46,7 @@ export const getCartMeta = ( state: CartState ): CartMeta => {
  * @return {Array<ResponseError>} Array of errors.
  */
 export const getCartErrors = ( state: CartState ): Array< ResponseError > => {
-	return state.errors || [];
+	return state.errors;
 };
 
 /**
@@ -57,6 +57,16 @@ export const getCartErrors = ( state: CartState ): Array< ResponseError > => {
  */
 export const isApplyingCoupon = ( state: CartState ): boolean => {
 	return !! state.metaData.applyingCoupon;
+};
+
+/**
+ * Returns true if cart is stale, false if it is not.
+ *
+ * @param {CartState} state The current state.
+ * @return {boolean} True if the cart data is stale.
+ */
+export const isCartDataStale = ( state: CartState ): boolean => {
+	return state.metaData.isCartDataStale;
 };
 
 /**

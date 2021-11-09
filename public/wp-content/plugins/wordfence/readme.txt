@@ -3,8 +3,8 @@ Contributors: mmaunder, wfryan, wfmatt, wfmattr
 Tags: security, firewall, malware scanner, web application firewall, two factor authentication, block hackers, country blocking, clean hacked site, blocklist, waf, login security
 Requires at least: 3.9
 Requires PHP: 5.3
-Tested up to: 5.7
-Stable tag: 7.5.2
+Tested up to: 5.8
+Stable tag: 7.5.6
 
 Secure your website with the most comprehensive WordPress security plugin. Firewall, malware scan, blocking, live traffic, login security & more.
 
@@ -182,6 +182,56 @@ Secure your website with Wordfence.
 9. Logging in is easy with Wordfence 2FA.
 
 == Changelog ==
+
+= 7.5.6 - October 18, 2021 =
+* Fix: Prevented login errors with WooCommerce integration when manual username entry is enabled on the WooCommerce registration form
+* Fix: Corrected theme incompatibilities with WooCommerce integration
+
+= 7.5.5 - August 16, 2021 =
+* Improvement: Enhanced accessibility
+* Improvement: Replaced regex in scan log with signature ID
+* Improvement: Updated Knockout JS dependency to version 3.5.1
+* Improvement: Removed PHP 8 compatibility notice
+* Improvement: Added NTP status for Login Security to Diagnostics
+* Improvement: Updated plugin headers for compatibility with WordPress 5.8
+* Improvement: Updated Nginx documentation links to HTTPS
+* Improvement: Updated IP address geolocation database
+* Improvement: Expanded WAF SQL syntax support
+* Improvement: Added optional constants to configure WAF database connection
+* Improvement: Added support for matching punycode domain names
+* Improvement: Updated Wordfence install count
+* Improvement: Deprecated support for WordPress versions older than 4.4.0
+* Improvement: Added warning messages when blocking U.S.
+* Improvement: Added MYSQLI_CLIENT_SSL support to WAF database connection
+* Improvement: Added 2FA and reCAPTCHA support for WooCommerce login and registration forms
+* Improvement: Added option to require 2FA for any role
+* Improvement: Added logic to automatically disable NTP after repeated failures and option to manually disable NTP
+* Improvement: Updated reCAPTCHA setup note
+* Fix: Prevented issue where country blocking changes are not saved
+* Fix: Corrected string placeholder
+* Fix: Added missing text domain to translation calls
+* Fix: Corrected warning about sprintf arguments on Central setup page
+* Fix: Prevented lost password functionality from revealing valid logins
+
+= 7.5.4 - June 7, 2021 =
+
+* Fix: Resolve conflict with woocommerce-gateway-amazon-payments-advanced plugin
+
+= 7.5.3 - May 10, 2021 =
+
+* Improvement: Expanded WAF capabilities including better JSON and user permission handling
+* Improvement: Switched to relative paths in WAF auto_prepend file to increase portability
+* Improvement: Eliminated unnecessary calls to Wordfence servers
+* Fix: Prevented errors on PHP 8.0 when disk_free_space and/or disk_total_space are included in disabled_functions
+* Fix: Fixed PHP notices caused by unexpected plugin version data
+* Fix: Gracefully handle unexpected responses from Wordfence servers
+* Fix: Time field now displays correctly on "See Recent Traffic" overlay
+* Fix: Corrected typo on Diagnostics page
+* Fix: Corrected IP counts on activity report
+* Fix: Added missing line break in scan result emails
+* Fix: Sending test activity report now provides success/failure response
+* Fix: Reduced SQLi false positives caused by comma-separated strings
+* Fix: Fixed JS error when resolving last scan result
 
 = 7.5.2 - March 24, 2021 =
 

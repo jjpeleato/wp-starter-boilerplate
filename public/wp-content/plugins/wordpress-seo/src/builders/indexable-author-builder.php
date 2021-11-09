@@ -4,6 +4,7 @@ namespace Yoast\WP\SEO\Builders;
 
 use Yoast\WP\SEO\Helpers\Author_Archive_Helper;
 use Yoast\WP\SEO\Models\Indexable;
+use Yoast\WP\SEO\Values\Indexables\Indexable_Builder_Versions;
 
 /**
  * Author Builder for the indexables.
@@ -11,6 +12,7 @@ use Yoast\WP\SEO\Models\Indexable;
  * Formats the author meta to indexable format.
  */
 class Indexable_Author_Builder {
+
 	use Indexable_Social_Image_Trait;
 
 	/**
@@ -21,12 +23,24 @@ class Indexable_Author_Builder {
 	private $author_archive;
 
 	/**
+	 * The latest version of the Indexable_Author_Builder.
+	 *
+	 * @var int
+	 */
+	protected $version;
+
+	/**
 	 * Indexable_Author_Builder constructor.
 	 *
-	 * @param Author_Archive_Helper $author_archive The author archive helper.
+	 * @param Author_Archive_Helper      $author_archive The author archive helper.
+	 * @param Indexable_Builder_Versions $versions       The Indexable version manager.
 	 */
-	public function __construct( Author_Archive_Helper $author_archive ) {
+	public function __construct(
+		Author_Archive_Helper $author_archive,
+		Indexable_Builder_Versions $versions
+	) {
 		$this->author_archive = $author_archive;
+		$this->version        = $versions->get_latest_version_for_type( 'user' );
 	}
 
 	/**
@@ -57,6 +71,8 @@ class Indexable_Author_Builder {
 
 		$this->reset_social_images( $indexable );
 		$this->handle_social_images( $indexable );
+
+		$indexable->version = $this->version;
 
 		return $indexable;
 	}
@@ -89,7 +105,7 @@ class Indexable_Author_Builder {
 	 * @param int    $user_id The user to retrieve the indexable for.
 	 * @param string $key     The meta entry to retrieve.
 	 *
-	 * @return string The value of the meta field.
+	 * @return string|null The value of the meta field.
 	 */
 	protected function get_author_meta( $user_id, $key ) {
 		$value = \get_the_author_meta( $key, $user_id );

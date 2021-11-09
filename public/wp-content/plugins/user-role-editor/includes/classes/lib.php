@@ -25,6 +25,9 @@ class URE_Lib extends URE_Base_Lib {
     // when we raise single site admin permissions up to the superadmin for the 'Add new user' new-user.php page
     // User_Role_Editor::allow_add_user_as_superadmin()
     protected $raised_permissions = false; 
+    
+    // roles sorting order: false - do not sort, 'id' - by role ID, 'name' - by role name
+    protected $roles_sorting_order = false;
  
     protected $debug = false;
  

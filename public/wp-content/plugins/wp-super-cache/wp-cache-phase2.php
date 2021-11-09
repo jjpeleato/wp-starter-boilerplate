@@ -28,6 +28,36 @@ function get_wp_cache_key( $url = false ) {
 	return do_cacheaction( 'wp_cache_key', wp_cache_check_mobile( $WPSC_HTTP_HOST . $server_port . preg_replace('/#.*$/', '', str_replace( '/index.php', '/', $url ) ) . $wp_cache_gzip_encoding . wp_cache_get_cookies_values() ) );
 }
 
+function wpsc_remove_tracking_params_from_uri( $uri ) {
+	global $wpsc_tracking_parameters, $wpsc_ignore_tracking_parameters;
+
+	if ( ! isset( $wpsc_ignore_tracking_parameters ) || ! $wpsc_ignore_tracking_parameters ) {
+		return $uri;
+	}
+
+	if ( ! isset( $wpsc_tracking_parameters ) || empty( $wpsc_tracking_parameters ) ) {
+		return $uri;
+	}
+
+	$parsed_url = parse_url( $uri );
+	$query      = array();
+
+	if ( isset( $parsed_url['query'] ) ) {
+		parse_str( $parsed_url['query'], $query );
+		foreach( $wpsc_tracking_parameters as $param_name ) {
+			unset( $query[$param_name] );
+		}
+	}
+	$path = isset( $parsed_url['path'] ) ? $parsed_url['path'] : '';
+	$query = ! empty( $query ) ? '?' . http_build_query( $query ) : '';
+
+	if ( $uri !== $path . $query ) {
+		wp_cache_debug( 'Removed tracking parameters from URL. Returning ' . $path . $query );
+	}
+
+	return $path . $query;
+}
+
 function wp_super_cache_init() {
 	global $wp_cache_key, $key, $blogcacheid, $file_prefix, $blog_cache_dir, $meta_file, $cache_file, $cache_filename, $meta_pathname;
 
@@ -1235,7 +1265,13 @@ function wp_cache_replace_line( $old, $new, $my_file ) {
 		}
 	}
 
-	$tmp_config_filename = tempnam( $GLOBALS['cache_path'], 'wpsc' );
+	$tmp_config_filename = tempnam( $GLOBALS['cache_path'], md5( mt_rand( 0, 9999 ) ) );
+	if ( file_exists( $tmp_config_filename . '.php' ) ) {
+		unlink( $tmp_config_filename . '.php' );
+		if ( file_exists( $tmp_config_filename . '.php' ) ) {
+			die( __( 'WARNING: attempt to intercept updating of config file.', 'wp-super-cache' ) );
+		}
+	}
 	rename( $tmp_config_filename, $tmp_config_filename . ".php" );
 	$tmp_config_filename .= ".php";
 	wp_cache_debug( 'wp_cache_replace_line: writing to ' . $tmp_config_filename );
@@ -1604,6 +1640,21 @@ function wp_cache_get_response_headers() {
 	}
 
 	return $headers;
+}
+
+function wpsc_is_rejected_cookie() {
+	global $wpsc_rejected_cookies;
+	if ( false == is_array( $wpsc_rejected_cookies ) ) {
+		return false;
+	}
+
+	foreach ( $wpsc_rejected_cookies as $expr ) {
+		if ( $expr !== '' && $match = preg_grep( "~$expr~", array_keys( $_COOKIE ) ) ) {
+			wp_cache_debug( 'wpsc_is_rejected_cookie: found cookie: ' . $expr );
+			return true;
+		}
+	}
+	return false;
 }
 
 function wp_cache_is_rejected($uri) {

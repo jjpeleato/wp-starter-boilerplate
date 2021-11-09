@@ -2,8 +2,8 @@
 Contributors: Backup with UpdraftPlus, DavidAnderson, DNutbourne, aporter, snightingale, bcrodua
 Tags: backup, restore, database backup, wordpress backup, cloud backup, s3, dropbox, google drive, onedrive, ftp, backups
 Requires at least: 3.2
-Tested up to: 5.7
-Stable tag: 1.16.56
+Tested up to: 5.8
+Stable tag: 1.16.63
 Author URI: https://updraftplus.com
 Donate link: https://david.dw-perspective.org.uk/donate
 License: GPLv3 or later
@@ -109,7 +109,7 @@ It also:
 
 UpdraftPlus is supported on all current versions of PHP, and is translated in over 16 languages.
 
-Extra features, including full guaranteed support, are available for purchase via our website shop. The full package of add-ons is included in our advanced version of the plugin, UpdraftPremium.
+Extra features, including full guaranteed support, are available for purchase via our website shop. The full package of add-ons is included in our advanced version of the plugin, UpdraftPlus Premium.
 
 = What are the benefits of upgrading to UpdraftPlus Premium? =
 
@@ -168,6 +168,91 @@ The <a href="https://updraftplus.com/news/">UpdraftPlus backup blog</a> is the b
 
 N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which is 1 higher in the first digit, and has an extra component on the end, but the changelog below still applies. i.e. changes listed for 1.16.32.x of the free version correspond to changes made in 2.16.32.x of the paid version.
 
+= 1.16.63 - 25/Oct/2021 =
+
+* FIX: Use correct zip file name when creating manifest
+* TWEAK: Tweak the response data of UpdraftCentral's plugin and theme handlers to add additional error information
+* TWEAK: Moved the raw backup history command so it can be accessed via UpdraftCentral
+* TWEAK: Optimise away unnecessary file open/read/close cycle on null gzip files when writing the final database dump (should help on enormous sites with thousands of tables)
+* TWEAK: Cleanup .list.tmp files when a local backup completes
+* TWEAK: Refactor WebDAV addon code for future improvements
+
+= 1.16.62 - 30/Sep/2021 =
+
+* FIX: Fix UpdraftCentral error when installing plugin or theme on a slow connection
+* TWEAK: Support wildcard (asterisk char) exclusions not just for the first/top-level directory but also for the 2nd level directories and below
+* TWEAK: Fix deprecation warning on UpdraftCentral's comment settings
+* TWEAK: Algorithm improvement with small tables with individually large rows not triggering the existing over-sized rows algorithm, to reduce fetch size quicker
+* TWEAK: Implement the newly abstracted host plugin usage/process within the UpdraftCentral client code
+* TWEAK: Improve backtrace logging
+* TWEAK: Add admin and log warning messages regarding the planned shutdown of Microsoft Azure and OneDrive Germany
+* TWEAK: Output UpdraftVault quota recount link if needed
+* TWEAK: Introduce constant: UPDRAFTPLUS_LOG_BACKUP_SELECTS: Defining this to true will cause the SQL SELECT commands used when fetching data for a database table backup to be logged in the UpdraftPlus backup log
+* TWEAK: Don't change SQL modes if a null value is returned
+* TWEAK: Existing backups paging logic to avoid a confusing rescan user experience
+* TWEAK: Refactor the search and replace engine
+
+= 1.16.61 - 28/Aug/2021 =
+
+* FIX: If MySQL performance was very fast on large tables, and if fallback fetch mode was being used (which should not occur on any WordPress core table, but can be triggered on recent Oracle MySQL 8.0 versions), then when increasing rows fetched on large tables, some rows could be unintentionally skipped.
+* TWEAK: Oracle MySQL 8.0 from somewhere after 8.0.17 has removed the display width from the response to SHOW CREATE TABLE, resulting in failure (prior to this tweak) to detect a primary key type that can be used with faster fetching
+* TWEAK: Use 'wp_mail_failed' action hook to improve logging of email delivery failures caused by a PHPMailer exception
+* TWEAK: Add additional log information to themes and plugins modules
+
+= 1.16.60 - 23/Aug/2021 =
+
+* FIX: An issue that prevented the more files restore UI appearing if it was part of an incremental backup
+* FIX: Add an extra check to prevent incremental backups from being run after a migration, if incremental backups are not enabled.
+* TWEAK: Add method to check whether an image editor is available for UpdraftCentral's image media editing feature.
+* TWEAK: In the reporting add-on accept URLs, if the address is a URL then instead of emailing it, POST it to that URL using the format used by Slack
+* TWEAK: Add a link to the create clone UI to explain the various clone package sizes
+* TWEAK: Record ABSPATH in the summary
+* TWEAK: Prevent a couple of unwanted logging notices on PHP 8
+* TWEAK: Catch and deal with various WebDAV exceptions
+* TWEAK: Create a zip file manifest and read from it if available
+
+= 1.16.59 - 16/Jul/2021 =
+
+* FEATURE: (Paid versions) New WP-CLI command (connect) to connect plugin with the user's associated account/licence on updraftplus.com
+* FIX: Each time the 'Upload Backup' dialog is opened, '(already uploaded)' text is appended one more time for the same remote storage resulting in it being nearly impossible to have the two buttons shown at the bottom
+* TWEAK: Enhanced over-sized row-detection to include any table with a primary key and a LONGTEXT
+* TWEAK: Log file now includes max packet size
+* TWEAK: Properly handle port numbers included in DB_HOST when using mysqldump
+* TWEAK: Handle UNIX socket paths included in DB_HOST when using mysqldump
+* TWEAK: Increase default mysqldump maximum packet size
+* TWEAK: Change WebDAV request library to HTTP_Request2
+* TWEAK: Add custom category sorting on post module using uasort due to deprecation warning emitted on UpdraftCentral
+* TWEAK: Added an icon within the top-right of the log widget allowing user to toggle that part between its current size and full-screen of the restoration log section
+* TWEAK: Prevent an error in the phpinfo advanced tool when handling non-string constants
+* TWEAK: Escape remote storage IDs in output templates
+* TWEAK: Suppress unwanted error logging related to Gravity Forms
+* TWEAK: Clear Elementor cache at the end of restoration process (if possible) giving an opportunity for Elementor to regenerate CSS files on the next page load request
+* TWEAK: Clear Avada/Fusion-related CSS cache at the end of restoration process (if relevant)
+* TWEAK: Catch and recover from errors and exceptions when clearing third-party caches
+* TWEAK: Prevent a PHP logging notice when an SCP server is scanned for files
+* TWEAK: Remove unused CloudFront methods from S3 library
+* TWEAK: Added missing anonymisation.png graphic and detail of Anonymisation addon in the addons list table
+* TWEAK: Added Update URI header field to avoid accidentally being overwritten with an update of a plugin of a similar name from the WordPress.org Plugin Directory.
+* TWEAK: Improvements in finding a working mysqldump binary during a backup operation
+* TWEAK: Start on larger chunk sizes when fetching *meta table contents, and scale up chunk sizes on all tables dynamically (less SQL queries; but testing shows it makes little difference to overall speed)
+* TWEAK: Adjust Google Drive to retry once after a UDP_Google_IO_Exception, as was done in Google Cloud - intended to help with intermittently buggy Curl versions
+* TWEAK: Show a notice when attempting to download a backup from email remote storage explaining nothing can be downloaded
+* TWEAK: Update shop links and upgrade prompts
+
+= 1.16.58 - 27/May/2021 =
+
+* FIX: UpdraftVault storage settings saving issue on multisite
+* FIX: Translation undefined index issue while running updates on UpdraftCentral
+* FIX: Do not retain SFTP/SCP connection object between upload and prune stages, fixing a multi-instance bug that could cause deleting of obsolete archives to be skipped when backing up the same backup to multiple SCP servers
+* TWEAK: When a link points to an unreadable file, include information in the log about the original reference
+* TWEAK: Do not compress and recompress intermediate table files when stitching together the final database dump (increases speed and reduces resource usage)
+
+= 1.16.57 - 08/May/2021 =
+
+* FIX: Backblaze infinite loop when listing on buckets with huge numbers of objects
+* TWEAK: Minor improvements to the organisation of the S3-provider classes (abstract per-backend logic more cleanly)
+* TWEAK: Add --no-tablespaces switch to mysqldump invocation (required on MySQL 8.0+)
+
 = 1.16.56 - 29/Apr/2021 =
 
 * FIX: Revert changing of Amazon S3 authentication error handling in 1.16.55, which broke support of S3-compatible providers
@@ -214,9 +299,9 @@ N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which i
 
 = 1.16.50 - 16/Mar/2021 =
 
+* FIX: An issue with refreshing Dropbox access tokens
 * TWEAK: Reduce and log memory usage in Google upload methods
 * TWEAK: Catch Dropbox HTTP 401 errors and refresh the access token
-* FIX: An issue with refreshing Dropbox access tokens
 
 = 1.16.49 - 10/Mar/2021 =
 
@@ -1315,4 +1400,4 @@ Reliance upon any non-English translation is at your own risk; UpdraftPlus can g
 We recognise and thank those mentioned at https://updraftplus.com/acknowledgements/ for code and/or libraries used and/or modified under the terms of their open source licences.
 
 == Upgrade Notice ==
-* 1.16.56: Fix a regression with S3-compatible providers in 1.16.55. A recommended update for all.
+* 1.16.63: Fixes various issues with the creation and cleanup of zip manifest files. Various small tweaks and improvements, including backup read/write optimisations. A recommended update for all.

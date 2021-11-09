@@ -38,6 +38,7 @@ const ProductListContainer = ( { attributes } ) => {
 
 ProductListContainer.propTypes = {
 	attributes: PropTypes.object.isRequired,
+	hideOutOfStockItems: PropTypes.bool,
 };
 
 export default ProductListContainer;

@@ -10,6 +10,7 @@ import { decodeEntities } from '@wordpress/html-entities';
 /**
  * Internal dependencies
  */
+import './style.scss';
 import {
 	PRODUCT_OUT_OF_STOCK,
 	PRODUCT_NOT_PURCHASABLE,
@@ -34,7 +35,13 @@ const cartItemErrorCodes = [
  * checkout block.
  */
 const CheckoutOrderError = () => {
-	const checkoutData = getSetting( 'checkoutData', {} );
+	const preloadedApiRequests = getSetting( 'preloadedApiRequests', {} );
+	const checkoutData = {
+		code: '',
+		message: '',
+		...( preloadedApiRequests[ '/wc/store/checkout' ]?.body || {} ),
+	};
+
 	const errorData = {
 		code: checkoutData.code || 'unknown',
 		message:

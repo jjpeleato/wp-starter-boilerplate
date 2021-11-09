@@ -81,7 +81,9 @@ class UpdraftPlus_BackupModule_AddonNotYetPresent extends UpdraftPlus_BackupModu
 	 * @return String - the template, ready for substitutions to be carried out
 	 */
 	public function get_configuration_template() {
-		$link = sprintf(__('%s support is available as an add-on', 'updraftplus'), $this->description).' - <a href="'.apply_filters("updraftplus_com_link", "https://updraftplus.com/shop/".$this->method."/").'" target="_blank">'.__('follow this link to get it', 'updraftplus');
+		global $updraftplus;
+		
+		$link = sprintf(__('%s support is available as an add-on', 'updraftplus'), $this->description).' - <a href="'.$updraftplus->get_url('premium').'" target="_blank">'.__('follow this link to get it', 'updraftplus');
 
 		$default = '
 		<tr class="updraftplusmethod '.$this->method.'">

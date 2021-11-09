@@ -288,21 +288,27 @@ class ProductSchema extends AbstractSchema {
 							'items'       => [
 								'type'       => 'object',
 								'properties' => [
-									'id'   => [
+									'id'      => [
 										'description' => __( 'The term ID, or 0 if the attribute is not a global attribute.', 'woocommerce' ),
 										'type'        => 'integer',
 										'context'     => [ 'view', 'edit' ],
 										'readonly'    => true,
 									],
-									'name' => [
+									'name'    => [
 										'description' => __( 'The term name.', 'woocommerce' ),
 										'type'        => 'string',
 										'context'     => [ 'view', 'edit' ],
 										'readonly'    => true,
 									],
-									'slug' => [
+									'slug'    => [
 										'description' => __( 'The term slug.', 'woocommerce' ),
 										'type'        => 'string',
+										'context'     => [ 'view', 'edit' ],
+										'readonly'    => true,
+									],
+									'default' => [
+										'description' => __( 'If this is a default attribute', 'woocommerce' ),
+										'type'        => 'boolean',
 										'context'     => [ 'view', 'edit' ],
 										'readonly'    => true,
 									],
@@ -436,12 +442,12 @@ class ProductSchema extends AbstractSchema {
 			'variation'           => $this->prepare_html_response( $product->is_type( 'variation' ) ? wc_get_formatted_variation( $product, true, true, false ) : '' ),
 			'permalink'           => $product->get_permalink(),
 			'sku'                 => $this->prepare_html_response( $product->get_sku() ),
-			'short_description'   => $this->prepare_html_response( wc_format_content( $product->get_short_description() ) ),
-			'description'         => $this->prepare_html_response( wc_format_content( $product->get_description() ) ),
+			'short_description'   => $this->prepare_html_response( wc_format_content( wp_kses_post( $product->get_short_description() ) ) ),
+			'description'         => $this->prepare_html_response( wc_format_content( wp_kses_post( $product->get_description() ) ) ),
 			'on_sale'             => $product->is_on_sale(),
 			'prices'              => (object) $this->prepare_product_price_response( $product ),
-			'price_html'          => $product->get_price_html(),
-			'average_rating'      => $product->get_average_rating(),
+			'price_html'          => $this->prepare_html_response( $product->get_price_html() ),
+			'average_rating'      => (string) $product->get_average_rating(),
 			'review_count'        => $product->get_review_count(),
 			'images'              => $this->get_images( $product ),
 			'categories'          => $this->get_term_list( $product, 'product_cat' ),
@@ -556,7 +562,12 @@ class ProductSchema extends AbstractSchema {
 		}
 		global $wpdb;
 
-		$variation_ids               = $product->get_visible_children();
+		$variation_ids = $product->get_visible_children();
+
+		if ( ! count( $variation_ids ) ) {
+			return [];
+		}
+
 		$attributes                  = array_filter( $product->get_attributes(), [ $this, 'filter_variation_attribute' ] );
 		$default_variation_meta_data = array_reduce(
 			$attributes,
@@ -618,20 +629,33 @@ class ProductSchema extends AbstractSchema {
 	 * @return array
 	 */
 	protected function get_attributes( \WC_Product $product ) {
-		$attributes = array_filter( $product->get_attributes(), [ $this, 'filter_valid_attribute' ] );
-		$return     = [];
+		$attributes         = array_filter( $product->get_attributes(), [ $this, 'filter_valid_attribute' ] );
+		$default_attributes = $product->get_default_attributes();
+		$return             = [];
 
 		foreach ( $attributes as $attribute_slug => $attribute ) {
 			// Only visible and variation attributes will be exposed by this API.
 			if ( ! $attribute->get_visible() || ! $attribute->get_variation() ) {
 				continue;
 			}
+
+			$terms = $attribute->is_taxonomy() ? array_map( [ $this, 'prepare_product_attribute_taxonomy_value' ], $attribute->get_terms() ) : array_map( [ $this, 'prepare_product_attribute_value' ], $attribute->get_options() );
+			// Custom attribute names are sanitized to be the array keys.
+			// So when we do the array_key_exists check below we also need to sanitize the attribute names.
+			$sanitized_attribute_name = sanitize_key( $attribute->get_name() );
+
+			if ( array_key_exists( $sanitized_attribute_name, $default_attributes ) ) {
+				foreach ( $terms as $term ) {
+					$term->default = $term->slug === $default_attributes[ $sanitized_attribute_name ];
+				}
+			}
+
 			$return[] = (object) [
 				'id'             => $attribute->get_id(),
 				'name'           => wc_attribute_label( $attribute->get_name(), $product ),
 				'taxonomy'       => $attribute->is_taxonomy() ? $attribute->get_name() : null,
 				'has_variations' => true === $attribute->get_variation(),
-				'terms'          => $attribute->is_taxonomy() ? array_map( [ $this, 'prepare_product_attribute_taxonomy_value' ], $attribute->get_terms() ) : array_map( [ $this, 'prepare_product_attribute_value' ], $attribute->get_options() ),
+				'terms'          => $terms,
 			];
 		}
 

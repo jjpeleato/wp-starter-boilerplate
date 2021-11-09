@@ -50,7 +50,7 @@ class Instant_Indexing extends Base {
 		$post_types = Helper::get_settings( 'instant_indexing.bing_post_types', [] );
 		foreach ( $post_types as $post_type ) {
 			$this->action( 'save_post_' . $post_type, 'save_post', 10, 3 );
-			$this->filter( "bulk_actions-edit-{$post_type}", 'post_bulk_actions' );
+			$this->filter( "bulk_actions-edit-{$post_type}", 'post_bulk_actions', 11 );
 			$this->filter( "handle_bulk_actions-edit-{$post_type}", 'handle_post_bulk_actions', 10, 3 );
 		}
 
@@ -139,7 +139,7 @@ class Instant_Indexing extends Base {
 			Helper::add_notification( $data['message'], [ 'type' => $notification_type ] );
 		}
 
-		wp_safe_redirect( remove_query_arg( [ 'action', 'index_post_id', 'method', '_wpnonce' ] ) );
+		Helper::redirect( remove_query_arg( [ 'action', 'index_post_id', 'method', '_wpnonce' ] ) );
 		exit;
 	}
 

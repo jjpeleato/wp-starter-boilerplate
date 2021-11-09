@@ -7,7 +7,7 @@ import {
 	__experimentalUseSlot,
 	useSlot as __useSlot,
 } from 'wordpress-components';
-import { CURRENT_USER_IS_ADMIN } from '@woocommerce/block-settings';
+import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
 import { Children, cloneElement } from '@wordpress/element';
 
 /**
@@ -35,6 +35,15 @@ const mockedUseSlot = () => {
 		fills: new Array( 2 ),
 	};
 };
+
+/**
+ * Checks if this slot has any valid fills. A valid fill is one that isn't falsy.
+ *
+ * @param {Array} fills The list of fills to check for a valid one in.
+ * @return {boolean} True if this slot contains any valid fills.
+ */
+export const hasValidFills = ( fills ) =>
+	Array.isArray( fills ) && fills.filter( Boolean ).length > 0;
 
 /**
  * A hook that is used inside a slotFillProvider to return information on the a slot.

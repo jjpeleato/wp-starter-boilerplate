@@ -3,7 +3,7 @@
  * $Id$
  *
  * Copyright (c) 2011, Donovan Schönknecht.  All rights reserved.
- * Portions copyright (c) 2012-2018, David Anderson (https://david.dw-perspective.org.uk).  All rights reserved.
+ * Portions copyright (c) 2012-2021, David Anderson (https://david.dw-perspective.org.uk).  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,6 +32,7 @@
 /**
  * Amazon S3 PHP class
  *
+ * Forked originally from:
  * @link http://undesigned.org.za/2007/10/22/amazon-s3-php-class
  * @version 0.5.0-dev
  */
@@ -666,7 +667,7 @@ class UpdraftPlus_S3 {
 	 * @param array $parts an ordered list of eTags of previously uploaded parts from uploadPart
 	 * @return boolean
 	 */
-	public function completeMultipartUpload ($bucket, $uri, $uploadId, $parts) {
+	public function completeMultipartUpload($bucket, $uri, $uploadId, $parts) {
 		$rest = new UpdraftPlus_S3Request('POST', $bucket, $uri, $this->endpoint, $this->use_dns_bucket_name, $this);
 		$rest->setParameter('uploadId', $uploadId);
 
@@ -832,7 +833,6 @@ class UpdraftPlus_S3 {
 		return $this->putObject($this->inputFile($file), $bucket, $uri, $acl, $metaHeaders, $contentType, $storageClass);
 	}
 
-
 	/**
 	 * Put an object from a string (legacy function)
 	 *
@@ -847,7 +847,6 @@ class UpdraftPlus_S3 {
 	public function putObjectString($string, $bucket, $uri, $acl = self::ACL_PRIVATE, $metaHeaders = array(), $contentType = 'text/plain') {
 		return $this->putObject($string, $bucket, $uri, $acl, $metaHeaders, $contentType);
 	}
-
 
 	/**
 	 * Get an object
@@ -914,7 +913,6 @@ class UpdraftPlus_S3 {
 		}
 		return (200 == $rest->code) ? ($returnInfo ? $rest->headers : true) : false;
 	}
-
 
 	/**
 	 * Copy an object
@@ -1062,7 +1060,6 @@ class UpdraftPlus_S3 {
 		return $this->setBucketLogging($bucket, null);
 	}
 
-
 	/**
 	 * Get a bucket's location
 	 *
@@ -1085,7 +1082,6 @@ class UpdraftPlus_S3 {
 		
 		return (isset($rest->body[0]) && (string)$rest->body[0] !== '') ? (string)$rest->body[0] : 'US';
 	}
-
 
 	/**
 	 * Set object or bucket Access Control Policy
@@ -1209,7 +1205,6 @@ class UpdraftPlus_S3 {
 		return $acp;
 	}
 
-
 	/**
 	 * Delete an object
 	 *
@@ -1233,7 +1228,6 @@ class UpdraftPlus_S3 {
 		return true;
 	}
 
-
 	/**
 	 * Get a query string authenticated URL
 	 *
@@ -1253,48 +1247,6 @@ class UpdraftPlus_S3 {
 		$hostBucket ? $bucket : 's3.amazonaws.com/'.$bucket, $uri, $this->__accessKey, $expires,
 		urlencode($this->__getHash("GET\n\n\n{$expires}\n/{$bucket}/{$uri}")));
 	}
-
-
-	/**
-	 * Get a CloudFront signed policy URL
-	 *
-	 * @param array $policy Policy
-	 *
-	 * @return string
-	 */
-	public function getSignedPolicyURL($policy) {
-		$data = json_encode($policy);
-		$signature = '';
-		if (!openssl_sign($data, $signature, $this->__signingKeyResource)) return false;
-
-		$encoded = str_replace(array('+', '='), array('-', '_', '~'), base64_encode($data));
-		$signature = str_replace(array('+', '='), array('-', '_', '~'), base64_encode($signature));
-
-		$url = $policy['Statement'][0]['Resource'] . '?';
-		foreach (array('Policy' => $encoded, 'Signature' => $signature, 'Key-Pair-Id' => $this->__signingKeyPairId) as $k => $v)
-			$url .= $k.'='.str_replace('%2F', '/', rawurlencode($v)).'&';
-		return substr($url, 0, -1);
-	}
-
-
-	/**
-	 * Get a CloudFront canned policy URL
-	 *
-	 * @param string  $url URL to sign
-	 * @param integer $lifetime URL lifetime
-	 *
-	 * @return string
-	 */
-	public function getSignedCannedURL($url, $lifetime) {
-		return $this->getSignedPolicyURL(array(
-			'Statement' => array(
-				array('Resource' => $url, 'Condition' => array(
-					'DateLessThan' => array('AWS:EpochTime' => time() + $lifetime)
-				))
-			)
-		));
-	}
-
 
 	/**
 	 * Get upload POST parameters for form uploads
@@ -1357,94 +1309,6 @@ class UpdraftPlus_S3 {
 		foreach ($amzHeaders as $headerKey => $headerVal) $params->{$headerKey} = (string)$headerVal;
 		return $params;
 	}
-
-	/**
-	 * List CloudFront Origin Access Identities
-	 *
-	 * @return array
-	 */
-	public function listOriginAccessIdentities() {
-		if (!extension_loaded('openssl')) {
-			$this->__triggerError(sprintf("UpdraftPlus_S3::listOriginAccessIdentities(): [%s] %s",
-			"CloudFront functionality requires SSL"), __FILE__, __LINE__);
-			return false;
-		}
-
-		$useSSL = $this->useSSL;
-		$this->useSSL = true; // CloudFront requires SSL
-		$rest = new UpdraftPlus_S3Request('GET', '', '2010-11-01/origin-access-identity/cloudfront', 'cloudfront.amazonaws.com');
-		$rest = $this->__getCloudFrontResponse($rest);
-		$this->useSSL = $useSSL;
-
-		if (false === $rest->error && 200 !== $rest->code) {
-			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
-		}
-
-		if (false !== $rest->error) {
-			trigger_error(sprintf("UpdraftPlus_S3::listOriginAccessIdentities(): [%s] %s",
-			$rest->error['code'], $rest->error['message']), E_USER_WARNING);
-			return false;
-		}
-
-		if (isset($rest->body->CloudFrontOriginAccessIdentitySummary)) {
-			$identities = array();
-			foreach ($rest->body->CloudFrontOriginAccessIdentitySummary as $identity)
-				if (isset($identity->S3CanonicalUserId))
-					$identities[(string)$identity->Id] = array('id' => (string)$identity->Id, 's3CanonicalUserId' => (string)$identity->S3CanonicalUserId);
-			return $identities;
-		}
-		return false;
-	}
-
-	/**
-	 * Get a InvalidationBatch DOMDocument
-	 *
-	 * @internal Used to create XML in invalidateDistribution()
-	 *
-	 * @param array $paths Paths to objects to invalidateDistribution
-	 * @param string $callerReference
-	 *
-	 * @return string
-	 */
-	private function __getCloudFrontInvalidationBatchXML($paths, $callerReference = '0') {// phpcs:ignore PHPCompatibility.FunctionNameRestrictions.ReservedFunctionNames.MethodDoubleUnderscore -- Method name "UpdraftPlus_S3Request::__responseHeaderCallback" is discouraged; PHP has reserved all method names with a double underscore prefix for future use.
-		$dom = new DOMDocument('1.0', 'UTF-8');
-		$dom->formatOutput = true;
-		$invalidationBatch = $dom->createElement('InvalidationBatch');
-		foreach ($paths as $path)
-			$invalidationBatch->appendChild($dom->createElement('Path', $path));
-
-		$invalidationBatch->appendChild($dom->createElement('CallerReference', $callerReference));
-		$dom->appendChild($invalidationBatch);
-		return $dom->saveXML();
-	}
-
-	/**
-	 * Grab CloudFront response
-	 *
-	 * @internal Used to parse the CloudFront UpdraftPlus_S3Request::getResponse() output
-	 *
-	 * @param object &$rest UpdraftPlus_S3Request instance
-	 *
-	 * @return object
-	 */
-	private function __getCloudFrontResponse(&$rest) {// phpcs:ignore PHPCompatibility.FunctionNameRestrictions.ReservedFunctionNames.MethodDoubleUnderscore -- Method name "UpdraftPlus_S3Request::__responseHeaderCallback" is discouraged; PHP has reserved all method names with a double underscore prefix for future use.
-		$rest->getResponse();
-		if (false === $rest->response->error && isset($rest->response->body) &&
-		is_string($rest->response->body) && '<?xml' == substr($rest->response->body, 0, 5)) {
-			$rest->response->body = simplexml_load_string($rest->response->body);
-			// Grab CloudFront errors
-			if (isset($rest->response->body->Error, $rest->response->body->Error->Code,
-			$rest->response->body->Error->Message)) {
-				$rest->response->error = array(
-					'code' => (string)$rest->response->body->Error->Code,
-					'message' => (string)$rest->response->body->Error->Message
-				);
-				unset($rest->response->body);
-			}
-		}
-		return $rest->response;
-	}
-
 
 	/**
 	 * Get MIME type for file
@@ -1645,6 +1509,7 @@ class UpdraftPlus_S3 {
 }
 
 final class UpdraftPlus_S3Request {
+
 	private $endpoint, $verb, $bucket, $uri, $resource = '', $parameters = array(),
 	$amzHeaders = array(), $headers = array(
 		'Host' => '', 'Date' => '', 'Content-MD5' => '', 'Content-Type' => ''
@@ -1652,7 +1517,6 @@ final class UpdraftPlus_S3Request {
 	public $fp = false, $size = 0, $data = false, $response;
 	
 	private $s3;
-
 
 	/**
 	 * Constructor

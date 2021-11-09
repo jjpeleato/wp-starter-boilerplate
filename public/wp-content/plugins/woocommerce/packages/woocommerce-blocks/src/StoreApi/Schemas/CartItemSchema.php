@@ -1,7 +1,6 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas;
 
-use Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi;
 use Automattic\WooCommerce\Checkout\Helpers\ReserveStock;
 
 /**
@@ -314,8 +313,8 @@ class CartItemSchema extends ProductSchema {
 			'quantity'             => wc_stock_amount( $cart_item['quantity'] ),
 			'quantity_limit'       => $this->get_product_quantity_limit( $product ),
 			'name'                 => $this->prepare_html_response( $product->get_title() ),
-			'short_description'    => $this->prepare_html_response( wc_format_content( $product->get_short_description() ) ),
-			'description'          => $this->prepare_html_response( wc_format_content( $product->get_description() ) ),
+			'short_description'    => $this->prepare_html_response( wc_format_content( wp_kses_post( $product->get_short_description() ) ) ),
+			'description'          => $this->prepare_html_response( wc_format_content( wp_kses_post( $product->get_description() ) ) ),
 			'sku'                  => $this->prepare_html_response( $product->get_sku() ),
 			'low_stock_remaining'  => $this->get_low_stock_remaining( $product ),
 			'backorders_allowed'   => (bool) $product->backorders_allowed(),
@@ -391,6 +390,10 @@ class CartItemSchema extends ProductSchema {
 	 */
 	protected function format_variation_data( $variation_data, $product ) {
 		$return = [];
+
+		if ( ! is_iterable( $variation_data ) ) {
+			return $return;
+		}
 
 		foreach ( $variation_data as $key => $value ) {
 			$taxonomy = wc_attribute_taxonomy_name( str_replace( 'attribute_pa_', '', urldecode( $key ) ) );

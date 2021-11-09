@@ -2,7 +2,7 @@
 Contributors: SuperPWA
 Tags: pwa, progressive web apps, manifest, web manifest, android app, chrome app, add to homescreen, mobile web
 Requires at least: 3.6.0
-Tested up to: 5.7.1
+Tested up to: 5.8.1
 Requires PHP: 5.3
 Stable tag: trunk
 License: GPLv2 or later
@@ -185,6 +185,55 @@ Feel free to get in touch if you have any questions.
 1. Settings page in WordPress Admin > SuperPWA > Settings
 
 == Changelog ==
+
+= 2.1.18 =
+* Date: [1.November.2021](https://superpwa.com/superpwa-2-1-18-release-note/?utm_source=wordpress.org&utm_medium=changelog)
+* Bug Fixed : Resolved the issue of License alert showing when key is not activated #230
+* Bug Fixed : PHP Warning: Trying to access array offset on value of type bool #230
+* Enhancement : Added New Addon PreLoader Array #226
+
+= 2.1.17 =
+* Date: [23.October.2021](https://superpwa.com/superpwa-2-1-17-release-note/?utm_source=wordpress.org&utm_medium=changelog)
+* Bug Fixed : Resolved the issue of Invalid regular expression error when exclude cache URL is placed without end slash #216
+* Bug Fixed : Added Seperate caching for range header request urls to aviod 206 type error #220
+* Enhancement : Added Pre Caching Feature in Caching Strategies Addon. #222
+* Enhancement : Updated License Page to display Complete License Information. #227
+* Enhancement : Added Status bar style option for apple icons. #210
+* Enhancement : Added Proper Method to render Application name and shortname of PWA App even with non-standard characters. #112
+
+= 2.1.16 =
+* Date: [26.August.2021](https://superpwa.com/superpwa-2-1-16-release-note/?utm_source=wordpress.org&utm_medium=changelog)
+* Bug Fixed : "Add to homescreen" banner was not showing when Wp fastest cache plugin is active #209
+* Enhancement : Added an Option to Re-Install Service Worker #211
+* Enhancement : Added an Option to Cache External Origin URLs by Service Worker #213
+
+= 2.1.15 =
+* Date: [12.July.2021](https://superpwa.com/superpwa-2-1-15-release-note/?utm_source=wordpress.org&utm_medium=changelog)
+* Bug Fixed : User end issue: Apple splash icon not working properly #200
+* Bug Fixed : Centralize image with background color not getting saved. #205
+
+= 2.1.14 =
+* Date: [30.June.2021](https://superpwa.com/superpwa-2-1-14-release-note/?utm_source=wordpress.org&utm_medium=changelog)
+* Enhancement: Need to Improve Admin UI #196
+
+= 2.1.13 =
+* Date: [15.June.2021](https://superpwa.com/superpwa-2-1-13-release-note/?utm_source=wordpress.org&utm_medium=changelog)
+* BugFixed: iOS Splash Screen Images are not getting saved #191
+
+= 2.1.12 =
+* Date: [29.May.2021](https://superpwa.com/superpwa-2-1-12-release-note/?utm_source=wordpress.org&utm_medium=changelog)
+Enhancement: Need An Option to exclude the URL #183
+Enhancement: Improved Tabs UI design #190
+
+= 2.1.11 =
+* Date: [17.May.2021](https://superpwa.com/superpwa-2-1-11-release-note/?utm_source=wordpress.org&utm_medium=changelog)
+BugFixed: Remediation of Splash Screen Settings #178
+
+= 2.1.10 =
+* Date: [10.May.2021](https://superpwa.com/superpwa-2-1-10-release-note/?utm_source=wordpress.org&utm_medium=changelog)
+BugFixed: iOS splash screen not working using apple icons addon #182
+BugFixed: iOS - Splash Screen #175
+
 = 2.1.9 =
 * Date: [17.April.2021](https://superpwa.com/changelog/)
 Minor Improvment: Added Data Analytics Addon Array #152

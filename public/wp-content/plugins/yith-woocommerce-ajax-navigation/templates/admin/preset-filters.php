@@ -3,11 +3,13 @@
  * Preset filters list - Admin view
  *
  * @author  YITH
- * @package YITH WooCommerce Ajax Product Filter
+ * @package YITH\AjaxProductFilter\Templates\Admin
  * @version 4.0.0
  */
 
 /**
+ * Variables available for this template:
+ *
  * @var $preset bool|YITH_WCAN_Preset
  */
 
@@ -26,8 +28,8 @@ if ( ! defined( 'YITH_WCAN' ) ) {
 
 		YITH_WCAN()->admin->show_empty_content(
 			array(
-				'item_name' => _x( 'filter', '[Admin] Name of the item missing, shown in preset-empty-content template', 'yith-woocommerce-ajax-navigation' ),
-				'hide' => ! empty( $filters ),
+				'item_name'    => _x( 'filter', '[Admin] Name of the item missing, shown in preset-empty-content template', 'yith-woocommerce-ajax-navigation' ),
+				'hide'         => ! empty( $filters ),
 				'button_label' => _x( 'Add a new filter', '[Admin] New filter button label', 'yith-woocommerce-ajax-navigation' ),
 				'button_class' => 'add-new-filter',
 			)
@@ -38,8 +40,8 @@ if ( ! defined( 'YITH_WCAN' ) ) {
 				$filters = array_slice( $filters, 0, YITH_WCAN_Presets::FILTERS_PER_PAGE, true );
 			}
 
-			foreach ( $filters as $id => $filter ) :
-				include( YITH_WCAN_DIR . 'templates/admin/preset-filter.php' );
+			foreach ( $filters as $filter_id => $filter ) :
+				include YITH_WCAN_DIR . 'templates/admin/preset-filter.php';
 			endforeach;
 		endif;
 		?>
@@ -48,7 +50,7 @@ if ( ! defined( 'YITH_WCAN' ) ) {
 	<?php
 	if ( $show_more ) :
 		$first = false;
-		include( YITH_WCAN_DIR . 'templates/admin/preset-load-more-filters.php' );
+		include YITH_WCAN_DIR . 'templates/admin/preset-load-more-filters.php';
 	endif;
 	?>
 
@@ -57,10 +59,10 @@ if ( ! defined( 'YITH_WCAN' ) ) {
 
 <script type="text/template" id="tmpl-yith-wcan-filter">
 	<?php
-	$filter = yith_wcan_get_filter();
-	$id     = '{{data.id}}';
+	$filter    = yith_wcan_get_filter();
+	$filter_id = '{{data.id}}';
 
-	include( YITH_WCAN_DIR . 'templates/admin/preset-filter.php' );
+	require YITH_WCAN_DIR . 'templates/admin/preset-filter.php';
 	?>
 </script>
 
@@ -69,33 +71,33 @@ if ( ! defined( 'YITH_WCAN' ) ) {
 $supported_types = array_keys( YITH_WCAN_Filter_Factory::get_supported_types() );
 ?>
 
-<?php if ( in_array( 'tax', $supported_types ) ) : ?>
+<?php if ( in_array( 'tax', $supported_types, true ) ) : ?>
 	<script type="text/template" id="tmpl-yith-wcan-filter-term">
 		<?php
+		$filter_id    = '{{data.id}}';
 		$term_id      = '{{data.term_id}}';
-		$id           = '{{data.id}}';
 		$term_name    = '{{data.name}}';
 		$term_options = array(
 			'label'   => '{{data.label}}',
 			'tooltip' => '{{data.tooltip}}',
 		);
 
-		YITH_WCAN()->admin->filter_term_field( $id, $term_id, $term_name, $term_options );
+		YITH_WCAN()->admin->filter_term_field( $filter_id, $term_id, $term_name, $term_options );
 		?>
 	</script>
 <?php endif; ?>
 
-<?php if ( in_array( 'price_range', $supported_types ) ) : ?>
+<?php if ( in_array( 'price_range', $supported_types, true ) ) : ?>
 	<script type="text/template" id="tmpl-yith-wcan-filter-range">
 		<?php
-		$range_id = '{{data.range_id}}';
-		$id       = '{{data.id}}';
-		$range    = array(
+		$range_id  = '{{data.range_id}}';
+		$filter_id = '{{data.id}}';
+		$range     = array(
 			'min' => '{{data.min}}',
 			'max' => '{{data.max}}',
 		);
 
-		include( YITH_WCAN_DIR . 'templates/admin/preset-filter-range.php' );
+		include YITH_WCAN_DIR . 'templates/admin/preset-filter-range.php';
 		?>
 	</script>
 <?php endif; ?>

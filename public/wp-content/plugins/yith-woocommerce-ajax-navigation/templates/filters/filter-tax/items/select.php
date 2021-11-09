@@ -3,7 +3,7 @@
  * Filters Tax Item - Select option
  *
  * @author  YITH
- * @package YITH WooCommerce Ajax Product Filter
+ * @package YITH\AjaxProductFilter\Templates\Filters
  * @version 4.0.0
  */
 
@@ -27,7 +27,7 @@ if ( ! defined( 'YITH_WCAN' ) ) {
 } // Exit if accessed directly
 ?>
 
-<option class="filter-item select <?php echo $filter->is_term_active( $term ) ? 'active' : ''; ?> <?php echo esc_attr( $additional_classes ); ?>" value="<?php echo esc_attr( $term->slug ); ?>" <?php echo selected( $filter->is_term_active( $term ) ); ?> <?php echo ! empty( $tooltip ) ? 'data-title="' . esc_attr( $tooltip ) . '"' : ''; ?> data-filter_url="<?php echo esc_url( $filter->get_term_url( $term ) ); ?>" data-count="<?php echo esc_attr( $filter->render_term_count( $term, $count ) ); ?>" >
+<option class="filter-item select <?php echo $filter->is_term_active( $term ) ? 'active' : ''; ?> <?php echo esc_attr( $additional_classes ); ?>" value="<?php echo esc_attr( yith_wcan_esc_term_slug( $term->slug ) ); ?>" <?php echo selected( $filter->is_term_active( $term ) ); ?> <?php echo ! empty( $tooltip ) ? 'data-title="' . esc_attr( $tooltip ) . '"' : ''; ?> data-filter_url="<?php echo esc_url( $filter->get_term_url( $term ) ); ?>" data-count="<?php echo esc_attr( $filter->render_term_count( $term, $count ) ); ?>" >
 	<?php echo esc_html( ! empty( $label ) ? $label : $term->name ); ?>
 </option>
 

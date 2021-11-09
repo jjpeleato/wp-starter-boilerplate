@@ -3,7 +3,7 @@
  * General options
  *
  * @author  YITH
- * @package YITH WooCommerce Ajax Product Filter
+ * @package YITH\AjaxProductFilter\Options
  * @version 4.0.0
  */
 
@@ -19,7 +19,7 @@ return apply_filters(
 				'id'   => 'yith_wcan_general_settings',
 			),
 
-			'show_reset' => array(
+			'show_reset'            => array(
 				'name'      => _x( 'Show reset button', '[ADMIN] General settings page', 'yith-woocommerce-ajax-navigation' ),
 				'desc'      => _x( 'Enable to show the "Reset filter" button to allow the user to cancel the filter selection in one click', '[ADMIN] General settings page', 'yith-woocommerce-ajax-navigation' ),
 				'id'        => 'yith_wcan_show_reset',
@@ -36,9 +36,9 @@ return apply_filters(
 				'yith-type' => 'radio',
 				'default'   => 'after_filters',
 				'options'   => array(
-					'before_filters'      => _x( 'Before filters', '[ADMIN] General settings page', 'yith-woocommerce-ajax-navigation' ),
-					'after_filters'       => _x( 'After filters', '[ADMIN] General settings page', 'yith-woocommerce-ajax-navigation' ),
-					'before_products'     => _x( 'Above products list<small>When using WooCommerce\'s Gutenberg product blocks, this may not work as expected; in these cases you can place Reset Button anywhere in the page using <code>[yith_wcan_reset_button]</code> shortcode or <code>YITH Filters Reset Button</code> block</small>', '[ADMIN] General settings page', 'yith-woocommerce-ajax-navigation' ),
+					'before_filters'  => _x( 'Before filters', '[ADMIN] General settings page', 'yith-woocommerce-ajax-navigation' ),
+					'after_filters'   => _x( 'After filters', '[ADMIN] General settings page', 'yith-woocommerce-ajax-navigation' ),
+					'before_products' => _x( 'Above products list<small>When using WooCommerce\'s Gutenberg product blocks, this may not work as expected; in these cases you can place Reset Button anywhere in the page using <code>[yith_wcan_reset_button]</code> shortcode or <code>YITH Filters Reset Button</code> block</small>', '[ADMIN] General settings page', 'yith-woocommerce-ajax-navigation' ),
 				),
 				'deps'      => array(
 					'ids'    => 'yith_wcan_show_reset',
@@ -46,9 +46,9 @@ return apply_filters(
 				),
 			),
 
-			'general_section_end' => array(
+			'general_section_end'   => array(
 				'type' => 'sectionend',
-				'id' => 'yith_wcan_general_settings',
+				'id'   => 'yith_wcan_general_settings',
 			),
 
 		),

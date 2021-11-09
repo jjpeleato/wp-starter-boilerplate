@@ -3,7 +3,7 @@
  * QTranslateX plugin support
  *
  * @author  YITH
- * @package YITH WooCommerce Ajax Product FIlter
+ * @package YITH\AjaxProductFilter\Classes\Compatibility
  * @version 1.3.2
  */
 

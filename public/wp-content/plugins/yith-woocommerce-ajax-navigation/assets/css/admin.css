@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* === Filter Preset List === */
 #yith_wcan_panel_filter-preset {
   position: relative;
@@ -112,40 +113,48 @@
   position: relative;
 }
 #yith_wcan_panel_filter-preset .yith-plugin-fw-list-table-container table.wp-list-table tbody tr td.shortcode .copy-on-click input {
-  background: #fff;
+  background: #f1f1f1;
+  color: #999;
+  border: 1px dashed #ccc;
   cursor: pointer;
 }
 #yith_wcan_panel_filter-preset .yith-plugin-fw-list-table-container table.wp-list-table tbody tr td.shortcode .copy-on-click:after {
   color: #9d9d9d;
-  content: "link";
-  font-family: "Material Icons";
-  font-size: 21px;
+  content: "";
+  font-family: "yith-icon";
+  font-size: 14px;
   position: absolute;
-  right: 10px;
-  top: 6px;
+  right: 15px;
+  top: 10px;
+}
+#yith_wcan_panel_filter-preset .yith-plugin-fw-list-table-container table.wp-list-table tbody tr td.actions {
+  overflow: hidden;
 }
 #yith_wcan_panel_filter-preset .yith-plugin-fw-list-table-container table.wp-list-table tbody tr td.actions a {
   float: right;
 }
 #yith_wcan_panel_filter-preset .yith-plugin-fw-list-table-container table.wp-list-table tbody tr td.actions a.show-on-hover {
+  align-items: center;
   background: #fff;
+  box-shadow: 0px 2px 7px rgba(170, 198, 222, 0.5);
   border-radius: 100%;
   color: #20659d;
-  display: none;
+  display: flex;
   float: right;
-  font-size: 21px;
+  font-size: 17px;
   height: 35px;
   margin-right: 8px;
+  opacity: 0;
+  transform: translate(0, -70px);
+  transition: all ease 0.3s;
   width: 35px;
   justify-content: center;
-  align-items: center;
-  box-shadow: 0 0 10px 0 rgba(167, 217, 236, 0.6);
 }
 #yith_wcan_panel_filter-preset .yith-plugin-fw-list-table-container table.wp-list-table tbody tr td.actions a.show-on-hover i {
-  font-size: 21px;
+  font-size: 17px;
 }
 #yith_wcan_panel_filter-preset .yith-plugin-fw-list-table-container table.wp-list-table tbody tr td.actions a.show-on-hover:hover {
-  box-shadow: 0 0 10px 0 #a7d9ec;
+  background: #f3f3f3;
 }
 #yith_wcan_panel_filter-preset .yith-plugin-fw-list-table-container table.wp-list-table tbody tr td.actions a.show-on-hover.delete {
   color: #ba3e3e;
@@ -157,7 +166,8 @@
   margin: 5px 0;
 }
 #yith_wcan_panel_filter-preset .yith-plugin-fw-list-table-container table.wp-list-table tbody tr:hover td.actions a.show-on-hover {
-  display: flex;
+  opacity: 1;
+  transform: none;
 }
 
 /* === Upgrade Note Modal === */
@@ -273,6 +283,17 @@
 #yith_wcan_panel_filter-preset-edit h4 {
   font-size: 14px;
 }
+#yith_wcan_panel_filter-preset-edit [data-currency] + .currency {
+  margin-left: 10px;
+}
+#yith_wcan_panel_filter-preset-edit input.validation-error {
+  border-color: red !important;
+}
+#yith_wcan_panel_filter-preset-edit input.validation-error + span.validation-message {
+  color: red;
+  display: block;
+  margin-top: 5px;
+}
 #yith_wcan_panel_filter-preset-edit .yith-toggle-row {
   background: none;
   border: 1px solid #e0e0e0;
@@ -316,6 +337,7 @@
 #yith_wcan_panel_filter-preset-edit .yith-toggle-row .yith-toggle-title {
   cursor: pointer;
   padding: 20px 15px;
+  overflow: hidden;
 }
 #yith_wcan_panel_filter-preset-edit .yith-toggle-row .yith-toggle-title .no-title {
   color: #757575;
@@ -329,24 +351,27 @@
   vertical-align: middle;
 }
 #yith_wcan_panel_filter-preset-edit .yith-toggle-row .yith-toggle-title .show-on-hover {
+  align-items: center;
   background: #fff;
+  box-shadow: 0px 2px 7px rgba(170, 198, 222, 0.5);
   border-radius: 100%;
   color: #20659d;
-  display: none;
+  display: flex;
   float: right;
-  font-size: 21px;
+  font-size: 17px;
   height: 35px;
   margin-right: 8px;
+  opacity: 0;
+  transform: translate(0, -70px);
+  transition: all ease 0.3s;
   width: 35px;
   justify-content: center;
-  align-items: center;
-  box-shadow: 0 0 10px 0 rgba(167, 217, 236, 0.6);
 }
 #yith_wcan_panel_filter-preset-edit .yith-toggle-row .yith-toggle-title .show-on-hover i {
-  font-size: 21px;
+  font-size: 17px;
 }
 #yith_wcan_panel_filter-preset-edit .yith-toggle-row .yith-toggle-title .show-on-hover:hover {
-  box-shadow: 0 0 10px 0 #a7d9ec;
+  background: #f3f3f3;
 }
 #yith_wcan_panel_filter-preset-edit .yith-toggle-row .yith-toggle-title .show-on-hover.delete {
   color: #ba3e3e;
@@ -354,7 +379,8 @@
   margin-right: 15px;
 }
 #yith_wcan_panel_filter-preset-edit .yith-toggle-row .yith-toggle-title:hover .show-on-hover {
-  display: flex;
+  opacity: 1;
+  transform: none;
 }
 #yith_wcan_panel_filter-preset-edit .yith-toggle-row .yith-toggle-title .yith-plugin-fw-field-wrapper {
   float: right;
@@ -365,6 +391,9 @@
 #yith_wcan_panel_filter-preset-edit .yith-toggle-row .yith-toggle-content-row {
   width: 100%;
 }
+#yith_wcan_panel_filter-preset-edit .yith-toggle-row .yith-toggle-content-row.disabled {
+  display: none !important;
+}
 #yith_wcan_panel_filter-preset-edit .yith-toggle-row .yith-toggle-content-row > label {
   width: 180px;
 }
@@ -374,6 +403,9 @@
 }
 #yith_wcan_panel_filter-preset-edit .yith-toggle-row .yith-toggle-content-row span.description {
   max-width: 100%;
+}
+#yith_wcan_panel_filter-preset-edit .yith-toggle-row .yith-toggle-content-row span.description > span {
+  display: block;
 }
 #yith_wcan_panel_filter-preset-edit .yith-toggle-row .yith-toggle-content-row .add-price-range {
   margin-bottom: 15px;
@@ -623,6 +655,38 @@
   padding: 20px 15px;
   border-radius: 4px;
   margin: 20px 0;
+}
+#yith_wcan_panel_filter-preset-edit .preset-saved {
+  background: var(--yith-success-lightest) !important;
+  border-radius: 5px;
+  border: 1px solid var(--yith-success-light);
+  box-shadow: 1px 1px 2px var(--yith-success-lighter);
+  color: var(--yith-content-text);
+  font-size: 14px;
+  margin: 15px 0 20px !important;
+  padding: 15px 40px 15px 45px !important;
+  position: relative;
+  text-align: left;
+}
+#yith_wcan_panel_filter-preset-edit .preset-saved p {
+  background: none !important;
+  font-weight: 600 !important;
+  margin: 0;
+  padding: 0 !important;
+}
+#yith_wcan_panel_filter-preset-edit .preset-saved p:before {
+  display: none !important;
+}
+#yith_wcan_panel_filter-preset-edit .preset-saved:before {
+  color: var(--yith-success);
+  content: "";
+  font-family: yith-icon;
+  font-weight: 400;
+  font-size: 21px;
+  left: 13px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 /* === Widget Area === */

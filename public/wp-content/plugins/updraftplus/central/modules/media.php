@@ -18,7 +18,7 @@ class UpdraftCentral_Media_Commands extends UpdraftCentral_Commands {
 	 *
 	 * link to udrpc_action main function in class UpdraftCentral_Listener
 	 */
-	public function _pre_action($command, $data, $extra_info) {// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- This function is called from listner.php and $extra_info is being sent.
+	public function _pre_action($command, $data, $extra_info) {// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- This function is called from listener.php and $extra_info is being sent.
 		// Here we assign the current blog_id to a variable $blog_id
 		$blog_id = get_current_blog_id();
 		if (!empty($data['site_id'])) $blog_id = $data['site_id'];
@@ -118,6 +118,7 @@ class UpdraftCentral_Media_Commands extends UpdraftCentral_Commands {
 
 		$response = array(
 			'items' => $media_items,
+			'has_image_editor' => $this->has_image_editor(isset($media_items[0]) ? $media_items[0] : null),
 			'info' => $info,
 			'options' => array(
 				'date' => $this->get_date_options(),
@@ -126,6 +127,36 @@ class UpdraftCentral_Media_Commands extends UpdraftCentral_Commands {
 		);
 
 		return $this->_response($response);
+	}
+
+	/**
+	 * Check whether we have an image editor (e.g. GD, Imagick, etc.) set in place to handle the basic editing
+	 * functions such as rotate, crop, etc. If not, then we hide that feature in UpdraftCentral
+	 *
+	 * @param object $media The media item/object to check
+	 * @return boolean
+	 */
+	private function has_image_editor($media) {
+		// Most of the time image library are enabled by default in the php.ini but there's a possbility that users don't
+		// enable them as they have no need for them at the moment or for some other reasons. Thus, we need to confirm
+		// that here through the wp_get_image_editor method.
+		$has_image_editor = true;
+		if (!empty($media)) {
+			if (!function_exists('wp_get_image_editor')) {
+				require_once(ABSPATH.'wp-includes/media.php');
+			}
+
+			if (!function_exists('_load_image_to_edit_path')) {
+				require_once(ABSPATH.'wp-admin/includes/image.php');
+			}
+
+			$image_editor = wp_get_image_editor(_load_image_to_edit_path($media->ID));
+			if (is_wp_error($image_editor)) {
+				$has_image_editor = false;
+			}
+		}
+
+		return $has_image_editor;
 	}
 
 	/**
@@ -150,11 +181,12 @@ class UpdraftCentral_Media_Commands extends UpdraftCentral_Commands {
 		}
 
 		if (!function_exists('get_post_mime_types')) {
-			global $updraftplus;
+			global $updraftcentral_main;
+
 			// For a much later version of WP the "get_post_mime_types" is located
 			// in a different folder. So, we make sure that we have it loaded before
 			// actually using it.
-			if (version_compare($updraftplus->get_wordpress_version(), '3.5', '>=')) {
+			if (version_compare($updraftcentral_main->get_wordpress_version(), '3.5', '>=')) {
 				require_once(ABSPATH.WPINC.'/post.php');
 			} else {
 				// For WP 3.4, the "get_post_mime_types" is located in the location provided below.
@@ -429,15 +461,14 @@ class UpdraftCentral_Media_Commands extends UpdraftCentral_Commands {
 	 * @return array
 	 */
 	private function get_type_options() {
-		global $wpdb, $updraftcentral_host_plugin;
-		$options = array();
+		global $wpdb, $updraftcentral_host_plugin, $updraftcentral_main;
 
+		$options = array();
 		if (!function_exists('get_post_mime_types')) {
-			global $updraftplus;
 			// For a much later version of WP the "get_post_mime_types" is located
 			// in a different folder. So, we make sure that we have it loaded before
 			// actually using it.
-			if (version_compare($updraftplus->get_wordpress_version(), '3.5', '>=')) {
+			if (version_compare($updraftcentral_main->get_wordpress_version(), '3.5', '>=')) {
 				require_once(ABSPATH.WPINC.'/post.php');
 			} else {
 				// For WP 3.4, the "get_post_mime_types" is located in the location provided below.

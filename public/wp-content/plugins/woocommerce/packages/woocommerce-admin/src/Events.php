@@ -8,12 +8,12 @@ namespace Automattic\WooCommerce\Admin;
 
 defined( 'ABSPATH' ) || exit;
 
+use \Automattic\WooCommerce\Admin\Features\Features;
 use \Automattic\WooCommerce\Admin\Notes\AddingAndManangingProducts;
 use \Automattic\WooCommerce\Admin\Notes\ChooseNiche;
 use \Automattic\WooCommerce\Admin\Notes\ChoosingTheme;
 use \Automattic\WooCommerce\Admin\Notes\CustomizingProductCatalog;
 use Automattic\WooCommerce\Admin\Notes\FirstDownlaodableProduct;
-use \Automattic\WooCommerce\Admin\Notes\GivingFeedbackNotes;
 use \Automattic\WooCommerce\Admin\Notes\InsightFirstProductAndPayment;
 use \Automattic\WooCommerce\Admin\Notes\MobileApp;
 use \Automattic\WooCommerce\Admin\Notes\NewSalesRecord;
@@ -24,6 +24,7 @@ use \Automattic\WooCommerce\Admin\Notes\PersonalizeStore;
 use \Automattic\WooCommerce\Admin\Notes\EUVATNumber;
 use \Automattic\WooCommerce\Admin\Notes\WooCommercePayments;
 use \Automattic\WooCommerce\Admin\Notes\Marketing;
+use \Automattic\WooCommerce\Admin\Notes\MarketingJetpack;
 use \Automattic\WooCommerce\Admin\Notes\StartDropshippingBusiness;
 use \Automattic\WooCommerce\Admin\Notes\WooCommerceSubscriptions;
 use \Automattic\WooCommerce\Admin\Notes\MigrateFromShopify;
@@ -32,13 +33,11 @@ use \Automattic\WooCommerce\Admin\Notes\RealTimeOrderAlerts;
 use \Automattic\WooCommerce\Admin\RemoteInboxNotifications\DataSourcePoller;
 use \Automattic\WooCommerce\Admin\RemoteInboxNotifications\RemoteInboxNotificationsEngine;
 use \Automattic\WooCommerce\Admin\Notes\MerchantEmailNotifications\MerchantEmailNotifications;
-use \Automattic\WooCommerce\Admin\Loader;
 use \Automattic\WooCommerce\Admin\Notes\InsightFirstSale;
 use \Automattic\WooCommerce\Admin\Notes\NeedSomeInspiration;
 use \Automattic\WooCommerce\Admin\Notes\OnlineClothingStore;
 use \Automattic\WooCommerce\Admin\Notes\FirstProduct;
 use \Automattic\WooCommerce\Admin\Notes\CustomizeStoreWithBlocks;
-use \Automattic\WooCommerce\Admin\Notes\GoogleAdsAndMarketing;
 use \Automattic\WooCommerce\Admin\Notes\TestCheckout;
 use \Automattic\WooCommerce\Admin\Notes\EditProductsOnTheMove;
 use \Automattic\WooCommerce\Admin\Notes\PerformanceOnMobile;
@@ -49,6 +48,8 @@ use \Automattic\WooCommerce\Admin\Notes\FilterByProductVariationsInReports;
 use \Automattic\WooCommerce\Admin\Notes\AddFirstProduct;
 use \Automattic\WooCommerce\Admin\Notes\DrawAttention;
 use \Automattic\WooCommerce\Admin\Notes\GettingStartedInEcommerceWebinar;
+use \Automattic\WooCommerce\Admin\Notes\NavigationNudge;
+use Automattic\WooCommerce\Admin\Schedulers\MailchimpScheduler;
 
 /**
  * Events Class.
@@ -103,6 +104,10 @@ class Events {
 		if ( $this->is_merchant_email_notifications_enabled() ) {
 			MerchantEmailNotifications::run();
 		}
+
+		if ( Features::is_enabled( 'onboarding' ) ) {
+			( new MailchimpScheduler() )->run();
+		}
 	}
 
 	/**
@@ -112,13 +117,12 @@ class Events {
 		NewSalesRecord::possibly_add_note();
 		MobileApp::possibly_add_note();
 		TrackingOptIn::possibly_add_note();
-		OnboardingEmailMarketing::possibly_add_note();
 		OnboardingPayments::possibly_add_note();
 		PersonalizeStore::possibly_add_note();
 		WooCommercePayments::possibly_add_note();
 		EUVATNumber::possibly_add_note();
 		Marketing::possibly_add_note();
-		GivingFeedbackNotes::possibly_add_note();
+		MarketingJetpack::possibly_add_note();
 		StartDropshippingBusiness::possibly_add_note();
 		WooCommerceSubscriptions::possibly_add_note();
 		MigrateFromShopify::possibly_add_note();
@@ -130,7 +134,6 @@ class Events {
 		ChooseNiche::possibly_add_note();
 		RealTimeOrderAlerts::possibly_add_note();
 		CustomizeStoreWithBlocks::possibly_add_note();
-		GoogleAdsAndMarketing::possibly_add_note();
 		TestCheckout::possibly_add_note();
 		EditProductsOnTheMove::possibly_add_note();
 		PerformanceOnMobile::possibly_add_note();
@@ -146,6 +149,7 @@ class Events {
 		CustomizingProductCatalog::possibly_add_note();
 		GettingStartedInEcommerceWebinar::possibly_add_note();
 		FirstDownlaodableProduct::possibly_add_note();
+		NavigationNudge::possibly_add_note();
 	}
 
 	/**
@@ -155,7 +159,7 @@ class Events {
 	 */
 	protected function is_remote_inbox_notifications_enabled() {
 		// Check if the feature flag is disabled.
-		if ( ! Loader::is_feature_enabled( 'remote-inbox-notifications' ) ) {
+		if ( ! Features::is_enabled( 'remote-inbox-notifications' ) ) {
 			return false;
 		}
 
