@@ -1,0 +1,26 @@
+/* common::grid
+--------------------------------------------------------------------------------------------------------------------- */
+
+.container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding-left: 50px;
+  padding-right: 50px;
+
+  &--large {
+    max-width: 1920px;
+  }
+
+  &--medium {
+    max-width: 1600px;
+  }
+
+  &--medium-small {
+    max-width: 1200px;
+  }
+
+  &--small {
+    max-width: 1024px;
+  }
+}
