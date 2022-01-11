@@ -2,6 +2,7 @@
 # Ignore files/directories #
 ############################
 /.idea
+/.vscode
 /.env
 /node_modules
 /vendor
@@ -10,9 +11,10 @@ package-lock.json
 composer.lock
 yarn.lock
 yarn-error.log
-phpcs.xml
 public/foo.php
+public/wp-content/themes/_s
 public/wp-content/themes/ao-apolo/
+public/wp-content/themes/ao-apolo/assets
 
 ########################
 # Wordpress Core files #
@@ -24,7 +26,6 @@ public/wp-content/blogs.dir
 public/wp-content/upgrade
 public/wp-content/uploads
 public/wp-content/plugins/hello.php
-
 public/.htaccess
 public/.htpasswd
 public/license.txt
@@ -52,7 +53,6 @@ public/sitemap.xml.gz
 #############################
 *.log
 *.sql
-!private/database/*.sql
 *.sqlite
 *.sass-cache
 .bash_history
@@ -61,6 +61,8 @@ public/sitemap.xml.gz
 .cache
 .profile
 .mysql_history
+!private/database/*.sql
+!public/wp-content/plugins/**/*.sql
 
 ############
 # Packages #
@@ -94,11 +96,19 @@ public/sitemap.xml.gz
 ######################
 # OS generated files #
 ######################
-.DS_Store*
+.DS_Store
 ehthumbs.db
 Icon?
 Thumbs.db
 *.lock
+._*
+.Spotlight-V100
+.Trashes
+
+###############
+# Autoptimize #
+###############
+public/wp-content/autoptimize_404_handler.php
 
 ##################################
 # W3 Total Cache untracked files #

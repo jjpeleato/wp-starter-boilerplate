@@ -1,19 +1,53 @@
-/* Typography
+/* common::variables
 --------------------------------------------------------------------------------------------------------------------- */
-$montserrat: 'Montserrat', sans-serif;
-$rubik: 'Rubik', sans-serif;
+
+// common::variables::breakpoints
+$desktop-extra-large: 2560px;
+$desktop-large: 1920px;
+$desktop: 1600px;
+$desktop-small: 1440px;
+$desktop-extra-small: 1366px;
+$tablet-extra-large: 1280px;
+$tablet-large: 1080px;
+$tablet: 991px;
+$tablet-small: 860px;
+$tablet-extra-small: 768px;
+$mobile-extra-large: 720px;
+$mobile-large: 640px;
+$mobile: 540px;
+$mobile-small: 480px;
+$mobile-extra-small: 375px;
+
+// common::variables::typography
+$font-main: 'Roboto', sans-serif;
+$font-secondary: 'Open Sans', sans-serif;
+$icomoon: 'icomoon', sans-serif;
 $letter-spacing: 0.03rem;
 $letter-spacing-2x: 0.06rem;
 $letter-spacing-big: 0.1rem;
 
-/* Color
-/-------------------------------------------------------------------------------------------------------------------- */
-$primary: #3f50b5;
-$primary-hover: #002884;
-$secondary: #eff1f2;
-$secondary-hover: #d4d8da;
-$title-color: #111;
-$text-color: #555;
+// common::variables::colors::base
+$primary: #e52726;
+$primary-hover: #c23634;
+$secondary: #0062ae;
+$secondary-hover: #3679ad;
+$white: #fff;
+$background-grey: #fafafa;
+$light-grey: #ebebeb;
+$grey: #bfbfbf;
+$mid-grey: #777;
+$dark-grey: #4a4a4a;
+$light-black: #222;
+$mid-black: #111;
+$black: #000;
+$blockquote:#9d9d9d;
+
+// common::variables::colors::text
+$title-color: $mid-black;
+$text-color: $light-black;
+$post-color: $dark-grey;
+
+// common::variables::colors::alerts
 $success: #8ac148;
 $success-hover: #599014;
 $info: #00a9f4;
@@ -22,13 +56,3 @@ $warning: #ff9800;
 $warning-hover: #c66900;
 $danger: #e53635;
 $danger-hover: #ab000e;
-$light-bg-color: #f7f7f7;
-$dark-bg-color: #222;
-$body-bg: #fefefe;
-$dark-body-bg: #111;
-$white: #fff;
-$light-grey: #ebebeb;
-$grey: #ccc;
-$mid-grey: #777;
-$dark-grey: #333;
-$black: #000;

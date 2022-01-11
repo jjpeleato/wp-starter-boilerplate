@@ -2,12 +2,12 @@
 # This file is distributed under the same license as the Plugins - Better Search Replace - Development (trunk) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2019-10-07 22:16:26+0000\n"
+"PO-Revision-Date: 2021-12-27 12:13:21+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: GlotPress/2.4.0-alpha\n"
+"X-Generator: GlotPress/3.0.0-alpha.2\n"
 "Language: es\n"
 "Project-Id-Version: Plugins - Better Search Replace - Development (trunk)\n"
 
@@ -134,7 +134,7 @@ msgstr "Sustituir con"
 
 #: templates/bsr-search-replace.php:28
 msgid "Search for"
-msgstr "Buscar por"
+msgstr "Buscar"
 
 #: templates/bsr-search-replace.php:23
 msgid "<strong>WARNING:</strong> Make sure you backup your database before using this plugin!"
@@ -188,7 +188,7 @@ msgstr "Error al actualizar la fila: %d."
 msgid "(%s MB)"
 msgstr "(%s MB)"
 
-#: templates/bsr-dashboard.php:74 includes/class-bsr-admin.php:288
+#: includes/class-bsr-admin.php:288 templates/bsr-dashboard.php:74
 msgid "Upgrade to Pro"
 msgstr "Actualiza a Pro"
 
@@ -225,7 +225,7 @@ msgid "<p><strong>DRY RUN:</strong> <strong>%d</strong> tables were searched, <s
 msgstr "<p><strong>SIMULACRO:</strong> se han encontrado <strong>%d</strong>  tablas, <strong>%d</strong> celdas que necesitan actualizarse y se han hecho <strong>%d</strong> cambios.</p><p><a href=\"%s\" class=\"thickbox\" title=\"Detalles sobre simulacros\">Haz clic aquí</a> para más detalles, o usa el formulario de abajo para ejecutar buscar/sustituir.</p>"
 
 #. Plugin Name of the plugin
-#: templates/bsr-dashboard.php:34 includes/class-bsr-admin.php:85
+#: includes/class-bsr-admin.php:85 templates/bsr-dashboard.php:34
 msgid "Better Search Replace"
 msgstr "Better Search Replace"
 

@@ -1,5 +1,8 @@
 (function ($) {
-    $(document).ready(function () {
-        // Write JavaScript or jQuery
-    });
+	$(document).ready(function () {
+		setDevice();
+		setIE();
+
+		// Write JavaScript or jQuery
+	});
 })(jQuery);

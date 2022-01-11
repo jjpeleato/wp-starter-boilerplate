@@ -39,6 +39,7 @@ define("DEPLOY_CONFIG", [
 			'public/wp-content/ewww',
 		],
 		'clear_paths' => [
+			'.husky',
 			'.git',
 			'assets',
 			'gulp',
@@ -57,6 +58,8 @@ define("DEPLOY_CONFIG", [
 			'composer.json',
 			'composer.lock',
 			'deploy.php',
+			'deploy.sh',
+			'deploy-exclude-list.txt',
 			'gulpfile.babel.js',
 			'LICENSE',
 			'package.json',
@@ -264,7 +267,7 @@ task('deploy', [
 after('deploy:failed', 'deploy:unlock');
 
 // If deploy is in progress
-//after('deploy:vendors', 'deploy:phpcs');
+after('deploy:vendors', 'deploy:phpcs');
 after('deploy:vendors', 'deploy:build:dev');
 after('deploy:vendors', 'deploy:build:pre');
 after('deploy:vendors', 'deploy:build:pro');

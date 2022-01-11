@@ -1,9 +1,15 @@
-
 # htpasswd
 AuthType Basic
 AuthName "Password Protected Area"
 AuthUserFile /path/to/current/public/.htpasswd
 Require valid-user
+
+# Error 503
+<IfModule mod_rewrite.c>
+    RewriteEngine on
+    RewriteCond %{REQUEST_URI} !/503.php$ [NC]
+    RewriteRule .* /503.php [R=302,L]
+</IfModule>
 
 # .htaccess secure
 <files .htaccess>
@@ -98,6 +104,15 @@ Require valid-user
 </IfModule>
 
 # END GZIP COMPRESSION
+
+# Add Trailing Slash
+<IfModule mod_rewrite.c>
+	RewriteEngine on
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.*[^/])$ /$1/ [L,R=301]
+</IfModule>
+
+# END Add Trailing Slash
 
 # BEGIN SSL
 <IfModule mod_ssl.c>
