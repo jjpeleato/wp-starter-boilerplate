@@ -1,13 +1,13 @@
-/* Mixins
+/* variables::mixins
 --------------------------------------------------------------------------------------------------------------------- */
 
-// OPACITY
+// variables::mixins::opacity
 @mixin opacity($opacity) {
   opacity: $opacity;
   filter: alpha(opacity=($opacity * 100));
 }
 
-// CLEARFIX
+// variables::mixins:clearfix
 @mixin clearfix {
   *zoom: 1;
   clear: both;
@@ -23,7 +23,7 @@
   }
 }
 
-// INVISIBLE
+// variables::mixins::invisible
 @mixin invisible {
   clip: rect(1px, 1px, 1px, 1px);
   height: 1px;
@@ -31,14 +31,14 @@
   position: absolute !important;
 }
 
-// BORDER RADIUS
+// variables::mixins::border-radius
 @mixin border-radius($radius) {
   -webkit-border-radius: $radius;
   -moz-border-radius: $radius;
   border-radius: $radius;
 }
 
-// TRANSFORM
+// variables::mixins::transform
 @mixin transform($transforms) {
   -moz-transform: $transforms;
   -o-transform: $transforms;
@@ -47,11 +47,11 @@
   transform: $transforms;
 }
 
-// TRANSITION
-@mixin transition($name, $time, $function) {
-  transition: $name $time $function;
-  -moz-transition: $name $time $function;
-  -ms-transition: $name $time $function;
-  -o-transition: $name $time $function;
-  -webkit-transition: $name $time $function;
+// variables::mixins::transition
+@mixin transition($name) {
+  transition: $name;
+  -moz-transition: $name;
+  -ms-transition: $name;
+  -o-transition: $name;
+  -webkit-transition: $name;
 }

@@ -192,6 +192,8 @@ The present project uses several technologies and tools for the automation and d
 
 1. It is very important that if you deploy the project to publish. The **DocumentRoot** on the VirtualHost has to point to the **public/** directory.
 2. It is very important that if you deploy the project to publish with **Deployer**. The **DocumentRoot** on the VirtualHost has to point to the **current/public/** directory.
+3. At the moment you can not update the `gulp-imagemin` package because it generates an error. I will investigate in the following commitments.
+4. You can not update the `stylelint`, `stylelint-config-standard` and `stylelint-scss` because `gulp-stylelint` package cannot work with them.
 
 ### Others clarifications
 

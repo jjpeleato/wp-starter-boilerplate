@@ -14,6 +14,9 @@ const paths = {
         src: [
             './assets/scss/**/*.scss'
         ],
+		srcCritical: [
+			'./assets/scss/critical.scss'
+		],
         vendor: [
             './node_modules/normalize.css/normalize.css',
             './node_modules/aos/dist/aos.css',
@@ -29,14 +32,14 @@ const paths = {
             './assets/js/custom.js'
         ],
         vendor: [
-            './node_modules/jquery/dist/jquery.min.js',
-            './node_modules/@popperjs/core/dist/umd/popper.min.js',
-            './node_modules/aos/dist/aos.js',
-            './node_modules/photoswipe/dist/photoswipe.min.js',
-            './node_modules/photoswipe/dist/photoswipe-ui-default.min.js',
-            './node_modules/salvattore/dist/salvattore.min.js',
-            './node_modules/tiny-slider/dist/min/tiny-slider.js',
-            './node_modules/vanilla-lazyload/dist/lazyload.min.js',
+			'./node_modules/aos/dist/aos.js',
+			'./node_modules/tiny-slider/dist/min/tiny-slider.js',
+			'./node_modules/vanilla-lazyload/dist/lazyload.min.js',
+			'./node_modules/photoswipe/dist/photoswipe.min.js',
+			'./node_modules/photoswipe/dist/photoswipe-ui-default.min.js',
+			'./node_modules/gsap/dist/gsap.min.js',
+			'./node_modules/gsap/dist/ScrollTrigger.min.js',
+			'./node_modules/lottie-web/build/player/lottie.min.js'
         ],
         dest: theme + 'js/',
         destVendor: theme + 'vendor/'
@@ -70,22 +73,22 @@ const paths = {
 
 /* Options */
 const options = {
-    stylelint: {
-        reporters: [
-            {
-                formatter: 'string',
-                console: true
-        }
-        ]
-    },
-    sass: {
-        outputStyle: 'compressed', // output_style = expanded or nested or compact or compressed
-        precision: 10
-    },
-    uglifyCss: {
-        "maxLineLen": 80,
-        "uglyComments": false
-    }
+	stylelint: {
+		reporters: [
+			{
+				formatter: 'string',
+				console: true
+			}
+		]
+	},
+	sass: {
+		outputStyle: 'compressed', // output_style = expanded or nested or compact or compressed
+		precision: 10
+	},
+	uglifyCss: {
+		"maxLineLen": 80,
+		"uglyComments": false
+	}
 };
 
 /* Exports */
