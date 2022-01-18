@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Deployer;
 
-require 'recipe/common.php';
+require 'recipe/wordpress.php';
 require 'contrib/slack.php';
 
 /**
@@ -247,22 +247,11 @@ task('restart:php-fpm', function () {
 	run('service php7.4-fpm restart');
 })->select('stage=prod');
 
-// Tasks
+// Main task
 desc('Deploy your project');
 task('deploy', [
-	'deploy:info',
 	'deploy:prepare',
-	'deploy:lock',
-	'deploy:release',
-	'deploy:update_code',
-	'deploy:shared',
-	'deploy:writable',
-	'deploy:vendors',
-	'deploy:clear_paths',
-	'deploy:symlink',
-	'deploy:unlock',
-	'deploy:cleanup',
-	'deploy:success'
+	'deploy:publish',
 ]);
 
 // If deploy fails automatically unlock.
