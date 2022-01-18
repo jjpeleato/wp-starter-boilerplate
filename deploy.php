@@ -197,7 +197,9 @@ task('deploy:phpcs', function (){
 	run('cp phpcs.xml.dist phpcs.xml');
 	run('composer install');
 	run('composer cs');
-})->select('stage=dev,pre,prod');
+})->select('stage=dev')
+	->select('stage=pre')
+	->select('stage=prod');
 
 // OWNER Custom tasks
 desc('Set the owner and group according http_user on DEV environment');
