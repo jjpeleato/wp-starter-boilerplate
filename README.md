@@ -6,6 +6,8 @@ WordPress base repository for any project.
 
 - LOCAL: ~
 - LOCAL ADMIN: ~
+- DEV: ~
+- DEV ADMIN: ~
 - PRE: ~
 - PRE ADMIN: ~
 - PRO: ~
@@ -47,13 +49,13 @@ For more information visit:
 ```
 ├─ .husky/ # Husky directory (git-hooks)
 ├─ assets/ # Front-end directory
+│  ├─ acf/
 │  ├─ font/
 │  ├─ img/
 │  ├─ js/
 │  ├─ scss/
 │  ├─ .htaccess.dist
-│  ├─ .htpasswd.dist
-│  └─ functions.php.dist
+│  └─ .htpasswd.dist
 ├─ gulp/
 │  ├─ task/
 │  └─ config.js # Paths and configuration Gulp system.
@@ -75,7 +77,7 @@ For more information visit:
 ├─ gulpfile.babel.js
 ├─ LICENSE
 ├─ package.json
-├─ phpcs.xml.dist
+├─ phpcs.xml
 ├─ README.md
 └─ validate.sh
 ```
@@ -92,10 +94,11 @@ For more information visit:
     - Add the following code:
     ```php
    <?php
-    define('WP_MEMORY_LIMIT', '256M');
-    define('WP_ENVIRONMENT', 'dev');
-    define('WP_CACHE', false);
-    define('DISALLOW_FILE_EDIT', true);
+    define( 'WP_MEMORY_LIMIT', '256M' );
+    define( 'AUTOMATIC_UPDATER_DISABLED', true );
+    define( 'WP_ENVIRONMENT', 'dev' );
+    define( 'WP_CACHE', false );
+    define( 'DISALLOW_FILE_EDIT', true );
     ...
     define( 'WP_DEBUG', true );
     define( 'WP_DEBUG_LOG', true );
@@ -112,7 +115,7 @@ For more information visit:
     - Change Authentication Unique Keys and Salts. Open the link `https://api.wordpress.org/secret-key/1.1/salt/`, copy and replace in the correct section.
     - Change table prefix. Only numbers, letters, and underscores. For example: `$table_prefix = 'j28p_';`
 7. Copy the `assets/.htaccess.dist` to `public/.htaccess` and to remove the code that you do not need.
-8. Copy the `phpcs.xml.dist` to `phpcs.xml` and rename the `ao-apolo` according theme path.
+8. Open the `phpcs.xml` and rename the `ao-apolo` according theme path.
 9. If required. Copy the `.env.dist` to `.env` and look the vars according Deployer file `deploy.php`.
 10. Open your terminal and browse to the root location of your project.
 11. Run `$lando start`.
@@ -132,6 +135,7 @@ For more information visit:
     - `$lando gulp clean` Delete all files.
     - `$lando gulp css` Compile SASS to CSS and validate SASS according Stylelint (https://stylelint.io/). Not concat.
     - `$lando gulp cssAssets` Copy CSS assets to public directory.
+    - `$lando gulp cssCritical` Copy critical CSS assets to public directory.
     - `$lando gulp cssWithConcat` Concat and compile SASS to CSS and validate SASS according Stylelint (https://stylelint.io/).
     - `$lando gulp fontAssets` Copy fonts assets to public directory.
     - `$lando gulp images` Copy and minify PNG, JPEG, GIF and SVG images with imagemin.

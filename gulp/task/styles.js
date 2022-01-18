@@ -1,10 +1,9 @@
 'use strict';
 
-import config from './../config';
-
 /**
  * Import config file and required resources.
  */
+import config from './../config';
 import gulp from 'gulp';
 import concat from 'gulp-concat';
 import gulpSass from 'gulp-sass';
