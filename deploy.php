@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Deployer;
 
-require 'recipe/wordpress.php';
+require 'recipe/common.php';
 require 'contrib/slack.php';
 
 /**
@@ -251,7 +251,12 @@ task('restart:php-fpm', function () {
 desc('Deploy your project');
 task('deploy', [
 	'deploy:prepare',
-	'deploy:publish',
+	'deploy:vendors',
+	'deploy:symlink',
+	'deploy:unlock',
+	'deploy:clear_paths',
+	'deploy:cleanup',
+	'deploy:success',
 ]);
 
 // If deploy fails automatically unlock.
