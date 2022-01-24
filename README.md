@@ -15,7 +15,7 @@ WordPress base repository for any project.
 
 ## Project
 
-Built with WordPress platform using the following technologies: HTML 5, Bootstrap 4, JavaScript, jQuery, CSS3, SASS & Compass, Lando (Docker), NPM or Yarn, Gulp v.4 and Deployer.
+Built with WordPress platform using the following technologies: HTML 5, JavaScript, jQuery, CSS3, SASS, Lando (Docker), NPM or Yarn, Gulp v.4 and Deployer.
 
 For your projects I recommend underscores theme. More information about:
 
@@ -148,10 +148,10 @@ For more information visit:
     - `$lando gulp validateScss` Validate SCSS according Stylint (https://stylelint.io/).
     - `$lando gulp watch` Compile SASS to CSS and concat and minify JS files in real-time.
 - NPM actions commands list:
-	- `$lando npm run prepare` Enable Git hooks. **Important: Run always after npm install.**
-	- `$lando npm run gulp:dev` Compile for development environment.
-	- `$lando npm run gulp:prod` Compile for production environment.
-	- `$lando npm run gulp:validate` Run validate JS and SCSS files.
+    - `$lando npm run prepare` Enable Git hooks. **Important: Run always after npm install.**
+    - `$lando npm run gulp:dev` Compile for development environment.
+    - `$lando npm run gulp:prod` Compile for production environment.
+    - `$lando npm run gulp:validate` Run validate JS and SCSS files.
 - If required. Run: `$lando composer install`.
 - If you deploy with Deployer. Copy the `.env.dist` to `.env` and you add the server credentials and git repository.
 - Deployer actions commands list:
@@ -160,10 +160,16 @@ For more information visit:
     - `$lando dep deploy pre` Deploy to the pre production server.
     - `$lando dep deploy pro` Deploy to the production server.
 - If you work with PHP CodeSniffer. If required run `$lando phpcs --config-set installed_paths /path/to/wpcs`
-	- `$lando phpcs` or `$lando composer cs` Runs the phpcs
-	- `$lando phpcbf` or `$lando composer cs:fix`  Runs the phpcbf
+    - `$lando phpcs` or `$lando composer cs` Runs the phpcs
+    - `$lando phpcbf` or `$lando composer cs:fix`  Runs the phpcbf
 - **Important**. Run the shell script to validate PHP, JS and SCSS files:
-	- `$sh validate.sh`
+    - `$sh validate.sh`
+
+### Git
+
+I recommend using `Conventional Commits` a specification for adding human and machine readable meaning to commit messages.
+
+https://www.conventionalcommits.org/en/v1.0.0/
 
 ### Technologies and tools
 

@@ -7,15 +7,13 @@ require 'recipe/common.php';
 require 'contrib/slack.php';
 
 /**
- * Loads environment variables
+ * Load environment variables.
  */
-require_once __DIR__ . '/vendor/autoload.php';
-use Dotenv\Dotenv;
+set('dotenv', '{{current_path}}/.env');
 
-$dotenv = Dotenv::createImmutable(__DIR__);
-$dotenv->load();
-
-// Environments
+/**
+ * Environments.
+ */
 define("DEPLOY_CONFIG", [
 	'basic' => [
 		'application' => $_ENV['DEP_APPLICATION'],
@@ -93,41 +91,50 @@ define("DEPLOY_CONFIG", [
 	],
 ]);
 
-// Project name
+/**
+ * Project name.
+ */
 set('application', DEPLOY_CONFIG['basic']['application']);
 
-// Project repository
+/**
+ * Project repository.
+ */
 set('repository', DEPLOY_CONFIG['basic']['repository']);
 
-// Basic configurations
-set('allow_anonymous_stats', false);
-set('timezone', 'Europe/Madrid');
+/**
+ * Basic configurations.
+ */
 set('keep_releases', 4); // Number to keep releases
 set('writable_mode', 'chown'); // chmod, chown, chgrp or acl.
-set('ssh_type', 'native');
 set('ssh_multiplexing', true);
-set('git_tty', true); // Allocate tty for git clone. Default value is false.
+set('slack_webhook', DEPLOY_CONFIG['basic']['slack_webhook']);
 
-// Windows Compatibility
+/**
+ * Windows compatibility.
+ */
 if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 	set('ssh_multiplexing', false);
-	set('git_tty', false);
 }
 
-// Shared files/dirs between deploys
+/**
+ * Shared files/dirs between deploys.
+ */
 set('shared_files', DEPLOY_CONFIG['basic']['shared_files']);
 set('shared_dirs', DEPLOY_CONFIG['basic']['shared_dirs']);
 
-// Writable dirs by web server
+/**
+ * Writable dirs by web server.
+ */
 set('writable_dirs', DEPLOY_CONFIG['basic']['writable_dirs']);
 
-// Delete directories or files
+/**
+ * Delete directories or files.
+ */
 set('clear_paths', DEPLOY_CONFIG['basic']['clear_paths']);
 
-// Slack
-set('slack_webhook', DEPLOY_CONFIG['basic']['slack_webhook']);
-
-// Hosts
+/**
+ * Environments: localhost, dev, pre and prod.
+ */
 localhost('localhost')
 	->set('labels', ['stage' => 'local'])
 	->set('http_user', 'www-data')
@@ -172,83 +179,121 @@ host('prod')
 	->set('branch', 'master')
 	->set('deploy_path', DEPLOY_CONFIG['prod']['deploy_path']);
 
-// NPM custom tasks
-desc('Install NPM packages and run gulp task on DEV environment');
-task('deploy:build:dev', function (){
+/**
+ * NPM custom tasks.
+ */
+task('deploy:build:dev', function () {
 	run('npm install --save-dev');
 	run('npm run gulp:dev');
-})->select('stage=dev');
+})
+	->desc('Install NPM packages and run gulp task on DEV environment')
+	->select('stage=dev')
+	->once()
+	->verbose();
 
-desc('Install NPM packages and run gulp task on PRE environment');
 task('deploy:build:pre', function (){
 	run('npm install --save-dev');
 	run('npm run gulp:dev');
-})->select('stage=pre');
+})
+	->desc('Install NPM packages and run gulp task on PRE environment')
+	->select('stage=pre')
+	->once()
+	->verbose();
 
-desc('Install NPM packages and run gulp task on PROD environment');
 task('deploy:build:prod', function () {
 	run('npm install --save-dev');
 	run('npm run gulp:prod');
-})->select('stage=prod');
+})
+	->desc('Install NPM packages and run gulp task on PROD environment')
+	->select('stage=prod')
+	->once()
+	->verbose();
 
-// COMPOSER custom tasks
-desc('Run phpcodesniffer task');
+/**
+ * COMPOSER custom tasks.
+ */
 task('deploy:phpcs', function (){
 	run('cp phpcs.xml.dist phpcs.xml');
 	run('composer install');
 	run('composer cs');
-})->select('stage=dev')
-	->select('stage=pre')
-	->select('stage=prod');
+})
+	->desc('Run phpcodesniffer task')
+	->verbose();
 
-// OWNER Custom tasks
-desc('Set the owner and group according http_user on DEV environment');
+/**
+ * OWNER Custom tasks.
+ */
 task('deploy:owner:dev', function () {
 	run('chown ' . DEPLOY_CONFIG['dev']['http_user'] . ': ' . DEPLOY_CONFIG['dev']['deploy_path'] . ' -R');
-})->select('stage=dev');
+})
+	->desc('Set the owner and group according http_user on DEV environment')
+	->select('stage=dev')
+	->once()
+	->verbose();
 
-desc('Set the owner and group according http_user on PRE environment');
 task('deploy:owner:pre', function () {
 	run('chown ' . DEPLOY_CONFIG['pre']['http_user'] . ': ' . DEPLOY_CONFIG['pre']['deploy_path'] . ' -R');
-})->select('stage=pre');
+})
+	->desc('Set the owner and group according http_user on PRE environment')
+	->select('stage=pre')
+	->once()
+	->verbose();
 
-desc('Set the owner and group according http_user on PROD environment');
 task('deploy:owner:prod', function () {
 	run('chown ' . DEPLOY_CONFIG['prod']['http_user'] . ': ' . DEPLOY_CONFIG['prod']['deploy_path'] . ' -R');
-})->select('stage=prod');
+})
+	->desc('Set the owner and group according http_user on PROD environment')
+	->select('stage=prod')
+	->once()
+	->verbose();
 
-// PERMISSIONS Custom tasks
-desc('Set the write permissions for the group on DEV environment');
+/**
+ * PERMISSIONS Custom tasks.
+ */
 task('deploy:permissions:dev', function () {
 	run('find ' . DEPLOY_CONFIG['dev']['deploy_path'] . ' -type d -exec chmod -R 0755 {} \;');
 	run('find ' . DEPLOY_CONFIG['dev']['deploy_path'] . ' -type f -exec chmod -R 0644 {} \;');
-})->select('stage=dev');
+})
+	->desc('Set the write permissions for the group on DEV environment')
+	->select('stage=dev')
+	->once();
 
-desc('Set the write permissions for the group on PRE environment');
 task('deploy:permissions:pre', function () {
 	run('find ' . DEPLOY_CONFIG['pre']['deploy_path'] . ' -type d -exec chmod -R 0755 {} \;');
 	run('find ' . DEPLOY_CONFIG['pre']['deploy_path'] . ' -type f -exec chmod -R 0644 {} \;');
-})->select('stage=pre');
+})
+	->desc('Set the write permissions for the group on PRE environment')
+	->select('stage=pre')
+	->once();
 
-desc('Set the write permissions for the group on PROD environment');
 task('deploy:permissions:prod', function () {
 	run('find ' . DEPLOY_CONFIG['prod']['deploy_path'] . ' -type d -exec chmod -R 0755 {} \;');
 	run('find ' . DEPLOY_CONFIG['prod']['deploy_path'] . ' -type f -exec chmod -R 0644 {} \;');
-})->select('stage=prod');
+})
+	->desc('Set the write permissions for the group on PROD environment')
+	->select('stage=prod')
+	->once();
 
-// SERVER Custom tasks
-desc('Restart Apache service');
+/**
+ * SERVER Custom tasks.
+ */
 task('restart:apache', function () {
 	run('service apache2 restart');
-})->select('stage=prod');
+})
+	->desc('Restart Apache service')
+	->select('stage=prod')
+	->once();
 
-desc('Restart PHP-FPM service');
 task('restart:php-fpm', function () {
 	run('service php7.4-fpm restart');
-})->select('stage=prod');
+})
+	->desc('Restart PHP-FPM service')
+	->select('stage=prod')
+	->once();
 
-// Main task
-desc('Deploy your project');
+/**
+ * Main tasks.
+ */
 task('deploy', [
 	'deploy:prepare',
 	'deploy:vendors',
@@ -257,18 +302,25 @@ task('deploy', [
 	'deploy:clear_paths',
 	'deploy:cleanup',
 	'deploy:success',
-]);
+])
+	->desc('Deploy your project');
 
-// If deploy fails automatically unlock.
+/**
+ * If deploy fails automatically unlock.
+ */
 after('deploy:failed', 'deploy:unlock');
 
-// If deploy is in progress
+/**
+ * If deploy is in progress.
+ */
 after('deploy:vendors', 'deploy:phpcs');
 after('deploy:vendors', 'deploy:build:dev');
 after('deploy:vendors', 'deploy:build:pre');
 after('deploy:vendors', 'deploy:build:prod');
 
-// If deploy is successfully
+/**
+ * If deploy is successfully.
+ */
 after('deploy', 'deploy:owner:dev');
 after('deploy', 'deploy:owner:pre');
 after('deploy', 'deploy:owner:prod');
@@ -278,7 +330,9 @@ after('deploy', 'deploy:permissions:prod');
 //after('deploy', 'restart:apache');
 //after('deploy', 'restart:php-fpm');
 
-// Slack
+/**
+ * Slack tasks.
+ */
 before('deploy', 'slack:notify');
 after('deploy:failed', 'slack:notify:failure');
 after('deploy:success', 'slack:notify:success');
