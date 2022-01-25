@@ -193,39 +193,19 @@ host( 'prod' )
  * NPM custom tasks.
  */
 task(
-	'deploy:build:dev',
+	'deploy:build',
 	function () {
 		run( 'cd {{current_path}} && npm install --save-dev' );
-		run( 'cd {{current_path}} && npm run gulp:dev' );
-	}
-)
-	->desc( 'Install NPM packages and run gulp task on DEV environment' )
-	->select( 'stage=dev' )
-	->once()
-	->verbose();
 
-task(
-	'deploy:build:pre',
-	function () {
-		run( 'cd {{current_path}} && npm install --save-dev' );
-		run( 'cd {{current_path}} && npm run gulp:dev' );
+		$stage = get( 'labels' )['stage'];
+		if ( 'prod' === $stage ) {
+			run( 'cd {{current_path}} && npm run gulp:prod' );
+		} else {
+			run( 'cd {{current_path}} && npm run gulp:dev' );
+		}
 	}
 )
-	->desc( 'Install NPM packages and run gulp task on PRE environment' )
-	->select( 'stage=pre' )
-	->once()
-	->verbose();
-
-task(
-	'deploy:build:prod',
-	function () {
-		run( 'cd {{current_path}} && npm install --save-dev' );
-		run( 'cd {{current_path}} && npm run gulp:prod' );
-	}
-)
-	->desc( 'Install NPM packages and run gulp task on PROD environment' )
-	->select( 'stage=prod' )
-	->once()
+	->desc( 'Install NPM packages and run gulp task on current environment' )
 	->verbose();
 
 /**
@@ -245,73 +225,45 @@ task(
  * OWNER Custom tasks.
  */
 task(
-	'deploy:owner:dev',
+	'deploy:owner',
 	function () {
-		run( 'chown ' . DEPLOY_CONFIG['dev']['http_user'] . ': ' . DEPLOY_CONFIG['dev']['deploy_path'] . ' -R' );
+		$stage = get( 'labels' )['stage'];
+		if ( 'dev' === $stage ) {
+			run( 'chown ' . DEPLOY_CONFIG['dev']['http_user'] . ': ' . DEPLOY_CONFIG['dev']['deploy_path'] . ' -R' );
+		} elseif ( 'pre' === $stage ) {
+			run( 'chown ' . DEPLOY_CONFIG['pre']['http_user'] . ': ' . DEPLOY_CONFIG['pre']['deploy_path'] . ' -R' );
+		} elseif ( 'prod' === $stage ) {
+			run( 'chown ' . DEPLOY_CONFIG['prod']['http_user'] . ': ' . DEPLOY_CONFIG['prod']['deploy_path'] . ' -R' );
+		} else {
+			echo "Ups! deploy:owner task has not run.\n";
+		}
 	}
 )
 	->desc( 'Set the owner and group according http_user on DEV environment' )
-	->select( 'stage=dev' )
-	->once()
-	->verbose();
-
-task(
-	'deploy:owner:pre',
-	function () {
-		run( 'chown ' . DEPLOY_CONFIG['pre']['http_user'] . ': ' . DEPLOY_CONFIG['pre']['deploy_path'] . ' -R' );
-	}
-)
-	->desc( 'Set the owner and group according http_user on PRE environment' )
-	->select( 'stage=pre' )
-	->once()
-	->verbose();
-
-task(
-	'deploy:owner:prod',
-	function () {
-		run( 'chown ' . DEPLOY_CONFIG['prod']['http_user'] . ': ' . DEPLOY_CONFIG['prod']['deploy_path'] . ' -R' );
-	}
-)
-	->desc( 'Set the owner and group according http_user on PROD environment' )
-	->select( 'stage=prod' )
-	->once()
 	->verbose();
 
 /**
  * PERMISSIONS Custom tasks.
  */
 task(
-	'deploy:permissions:dev',
+	'deploy:permissions',
 	function () {
-		run( 'find ' . DEPLOY_CONFIG['dev']['deploy_path'] . ' -type d -exec chmod -R 0755 {} \;' );
-		run( 'find ' . DEPLOY_CONFIG['dev']['deploy_path'] . ' -type f -exec chmod -R 0644 {} \;' );
+		$stage = get( 'labels' )['stage'];
+		if ( 'dev' === $stage ) {
+			run( 'find ' . DEPLOY_CONFIG['dev']['deploy_path'] . ' -type d -exec chmod -R 0755 {} \;' );
+			run( 'find ' . DEPLOY_CONFIG['dev']['deploy_path'] . ' -type f -exec chmod -R 0644 {} \;' );
+		} elseif ( 'pre' === $stage ) {
+			run( 'find ' . DEPLOY_CONFIG['pre']['deploy_path'] . ' -type d -exec chmod -R 0755 {} \;' );
+			run( 'find ' . DEPLOY_CONFIG['pre']['deploy_path'] . ' -type f -exec chmod -R 0644 {} \;' );
+		} elseif ( 'prod' === $stage ) {
+			run( 'find ' . DEPLOY_CONFIG['prod']['deploy_path'] . ' -type d -exec chmod -R 0755 {} \;' );
+			run( 'find ' . DEPLOY_CONFIG['prod']['deploy_path'] . ' -type f -exec chmod -R 0644 {} \;' );
+		} else {
+			echo "Ups! deploy:permissions task has not run.\n";
+		}
 	}
 )
-	->desc( 'Set the write permissions for the group on DEV environment' )
-	->select( 'stage=dev' )
-	->once();
-
-task(
-	'deploy:permissions:pre',
-	function () {
-		run( 'find ' . DEPLOY_CONFIG['pre']['deploy_path'] . ' -type d -exec chmod -R 0755 {} \;' );
-		run( 'find ' . DEPLOY_CONFIG['pre']['deploy_path'] . ' -type f -exec chmod -R 0644 {} \;' );
-	}
-)
-	->desc( 'Set the write permissions for the group on PRE environment' )
-	->select( 'stage=pre' )
-	->once();
-
-task(
-	'deploy:permissions:prod',
-	function () {
-		run( 'find ' . DEPLOY_CONFIG['prod']['deploy_path'] . ' -type d -exec chmod -R 0755 {} \;' );
-		run( 'find ' . DEPLOY_CONFIG['prod']['deploy_path'] . ' -type f -exec chmod -R 0644 {} \;' );
-	}
-)
-	->desc( 'Set the write permissions for the group on PROD environment' )
-	->select( 'stage=prod' )
-	->once();
+	->desc( 'Set the write permissions for the group on DEV environment' );
 
 /**
  * SERVER Custom tasks.
@@ -319,22 +271,28 @@ task(
 task(
 	'restart:apache',
 	function () {
+		$stage = get( 'labels' )['stage'];
+		if ( 'prod' !== $stage ) {
+			return;
+		}
+
 		run( 'service apache2 restart' );
 	}
 )
-	->desc( 'Restart Apache service' )
-	->select( 'stage=prod' )
-	->once();
+	->desc( 'Restart Apache service' );
 
 task(
 	'restart:php-fpm',
 	function () {
+		$stage = get( 'labels' )['stage'];
+		if ( 'prod' !== $stage ) {
+			return;
+		}
+
 		run( 'service php7.4-fpm restart' );
 	}
 )
-	->desc( 'Restart PHP-FPM service' )
-	->select( 'stage=prod' )
-	->once();
+	->desc( 'Restart PHP-FPM service' );
 
 /**
  * Main tasks.
@@ -361,20 +319,14 @@ after( 'deploy:failed', 'deploy:unlock' );
 /**
  * If deploy is in progress.
  */
-after( 'deploy:unlock', 'deploy:build:dev' );
-after( 'deploy:unlock', 'deploy:build:pre' );
-after( 'deploy:unlock', 'deploy:build:prod' );
+after( 'deploy:unlock', 'deploy:build' );
 after( 'deploy:unlock', 'deploy:phpcs' );
 
 /**
  * If deploy is successfully.
  */
-after( 'deploy', 'deploy:owner:dev' );
-after( 'deploy', 'deploy:owner:pre' );
-after( 'deploy', 'deploy:owner:prod' );
-after( 'deploy', 'deploy:permissions:dev' );
-after( 'deploy', 'deploy:permissions:pre' );
-after( 'deploy', 'deploy:permissions:prod' );
+after( 'deploy', 'deploy:owner' );
+after( 'deploy', 'deploy:permissions' );
 // after('deploy', 'restart:apache');
 // after('deploy', 'restart:php-fpm');
 
