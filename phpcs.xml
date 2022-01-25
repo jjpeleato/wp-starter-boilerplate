@@ -17,7 +17,9 @@
 	Check all files in this directory and the directories below it.
 	Include the /path/to/theme.
 	-->
+	<!--
 	<file>public/wp-content/themes/ao-apolo/</file>
+	-->
 
 	<!--
 	Check all files in this plugin directory and the directories below it.
@@ -29,10 +31,14 @@
 	<exclude-pattern>*/index.php</exclude-pattern>
 
 	<!-- Exclude WP Core folders and files from being checked. -->
+	<!--
 	<exclude-pattern>public/wp-content/themes/ao-apolo/assets/</exclude-pattern>
+	-->
 
 	<!-- Exclude ACF file from being checked. -->
+	<!--
 	<exclude-pattern>public/wp-content/themes/ao-apolo/inc/theme-acf.php</exclude-pattern>
+	-->
 
 	<!-- Exclude the Composer Vendor directory. -->
 	<exclude-pattern>/vendor/*</exclude-pattern>
