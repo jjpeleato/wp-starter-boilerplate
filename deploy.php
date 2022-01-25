@@ -361,10 +361,10 @@ after( 'deploy:failed', 'deploy:unlock' );
 /**
  * If deploy is in progress.
  */
-after( 'deploy:vendors', 'deploy:phpcs' );
 after( 'deploy:vendors', 'deploy:build:dev' );
 after( 'deploy:vendors', 'deploy:build:pre' );
 after( 'deploy:vendors', 'deploy:build:prod' );
+after( 'deploy:vendors', 'deploy:phpcs' );
 
 /**
  * If deploy is successfully.
