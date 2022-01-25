@@ -195,9 +195,8 @@ host( 'prod' )
 task(
 	'deploy:build:dev',
 	function () {
-		run( 'cd {{current_path}}' );
-		run( 'npm install --save-dev' );
-		run( 'npm run gulp:dev' );
+		run( 'cd {{current_path}} && npm install --save-dev' );
+		run( 'cd {{current_path}} && npm run gulp:dev' );
 	}
 )
 	->desc( 'Install NPM packages and run gulp task on DEV environment' )
@@ -208,9 +207,8 @@ task(
 task(
 	'deploy:build:pre',
 	function () {
-		run( 'cd {{current_path}}' );
-		run( 'npm install --save-dev' );
-		run( 'npm run gulp:dev' );
+		run( 'cd {{current_path}} && npm install --save-dev' );
+		run( 'cd {{current_path}} && npm run gulp:dev' );
 	}
 )
 	->desc( 'Install NPM packages and run gulp task on PRE environment' )
@@ -221,9 +219,8 @@ task(
 task(
 	'deploy:build:prod',
 	function () {
-		run( 'cd {{current_path}}' );
-		run( 'npm install --save-dev' );
-		run( 'npm run gulp:prod' );
+		run( 'cd {{current_path}} && npm install --save-dev' );
+		run( 'cd {{current_path}} && npm run gulp:prod' );
 	}
 )
 	->desc( 'Install NPM packages and run gulp task on PROD environment' )
@@ -237,9 +234,8 @@ task(
 task(
 	'deploy:phpcs',
 	function () {
-		run( 'cd {{current_path}}' );
-		run( 'composer install' );
-		run( 'composer cs' );
+		run( 'cd {{current_path}} && composer install' );
+		run( 'cd {{current_path}} && composer cs' );
 	}
 )
 	->desc( 'Run phpcodesniffer task' )
