@@ -92,11 +92,11 @@ define(
 			'deploy_path' => $_ENV['DEP_PRE_DEPLOY_PATH'],
 		),
 		'prod'  => array(
-			'hostname'    => $_ENV['DEP_PRO_HOSTNAME'],
-			'port'        => (int) $_ENV['DEP_PRO_PORT'],
-			'user'        => $_ENV['DEP_PRO_USER'],
-			'http_user'   => $_ENV['DEP_PRO_HTTP_USER'],
-			'deploy_path' => $_ENV['DEP_PRO_DEPLOY_PATH'],
+			'hostname'    => $_ENV['DEP_PROD_HOSTNAME'],
+			'port'        => (int) $_ENV['DEP_PROD_PORT'],
+			'user'        => $_ENV['DEP_PROD_USER'],
+			'http_user'   => $_ENV['DEP_PROD_HTTP_USER'],
+			'deploy_path' => $_ENV['DEP_PROD_DEPLOY_PATH'],
 		),
 	)
 );
