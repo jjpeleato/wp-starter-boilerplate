@@ -234,7 +234,6 @@ task(
 task(
 	'deploy:phpcs',
 	function () {
-		run( 'cp phpcs.xml.dist phpcs.xml' );
 		run( 'composer install' );
 		run( 'composer cs' );
 	}
