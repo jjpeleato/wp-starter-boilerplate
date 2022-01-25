@@ -195,6 +195,7 @@ host( 'prod' )
 task(
 	'deploy:build:dev',
 	function () {
+		run( 'cd {{current_path}}' );
 		run( 'npm install --save-dev' );
 		run( 'npm run gulp:dev' );
 	}
@@ -207,6 +208,7 @@ task(
 task(
 	'deploy:build:pre',
 	function () {
+		run( 'cd {{current_path}}' );
 		run( 'npm install --save-dev' );
 		run( 'npm run gulp:dev' );
 	}
@@ -219,6 +221,7 @@ task(
 task(
 	'deploy:build:prod',
 	function () {
+		run( 'cd {{current_path}}' );
 		run( 'npm install --save-dev' );
 		run( 'npm run gulp:prod' );
 	}
@@ -234,6 +237,7 @@ task(
 task(
 	'deploy:phpcs',
 	function () {
+		run( 'cd {{current_path}}' );
 		run( 'composer install' );
 		run( 'composer cs' );
 	}
