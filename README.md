@@ -6,6 +6,8 @@ WordPress base repository for any project.
 
 - LOCAL: ~
 - LOCAL ADMIN: ~
+- DEV: ~
+- DEV ADMIN: ~
 - PRE: ~
 - PRE ADMIN: ~
 - PRO: ~
@@ -13,7 +15,7 @@ WordPress base repository for any project.
 
 ## Project
 
-Built with WordPress platform using the following technologies: HTML 5, Bootstrap 4, JavaScript, jQuery, CSS3, SASS & Compass, Lando (Docker), NPM or Yarn, Gulp v.4 and Deployer.
+Built with WordPress platform using the following technologies: HTML 5, JavaScript, jQuery, CSS3, SASS, Lando (Docker), NPM or Yarn, Gulp v.4 and Deployer.
 
 For your projects I recommend underscores theme. More information about:
 
@@ -47,13 +49,13 @@ For more information visit:
 ```
 ├─ .husky/ # Husky directory (git-hooks)
 ├─ assets/ # Front-end directory
+│  ├─ acf/
 │  ├─ font/
 │  ├─ img/
 │  ├─ js/
 │  ├─ scss/
 │  ├─ .htaccess.dist
-│  ├─ .htpasswd.dist
-│  └─ functions.php.dist
+│  └─ .htpasswd.dist
 ├─ gulp/
 │  ├─ task/
 │  └─ config.js # Paths and configuration Gulp system.
@@ -75,7 +77,7 @@ For more information visit:
 ├─ gulpfile.babel.js
 ├─ LICENSE
 ├─ package.json
-├─ phpcs.xml.dist
+├─ phpcs.xml
 ├─ README.md
 └─ validate.sh
 ```
@@ -92,10 +94,11 @@ For more information visit:
     - Add the following code:
     ```php
    <?php
-    define('WP_MEMORY_LIMIT', '256M');
-    define('WP_ENVIRONMENT', 'dev');
-    define('WP_CACHE', false);
-    define('DISALLOW_FILE_EDIT', true);
+    define( 'WP_MEMORY_LIMIT', '256M' );
+    define( 'AUTOMATIC_UPDATER_DISABLED', true );
+    define( 'WP_ENVIRONMENT', 'dev' );
+    define( 'WP_CACHE', false );
+    define( 'DISALLOW_FILE_EDIT', true );
     ...
     define( 'WP_DEBUG', true );
     define( 'WP_DEBUG_LOG', true );
@@ -112,7 +115,7 @@ For more information visit:
     - Change Authentication Unique Keys and Salts. Open the link `https://api.wordpress.org/secret-key/1.1/salt/`, copy and replace in the correct section.
     - Change table prefix. Only numbers, letters, and underscores. For example: `$table_prefix = 'j28p_';`
 7. Copy the `assets/.htaccess.dist` to `public/.htaccess` and to remove the code that you do not need.
-8. Copy the `phpcs.xml.dist` to `phpcs.xml` and rename the `ao-apolo` according theme path.
+8. Open the `phpcs.xml` and rename the `ao-apolo` according theme path.
 9. If required. Copy the `.env.dist` to `.env` and look the vars according Deployer file `deploy.php`.
 10. Open your terminal and browse to the root location of your project.
 11. Run `$lando start`.
@@ -132,6 +135,7 @@ For more information visit:
     - `$lando gulp clean` Delete all files.
     - `$lando gulp css` Compile SASS to CSS and validate SASS according Stylelint (https://stylelint.io/). Not concat.
     - `$lando gulp cssAssets` Copy CSS assets to public directory.
+    - `$lando gulp cssCritical` Copy critical CSS assets to public directory.
     - `$lando gulp cssWithConcat` Concat and compile SASS to CSS and validate SASS according Stylelint (https://stylelint.io/).
     - `$lando gulp fontAssets` Copy fonts assets to public directory.
     - `$lando gulp images` Copy and minify PNG, JPEG, GIF and SVG images with imagemin.
@@ -144,10 +148,10 @@ For more information visit:
     - `$lando gulp validateScss` Validate SCSS according Stylint (https://stylelint.io/).
     - `$lando gulp watch` Compile SASS to CSS and concat and minify JS files in real-time.
 - NPM actions commands list:
-	- `$lando npm run prepare` Enable Git hooks. **Important: Run always after npm install.**
-	- `$lando npm run gulp:dev` Compile for development environment.
-	- `$lando npm run gulp:prod` Compile for production environment.
-	- `$lando npm run gulp:validate` Run validate JS and SCSS files.
+    - `$lando npm run prepare` Enable Git hooks. **Important: Run always after npm install.**
+    - `$lando npm run gulp:dev` Compile for development environment.
+    - `$lando npm run gulp:prod` Compile for production environment.
+    - `$lando npm run gulp:validate` Run validate JS and SCSS files.
 - If required. Run: `$lando composer install`.
 - If you deploy with Deployer. Copy the `.env.dist` to `.env` and you add the server credentials and git repository.
 - Deployer actions commands list:
@@ -156,10 +160,16 @@ For more information visit:
     - `$lando dep deploy pre` Deploy to the pre production server.
     - `$lando dep deploy pro` Deploy to the production server.
 - If you work with PHP CodeSniffer. If required run `$lando phpcs --config-set installed_paths /path/to/wpcs`
-	- `$lando phpcs` or `$lando composer cs` Runs the phpcs
-	- `$lando phpcbf` or `$lando composer cs:fix`  Runs the phpcbf
+    - `$lando phpcs` or `$lando composer cs` Runs the phpcs
+    - `$lando phpcbf` or `$lando composer cs:fix`  Runs the phpcbf
 - **Important**. Run the shell script to validate PHP, JS and SCSS files:
-	- `$sh validate.sh`
+    - `$sh validate.sh`
+
+### Git
+
+I recommend using `Conventional Commits` a specification for adding human and machine readable meaning to commit messages.
+
+https://www.conventionalcommits.org/en/v1.0.0/
 
 ### Technologies and tools
 
