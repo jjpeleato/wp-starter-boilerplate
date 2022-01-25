@@ -18,13 +18,13 @@ HOOK="https://hooks.slack.com/services/[KEY]"
 
 # Answer to continue
 echo
-echo "Do you want to deploy on production or pre production environment?. (pro/pre/dev): "
+echo "Do you want to deploy on demo, production or preproduction environment?. (prod/pre/dev): "
 read -r answer
 
-if [ "$answer" = "pro" ] ; then
+if [ "$answer" = "prod" ] ; then
     echo
     echo "Production environment"
-    ENVIRONMENT="pro"
+    ENVIRONMENT="prod"
     SSH_DIRECTORY="[user]@[ip]:/[path]"
     SSH_PORT="22"
 
@@ -61,7 +61,7 @@ echo
 
 # Download project according repository GIT
 echo "Download project and save into temporary directory"
-if [ "$ENVIRONMENT" = "pro" ] ; then
+if [ "$ENVIRONMENT" = "prod" ] ; then
     echo
     cd "$HOME" && rm -rf "$ORIGIN_DIRECTORY"
     cd "$HOME" && git clone "$GIT_URI" "$ORIGIN_DIRECTORY" --verbose
@@ -115,7 +115,7 @@ fi
 # Execute GULP
 echo
 echo "Execute GULP process"
-if [ "$ENVIRONMENT" = "pro" ] ; then
+if [ "$ENVIRONMENT" = "prod" ] ; then
     cd "$HOME/$ORIGIN_DIRECTORY" && npm run gulp:prod
 elif [ "$ENVIRONMENT" = "pre" ] ; then
     cd "$HOME/$ORIGIN_DIRECTORY" && npm run gulp:dev
@@ -135,7 +135,7 @@ fi
 # Deploy local to production environment
 echo
 echo "Deploying with dry-run"
-if [ "$ENVIRONMENT" = "pro" ] ; then
+if [ "$ENVIRONMENT" = "prod" ] ; then
     rsync --progress --exclude-from="$HOME/$ORIGIN_DIRECTORY/deploy-exclude-list.txt" -avzh "$HOME/$ORIGIN_DIRECTORY/public/" -e "ssh -p $SSH_PORT" "$SSH_DIRECTORY" --dry-run
 elif [ "$ENVIRONMENT" = "pre" ] ; then
     rsync --delete --progress --exclude-from="$HOME/$ORIGIN_DIRECTORY/deploy-exclude-list.txt" -avzh "$HOME/$ORIGIN_DIRECTORY/public/" -e "ssh -p $SSH_PORT" "$SSH_DIRECTORY" --dry-run
@@ -173,7 +173,7 @@ fi
 # Deploy local to production environment
 echo
 echo "Deploying..."
-if [ "$ENVIRONMENT" = "pro" ] ; then
+if [ "$ENVIRONMENT" = "prod" ] ; then
   rsync --progress --exclude-from="$HOME/$ORIGIN_DIRECTORY/deploy-exclude-list.txt" -avzh "$HOME/$ORIGIN_DIRECTORY/public/" -e "ssh -p $SSH_PORT" "$SSH_DIRECTORY"
 elif [ "$ENVIRONMENT" = "pre" ] ; then
   rsync --delete --progress --exclude-from="$HOME/$ORIGIN_DIRECTORY/deploy-exclude-list.txt" -avzh "$HOME/$ORIGIN_DIRECTORY/public/" -e "ssh -p $SSH_PORT" "$SSH_DIRECTORY"
