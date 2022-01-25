@@ -3,13 +3,20 @@ declare(strict_types=1);
 
 namespace Deployer;
 
-require 'recipe/common.php';
-require 'contrib/slack.php';
+/**
+ * Loads environment variables
+ */
+require_once __DIR__ . '/vendor/autoload.php';
+use Dotenv\Dotenv;
+
+$dotenv = Dotenv::createImmutable( __DIR__ );
+$dotenv->load();
 
 /**
- * Load environment variables.
+ * Load Deployer's files.
  */
-set( 'dotenv', '{{current_path}}/.env' );
+require 'recipe/common.php';
+require 'contrib/slack.php';
 
 /**
  * Environments.
@@ -18,9 +25,9 @@ define(
 	'DEPLOY_CONFIG',
 	array(
 		'basic' => array(
-			'application'   => getenv( 'DEP_APPLICATION' ),
-			'repository'    => getenv( 'DEP_REPOSITORY' ),
-			'slack_webhook' => getenv( 'DEP_SLACK_HOOK' ),
+			'application'   => $_ENV['DEP_APPLICATION'],
+			'repository'    => $_ENV['DEP_REPOSITORY'],
+			'slack_webhook' => $_ENV['DEP_SLACK_HOOK'],
 			'shared_files'  => array(
 				'public/.htaccess',
 				'public/.htpasswd',
@@ -71,25 +78,25 @@ define(
 			),
 		),
 		'dev'   => array(
-			'hostname'    => (string) getenv( 'DEP_DEV_HOSTNAME' ),
-			'port'        => (int) getenv( 'DEP_DEV_PORT' ),
-			'user'        => (string) getenv( 'DEP_DEV_USER' ),
-			'http_user'   => (string) getenv( 'DEP_DEV_HTTP_USER' ),
-			'deploy_path' => (string) getenv( 'DEP_DEV_DEPLOY_PATH' ),
+			'hostname'    => $_ENV['DEP_DEV_HOSTNAME'],
+			'port'        => (int) $_ENV['DEP_DEV_PORT'],
+			'user'        => $_ENV['DEP_DEV_USER'],
+			'http_user'   => $_ENV['DEP_DEV_HTTP_USER'],
+			'deploy_path' => $_ENV['DEP_DEV_DEPLOY_PATH'],
 		),
 		'pre'   => array(
-			'hostname'    => (string) getenv( 'DEP_PRE_HOSTNAME' ),
-			'port'        => (int) getenv( 'DEP_PRE_PORT' ),
-			'user'        => (string) getenv( 'DEP_PRE_USER' ),
-			'http_user'   => (string) getenv( 'DEP_PRE_HTTP_USER' ),
-			'deploy_path' => (string) getenv( 'DEP_PRE_DEPLOY_PATH' ),
+			'hostname'    => $_ENV['DEP_PRE_HOSTNAME'],
+			'port'        => (int) $_ENV['DEP_PRE_PORT'],
+			'user'        => $_ENV['DEP_PRE_USER'],
+			'http_user'   => $_ENV['DEP_PRE_HTTP_USER'],
+			'deploy_path' => $_ENV['DEP_PRE_DEPLOY_PATH'],
 		),
 		'prod'  => array(
-			'hostname'    => (string) getenv( 'DEP_PROD_HOSTNAME' ),
-			'port'        => (int) getenv( 'DEP_PROD_PORT' ),
-			'user'        => (string) getenv( 'DEP_PROD_USER' ),
-			'http_user'   => (string) getenv( 'DEP_PROD_HTTP_USER' ),
-			'deploy_path' => (string) getenv( 'DEP_PROD_DEPLOY_PATH' ),
+			'hostname'    => $_ENV['DEP_PRO_HOSTNAME'],
+			'port'        => (int) $_ENV['DEP_PRO_PORT'],
+			'user'        => $_ENV['DEP_PRO_USER'],
+			'http_user'   => $_ENV['DEP_PRO_HTTP_USER'],
+			'deploy_path' => $_ENV['DEP_PRO_DEPLOY_PATH'],
 		),
 	)
 );
