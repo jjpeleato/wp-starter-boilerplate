@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Themes - Twenty Twenty-One package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-03-11 06:52:50+0000\n"
+"PO-Revision-Date: 2022-01-26 04:56:10+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -39,8 +39,8 @@ msgid "Dark Mode is a device setting. If a visitor to your site requests it, you
 msgstr "El modo oscuro es un ajuste del dispositivo. Si un visitante de tu sitio lo solicita, tu sitio se mostrará con un fondo oscuro y un texto claro. <a href=\"%s\">Aprende más sobre el modo oscuro.</a>"
 
 #: classes/class-twenty-twenty-one-dark-mode.php:181
-msgid "Dark Mode can also be turned on and off with a button that you can find in the bottom right corner of the page."
-msgstr "El modo oscuro también puede activarse y desactivarse con un botón que puedes encontrar en la esquina inferior derecha de la página."
+msgid "Dark Mode can also be turned on and off with a button that you can find in the bottom corner of the page."
+msgstr "El modo oscuro también se puede activar y desactivar con un botón que puedes encontrar en la esquina inferior de la página."
 
 #: classes/class-twenty-twenty-one-dark-mode.php:380
 msgid "This website uses LocalStorage to save the setting when Dark Mode support is turned on or off.<br> LocalStorage is necessary for the setting to work and is only used when a user clicks on the Dark Mode button.<br> No data is saved in the database or transferred."
@@ -116,15 +116,10 @@ msgid "Background color"
 msgstr "Color del fondo"
 
 #. translators: %s: WordPress Version.
-#. translators: %s: WordPress Version.
-#. translators: %s: WordPress Version.
 #: inc/back-compat.php:42 inc/back-compat.php:61 inc/back-compat.php:86
 msgid "This theme requires WordPress 5.3 or newer. You are running version %s. Please upgrade."
 msgstr "Este tema necesita WordPress 5.3 o superior. Estás ejecutando la versión %s. Por favor, actualiza."
 
-#. translators: %: Page number.
-#. translators: %: Page number.
-#. translators: %: Page number.
 #. translators: %: Page number.
 #: image.php:48 template-parts/content/content-page.php:36
 #: template-parts/content/content-single.php:30
@@ -167,19 +162,19 @@ msgctxt "Font size"
 msgid "XS"
 msgstr "XS"
 
-#: comments.php:87
+#: comments.php:85
 msgid "Leave a comment"
 msgstr "Dejar un comentario"
 
 #. translators: %s: Comment count number.
-#: comments.php:40
+#: comments.php:39
 msgctxt "Comments title"
 msgid "%s comment"
 msgid_plural "%s comments"
 msgstr[0] "%s comentario"
 msgstr[1] "%s comentarios"
 
-#: comments.php:35
+#: comments.php:34
 msgid "1 comment"
 msgstr "1 comentario"
 
@@ -361,7 +356,6 @@ msgid "View all of %s's posts."
 msgstr "Ver todas las entradas de %s."
 
 #. translators: %s: Author name.
-#. translators: %s: Author name.
 #: inc/template-tags.php:49 template-parts/post/author-bio.php:19
 msgid "By %s"
 msgstr "Por %s"
@@ -409,36 +403,26 @@ msgstr[0] "Hemos encontrado %d resultado para tu búsqueda."
 msgstr[1] "Hemos encontrado %d resultados para tu búsqueda."
 
 #. translators: %s: Search term.
-#. translators: %s: Search term.
 #: search.php:21 template-parts/content/content-none.php:22
 msgid "Results for \"%s\""
 msgstr "Resultados para «%s»"
 
-#. translators: %s: List of tags.
 #. translators: %s: List of tags.
 #: inc/template-tags.php:118 inc/template-tags.php:162
 msgid "Tagged %s"
 msgstr "Etiquetado como %s"
 
 #. translators: %s: List of categories.
-#. translators: %s: List of categories.
 #: inc/template-tags.php:108 inc/template-tags.php:152
 msgid "Categorized as %s"
 msgstr "Categorizado como %s"
 
-#. translators: Used between list items, there is a space after the comma.
-#. translators: Used between list items, there is a space after the comma.
-#. translators: Used between list items, there is a space after the comma.
 #. translators: Used between list items, there is a space after the comma.
 #: inc/template-tags.php:104 inc/template-tags.php:114
 #: inc/template-tags.php:148 inc/template-tags.php:158
 msgid ", "
 msgstr ", "
 
-#. translators: %s: Name of current post. Only visible to screen readers.
-#. translators: %s: Name of current post. Only visible to screen readers.
-#. translators: %s: Name of current post. Only visible to screen readers.
-#. translators: %s: Name of current post. Only visible to screen readers.
 #. translators: %s: Name of current post. Only visible to screen readers.
 #: image.php:70 image.php:95 inc/template-tags.php:92 inc/template-tags.php:135
 #: template-parts/content/content-page.php:48
@@ -568,7 +552,7 @@ msgstr "Tamaño completo"
 msgid "Published %s"
 msgstr "Publicada el %s"
 
-#: comments.php:62 image.php:45 inc/template-tags.php:228
+#: comments.php:61 image.php:45 inc/template-tags.php:228
 #: template-parts/content/content-page.php:33
 #: template-parts/content/content-single.php:27
 #: template-parts/content/content.php:33
@@ -592,11 +576,11 @@ msgstr "Menú principal"
 msgid "Skip to content"
 msgstr "Saltar al contenido"
 
-#: functions.php:360
+#: functions.php:363
 msgid "Add widgets here to appear in your footer."
 msgstr "Añade aquí los widgets que quieres que aparezcan en tu pie de página."
 
-#: functions.php:358
+#: functions.php:361
 msgid "Footer"
 msgstr "Pie de página"
 
@@ -701,7 +685,7 @@ msgid "Extra small"
 msgstr "Muy pequeño"
 
 #. translators: %s: WordPress.
-#: footer.php:60
+#: footer.php:67
 msgid "Proudly powered by %s."
 msgstr "Funciona gracias a %s."
 
@@ -709,15 +693,15 @@ msgstr "Funciona gracias a %s."
 msgid "Secondary menu"
 msgstr "Menú secundario"
 
-#: comments.php:79
+#: comments.php:78
 msgid "Comments are closed."
 msgstr "Los comentarios están cerrados."
 
-#: comments.php:71
+#: comments.php:70
 msgid "Newer comments"
 msgstr "Comentarios siguientes"
 
-#: comments.php:67
+#: comments.php:66
 msgid "Older comments"
 msgstr "Comentarios anteriores"
 
@@ -738,7 +722,7 @@ msgid "Nothing here"
 msgstr "No hay nada aquí"
 
 #. Author URI of the theme
-#: footer.php:61
+#: footer.php:68
 msgid "https://wordpress.org/"
 msgstr "https://es.wordpress.org/"
 
