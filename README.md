@@ -70,6 +70,7 @@ For more information visit:
 ├─ .lando.yml
 ├─ .stylelintignore
 ├─ .stylelintrc
+├─ commitlint.config.js
 ├─ composer.json
 ├─ deploy.php
 ├─ deploy.sh
@@ -165,7 +166,7 @@ For more information visit:
 - **Important**. Run the shell script to validate PHP, JS and SCSS files:
     - `$sh validate.sh`
 
-### Git
+### Developing with Git
 
 I recommend using `Conventional Commits` a specification for adding human and machine readable meaning to commit messages.
 
@@ -173,7 +174,7 @@ https://www.conventionalcommits.org/
 
 #### Conventional Commits Linter: Commitlint
 
-Commitlint is a NPM package that you can use to validate your syntax commit message.
+Commitlint is a NPM package that you can use to validate your syntax commit message. Integrated with husky package.
 
 https://commitlint.js.org/
 https://github.com/conventional-changelog/commitlint
