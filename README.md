@@ -70,6 +70,7 @@ For more information visit:
 ├─ .lando.yml
 ├─ .stylelintignore
 ├─ .stylelintrc
+├─ commitlint.config.js
 ├─ composer.json
 ├─ deploy.php
 ├─ deploy.sh
@@ -165,11 +166,42 @@ For more information visit:
 - **Important**. Run the shell script to validate PHP, JS and SCSS files:
     - `$sh validate.sh`
 
-### Git
+### Developing with Git
 
 I recommend using `Conventional Commits` a specification for adding human and machine readable meaning to commit messages.
 
-https://www.conventionalcommits.org/en/v1.0.0/
+https://www.conventionalcommits.org/
+
+#### Conventional Commits Linter: Commitlint
+
+Commitlint is a NPM package that you can use to validate your syntax commit message. Integrated with husky package.
+
+https://commitlint.js.org/
+https://github.com/conventional-changelog/commitlint
+
+```bash
+# Lint from stdin.
+
+echo 'foo: bar' | commitlint
+
+# Lint last commit from history.
+
+commitlint --from=HEAD~1
+```
+
+#### Conventional Commits Helper: Commitizen
+
+Commitizen is a NPM package that you can use to help your syntax commit message.
+
+http://commitizen.github.io/cz-cli/
+
+```bash
+# Helper to write a good commit message.
+
+git add .
+git cz
+```
+
 
 ### Technologies and tools
 
@@ -194,7 +226,9 @@ The present project uses several technologies and tools for the automation and d
 17. Mailhog: https://github.com/mailhog/MailHog
 18. EditorConfig: https://editorconfig.org/
 19. Husky: https://www.npmjs.com/package/husky
-20. Human.txt: http://humanstxt.org/
+20. Commitlint: https://commitlint.js.org/
+21. Commitizen: http://commitizen.github.io/cz-cli/
+22. Human.txt: http://humanstxt.org/
 
 **Note:** Thanks all people to work on these projects.
 
