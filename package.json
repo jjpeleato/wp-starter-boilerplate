@@ -34,8 +34,12 @@
 		"@babel/core": "^7.16.7",
 		"@babel/preset-env": "^7.16.8",
 		"@babel/register": "^7.16.8",
+		"@commitlint/cli": "^16.1.0",
+		"@commitlint/config-conventional": "^16.0.0",
 		"autoprefixer": "^10.4.2",
 		"browser-sync": "^2.27.7",
+		"commitizen": "^4.2.4",
+		"cz-conventional-changelog": "^3.3.0",
 		"del": "^6.0.0",
 		"gulp": "^4.0.2",
 		"gulp-autoprefixer": "^8.0.0",
@@ -64,6 +68,12 @@
 		"prepare": "husky install",
 		"gulp:dev": "gulp",
 		"gulp:prod": "env NODE_ENV=production gulp",
-		"gulp:validate": "gulp validate"
+		"gulp:validate": "gulp validate",
+		"commit": "cz"
+	},
+	"config": {
+		"commitizen": {
+			"path": "./node_modules/cz-conventional-changelog"
+		}
 	}
 }
