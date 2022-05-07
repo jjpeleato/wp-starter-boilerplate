@@ -7,16 +7,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: GlotPress/3.0.0-alpha.2\n"
+"X-Generator: GlotPress/3.0.0\n"
 "Language: es\n"
 "Project-Id-Version: Themes - Twenty Twenty-One\n"
 
 #. Description of the theme
+#, gp-priority: high
 msgid "Twenty Twenty-One is a blank canvas for your ideas and it makes the block editor your best brush. With new block patterns, which allow you to create a beautiful layout in a matter of seconds, this theme’s soft colors and eye-catching — yet timeless — design will let your work shine. Take it for a spin! See how Twenty Twenty-One elevates your portfolio, business website, or personal blog."
 msgstr "Twenty Twenty-One es un lienzo en blanco para tus ideas y hace que el editor de bloques sea tu mejor pincel. Con los nuevos patrones de bloques, que te permiten crear un hermoso diseño en cuestión de segundos, los suaves colores de este tema y el diseño llamativo, aunque atemporal, harán que tu trabajo brille. ¡Dale una vuelta! Mira cómo Twenty Twenty-One eleva tu porfolio, tu web de negocios o tu blog personal."
 
 #. Theme Name of the theme
 #: inc/block-patterns.php:20
+#, gp-priority: high
 msgid "Twenty Twenty-One"
 msgstr "Twenty Twenty-One"
 
@@ -723,13 +725,16 @@ msgstr "No hay nada aquí"
 
 #. Author URI of the theme
 #: footer.php:68
+#, gp-priority: low
 msgid "https://wordpress.org/"
 msgstr "https://es.wordpress.org/"
 
 #. Author of the theme
+#, gp-priority: low
 msgid "the WordPress team"
 msgstr "el equipo WordPress"
 
 #. Theme URI of the theme
+#, gp-priority: low
 msgid "https://wordpress.org/themes/twentytwentyone/"
 msgstr "https://es.wordpress.org/themes/twentytwentyone/"
