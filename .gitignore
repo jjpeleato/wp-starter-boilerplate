@@ -53,6 +53,7 @@ public/sitemap.xml.gz
 #############################
 *.log
 *.sql
+*.sql.gz
 *.sqlite
 *.sass-cache
 .bash_history
@@ -144,3 +145,8 @@ public/wp-content/wp-rocket-config
 ##############################
 public/superpwa-manifest.json
 public/superpwa-sw.js
+
+##############################
+# Prevent Direct Access Gold #
+##############################
+public/pda_enc.bk

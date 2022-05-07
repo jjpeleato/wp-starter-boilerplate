@@ -114,6 +114,11 @@ Require valid-user
 
 # END Add Trailing Slash
 
+# BEGIN Redirection security.txt
+Redirect 301 /security.txt /.well-known/security.txt
+
+# END Redirection security.txt
+
 # BEGIN SSL
 <IfModule mod_ssl.c>
     RewriteEngine on

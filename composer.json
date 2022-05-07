@@ -33,7 +33,10 @@
     "config": {
         "process-timeout" : 0,
 		"optimize-autoloader": true,
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     },
     "scripts": {
 		"cs": "phpcs",

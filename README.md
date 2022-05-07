@@ -50,7 +50,7 @@ For more information visit:
 ├─ .husky/ # Husky directory (git-hooks)
 ├─ assets/ # Front-end directory
 │  ├─ acf/
-│  ├─ font/
+│  ├─ fonts/
 │  ├─ img/
 │  ├─ js/
 │  ├─ scss/
@@ -229,6 +229,7 @@ The present project uses several technologies and tools for the automation and d
 20. Commitlint: https://commitlint.js.org/
 21. Commitizen: http://commitizen.github.io/cz-cli/
 22. Human.txt: http://humanstxt.org/
+23. Security.txt: https://securitytxt.org/
 
 **Note:** Thanks all people to work on these projects.
 
