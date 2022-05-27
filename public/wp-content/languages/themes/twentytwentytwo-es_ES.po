@@ -2,12 +2,12 @@
 # This file is distributed under the same license as the Themes - Twenty Twenty-Two package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-02-25 06:50:42+0000\n"
+"PO-Revision-Date: 2022-05-24 20:24:01+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: GlotPress/3.0.0\n"
+"X-Generator: GlotPress/4.0.0-alpha.1\n"
 "Language: es\n"
 "Project-Id-Version: Themes - Twenty Twenty-Two\n"
 
@@ -20,6 +20,46 @@ msgstr "Construido sobre una base de diseño sólido, Twenty Twenty-Two adopta l
 #, gp-priority: high
 msgid "Twenty Twenty-Two"
 msgstr "Twenty Twenty-Two"
+
+#: styles/swiss.json
+msgctxt "Duotone name"
+msgid "Default filter"
+msgstr "Filtro por defecto"
+
+#: styles/swiss.json
+msgctxt "Font family name"
+msgid "Inter"
+msgstr "Inter"
+
+#: styles/swiss.json
+msgctxt "Style variation name"
+msgid "Swiss"
+msgstr "Suizo"
+
+#: styles/pink.json
+msgctxt "Font family name"
+msgid "IBM Plex Mono"
+msgstr "IBM Plex Mono"
+
+#: styles/pink.json
+msgctxt "Font family name"
+msgid "IBM Plex Sans"
+msgstr "IBM Plex Sans"
+
+#: styles/pink.json
+msgctxt "Style variation name"
+msgid "Pink"
+msgstr "Rosado"
+
+#: styles/blue.json
+msgctxt "Font family name"
+msgid "DM Sans"
+msgstr "DM Sans"
+
+#: styles/blue.json
+msgctxt "Style variation name"
+msgid "Blue"
+msgstr "Azul"
 
 #: inc/patterns/hidden-404.php:14
 msgid "Search"
@@ -140,27 +180,27 @@ msgctxt "Gradient name"
 msgid "Vertical secondary to tertiary"
 msgstr "Vertical secundario a terciario"
 
-#: theme.json
+#: theme.json styles/blue.json styles/pink.json styles/swiss.json
 msgctxt "Color name"
 msgid "Tertiary"
 msgstr "Terciario"
 
-#: theme.json
+#: theme.json styles/blue.json styles/pink.json styles/swiss.json
 msgctxt "Color name"
 msgid "Secondary"
 msgstr "Secundario"
 
-#: theme.json
+#: theme.json styles/blue.json styles/pink.json styles/swiss.json
 msgctxt "Color name"
 msgid "Primary"
 msgstr "Principal"
 
-#: theme.json
+#: theme.json styles/blue.json styles/pink.json styles/swiss.json
 msgctxt "Color name"
 msgid "Background"
 msgstr "Fondo"
 
-#: theme.json
+#: theme.json styles/blue.json styles/pink.json styles/swiss.json
 msgctxt "Color name"
 msgid "Foreground"
 msgstr "Primer plano"
