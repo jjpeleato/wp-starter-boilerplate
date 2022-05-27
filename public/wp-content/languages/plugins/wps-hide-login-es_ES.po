@@ -1,0 +1,118 @@
+# Translation of Plugins - WPS Hide Login - Stable (latest release) in Spanish (Spain)
+# This file is distributed under the same license as the Plugins - WPS Hide Login - Stable (latest release) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2020-10-15 10:00:02+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/3.0.0-alpha.2\n"
+"Language: es\n"
+"Project-Id-Version: Plugins - WPS Hide Login - Stable (latest release)\n"
+
+#. Author of the plugin
+msgid "WPServeur, NicolasKulka, wpformation"
+msgstr "WPServeur, NicolasKulka, wpformation"
+
+#: classes/plugin.php:417
+msgid "Redirect URL when someone tries to access the wp-login.php page and the wp-admin directory while not logged in."
+msgstr "Redirige la URL cuando alguien intenta acceder a la página «wp-login.php» y al directorio «wp-admin» sin haber accedido."
+
+#: classes/plugin.php:402
+msgid "Protect your website by changing the login URL and preventing access to the wp-login.php page and the wp-admin directory to non-connected people."
+msgstr "Protege tu web cambiando la URL de acceso y evitando el acceso a la página «wp-login.php» y al directorio «wp-admin» a quien no esté conectado."
+
+#: classes/plugin.php:373
+msgid "WPS Limit Login"
+msgstr "WPS Limit Login"
+
+#: classes/plugin.php:373
+msgid "and"
+msgstr "y"
+
+#: classes/plugin.php:372
+msgid "WPS Cleaner"
+msgstr "WPS Cleaner"
+
+#: classes/plugin.php:371
+msgid "WPS Bidouille"
+msgstr "WPS Bidouille"
+
+#: classes/plugin.php:371 classes/plugin.php:372
+msgid "the plugin"
+msgstr "el plugin"
+
+#: classes/plugin.php:370
+msgid "Discover our other plugins:"
+msgstr "Descubre nuestros otros plugins:"
+
+#: classes/plugin.php:369
+msgid "WordPress specialized hosting"
+msgstr "Alojamiento especializado para WordPress"
+
+#: classes/plugin.php:296
+msgid "Redirection url"
+msgstr "URL de redirección"
+
+#: classes/plugin.php:245
+msgid "Redirection url default"
+msgstr "URL de redirección por defecto"
+
+#. Author URI of the plugin
+msgid "https://wpserveur.net"
+msgstr "https://wpserveur.net"
+
+#: classes/plugin.php:519
+msgid "This has been disabled"
+msgstr "Esto ha sido desactivado"
+
+#. Description of the plugin
+msgid "Protect your website by changing the login URL and preventing access to wp-login.php page and wp-admin directory while not logged-in"
+msgstr "Protege tu web cambiando la URL de acceso y evitando el acceso al archivo «wp-login.php» y al directorio «wp-admin» si no se está conectado"
+
+#: classes/plugin.php:479
+msgid "This feature is not enabled."
+msgstr "Esta característica no está activada."
+
+#: classes/plugin.php:442 classes/plugin.php:446
+msgid "Settings"
+msgstr "Ajustes"
+
+#: classes/plugin.php:431
+msgid "Your login page is now here: <strong><a href=\"%1$s\">%2$s</a></strong>. Bookmark this page!"
+msgstr "Ahora tu página de acceso está aquí: <strong><a href=\"%1$s\">%2$s</a></strong>. ¡Guarda esta página en tus favoritos!"
+
+#: classes/plugin.php:382
+msgid "To set a networkwide default, go to <a href=\"%s\">Network Settings</a>."
+msgstr "Para establecer los valores por defecto para toda la red, ve a los <a href=\"%s\">Ajustes de red</a>."
+
+#: classes/plugin.php:288
+msgid "Login url"
+msgstr "URL de acceso"
+
+#: classes/plugin.php:243
+msgid "Networkwide default"
+msgstr "Valor por defecto para toda la red"
+
+#: classes/plugin.php:240 classes/plugin.php:369
+msgid "Need help? Try the <a href=\"%1$s\" target=\"_blank\">support forum</a>. This plugin is kindly brought to you by <a href=\"%2$s\" target=\"_blank\">WPServeur</a>"
+msgstr "¿Necesitas ayuda? Inténtalo en el <a href=\"%1$s\" target=\"_blank\">foro de soporte</a>. Este plugin te lo ofrece amablemente <a href=\"%2$s\" target=\"_blank\">WPServeur</a>"
+
+#: classes/plugin.php:239
+msgid "This option allows you to set a networkwide default, which can be overridden by individual sites. Simply go to to the site’s permalink settings to change the url."
+msgstr "Esta opción te permite establecer un valor por defecto para toda la red, que puede ser anulado para sitios individuales. Simplemente, ve a los ajustes de los enlaces permanentes del sitio para cambiar la URL."
+
+#: classes/plugin.php:221
+msgid "WPS Hide Login could not be activated because you already have Rename wp-login.php active. Please uninstall rename wp-login.php to use WPS Hide Login"
+msgstr "WPS Hide Login no se ha podido activar debido a que ya tienes activo el plugin Rename wp-login.php. Por favor, desinstala Rename wp-login.php para poder usar WPS Hide Login"
+
+#. Plugin Name of the plugin
+#: classes/plugin.php:215 classes/plugin.php:238 classes/plugin.php:701
+#: classes/plugin.php:710
+msgid "WPS Hide Login"
+msgstr "WPS Hide Login"
+
+#: classes/plugin.php:215
+msgid "Please upgrade to the latest version of WordPress to activate"
+msgstr "Por favor, actualiza a la última versión de WordPress para activarlo"
