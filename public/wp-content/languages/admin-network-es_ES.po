@@ -1,15 +1,23 @@
-# Translation of WordPress - 5.9.x - Development - Administration - Network Admin in Spanish (Spain)
-# This file is distributed under the same license as the WordPress - 5.9.x - Development - Administration - Network Admin package.
+# Translation of WordPress - 6.0.x - Development - Administration - Network Admin in Spanish (Spain)
+# This file is distributed under the same license as the WordPress - 6.0.x - Development - Administration - Network Admin package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-12-17 10:14:34+0000\n"
+"PO-Revision-Date: 2022-05-03 10:14:18+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: GlotPress/3.0.0\n"
+"X-Generator: GlotPress/4.0.0-alpha.1\n"
 "Language: es\n"
-"Project-Id-Version: WordPress - 5.9.x - Development - Administration - Network Admin\n"
+"Project-Id-Version: WordPress - 6.0.x - Development - Administration - Network Admin\n"
+
+#: wp-admin/network/upgrade.php:141
+msgid "WordPress has been updated! Next and final step is to individually upgrade the sites in your network."
+msgstr "¡WordPress se ha actualizado! A continuación, y como último paso, hay que actualizar individualmente los sitios de tu red."
+
+#: wp-admin/network/site-new.php:40
+msgid "Cannot create an empty site."
+msgstr "No se puede crear un sitio vacío."
 
 #. translators: %s: wp-config.php
 #: wp-admin/includes/network.php:463
@@ -723,10 +731,6 @@ msgstr "Desde aquí puedes:"
 msgid "Welcome to your Network Admin. This area of the Administration Screens is used for managing all aspects of your Multisite Network."
 msgstr "Bienvenido a la administración de la red. Este área de las pantallas de administración se utiliza para gestionar todos los aspectos de tu red multisitio."
 
-#: wp-admin/network/upgrade.php:141
-msgid "WordPress has been updated! Before we send you on your way, we need to individually upgrade the sites in your network."
-msgstr "¡WordPress se ha actualizado! Antes de que vuelvas a lo tuyo, tenemos que actualizar los sitios de tu red uno a uno."
-
 #: wp-admin/network/upgrade.php:24
 msgid "Only use this screen once you have updated to a new version of WordPress through Updates/Available Updates (via the Network Administration navigation menu or the Toolbar). Clicking the Upgrade Network button will step through each site in the network, five at a time, and make sure any database updates are applied."
 msgstr "Usa solo esta pantalla una vez hayas actualizado a una nueva versión de WordPress desde Actualizaciones/Actualizaciones disponibles (en el menú de navegación o barra de administración de la red). Al hacer clic en el botón Actualizar red, se empezará a actualizar sitio a sitio de la red, cinco cada vez, asegurándose de que se actualizan las bases de datos."
@@ -1127,8 +1131,8 @@ msgid "If this process fails for any reason, users logging in to their sites wil
 msgstr "Si este proceso falla por cualquier circunstancia, cuando los usuarios accedan a su sitio forzaran esta misma actualización."
 
 #: wp-admin/network/upgrade.php:25
-msgid "If a version update to core has not happened, clicking this button won&#8217;t affect anything."
-msgstr "Si no se ha actualizado el núcleo, hacer clic en este botón no afectará en nada."
+msgid "If a version update to core has not happened, clicking this button will not affect anything."
+msgstr "Si no se ha producido una actualización de la versión del núcleo, hacer clic en este botón no afectará a nada."
 
 #: wp-admin/network/themes.php:301
 msgid "If the network admin disables a theme that is in use, it can still remain selected on that site. If another theme is chosen, the disabled theme will not appear in the site&#8217;s Appearance > Themes screen."
@@ -1164,8 +1168,8 @@ msgid "The following words are reserved for use by WordPress functions and canno
 msgstr "Las siguientes palabras están reservadas para su uso en las funciones de WordPress y no se pueden usar como nombres de sitios: %s"
 
 #: wp-admin/network/upgrade.php:125
-msgid "If your browser doesn&#8217;t start loading the next page automatically, click this link:"
-msgstr "Si tu navegador no carga la siguiente página de forma automática, haz clic en este enlace:"
+msgid "If your browser does not start loading the next page automatically, click this link:"
+msgstr "Si tu navegador no empieza a cargar automáticamente la siguiente página, haz clic en este enlace:"
 
 #: wp-admin/network/settings.php:302
 msgid "If you want to ban domains from site registrations. One domain per line."
@@ -1174,10 +1178,6 @@ msgstr "Si quieres prohibir dominios del registro de sitios. Un dominio por lín
 #: wp-admin/network/settings.php:282
 msgid "If you want to limit site registrations to certain domains. One domain per line."
 msgstr "Si quieres limitar el registro de sitios a determinados dominios. Un dominio por línea."
-
-#: wp-admin/network/site-new.php:40
-msgid "Can&#8217;t create an empty site."
-msgstr "No se puede crear un sitio vacío."
 
 #: wp-admin/network/users.php:268
 msgid "Users removed from spam."

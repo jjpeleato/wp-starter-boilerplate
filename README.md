@@ -42,6 +42,8 @@ For more information visit:
 
 **Note:** If you work with Windows 10. To execute the commands, we recommend installing **WSL 2** with Ubuntu https://docs.microsoft.com/es-es/windows/wsl/install-win10
 
+**Note:** If you work with Windows 10. You need install the following package: https://www.npmjs.com/package/win-node-env
+
 **Note:** I recommend installing the following IDE for PHP Programming: Visual Studio Code (https://code.visualstudio.com/) or PHPStorm (recommended) (https://www.jetbrains.com/phpstorm/).
 
 ### Project skeleton
