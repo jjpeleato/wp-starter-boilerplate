@@ -63,7 +63,7 @@ tooling:
     service: appserver
     desription: run deployer commands
     cmd:
-      - "vendor/bin/dep"
+      - "vendor/bin/deployer.phar"
   phpcs:
     service: appserver
     desription: "Analyze code against the WordPress coding standards with PHP_CodeSniffer"
