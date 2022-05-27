@@ -32,14 +32,14 @@ const paths = {
             './assets/js/custom.js'
         ],
         vendor: [
-			'./node_modules/aos/dist/aos.js',
-			'./node_modules/tiny-slider/dist/min/tiny-slider.js',
 			'./node_modules/vanilla-lazyload/dist/lazyload.min.js',
-			'./node_modules/photoswipe/dist/photoswipe.min.js',
-			'./node_modules/photoswipe/dist/photoswipe-ui-default.min.js',
+			'./node_modules/aos/dist/aos.js',
 			'./node_modules/gsap/dist/gsap.min.js',
 			'./node_modules/gsap/dist/ScrollTrigger.min.js',
-			'./node_modules/lottie-web/build/player/lottie.min.js'
+			'./node_modules/lottie-web/build/player/lottie.min.js',
+			'./node_modules/tiny-slider/dist/min/tiny-slider.js',
+			'./node_modules/photoswipe/dist/photoswipe.esm.min.js',
+			'./node_modules/photoswipe/dist/photoswipe-lightbox.esm.min.js'
         ],
         dest: theme + 'js/',
         destVendor: theme + 'vendor/'
