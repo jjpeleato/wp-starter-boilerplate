@@ -16,6 +16,7 @@
  * @since 2.8.0
  * @since 4.6.0 Moved to its own file from wp-admin/includes/class-wp-upgrader.php.
  */
+#[AllowDynamicProperties]
 class File_Upload_Upgrader {
 
 	/**
@@ -68,6 +69,13 @@ class File_Upload_Upgrader {
 				wp_die( $file['error'] );
 			}
 
+			if ( 'pluginzip' === $form || 'themezip' === $form ) {
+				if ( ! wp_zip_file_is_valid( $file['file'] ) ) {
+					wp_delete_file( $file['file'] );
+					wp_die( __( 'Incompatible Archive.' ) );
+				}
+			}
+
 			$this->filename = $_FILES[ $form ]['name'];
 			$this->package  = $file['file'];
 
@@ -107,14 +115,14 @@ class File_Upload_Upgrader {
 			$this->filename = sanitize_file_name( $_GET[ $urlholder ] );
 			$this->package  = $uploads['basedir'] . '/' . $this->filename;
 
-			if ( 0 !== strpos( realpath( $this->package ), realpath( $uploads['basedir'] ) ) ) {
+			if ( ! str_starts_with( realpath( $this->package ), realpath( $uploads['basedir'] ) ) ) {
 				wp_die( __( 'Please select a file' ) );
 			}
 		}
 	}
 
 	/**
-	 * Delete the attachment/uploaded file.
+	 * Deletes the attachment/uploaded file.
 	 *
 	 * @since 3.2.2
 	 *
