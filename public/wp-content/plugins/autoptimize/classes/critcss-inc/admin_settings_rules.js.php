@@ -40,13 +40,13 @@ function drawTable(critCssArray) {
     rnotice = 0;
     jQuery.each(critCssArray,function(k,v) {
         if (k=="paths") {
-            kstring="<?php _e( 'Path Based Rules', 'autoptimize' ); ?>";
+            kstring="<?php esc_html_e( 'Path Based Rules', 'autoptimize' ); ?>";
         } else {
-            kstring="<?php _e( 'Conditional Tags, Custom Post Types and Page Templates Rules', 'autoptimize' ); ?>";
+            kstring="<?php esc_html_e( 'Conditional Tags, Custom Post Types and Page Templates Rules', 'autoptimize' ); ?>";
         }
         if (!(jQuery.isEmptyObject(v))) {
             jQuery("#rules-list").append("<tr><td colspan='5'><h4>" + kstring + "</h4></td></tr>");
-            jQuery("#rules-list").append("<tr class='header "+k+"Rule'><th><?php _e( 'Type', 'autoptimize' ); ?></th><th><?php _e( 'Target', 'autoptimize' ); ?></th><th><?php _e( 'Critical CSS File', 'autoptimize' ); ?></th><th colspan='2'><?php _e( 'Actions', 'autoptimize' ); ?></th></tr>");
+            jQuery("#rules-list").append("<tr class='header "+k+"Rule'><th><?php esc_html_e( 'Type', 'autoptimize' ); ?></th><th><?php esc_html_e( 'Target', 'autoptimize' ); ?></th><th><?php esc_html_e( 'Critical CSS File', 'autoptimize' ); ?></th><th colspan='2'><?php esc_html_e( 'Actions', 'autoptimize' ); ?></th></tr>");
         }
         nodeNumber=0;
         jQuery.each(v,function(i,nv){
@@ -57,21 +57,21 @@ function drawTable(critCssArray) {
             filest=nv.file;
             auto_style = '';
             <?php
-                $criticalcss = new autoptimizeCriticalCSSBase();
-                if ( $criticalcss->is_api_active() ){
-                    ?>api_active = 1;<?php
-                } else {
-                    ?>api_active = 0;<?php
-                }
+            $criticalcss = new autoptimizeCriticalCSSBase();
+            if ( $criticalcss->is_api_active() ) {
+                echo 'api_active = 1;' . "\n";
+            } else {
+                echo 'api_active = 0;' . "\n";
+            }
             ?>
             if (file == 0) {
-                file='<?php _e( 'To be fetched from criticalcss.com in the next queue run...', 'autoptimize' ); ?>';
+                file='<?php esc_html_e( 'To be fetched from criticalcss.com in the next queue run...', 'autoptimize' ); ?>';
             }
             if (nv.hash === 0 && filest != 0) {
-                type='<?php _e( 'MANUAL', 'autoptimize' ); ?>';
+                type='<?php esc_html_e( 'MANUAL', 'autoptimize' ); ?>';
                 typeClass = 'manual';
             } else {
-                type='<?php _e( 'AUTO', 'autoptimize' ); ?>';
+                type='<?php esc_html_e( 'AUTO', 'autoptimize' ); ?>';
                 typeClass = 'auto';
                 if ( api_active != 1 ) {
                     auto_style = ' style="opacity:.5;" '
@@ -84,12 +84,22 @@ function drawTable(critCssArray) {
                 }
             }
             if ( k == "paths" ) {
-                target = '<a href="<?php echo AUTOPTIMIZE_WP_SITE_URL; ?>' + i + '" target="_blank">' + i + '</a>';
+                <?php
+                if ( apply_filters( 'autoptimize_filter_ccss_paths_clickable', true ) ) {
+                    ?>
+                    target = '<a href="<?php echo AUTOPTIMIZE_WP_SITE_URL; ?>' + i + '" target="_blank">' + i + '</a>';
+                    <?php
+                } else {
+                    ?>
+                    target = i;
+                    <?php
+                }
+                ?>
             } else {
                 target = i.replace(/(woo_|template_|custom_post_|edd_|bp_|bbp_)/,'');
             }
 
-            jQuery("#rules-list").append("<tr " + auto_style + "class='rule "+k+"Rule'><td class='type'><span class='badge " + typeClass + "'>" + type + "</span></td><td class='target'>" + target + "</td><td class='file'>" + file + "</td><td class='btn edit'><span class=\"button-secondary\" id=\"" + nodeId + "_edit\"><?php _e( 'Edit', 'autoptimize' ); ?></span></td><td class='btn delete'><span class=\"button-secondary\" id=\"" + nodeId + "_remove\"><?php _e( 'Remove', 'autoptimize' ); ?></span></td></tr>");
+            jQuery("#rules-list").append("<tr " + auto_style + "class='rule "+k+"Rule'><td class='type'><span class='badge " + typeClass + "'>" + type + "</span></td><td class='target'>" + target + "</td><td class='file'>" + file + "</td><td class='btn edit'><span class=\"button-secondary\" id=\"" + nodeId + "_edit\"><?php esc_html_e( 'Edit', 'autoptimize' ); ?></span></td><td class='btn delete'><span class=\"button-secondary\" id=\"" + nodeId + "_remove\"><?php esc_html_e( 'Remove', 'autoptimize' ); ?></span></td></tr>");
             if ( typeClass == 'manual' || api_active == 1 ) {
                 jQuery("#" + nodeId + "_edit").click(function(){addEditRow(this.id);});
             }
@@ -100,22 +110,22 @@ function drawTable(critCssArray) {
         // R rules were found, show a notice!
         // and add some JS magic to ensure the notice works as a notice, but is shown inline 
         // in the rules panel instead of in the notice area where it would be too prominent.
-        <?php 
+        <?php
         $_ao_ccss_review_notice_id   = 'autoptimize-ccss-review-rules-notice-30';
         // Translators: before the 1st word a number + a space will be displayed, as in e.g. "2 of above rules".
-        $_ao_ccss_review_notice_copy = __('of the above rules got flagged by criticalcss.com as to be reviewed. This is often due to font-related issues which can be safely ignored, but you can log in to your account at https://criticalcss.com and compare screenshots for rules by clicking the red exclamation mark to confirm if all is OK.', 'autoptimize');
+        $_ao_ccss_review_notice_copy = esc_html__( 'of the above rules got flagged by criticalcss.com as possibly needing review. This is often due to font-related issues which can be safely ignored, but in case of doubt do a visual test or check for Cumulative Layout Shift issues in e.g. Pagespeed Insights.', 'autoptimize' );
         if ( PAnD::is_admin_notice_active( $_ao_ccss_review_notice_id ) ) {
-        ?>
+            ?>
             jQuery("#rules-notices").append( "&nbsp;<div class='rnotice notice notice-info is-dismissible hidden' data-dismissible='<?php echo $_ao_ccss_review_notice_id; ?>'><p>" + rnotice + " <?php echo $_ao_ccss_review_notice_copy; ?>" + "</p></div>");
             jQuery( document ).ready(function() {
                 jQuery("div.rnotice").detach().appendTo('#rules-notices');
                 jQuery("div.rnotice").show();
             });
-        <?php
-        } else {
-        ?>
+            <?php
+        } else if ( $ao_ccss_debug ) {
+            ?>
             console.log( "Autoptimize: " + rnotice + " <?php echo $_ao_ccss_review_notice_copy; ?>" );
-        <?php
+            <?php
         }
         ?>
     }
@@ -127,12 +137,12 @@ function confirmRemove(idToRemove) {
         height:235,
         modal: true,
         buttons: {
-            "<?php _e( 'Delete', 'autoptimize' ); ?>": function() {
+            "<?php esc_html_e( 'Delete', 'autoptimize' ); ?>": function() {
                 removeRow(idToRemove);
                 updateAfterChange();
                 jQuery( this ).dialog( "close" );
             },
-            "<?php _e( 'Cancel', 'autoptimize' ); ?>": function() {
+            "<?php esc_html_e( 'Cancel', 'autoptimize' ); ?>": function() {
                 jQuery( this ).dialog( "close" );
             }
         }
@@ -145,14 +155,14 @@ function removeAllRules() {
         height:235,
         modal: true,
         buttons: {
-            "<?php _e( 'Delete All', 'autoptimize' ); ?>": function() {
+            "<?php esc_html_e( 'Delete All', 'autoptimize' ); ?>": function() {
                 critCssArray={'paths':[],'types':[]};
                 drawTable(critCssArray);
                 updateAfterChange();
                 removeAllCcssFilesOnServer();
                 jQuery( this ).dialog( "close" );
             },
-            "<?php _e( 'Cancel', 'autoptimize' ); ?>": function() {
+            "<?php esc_html_e( 'Cancel', 'autoptimize' ); ?>": function() {
                 jQuery( this ).dialog( "close" );
             }
         }
@@ -210,7 +220,7 @@ function removeAllCcssFilesOnServer() {
 function addEditRow(idToEdit) {
     resetForm();
     if (idToEdit) {
-        dialogTitle="<?php _e( 'Edit Critical CSS Rule', 'autoptimize' ); ?>";
+        dialogTitle="<?php esc_html_e( 'Edit Critical CSS Rule', 'autoptimize' ); ?>";
 
         splits=idToEdit.split(/_/);
         crit_type=splits[0];
@@ -221,7 +231,8 @@ function addEditRow(idToEdit) {
         jQuery("#critcss_addedit_id").val(idToEdit);
         jQuery("#critcss_addedit_type").val(crit_type);
         jQuery("#critcss_addedit_file").val(crit_file);
-        jQuery("#critcss_addedit_css").attr("placeholder", "<?php _e( 'Loading critical CSS...', 'autoptimize' ); ?>");
+        jQuery("#critcss_addedit_css").attr("placeholder", "<?php esc_html_e( 'Loading critical CSS...', 'autoptimize' ); ?>");
+        jQuery("#critcss_addedit_css").attr("spellcheck",false);
         jQuery("#critcss_addedit_type").attr("disabled",true);
 
         if (crit_type==="paths") {
@@ -250,10 +261,11 @@ function addEditRow(idToEdit) {
             }
         });
     } else {
-        dialogTitle="<?php _e( 'Add Critical CSS Rule', 'autotimize' ); ?>";
+        dialogTitle="<?php esc_html_e( 'Add Critical CSS Rule', 'autotimize' ); ?>";
 
         // default: paths, hide content type field
         jQuery("#critcss_addedit_type").val("paths");
+        jQuery("#critcss_addedit_css").attr("spellcheck",false);
         jQuery("#critcss_addedit_pagetype_wrapper").hide();
 
         // event handler on type to switch display
@@ -261,11 +273,11 @@ function addEditRow(idToEdit) {
             if(this.value==="types") {
                 jQuery("#critcss_addedit_pagetype_wrapper").show();
                 jQuery("#critcss_addedit_path_wrapper").hide();
-                jQuery("#critcss_addedit_css").attr("placeholder", "<?php _e( 'For type based rules, paste your specific and minified critical CSS here and hit submit to save. If you want to create a rule to exclude from critical CSS injection, enter \"none\".', 'autoptimize' ); ?>");
+                jQuery("#critcss_addedit_css").attr("placeholder", "<?php esc_html_e( 'For type based rules, paste your specific and minified critical CSS here and hit submit to save. If you want to create a rule to exclude from critical CSS injection, enter \"none\".', 'autoptimize' ); ?>");
             } else {
                 jQuery("#critcss_addedit_path_wrapper").show();
                 jQuery("#critcss_addedit_pagetype_wrapper").hide();
-                jQuery("#critcss_addedit_css").attr("placeholder", "<?php _e( 'For path based rules, paste your specific and minified critical CSS here or leave this empty to fetch it from criticalcss.com and hit submit to save. If you want to create a rule to exclude from critical CSS injection, enter \"none\"', 'autoptimize' ); ?>");
+                jQuery("#critcss_addedit_css").attr("placeholder", "<?php esc_html_e( 'For path based rules, paste your specific and minified critical CSS here or leave this empty to fetch it from criticalcss.com and hit submit to save. If you want to create a rule to exclude from critical CSS injection, enter \"none\"', 'autoptimize' ); ?>");
             }
         });
     }
@@ -277,21 +289,25 @@ function addEditRow(idToEdit) {
         title: dialogTitle,
         modal: true,
         buttons: {
-            "<?php _e( 'Submit', 'autoptimize' ); ?>": function() {
+            "<?php esc_html_e( 'Submit', 'autoptimize' ); ?>": function() {
                 rpath = jQuery("#critcss_addedit_path").val();
                 rtype = jQuery("#critcss_addedit_pagetype option:selected").val();
                 rccss = jQuery("#critcss_addedit_css").val();
+                <?php if ( $ao_ccss_debug ) { ?>
                 console.log('rpath: ' + rpath, 'rtype: ' + rtype, 'rccss: ' + rccss);
+                <?php } ?>
                 if (rpath === '' && rtype === '') {
-                    alert('<?php _e( "RULE VALIDATION ERROR!\\n\\nBased on your rule type, you SHOULD set a path or conditional tag.", 'autoptimize' ); ?>');
+                    alert('<?php esc_html_e( "Rule validation error:\\n\\nBased on your rule type, you should set a path or conditional tag.", 'autoptimize' ); ?>');
                 } else if (rtype !== '' && rccss == '') {
-                    alert('<?php _e( "RULE VALIDATION ERROR!\\n\\nType based rules REQUIRES a minified critical CSS.", 'autoptimize' ); ?>');
+                    alert('<?php esc_html_e( "Rule validation error:\\n\\nType based rules requires a minified critical CSS.", 'autoptimize' ); ?>');
+                } else if (rpath !== rpath.replace(/("|\'|<|>|\[|\]|{|}|\|)/,'')) {
+                    alert('<?php esc_html_e( "Path validation error:\\n\\nThe path contains characters that are not permitted, remove or encode the unsafe characters.", 'autoptimize' ); ?>');
                 } else {
                     saveEditCritCss();
                     jQuery(this).dialog('close');
                 }
             },
-            "<?php _e( 'Cancel', 'autoptimize' ); ?>": function() {
+            "<?php esc_html_e( 'Cancel', 'autoptimize' ); ?>": function() {
                 resetForm();
                 jQuery(this).dialog("close");
             }
@@ -301,19 +317,20 @@ function addEditRow(idToEdit) {
 
 function editDefaultCritCss(){
     document.getElementById("dummyDefault").value=document.getElementById("autoptimize_css_defer_inline").value;
+    jQuery("#dummyDefault").attr("spellcheck",false);
     jQuery("#default_critcss_wrapper").dialog({
         autoOpen: true,
         height: 505,
         width: 700,
-        title: "<?php _e( 'Default Critical CSS', 'autoptimize' ); ?>",
+        title: "<?php esc_html_e( 'Default Critical CSS', 'autoptimize' ); ?>",
         modal: true,
         buttons: {
-            "<?php _e( 'Submit', 'autoptimize' ); ?>": function() {
+            "<?php esc_html_e( 'Submit', 'autoptimize' ); ?>": function() {
                 document.getElementById("autoptimize_css_defer_inline").value=document.getElementById("dummyDefault").value;
                 jQuery("#unSavedWarning").show();
                 jQuery("#default_critcss_wrapper").dialog( "close" );
             },
-            "<?php _e( 'Cancel', 'autoptimize' ); ?>": function() {
+            "<?php esc_html_e( 'Cancel', 'autoptimize' ); ?>": function() {
                 jQuery("#default_critcss_wrapper").dialog( "close" );
             }
         }
@@ -322,19 +339,20 @@ function editDefaultCritCss(){
 
 function editAdditionalCritCss(){
     document.getElementById("dummyAdditional").value=document.getElementById("autoptimize_ccss_additional").value;
+    jQuery("#dummyAdditional").attr("spellcheck",false);
     jQuery("#additional_critcss_wrapper").dialog({
         autoOpen: true,
         height: 505,
         width: 700,
-        title: "<?php _e( 'Additional Critical CSS', 'autoptimize' ); ?>",
+        title: "<?php esc_html_e( 'Additional Critical CSS', 'autoptimize' ); ?>",
         modal: true,
         buttons: {
-            "<?php _e( 'Submit', 'autoptimize' ); ?>": function() {
+            "<?php esc_html_e( 'Submit', 'autoptimize' ); ?>": function() {
                 document.getElementById("autoptimize_ccss_additional").value=document.getElementById("dummyAdditional").value;
                 jQuery("#unSavedWarning").show();
                 jQuery("#additional_critcss_wrapper").dialog( "close" );
             },
-            "<?php _e( 'Cancel', 'autoptimize' ); ?>": function() {
+            "<?php esc_html_e( 'Cancel', 'autoptimize' ); ?>": function() {
                 jQuery("#additional_critcss_wrapper").dialog( "close" );
             }
         }
@@ -399,7 +417,7 @@ function updateAfterChange() {
     <?php
     // autosave rules is on by default, but can be disabled with a filter.
     if ( apply_filters( 'autoptimize_filter_ccss_settings_rules_autosave', true ) ) {
-    ?>
+        ?>
     var data = {
         'action': 'ao_ccss_saverules',
         'ao_ccss_saverules_nonce': '<?php echo wp_create_nonce( 'ao_ccss_saverules_nonce' ); ?>',
@@ -426,7 +444,7 @@ function displayNotice(textIn, level = 'error') {
 }
 
 function resetForm() {
-    jQuery("#critcss_addedit_css").attr("placeholder", "<?php _e( 'For path based rules, paste your specific and minified critical CSS. If you want to create a rule to exclude from critical CSS injection, enter \"none\"', 'autoptimize' ); ?>");
+    jQuery("#critcss_addedit_css").attr("placeholder", "<?php esc_html_e( 'For path based rules, paste your specific and minified critical CSS. If you want to create a rule to exclude from critical CSS injection, enter \"none\"', 'autoptimize' ); ?>");
     jQuery("#critcss_addedit_type").attr("disabled",false);
     jQuery("#critcss_addedit_path_wrapper").show();
     jQuery("#critcss_addedit_id").val("");

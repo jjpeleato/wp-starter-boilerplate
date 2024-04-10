@@ -63,8 +63,8 @@ class autoptimizeCacheChecker
                 $home_url  = esc_url( home_url() );
                 $ao_mailto = apply_filters( 'autoptimize_filter_cachecheck_mailto', autoptimizeOptionWrapper::get_option( 'admin_email', '' ) );
 
-                $ao_mailsubject = __( 'Autoptimize cache size warning', 'autoptimize' ) . ' (' . $home_url . ')';
-                $ao_mailbody    = __( 'Autoptimize\'s cache size is getting big, consider purging the cache. Have a look at https://wordpress.org/plugins/autoptimize/faq/ to see how you can keep the cache size under control.', 'autoptimize' ) . ' (site: ' . $home_url . ')';
+                $ao_mailsubject = esc_html__( 'Autoptimize cache size warning', 'autoptimize' ) . ' (' . $home_url . ')';
+                $ao_mailbody    = esc_html__( 'Autoptimize\'s cache size is getting big, consider purging the cache. Have a look at https://wordpress.org/plugins/autoptimize/faq/ to see how you can keep the cache size under control.', 'autoptimize' ) . ' (site: ' . $home_url . ')';
 
                 if ( ! empty( $ao_mailto ) ) {
                     $ao_mailresult = wp_mail( $ao_mailto, $ao_mailsubject, $ao_mailbody );
@@ -89,7 +89,8 @@ class autoptimizeCacheChecker
     {
         if ( (bool) autoptimizeOptionWrapper::get_option( 'autoptimize_cachesize_notice', false ) && current_user_can( 'manage_options' ) ) {
             echo '<div class="notice notice-warning"><p>';
-            _e( '<strong>Autoptimize\'s cache size is getting big</strong>, consider purging the cache. Have a look at <a href="https://wordpress.org/plugins/autoptimize/faq/" target="_blank" rel="noopener noreferrer">the Autoptimize FAQ</a> to see how you can keep the cache size under control.', 'autoptimize' );
+            // Translators: first two variables are strong tags, 3rd is link to the AO FAQ and the 4th closes that tag.
+            printf( esc_html__( '%1$sAutoptimize\'s cache size is getting big%2$s, consider purging the cache. Have a look at %3$sthe Autoptimize FAQ%4$s to see how you can keep the cache size under control.', 'autoptimize' ), '<strong>', '</strong>', '<a href="https://wordpress.org/plugins/autoptimize/faq/" target="_blank" rel="noopener noreferrer">', '</a>' );
             echo '</p></div>';
             autoptimizeOptionWrapper::update_option( 'autoptimize_cachesize_notice', false );
         }
@@ -107,7 +108,7 @@ class autoptimizeCacheChecker
             $_imgopt_notice_dismissible = apply_filters( 'autoptimize_filter_imgopt_notice_dismissable', $_dismissible . $_hide_notice );
 
             if ( $_imgopt_notice && PAnD::is_admin_notice_active( $_imgopt_notice_dismissible ) ) {
-                echo '<div class="notice notice-warning is-dismissible" data-dismissible="' . $_imgopt_notice_dismissible . '"><p><strong>' . __( 'Autoptimize', 'autoptimize' ) . '</strong>: ' . $_imgopt_notice['notice'] . '</p></div>';
+                echo '<div class="notice notice-warning is-dismissible" data-dismissible="' . $_imgopt_notice_dismissible . '"><p><strong>' . esc_html__( 'Autoptimize', 'autoptimize' ) . '</strong>: ' . $_imgopt_notice['notice'] . '</p></div>';
             }
         }
     }

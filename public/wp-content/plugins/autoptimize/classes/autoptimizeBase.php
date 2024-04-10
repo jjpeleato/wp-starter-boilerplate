@@ -150,7 +150,7 @@ abstract class autoptimizeBase
             // As we replaced the content-domain with the site-domain, we should match against that.
             $tmp_ao_root = preg_replace( '/https?:/', '', AUTOPTIMIZE_WP_SITE_URL );
         }
-        
+
         if ( is_multisite() && ! is_main_site() && ! empty( $this->cdn_url ) && apply_filters( 'autoptimize_filter_base_getpage_multisite_cdn_juggling', true ) ) {
             // multisite child sites with CDN need the network_site_url as tmp_ao_root but only if directory-based multisite.
             $_network_site_url = network_site_url();
@@ -171,8 +171,8 @@ abstract class autoptimizeBase
 
         // Prepend with WP_ROOT_DIR to have full path to file.
         $path = str_replace( '//', '/', trailingslashit( WP_ROOT_DIR ) . $path );
-        
-        // Allow path to be altered, e.g. in the case of bedrock-like setups where 
+
+        // Allow path to be altered, e.g. in the case of bedrock-like setups where
         // core, theme & plugins might be in different locations on the filesystem.
         $path = apply_filters( 'autoptimize_filter_base_getpath_path', $path, $url );
 
@@ -319,7 +319,7 @@ abstract class autoptimizeBase
 
         // Allows API/filter to further tweak the cdn url...
         $cdn_url = apply_filters( 'autoptimize_filter_base_cdnurl', $cdn_url );
-        if ( ! empty( $cdn_url ) && false === strpos( $url, $cdn_url ) ) {
+        if ( ! empty( $cdn_url ) && false === strpos( $url, $cdn_url ) && false !== apply_filters( 'autoptimize_filter_base_apply_cdn', true, $url ) ) {
 
             // Simple str_replace-based approach fails when $url is protocol-or-host-relative.
             $is_protocol_relative = autoptimizeUtils::is_protocol_relative( $url );
@@ -665,12 +665,10 @@ abstract class autoptimizeBase
             return false;
         }
 
-        // Bail if it looks like its already minifed (by having -min or .min
-        // in filename) or if it looks like WP jquery.js (which is minified).
+        // Bail if it looks like its already minifed (by having -min or .min in filename).
         $minified_variants = array(
             '-min.' . $type,
             '.min.' . $type,
-            'js/jquery/jquery.js',
         );
         foreach ( $minified_variants as $ending ) {
             if ( autoptimizeUtils::str_ends_in( $filepath, $ending ) && true === apply_filters( 'autoptimize_filter_base_prepare_exclude_minified', true ) ) {

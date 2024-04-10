@@ -34,9 +34,12 @@ class autoptimizePartners
 
     public function add_partner_tabs( $in )
     {
-        $in = array_merge( $in, array(
-            'ao_partners' => __( 'Optimize More!', 'autoptimize' ),
-        ) );
+        $in = array_merge(
+            $in,
+            array(
+                'ao_partners' => esc_html__( 'Optimize More!', 'autoptimize' ),
+            )
+        );
 
         return $in;
     }
@@ -44,13 +47,13 @@ class autoptimizePartners
     public function add_admin_menu()
     {
         if ( $this->enabled() ) {
-            add_submenu_page( null, 'AO partner', 'AO partner', 'manage_options', 'ao_partners', array( $this, 'ao_partners_page' ) );
+            add_submenu_page( '', 'AO partner', 'AO partner', 'manage_options', 'ao_partners', array( $this, 'ao_partners_page' ) );
         }
     }
 
     protected function get_ao_partner_feed_markup()
     {
-        $no_feed_text = __( 'Have a look at <a href="http://optimizingmatters.com/">optimizingmatters.com</a> for Autoptimize power-ups!', 'autoptimize' );
+        $no_feed_text = sprintf( esc_html__( 'Have a look at %1$sAutoptimize Pro%2$s to power-up your site!', 'autoptimize' ), '<a href="http://autoptimize.com/pro">', '</a>' );
         $output       = '';
         if ( apply_filters( 'autoptimize_settingsscreen_remotehttp', true ) ) {
             $rss      = fetch_feed( 'http://feeds.feedburner.com/OptimizingMattersDownloads' );
@@ -78,7 +81,7 @@ class autoptimizePartners
                     }
 
                     $output .= '<div class="itemDescription">' . wp_kses_post( $item->get_description() ) . '</div>';
-                    $output .= '<div class="itemButtonRow"><div class="itemButton button-secondary"><a href="' . $item_url . '" target="_blank">' . __( 'More info', 'autoptimize' ) . '</a></div></div>';
+                    $output .= '<div class="itemButtonRow"><div class="itemButton button-secondary"><a href="' . $item_url . '" target="_blank">' . esc_html__( 'More info', 'autoptimize' ) . '</a></div></div>';
                     $output .= '</li>';
                 }
                 $output .= '</ul>';
@@ -92,7 +95,7 @@ class autoptimizePartners
 
     public function ao_partners_page()
     {
-?>
+        ?>
 <style>
     .itemDetail {
         background: #fff;
@@ -136,15 +139,15 @@ class autoptimizePartners
         color: #23282d;
     }
     </style>
-    <script>document.title = "Autoptimize: <?php _e( 'Optimize More!', 'autoptimize' ); ?> " + document.title;</script>
+    <script>document.title = "Autoptimize: <?php esc_html_e( 'Optimize More!', 'autoptimize' ); ?> " + document.title;</script>
     <div class="wrap">
-        <h1><?php apply_filters( 'autoptimize_filter_settings_is_pro', false ) ? _e( 'Autoptimize Pro Settings', 'autoptimize' ) : _e( 'Autoptimize Settings', 'autoptimize' ); ?></h1>
+        <h1><?php apply_filters( 'autoptimize_filter_settings_is_pro', false ) ? esc_html_e( 'Autoptimize Pro Settings', 'autoptimize' ) : esc_html_e( 'Autoptimize Settings', 'autoptimize' ); ?></h1>
         <?php echo autoptimizeConfig::ao_admin_tabs(); ?>
-        <?php echo '<h2>' . __( "These Autoptimize power-ups and related services will improve your site's performance even more!", 'autoptimize' ) . '</h2>'; ?>
+        <?php echo '<h2>' . esc_html__( "These Autoptimize power-ups and related services will improve your site's performance even more!", 'autoptimize' ) . '</h2>'; ?>
         <div>
             <?php echo $this->get_ao_partner_feed_markup(); ?>
         </div>
     </div>
-<?php
+        <?php
     }
 }

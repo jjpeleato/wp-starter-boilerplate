@@ -9,7 +9,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class autoptimizeCriticalCSSCore {
+    /**
+     * Critical CSS page types.
+     *
+     * @var array
+     */
     protected $_types = null;
+    
+    /**
+     * Critical CSS object.
+     *
+     * @var object
+     */
+    protected $criticalcss;
 
     public function __construct() {
         $this->criticalcss = autoptimize()->criticalcss();
@@ -95,6 +107,9 @@ class autoptimizeCriticalCSSCore {
                                 }
                                 return apply_filters( 'autoptimize_filter_ccss_core_ccss', $_ccss_contents . $additional );
                             } else {
+                                if ( $debug ) {
+                                    $this->criticalcss->log( 'Path based rule with value "none" found.', 3 );
+                                }
                                 $no_ccss = 'none';
                             }
                         }
@@ -118,6 +133,9 @@ class autoptimizeCriticalCSSCore {
                                 }
                                 return apply_filters( 'autoptimize_filter_ccss_core_ccss', $_ccss_contents . $additional );
                             } else {
+                                if ( $debug ) {
+                                    $this->criticalcss->log( 'Conditional rule for is_front_page with value "none" found.', 3 );
+                                }
                                 $no_ccss = 'none';
                             }
                         } elseif ( ( $this->criticalcss->is_api_active() || $this->criticalcss->is_rule_manual( $rule ) ) && strpos( $type, 'custom_post_' ) === 0 && ! $is_front_page ) {
@@ -128,6 +146,9 @@ class autoptimizeCriticalCSSCore {
                                     }
                                     return apply_filters( 'autoptimize_filter_ccss_core_ccss', $_ccss_contents . $additional );
                                 } else {
+                                    if ( $debug ) {
+                                        $this->criticalcss->log( 'Conditional rule custom_post with value "none" found.', 3 );
+                                    }
                                     $no_ccss = 'none';
                                 }
                             }
@@ -139,6 +160,9 @@ class autoptimizeCriticalCSSCore {
                                     }
                                     return apply_filters( 'autoptimize_filter_ccss_core_ccss', $_ccss_contents . $additional );
                                 } else {
+                                    if ( $debug ) {
+                                        $this->criticalcss->log( 'Conditional rule for template with value "none" found.', 3 );
+                                    }
                                     $no_ccss = 'none';
                                 }
                             }
@@ -153,6 +177,9 @@ class autoptimizeCriticalCSSCore {
                                     }
                                     return apply_filters( 'autoptimize_filter_ccss_core_ccss', $_ccss_contents . $additional );
                                 } else {
+                                    if ( $debug ) {
+                                        $this->criticalcss->log( 'Conditional rule for ' . $type . ' with value "none" found.', 3 );
+                                    }
                                     $no_ccss = 'none';
                                 }
                             }
@@ -165,8 +192,14 @@ class autoptimizeCriticalCSSCore {
         // Finally, inline the default CriticalCSS if any or else the entire CSS for the page
         // This also applies to logged in users if the option to add CCSS for logged in users has been disabled.
         if ( ! empty( $inlined ) && 'none' !== $no_ccss ) {
+            if ( $debug ) {
+                $this->criticalcss->log( 'Using default "above the fold" CSS.', 3 );
+            }
             return apply_filters( 'autoptimize_filter_ccss_core_ccss', $inlined . $additional );
         } else {
+            if ( $debug ) {
+                $this->criticalcss->log( 'No matching CCSS found, switching to inlining full CSS.', 3 );
+            }
             add_filter( 'autoptimize_filter_css_inline', '__return_true' );
             return;
         }
@@ -277,7 +310,8 @@ class autoptimizeCriticalCSSCore {
                     'bbp_is_topics_created',
                     'bbp_is_user_home',
                     'bbp_is_user_home_edit',
-                ), $this->_types
+                ),
+                $this->_types
             );
         }
 
@@ -319,7 +353,8 @@ class autoptimizeCriticalCSSCore {
                     'bp_is_user',
                     'bp_is_user_profile',
                     'bp_is_wire',
-                ), $this->_types
+                ),
+                $this->_types
             );
         }
 
@@ -331,7 +366,8 @@ class autoptimizeCriticalCSSCore {
                     'edd_is_failed_transaction_page',
                     'edd_is_purchase_history_page',
                     'edd_is_success_page',
-                ), $this->_types
+                ),
+                $this->_types
             );
         }
 
@@ -348,7 +384,8 @@ class autoptimizeCriticalCSSCore {
                     'woo_is_shop',
                     'woo_is_wc_endpoint_url',
                     'woo_is_woocommerce',
-                ), $this->_types
+                ),
+                $this->_types
             );
         }
     }
@@ -384,16 +421,17 @@ class autoptimizeCriticalCSSCore {
             // Key exists and its status is valid.
             // Set valid key status.
             $status     = 'valid';
-            $status_msg = __( 'Valid' );
+            $status_msg = esc_html__( 'Valid' );
             $color      = '#46b450'; // Green.
             $message    = null;
         } elseif ( $key && 1 == $key_status ) {
             // Key exists but its validation has failed.
             // Set invalid key status.
             $status     = 'invalid';
-            $status_msg = __( 'Invalid' );
+            $status_msg = esc_html__( 'Invalid' );
             $color      = '#dc3232'; // Red.
-            $message    = __( 'Your API key is invalid. Please enter a valid <a href="https://criticalcss.com/?aff=1" target="_blank">criticalcss.com</a> key.', 'autoptimize' );
+            // Translators: link to criticalcss.com page.
+            $message    = sprintf( esc_html__( 'Your API key is invalid. Please enter a valid %1$scriticalcss.com%2$s key.', 'autoptimize' ), '<a href="https://criticalcss.com/?aff=1" target="_blank">', '</a>' );
         } elseif ( $key && ! $key_status ) {
             // Key exists but it has no valid status yet
             // Perform key validation.
@@ -402,27 +440,29 @@ class autoptimizeCriticalCSSCore {
             // Key is valid, set valid status.
             if ( $key_check ) {
                 $status     = 'valid';
-                $status_msg = __( 'Valid' );
+                $status_msg = esc_html__( 'Valid' );
                 $color      = '#46b450'; // Green.
                 $message    = null;
             } else {
                 // Key is invalid, set invalid status.
                 $status     = 'invalid';
-                $status_msg = __( 'Invalid' );
+                $status_msg = esc_html__( 'Invalid' );
                 $color      = '#dc3232'; // Red.
                 if ( get_option( 'autoptimize_ccss_keyst' ) == 1 ) {
-                    $message = __( 'Your API key is invalid. Please enter a valid <a href="https://criticalcss.com/?aff=1" target="_blank">criticalcss.com</a> key.', 'autoptimize' );
+                    // Translators: link to criticalcss.com page.
+                    $message = sprintf( esc_html__( 'Your API key is invalid. Please enter a valid %1$scriticalcss.com%2$s key.', 'autoptimize' ), '<a href="https://criticalcss.com/?aff=1" target="_blank">', '</a>' );
                 } else {
-                    $message = __( 'Something went wrong when checking your API key, make sure you server can communicate with https://criticalcss.com and/ or try again later.', 'autoptimize' );
+                    $message = esc_html__( 'Something went wrong when checking your API key, make sure you server can communicate with https://criticalcss.com and/ or try again later.', 'autoptimize' );
                 }
             }
         } else {
             // No key nor status
             // Set no key status.
             $status     = 'nokey';
-            $status_msg = __( 'None' );
+            $status_msg = esc_html__( 'None' );
             $color      = '#ffb900'; // Yellow.
-            $message    = __( 'Please enter a valid <a href="https://criticalcss.com/?aff=1" target="_blank">criticalcss.com</a> API key to start.', 'autoptimize' );
+            // Translators: link to criticalcss.com page.
+            $message    = sprintf( esc_html__( 'Please enter a valid %1$scriticalcss.com%2$s API key to start.', 'autoptimize' ), '<a href="https://criticalcss.com/?aff=1" target="_blank">', '</a>' );
         }
 
         // Fill returned values.
@@ -447,87 +487,97 @@ class autoptimizeCriticalCSSCore {
 
         // Avoid AO optimizations if required by config or avoid lazyload if lazyload is active in AO.
         if ( ! empty( $noptimize ) ) {
-            $src_url .= '?ao_noptirocket=1';
+            $src_url .= '/?ao_noptirocket=1';
         } elseif ( class_exists( 'autoptimizeImages', false ) && autoptimizeImages::should_lazyload_wrapper() ) {
-            $src_url .= '?ao_nolazy=1';
+            $src_url .= '/?ao_nolazy=1';    
         }
 
         $src_url = apply_filters( 'autoptimize_filter_ccss_cron_srcurl', $src_url );
 
-        // Prepare the request.
-        $url  = esc_url_raw( AO_CCSS_API . 'generate' );
-        $args = array(
-            'headers' => apply_filters( 'autoptimize_ccss_cron_api_generate_headers', array(
-                'User-Agent'    => 'Autoptimize v' . AO_CCSS_VER,
-                'Content-type'  => 'application/json; charset=utf-8',
-                'Authorization' => 'JWT ' . $key,
-                'Connection'    => 'close',
-            ) ),
-            // Body must be JSON.
-            'body'    => json_encode(
-                apply_filters( 'autoptimize_ccss_cron_api_generate_body',
+        if ( true !== autoptimizeUtils::is_local_server( parse_url( $src_url,  PHP_URL_HOST ) ) ) {
+            // Prepare the request.
+            $url  = esc_url_raw( AO_CCSS_API . 'generate' );
+            $args = array(
+                'headers' => apply_filters(
+                    'autoptimize_ccss_cron_api_generate_headers',
                     array(
-                        'url'    => $src_url,
-                        'aff'    => 1,
-                        'aocssv' => AO_CCSS_VER,
+                        'User-Agent'    => 'Autoptimize v' . AO_CCSS_VER,
+                        'Content-type'  => 'application/json; charset=utf-8',
+                        'Authorization' => 'JWT ' . $key,
+                        'Connection'    => 'close',
                     )
-                )
-            ),
-        );
+                ),
+                // Body must be JSON.
+                'body'    => json_encode(
+                    apply_filters(
+                        'autoptimize_ccss_cron_api_generate_body',
+                        array(
+                            'url'    => $src_url,
+                            'aff'    => 1,
+                            'aocssv' => AO_CCSS_VER,
+                        )
+                    ),
+                    JSON_UNESCAPED_SLASHES
+                ),
+            );
 
-        // Dispatch the request and store its response code.
-        $req  = wp_safe_remote_post( $url, $args );
-        $code = wp_remote_retrieve_response_code( $req );
-        $body = json_decode( wp_remote_retrieve_body( $req ), true );
+            // Dispatch the request and store its response code.
+            $req  = wp_safe_remote_post( $url, $args );
+            $code = wp_remote_retrieve_response_code( $req );
+            $body = json_decode( wp_remote_retrieve_body( $req ), true );
 
-        if ( 200 == $code ) {
-            // Response is OK.
-            // Set key status as valid and log key check.
-            update_option( 'autoptimize_ccss_keyst', 2 );
-            $this->ao_ccss_log( 'criticalcss.com: API key is valid, updating key status', 3 );
+            if ( 200 == $code ) {
+                // Response is OK.
+                // Set key status as valid and log key check.
+                update_option( 'autoptimize_ccss_keyst', 2 );
+                $this->ao_ccss_log( 'criticalcss.com: API key is valid, updating key status', 3 );
 
-            // extract job-id from $body and put it in the queue as a P job
-            // but only if no jobs and no rules!
-            $queue = $this->criticalcss->get_option( 'queue' );
-            $rules = $this->criticalcss->get_option( 'rules' );
+                // extract job-id from $body and put it in the queue as a P job
+                // but only if no jobs and no rules!
+                $queue = $this->criticalcss->get_option( 'queue' );
+                $rules = $this->criticalcss->get_option( 'rules' );
 
-            if ( 0 == count( $queue ) && 0 == count( $rules['types'] ) && 0 == count( $rules['paths'] ) ) {
-                if ( 'JOB_QUEUED' == $body['job']['status'] || 'JOB_ONGOING' == $body['job']['status'] ) {
-                    $jprops['ljid']     = 'firstrun';
-                    $jprops['rtarget']  = 'types|is_front_page';
-                    $jprops['ptype']    = 'is_front_page';
-                    $jprops['hashes'][] = 'dummyhash';
-                    $jprops['hash']     = 'dummyhash';
-                    $jprops['file']     = null;
-                    $jprops['jid']      = $body['job']['id'];
-                    $jprops['jqstat']   = $body['job']['status'];
-                    $jprops['jrstat']   = null;
-                    $jprops['jvstat']   = null;
-                    $jprops['jctime']   = microtime( true );
-                    $jprops['jftime']   = null;
-                    $queue['/'] = $jprops;
-                    $queue_raw  = json_encode( $queue );
-                    update_option( 'autoptimize_ccss_queue', $queue_raw, false );
-                    $this->ao_ccss_log( 'Created P job for is_front_page based on API key check response.', 3 );
+                if ( 0 == count( $queue ) && 0 == count( $rules['types'] ) && 0 == count( $rules['paths'] ) ) {
+                    if ( 'JOB_QUEUED' == $body['job']['status'] || 'JOB_ONGOING' == $body['job']['status'] ) {
+                        $jprops['ljid']     = 'firstrun';
+                        $jprops['rtarget']  = 'types|is_front_page';
+                        $jprops['ptype']    = 'is_front_page';
+                        $jprops['hashes'][] = 'dummyhash';
+                        $jprops['hash']     = 'dummyhash';
+                        $jprops['file']     = null;
+                        $jprops['jid']      = $body['job']['id'];
+                        $jprops['jqstat']   = $body['job']['status'];
+                        $jprops['jrstat']   = null;
+                        $jprops['jvstat']   = null;
+                        $jprops['jctime']   = microtime( true );
+                        $jprops['jftime']   = null;
+                        $queue['/'] = $jprops;
+                        $queue_raw  = json_encode( $queue );
+                        update_option( 'autoptimize_ccss_queue', $queue_raw, false );
+                        $this->ao_ccss_log( 'Created P job for is_front_page based on API key check response.', 3 );
+                    }
                 }
+                return true;
+            } elseif ( 401 == $code ) {
+                // Response is unauthorized
+                // Set key status as invalid and log key check.
+                update_option( 'autoptimize_ccss_keyst', 1 );
+                $this->ao_ccss_log( 'criticalcss.com: API key is invalid, updating key status', 3 );
+                return false;
+            } else {
+                // Response unkown
+                // Log key check attempt.
+                $this->ao_ccss_log( 'criticalcss.com: could not check API key status, this is a service error, body follows if any...', 2 );
+                if ( ! empty( $body ) ) {
+                    $this->ao_ccss_log( print_r( $body, true ), 2 );
+                }
+                if ( is_wp_error( $req ) ) {
+                    $this->ao_ccss_log( $req->get_error_message(), 2 );
+                }
+                return false;
             }
-            return true;
-        } elseif ( 401 == $code ) {
-            // Response is unauthorized
-            // Set key status as invalid and log key check.
-            update_option( 'autoptimize_ccss_keyst', 1 );
-            $this->ao_ccss_log( 'criticalcss.com: API key is invalid, updating key status', 3 );
-            return false;
         } else {
-            // Response unkown
-            // Log key check attempt.
-            $this->ao_ccss_log( 'criticalcss.com: could not check API key status, this is a service error, body follows if any...', 2 );
-            if ( ! empty( $body ) ) {
-                $this->ao_ccss_log( print_r( $body, true ), 2 );
-            }
-            if ( is_wp_error( $req ) ) {
-                $this->ao_ccss_log( $req->get_error_message(), 2 );
-            }
+            // localhost/ private network server, no API check possible.
             return false;
         }
     }
@@ -547,9 +597,9 @@ class autoptimizeCriticalCSSCore {
         // Perform basic exploit avoidance and CSS validation.
         if ( ! empty( $ccss ) ) {
             // Try to avoid code injection.
-            $blocklist = array( '#!/', 'function(', '<script', '<?php' );
+            $blocklist = array( '#!/', 'function(', '<script', '<?php', '</style', ' onload=', ' onerror=', ' onmouse', ' onscroll=', ' onclick=' );
             foreach ( $blocklist as $blocklisted ) {
-                if ( strpos( $ccss, $blocklisted ) !== false ) {
+                if ( stripos( $ccss, $blocklisted ) !== false ) {
                     $this->ao_ccss_log( 'Critical CSS received contained blocklisted content.', 2 );
                     return false;
                 }
@@ -580,28 +630,27 @@ class autoptimizeCriticalCSSCore {
         // 3: DD (for debug)
         // Default: UU (for unkown).
         $level = false;
-        switch ( $lvl ) {
-            case 1:
-                $level = 'II';
-                break;
-            case 2:
-                $level = 'EE';
-                break;
-            case 3:
-                // Output debug messages only if debug mode is enabled.
-                if ( $debug ) {
+        if ( $debug ) {
+            switch ( $lvl ) {
+                case 1:
+                    $level = 'II';
+                    break;
+                case 2:
+                    $level = 'EE';
+                    break;
+                case 3:
                     $level = 'DD';
-                }
-                break;
-            default:
-                $level = 'UU';
+                    break;
+                default:
+                    $level = 'UU';
+            }
         }
 
         // Prepare and write a log message if there's a valid level.
         if ( $level ) {
 
             // Prepare message.
-            $message = date( 'c' ) . ' - [' . $level . '] ' . htmlentities( $msg ) . '<br>';
+            $message = date( 'c' ) . ' - [' . $level . '] ' . htmlentities( $msg ) . '<br>'; // @codingStandardsIgnoreLine
 
             // Write message to log file.
             error_log( $message, 3, AO_CCSS_LOG );
