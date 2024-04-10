@@ -16,8 +16,13 @@ import terser from 'gulp-terser';
  *
  * @returns {Stream}
  */
-const reporterJs = function() {
+const reporterJs = function()
+{
 	return map(function (file, callback) {
+		if (typeof file.jshint === 'undefined') {
+			return callback(null, file);
+		}
+
 		if (file.jshint.success) {
 			return callback(null, file);
 		}
@@ -49,7 +54,7 @@ function validateJs()
 		.pipe(config.jshint === true ? jshint() : noop())
 		.pipe(config.jshint === true ? jshint.reporter('default') : noop())
 		.pipe(config.jshint === true ? jshint.reporter('fail') : noop())
-		.pipe(config.jshint === true ? reporterJs() : noop())
+		.pipe(config.jshint === true ? reporterJs() : noop());
 }
 
 exports.validateJs = validateJs;
