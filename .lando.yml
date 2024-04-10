@@ -29,7 +29,7 @@ services:
     run_as_root:
       - "chown www-data: -R /app"
   node:
-    type: node
+    type: node:18
     globals:
       npm: "latest"
       yarn: "latest"
