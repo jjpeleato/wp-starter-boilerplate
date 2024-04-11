@@ -11,7 +11,7 @@ import nodeSass from 'node-sass';
 import noop from 'gulp-noop';
 import rename from 'gulp-rename';
 import sourcemaps from 'gulp-sourcemaps';
-import stylelint from 'gulp-stylelint';
+import stylelint from '@ronilaukkarinen/gulp-stylelint';
 import uglifycss from 'gulp-uglifycss';
 
 const sass = gulpSass(nodeSass);
