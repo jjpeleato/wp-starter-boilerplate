@@ -11,7 +11,7 @@ import nodeSass from 'node-sass';
 import noop from 'gulp-noop';
 import rename from 'gulp-rename';
 import sourcemaps from 'gulp-sourcemaps';
-import stylelint from 'gulp-stylelint';
+import stylelint from '@ronilaukkarinen/gulp-stylelint';
 import uglifycss from 'gulp-uglifycss';
 
 const sass = gulpSass(nodeSass);
@@ -37,11 +37,11 @@ function css()
 {
 	return gulp
 		.src(config.paths.sassAssets.src)
-		.pipe(sourcemaps.init())
+		.pipe(config.environment === 'production' ? noop() : sourcemaps.init())
 		.pipe(sass(config.options.sass).on('error', sass.logError))
 		.pipe(config.environment === 'production' ? uglifycss(config.options.uglifyCss) : noop())
 		.pipe(config.environment === 'production' ? rename({ suffix: '.min' }) : noop())
-		.pipe(sourcemaps.write())
+		.pipe(config.environment === 'production' ? noop() : sourcemaps.write())
 		.pipe(gulp.dest(config.paths.sassAssets.dest));
 }
 
@@ -57,11 +57,11 @@ function cssWithConcat()
 
 	return gulp
 		.src(merge)
-		.pipe(sourcemaps.init())
+		.pipe(config.environment === 'production' ? noop() : sourcemaps.init())
 		.pipe(sass(config.options.sass).on('error', sass.logError))
 		.pipe(config.environment === 'production' ? concat('custom-style.min.css') : concat('custom-style.css'))
 		.pipe(config.environment === 'production' ? uglifycss(config.options.uglifyCss) : noop())
-		.pipe(sourcemaps.write())
+		.pipe(config.environment === 'production' ? noop() : sourcemaps.write())
 		.pipe(gulp.dest(config.paths.sassAssets.dest));
 }
 
@@ -76,10 +76,10 @@ function cssCritical()
 {
 	return gulp
 		.src(config.paths.sassAssets.srcCritical)
-		.pipe(sourcemaps.init())
+		.pipe(config.environment === 'production' ? noop() : sourcemaps.init())
 		.pipe(sass(config.options.sass).on('error', sass.logError))
 		.pipe(config.environment === 'production' ? uglifycss(config.options.uglifyCss) : noop())
-		.pipe(sourcemaps.write())
+		.pipe(config.environment === 'production' ? noop() : sourcemaps.write())
 		.pipe(gulp.dest(config.paths.sassAssets.dest));
 }
 

@@ -19,7 +19,6 @@ const paths = {
 		],
         vendor: [
             './node_modules/normalize.css/normalize.css',
-            './node_modules/aos/dist/aos.css',
             './node_modules/photoswipe/dist/photoswipe.css',
             './node_modules/tiny-slider/dist/tiny-slider.css',
         ],
@@ -32,14 +31,12 @@ const paths = {
             './assets/js/custom.js'
         ],
         vendor: [
-			'./node_modules/vanilla-lazyload/dist/lazyload.min.js',
-			'./node_modules/aos/dist/aos.js',
 			'./node_modules/gsap/dist/gsap.min.js',
 			'./node_modules/gsap/dist/ScrollTrigger.min.js',
 			'./node_modules/lottie-web/build/player/lottie.min.js',
 			'./node_modules/tiny-slider/dist/min/tiny-slider.js',
-			'./node_modules/photoswipe/dist/photoswipe.esm.min.js',
-			'./node_modules/photoswipe/dist/photoswipe-lightbox.esm.min.js'
+			'./node_modules/photoswipe/dist/umd/photoswipe.umd.min.js',
+			'./node_modules/photoswipe/dist/umd/photoswipe-lightbox.umd.min.js'
         ],
         dest: theme + 'js/',
         destVendor: theme + 'vendor/'
@@ -64,10 +61,8 @@ const paths = {
         destVendor: theme + 'vendor/'
     },
     extra: {
-        src: [
-            './node_modules/photoswipe/dist/default-skin/*'
-        ],
-        dest: theme + 'vendor/default-skin/'
+        src: [],
+        dest: theme + 'vendor/'
     }
 };
 

@@ -1,9 +1,11 @@
 <?php
 global $WPSC_HTTP_HOST, $cache_enabled, $cache_path, $blogcacheid, $blog_cache_dir;
 
+// we need to backup HTTP_HOST early in the PHP process, and if running in command line set it to something useful.
 if ( ! empty( $_SERVER['HTTP_HOST'] ) ) {
 	$WPSC_HTTP_HOST = function_exists( 'mb_strtolower' ) ? mb_strtolower( $_SERVER['HTTP_HOST'] ) : strtolower( $_SERVER['HTTP_HOST'] );
-	$WPSC_HTTP_HOST = htmlentities( $WPSC_HTTP_HOST );
+	// phpcs:ignore WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase
+	$WPSC_HTTP_HOST = htmlentities( $WPSC_HTTP_HOST, ENT_COMPAT );
 } elseif ( PHP_SAPI === 'cli' && function_exists( 'get_option' ) ) {
 	$WPSC_HTTP_HOST = (string) parse_url( get_option( 'home' ), PHP_URL_HOST );
 } else {
@@ -15,6 +17,8 @@ if ( ! empty( $_SERVER['HTTP_HOST'] ) ) {
 $blogcacheid    = '';
 $blog_cache_dir = $cache_path;
 
+// we might be able to simplify this. I run a multisite and the blogs directory isn't used any more.
+// $blogcacheid is set to the domain or prefix path of your site, and all files are put in $cache_path/supercache/$blogcacheid/[REQUEST_URI path]/
 if ( is_multisite() ) {
 	global $current_blog;
 
@@ -28,12 +32,12 @@ if ( is_multisite() ) {
 
 		$wpsc_path_segs  = array_filter( explode( '/', trim( $request_uri, '/' ) ) );
 		$wpsc_base_count = defined( 'PATH_CURRENT_SITE' ) ? count( array_filter( explode( '/', trim( PATH_CURRENT_SITE, '/' ) ) ) ) : 0;
-		if ( '/' !== substr( $request_uri, -1 ) ) {
+		if ( ! str_ends_with( $request_uri, '/' ) ) {
 			$wpsc_path_segs = array_slice( $wpsc_path_segs, 0, -1 );
 		}
 
 		if ( count( $wpsc_path_segs ) > $wpsc_base_count &&
-			( ! defined( 'PATH_CURRENT_SITE' ) || 0 === strpos( $request_uri, PATH_CURRENT_SITE ) )
+			( ! defined( 'PATH_CURRENT_SITE' ) || str_starts_with( $request_uri, PATH_CURRENT_SITE ) )
 		) {
 			$blogcacheid = $wpsc_path_segs[ $wpsc_base_count ];
 		}

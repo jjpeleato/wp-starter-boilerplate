@@ -28,7 +28,7 @@ class autoptimizeToolbar
     public function load_toolbar()
     {
         // Check permissions and that toolbar is not hidden via filter.
-        if ( current_user_can( 'manage_options' ) && apply_filters( 'autoptimize_filter_toolbar_show', true ) && ! autoptimizeMain::is_amp_markup('') ) {
+        if ( current_user_can( 'manage_options' ) && apply_filters( 'autoptimize_filter_toolbar_show', true ) && ! autoptimizeMain::is_amp_markup( '' ) ) {
 
             // Create a handler for the AJAX toolbar requests.
             add_action( 'wp_ajax_autoptimize_delete_cache', array( $this, 'delete_cache' ) );
@@ -79,39 +79,45 @@ class autoptimizeToolbar
 
         // Create or add new items into the Admin Toolbar.
         // Main "Autoptimize" node.
-        $_my_name = apply_filters( 'autoptimize_filter_settings_is_pro', false ) ? __( 'Autoptimize Pro', 'autoptimize' ) : __( 'Autoptimize', 'autoptimize' );
-        $wp_admin_bar->add_node( array(
-            'id'    => 'autoptimize',
-            'title' => '<span class="ab-icon"></span><span class="ab-label">' . $_my_name . '</span>',
-            'href'  => admin_url( 'options-general.php?page=autoptimize' ),
-            'meta'  => array( 'class' => 'bullet-' . $color ),
-        ));
+        $_my_name = apply_filters( 'autoptimize_filter_settings_is_pro', false ) ? esc_html__( 'Autoptimize Pro', 'autoptimize' ) : esc_html__( 'Autoptimize', 'autoptimize' );
+        $wp_admin_bar->add_node(
+            array(
+                'id'    => 'autoptimize',
+                'title' => '<span class="ab-icon"></span><span class="ab-label">' . $_my_name . '</span>',
+                'href'  => admin_url( 'options-general.php?page=autoptimize' ),
+                'meta'  => array( 'class' => 'bullet-' . $color ),
+            )
+        );
 
         // "Cache Info" node.
-        $wp_admin_bar->add_node( array(
-            'id'     => 'autoptimize-cache-info',
-            'title'  => '<p>' . __( 'CSS/ JS Cache Info', 'autoptimize' ) . '</p>' .
-                        '<div class="autoptimize-radial-bar" percentage="' . $percentage . '">' .
-                        '<div class="autoptimize-circle">' .
-                        '<div class="mask full"><div class="fill bg-' . $color . '"></div></div>' .
-                        '<div class="mask half"><div class="fill bg-' . $color . '"></div></div>' .
-                        '<div class="shadow"></div>' .
-                        '</div>' .
-                        '<div class="inset"><div class="percentage"><div class="numbers ' . $color . '">' . $percentage . '%</div></div></div>' .
-                        '</div>' .
-                        '<table>' .
-                        '<tr><td>' . __( 'Size', 'autoptimize' ) . ':</td><td class="size ' . $color . '">' . $size . '</td></tr>' .
-                        '<tr><td>' . __( 'Files', 'autoptimize' ) . ':</td><td class="files white">' . $files . '</td></tr>' .
-                        '</table>',
-            'parent' => 'autoptimize',
-        ));
+        $wp_admin_bar->add_node(
+            array(
+                'id'     => 'autoptimize-cache-info',
+                'title'  => '<p>' . esc_html__( 'CSS/ JS Cache Info', 'autoptimize' ) . '</p>' .
+                            '<div class="autoptimize-radial-bar" percentage="' . $percentage . '">' .
+                            '<div class="autoptimize-circle">' .
+                            '<div class="mask full"><div class="fill bg-' . $color . '"></div></div>' .
+                            '<div class="mask half"><div class="fill bg-' . $color . '"></div></div>' .
+                            '<div class="shadow"></div>' .
+                            '</div>' .
+                            '<div class="inset"><div class="percentage"><div class="numbers ' . $color . '">' . $percentage . '%</div></div></div>' .
+                            '</div>' .
+                            '<table>' .
+                            '<tr><td>' . esc_html__( 'Size', 'autoptimize' ) . ':</td><td class="size ' . $color . '">' . $size . '</td></tr>' .
+                            '<tr><td>' . esc_html__( 'Files', 'autoptimize' ) . ':</td><td class="files white">' . $files . '</td></tr>' .
+                            '</table>',
+                'parent' => 'autoptimize',
+            )
+        );
 
         // "Delete Cache" node.
-        $wp_admin_bar->add_node( array(
-            'id'     => 'autoptimize-delete-cache',
-            'title'  => __( 'Clear CSS/ JS Cache', 'autoptimize' ),
-            'parent' => 'autoptimize',
-        ));
+        $wp_admin_bar->add_node(
+            array(
+                'id'     => 'autoptimize-delete-cache',
+                'title'  => esc_html__( 'Clear CSS/ JS Cache', 'autoptimize' ),
+                'parent' => 'autoptimize',
+            )
+        );
     }
 
     public function delete_cache()
@@ -130,20 +136,24 @@ class autoptimizeToolbar
     public function enqueue_scripts()
     {
         // Autoptimize Toolbar Styles.
-        wp_enqueue_style( 'autoptimize-toolbar', plugins_url( '/static/toolbar.css', __FILE__ ), array(), AUTOPTIMIZE_PLUGIN_VERSION, 'all' );
+        wp_enqueue_style( 'autoptimize-toolbar', plugins_url( '/static/toolbar.min.css', __FILE__ ), array(), AUTOPTIMIZE_PLUGIN_VERSION, 'all' );
 
         // Autoptimize Toolbar Javascript.
-        wp_enqueue_script( 'autoptimize-toolbar', plugins_url( '/static/toolbar.js', __FILE__ ), array( 'jquery' ), AUTOPTIMIZE_PLUGIN_VERSION, true );
+        wp_enqueue_script( 'autoptimize-toolbar', plugins_url( '/static/toolbar.min.js', __FILE__ ), array( 'jquery' ), AUTOPTIMIZE_PLUGIN_VERSION, true );
 
         // Localizes a registered script with data for a JavaScript variable.
         // Needed for the AJAX to work properly on the frontend.
-        wp_localize_script( 'autoptimize-toolbar', 'autoptimize_ajax_object', array(
-            'ajaxurl'     => admin_url( 'admin-ajax.php' ),
-            // translators: links to the Autoptimize settings page.
-            'error_msg'   => sprintf( __( 'Your Autoptimize cache might not have been purged successfully, please check on the <a href=%s>Autoptimize settings page</a>.', 'autoptimize' ), admin_url( 'options-general.php?page=autoptimize' ) . ' style="white-space:nowrap;"' ),
-            'dismiss_msg' => __( 'Dismiss this notice.' ),
-            'nonce'       => wp_create_nonce( 'ao_delcache_nonce' ),
-        ) );
+        wp_localize_script(
+            'autoptimize-toolbar',
+            'autoptimize_ajax_object',
+            array(
+                'ajaxurl'     => admin_url( 'admin-ajax.php' ),
+                // translators: links to the Autoptimize settings page.
+                'error_msg'   => sprintf( esc_html__( 'Your Autoptimize cache might not have been purged successfully, please check on the %1$sAutoptimize settings page%2$s.', 'autoptimize' ), '<a href="' . admin_url( 'options-general.php?page=autoptimize' ) . '" style="white-space:nowrap;">', '</a>' ),
+                'dismiss_msg' => esc_html__( 'Dismiss this notice.' ),
+                'nonce'       => wp_create_nonce( 'ao_delcache_nonce' ),
+            )
+        );
     }
 
     public function format_filesize( $bytes, $decimals = 2 )

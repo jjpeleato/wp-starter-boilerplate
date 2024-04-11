@@ -34,11 +34,14 @@
 	<!-- Exclude ACF file from being checked. -->
 	<exclude-pattern>public/wp-content/themes/ao-apolo/inc/theme-acf.php</exclude-pattern>
 
-	<!-- Exclude the Composer Vendor directory. -->
-	<exclude-pattern>/vendor/*</exclude-pattern>
+	<!-- Exclude the gulp directory. -->
+	<exclude-pattern>gulp/*</exclude-pattern>
 
-	<!-- Exclude the Node Modules directory. -->
-	<exclude-pattern>/node_modules/*</exclude-pattern>
+	<!-- Exclude the composer directory. -->
+	<exclude-pattern>vendor/*</exclude-pattern>
+
+	<!-- Exclude the npm directory. -->
+	<exclude-pattern>node_modules/*</exclude-pattern>
 
 	<!-- Exclude minified Javascript files. -->
 	<exclude-pattern>*.min.js</exclude-pattern>

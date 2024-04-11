@@ -2,20 +2,23 @@
 Contributors: futtta, optimizingmatters, zytzagoo, turl
 Tags: optimize, minify, performance, images, core web vitals, lazy-load, pagespeed, google fonts
 Donate link: http://blog.futtta.be/2013/10/21/do-not-donate-to-me/
-Requires at least: 4.9
-Tested up to: 6.0 
+Requires at least: 5.3
+Tested up to: 6.4
 Requires PHP: 5.6
-Stable tag: 3.0.4 
+Stable tag: 3.1.11
 
 Autoptimize speeds up your website by optimizing JS, CSS, images (incl. lazy-load), HTML and Google Fonts, asyncing JS, removing emoji cruft and more.
 
 == Description ==
 
 Autoptimize makes optimizing your site really easy. It can aggregate, minify and cache scripts and styles, injects CSS in the page head by default but can also inline critical CSS and defer the aggregated full CSS, moves and defers scripts to the footer and minifies HTML. You can optimize and lazy-load images (with support for WebP and AVIF formats), optimize Google Fonts, async non-aggregated JavaScript, remove WordPress core emoji cruft and more. As such it can improve your site's performance even when already on HTTP/2! There is extensive API available to enable you to tailor Autoptimize to each and every site's specific needs.
-If you consider performance important, you really should use one of the many caching plugins to do page caching. Some good candidates to complement Autoptimize that way are e.g. [Speed Booster pack](https://wordpress.org/plugins/speed-booster-pack/), [KeyCDN's Cache Enabler](https://wordpress.org/plugins/cache-enabler), [WP Super Cache](http://wordpress.org/plugins/wp-super-cache/) or if you use Cloudflare [WP Cloudflare Super Page Cache](https://wordpress.org/plugins/wp-cloudflare-page-cache/).
+If you think performance indeed is important, you should at least consider one of the many free page caching plugins (e.g. [Speed Booster pack](https://wordpress.org/plugins/speed-booster-pack/) or [KeyCDN's Cache Enabler](https://wordpress.org/plugins/cache-enabler)) to complement Autoptimize or even [consider Autoptimize Pro](https://misc.optimizingmatters.com/partners/?from=partnertab&partner=aopro) which not only has page caching but also image optimization, CDN, critical CSS and more!
+
+> <strong>Autoptimize Pro</strong><br>
+> [Autoptimize Pro is a premium Power-Up](https://misc.optimizingmatters.com/partners/?from=partnertab&partner=aopro), adding image optimization, CDN, page caching, automatic critical CSS rules and extra “booster” options, all in one handy subscription to [make your site even faster!](https://misc.optimizingmatters.com/partners/?from=partnertab&partner=aopro)!
 
 > <strong>Premium Support</strong><br>
-> We provide great [Autoptimize Pro Support and Web Performance Optimization services](https://misc.optimizingmatters.com/partners/?from=partnertab&partner=autoptimizepro), check out our offering on [https://accelera.autoptimize.com/](https://misc.optimizingmatters.com/partners/?from=partnertab&partner=autoptimizepro)!
+> We provide great [Premium Support and Web Performance Optimization services](https://misc.optimizingmatters.com/partners/?from=partnertab&partner=autoptimizepro) with Accelera, check out our offering on [https://accelerawp.com/](https://misc.optimizingmatters.com/partners/?from=partnertab&partner=autoptimizepro)!
 
 (Speed-surfing image under creative commons [by LL Twistiti](https://www.flickr.com/photos/twistiti/818552808/))
 
@@ -31,23 +34,23 @@ Just install from your WordPress "Plugins > Add New" screen and all will be well
 
 = What does the plugin do to help speed up my site? =
 
-It concatenates all scripts and styles, minifies and compresses them, adds expires headers, caches them, and moves styles to the page head, and scripts (optionally) to the footer. It also minifies the HTML code itself, making your page really lightweight.
+It minifies all scripts and styles and configures your webserver to compresses them with good expires headers. JavaScript be default will be made non-render-blocking and CSS can be too by adding critical CSS. You can configure it to combine (aggregate) CSS & JS-files, in which case styles are moved to the page head, and scripts to the footer. It also minifies the HTML code and can also optimize images and Google Fonts, making your page really lightweight.
 
 = But I'm on HTTP/2, so I don't need Autoptimize? =
 
-HTTP/2 is a great step forward for sure, reducing the impact of multiple requests from the same server significantly by using the same connection to perform several concurrent requests. That being said, [concatenation of CSS/ JS can still make a lot of sense](http://engineering.khanacademy.org/posts/js-packaging-http2.htm), as described in [this css-tricks.com article](https://css-tricks.com/http2-real-world-performance-test-analysis/) and this [blogpost from one of the Ebay engineers](http://calendar.perfplanet.com/2015/packaging-for-performance/). The conclusion; configure, test, reconfigure, retest, tweak and look what works best in your context. Maybe it's just HTTP/2, maybe it's HTTP/2 + aggregation and minification, maybe it's HTTP/2 + minification (which AO can do as well, simply untick the "aggregate JS-files" and/ or "aggregate CSS-files" options). And Autoptimize can do a lot more then "just" optimizing your JS & CSS off course ;-)
+HTTP/2 is a great step forward for sure, reducing the impact of multiple requests from the same server significantly by using the same connection to perform several concurrent requests and for that reason on new installations Autoptimize will not aggregate CSS and JS files any more. That being said, [concatenation of CSS/ JS can still make a lot of sense](http://engineering.khanacademy.org/posts/js-packaging-http2.htm), as described in [this css-tricks.com article](https://css-tricks.com/http2-real-world-performance-test-analysis/) and this [blogpost from one of the Ebay engineers](http://calendar.perfplanet.com/2015/packaging-for-performance/). The conclusion; configure, test, reconfigure, retest, tweak and look what works best in your context. Maybe it's just HTTP/2, maybe it's HTTP/2 + aggregation and minification, maybe it's HTTP/2 + minification (which AO can do as well, simply untick the "aggregate JS-files" and/ or "aggregate CSS-files" options). And Autoptimize can do a lot more then "just" optimizing your JS & CSS off course ;-)
 
 = Will this work with my blog? =
 
-Although Autoptimize comes without any warranties, it will in general work flawlessly if you configure it correctly. See "Troubleshooting" below for info on how to configure in case of problems.
+Although Autoptimize comes without any warranties, it will in general work flawlessly if you configure it correctly. See "Troubleshooting" below for info on how to configure in case of problems. If you want you can [test Autoptimize on a new free dummy site, courtesy of tastewp.com](https://demo.tastewp.com/autoptimize).
 
-= Why is jquery.min.js not optimized =
+= Why is jquery.min.js not optimized when aggregating JavaScript? =
 
 Starting from AO 2.1 WordPress core's jquery.min.js is not optimized for the simple reason a lot of popular plugins inject inline JS that is not aggregated either (due to possible cache size issues with unique code in inline JS) which relies on jquery being available, so excluding jquery.min.js ensures that most sites will work out of the box. If you want optimize jquery as well, you can remove it from the JS optimization exclusion-list (you might have to enable "also aggregate inline JS" as well or switch to "force JS in head").
 
 = Why is Autoptimized JS render blocking? =
 
-If not "forced in head", Autoptimized JS is not render blocking as it has the "defer" flag added. It is however possible another plugin removes the "defer"-flag. Speed Booster Pack was reported doing this, but [the behavior has not been confirmed yet](https://wordpress.org/support/topic/speed-booster-pack-autoptimized-js-defer-flag/).
+This happens when aggregating JavaSCript and ticking the "force in head" option or when not aggregating and not deferring. Consider changing settings.
 
 = Why is the autoptimized CSS still called out as render blocking? =
 
@@ -128,18 +131,9 @@ Both CSS and JS optimization can skip code from being aggregated and minimized b
 * if you want to exclude all files of a specific plugin, e.g. wp-content/plugins/funkyplugin/js/*, you can exclude for example "funkyplugin/js/" or "plugins/funkyplugin"
 * if you want to exclude inline code, you'll have to find a specific, unique string in that block of code and add that to the exclusion list. Example: to exclude `<script>funky_data='Won\'t you take me to, Funky Town'</script>`, the identifier is "funky_data".
 
-= Configuring & Troubleshooting Autoptimize =
+= Troubleshooting Autoptimize =
 
-After having installed and activated the plugin, you'll have access to an admin page where you can to enable HTML, CSS and JavaScript optimization. According to your liking, you can start of just enabling all of them, or if you're more cautious one at a time.
-
-If your blog doesn't function normally after having turned on Autoptimize, here are some pointers to identify & solve such issues using "advanced settings":
-
-* If all works but you notice your blog is slower, ensure you have a page caching plugin installed (WP Super Cache or similar) and check the info on cache size (the soution for that problem also impacts performance for uncached pages) in this FAQ as well.
-* In case your blog looks weird, i.e. when the layout gets messed up, there is problem with CSS optimization. Try excluding one or more CSS-files from being optimized. You can also force CSS not to be aggregated by wrapping it in noptimize-tags in your theme or widget or by adding filename (for external stylesheets) or string (for inline styles) to the exclude-list.
-* In case some functionality on your site stops working (a carroussel, a menu, the search input, ...) you're likely hitting JavaScript optimization trouble. Change the "Aggregate inline JS" and/ or "Force JavaScript in head?" settings and try again. Excluding 'js/jquery/jquery.min.js' from optimization (see below) and optionally activating "[Add try/catch wrapping](http://blog.futtta.be/2014/08/18/when-should-you-trycatch-javascript/)") can also help. Alternatively -for the technically savvy- you can exclude specific scripts from being treated (moved and/ or aggregated) by Autoptimize by adding a string that will match the offending Javascript or excluding it from within your template files or widgets by wrapping the code between noptimize-tags. Identifying the offending JavaScript and choosing the correct exclusion-string can be trial and error, but in the majority of cases JavaScript optimization issues can be solved this way. When debugging JavaScript issues, your browsers error console is the most important tool to help you understand what is going on.
-* If your theme or plugin require jQuery, you can try either forcing all in head and/ or excluding jquery.min.js (and jQuery-plugins if needed).
-* If you can't get either CSS or JS optimization working, you can off course always continue using the other two optimization-techniques.
-* If you tried the troubleshooting tips above and you still can't get CSS and JS working at all, you can ask for support on the [WordPress Autoptimize support forum](http://wordpress.org/support/plugin/autoptimize). See below for a description of what information you should provide in your "trouble ticket"
+Have a look at the troubleshooitng instructions at https://blog.futtta.be/2022/05/05/what-to-do-when-autoptimize-breaks-your-site/
 
 = I excluded files but they are still being autoptimized? =
 
@@ -266,9 +260,9 @@ add_filter('autoptimize_filter_main_use_mbstring', '__return_true');`
 
 Check [the FAQ on the (legacy) "power-up" here](https://wordpress.org/plugins/autoptimize-criticalcss/#faq), this info will be integrated in this FAQ at a later date.
 
-= Do I still need the Critical CSS power-up when I have Autoptimize 2.7? =
+= Do I still need the Critical CSS power-up when I have Autoptimize 2.7 or higher? =
 
-When both Autoptimize 2.7 and the separate Critical CSS power-up are installed and active, the power-up will handle the critical CSS part. When you disable the power-up, the integrated critical CSS code in Autoptimize 2.7 will take over.
+No, the Critical CSS power-up is not needed any more, all functionality (and many fixes/ improvements) are now part of Autoptimize.
 
 = What does "enable 404 fallbacks" do? Why would I need this? =
 
@@ -307,6 +301,7 @@ The following great open source projects are used in Autoptimize in some form or
 * [jQuery unslider](https://github.com/idiot/unslider/) for the mini-slider in the top right corner on the main settings page (repo gone)
 * [JavaScript-md5](https://github.com/blueimp/JavaScript-MD5) for critical CSS rules editing
 * [Speed Booster Pack](https://wordpress.org/plugins/speed-booster-pack/) for advanced JS deferring
+* [Disable Remove Google Fonts](https://wordpress.org/plugins/disable-remove-google-fonts/) for additional Google Font removal
 
 = Where can I get help? =
 
@@ -324,6 +319,85 @@ Just [fork Autoptimize on Github](https://github.com/futtta/autoptimize) and cod
 
 == Changelog ==
 
+= 3.1.11 =
+* code quality improvements see the [GitHub commit log](https://github.com/futtta/autoptimize/commits/beta).
+* some other minor changes/ improvements/ filters, see the [GitHub commit log](https://github.com/futtta/autoptimize/commits/beta).
+
+= 3.1.10 =
+* improvement: with "don't aggregate but defer" and "also defer inline JS" on, also defer JS that had the async flag to avoid the (previously) asynced JS from executing before the inline JS has ran.
+* improvement: show option to disable the default on "compatibility logic".
+* fix for regression in  3.1.9 which caused JetPack Image optimization not working even if image optimization was off in AO.
+* API: some extra hooks in critical CSS to enable others (and AOPro) to act on changes in critical CSS rules
+* some other minor changes/ improvements/ filters, see the [GitHub commit log](https://github.com/futtta/autoptimize/commits/beta).
+
+= 3.1.9 =
+* improvement: activate JS, CSS & HTML optimization upon plugin activation (hat tip to Adam Silverstein (developer relations engineer at Google))
+* improvement: also defer asynced JS (to ensure execution order remains intact; asynced JS should not execute before deferred inline JS which it might depend upon)
+* improvement: exclude images from being lazyloaded if they have fetchpriority attribute set to high (as done by WordPress core since 6.3)
+* bugfix: disable spellcheck on CSS textarea's (above the fold CSS/ critical CSS) which in some cases caused browser issues
+* add tab to explain Autoptimize Pro.
+* confirmed working with WordPress 6.4 (beta 3)
+* some other minor changes/ improvements/ filters, see the [GitHub commit log](https://github.com/futtta/autoptimize/commits/beta).
+
+= 3.1.8.1 =
+* urgent fix for PHP error, sorry about that!
+
+= 3.1.8 =
+* Images: improve optmization logic for background images
+* Critical CSS: don't trigger custom_post rule if not is_singular + adding debug logging for rule selection
+* some other minor changes/ improvements/ filters, see the [GitHub commit log](https://github.com/futtta/autoptimize/commits/beta).
+
+= 3.1.7 =
+* security: improve validation (import) and sanitization (output) of critical CSS rules, to fix a medium severity Admin+ Stored Cross-Site Scripting vulnerability as reported by WP Scan Security.
+
+= 3.1.6 =
+* CSS: removing trailing slashes in <link tags for more W3 HTML validation love
+* Extra: also dequeue WooCommerce block CSS if "remove WordPress block CSS" option is active
+* imgopt: also act on non-aggregated inline CSS
+* imgopt: added logic to warn users if Shortpixel can't reach their site
+* backend: AO toolbar JS/ CSS is finally minified as well.
+* explicitly disable optimization of login pages
+* some other minor changes/ improvements/ filters, see the [GitHub commit log](https://github.com/futtta/autoptimize/commits/beta).
+
+= 3.1.5 =
+* improvements to JSMin by Robert Ehrenleitner (big thanks Robert!).
+* do not consider jquery.js as minified any more (WordPress now uses jquery.min.js by default and jquery.js is the unminified version).
+* fix for "undefined array key" PHP errors in autoptimizeCriticalCSSCron.php
+* some other minor changes/ improvements/ filters, see the [GitHub commit log](https://github.com/futtta/autoptimize/commits/beta).
+
+= 3.1.4 =
+* Improvement: when all CSS is inlined, try doing so after SEO meta-tags (just before ld+json script tag which most SEO plugins add as last item on their list).
+* Img opt: also optimize images set in data-background and data-retina attributes (+ filter to easily add other attributes)
+* CSS opt: filter to enable AO to skip minification of calc formulas in CSS (as the CSS minifier on rare occasions breaks those)
+* Multiple other filters added
+* Some other minor changes/ improvements/ filters, see the [GitHub commit log](https://github.com/futtta/autoptimize/commits/beta).
+
+= 3.1.3 =
+* Multiple fixes for metabox LCP image preloads (thanks [Kishorchand](https://foxscribbler.com/) for notifying & providing a staging environment to debug on).
+* Fix in revslider compatibility (hat tip [Waqar Ahmed for reporting & helping out](https://wordpress.org/support/topic/issue-with-latest-version-of-slider-revolution/) ).
+* No image optimization or criticalcss attempts on localhost installations any more + notification of that fact if localhost detected.
+* Some other minor changes/ improvements/ filters, see the [GitHub commit log](https://github.com/futtta/autoptimize/commits/beta).
+
+= 3.1.2 =
+* Google Fonts: some more removal logic
+* fix for 404 fallback bug (hat tip to Asif for finding & reporting)
+* Some other minor changes/ improvements/ filters, see the [GitHub commit log](https://github.com/futtta/autoptimize/commits/beta).
+
+= 3.1.1.1 =
+* Quick workaround for an autoload conflict with JetFormBuilder (and maybe other Crocoblock plugins?) that causes a critical error on the AO settings page.
+
+= 3.1.1 =
+* images: when optimizing images and lazyloading is on, then by default do not set an LQIP (low quality image placeholder) any more (reason: it might *look* nice but it comes with a small-ish perf. penalty). This can be re-enabled by returning true to the `autoptimize_filter_imgopt_lazyload_dolqip` filter.
+* security: further improvements to critical CSS settings page (again with the great assistance of WPScan Security).
+* some other minor changes/ improvements/ filters, see the [GitHub commit log](https://github.com/futtta/autoptimize/commits/beta).
+
+= 3.1.0 =
+* new HTML sub-option: "minify inline CSS/ JS" (off by default).
+* new Misc option: permanently allow the "do not run compatibility logic" flag to be removed (which was set for users upgrading from AO 2.9.* to AO 3.0.* as the assumption was things were working anyway).
+* security: improvements to the critical CSS settings page to fix authenticated cross site scripting issues as reported by WPScan Security.
+* bugfix: "defer inline JS" of very large chunks of inline JS could cause server errors (PCRE crash actually) so not deferring if string is more then 200000 characters (filter available).
+* some other minor changes/ improvements/ hooks, see the [GitHub commit log](https://github.com/futtta/autoptimize/commits/beta)
+
 = 3.0.4 =
 * fix for "undefined array key ao_post_preload” on post/ page edit screens
 * fix for image optimization altering inline JS that contains an `<img` tag if lazyload is not active
@@ -337,7 +411,7 @@ Just [fork Autoptimize on Github](https://github.com/futtta/autoptimize) and cod
 
 = 3.0.2 =
 * rollback automatic "minify inline CSS/ JS" which broke more then expected, this will come back as a separate default off option later and can now be enabled with a simple filter: `add_filter( 'autoptimize_html_minify_inline_js_css', '__return_true');` .
-* fix for "Call to undefined method autoptimizeOptionWrapper::delete_option()" in autoptimizeVersionUpdatesHandler.php 
+* fix for "Call to undefined method autoptimizeOptionWrapper::delete_option()" in autoptimizeVersionUpdatesHandler.php
 
 = 3.0.1 =
 * fix for minification of inline script with type text/template breaking the template (e.g. ninja forms), hat tip to @bobsled.
@@ -356,143 +430,5 @@ Just [fork Autoptimize on Github](https://github.com/futtta/autoptimize) and cod
 * fix: stop Divi from clearing Autoptimize's cache [which is pretty counter-productive](https://blog.futtta.be/2018/11/17/warning-divi-purging-autoptimizes-cache/).
 * misc smaller fixes/ improvements, see the [GitHub commit log](https://github.com/futtta/autoptimize/commits/beta)
 
-= 2.9.5.1 =
-* fix for CSS cache growing too fast when inline CSS with variable selectors from WordPress 5.9 comment blocks is aggregated.
-
-= 2.9.5 =
-* Better fix for PHP notice in autoptimizeImages.php.
-* Further improvements to the exit survey.
-
-= 2.9.4 =
-* Fix for 2 AMP compatibility issues (toolbar JS & lazyload JS).
-* Fix for PHP notice in autoptimizeImages.php.
-* Change default for "lazyload from nth image" from 0 to 2 (only applies to new installations).
-* Improvements to the exit survey.
-* Enjoy the end-of-year celebrations, there are great Autoptimize things to come in 2022! ;-)
-
-= 2.9.3 =
-* Improvement: add logic to autoptimize_404_handler.php to differentiate between different multisite sites.
-* Improvement: remove the different feeds (and all JS to switch between them) on the settings-page, keeping only the "Autoptimize news".
-* Improvement: reduced autoptimize_enable_site_config option lookups when on multisite and AO is active for network.
-* Fixed wrong variable name that caused PHP notices (but did not affect normal usage) to $w3tc_minify_on.
-* Fix for Autoptimize Toolbar being loaded on AMP pages for logged in administrators/ editors
-* Fix for CDN replacement edge case (if the CDN has the site_url in it).
-* Fix for service availability checks causing too many outgoing requests (root cause likely to be object caching resulting in the autoptimize_service_availability option not being updated)
-* Added "exit survey" when Autoptimize is deactivated (with the kind help of Shakeeb of RapidLoad, thanks brother!)
-
-= 2.9.2 =
-* New: page/ post settings now have a "Generate Critical CSS"-button (critical CSS needs to be active with valid API key)
-* Improvement: also check WP Rocket settings for possible conflicts
-* Improvement: Image optimization CDN updated to new Autoptimize-specific subdomain
-* Fix: "don't aggregate but defer" did not defer 3rd party hosted JS (can be disabled with a filter)
-* Fix: the metabox per page/post logic failed when all optimizations were off (hat tip to Valenki for reporting) resulting in PHP notices
-
-= 2.9.1 =
-* New: logic to detect possibly conflicting plugins, with notification if found.
-* Improvement: to be reviewed critical css rules UI change.
-* Improvement: automatically save critical CSS rules when changed.
-* Fix for no CCSS jobs being created when "aggregate CSS" is off and all files are minified.
-* Fix for some page caches not being detected correctly leading to notification being shown when it should not (thanks @optimocha for warning me!)
-* Fix for a (rare) lazyload-regression in 2.9.0.
-* Fix for a (rare) image optimization issue when the same image is referenced multiple times as background-image in optimized CSS.
-
-= 2.9.0 =
-* New: per page/ post Autoptimize settings so one can disable specific optimizations (needs to be enabled on the main settings page under "Misc Options").
-* New: "defer inline JS" as sub-option of "do not aggregate but defer" allowing to defer (almost) all JS.
-* Improvement: Image optimization now automatically switches between AVIF & WebP & Jpeg even if lazyload is not active (AVIF has to be explicitly enabled).
-* Improvement: re-ordering of "JavaScript optimization" settings & copy improvements.
-* Misc. other minor fixes, see the [GitHub commit log](https://github.com/futtta/autoptimize/commits/beta)
-
-This release coincides with my father's 76th birthday, who continues to be a big inspritation to me. He's a mechanical engineer who after retirement focused his technical insights, experience and never-ending inquisitiveness on fountain pen design and prototyping, inventing a new bulkfiller mechanism in the process. Search the web for `Fountainbel` to find out more about him (or read [this older blogpost I wrote in Dutch](https://blog.futtta.be/2008/04/09/mijn-vader-is-een-tovenaar/)). Love you pops!
-
-= 2.8.4 =
-* fix for an authenticated XSS vulnerability
-
-= 2.8.3 =
-* fix for missing ao-minify-html.php
-
-= 2.8.2 =
-* Images: only show "did you know shortpixel" notice on Autoptimize settings pages (no more littering all over the backend)
-* Images: update lazysizes from upstream
-* Images: misc. improvements such as fix for PHP "undefined index" notice, updated copy, ...
-* HTML: rename HTML minify class from minify_HTML to AO_minify_HTML to avoid conflicts with e.g. W3TC
-* Critical CSS: misc. improvements such as detect is_front_page before any other conditional, fix for conditional rules without an actual condition, improved debug logging, ...
-* JS/ CSS: fix for AO not optimizing multisite child sites when CDN set
-
-= 2.8.1 =
-* Images: new option not to lazyload first X images
-* fix for "array to string" conversion errors in image optimization logic of .ico files
-* switch jQuery shorthand .click (in toolbar JS & PaND dismiss notice JS) to please jQuery Migrate helper (and because it's better that way)
-
-= 2.8.0 =
-* JavaScript: new option "defer but don't aggregate"
-* JavaScript: ensure Autoptimize also acts on jQuery in WordPress 5.6 which is renamed to jquery.min.js from jquery.js before.
-* Images: add field to exclude images from being optimized.
-* Images: new filter (`autoptimize_filter_imgopt_lazyload_from_nth`) to tell AO not to lazyload the first X images (to improve LCP/ CLS).
-* Critical CSS: major improvements of the job processing mechanism, reducing time spent from up to 1 minute to just a couple of seconds.
-* Critical CSS: under "advanced options" replace "request limit" with "queue processing time limit" (default 30s).
-* Extra | Google Fonts: better parsing of version 2 Google Font URL's (/css2/).
-* Misc. other minor fixes, see the [GitHub commit log](https://github.com/futtta/autoptimize/commits/beta).
-
-= 2.7.8 =
-* Image optimization: add support for AVIF image format for browsers that support it (enabled with the existing WebP-option, also requires lazy-load to be active)
-* Critical CSS: further security improvements of critical CSS import settings upload, based on the input of [Marcin Weglowski of afine.com](https://afine.com)
-* Misc. other minor fixes, see the [GitHub commit log](https://github.com/futtta/autoptimize/commits/beta).
-
-= 2.7.7 =
-* critical CSS: make sure pages get a path-based rule even if a CPT or template matches (when "path based rules for pages" option is on)
-* critical CSS: make sure the "unload CCSS javascript" is only added once
-* settings screens: switch jQuery .attr() to .prop() as suggested by jQuery Migrate to prepare for [the great oncoming big jQuery updates](https://wptavern.com/major-jquery-changes-on-the-way-for-wordpress-5-5-and-beyond)
-* HTML minify: reverse placeholder array to make sure last replaced placeholder is changed back first to fix rare issues
-* security fix: kudos to [Erin Germ](https://eringerm.com/) for finding & reporting an authenticated XSS vulnerability
-* security fix: props to an anonymous pentester for finding & reporting an authenticated malicous file upload vulnerability
-
-= 2.7.6 =
-* fix for top frontend admin-bar being invisible when "inline & defer" is active.
-* fix for 3rd party CSS-files not being deferred when "inline & defer" is active.
-* small copy changes on Extra settings screen.
-
-= 2.7.5 =
-* urgent fix for Google Fonts aggregate & preload that broke badly in 2.7.4.
-
-= 2.7.4 =
-* Image optimization: also optimize icon links
-* Image optimization: fix webp-detection for Safari (contributed by @pinkasey)
-* Image lazyload: remove CSS that hides the placeholder image/ sets transistion between placeholder and final image
-* Critical CSS: new advanced option to unload CCSS on onLoad
-* Critical CSS improvement: cache templates in a transient to avoid overhead of having to search filesystem time and time again (contributed by @pratham2003)
-* Critical CSS improvement: better but still experimental jQuery deferring logic
-* Critical CSS fix: prevent MANUAL template-based rules being overwritten
-* CSS Inline & defer: move away from old loadCSS-based approach to [Filamentgroup's new, simpler method](https://www.filamentgroup.com/lab/load-css-simpler/)
-* 404 fallback enabled by default for new installations
-* changed all occurences of blacklist/ whitelist to blocklist/ allowlist. The filters `autoptimize_filter_js_whitelist` and `autoptimize_filter_css_whitelist` still work in 2.7.4 but usage is deprecated and should be replaced with `autoptimize_filter_js_allowlist` and `autoptimize_filter_css_allowlist`.
-* updated readme to explicitly confirm this is GPL + praise open source projects used in Autoptimize as praise was long overdue!
-* tested and confirmed working on WordPress 5.5 beta 2
-
-= 2.7.3 =
-* Critical CSS: cache settings in the PHP process instead of re-fetching them
-* Critical CSS: shorter intervals between calls to criticalcss.com (shortening the asynchronous job queue processing time)
-* inline & defer CSS: fix for some excluded files not being preloaded
-* 404 fallback: only create fallback files for CSS/ JS, not for (background-)images
-* copy changes as suggested by Cyrille (@css31), un grand merci!
-* misc. other minor fixes, see the [GitHub commit log](https://github.com/futtta/autoptimize/commits/beta).
-
-= 2.7.2 =
-* Critical CSS: fix settings page issues with certain translation strings
-* Critical CSS: fix "inline & defer" not being "seen" on multisite network settings
-* Critical CSS: add links on path-based rules
-* Critical CSS: fix for non-asci URL's not matching rules
-* Improvement: auto-disable autoptimize on misc. page builder URL's
-* Improvement: don't change non-aggregated CSS if it already has an onload attribute
-* Image lazyload improvement: remove `&quot;` from around background images
-
-= 2.7.1 =
-* A couple of small bugfixes, see the [GitHub commit log](https://github.com/futtta/autoptimize/commits/beta).
-
-= 2.7.0 =
-* Integration of critical CSS power-up.
-* New option to ensure missing autoptimized files are served with fallback JS/ CSS.
-* Batch of misc. smaller improvements & fixes, more info in the [GitHub commit log](https://github.com/futtta/autoptimize/commits/beta).
-
 = older =
-* see [https://plugins.svn.wordpress.org/autoptimize/tags/2.7.2/readme.txt](https://plugins.svn.wordpress.org/autoptimize/tags/2.7.2/readme.txt)
+* see [https://plugins.svn.wordpress.org/autoptimize/tags/2.9.5.1/readme.txt](https://plugins.svn.wordpress.org/autoptimize/tags/2.9.5.1/readme.txt)

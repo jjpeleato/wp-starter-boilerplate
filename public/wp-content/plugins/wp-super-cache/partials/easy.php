@@ -1,4 +1,7 @@
+<div class="wpsc-settings-inner">
 <?php
+global $wpsc_promo_links;
+echo '<div class="wpsc-card">';
 echo '<form name="wp_manager" action="' . esc_url_raw( add_query_arg( 'tab', 'easy', $admin_url ) ) . '" method="post">';
 echo '<input type="hidden" name="action" value="easysetup" />';
 wp_nonce_field( 'wp-cache' );
@@ -30,7 +33,9 @@ if ( ! $is_nginx && $cache_enabled && ! $wp_cache_mod_rewrite ) {
 	}
 }
 echo '<div class="submit"><input class="button-primary" type="submit" ' . SUBMITDISABLED . ' value="' . esc_html__( 'Update Status', 'wp-super-cache' ) . '" /></div></form>';
+echo '</div>';
 if ( $cache_enabled ) {
+	echo '<div class="wpsc-card">';
 	echo '<h4>' . esc_html__( 'Cache Tester', 'wp-super-cache' ) . '</h4>';
 	echo '<p>' . esc_html__( 'Test your cached website by clicking the test button below.', 'wp-super-cache' ) . '</p>';
 	echo '<p>' . __( 'Note: if you use Cloudflare or other transparent front-end proxy service this test may fail.<ol><li> If you have Cloudflare minification enabled this plugin may detect differences in the pages and report an error.</li><li> Try using the development mode of Cloudflare to perform the test. You can disable development mode afterwards if the test succeeds.</li></ol>', 'wp-super-cache' ) . '</p>';
@@ -67,7 +72,7 @@ if ( $cache_enabled ) {
 					echo '<p>' . sprintf( __( '<strong>Errors:</strong> %s', 'wp-super-cache' ), $errors ) . '</p>';
 				}
 			}
-			$c ++;
+			++$c;
 		}
 
 		if ( false == $cache_test_error ) {
@@ -105,7 +110,9 @@ if ( $cache_enabled ) {
 
 	wp_nonce_field( 'wp-cache' );
 	echo '</form>';
+	echo '</div>';
 }
+echo '<div class="wpsc-card">';
 echo '<h4>' . esc_html__( 'Delete Cached Pages', 'wp-super-cache' ) . '</h4>';
 echo '<p>' . esc_html__( 'Cached pages are stored on your server as html and PHP files. If you need to delete them, use the button below.', 'wp-super-cache' ) . '</p>';
 echo '<form name="wp_cache_content_delete" action="' . esc_url_raw( add_query_arg( 'tab', 'contents', $admin_url ) ) . '" method="post">';
@@ -113,22 +120,52 @@ echo '<input type="hidden" name="wp_delete_cache" />';
 echo '<div class="submit"><input id="deletepost" class="button-secondary" type="submit" ' . SUBMITDISABLED . 'value="' . esc_html__( 'Delete Cache', 'wp-super-cache' ) . ' " /></div>';
 wp_nonce_field( 'wp-cache' );
 echo "</form>\n";
+echo '</div>';
 
 if ( is_multisite() && wpsupercache_site_admin() ) {
+	echo '<div class="wpsc-card">';
 	echo '<form name="wp_cache_content_delete" action="' . esc_url_raw( add_query_arg( 'tab', 'contents', $admin_url ) . '#listfiles' ) . '" method="post">';
 	echo '<input type="hidden" name="wp_delete_all_cache" />';
 	echo '<div class="submit"><input id="deleteallpost" class="button-secondary" type="submit" ' . SUBMITDISABLED . 'value="' . esc_html__( 'Delete Cache On All Blogs', 'wp-super-cache' ) . '" /></div>';
 	wp_nonce_field( 'wp-cache' );
 	echo "</form><br />\n";
+	echo '</div>';
 }
 ?>
+<div class="wpsc-card">
 <h4 class="clear"><?php esc_html_e( 'Recommended Links and Plugins', 'wp-super-cache' ); ?></h4>
 <p><?php esc_html_e( 'Caching is only one part of making a website faster. Here are some other plugins that will help:', 'wp-super-cache' ); ?></p>
+
 <ul style="list-style: square; margin-left: 2em;">
-<li><?php printf( __( '<a href="%s">Jetpack</a> provides everything you need to build a successful WordPress website including an image/photo CDN (free) and a video hosting service (paid).', 'wp-super-cache' ), 'https://jetpack.com/redirect/?source=jitm-wpsc-recommended' ); ?></li>
-<li><?php printf( __( '<a href="%s">Yahoo! Yslow</a> analyzes web pages and suggests ways to improve their performance based on a set of rules for high performance web pages. Also try the performance tools online at <a href="%s">GTMetrix</a>.', 'wp-super-cache' ), 'http://yslow.org/', 'https://gtmetrix.com/' ); ?></li>
-<li><?php printf( __( '<a href="%s">Use Google Libraries</a> allows you to load some commonly used Javascript libraries from Google webservers. Ironically, it may reduce your Yslow score.', 'wp-super-cache' ), 'https://wordpress.org/plugins/use-google-libraries/' ); ?></li>
-<li><?php printf( __( '<strong>Advanced users only:</strong> Install an object cache. Choose from <a href="%s">Memcached</a>, <a href="%s">XCache</a>, <a href="%s">eAcccelerator</a> and others.', 'wp-super-cache' ), 'https://wordpress.org/plugins/memcached/', 'https://neosmart.net/WP/XCache/', 'https://neosmart.net/WP/eAccelerator/' ); ?></li>
+	<li>
+		<?php
+			echo \wp_kses(
+				\sprintf(
+					/* translators: %s: Link URL for Jetpack Boost. */
+					__( '<a href="%s">Jetpack Boost</a> helps speed up your website by generating critical CSS, defering Javascript and much more.', 'wp-super-cache' ),
+					$wpsc_promo_links['boost']
+				),
+				'a'
+			);
+			?>
+	</li>
+
+	<li>
+		<?php
+		printf(
+			/* translators: %s: HTML Link to Jetpack website. */
+			esc_html__( '%s provides everything you need to build a successful WordPress website including an image/photo CDN (free) and a video hosting service (paid).', 'wp-super-cache' ),
+			'<a href="' . esc_url( $wpsc_promo_links['jetpack'] ) . '">Jetpack</a>'
+		);
+		?>
+	</li>
+
+<?php // translators: this is a html link to the GTMetrix website. ?>
+<li><?php printf( esc_html__( 'See how your site performs by doing a %s analysis of it.', 'wp-super-cache' ), '<a href="https://gtmetrix.com/">GTMetrix</a>' ); ?></li>
+<?php // translators: this is a html link to the Memcached plugin. ?>
+<li><?php printf( esc_html__( 'Advanced users only: Install an object cache like %s.', 'wp-super-cache' ), '<a href="https://wordpress.org/plugins/memcached/">Memcached</a>' ); ?></li>
 <li><?php printf( __( '<a href="%s">WP Crontrol</a> is a useful plugin to use when trying to debug garbage collection and preload problems.', 'wp-super-cache' ), 'https://wordpress.org/plugins/wp-crontrol/' ); ?></li>
 </ul>
-
+<p><?php esc_html_e( "* The links above (apart from Jetpack and Jetpack Boost) go to websites outside the author's control. Caution is advised when testing any new software.", 'wp-super-cache' ); ?></p>
+</div>
+</div>

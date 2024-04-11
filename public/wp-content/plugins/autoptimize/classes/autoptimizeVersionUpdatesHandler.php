@@ -58,11 +58,17 @@ class autoptimizeVersionUpdatesHandler
                 $major_update = true;
                 // No break, intentionally, so all upgrades are ran during a single request...
             case '2.8':
-                // nothing
+                // nothing.
             case '2.9':
                 if ( version_compare( autoptimizeOptionWrapper::get_option( 'autoptimize_version', 'none' ), '2.9.999', 'lt' ) ) {
                     $this->upgrade_from_2_9_before_compatibility();
                 }
+                $major_update = false;
+                // No break, intentionally, so all upgrades are ran during a single request...
+            case '3.0':
+                // nothing.
+            case '3.1':
+                $this->upgrade_from_3_1();
                 $major_update = false;
         }
 
@@ -262,8 +268,8 @@ class autoptimizeVersionUpdatesHandler
     }
 
     /**
-     * remove CCSS request limit option + update jquery exclusion to include WordPress 5.6 jquery.min.js.
-     */    
+     * Remove CCSS request limit option + update jquery exclusion to include WordPress 5.6 jquery.min.js.
+     */
     private function upgrade_from_2_7() {
         delete_option( 'autoptimize_ccss_rlimit' );
         $js_exclusions = get_option( 'autoptimize_js_exclude', '' );
@@ -272,13 +278,23 @@ class autoptimizeVersionUpdatesHandler
             autoptimizeOptionWrapper::update_option( 'autoptimize_js_exclude', $js_exclusions );
         }
     }
-    
+
     /**
-     * set an option to indicate the AO installation predates the compatibility logic, this way we 
+     * Set an option to indicate the AO installation predates the compatibility logic, this way we
      * can avoid adding compatibility code that is likely not needed and maybe not wanted as it
      * can introduce performance regressions.
      */
     private function upgrade_from_2_9_before_compatibility() {
         autoptimizeOptionWrapper::update_option( 'autoptimize_installed_before_compatibility', true );
+    }
+
+    /**
+     * If the 404 handler is active, delete the current PHP-file so it can be re-created to fix the double underscore bug.
+     */
+    private function upgrade_from_3_1() {
+        if ( autoptimizeCache::do_fallback() && version_compare( autoptimizeOptionWrapper::get_option( 'autoptimize_version', 'none' ), '3.1.2', 'lt' ) ) {
+            $_fallback_php = trailingslashit( WP_CONTENT_DIR ) . 'autoptimize_404_handler.php';
+            @unlink( $_fallback_php ); // @codingStandardsIgnoreLine
+        }
     }
 }

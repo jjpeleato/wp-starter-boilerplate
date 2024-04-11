@@ -17,6 +17,9 @@ trim_trailing_whitespace = true
 [*.ini]
 insert_final_newline = false
 
+[*.php]
+indent_style = space
+
 [*.scss]
 indent_style = space
 indent_size = 2
@@ -29,5 +32,5 @@ indent_size = 2
 insert_final_newline = false
 trim_trailing_whitespace = false
 
-[{*.txt,wp-config-sample.php}]
+[*.txt]
 end_of_line = crlf

@@ -8,17 +8,17 @@
  */
 function ao_ccss_render_rules() {
     // Attach required arrays.
-    $criticalcss = autoptimize()->criticalcss();
-    $ao_ccss_rules = $criticalcss->get_option( 'rules' );
+    $criticalcss   = autoptimize()->criticalcss();
+    $ao_ccss_rules = sanitize_rules( $criticalcss->get_option( 'rules' ) );
     $ao_ccss_types = $criticalcss->get_types();
-    
+
     if ( empty( $ao_ccss_types ) || ! is_array( $ao_ccss_types ) ) {
         $ao_ccss_types = array( 'No conditionals, check CSS optimization settings.' );
     }
-?>
+    ?>
     <ul id="rules-panel">
         <li class="itemDetail">
-            <h2 class="itemTitle"><?php _e( 'Rules', 'autoptimize' ); ?></h2>
+            <h2 class="itemTitle"><?php esc_html_e( 'Rules', 'autoptimize' ); ?></h2>
 
             <!-- BEGIN Rule dialogs -->
             <!-- Unsaved dialog -->
@@ -31,31 +31,31 @@ function ao_ccss_render_rules() {
                 <table class="form-table rules">
                     <tr id="critcss_addedit_type_wrapper">
                         <th scope="row">
-                            <?php _e( 'Rule Type', 'autoptimize' ); ?>
+                            <?php esc_html_e( 'Rule Type', 'autoptimize' ); ?>
                         </th>
                         <td>
                             <select id="critcss_addedit_type" style="width:100%;">
-                                <option value="paths"><?php _e( 'Path', 'autoptimize' ); ?></option>
-                                <option value="types"><?php _e( 'Conditional Tag', 'autoptimize' ); ?></option>
+                                <option value="paths"><?php esc_html_e( 'Path', 'autoptimize' ); ?></option>
+                                <option value="types"><?php esc_html_e( 'Conditional Tag', 'autoptimize' ); ?></option>
                             </select>
                         </td>
                     </tr>
                     <tr id="critcss_addedit_path_wrapper">
                         <th scope="row">
-                            <?php _e( 'String in Path', 'autoptimize' ); ?>
+                            <?php esc_html_e( 'String in Path', 'autoptimize' ); ?>
                         </th>
                         <td>
-                            <input type="text" id="critcss_addedit_path" placeholder="<?php _e( "Enter a part of the URL that identifies the page(s) you're targetting.", 'autoptimize' ); ?>" style="width:100%;" value="">
+                            <input type="text" id="critcss_addedit_path" placeholder="<?php esc_html_e( "Enter a part of the URL that identifies the page(s) you're targetting.", 'autoptimize' ); ?>" style="width:100%;" value="">
                         </td>
                     </tr>
                     <tr id="critcss_addedit_pagetype_wrapper">
                         <th scope="row">
-                            <?php _e( 'Conditional Tag, Custom Post Type or Page Template', 'autoptimize' ); ?>
+                            <?php esc_html_e( 'Conditional Tag, Custom Post Type or Page Template', 'autoptimize' ); ?>
                         </th>
                         <td>
                             <select id="critcss_addedit_pagetype" style="width:100%;">
-                                <option value="" disabled selected><?php _e( 'Select from the list below...', 'autoptimize' ); ?></option>
-                                <optgroup label="<?php _e( 'Standard Conditional Tags', 'autoptimize' ); ?>">
+                                <option value="" disabled selected><?php esc_html_e( 'Select from the list below...', 'autoptimize' ); ?></option>
+                                <optgroup label="<?php esc_html_e( 'Standard Conditional Tags', 'autoptimize' ); ?>">
                                     <?php
                                     // Render grouped simple conditional tags.
                                     foreach ( $ao_ccss_types as $ctag ) {
@@ -77,27 +77,27 @@ function ao_ccss_render_rules() {
                                             <?php
                                             if ( substr( $type, 0, 12 ) === 'custom_post_' ) {
                                                 ?>
-                                                <optgroup label="<?php _e( 'Custom Post Types', 'autoptimize' ); ?>">
+                                                <optgroup label="<?php esc_html_e( 'Custom Post Types', 'autoptimize' ); ?>">
                                                 <?php
                                             } elseif ( substr( $type, 0, 9 ) === 'template_' ) {
                                                 ?>
-                                                <optgroup label="<?php _e( 'Page Templates', 'autoptimize' ); ?>">
+                                                <optgroup label="<?php esc_html_e( 'Page Templates', 'autoptimize' ); ?>">
                                                 <?php
                                             } elseif ( substr( $type, 0, 4 ) === 'bbp_' ) {
                                                 ?>
-                                                <optgroup label="<?php _e( 'BBPress Conditional Tags', 'autoptimize' ); ?>">
+                                                <optgroup label="<?php esc_html_e( 'BBPress Conditional Tags', 'autoptimize' ); ?>">
                                                 <?php
                                             } elseif ( substr( $type, 0, 3 ) === 'bp_' ) {
                                                 ?>
-                                                <optgroup label="<?php _e( 'BuddyPress Conditional Tags', 'autoptimize' ); ?>">
+                                                <optgroup label="<?php esc_html_e( 'BuddyPress Conditional Tags', 'autoptimize' ); ?>">
                                                 <?php
                                             } elseif ( substr( $type, 0, 4 ) === 'edd_' ) {
                                                 ?>
-                                                <optgroup label="<?php _e( 'Easy Digital Downloads Conditional Tags', 'autoptimize' ); ?>">
+                                                <optgroup label="<?php esc_html_e( 'Easy Digital Downloads Conditional Tags', 'autoptimize' ); ?>">
                                                 <?php
                                             } elseif ( substr( $type, 0, 4 ) === 'woo_' ) {
                                                 ?>
-                                                <optgroup label="<?php _e( 'WooCommerce Conditional Tags', 'autoptimize' ); ?>">
+                                                <optgroup label="<?php esc_html_e( 'WooCommerce Conditional Tags', 'autoptimize' ); ?>">
                                                 <?php
                                             }
                                         }
@@ -109,9 +109,9 @@ function ao_ccss_render_rules() {
                                                 $_type = str_replace( 'custom_post_', '', $type );
                                             } elseif ( substr( $type, 0, 9 ) === 'template_' ) {
                                                 $_type = str_replace( 'template_', '', $type );
-                                            } elseif ( 'bbp_is_bbpress' == $type ) {
+                                            } elseif ( 'bbp_is_bbpress' === $type ) {
                                                 $_type = str_replace( 'bbp_', '', $type );
-                                            } elseif ( 'bp_is_buddypress' == $type ) {
+                                            } elseif ( 'bp_is_buddypress' === $type ) {
                                                 $_type = str_replace( 'bp_', '', $type );
                                             } elseif ( substr( $type, 0, 4 ) === 'woo_' ) {
                                                 $_type = str_replace( 'woo_', '', $type );
@@ -132,10 +132,10 @@ function ao_ccss_render_rules() {
                     </tr>
                     <tr>
                         <th scope="row">
-                            <?php _e( 'Custom Critical CSS', 'autoptimize' ); ?>
+                            <?php esc_html_e( 'Custom Critical CSS', 'autoptimize' ); ?>
                         </th>
                         <td>
-                            <textarea id="critcss_addedit_css" rows="13" cols="10" style="width:100%;" placeholder="<?php _e( 'Paste your specific critical CSS here and hit submit to save.', 'autoptimize' ); ?>"></textarea>
+                            <textarea id="critcss_addedit_css" rows="13" cols="10" style="width:100%;" placeholder="<?php esc_html_e( 'Paste your specific critical CSS here and hit submit to save.', 'autoptimize' ); ?>"></textarea>
                             <input type="hidden" id="critcss_addedit_file">
                             <input type="hidden" id="critcss_addedit_id">
                         </td>
@@ -144,30 +144,30 @@ function ao_ccss_render_rules() {
             </div>
 
             <!-- Remove dialog -->
-            <div id="confirm-rm" title="<?php _e( 'Delete Rule', 'autoptimize' ); ?>" class="hidden">
+            <div id="confirm-rm" title="<?php esc_html_e( 'Delete Rule', 'autoptimize' ); ?>" class="hidden">
                 <p><?php _e( 'This Critical CSS rule will be deleted immediately and cannot be recovered.<br /><br /><strong>Are you sure?</strong>', 'autoptimize' ); ?></p>
             </div>
 
             <!-- Remove All dialog -->
-            <div id="confirm-rm-all" title="<?php _e( 'Delete all Rules and Jobs', 'autoptimize' ); ?>" class="hidden">
+            <div id="confirm-rm-all" title="<?php esc_html_e( 'Delete all Rules and Jobs', 'autoptimize' ); ?>" class="hidden">
                 <p><?php _e( 'All Critical CSS rules will be deleted immediately and cannot be recovered.<br /><br /><strong>Are you sure?</strong>', 'autoptimize' ); ?></p>
             </div>
 
             <!-- Add/edit default critical CSS dialog -->
             <div id="default_critcss_wrapper" class="hidden">
-                <textarea id="dummyDefault" rows="19" cols="10" style="width:100%;" placeholder="<?php _e( 'Paste your minified default critical CSS here and hit submit to save. This is the critical CSS to be used for every page not matching any rule.', 'autoptimize' ); ?>"></textarea>
+                <textarea id="dummyDefault" rows="19" cols="10" style="width:100%;" placeholder="<?php esc_html_e( 'Paste your minified default critical CSS here and hit submit to save. This is the critical CSS to be used for every page not matching any rule.', 'autoptimize' ); ?>"></textarea>
             </div>
 
             <!-- Add/edit additional critical CSS dialog -->
             <div id="additional_critcss_wrapper" class="hidden">
-                <textarea id="dummyAdditional" rows="19" cols="10" style="width:100%;" placeholder="<?php _e( 'Paste your minified additional critical CSS here and hit submit to save. This is the CSS to be added AT THE END of every critical CSS provided by a matching rule, or the default one.', 'autoptimize' ); ?>"></textarea>
+                <textarea id="dummyAdditional" rows="19" cols="10" style="width:100%;" placeholder="<?php esc_html_e( 'Paste your minified additional critical CSS here and hit submit to save. This is the CSS to be added AT THE END of every critical CSS provided by a matching rule, or the default one.', 'autoptimize' ); ?>"></textarea>
             </div>
 
             <!-- BEGIN Rules UI -->
             <div class="howto">
                 <div class="title-wrap">
-                    <h4 class="title"><?php _e( 'How To Use Autoptimize CriticalCSS Rules', 'autoptimize' ); ?></h4>
-                    <p class="subtitle"><?php _e( 'Click the side arrow to toggle instructions', 'autoptimize' ); ?></p>
+                    <h4 class="title"><?php esc_html_e( 'How To Use Autoptimize CriticalCSS Rules', 'autoptimize' ); ?></h4>
+                    <p class="subtitle"><?php esc_html_e( 'Click the side arrow to toggle instructions', 'autoptimize' ); ?></p>
                 </div>
                 <button type="button" class="toggle-btn">
                     <span class="toggle-indicator dashicons dashicons-arrow-up dashicons-arrow-down"></span>
@@ -193,17 +193,46 @@ function ao_ccss_render_rules() {
             <!-- END Rule add/edit dialogs -->
             <div class="submit rules-btn">
                 <div class="alignleft">
-                    <span id="addCritCssButton" class="button-secondary"><?php _e( 'Add New Rule', 'autoptimize' ); ?></span>
-                    <span id="editDefaultButton" class="button-secondary"><?php _e( 'Edit Default Rule CSS', 'autoptimize' ); ?></span>
-                    <span id="editAdditionalButton" class="button-secondary"><?php _e( 'Add CSS To All Rules', 'autoptimize' ); ?></span>
+                    <span id="addCritCssButton" class="button-secondary"><?php esc_html_e( 'Add New Rule', 'autoptimize' ); ?></span>
+                    <span id="editDefaultButton" class="button-secondary"><?php esc_html_e( 'Edit Default Rule CSS', 'autoptimize' ); ?></span>
+                    <span id="editAdditionalButton" class="button-secondary"><?php esc_html_e( 'Add CSS To All Rules', 'autoptimize' ); ?></span>
                 </div>
                 <div class="alignright">
-                    <span id="removeAllRules" class="button-secondary" style="color:red;"><?php _e( 'Remove all rules', 'autoptimize' ); ?></span>
+                    <span id="removeAllRules" class="button-secondary" style="color:red;"><?php esc_html_e( 'Remove all rules', 'autoptimize' ); ?></span>
                 </div>
             </div>
             <!-- END Rules UI -->
         </li>
     </ul>
-<?php
+    <?php
 }
+
+/**
+ * Sanitize rules before rendering.
+ *
+ * @param array $rules Array with rules to be sanitized.
+ */
+function sanitize_rules( $rules ) {
+    if ( apply_filters( 'autoptimize_filter_ccss_paths_clickable', true ) ) {
+        if ( array_key_exists( 'paths', $rules ) ) {
+            foreach ( $rules['paths'] as $key => $value ) {
+                $newkey = esc_url( $key );
+                if ( $newkey !== $key ) {
+                    if ( 0 === strpos( $newkey, 'http://' ) && 0 !== strpos( $key, 'http://' ) ) {
+                        // esc_url adds "http://" to any string that does not start with either a protocol or a
+                        // slash, see https://developer.wordpress.org/reference/functions/esc_url/#more-information
+                        // this removes that unneeded protocol again.
+                        $newkey = substr_replace( $newkey, '', 0, 7 );
+                    }
+                    unset( $rules['paths'][ $key ] );
+                    $rules['paths'][ $newkey ] = $value;
+                }
+            }
+        }
+    }
+    
+    $rules = autoptimizeUtils::strip_tags_array( $rules );
+    return $rules;
+}
+
 ?>
