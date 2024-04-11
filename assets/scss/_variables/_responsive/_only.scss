@@ -6,21 +6,15 @@
     @media only screen and (min-width: $tablet-extra-large) {
       @content;
     }
-  }
-
-  @else if $breakpoint == tablet {
+  } @else if $breakpoint == tablet {
     @media (min-width: $tablet-extra-small) and (max-width: $tablet-extra-large) {
       @content;
     }
-  }
-
-  @else if $breakpoint == mobile {
+  } @else if $breakpoint == mobile {
     @media only screen and (max-width: $tablet-extra-small) {
       @content;
     }
-  }
-
-  @else {
+  } @else {
     // nothing
   }
 }

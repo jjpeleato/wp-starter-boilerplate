@@ -6,93 +6,63 @@
     @media only screen and (max-width: $desktop-extra-large) {
       @content;
     }
-  }
-
-  @else if $breakpoint == desktop-large {
+  } @else if $breakpoint == desktop-large {
     @media only screen and (max-width: $desktop-large) {
       @content;
     }
-  }
-
-  @else if $breakpoint == desktop {
+  } @else if $breakpoint == desktop {
     @media only screen and (max-width: $desktop) {
       @content;
     }
-  }
-
-  @else if $breakpoint == desktop-small {
+  } @else if $breakpoint == desktop-small {
     @media only screen and (max-width: $desktop-small) {
       @content;
     }
-  }
-
-  @else if $breakpoint == desktop-extra-small {
+  } @else if $breakpoint == desktop-extra-small {
     @media only screen and (max-width: $desktop-extra-small) {
       @content;
     }
-  }
-
-  @else if $breakpoint == tablet-extra-large {
+  } @else if $breakpoint == tablet-extra-large {
     @media only screen and (max-width: $tablet-extra-large) {
       @content;
     }
-  }
-
-  @else if $breakpoint == tablet-large {
+  } @else if $breakpoint == tablet-large {
     @media only screen and (max-width: $tablet-large) {
       @content;
     }
-  }
-
-  @else if $breakpoint == tablet {
+  } @else if $breakpoint == tablet {
     @media only screen and (max-width: $tablet) {
       @content;
     }
-  }
-
-  @else if $breakpoint == tablet-small {
+  } @else if $breakpoint == tablet-small {
     @media only screen and (max-width: $tablet-small) {
       @content;
     }
-  }
-
-  @else if $breakpoint == tablet-extra-small {
+  } @else if $breakpoint == tablet-extra-small {
     @media only screen and (max-width: $tablet-extra-small) {
       @content;
     }
-  }
-
-  @else if $breakpoint == mobile-extra-large {
+  } @else if $breakpoint == mobile-extra-large {
     @media only screen and (max-width: $mobile-extra-large) {
       @content;
     }
-  }
-
-  @else if $breakpoint == mobile-large {
+  } @else if $breakpoint == mobile-large {
     @media only screen and (max-width: $mobile-large) {
       @content;
     }
-  }
-
-  @else if $breakpoint == mobile {
+  } @else if $breakpoint == mobile {
     @media only screen and (max-width: $mobile) {
       @content;
     }
-  }
-
-  @else if $breakpoint == mobile-small {
+  } @else if $breakpoint == mobile-small {
     @media only screen and (max-width: $mobile-small) {
       @content;
     }
-  }
-
-  @else if $breakpoint == mobile-extra-small {
+  } @else if $breakpoint == mobile-extra-small {
     @media only screen and (max-width: $mobile-extra-small) {
       @content;
     }
-  }
-
-  @else {
+  } @else {
     // nothing
   }
 }

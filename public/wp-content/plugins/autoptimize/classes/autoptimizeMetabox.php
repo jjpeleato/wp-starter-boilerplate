@@ -29,10 +29,12 @@ class autoptimizeMetabox
             // add extra types e.g. product or ... ?
         );
 
+        $screens = apply_filters( 'autoptimize_filter_metabox_screens', $screens );
+
         foreach ( $screens as $screen ) {
             add_meta_box(
                 'ao_metabox',
-                __( 'Autoptimize this page', 'autoptimize' ),
+                esc_html__( 'Autoptimize this page', 'autoptimize' ),
                 array( $this, 'ao_metabox_content' ),
                 $screen,
                 'side'
@@ -47,6 +49,8 @@ class autoptimizeMetabox
      */
     function ao_metabox_content( $post )
     {
+        // phpcs:disable Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace
+
         wp_nonce_field( 'ao_metabox', 'ao_metabox_nonce' );
 
         $ao_opt_value = $this->check_ao_opt_sanity( get_post_meta( $post->ID, 'ao_post_optimize', true ) );
@@ -59,7 +63,7 @@ class autoptimizeMetabox
         <p >
             <input type="checkbox" id="autoptimize_post_optimize" class="ao_meta_main" name="ao_post_optimize" <?php echo 'on' !== $ao_opt_value['ao_post_optimize'] ? '' : 'checked="checked" '; ?> />
             <label for="autoptimize_post_optimize">
-                 <?php _e( 'Optimize this page?', 'autoptimize' ); ?>
+                 <?php esc_html_e( 'Optimize this page?', 'autoptimize' ); ?>
             </label>
         </p>
         <?php
@@ -71,7 +75,7 @@ class autoptimizeMetabox
         ?>
         <input type="checkbox" id="autoptimize_post_optimize_js" name="ao_post_js_optimize" <?php echo 'on' !== $ao_opt_value['ao_post_js_optimize'] ? '' : 'checked="checked" '; ?> />
             <label for="autoptimize_post_optimize_js">
-                 <?php _e( 'Optimize JS?', 'autoptimize' ); ?>
+                 <?php esc_html_e( 'Optimize JS?', 'autoptimize' ); ?>
             </label>
         </p>
         <?php
@@ -83,7 +87,7 @@ class autoptimizeMetabox
         ?>
         <input type="checkbox" id="autoptimize_post_optimize_css" name="ao_post_css_optimize" <?php echo 'on' !== $ao_opt_value['ao_post_css_optimize'] ? '' : 'checked="checked" '; ?> />
             <label for="autoptimize_post_optimize_css">
-                 <?php _e( 'Optimize CSS?', 'autoptimize' ); ?>
+                 <?php esc_html_e( 'Optimize CSS?', 'autoptimize' ); ?>
             </label>
         </p>
         <?php
@@ -98,34 +102,44 @@ class autoptimizeMetabox
         ?>
             <input type="checkbox" id="autoptimize_post_ccss" name="ao_post_ccss" <?php echo 'on' !== $ao_opt_value['ao_post_ccss'] ? '' : 'checked="checked" '; ?> />
             <label for="autoptimize_post_ccss">
-                 <?php _e( 'Inline critical CSS?', 'autoptimize' ); ?>
+                 <?php esc_html_e( 'Inline critical CSS?', 'autoptimize' ); ?>
             </label>
         </p>
         <?php
         $_ao_meta_lazyload_style = '';
-        if ( false === autoptimizeImages::should_lazyload_wrapper() ) {
+        if ( false === autoptimizeImages::should_lazyload_wrapper( true ) ) {
             $_ao_meta_lazyload_style = 'display:none;';
         }
         echo '<p class="ao_meta_sub" style="' . $_ao_meta_sub_opacity . $_ao_meta_lazyload_style . '">';
         ?>
             <input type="checkbox" id="autoptimize_post_lazyload" name="ao_post_lazyload" <?php echo 'on' !== $ao_opt_value['ao_post_lazyload'] ? '' : 'checked="checked" '; ?> />
             <label for="autoptimize_post_lazyload">
-                 <?php _e( 'Lazyload images?', 'autoptimize' ); ?>
+                 <?php esc_html_e( 'Lazyload images?', 'autoptimize' ); ?>
             </label>
         </p>
-        <p class="ao_meta_sub" style="<?php echo $_ao_meta_sub_opacity ?>">
+        <?php
+        $_ao_meta_preload_style = '';
+        if ( false === autoptimizeImages::should_lazyload_wrapper() && false === autoptimizeImages::imgopt_active() ) {
+            // img preload requires imgopt and/ or lazyload to be active.
+            $_ao_meta_preload_style = 'opacity:.33;';
+        }
+        ?>
+        <p class="ao_meta_sub ao_meta_preload" style="<?php echo $_ao_meta_sub_opacity . $_ao_meta_preload_style; ?>">
             <label for="autoptimize_post_preload">
-                 <?php _e( 'LCP Image to preload', 'autoptimize' ); ?>
+                 <?php esc_html_e( 'LCP Image to preload', 'autoptimize' ); ?>
             </label>
             <?php
-                if ( is_array( $ao_opt_value ) && array_key_exists( 'ao_post_preload', $ao_opt_value ) ) {
-                    $_preload_img = esc_attr( $ao_opt_value['ao_post_preload'] );
-                } else {
-                    $_preload_img = '';
-                }
+            if ( is_array( $ao_opt_value ) && array_key_exists( 'ao_post_preload', $ao_opt_value ) ) {
+                $_preload_img = esc_attr( $ao_opt_value['ao_post_preload'] );
+            } else {
+                $_preload_img = '';
+            }
             ?>
-            <input type="text" id="autoptimize_post_preload" name="ao_post_preload" value="<?php echo $_preload_img ?>">
+            <input type="text" id="autoptimize_post_preload" name="ao_post_preload" value="<?php echo $_preload_img; ?>">
         </p>
+        <?php
+            echo apply_filters( 'autoptimize_filter_metabox_extra_ui', '');
+        ?>
         <p>&nbsp;</p>
         <p>
             <?php
@@ -150,7 +164,7 @@ class autoptimizeMetabox
                 $_generate_disabled = false;
             }
             ?>
-            <button class="button ao_meta_sub ao_meta_sub_css" id="generateccss" style="<?php echo $_ao_meta_sub_opacity . $_ao_meta_ccss_style; ?>" <?php if ( true === $_generate_disabled ) { echo 'disabled'; } ?>><?php _e( 'Generate Critical CSS', 'autoptimize' ); ?></button>
+            <button class="button ao_meta_sub ao_meta_sub_css" id="generateccss" style="<?php echo $_ao_meta_sub_opacity . $_ao_meta_ccss_style; ?>" <?php if ( true === $_generate_disabled ) { echo 'disabled'; } ?>><?php esc_html_e( 'Generate Critical CSS', 'autoptimize' ); ?></button>
         </p>
         <script>
             jQuery(document).ready(function() {
@@ -175,6 +189,19 @@ class autoptimizeMetabox
                         jQuery("#generateccss:visible").fadeTo("fast",.33);
                     }
                 });
+                <?php
+                if ( true === autoptimizeImages::should_lazyload_wrapper() && false === autoptimizeImages::imgopt_active() ) {
+                ?>
+                    jQuery( "#autoptimize_post_lazyload" ).change(function() {
+                        if (this.checked) {
+                            jQuery(".ao_meta_preload:visible").fadeTo("fast",1);
+                        } else {
+                            jQuery(".ao_meta_preload:visible").fadeTo("fast",.33);
+                        }                    
+                    });
+                <?php
+                }
+                ?>
                 jQuery("#generateccss").click(function(e){
                     e.preventDefault();
                     // disable button to avoid it being clicked several times.
@@ -189,12 +216,12 @@ class autoptimizeMetabox
                     jQuery.post(ajaxurl, data, function(response) {
                         response_array=JSON.parse(response);
                         if (response_array['code'] == 200) {
-                            setCritCSSbutton("<?php _e('Added to CCSS job queue.', 'autoptimize' ); ?>", "green");
+                            setCritCSSbutton("<?php esc_html_e( 'Added to CCSS job queue.', 'autoptimize' ); ?>", "green");
                         } else {
-                            setCritCSSbutton("<?php _e('Could not add to CCSS job queue.', 'autoptimize' ); ?>", "orange");
+                            setCritCSSbutton("<?php esc_html_e( 'Could not add to CCSS job queue.', 'autoptimize' ); ?>", "orange");
                         }
                     }).fail(function() {
-                        setCritCSSbutton("<?php _e('Sorry, something went wrong.', 'autoptimize' ); ?>", "orange");
+                        setCritCSSbutton("<?php esc_html_e( 'Sorry, something went wrong.', 'autoptimize' ); ?>", "orange");
                     });
                 });
             });
@@ -241,20 +268,24 @@ class autoptimizeMetabox
             }
         }
 
-      // OK, we can have a look at the actual data now.
-      // Sanitize user input.
-      foreach ( array( 'ao_post_optimize', 'ao_post_js_optimize', 'ao_post_css_optimize', 'ao_post_ccss', 'ao_post_lazyload', 'ao_post_preload' ) as $opti_type ) {
-          if ( ! isset( $_POST[$opti_type] ) ) {
-              $ao_meta_result[$opti_type] = '';
-          } else if ( 'on' === $_POST[$opti_type] ) {
-              $ao_meta_result[$opti_type] = 'on';
-          } else if ( in_array( $opti_type, array( 'ao_post_preload' ) ) ) {
-              $ao_meta_result[$opti_type] = $_POST[$opti_type];
-          }
-      }
+        // OK, we can have a look at the actual data now.
+        // Sanitize user input.
+        foreach ( apply_filters( 'autoptimize_filter_meta_valid_optims', array( 'ao_post_optimize', 'ao_post_js_optimize', 'ao_post_css_optimize', 'ao_post_ccss', 'ao_post_lazyload', 'ao_post_preload' ) ) as $opti_type ) {
+            if ( in_array( $opti_type, apply_filters( 'autoptimize_filter_meta_optim_nonbool', array( 'ao_post_preload' ) ) ) ) {
+                if ( isset( $_POST[ $opti_type ] ) ) {
+                    $ao_meta_result[ $opti_type ] = $_POST[ $opti_type ];
+                } else {
+                    $ao_meta_result[ $opti_type ] = false;
+                }
+            } else if ( ! isset( $_POST[ $opti_type ] ) ) {
+                $ao_meta_result[ $opti_type ] = '';
+            } else if ( 'on' === $_POST[ $opti_type ] ) {
+                $ao_meta_result[ $opti_type ] = 'on';
+            } 
+        }
 
-      // Update the meta field in the database.
-      update_post_meta( $post_id, 'ao_post_optimize', $ao_meta_result );
+        // Update the meta field in the database.
+        update_post_meta( $post_id, 'ao_post_optimize', $ao_meta_result );
     }
 
     public function ao_metabox_generateccss_callback()
@@ -310,7 +341,7 @@ class autoptimizeMetabox
         } else {
             foreach ( array( 'ao_post_optimize', 'ao_post_js_optimize', 'ao_post_css_optimize', 'ao_post_ccss', 'ao_post_lazyload' ) as $key ) {
                 if ( ! array_key_exists( $key, $ao_opt_val ) ) {
-                    $ao_opt_val[$key] = 'off';
+                    $ao_opt_val[ $key ] = 'off';
                 }
             }
         }

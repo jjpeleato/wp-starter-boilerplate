@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: Autoptimize
- * Plugin URI: https://autoptimize.com/
+ * Plugin URI: https://autoptimize.com/pro/
  * Description: Makes your site faster by optimizing CSS, JS, Images, Google fonts and more.
- * Version: 3.0.4 
+ * Version: 3.1.11
  * Author: Frank Goossens (futtta)
- * Author URI: https://autoptimize.com/
+ * Author URI: https://autoptimize.com/pro/
  * Text Domain: autoptimize
  * License: GPLv2
  * Released under the GNU General Public License (GPL)
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'AUTOPTIMIZE_PLUGIN_VERSION', '3.0.4' );
+define( 'AUTOPTIMIZE_PLUGIN_VERSION', '3.1.11' );
 
 // plugin_dir_path() returns the trailing slash!
 define( 'AUTOPTIMIZE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
@@ -30,7 +30,7 @@ define( 'AUTOPTIMIZE_PLUGIN_FILE', __FILE__ );
 // Bail early if attempting to run on non-supported php versions.
 if ( version_compare( PHP_VERSION, '5.6', '<' ) ) {
     function autoptimize_incompatible_admin_notice() {
-        echo '<div class="error"><p>' . __( 'Autoptimize requires PHP 5.6 (or higher) to function properly. Please upgrade PHP. The Plugin has been auto-deactivated.', 'autoptimize' ) . '</p></div>';
+        echo '<div class="error"><p>' . esc_html__( 'Autoptimize requires PHP 5.6 (or higher) to function properly. Please upgrade PHP. The Plugin has been auto-deactivated.', 'autoptimize' ) . '</p></div>';
         if ( isset( $_GET['activate'] ) ) {
             unset( $_GET['activate'] );
         }
@@ -65,7 +65,7 @@ function autoptimize_autoload( $class_name ) {
     }
 
     // If we didn't match one of our rules, bail!
-    if ( ! isset( $filepath ) ) {
+    if ( ! isset( $filepath ) || ! is_readable( $filepath ) ) {
         return;
     }
 
@@ -77,6 +77,11 @@ spl_autoload_register( 'autoptimize_autoload' );
 // Load WP CLI command(s) on demand.
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
     require AUTOPTIMIZE_PLUGIN_DIR . 'classes/autoptimizeCLI.php';
+}
+
+// filter to disable AO both on front- and backend.
+if ( apply_filters( 'autoptimize_filter_disable_plugin', false ) ) {
+    return;
 }
 
 /**

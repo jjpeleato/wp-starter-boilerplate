@@ -91,7 +91,7 @@ class autoptimizeCache
      * @param string $data Data to cache.
      * @param string $mime Mimetype.
      *
-     * @return void
+     * @return void|bool
      */
     public function cache( $data, $mime )
     {
@@ -386,13 +386,15 @@ class autoptimizeCache
             // see https://blog.futtta.be/2018/11/17/warning-divi-purging-autoptimizes-cache/ .
             $dbt    = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 2 );
             $caller = isset( $dbt[1]['function'] ) ? $dbt[1]['function'] : null;
-            if ( $caller === 'et_core_clear_wp_cache' ) {
-                _doing_it_wrong( 'autoptimizeCache::clearall', 'Divi devs: please don\'t clear Autoptimize\'s cache, it is unneeded and can break sites. You can contact me at futtta@gmail.com to discuss.', 'Autoptimize 2.9.6' );
+            if ( 'et_core_clear_wp_cache' === $caller ) {
+                if ( apply_filters( 'autoptimize_filter_cache_divi_wrong_complain', true ) ) {
+                    _doing_it_wrong( 'autoptimizeCache::clearall', 'Divi devs: please don\'t clear Autoptimize\'s cache, it is unneeded and can break sites. You can contact me at futtta@gmail.com to discuss.', 'Autoptimize 2.9.6' );
+                }
                 return false;
             }
         }
-        
-        if ( ! self::cacheavail() ) {
+
+        if ( ! self::cacheavail() || true === apply_filters( 'autoptimize_filter_cache_clearall_disabled', false ) ) {
             return false;
         }
 
@@ -695,7 +697,7 @@ class autoptimizeCache
 
             // prepare for Shakeeb's Unused CSS files to be 404-handled as well.
             if ( strpos( $original_request, 'uucss/uucss-' ) !== false ) {
-                $original_request = preg_replace( '/uucss\/uucss-[a-z0-9]{32}-/', 'css/', $original_request  );
+                $original_request = preg_replace( '/uucss\/uucss-[a-z0-9]{32}-/', 'css/', $original_request );
             }
 
             // set fallback URL.
@@ -823,7 +825,7 @@ class autoptimizeCache
             $_kinsta_clear_cache_url = 'https://localhost/kinsta-clear-cache-all';
             $_kinsta_response        = wp_remote_get(
                 $_kinsta_clear_cache_url,
-                array( 
+                array(
                     'sslverify' => false,
                     'timeout' => 5,
                     )

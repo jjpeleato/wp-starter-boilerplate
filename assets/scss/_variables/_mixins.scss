@@ -30,28 +30,3 @@
   overflow: hidden;
   position: absolute !important;
 }
-
-// variables::mixins::border-radius
-@mixin border-radius($radius) {
-  -webkit-border-radius: $radius;
-  -moz-border-radius: $radius;
-  border-radius: $radius;
-}
-
-// variables::mixins::transform
-@mixin transform($transforms) {
-  -moz-transform: $transforms;
-  -o-transform: $transforms;
-  -webkit-transform: $transforms;
-  -ms-transform: $transforms;
-  transform: $transforms;
-}
-
-// variables::mixins::transition
-@mixin transition($name) {
-  transition: $name;
-  -moz-transition: $name;
-  -ms-transition: $name;
-  -o-transition: $name;
-  -webkit-transition: $name;
-}

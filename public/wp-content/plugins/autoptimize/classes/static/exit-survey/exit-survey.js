@@ -1,6 +1,6 @@
 (function ($) {
     $(document).ready(function () {
-        var targetElement = 'tr[data-slug="autoptimize"] span.deactivate a';
+        var targetElement = 'tr[data-plugin="autoptimize/autoptimize.php"] span.deactivate a';
         var redirectUrl = $(targetElement).attr('href');
         if ($('.ao-feedback-overlay').length === 0) {
             $('body').prepend('<div class="ao-feedback-overlay"></div>');
@@ -8,9 +8,7 @@
         $('#ao_uninstall_feedback_popup').appendTo($(targetElement).parent());
 
         $(targetElement).on('click', function (e) {
-            if ( false == e.target.href.includes('https://wordpress.org/') && false == e.target.href.includes('https://blog.futtta.be/') ) {
-                e.preventDefault();
-            } 
+			e.preventDefault();
             $('#ao_uninstall_feedback_popup ').addClass('active');
             $('body').addClass('ao-feedback-open');
             $('.ao-feedback-overlay').on('click', function () {
@@ -71,6 +69,10 @@
             e.stopPropagation();
             $('#ao_uninstall_feedback_popup ').removeClass('active');
             $('body').removeClass('ao-feedback-open');
+        });
+        
+        $('#ao_feedback_email_toggle').on('click', function (e) {
+            $('#ao_feedback998').toggle();
         });
 
         $('#ao_uninstall_feedback_popup #ao-deactivate-yes').on('click', function (e) {

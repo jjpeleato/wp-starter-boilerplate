@@ -34,7 +34,7 @@ gulp.task(
 		validateJs,
 		js,
 		jsAssets,
-		copy,
+		//copy,
 		images,
 		//imagesAssets,
 	)

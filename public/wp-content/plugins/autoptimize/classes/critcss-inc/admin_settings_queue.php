@@ -17,11 +17,11 @@ function ao_ccss_render_queue() {
     } else {
         $ao_ccss_queue = json_encode( $ao_ccss_queue );
     }
-?>
+    ?>
 
     <ul id="queue-panel">
         <li class="itemDetail">
-            <h2 class="itemTitle fleft"><?php _e( 'Job Queue', 'autoptimize' ); ?></h2>
+            <h2 class="itemTitle fleft"><?php esc_html_e( 'Job Queue', 'autoptimize' ); ?></h2>
             <button type="button" class="toggle-btn">
                 <span class="toggle-indicator dashicons dashicons-arrow-up dashicons-arrow-down"></span>
             </button>
@@ -35,26 +35,26 @@ function ao_ccss_render_queue() {
             <div class="collapsible <?php echo $_queue_visibility; ?>">
                 <!-- BEGIN Queue dialogs -->
                 <!-- Retry dialog -->
-                <div id="queue-confirm-retry" title="<?php _e( 'Retry Job', 'autoptimize' ); ?>" class="hidden">
-                    <p><?php _e( 'Are you sure you want to retry this job?', 'autoptimize' ); ?></p>
+                <div id="queue-confirm-retry" title="<?php esc_html_e( 'Retry Job', 'autoptimize' ); ?>" class="hidden">
+                    <p><?php esc_html_e( 'Are you sure you want to retry this job?', 'autoptimize' ); ?></p>
                 </div>
 
                 <!-- Remove dialog -->
-                <div id="queue-confirm-rm" title="<?php _e( 'Delete Job', 'autoptimize' ); ?>" class="hidden">
-                    <p><?php _e( 'Are you sure you want to delete this job?', 'autoptimize' ); ?></p>
+                <div id="queue-confirm-rm" title="<?php esc_html_e( 'Delete Job', 'autoptimize' ); ?>" class="hidden">
+                    <p><?php esc_html_e( 'Are you sure you want to delete this job?', 'autoptimize' ); ?></p>
                 </div>
 
                 <!-- Remove all dialog -->
-                <div id="queue-confirm-rm-all" title="<?php _e( 'Delete all jobs', 'autoptimize' ); ?>" class="hidden">
-                    <p><?php _e( 'This will delete all jobs, are you sure?', 'autoptimize' ); ?></p>
+                <div id="queue-confirm-rm-all" title="<?php esc_html_e( 'Delete all jobs', 'autoptimize' ); ?>" class="hidden">
+                    <p><?php esc_html_e( 'This will delete all jobs, are you sure?', 'autoptimize' ); ?></p>
                 </div>
                 <!-- END Queue dialogs -->
 
                 <!-- BEGIN Queue UI -->
                 <div class="howto">
                     <div class="title-wrap">
-                        <h4 class="title"><?php _e( 'How To Use Autoptimize CriticalCSS Queue', 'autoptimize' ); ?></h4>
-                        <p class="subtitle"><?php _e( 'Click the side arrow to toggle instructions', 'autoptimize' ); ?></p>
+                        <h4 class="title"><?php esc_html_e( 'How To Use Autoptimize CriticalCSS Queue', 'autoptimize' ); ?></h4>
+                        <p class="subtitle"><?php esc_html_e( 'Click the side arrow to toggle instructions', 'autoptimize' ); ?></p>
                     </div>
                     <button type="button" class="toggle-btn">
                         <span class="toggle-indicator dashicons dashicons-arrow-up dashicons-arrow-down"></span>
@@ -75,22 +75,22 @@ function ao_ccss_render_queue() {
                 </div>
                 <table id="queue-tbl" class="queue tablesorter" cellspacing="0">
                     <thead>
-                        <tr><th class="status"><?php _e( 'Status', 'autoptimize' ); ?></th><th><?php _e( 'Target Rule', 'autoptimize' ); ?></th><th><?php _e( 'Page Path', 'autoptimize' ); ?></th><th><?php _e( 'Page Type', 'autoptimize' ); ?></th><th><?php _e( 'Creation Date', 'autoptimize' ); ?></th><th><?php _e( 'Finish Date', 'autoptimize' ); ?></th><th class="btn"><?php _e( 'Actions', 'autoptimize' ); ?></th></tr>
+                        <tr><th class="status"><?php esc_html_e( 'Status', 'autoptimize' ); ?></th><th><?php esc_html_e( 'Target Rule', 'autoptimize' ); ?></th><th><?php esc_html_e( 'Page Path', 'autoptimize' ); ?></th><th><?php esc_html_e( 'Page Type', 'autoptimize' ); ?></th><th><?php esc_html_e( 'Creation Date', 'autoptimize' ); ?></th><th><?php esc_html_e( 'Finish Date', 'autoptimize' ); ?></th><th class="btn"><?php esc_html_e( 'Actions', 'autoptimize' ); ?></th></tr>
                     </thead>
                     <tbody id="queue"></tbody>
                 </table>
                 <input class="hidden" type="text" id="ao-ccss-queue" name="autoptimize_ccss_queue" value='<?php echo( $ao_ccss_queue ); ?>'>
                 <div class="submit jobs-btn">
                     <div id="queuerunner-container" class="alignleft hidden">
-                        <span id="queuerunner" class="button-secondary"><?php _e( 'Manually process the job queue', 'autoptimize' ); ?></span>
+                        <span id="queuerunner" class="button-secondary"><?php esc_html_e( 'Manually process the job queue', 'autoptimize' ); ?></span>
                     </div>
                     <div class="alignright">
-                        <span id="removeAllJobs" class="button-secondary" style="color:red;"><?php _e( 'Remove all jobs', 'autoptimize' ); ?></span>
+                        <span id="removeAllJobs" class="button-secondary" style="color:red;"><?php esc_html_e( 'Remove all jobs', 'autoptimize' ); ?></span>
                     </div>
                 </div>
             </div>
             <!-- END Queue UI -->
         </li>
     </ul>
-<?php
+    <?php
 }
