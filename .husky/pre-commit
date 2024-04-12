@@ -1,5 +1,6 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
+lando npm rebuild node-sass # fix unsupported operation system
 lando npm run gulp:validate
 lando composer cs

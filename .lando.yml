@@ -61,17 +61,17 @@ tooling:
     service: node
   dep:
     service: appserver
-    desription: run deployer commands
+    description: run deployer commands
     cmd:
       - "vendor/bin/deployer.phar"
   phpcs:
     service: appserver
-    desription: "Analyze code against the WordPress coding standards with PHP_CodeSniffer"
+    description: "Analyze code against the WordPress coding standards with PHP_CodeSniffer"
     cmd:
       - "vendor/bin/phpcs"
   phpcbf:
     service: appserver
-    desription: "Fix coding standards warnings/errors automatically with PHP Code Beautifier"
+    description: "Fix coding standards warnings/errors automatically with PHP Code Beautifier"
     cmd:
       - "vendor/bin/phpcbf"
 
