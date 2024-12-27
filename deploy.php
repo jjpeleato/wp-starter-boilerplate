@@ -195,13 +195,13 @@ host( 'prod' )
 task(
 	'deploy:build',
 	function () {
-		run( 'cd {{current_path}} && npm install --save-dev' );
+		run( 'cd {{release_or_current_path}} && npm install --save-dev' );
 
 		$stage = get( 'labels' )['stage'];
 		if ( 'prod' === $stage ) {
-			run( 'cd {{current_path}} && npm run gulp:prod' );
+			run( 'cd {{release_or_current_path}} && npm run gulp:prod' );
 		} else {
-			run( 'cd {{current_path}} && npm run gulp:dev' );
+			run( 'cd {{release_or_current_path}} && npm run gulp:dev' );
 		}
 	}
 )
@@ -214,8 +214,8 @@ task(
 task(
 	'deploy:phpcs',
 	function () {
-		run( 'cd {{current_path}} && composer install' );
-		run( 'cd {{current_path}} && composer cs' );
+		run( 'cd {{release_or_current_path}} && composer install' );
+		run( 'cd {{release_or_current_path}} && composer cs' );
 	}
 )
 	->desc( 'Run phpcodesniffer task' )

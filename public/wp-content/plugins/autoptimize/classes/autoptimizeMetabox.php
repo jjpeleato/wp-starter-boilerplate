@@ -336,7 +336,7 @@ class autoptimizeMetabox
     }
 
     public function check_ao_opt_sanity( $ao_opt_val ) {
-        if ( empty( $ao_opt_val ) ) {
+        if ( empty( $ao_opt_val ) || ! is_array( $ao_opt_val ) ) {
             $ao_opt_val = $this->get_metabox_default_values();
         } else {
             foreach ( array( 'ao_post_optimize', 'ao_post_js_optimize', 'ao_post_css_optimize', 'ao_post_ccss', 'ao_post_lazyload' ) as $key ) {

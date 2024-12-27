@@ -1,11 +1,13 @@
 === Autoptimize ===
 Contributors: futtta, optimizingmatters, zytzagoo, turl
-Tags: optimize, minify, performance, images, core web vitals, lazy-load, pagespeed, google fonts
+Tags: optimize, performance, images, core web vitals, pagespeed
 Donate link: http://blog.futtta.be/2013/10/21/do-not-donate-to-me/
+License: GPLv3
+License URI: [https://www.gnu.org/licenses/gpl-3.0.html](https://www.gnu.org/licenses/gpl-3.0.html)
 Requires at least: 5.3
-Tested up to: 6.4
+Tested up to: 6.7
 Requires PHP: 5.6
-Stable tag: 3.1.11
+Stable tag: 3.1.13
 
 Autoptimize speeds up your website by optimizing JS, CSS, images (incl. lazy-load), HTML and Google Fonts, asyncing JS, removing emoji cruft and more.
 
@@ -318,6 +320,15 @@ You can get help on the [wordpress.org support forum](http://wordpress.org/suppo
 Just [fork Autoptimize on Github](https://github.com/futtta/autoptimize) and code away!
 
 == Changelog ==
+
+= 3.1.13 =
+* multiple minor changes/ improvements/ bugfixes, see the [GitHub commit log](https://github.com/futtta/autoptimize/commits/beta).
+
+= 3.1.12 =
+* image optimization: improvements to the favicon regex
+* javascript optimization: integrate most recent version of jsmin.php
+* critical CSS: improve blocklist (url/ paths that should not be added to the job queue)
+* some other minor changes/ improvements/ filters, see the [GitHub commit log](https://github.com/futtta/autoptimize/commits/beta).
 
 = 3.1.11 =
 * code quality improvements see the [GitHub commit log](https://github.com/futtta/autoptimize/commits/beta).
