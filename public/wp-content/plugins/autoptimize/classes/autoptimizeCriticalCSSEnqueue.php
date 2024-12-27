@@ -67,7 +67,7 @@ class autoptimizeCriticalCSSEnqueue {
         $req_path = strtok( $req_orig, '?' );
 
         // now that we really have the path, check if there's no garbage in there (due to some themes serving a non 404 page even if the resource does not exist resulting in all sorts of nonsense rules).
-        if ( true === apply_filters( 'autoptimize_filter_ccss_enqueue_block_garbage' , true ) && str_replace( apply_filters( 'autoptimize_filter_ccss_enqueue_blocklist', array( '.php', 'data:javascript/text;base64', '/.', '/null' ) ), '', $req_path ) !== $req_path ) {
+        if ( true === apply_filters( 'autoptimize_filter_ccss_enqueue_block_garbage' , true ) && str_ireplace( apply_filters( 'autoptimize_filter_ccss_enqueue_blocklist', array( '.php', 'data:text/javascript;base64', '/.', '/null', '.jpeg', '.jpg', '.png' ) ), '', $req_path ) !== $req_path ) {
             $this->criticalcss->log( 'Job not enqueued looks like the path is just garbage; ' . $req_path, 3 );
             return;
         }

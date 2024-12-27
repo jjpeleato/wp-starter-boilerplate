@@ -537,7 +537,7 @@ class autoptimizeCriticalCSSCore {
                 $queue = $this->criticalcss->get_option( 'queue' );
                 $rules = $this->criticalcss->get_option( 'rules' );
 
-                if ( 0 == count( $queue ) && 0 == count( $rules['types'] ) && 0 == count( $rules['paths'] ) ) {
+                if ( ( empty( $queue ) || 0 == count( $queue ) ) && ( empty( $rules ) || ( is_array( $rules ) && 0 == count( $rules['types'] ) && 0 == count( $rules['paths'] ) ) ) ) {
                     if ( 'JOB_QUEUED' == $body['job']['status'] || 'JOB_ONGOING' == $body['job']['status'] ) {
                         $jprops['ljid']     = 'firstrun';
                         $jprops['rtarget']  = 'types|is_front_page';

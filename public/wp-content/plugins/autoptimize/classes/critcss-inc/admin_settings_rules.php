@@ -213,7 +213,7 @@ function ao_ccss_render_rules() {
  * @param array $rules Array with rules to be sanitized.
  */
 function sanitize_rules( $rules ) {
-    if ( apply_filters( 'autoptimize_filter_ccss_paths_clickable', true ) ) {
+    if ( is_array( $rules ) && ! empty( $rules ) && apply_filters( 'autoptimize_filter_ccss_paths_clickable', true ) ) {
         if ( array_key_exists( 'paths', $rules ) ) {
             foreach ( $rules['paths'] as $key => $value ) {
                 $newkey = esc_url( $key );

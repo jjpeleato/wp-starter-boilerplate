@@ -377,7 +377,9 @@ class autoptimizeCriticalCSSSettings {
                 <div id="debug">
                     <?php
                     // Include debug panel.
-                    include( 'critcss-inc/admin_settings_debug.php' );
+                    if ( true === apply_filters( 'autoptimize_filter_ccss_debug_browser_output', true ) ) {
+                        include( 'critcss-inc/admin_settings_debug.php' );
+                    }
                     ?>
                 </div><!-- /#debug -->
                 <?php
