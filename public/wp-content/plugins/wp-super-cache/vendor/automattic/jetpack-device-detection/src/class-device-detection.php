@@ -24,6 +24,20 @@ use function Automattic\Jetpack\Device_Detection\wp_unslash;
 class Device_Detection {
 
 	/**
+	 * Memoization cache for get_info() results.
+	 *
+	 * @var array
+	 */
+	private static $get_info_memo = array();
+
+	/**
+	 * Maximum size of the memoization cache.
+	 *
+	 * @var int
+	 */
+	private static $max_memo_size = 100;
+
+	/**
 	 * Returns information about the current device accessing the page.
 	 *
 	 * @param string $ua (Optional) User-Agent string.
@@ -41,6 +55,16 @@ class Device_Detection {
 	 * );
 	 */
 	public static function get_info( $ua = '' ) {
+		// Return memoized result if available.
+		// phpcs:disable WordPress.Security.ValidatedSanitizedInput
+		$memo_key = ! empty( $ua ) ? $ua : ( $_SERVER['HTTP_USER_AGENT'] ?? '' );
+		// Note: UA string used raw for compatibility reasons.
+		// No sanitization is needed as the value is never output or persisted, and is only used for memoization.
+		// phpcs:enable WordPress.Security.ValidatedSanitizedInput
+		if ( isset( self::$get_info_memo[ $memo_key ] ) ) {
+			return self::$get_info_memo[ $memo_key ];
+		}
+
 		$ua_info = new User_Agent_Info( $ua );
 
 		$info = array(
@@ -68,6 +92,13 @@ class Device_Detection {
 			 */
 			$info = apply_filters( 'jetpack_device_detection_get_info', $info, $ua, $ua_info );
 		}
+
+		// Memoize the result.
+		self::$get_info_memo[ $memo_key ] = $info;
+		if ( count( self::$get_info_memo ) > self::$max_memo_size ) {
+			array_shift( self::$get_info_memo );
+		}
+
 		return $info;
 	}
 
@@ -146,7 +177,6 @@ class Device_Detection {
 			'dumb'  => false,
 			'any'   => false,
 		);
-		$first_run     = true;
 		$matched_agent = '';
 
 		// If an invalid kind is passed in, reset it to default.
@@ -176,42 +206,38 @@ class Device_Detection {
 			return false;
 		}
 
-		if ( $first_run ) {
-			$first_run = false;
+		// checks for iPhoneTier devices & RichCSS devices.
+		if ( $ua_info->isTierIphone() || $ua_info->isTierRichCSS() ) {
+			$kinds['smart'] = true;
+			$matched_agent  = $ua_info->matched_agent;
+		}
 
-			// checks for iPhoneTier devices & RichCSS devices.
-			if ( $ua_info->isTierIphone() || $ua_info->isTierRichCSS() ) {
-				$kinds['smart'] = true;
-				$matched_agent  = $ua_info->matched_agent;
-			}
+		if ( ! $kinds['smart'] ) {
+			// if smart, we are not dumb so no need to check.
+			$dumb_agents = $ua_info->dumb_agents;
 
-			if ( ! $kinds['smart'] ) {
-				// if smart, we are not dumb so no need to check.
-				$dumb_agents = $ua_info->dumb_agents;
+			foreach ( $dumb_agents as $dumb_agent ) {
+				if ( false !== strpos( $agent, $dumb_agent ) ) {
+					$kinds['dumb'] = true;
+					$matched_agent = $dumb_agent;
 
-				foreach ( $dumb_agents as $dumb_agent ) {
-					if ( false !== strpos( $agent, $dumb_agent ) ) {
-						$kinds['dumb'] = true;
-						$matched_agent = $dumb_agent;
-
-						break;
-					}
-				}
-
-				if ( ! $kinds['dumb'] ) {
-					if ( isset( $_SERVER['HTTP_X_WAP_PROFILE'] ) ) {
-						$kinds['dumb'] = true;
-						$matched_agent = 'http_x_wap_profile';
-					} elseif ( isset( $_SERVER['HTTP_ACCEPT'] ) && ( preg_match( '/wap\.|\.wap/i', $_SERVER['HTTP_ACCEPT'] ) || false !== strpos( strtolower( $_SERVER['HTTP_ACCEPT'] ), 'application/vnd.wap.xhtml+xml' ) ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- This is doing the validating.
-						$kinds['dumb'] = true;
-						$matched_agent = 'vnd.wap.xhtml+xml';
-					}
+					break;
 				}
 			}
 
-			if ( $kinds['dumb'] || $kinds['smart'] ) {
-				$kinds['any'] = true;
+			if ( ! $kinds['dumb'] ) {
+				if ( isset( $_SERVER['HTTP_X_WAP_PROFILE'] ) ) {
+					$kinds['dumb'] = true;
+					$matched_agent = 'http_x_wap_profile';
+				} elseif ( isset( $_SERVER['HTTP_ACCEPT'] ) && ( preg_match( '/wap\.|\.wap/i', $_SERVER['HTTP_ACCEPT'] ) || false !== strpos( strtolower( $_SERVER['HTTP_ACCEPT'] ), 'application/vnd.wap.xhtml+xml' ) ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- This is doing the validating.
+					$kinds['dumb'] = true;
+					$matched_agent = 'vnd.wap.xhtml+xml';
+				}
 			}
+		}
+
+		if ( $kinds['dumb'] || $kinds['smart'] ) {
+			$kinds['any'] = true;
 		}
 
 		$value = $kinds[ $kind ];

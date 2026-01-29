@@ -2,12 +2,12 @@
 # This file is distributed under the same license as the Themes - Twenty Twenty-Five package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-12-19 14:12:27+0000\n"
+"PO-Revision-Date: 2025-11-13 16:14:19+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: GlotPress/4.0.1\n"
+"X-Generator: GlotPress/4.0.3\n"
 "Language: es\n"
 "Project-Id-Version: Themes - Twenty Twenty-Five\n"
 
@@ -23,6 +23,31 @@ msgstr "Twenty Twenty-Five hace hincapié en la sencillez y la adaptabilidad. Of
 #, gp-priority: high
 msgid "Twenty Twenty-Five"
 msgstr "Twenty Twenty-Five"
+
+#: patterns/template-home-vertical-header-blog.php
+msgctxt "Pattern title"
+msgid "Right-aligned home"
+msgstr "Inicio alineado a la derecha"
+
+#: patterns/template-archive-vertical-header-blog.php
+msgctxt "Pattern title"
+msgid "Right-aligned archive"
+msgstr "Archivo alineado a la derecha"
+
+#: patterns/template-search-text-blog.php
+msgctxt "Pattern title"
+msgid "Text blog search results"
+msgstr "Resultados de la búsqueda de blog de texto"
+
+#: patterns/template-query-loop-vertical-header-blog.php
+msgctxt "Pattern title"
+msgid "Right-aligned query loop"
+msgstr "Consulta de contenidos alineada a la derecha"
+
+#: patterns/template-query-loop-text-blog.php
+msgctxt "Pattern title"
+msgid "Text blog query loop"
+msgstr "Consulta de contenidos de blog de texto"
 
 #: patterns/text-faqs.php:35 patterns/text-faqs.php:51
 #: patterns/text-faqs.php:71 patterns/text-faqs.php:87
@@ -62,8 +87,8 @@ msgstr "Cabecera con título grande"
 
 #: theme.json
 msgctxt "Template part name"
-msgid "Vertical Header"
-msgstr "Cabecera vertical"
+msgid "Vertical site header"
+msgstr "Cabecera vertical del sitio"
 
 #: theme.json
 msgctxt "Template part name"
@@ -99,7 +124,7 @@ msgctxt "Font family name"
 msgid "Fira Sans"
 msgstr "Fira Sans"
 
-#: styles/03-dusk.json styles/typography/typography-preset-2.json theme.json
+#: theme.json styles/03-dusk.json styles/typography/typography-preset-2.json
 msgctxt "Font family name"
 msgid "Fira Code"
 msgstr "Fira Code"
@@ -118,8 +143,8 @@ msgctxt "Font family name"
 msgid "Literata"
 msgstr "Literata"
 
-#: styles/05-twilight.json styles/typography/typography-preset-4.json
-#: theme.json
+#: theme.json styles/05-twilight.json
+#: styles/typography/typography-preset-4.json
 msgctxt "Font family name"
 msgid "Manrope"
 msgstr "Manrope"
@@ -274,57 +299,57 @@ msgctxt "Style variation name"
 msgid "Dusk"
 msgstr "Atardecer"
 
-#: styles/02-noon.json styles/04-afternoon.json styles/05-twilight.json
-#: styles/06-morning.json styles/08-midnight.json
+#: theme.json styles/02-noon.json styles/04-afternoon.json
+#: styles/05-twilight.json styles/06-morning.json styles/08-midnight.json
 #: styles/typography/typography-preset-1.json
 #: styles/typography/typography-preset-3.json
 #: styles/typography/typography-preset-4.json
 #: styles/typography/typography-preset-5.json
-#: styles/typography/typography-preset-7.json theme.json
+#: styles/typography/typography-preset-7.json
 msgctxt "Font size name"
 msgid "Extra Extra Large"
 msgstr "Extra extra grande"
 
-#: styles/02-noon.json styles/04-afternoon.json styles/05-twilight.json
-#: styles/06-morning.json styles/08-midnight.json
+#: theme.json styles/02-noon.json styles/04-afternoon.json
+#: styles/05-twilight.json styles/06-morning.json styles/08-midnight.json
 #: styles/typography/typography-preset-1.json
 #: styles/typography/typography-preset-3.json
 #: styles/typography/typography-preset-4.json
 #: styles/typography/typography-preset-5.json
-#: styles/typography/typography-preset-7.json theme.json
+#: styles/typography/typography-preset-7.json
 msgctxt "Font size name"
 msgid "Extra Large"
 msgstr "Extra grande"
 
-#: styles/02-noon.json styles/04-afternoon.json styles/05-twilight.json
-#: styles/06-morning.json styles/08-midnight.json
+#: theme.json styles/02-noon.json styles/04-afternoon.json
+#: styles/05-twilight.json styles/06-morning.json styles/08-midnight.json
 #: styles/typography/typography-preset-1.json
 #: styles/typography/typography-preset-3.json
 #: styles/typography/typography-preset-4.json
 #: styles/typography/typography-preset-5.json
-#: styles/typography/typography-preset-7.json theme.json
+#: styles/typography/typography-preset-7.json
 msgctxt "Font size name"
 msgid "Large"
 msgstr "Grande"
 
-#: styles/02-noon.json styles/04-afternoon.json styles/05-twilight.json
-#: styles/06-morning.json styles/08-midnight.json
+#: theme.json styles/02-noon.json styles/04-afternoon.json
+#: styles/05-twilight.json styles/06-morning.json styles/08-midnight.json
 #: styles/typography/typography-preset-1.json
 #: styles/typography/typography-preset-3.json
 #: styles/typography/typography-preset-4.json
 #: styles/typography/typography-preset-5.json
-#: styles/typography/typography-preset-7.json theme.json
+#: styles/typography/typography-preset-7.json
 msgctxt "Font size name"
 msgid "Medium"
 msgstr "Medio"
 
-#: styles/02-noon.json styles/04-afternoon.json styles/05-twilight.json
-#: styles/06-morning.json styles/08-midnight.json
+#: theme.json styles/02-noon.json styles/04-afternoon.json
+#: styles/05-twilight.json styles/06-morning.json styles/08-midnight.json
 #: styles/typography/typography-preset-1.json
 #: styles/typography/typography-preset-3.json
 #: styles/typography/typography-preset-4.json
 #: styles/typography/typography-preset-5.json
-#: styles/typography/typography-preset-7.json theme.json
+#: styles/typography/typography-preset-7.json
 msgctxt "Font size name"
 msgid "Small"
 msgstr "Pequeño"
@@ -334,90 +359,90 @@ msgctxt "Style variation name"
 msgid "Noon"
 msgstr "Mediodía"
 
-#: styles/01-evening.json styles/02-noon.json styles/03-dusk.json
+#: theme.json styles/01-evening.json styles/02-noon.json styles/03-dusk.json
 #: styles/04-afternoon.json styles/05-twilight.json styles/06-morning.json
 #: styles/07-sunrise.json styles/08-midnight.json styles/colors/01-evening.json
 #: styles/colors/02-noon.json styles/colors/03-dusk.json
 #: styles/colors/04-afternoon.json styles/colors/05-twilight.json
 #: styles/colors/06-morning.json styles/colors/07-sunrise.json
-#: styles/colors/08-midnight.json theme.json
+#: styles/colors/08-midnight.json
 msgctxt "Color name"
 msgid "Accent 6"
-msgstr "Acento 6"
+msgstr "Énfasis 6"
 
-#: styles/01-evening.json styles/02-noon.json styles/03-dusk.json
+#: theme.json styles/01-evening.json styles/02-noon.json styles/03-dusk.json
 #: styles/04-afternoon.json styles/05-twilight.json styles/06-morning.json
 #: styles/07-sunrise.json styles/08-midnight.json styles/colors/01-evening.json
 #: styles/colors/02-noon.json styles/colors/03-dusk.json
 #: styles/colors/04-afternoon.json styles/colors/05-twilight.json
 #: styles/colors/06-morning.json styles/colors/07-sunrise.json
-#: styles/colors/08-midnight.json theme.json
+#: styles/colors/08-midnight.json
 msgctxt "Color name"
 msgid "Accent 5"
-msgstr "Acento 5"
+msgstr "Énfasis 5"
 
-#: styles/01-evening.json styles/02-noon.json styles/03-dusk.json
+#: theme.json styles/01-evening.json styles/02-noon.json styles/03-dusk.json
 #: styles/04-afternoon.json styles/05-twilight.json styles/06-morning.json
 #: styles/07-sunrise.json styles/08-midnight.json styles/colors/01-evening.json
 #: styles/colors/02-noon.json styles/colors/03-dusk.json
 #: styles/colors/04-afternoon.json styles/colors/05-twilight.json
 #: styles/colors/06-morning.json styles/colors/07-sunrise.json
-#: styles/colors/08-midnight.json theme.json
+#: styles/colors/08-midnight.json
 msgctxt "Color name"
 msgid "Accent 4"
-msgstr "Acento 4"
+msgstr "Énfasis 4"
 
-#: styles/01-evening.json styles/02-noon.json styles/03-dusk.json
+#: theme.json styles/01-evening.json styles/02-noon.json styles/03-dusk.json
 #: styles/04-afternoon.json styles/05-twilight.json styles/06-morning.json
 #: styles/07-sunrise.json styles/08-midnight.json styles/colors/01-evening.json
 #: styles/colors/02-noon.json styles/colors/03-dusk.json
 #: styles/colors/04-afternoon.json styles/colors/05-twilight.json
 #: styles/colors/06-morning.json styles/colors/07-sunrise.json
-#: styles/colors/08-midnight.json theme.json
+#: styles/colors/08-midnight.json
 msgctxt "Color name"
 msgid "Accent 3"
 msgstr "Énfasis 3"
 
-#: styles/01-evening.json styles/02-noon.json styles/03-dusk.json
+#: theme.json styles/01-evening.json styles/02-noon.json styles/03-dusk.json
 #: styles/04-afternoon.json styles/05-twilight.json styles/06-morning.json
 #: styles/07-sunrise.json styles/08-midnight.json styles/colors/01-evening.json
 #: styles/colors/02-noon.json styles/colors/03-dusk.json
 #: styles/colors/04-afternoon.json styles/colors/05-twilight.json
 #: styles/colors/06-morning.json styles/colors/07-sunrise.json
-#: styles/colors/08-midnight.json theme.json
+#: styles/colors/08-midnight.json
 msgctxt "Color name"
 msgid "Accent 2"
-msgstr "Énfasis 2"
+msgstr "Énfasis 2"
 
-#: styles/01-evening.json styles/02-noon.json styles/03-dusk.json
+#: theme.json styles/01-evening.json styles/02-noon.json styles/03-dusk.json
 #: styles/04-afternoon.json styles/05-twilight.json styles/06-morning.json
 #: styles/07-sunrise.json styles/08-midnight.json styles/colors/01-evening.json
 #: styles/colors/02-noon.json styles/colors/03-dusk.json
 #: styles/colors/04-afternoon.json styles/colors/05-twilight.json
 #: styles/colors/06-morning.json styles/colors/07-sunrise.json
-#: styles/colors/08-midnight.json theme.json
+#: styles/colors/08-midnight.json
 msgctxt "Color name"
 msgid "Accent 1"
-msgstr "Énfasis 1"
+msgstr "Énfasis 1"
 
-#: styles/01-evening.json styles/02-noon.json styles/03-dusk.json
+#: theme.json styles/01-evening.json styles/02-noon.json styles/03-dusk.json
 #: styles/04-afternoon.json styles/05-twilight.json styles/06-morning.json
 #: styles/07-sunrise.json styles/08-midnight.json styles/colors/01-evening.json
 #: styles/colors/02-noon.json styles/colors/03-dusk.json
 #: styles/colors/04-afternoon.json styles/colors/05-twilight.json
 #: styles/colors/06-morning.json styles/colors/07-sunrise.json
-#: styles/colors/08-midnight.json theme.json
+#: styles/colors/08-midnight.json
 msgctxt "Color name"
 msgid "Contrast"
 msgstr "Contraste"
 
-#: styles/01-evening.json styles/02-noon.json styles/03-dusk.json
+#: theme.json styles/01-evening.json styles/02-noon.json styles/03-dusk.json
 #: styles/04-afternoon.json styles/05-twilight.json styles/06-morning.json
 #: styles/07-sunrise.json styles/08-midnight.json styles/colors/01-evening.json
 #: styles/colors/02-noon.json styles/colors/03-dusk.json
 #: styles/colors/04-afternoon.json styles/colors/05-twilight.json
 #: styles/colors/06-morning.json styles/colors/07-sunrise.json
-#: styles/colors/08-midnight.json theme.json
+#: styles/colors/08-midnight.json
 msgctxt "Color name"
 msgid "Base"
 msgstr "Base"
@@ -429,13 +454,13 @@ msgstr "Tarde"
 
 #: patterns/vertical-header.php
 msgctxt "Pattern description"
-msgid "Vertical Header with site title and navigation"
-msgstr "Cabecera vertical con título del sitio y navegación"
+msgid "Vertical site header with site title and navigation."
+msgstr "Cabecera vertical del sitio con título del sitio y navegación"
 
 #: patterns/vertical-header.php
 msgctxt "Pattern title"
-msgid "Vertical header"
-msgstr "Cabecera vertical"
+msgid "Vertical site header"
+msgstr "Cabecera vertical del sitio"
 
 #: patterns/text-faqs.php:83
 msgctxt "Question in the FAQs pattern."
@@ -555,8 +580,8 @@ msgstr "Entrada única alineada a la derecha"
 
 #: patterns/template-single-text-blog.php
 msgctxt "Pattern title"
-msgid "Text-only blog, single post"
-msgstr "Blog de sólo texto, entrada única"
+msgid "Text blog single post"
+msgstr "Entrada individual de blog de texto"
 
 #: patterns/template-single-photo-blog.php:79
 msgid "Next Photo"
@@ -624,11 +649,6 @@ msgctxt "Pattern title"
 msgid "Right-aligned blog, search"
 msgstr "Blog alineado a la derecha, búsqueda"
 
-#: patterns/template-search-text-blog.php
-msgctxt "Pattern title"
-msgid "Text-only blog, search"
-msgstr "Blog de sólo texto, búsqueda"
-
 #: patterns/template-search-photo-blog.php
 msgctxt "Pattern title"
 msgid "Photo blog search results"
@@ -649,15 +669,10 @@ msgctxt "Pattern title"
 msgid "List of posts, 1 column"
 msgstr "Lista de entradas, 1 columna"
 
-#: patterns/template-query-loop-vertical-header-blog.php
+#: patterns/template-page-vertical-header-blog.php
 msgctxt "Pattern title"
-msgid "Right-aligned posts"
-msgstr "Entradas alineadas a la derecha"
-
-#: patterns/template-query-loop-text-blog.php
-msgctxt "Pattern title"
-msgid "Text-only blog, posts"
-msgstr "Blog de sólo texto, entradas"
+msgid "Right-aligned page"
+msgstr "Página alineada a la derecha"
 
 #: patterns/template-query-loop-photo-blog.php
 msgctxt "Pattern description"
@@ -687,11 +702,6 @@ msgctxt "Pattern title"
 msgid "News blog query loop"
 msgstr "Bucle de consulta del blog de noticias"
 
-#: patterns/template-page-vertical-header-blog.php
-msgctxt "Pattern title"
-msgid "Page template for the right-aligned blog"
-msgstr "Plantilla de página para el blog alineado a la derecha"
-
 #: patterns/template-page-photo-blog.php
 msgctxt "Pattern title"
 msgid "Photo blog page"
@@ -706,15 +716,10 @@ msgctxt "Pattern title"
 msgid "News blog with sidebar"
 msgstr "Blog de noticias con barra lateral"
 
-#: patterns/template-home-vertical-header-blog.php
-msgctxt "Pattern title"
-msgid "Homepage for right-aligned blog"
-msgstr "Página de inicio para blog alineado a la derecha"
-
 #: patterns/template-home-text-blog.php
 msgctxt "Pattern title"
-msgid "Text-only blog, home"
-msgstr "Blog de sólo texto, inicio"
+msgid "Text blog home"
+msgstr "Inicio de blog de texto"
 
 #: patterns/template-home-posts-grid-news-blog.php:114
 msgid "Architecture"
@@ -735,15 +740,10 @@ msgctxt "Pattern title"
 msgid "News blog home"
 msgstr "Página de inicio de blog de noticias"
 
-#: patterns/template-archive-vertical-header-blog.php
-msgctxt "Pattern title"
-msgid "Archive for the right-aligned blog"
-msgstr "Archivo del blog alineado a la derecha"
-
 #: patterns/template-archive-text-blog.php
 msgctxt "Pattern title"
-msgid "Text-only blog, archive"
-msgstr "Blog sólo texto, archivo"
+msgid "Text blog archive"
+msgstr "Archivo de blog de texto"
 
 #: patterns/template-archive-photo-blog.php
 msgctxt "Pattern title"
@@ -757,8 +757,8 @@ msgstr "Archivo de blog de noticias"
 
 #: patterns/template-404-vertical-header-blog.php
 msgctxt "Pattern title"
-msgid "Right-aligned blog, 404"
-msgstr "Blog alineado a la derecha, 404"
+msgid "Right-aligned 404"
+msgstr "404 alineado a la derecha"
 
 #: patterns/services-team-photos.php:50
 msgid "Man in hat, standing in front of a building."
@@ -1264,7 +1264,7 @@ msgstr "Escrito por"
 #: patterns/template-query-loop.php:31
 msgctxt "Message explaining that there are no results returned from a search."
 msgid "Sorry, but nothing was found. Please try a search with different keywords."
-msgstr "Lo siente, no se ha encontrado nada. Por favor, intenta buscar con otras palabras clave."
+msgstr "Lo siento, no se ha encontrado nada. Por favor, prueba a buscar con otras palabras clave."
 
 #: patterns/hidden-sidebar.php:37
 #: patterns/template-home-posts-grid-news-blog.php:34
@@ -1393,11 +1393,6 @@ msgctxt "Pattern title"
 msgid "Hero, overlapped book cover with links"
 msgstr "Sección destacada, cubierta de libro superpuesta con enlaces"
 
-#: patterns/hero-full-width-image.php:33
-msgctxt "Sample hero button"
-msgid "Learn More"
-msgstr "Más información"
-
 #: patterns/hero-full-width-image.php:27
 msgctxt "Sample hero paragraph"
 msgid "Like flowers that bloom in unexpected places, every story unfolds with beauty and resilience, revealing hidden wonders."
@@ -1478,8 +1473,8 @@ msgstr "Encabezado y párrafo con imagen a la derecha"
 
 #: patterns/header.php
 msgctxt "Pattern description"
-msgid "Header with site title and navigation."
-msgstr "Cabecera con título del sitio y navegación."
+msgid "Site header with site title and navigation."
+msgstr "Cabecera del sitio con título del sitio y navegación."
 
 #: patterns/header.php
 msgctxt "Pattern title"
@@ -1488,8 +1483,8 @@ msgstr "Cabecera"
 
 #: patterns/header-large-title.php
 msgctxt "Pattern description"
-msgid "Header with large site title and right-aligned navigation."
-msgstr "Cabecera con título grande del sitio y navegación alineada a la derecha."
+msgid "Site header with large site title and right-aligned navigation."
+msgstr "Cabecera del sitio con título grande del sitio y navegación alineada a la derecha."
 
 #: patterns/header-large-title.php
 msgctxt "Pattern title"
@@ -1498,8 +1493,8 @@ msgstr "Cabecera con título grande"
 
 #: patterns/header-columns.php
 msgctxt "Pattern description"
-msgid "Header with site title and navigation in columns."
-msgstr "Cabecera con título del sitio y navegación en columnas."
+msgid "Site header with site title and navigation in columns."
+msgstr "Cabecera del sitio con título del sitio y navegación en columnas."
 
 #: patterns/header-columns.php
 msgctxt "Pattern title"
@@ -1508,13 +1503,13 @@ msgstr "Cabecera con columnas"
 
 #: patterns/header-centered.php
 msgctxt "Pattern description"
-msgid "Header with centered site title and navigation."
-msgstr "Cabecera con el título del sitio y la navegación centrados."
+msgid "Site header with centered site title and navigation."
+msgstr "Cabecera del sitio con el título del sitio y la navegación centrados."
 
 #: patterns/header-centered.php
 msgctxt "Pattern title"
-msgid "Centered header"
-msgstr "Cabecera centrada"
+msgid "Centered site header"
+msgstr "Cabecera centrada del sitio"
 
 #: patterns/grid-with-categories.php:64
 msgid "Sunflowers"
@@ -1956,7 +1951,8 @@ msgctxt "Pattern title"
 msgid "Events list"
 msgstr "Lista de eventos"
 
-#: patterns/cta-centered-heading.php:28
+#: patterns/banner-intro-image.php:42 patterns/cta-centered-heading.php:28
+#: patterns/hero-full-width-image.php:33
 msgid "Learn more"
 msgstr "Saber más"
 
@@ -2330,11 +2326,6 @@ msgctxt "Pattern title"
 msgid "Intro with left-aligned description"
 msgstr "Intro con descripción alineada a la izquierda"
 
-#: patterns/banner-intro-image.php:42
-msgctxt "Button text of intro section."
-msgid "Learn More"
-msgstr "Más información"
-
 #: patterns/banner-intro-image.php:35
 msgctxt "Sample description for banner with flower."
 msgid "Like flowers that bloom in unexpected places, every story unfolds with beauty and resilience, revealing hidden wonders."
@@ -2404,28 +2395,28 @@ msgctxt "Pattern title"
 msgid "Banner with book description"
 msgstr "Banner con la descripción del libro"
 
-#: functions.php:134
+#: functions.php:142
 msgctxt "Label for the block binding placeholder in the editor"
 msgid "Post format name"
 msgstr "Nombre del formato de publicación"
 
-#: functions.php:114
+#: functions.php:122
 msgid "A collection of post format patterns."
 msgstr "Una colección de patrones de formato de publicación."
 
-#: functions.php:113
+#: functions.php:121
 msgid "Post formats"
 msgstr "Formatos de entrada"
 
-#: functions.php:106
+#: functions.php:114
 msgid "A collection of full page layouts."
 msgstr "Una colección de diseños de página completa."
 
-#: functions.php:105
+#: functions.php:113
 msgid "Pages"
 msgstr "Páginas"
 
-#: functions.php:76
+#: functions.php:84
 msgid "Checkmark"
 msgstr "Marca de comprobación"
 
