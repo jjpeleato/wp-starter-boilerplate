@@ -1,4 +1,13 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2025 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 /**
  * Returns a WordPress object type.
@@ -193,6 +202,10 @@ function acf_decode_post_id( $post_id = 0 ) {
 		case 'site_%d':
 			// Allow backwards compatibility for custom taxonomies.
 			$type = taxonomy_exists( $type ) ? 'term' : 'blog';
+			$id   = absint( $id );
+			break;
+		case 'woo_order_%d':
+			$type = 'woo_order';
 			$id   = absint( $id );
 			break;
 		default:

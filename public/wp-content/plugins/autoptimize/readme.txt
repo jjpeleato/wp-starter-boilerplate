@@ -5,9 +5,9 @@ Donate link: http://blog.futtta.be/2013/10/21/do-not-donate-to-me/
 License: GPLv3
 License URI: [https://www.gnu.org/licenses/gpl-3.0.html](https://www.gnu.org/licenses/gpl-3.0.html)
 Requires at least: 5.3
-Tested up to: 6.7
-Requires PHP: 5.6
-Stable tag: 3.1.13
+Tested up to: 6.9
+Requires PHP: 7.1
+Stable tag: 3.1.14
 
 Autoptimize speeds up your website by optimizing JS, CSS, images (incl. lazy-load), HTML and Google Fonts, asyncing JS, removing emoji cruft and more.
 
@@ -320,6 +320,14 @@ You can get help on the [wordpress.org support forum](http://wordpress.org/suppo
 Just [fork Autoptimize on Github](https://github.com/futtta/autoptimize) and code away!
 
 == Changelog ==
+
+= 3.1.14 =
+* improve HTML output for <link rel="preload" images (based on report by Muhammad)
+* let the 404-handler issue a 302 iso 301 HTTP response (as mentioned by thefitrv)
+* small improvement in critical CSS cron job handling in case of an empty "time limit" (thanks for the help Jason)
+* fix bug in "domain binding" in critical CSS advanced options (reported by Hazel)
+* catch and report (exceptional) JS optimization issues causing preg_replace_callback to crash out (in case of a huge amount of JS code), thanks siliconforks
+* confirmed OK with WordPress 6.9
 
 = 3.1.13 =
 * multiple minor changes/ improvements/ bugfixes, see the [GitHub commit log](https://github.com/futtta/autoptimize/commits/beta).

@@ -1,4 +1,13 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2025 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 /**
  * This function will return a custom field value for a specific field name/key + post_id.
@@ -142,7 +151,7 @@ function the_field( $selector, $post_id = false, $format_value = true ) {
  */
 function _acf_log_escaped_html( $function, $selector, $field, $post_id ) {
 	// If the notice isn't shown, no use in logging the errors.
-	if ( apply_filters( 'acf/admin/prevent_escaped_html_notice', false ) ) {
+	if ( apply_filters( 'acf/admin/prevent_escaped_html_notice', true ) ) {
 		return;
 	}
 
