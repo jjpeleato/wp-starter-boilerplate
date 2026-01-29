@@ -2,12 +2,12 @@
 # This file is distributed under the same license as the Plugins - Better Search Replace - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-01-18 20:19:09+0000\n"
+"PO-Revision-Date: 2025-01-31 18:31:37+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: GlotPress/4.0.0-alpha.11\n"
+"X-Generator: GlotPress/4.0.1\n"
 "Language: es\n"
 "Project-Id-Version: Plugins - Better Search Replace - Stable (latest release)\n"
 
@@ -30,6 +30,7 @@ msgid "%1$s is developed and maintained by %2$s."
 msgstr "%2$s desarrolla y mantiene %1$s."
 
 #. Author of the plugin
+#: better-search-replace.php
 msgid "WP Engine"
 msgstr "WP Engine"
 
@@ -173,45 +174,45 @@ msgstr "Error al actualizar la fila: %d."
 msgid "(%s MB)"
 msgstr "(%s MB)"
 
-#: includes/class-bsr-ajax.php:157
+#: includes/class-bsr-ajax.php:159
 msgid "Processing table %d of %d: %s"
 msgstr "Procesando tabla %d de %d: %s"
 
-#: includes/class-bsr-admin.php:285
+#: includes/class-bsr-admin.php:303
 msgid "Upgrade to Pro"
 msgstr "Actualiza a Pro"
 
-#: includes/class-bsr-admin.php:235
+#: includes/class-bsr-admin.php:256
 msgid " seconds"
 msgstr "segundos"
 
-#: includes/class-bsr-admin.php:224
+#: includes/class-bsr-admin.php:245
 msgid "<a href=\"%s\" target=\"_blank\">UPGRADE</a> to view details on the exact changes that will be made."
 msgstr "<a href=\"%s\" target=\"_blank\">ACTUALIZA</a> para ver los detalles de los cambios exactos que se harán."
 
-#: includes/class-bsr-admin.php:213
+#: includes/class-bsr-admin.php:234
 msgid "Time"
 msgstr "Hora"
 
-#: includes/class-bsr-admin.php:213
+#: includes/class-bsr-admin.php:234
 msgid "Rows Updated"
 msgstr "Filas actualizadas"
 
-#: includes/class-bsr-admin.php:213
+#: includes/class-bsr-admin.php:234
 msgid "Changes Found"
 msgstr "Cambios encontrados"
 
-#: includes/class-bsr-admin.php:213
+#: includes/class-bsr-admin.php:234
 msgid "Table"
 msgstr "Tabla"
 
-#: includes/class-bsr-admin.php:115
-msgid "<p>During the search/replace, <strong>%d</strong> tables were searched, with <strong>%d</strong> cells changed in <strong>%d</strong> updates.</p><p><a href=\"%s\" class=\"thickbox\" title=\"Search/Replace Details\">Click here</a> for more details.</p>"
-msgstr "<p>Durante la búsqueda y sustitución, se han realizado búsquedas en <strong>%d</strong> tablas, y se han modificado <strong>%d</strong> celdas en <strong>%d</strong> actualizaciones.</p><p><a href=\"%s\" class=\"thickbox\" title=\"Detalles sobre la búsqueda y sustitución\">Haz clic aquí</a> para ver más detalles.</p>"
+#: includes/class-bsr-admin.php:136
+msgid "<p>During the search/replace, <strong>%1$d</strong> tables were searched, with <strong>%2$d</strong> cells changed in <strong>%3$d</strong> updates.</p><p><a href=\"%4$s\" class=\"thickbox\" title=\"Search/Replace Details\">Click here</a> for more details.</p>"
+msgstr "<p>Durante la búsqueda y sustitución, se han realizado búsquedas en <strong>%1$d</strong> tablas, y se han modificado <strong>%2$d</strong> celdas en <strong>%3$d</strong> actualizaciones.</p><p><a href=\"%4$s\" class=\"thickbox\" title=\"Detalles sobre la búsqueda y sustitución\">Haz clic aquí</a> para ver más detalles.</p>"
 
-#: includes/class-bsr-admin.php:108
-msgid "<p><strong>DRY RUN:</strong> <strong>%d</strong> tables were searched, <strong>%d</strong> cells were found that need to be updated, and <strong>%d</strong> changes were made.</p><p><a href=\"%s\" class=\"thickbox\" title=\"Dry Run Details\">Click here</a> for more details, or use the form below to run the search/replace.</p>"
-msgstr "<p><strong>SIMULACRO:</strong> se han encontrado <strong>%d</strong>  tablas, <strong>%d</strong> celdas que necesitan actualizarse y se han hecho <strong>%d</strong> cambios.</p><p><a href=\"%s\" class=\"thickbox\" title=\"Detalles sobre simulacros\">Haz clic aquí</a> para más detalles, o usa el formulario de abajo para ejecutar buscar/sustituir.</p>"
+#: includes/class-bsr-admin.php:125
+msgid "<p><strong>DRY RUN:</strong> <strong>%1$d</strong> tables were searched, <strong>%2$d</strong> cells were found that need to be updated, and <strong>%3$d</strong> changes were made.</p><p><a href=\"%4$s\" class=\"thickbox\" title=\"Dry Run Details\">Click here</a> for more details, or use the form below to run the search/replace.</p>"
+msgstr "<p><strong>SIMULACRO:</strong> se han encontrado <strong>%1$d</strong>  tablas, <strong>%2$d</strong> celdas que necesitan actualizarse y se han hecho <strong>%3$d</strong> cambios.</p><p><a href=\"%4$s\" class=\"thickbox\" title=\"Detalles sobre simulacros\">Haz clic aquí</a> para más detalles, o usa el formulario de abajo para ejecutar buscar/sustituir.</p>"
 
 #: includes/class-bsr-admin.php:75
 msgid "Processing..."
@@ -230,15 +231,17 @@ msgid "No search string was defined, please enter a URL or string to search for.
 msgstr "No se ha definido ninguna cadena de búsqueda, por favor, escribe una URL o cadena que buscar."
 
 #. Description of the plugin
+#: better-search-replace.php
 msgid "A small plugin for running a search/replace on your WordPress database."
 msgstr "Un pequeño plugin para ejecutar una búsqueda/sustitución en tu base de datos de WordPress."
 
 #. Plugin URI of the plugin
 #. Author URI of the plugin
+#: better-search-replace.php
 msgid "https://bettersearchreplace.com"
 msgstr "https://bettersearchreplace.com"
 
 #. Plugin Name of the plugin
-#: includes/class-bsr-admin.php:87
+#: better-search-replace.php includes/class-bsr-admin.php:87
 msgid "Better Search Replace"
 msgstr "Better Search Replace"

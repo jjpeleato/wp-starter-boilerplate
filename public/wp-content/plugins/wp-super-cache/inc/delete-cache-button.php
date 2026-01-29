@@ -86,7 +86,7 @@ function wpsc_admin_bar_delete_cache_ajax() {
 		if ( defined( 'WPSCDELETEERROR' ) ) {
 			return json_decode( constant( 'WPSCDELETEERROR' ) );
 		} else {
-			return json_decode( false );
+			return false;
 		}
 	}
 }
@@ -132,7 +132,7 @@ function wpsc_admin_bar_delete_cache() {
 		} else {
 			wp_safe_redirect( esc_url_raw( home_url( $req_path ) ) );
 		}
-		exit;
+		exit( 0 );
 	} else {
 		die( "Oops. Problem with nonce. Please delete cached page from settings page." );
 	}
@@ -155,7 +155,7 @@ function wpsc_delete_cache_directory() {
 		return false;
 	}
 
-	$path = $valid_nonce ? realpath( trailingslashit( get_supercache_dir() . str_replace( '..', '', preg_replace( '/:.*$/', '', $req_path ) ) ) ) : false;
+	$path = realpath( trailingslashit( get_supercache_dir() . str_replace( '..', '', preg_replace( '/:.*$/', '', $req_path ) ) ) );
 
 	if ( $path ) {
 		if ( isset( $_POST['admin'] ) && (int) $_POST['admin'] === 1 ) {
