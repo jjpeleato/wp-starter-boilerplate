@@ -3,7 +3,7 @@
  * Plugin Name: WP Super Cache
  * Plugin URI: https://wordpress.org/plugins/wp-super-cache/
  * Description: Very fast caching plugin for WordPress.
- * Version: 3.0.3
+ * Version: 3.1.1
  * Author: Automattic
  * Author URI: https://automattic.com/
  * License: GPL2+
@@ -12,21 +12,20 @@
  */
 
 /*
-    Copyright Automattic and many other contributors.
+Copyright Automattic and many other contributors.
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+You should have received a copy of the GNU General Public License
+along with this program; if not, see <https://www.gnu.org/licenses/>.
 */
 
 define( 'WPSC_VERSION_ID', '1.12.1' );
@@ -157,6 +156,29 @@ function wp_super_cache_init_action() {
 	wpsc_register_post_hooks();
 }
 add_action( 'init', 'wp_super_cache_init_action' );
+
+/**
+ * Disable caching for pages rendered via wp_die().
+ *
+ * The function wp_die() is used to render error and interstitial pages (e.g.
+ * "Error establishing a database connection"); caching them causes the error to
+ * persist for subsequent visitors even after the underlying issue is resolved.
+ *
+ * @param callable $handler The registered wp_die handler, returned unchanged.
+ * @return callable
+ */
+function wpsc_wp_die_disable_cache( $handler ) {
+	/**
+	 * Filters whether to disable caching when wp_die() is invoked.
+	 *
+	 * @param bool $disable Whether to set DONOTCACHEPAGE. Default true.
+	 */
+	if ( apply_filters( 'wpsc_disable_cache_on_wp_die', true ) && ! defined( 'DONOTCACHEPAGE' ) ) {
+		define( 'DONOTCACHEPAGE', true );
+	}
+	return $handler;
+}
+add_filter( 'wp_die_handler', 'wpsc_wp_die_disable_cache' );
 
 function wp_cache_set_home() {
 	global $wp_cache_is_home;
@@ -378,18 +400,18 @@ function wpsc_ajax_activate_boost() {
 	check_ajax_referer( 'activate-boost' );
 
 	if ( ! isset( $_POST['source'] ) ) {
-		wp_send_json_error( 'no source specified' );
+		wp_send_json_error( 'no source specified', null, JSON_UNESCAPED_SLASHES );
 	}
 
 	$source = sanitize_text_field( wp_unslash( $_POST['source'] ) );
 	$result = activate_plugin( 'jetpack-boost/jetpack-boost.php' );
 	if ( is_wp_error( $result ) ) {
-		wp_send_json_error( $result->get_error_message() );
+		wp_send_json_error( $result->get_error_message(), null, JSON_UNESCAPED_SLASHES );
 	}
 
 	wpsc_notify_migration_to_boost( $source );
 
-	wp_send_json_success();
+	wp_send_json_success( null, null, JSON_UNESCAPED_SLASHES );
 }
 add_action( 'wp_ajax_wpsc_activate_boost', 'wpsc_ajax_activate_boost' );
 
@@ -471,10 +493,12 @@ function wp_cache_manager_error_checks() {
 		return false;
 	}
 
+	// phpcs:ignore PHPCompatibility.IniDirectives.RemovedIniDirectives.safe_modeDeprecatedRemoved -- Version is checked before access.
 	if ( PHP_VERSION_ID < 50300 && ( ini_get( 'safe_mode' ) === '1' || strtolower( ini_get( 'safe_mode' ) ) === 'on' ) ) { // @codingStandardsIgnoreLine
 		echo '<div class="notice notice-error"><h4>' . esc_html__( 'Warning! PHP Safe Mode Enabled!', 'wp-super-cache' ) . '</h4>';
 		echo '<p>' . esc_html__( 'You may experience problems running this plugin because SAFE MODE is enabled.', 'wp-super-cache' ) . '<br />';
 
+		// phpcs:ignore PHPCompatibility.IniDirectives.RemovedIniDirectives.safe_mode_gidDeprecatedRemoved -- Version is checked before access.
 		if ( ! ini_get( 'safe_mode_gid' ) ) { // @codingStandardsIgnoreLine
 			esc_html_e( 'Your server is set up to check the owner of PHP scripts before allowing them to read and write files.', 'wp-super-cache' );
 			echo '<br />';
@@ -617,8 +641,7 @@ function wp_cache_manager_error_checks() {
 		$dismiss_readable_warning = 0;
 	}
 	if( $dismiss_readable_warning == 0 && is_writeable_ACLSafe( WP_CONTENT_DIR . '/' ) ) {
-		$wp_content_stat = stat(WP_CONTENT_DIR . '/');
-		$wp_content_mode = decoct( $wp_content_stat[ 'mode' ] & 0777 );
+		$wp_content_mode = decoct( fileperms( WP_CONTENT_DIR . '/' ) & 0777 );
 		if( substr( $wp_content_mode, -2 ) == '77' ) {
 			?><div class="notice notice-warning"><h4><?php printf( __( 'Warning! %s is writeable!', 'wp-super-cache' ), WP_CONTENT_DIR ); ?></h4>
 			<p><?php printf( __( 'You should change the permissions on %s and make it more restrictive. Use your ftp client, or the following command to fix things:', 'wp-super-cache' ), WP_CONTENT_DIR ); ?> <code>chmod 755 <?php echo WP_CONTENT_DIR; ?>/</code></p>
@@ -668,13 +691,23 @@ function wp_cache_manager_error_checks() {
 			)
 		) {
 			?>
-			<div class="notice notice-warning"><h4><?php _e( 'Rewrite rules must be updated', 'wp-super-cache' ); ?></h4>
-			<p><?php _e( 'The rewrite rules required by this plugin have changed or are missing. ', 'wp-super-cache' ); ?>
-			<?php _e( 'Mobile support requires extra rules in your .htaccess file, or you can set the plugin to simple mode. Here are your options (in order of difficulty):', 'wp-super-cache' ); ?>
-			<ol><li> <?php _e( 'Set the plugin to simple mode and enable mobile support.', 'wp-super-cache' ); ?></li>
+			<div class="notice notice-warning"><h4><?php esc_html_e( 'Rewrite rules must be updated', 'wp-super-cache' ); ?></h4>
+			<p><?php esc_html_e( 'The rewrite rules required by this plugin have changed or are missing. ', 'wp-super-cache' ); ?>
+			<?php esc_html_e( 'Mobile support requires extra rules in your .htaccess file, or you can set the plugin to simple mode. Here are your options (in order of difficulty):', 'wp-super-cache' ); ?></p>
+			<ol><li> <?php esc_html_e( 'Set the plugin to simple mode and enable mobile support.', 'wp-super-cache' ); ?></li>
 			<li> <?php _e( 'Scroll down the Advanced Settings page and click the <strong>Update Mod_Rewrite Rules</strong> button.', 'wp-super-cache' ); ?></li>
-			<li> <?php printf( __( 'Delete the plugin mod_rewrite rules in %s.htaccess enclosed by <code># BEGIN WPSuperCache</code> and <code># END WPSuperCache</code> and let the plugin regenerate them by reloading this page.', 'wp-super-cache' ), $home_path ); ?></li>
-			<li> <?php printf( __( 'Add the rules yourself. Edit %s.htaccess and find the block of code enclosed by the lines <code># BEGIN WPSuperCache</code> and <code># END WPSuperCache</code>. There are two sections that look very similar. Just below the line <code>%%{HTTP:Cookie} !^.*(comment_author_|%s|wp-postpass_).*$</code> add these lines: (do it twice, once for each section)', 'wp-super-cache' ), $home_path, wpsc_get_logged_in_cookie() ); ?></p>
+			<li>
+			<?php
+			// translators: %s is the path to the .htaccess file.
+			printf( wp_kses( __( 'Delete the plugin mod_rewrite rules in %s.htaccess enclosed by <code># BEGIN WPSuperCache</code> and <code># END WPSuperCache</code> and let the plugin regenerate them by reloading this page.', 'wp-super-cache' ), array( 'code' => array() ) ), esc_html( $home_path ) );
+			?>
+			</li>
+			<li>
+			<?php
+			// translators: %1$s is the path to the .htaccess file, %2$s is the logged-in cookie name.
+			printf( wp_kses( __( 'Add the rules yourself. Edit %1$s.htaccess and find the block of code enclosed by the lines <code># BEGIN WPSuperCache</code> and <code># END WPSuperCache</code>. There are two sections that look very similar. Just below the line <code>%%{HTTP:Cookie} !^.*(comment_author_|%2$s|wp-postpass_).*$</code> add these lines: (do it twice, once for each section)', 'wp-super-cache' ), array( 'code' => array() ) ), esc_html( $home_path ), esc_html( wpsc_get_logged_in_cookie() ) );
+			?>
+			</p>
 			<div style='padding: 2px; margin: 2px; border: 1px solid #333; width:400px; overflow: scroll'><pre><?php echo "RewriteCond %{HTTP_user_agent} !^.*(" . addcslashes( str_replace( ', ', '|', $wp_cache_mobile_browsers ), ' ' ) . ").*\nRewriteCond %{HTTP_user_agent} !^(" . addcslashes( str_replace( ', ', '|', $wp_cache_mobile_prefixes ), ' ' ) . ").*"; ?></pre></div></li></ol></div><?php
 		}
 
@@ -1375,16 +1408,26 @@ table.wpsc-settings-table {
 		}
 		?>
 		<p><?php printf( __( 'Cached pages since %1$s : <strong>%2$s</strong>', 'wp-super-cache' ), date( 'M j, Y', $start_date ), number_format( get_option( 'wpsupercache_count' ) ) ); ?></p>
+		<?php
+		$supercache_last_cached_option = get_option( 'supercache_last_cached' );
+		if ( is_array( $supercache_last_cached_option ) ) {
+			?>
 		<p><?php _e( 'Newest Cached Pages:', 'wp-super-cache' ); ?><ol>
 			<?php
-			foreach ( array_reverse( (array) get_option( 'supercache_last_cached' ) ) as $url ) {
-				$since = time() - strtotime( $url['date'] );
-				echo "<li><a title='" . sprintf( esc_html__( 'Cached %s seconds ago', 'wp-super-cache' ), (int) $since ) . "' href='" . site_url( $url['url'] ) . "'>" . substr( $url['url'], 0, 20 ) . "</a></li>\n";
+			foreach ( array_reverse( $supercache_last_cached_option ) as $url ) {
+				if ( ! is_array( $url ) ) {
+					continue;
+				}
+				$since = time() - strtotime( $url['date'] ?? '' );
+				// translators: %s is the number of seconds since the page was cached.
+				echo "<li><a title='" . sprintf( esc_html__( 'Cached %s seconds ago', 'wp-super-cache' ), (int) $since ) . "' href='" . esc_url( site_url( $url['url'] ?? '' ) ) . "'>" . esc_html( substr( $url['url'] ?? '', 0, 20 ) ) . "</a></li>\n";
 			}
 			?>
 			</ol>
 			<small><?php esc_html_e( '(may not always be accurate on busy sites)', 'wp-super-cache' ); ?></small>
-		</p><?php
+		</p>
+			<?php
+		}
 	} elseif ( false == get_option( 'wpsupercache_start' ) ) {
 			update_option( 'wpsupercache_start', time() );
 			update_option( 'wpsupercache_count', 0 );
@@ -2085,9 +2128,14 @@ function wpsc_config_file_notices() {
 }
 add_action( 'admin_notices', 'wpsc_config_file_notices' );
 function wpsc_dismiss_indexhtml_warning() {
-		check_ajax_referer( "wpsc-index-dismiss" );
-		update_site_option( 'wp_super_cache_index_detected', 3 );
-		die( 0 );
+	check_ajax_referer( 'wpsc-index-dismiss' );
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( null, 403 );
+	}
+
+	update_site_option( 'wp_super_cache_index_detected', 3 );
+	die( 0 );
 }
 add_action( 'wp_ajax_wpsc-index-dismiss', 'wpsc_dismiss_indexhtml_warning' );
 
@@ -3307,8 +3355,14 @@ function clear_post_supercache( $post_id ) {
  * Serves an AJAX endpoint to return the current state of the preload process.
  */
 function wpsc_ajax_get_preload_status() {
+	check_ajax_referer( 'wpsc-get-preload-status' );
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( null, 403 );
+	}
+
 	$preload_status = wpsc_get_preload_status( true );
-	wp_send_json_success( $preload_status );
+	wp_send_json_success( $preload_status, null, JSON_UNESCAPED_SLASHES );
 }
 add_action( 'wp_ajax_wpsc_get_preload_status', 'wpsc_ajax_get_preload_status' );
 
@@ -3381,7 +3435,7 @@ function wpsc_update_active_preload( $group = null, $progress = null, $url = nul
 
 	$filename = wpsc_get_preload_status_file_path();
 	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
-	if ( false === file_put_contents( $filename, wp_json_encode( $preload_status ) ) ) {
+	if ( false === file_put_contents( $filename, wp_json_encode( $preload_status, JSON_UNESCAPED_SLASHES ) ) ) {
 		wp_cache_debug( "wpsc_update_active_preload: failed to write to $filename" );
 	}
 }
@@ -3401,7 +3455,7 @@ function wpsc_update_idle_preload( $finish_time = null ) {
 
 	$filename = wpsc_get_preload_status_file_path();
 	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
-	if ( false === file_put_contents( $filename, wp_json_encode( $preload_status ) ) ) {
+	if ( false === file_put_contents( $filename, wp_json_encode( $preload_status, JSON_UNESCAPED_SLASHES ) ) ) {
 		wp_cache_debug( "wpsc_update_idle_preload: failed to write to $filename" );
 	}
 }
@@ -4001,10 +4055,14 @@ function wpsc_get_minimum_preload_interval() {
 }
 
 function wpsc_preload_settings() {
-	global $wp_cache_preload_interval, $wp_cache_preload_on, $wp_cache_preload_taxonomies, $wp_cache_preload_email_me, $wp_cache_preload_email_volume, $wp_cache_preload_posts, $wpdb;
+	global $wp_cache_preload_interval, $wp_cache_preload_on, $wp_cache_preload_taxonomies, $wp_cache_preload_email_volume, $wp_cache_preload_posts, $valid_nonce;
 
 	if ( isset( $_POST[ 'action' ] ) == false || $_POST[ 'action' ] != 'preload' )
 		return;
+
+	if ( ! $valid_nonce ) {
+		return;
+	}
 
 	if ( isset( $_POST[ 'preload_off' ] ) ) {
 		wpsc_cancel_preload();
