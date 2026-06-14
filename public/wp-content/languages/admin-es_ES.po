@@ -1190,15 +1190,15 @@ msgid "Current time"
 msgstr "Hora actual"
 
 #. translators: Hidden accessibility text.
-#: wp-admin/includes/class-wp-comments-list-table.php:599
+#: wp-admin/includes/class-wp-comments-list-table.php:600
 msgid "Ordered by Comment Date, descending."
 msgstr "Ordenado descendente por fecha de comentario."
 
-#: wp-admin/includes/class-wp-comments-list-table.php:555
+#: wp-admin/includes/class-wp-comments-list-table.php:556
 msgid "Table ordered by Post Replied To."
 msgstr "Tabla ordenada por a qué entrada se respondió."
 
-#: wp-admin/includes/class-wp-comments-list-table.php:554
+#: wp-admin/includes/class-wp-comments-list-table.php:555
 msgid "Table ordered by Comment Author."
 msgstr "Tabla ordenada por por comentario del autor."
 
@@ -3480,7 +3480,7 @@ msgstr "Mover la caja %s abajo"
 msgid "Move %s box up"
 msgstr "Mover la caja %s arriba"
 
-#: wp-admin/includes/class-wp-comments-list-table.php:385
+#: wp-admin/includes/class-wp-comments-list-table.php:386
 msgctxt "comment"
 msgid "Not spam"
 msgstr "No es spam"
@@ -3850,7 +3850,7 @@ msgstr "Aún no hay información..."
 msgid "The uploaded file exceeds the %1$s directive in %2$s."
 msgstr "El archivo subido supera la directiva %1$s en %2$s. "
 
-#: wp-admin/includes/class-wp-comments-list-table.php:227
+#: wp-admin/includes/class-wp-comments-list-table.php:228
 msgid "No comments found in Trash."
 msgstr "No se han encontrado comentarios en la papelera."
 
@@ -8093,16 +8093,16 @@ msgctxt "attachment filter"
 msgid "Trash"
 msgstr "Papelera"
 
-#: wp-admin/includes/class-wp-comments-list-table.php:843
+#: wp-admin/includes/class-wp-comments-list-table.php:844
 msgid "Quick edit this comment inline"
 msgstr "Edición rápida integrada de este comentario"
 
-#: wp-admin/includes/class-wp-comments-list-table.php:831
+#: wp-admin/includes/class-wp-comments-list-table.php:832
 #: wp-admin/includes/dashboard.php:759
 msgid "Edit this comment"
 msgstr "Editar este comentario"
 
-#: wp-admin/includes/class-wp-comments-list-table.php:794
+#: wp-admin/includes/class-wp-comments-list-table.php:795
 msgid "Restore this comment from the spam"
 msgstr "Restaurar este comentario desde el spam"
 
@@ -8585,13 +8585,13 @@ msgstr "No hay comentarios pendientes"
 msgid "Failed to initialize a SFTP subsystem session with the SSH2 Server %s"
 msgstr "Fallo al inicializar una sesión de subsistema SFTP con el servidor SSH2 %s"
 
-#: wp-admin/includes/class-wp-comments-list-table.php:488
+#: wp-admin/includes/class-wp-comments-list-table.php:489
 msgctxt "column name"
 msgid "Submitted on"
 msgstr "Enviado el"
 
 #. translators: %s: Number of comments.
-#: wp-admin/includes/class-wp-comments-list-table.php:281
+#: wp-admin/includes/class-wp-comments-list-table.php:282
 msgctxt "comments"
 msgid "Trash <span class=\"count\">(%s)</span>"
 msgid_plural "Trash <span class=\"count\">(%s)</span>"
@@ -8599,7 +8599,7 @@ msgstr[0] "Papelera <span class=\"count\">(%s)</span>"
 msgstr[1] "Papelera <span class=\"count\">(%s)</span>"
 
 #. translators: %s: Number of comments.
-#: wp-admin/includes/class-wp-comments-list-table.php:274
+#: wp-admin/includes/class-wp-comments-list-table.php:275
 msgctxt "comments"
 msgid "Spam <span class=\"count\">(%s)</span>"
 msgid_plural "Spam <span class=\"count\">(%s)</span>"
@@ -8607,7 +8607,7 @@ msgstr[0] "Spam <span class=\"count\">(%s)</span>"
 msgstr[1] "Spam <span class=\"count\">(%s)</span>"
 
 #. translators: %s: Number of comments.
-#: wp-admin/includes/class-wp-comments-list-table.php:267
+#: wp-admin/includes/class-wp-comments-list-table.php:268
 msgctxt "comments"
 msgid "Approved <span class=\"count\">(%s)</span>"
 msgid_plural "Approved <span class=\"count\">(%s)</span>"
@@ -8615,7 +8615,7 @@ msgstr[0] "Aprobado <span class=\"count\">(%s)</span>"
 msgstr[1] "Aprobados <span class=\"count\">(%s)</span>"
 
 #. translators: %s: Number of comments.
-#: wp-admin/includes/class-wp-comments-list-table.php:260
+#: wp-admin/includes/class-wp-comments-list-table.php:261
 msgctxt "comments"
 msgid "Pending <span class=\"count\">(%s)</span>"
 msgid_plural "Pending <span class=\"count\">(%s)</span>"
@@ -8623,7 +8623,7 @@ msgstr[0] "Pendiente <span class=\"count\">(%s)</span>"
 msgstr[1] "Pendientes <span class=\"count\">(%s)</span>"
 
 #. translators: %s: Number of comments.
-#: wp-admin/includes/class-wp-comments-list-table.php:246
+#: wp-admin/includes/class-wp-comments-list-table.php:247
 msgctxt "comments"
 msgid "All <span class=\"count\">(%s)</span>"
 msgid_plural "All <span class=\"count\">(%s)</span>"
@@ -8826,7 +8826,7 @@ msgstr "Elige un icono del sitio"
 
 #. translators: Hidden accessibility text.
 #: wp-admin/includes/class-wp-application-passwords-list-table.php:258
-#: wp-admin/includes/class-wp-comments-list-table.php:913
+#: wp-admin/includes/class-wp-comments-list-table.php:914
 #: wp-admin/includes/class-wp-list-table.php:689
 #: wp-admin/includes/class-wp-list-table.php:1822
 #: wp-admin/includes/update.php:933
@@ -9139,7 +9139,7 @@ msgstr "Enviado el"
 
 #. translators: Column name or table row header.
 #: wp-admin/comment.php:201
-#: wp-admin/includes/class-wp-comments-list-table.php:485
+#: wp-admin/includes/class-wp-comments-list-table.php:486
 msgid "In response to"
 msgstr "En respuesta a"
 
@@ -9239,7 +9239,7 @@ msgid "All categories"
 msgstr "Todas las categorías"
 
 #. translators: Hidden accessibility text.
-#: wp-admin/includes/class-wp-comments-list-table.php:521
+#: wp-admin/includes/class-wp-comments-list-table.php:522
 msgid "Filter by comment type"
 msgstr "Filtrar por tipo de comentario"
 
@@ -9488,7 +9488,7 @@ msgstr "Usuarios de teclado: Cuando estés trabajando en el editor visual, puede
 msgid "A red bar on the left means the comment is waiting for you to moderate it."
 msgstr "Una línea roja a la izquierda indica que el comentario está esperando moderación."
 
-#: wp-admin/includes/class-wp-comments-list-table.php:526
+#: wp-admin/includes/class-wp-comments-list-table.php:527
 msgid "All comment types"
 msgstr "Todos los tipos de comentario"
 
@@ -10847,7 +10847,7 @@ msgid "Contextual Help Tab"
 msgstr "Pestaña de ayuda contextual"
 
 #. translators: Hidden accessibility text.
-#: wp-admin/includes/class-wp-comments-list-table.php:935
+#: wp-admin/includes/class-wp-comments-list-table.php:936
 msgid "Select comment"
 msgstr "Elegir comentario"
 
@@ -11370,7 +11370,7 @@ msgstr "Lo siento, necesito un archivo %s desde el que poder trabajar. Por favor
 msgid "To allow use of this page to automatically repair database problems, please add the following line to your %s file. Once this line is added to your config, reload this page."
 msgstr "Para permitir usar esta página para reparar automáticamente problemas en la base de datos añade la siguiente línea al archivo <code>wp-config.php</code>. Una vez añadas esta línea a tu archivo de configuración vuelve a cargar esta página."
 
-#: wp-admin/includes/class-wp-comments-list-table.php:225
+#: wp-admin/includes/class-wp-comments-list-table.php:226
 msgid "No comments awaiting moderation."
 msgstr "No hay comentarios esperando moderación."
 
@@ -12491,7 +12491,7 @@ msgid "Choose what to export"
 msgstr "Elige qué exportar"
 
 #. translators: %s: Number of comments.
-#: wp-admin/includes/class-wp-comments-list-table.php:253
+#: wp-admin/includes/class-wp-comments-list-table.php:254
 msgctxt "comments"
 msgid "Mine <span class=\"count\">(%s)</span>"
 msgid_plural "Mine <span class=\"count\">(%s)</span>"
@@ -12503,7 +12503,7 @@ msgstr[1] "Míos <span class=\"count\">(%s)</span>"
 msgid "%s &#8212; WordPress"
 msgstr "%s &#8212; WordPress"
 
-#: wp-admin/includes/class-wp-comments-list-table.php:555
+#: wp-admin/includes/class-wp-comments-list-table.php:556
 msgctxt "column name"
 msgid "In Response To"
 msgstr "En respuesta a"
@@ -13033,12 +13033,12 @@ msgstr "Esto quitará la imagen de cabecera. No podrás restaurar ninguna person
 msgid "Default Images"
 msgstr "Imágenes por defecto"
 
-#: wp-admin/includes/class-wp-comments-list-table.php:814
+#: wp-admin/includes/class-wp-comments-list-table.php:815
 #: wp-admin/includes/dashboard.php:785
 msgid "Delete this comment permanently"
 msgstr "Borrar este elemento permanentemente"
 
-#: wp-admin/includes/class-wp-comments-list-table.php:804
+#: wp-admin/includes/class-wp-comments-list-table.php:805
 msgid "Restore this comment from the Trash"
 msgstr "Restaurar este elemento desde la papelera"
 
@@ -13115,7 +13115,7 @@ msgid "Clear"
 msgstr "Limpiar"
 
 #: wp-admin/comment.php:135
-#: wp-admin/includes/class-wp-comments-list-table.php:379
+#: wp-admin/includes/class-wp-comments-list-table.php:380
 msgctxt "comment"
 msgid "Mark as spam"
 msgstr "Marcar como spam"
@@ -13154,7 +13154,7 @@ msgstr "Tienes la versión %1$s. Actualiza a la %2$s."
 msgid "Enabled"
 msgstr "Activado"
 
-#: wp-admin/includes/class-wp-comments-list-table.php:795
+#: wp-admin/includes/class-wp-comments-list-table.php:796
 msgctxt "comment"
 msgid "Not Spam"
 msgstr "No es spam"
@@ -14849,7 +14849,7 @@ msgstr "Edición en lote"
 msgid "Relationship"
 msgstr "Relación con el enlace (XFN)"
 
-#: wp-admin/includes/class-wp-comments-list-table.php:481
+#: wp-admin/includes/class-wp-comments-list-table.php:482
 #: wp-admin/includes/class-wp-post-comments-list-table.php:26
 msgctxt "column name"
 msgid "Comment"
@@ -14874,7 +14874,7 @@ msgctxt "column name"
 msgid "Title"
 msgstr "Título"
 
-#: wp-admin/includes/class-wp-comments-list-table.php:844
+#: wp-admin/includes/class-wp-comments-list-table.php:845
 #: wp-admin/includes/class-wp-posts-list-table.php:1509
 #: wp-admin/includes/class-wp-terms-list-table.php:510
 msgid "Quick&nbsp;Edit"
@@ -15665,36 +15665,36 @@ msgstr "[Pendiente]"
 msgid "From %1$s on %2$s %3$s"
 msgstr "De %1$s en %2$s%3$s"
 
-#: wp-admin/includes/class-wp-comments-list-table.php:822
+#: wp-admin/includes/class-wp-comments-list-table.php:823
 #: wp-admin/includes/dashboard.php:793
 msgid "Move this comment to the Trash"
 msgstr "Mover este comentario a la papelera"
 
 #. translators: "Mark as spam" link.
-#: wp-admin/includes/class-wp-comments-list-table.php:787
+#: wp-admin/includes/class-wp-comments-list-table.php:788
 #: wp-admin/includes/dashboard.php:777
 msgctxt "verb"
 msgid "Spam"
 msgstr "Spam"
 
-#: wp-admin/includes/class-wp-comments-list-table.php:785
+#: wp-admin/includes/class-wp-comments-list-table.php:786
 #: wp-admin/includes/dashboard.php:775
 msgid "Mark this comment as spam"
 msgstr "Marcar este comentario como spam"
 
-#: wp-admin/includes/class-wp-comments-list-table.php:853
+#: wp-admin/includes/class-wp-comments-list-table.php:854
 #: wp-admin/includes/dashboard.php:767
 msgid "Reply to this comment"
 msgstr "Responder a este comentario"
 
-#: wp-admin/includes/class-wp-comments-list-table.php:750
-#: wp-admin/includes/class-wp-comments-list-table.php:775
+#: wp-admin/includes/class-wp-comments-list-table.php:751
+#: wp-admin/includes/class-wp-comments-list-table.php:776
 #: wp-admin/includes/dashboard.php:752
 msgid "Unapprove this comment"
 msgstr "Rechazar este comentario"
 
-#: wp-admin/includes/class-wp-comments-list-table.php:758
-#: wp-admin/includes/class-wp-comments-list-table.php:767
+#: wp-admin/includes/class-wp-comments-list-table.php:759
+#: wp-admin/includes/class-wp-comments-list-table.php:768
 #: wp-admin/includes/dashboard.php:744
 msgid "Approve this comment"
 msgstr "Aprobar este comentario"
@@ -16145,21 +16145,21 @@ msgstr "Campo personalizado borrado."
 msgid "Custom field updated."
 msgstr "Campo personalizado actualizado."
 
-#: wp-admin/includes/class-wp-comments-list-table.php:229
+#: wp-admin/includes/class-wp-comments-list-table.php:230
 msgid "No comments found."
 msgstr "Sin comentarios."
 
-#: wp-admin/includes/class-wp-comments-list-table.php:437
+#: wp-admin/includes/class-wp-comments-list-table.php:438
 #: wp-admin/includes/class-wp-media-list-table.php:222
 #: wp-admin/includes/class-wp-posts-list-table.php:606
 msgid "Empty Trash"
 msgstr "Vaciar papelera"
 
-#: wp-admin/includes/class-wp-comments-list-table.php:437
+#: wp-admin/includes/class-wp-comments-list-table.php:438
 msgid "Empty Spam"
 msgstr "Vaciar spam"
 
-#: wp-admin/includes/class-wp-comments-list-table.php:429
+#: wp-admin/includes/class-wp-comments-list-table.php:430
 #: wp-admin/includes/class-wp-links-list-table.php:123
 #: wp-admin/includes/class-wp-media-list-table.php:217
 #: wp-admin/includes/class-wp-posts-list-table.php:599
@@ -16167,21 +16167,21 @@ msgstr "Vaciar spam"
 msgid "Filter"
 msgstr "Filtrar"
 
-#: wp-admin/includes/class-wp-comments-list-table.php:513
+#: wp-admin/includes/class-wp-comments-list-table.php:514
 #: wp-admin/includes/class-wp-posts-list-table.php:1944
 msgid "Pings"
 msgstr "Pings"
 
-#: wp-admin/includes/class-wp-comments-list-table.php:375
-#: wp-admin/includes/class-wp-comments-list-table.php:759
-#: wp-admin/includes/class-wp-comments-list-table.php:768
+#: wp-admin/includes/class-wp-comments-list-table.php:376
+#: wp-admin/includes/class-wp-comments-list-table.php:760
+#: wp-admin/includes/class-wp-comments-list-table.php:769
 #: wp-admin/includes/dashboard.php:745
 msgid "Approve"
 msgstr "Aprobar"
 
-#: wp-admin/includes/class-wp-comments-list-table.php:371
-#: wp-admin/includes/class-wp-comments-list-table.php:751
-#: wp-admin/includes/class-wp-comments-list-table.php:776
+#: wp-admin/includes/class-wp-comments-list-table.php:372
+#: wp-admin/includes/class-wp-comments-list-table.php:752
+#: wp-admin/includes/class-wp-comments-list-table.php:777
 #: wp-admin/includes/dashboard.php:753
 msgid "Unapprove"
 msgstr "Rechazar"
@@ -16255,7 +16255,7 @@ msgid "View &#8220;%s&#8221;"
 msgstr "Ver &#171;%s&#187;"
 
 #: wp-admin/edit-form-comment.php:242
-#: wp-admin/includes/class-wp-comments-list-table.php:815
+#: wp-admin/includes/class-wp-comments-list-table.php:816
 #: wp-admin/includes/class-wp-media-list-table.php:810
 #: wp-admin/includes/class-wp-posts-list-table.php:1539
 #: wp-admin/includes/dashboard.php:786 wp-admin/includes/media.php:1736
