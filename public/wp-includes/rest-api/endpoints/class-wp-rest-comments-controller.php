@@ -357,8 +357,8 @@ class WP_REST_Comments_Controller extends WP_REST_Controller {
 		}
 
 		$response = $is_head_request ? new WP_REST_Response( array() ) : rest_ensure_response( $comments );
-		$response->header( 'X-WP-Total', $total_comments );
-		$response->header( 'X-WP-TotalPages', $max_pages );
+		$response->header( 'X-WP-Total', (string) $total_comments );
+		$response->header( 'X-WP-TotalPages', (string) $max_pages );
 
 		$base = add_query_arg( urlencode_deep( $request->get_query_params() ), rest_url( sprintf( '%s/%s', $this->namespace, $this->rest_base ) ) );
 
@@ -558,6 +558,14 @@ class WP_REST_Comments_Controller extends WP_REST_Controller {
 					array( 'status' => rest_authorization_required_code() )
 				);
 			}
+		}
+
+		if ( $is_note && ! empty( $request['post'] ) && ! current_user_can( 'edit_post', (int) $request['post'] ) ) {
+			return new WP_Error(
+				'rest_cannot_create_note',
+				__( 'Sorry, you are not allowed to create notes for this post.' ),
+				array( 'status' => rest_authorization_required_code() )
+			);
 		}
 
 		$edit_cap = $is_note ? array( 'edit_post', (int) $request['post'] ) : array( 'moderate_comments' );

@@ -1,0 +1,1382 @@
+# Translation of Plugins - AI - Stable (latest release) in Spanish (Spain)
+# This file is distributed under the same license as the Plugins - AI - Stable (latest release) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2026-05-21 15:32:13+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/4.0.3\n"
+"Language: es\n"
+"Project-Id-Version: Plugins - AI - Stable (latest release)\n"
+
+#: includes/Logging/REST/AI_Request_Log_Controller.php:319
+msgid "Cursor timestamp for cursor-based pagination (use with cursor_id)."
+msgstr "Marca de tiempo del cursor para la paginación basada en el cursor (se usa con cursor_id)."
+
+#: includes/Logging/REST/AI_Request_Log_Controller.php:314
+msgid "Cursor ID for cursor-based pagination (use with cursor_timestamp)."
+msgstr "ID del cursor para la paginación basada en el cursor (se usa con cursor_timestamp)."
+
+#: includes/Logging/REST/AI_Request_Log_Controller.php:308
+msgid "Order sort attribute ascending or descending."
+msgstr "Ordenar la clasificación de los atributos como ascendente o descendente."
+
+#: includes/Logging/REST/AI_Request_Log_Controller.php:302
+msgid "Sort collection by attribute."
+msgstr "Ordenar colección por atributo."
+
+#: includes/Logging/REST/AI_Request_Log_Controller.php:295
+msgid "Maximum number of items per page."
+msgstr "Número máximo de elementos por página."
+
+#: includes/Logging/REST/AI_Request_Log_Controller.php:289
+msgid "Current page of the collection."
+msgstr "Página actual de la colección."
+
+#: includes/Logging/REST/AI_Request_Log_Controller.php:284
+msgid "Filter by tokens: \"gt:N\", \"lt:N\", or \"none\"."
+msgstr "Filtra por tokens: «gt:N», «lt:N» o «none»."
+
+#: includes/Logging/REST/AI_Request_Log_Controller.php:279
+msgid "Search in operations, request previews, response previews, and error messages."
+msgstr "Busca en operaciones, vistas previas de solicitudes, vistas previas de respuestas y mensajes de error."
+
+#: includes/Logging/REST/AI_Request_Log_Controller.php:274
+msgid "Filter logs until this date (YYYY-MM-DD HH:MM:SS)."
+msgstr "Filtra los registros hasta esta fecha (AAAA-MM-DD HH:MM:SS)."
+
+#: includes/Logging/REST/AI_Request_Log_Controller.php:269
+msgid "Filter logs from this date (YYYY-MM-DD HH:MM:SS)."
+msgstr "Filtra los registros a partir de esta fecha (AAAA-MM-DD HH:MM:SS)."
+
+#: includes/Logging/REST/AI_Request_Log_Controller.php:264
+msgid "Filter by user ID."
+msgstr "Filtrar por ID de usuario."
+
+#: includes/Logging/REST/AI_Request_Log_Controller.php:259
+msgid "Filter by AI provider."
+msgstr "Filtrar por proveedor de IA."
+
+#: includes/Logging/REST/AI_Request_Log_Controller.php:247
+msgid "Filter by log type."
+msgstr "Filtrar por tipo de registro."
+
+#. translators: %d: Number of deleted logs.
+#: includes/Logging/REST/AI_Request_Log_Controller.php:232
+msgid "Successfully purged %d log entries."
+msgstr "Se han eliminado correctamente %d entradas del registro."
+
+#: includes/Logging/REST/AI_Request_Log_Controller.php:184
+msgid "Log entry not found."
+msgstr "No se ha encontrado la entrada del registro."
+
+#: includes/Logging/Logging_Http_Transporter.php:408
+msgid "WordPress Core"
+msgstr "Núcleo de WordPress"
+
+#. translators: %d: user ID.
+#: includes/Logging/AI_Request_Log_Manager.php:244
+msgid "User #%d"
+msgstr "Usuario #%d"
+
+#: includes/Experiments/Editorial_Updates/Editorial_Updates.php:47
+msgid "Applies pending editorial Notes to your content automatically. Requires an AI connector that includes support for text generation models."
+msgstr "Aplica automáticamente las notas editoriales pendientes a tu contenido. Requiere un conector de IA que admita modelos de generación de texto."
+
+#: includes/Experiments/Editorial_Updates/Editorial_Updates.php:46
+msgid "Editorial Updates"
+msgstr "Actualizaciones editoriales"
+
+#: includes/Experiments/Editorial_Notes/Editorial_Notes.php:45
+msgid "Adds editorial suggestions to posts block-by-block, covering Accessibility, Readability, Grammar, and SEO. Requires an AI connector that includes support for text generation models."
+msgstr "Añade sugerencias editoriales a las entradas bloque por bloque, abarcando aspectos como la accesibilidad, la legibilidad, la gramática y el SEO. Requiere un conector de IA que incluya compatibilidad con modelos de generación de texto."
+
+#: includes/Experiments/Editorial_Notes/Editorial_Notes.php:44
+msgid "Editorial Notes"
+msgstr "Notas editoriales"
+
+#: includes/Experiments/Connector_Approval/Connector_Approval.php:66
+msgid "Require explicit administrator approval before plugins or themes can use AI connectors configured on this site. Note this is an experimental, proof-of-concept feature and as such, issues may be encountered. Feedback welcome and desired to help shape the feature."
+msgstr "Requiere la aprobación explícita del administrador antes de que los plugins o temas puedan utilizar los conectores de IA configurados en este sitio. Ten en cuenta que se trata de una función experimental, una prueba de concepto, y que, como tal, pueden surgir problemas. Agradecemos tus comentarios, que nos ayudarán a perfeccionar la función."
+
+#: includes/Experiments/Connector_Approval/Connector_Approval.php:65
+msgid "Connector Approval"
+msgstr "Aprobación de conectores"
+
+#: includes/Experiments/Connector_Approval/Admin_Page.php:125
+msgid "Control which plugins and themes are allowed to use each AI connector on this site. Prompts from unapproved callers are prevented and listed below for review."
+msgstr "Controla qué plugins y temas pueden usar cada conector de IA en este sitio. Las solicitudes de usuarios no autorizados se bloquean y se muestran a continuación para que las revises."
+
+#: includes/Experiments/Connector_Approval/Admin_Page.php:79
+#: includes/Experiments/Connector_Approval/Admin_Page.php:80
+#: includes/Experiments/Connector_Approval/Admin_Page.php:124
+msgid "Connector Approvals"
+msgstr "Aprobaciones de conectores"
+
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:898
+msgid "Settings → Connectors"
+msgstr "Ajustes → Conectores"
+
+#. translators: %s: Link to connectors settings page.
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:897
+msgid "This feature requires a valid AI Connector to function properly. Please set up a provider to use this feature in %s."
+msgstr "Esta función necesita un conector de IA válido para funcionar correctamente. Configura un proveedor para poder usar esta función en %s."
+
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:757
+#: build-scripts/experiments/comment-moderation.js:1
+msgid "Failed"
+msgstr "Error"
+
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:477
+msgid "All Toxicities"
+msgstr "Todas las toxicidades"
+
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:475
+msgid "Filter by Toxicity"
+msgstr "Filtrar por toxicidad"
+
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:463
+msgid "All Sentiments"
+msgstr "Todos los sentimientos"
+
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:461
+msgid "Filter by Sentiment"
+msgstr "Filtrar por sentimiento"
+
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:188
+msgid "High Toxicity (>=70%)"
+msgstr "Alta toxicidad (>=70%)"
+
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:180
+msgid "Medium Toxicity (40%-69%)"
+msgstr "Toxicidad media (40%-69%)"
+
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:172
+msgid "Low Toxicity (<40%)"
+msgstr "Baja toxicidad (<40 %)"
+
+#: includes/Logging/REST/AI_Request_Log_Controller.php:253
+msgid "Filter by status."
+msgstr "Filtrar pot estado."
+
+#: includes/Logging/AI_Request_Log_Page.php:48
+#: includes/Logging/AI_Request_Log_Page.php:49
+#: build-scripts/admin/ai-request-logs.js:155
+msgid "AI Request Logs"
+msgstr "Registros de solicitudes de IA"
+
+#: includes/Experiments/AI_Request_Logging/AI_Request_Logging.php:45
+msgid "AI Request Logging"
+msgstr "Registro de solicitudes de IA"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:518
+msgid "<strong>Theme</strong>: Registered by the active theme."
+msgstr "<strong>Tema</strong>: Registrado por el tema activo."
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:517
+msgid "<strong>Plugin</strong>: Registered by an active plugin."
+msgstr "<strong>Complemento</strong>: Registrado por un complemento activo."
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:516
+msgid "<strong>Core</strong>: Built into WordPress itself."
+msgstr "<strong>Núcleo</strong>: Integrado en el propio WordPress."
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:183
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:274
+msgid "&larr; Back to List"
+msgstr "&larr; Volver a la lista"
+
+#: includes/Connector_Approval/REST_Controller.php:203
+msgid "No pending approval request matches the provided key."
+msgstr "No hay ninguna solicitud de aprobación pendiente que coincida con la clave proporcionada."
+
+#: includes/Connector_Approval/REST_Controller.php:173
+msgid "Plugin basename and connector ID are required."
+msgstr "Es necesario indicar el nombre base del plugin y el ID del conector."
+
+#. translators: %s: Capability slug.
+#: includes/REST/Models_Controller.php:185
+msgid "Unsupported capability: %s"
+msgstr "Función no compatible: %s"
+
+#: includes/REST/Models_Controller.php:117
+msgid "AI client is not available."
+msgstr "El cliente de IA no está disponible."
+
+#: includes/Experiments/Content_Resizing/Content_Resizing.php:42
+msgid "Shorten, expand, or rephrase selected block content. Requires an AI connector that includes support for text generation models."
+msgstr "Acorta, amplía o reformula el contenido del bloque seleccionado. Requiere un conector de IA que admita modelos de generación de texto."
+
+#: includes/Experiments/Content_Resizing/Content_Resizing.php:41
+msgid "Content Resizing"
+msgstr "Cambiar tamaño del contenido"
+
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:881
+msgid "Analyze this comment"
+msgstr "Analiza este comentario"
+
+#. translators: %d: Number of comments queued for analysis.
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:840
+msgid "%d comment queued for analysis."
+msgid_plural "%d comments queued for analysis."
+msgstr[0] "%d comentario en cola para su análisis."
+msgstr[1] "%d comentarios en cola para su análisis."
+
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:774
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:882
+msgid "Analyze Sentiment and Toxicity"
+msgstr "Analizar el sentimiento y la toxicidad"
+
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:745
+#: build-scripts/experiments/comment-moderation.js:1
+msgid "Analyzing…"
+msgstr "Analizando…"
+
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:730
+msgid "Queued"
+msgstr "En cola"
+
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:171
+msgid "Low"
+msgstr "Bajo"
+
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:179
+msgid "Medium"
+msgstr "﻿Medio"
+
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:187
+msgid "High"
+msgstr "Alto"
+
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:147
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:148
+msgid "Neutral"
+msgstr "Neutro"
+
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:153
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:154
+msgid "Negative"
+msgstr "Negativo"
+
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:141
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:142
+msgid "Positive"
+msgstr "Positivo"
+
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:376
+msgid "Toxicity"
+msgstr "Toxicidad"
+
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:375
+msgid "Sentiment"
+msgstr "Sentimiento"
+
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:281
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:348
+msgid "Analyzes a comment for toxicity and sentiment."
+msgstr "Analiza un comentario para detectar si es ofensivo y determinar su tono."
+
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:280
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:347
+msgid "Comment Analysis"
+msgstr "Análisis de comentarios"
+
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:223
+msgid "Automatically moderate comments based on toxicity detection and sentiment analysis. Requires an AI connector that includes support for text generation models."
+msgstr "Modera automáticamente los comentarios basándote en la detección de contenido tóxico y el análisis de opiniones. Requiere un conector de IA que admita modelos de generación de texto."
+
+#: includes/Experiments/Comment_Moderation/Comment_Moderation.php:222
+msgid "Comment Moderation"
+msgstr "Moderación de comentarios"
+
+#: includes/Abilities/Content_Resizing/Content_Resizing.php:231
+msgid "Content resizing failed. Please ensure you have a connected provider that supports text generation."
+msgstr "No se ha podido ajustar el tamaño del contenido. Asegúrate de que tienes conectado un proveedor que de soporte de generación de texto."
+
+#: includes/Abilities/Content_Resizing/Content_Resizing.php:175
+msgid "You do not have permission to resize content."
+msgstr "No tienes permiso para reescalar el contenido."
+
+#: includes/Abilities/Content_Resizing/Content_Resizing.php:137
+msgid "No resized content was generated."
+msgstr "No se ha generado ningún contenido redimensionado."
+
+#. translators: %d: Minimum word count.
+#: includes/Abilities/Content_Resizing/Content_Resizing.php:117
+msgid "A minimum of %d words is required to shorten the content."
+msgstr "Se necesita un mínimo de %d palabras para resumir el contenido."
+
+#: includes/Abilities/Content_Resizing/Content_Resizing.php:78
+msgid "The resized content."
+msgstr "El contenido reescalado."
+
+#: includes/Abilities/Content_Resizing/Content_Resizing.php:64
+msgid "The resizing action to perform."
+msgstr "La acción de reescalado que hay que realizar."
+
+#: includes/Abilities/Content_Resizing/Content_Resizing.php:58
+msgid "The block content to resize."
+msgstr "El contenido del bloque a reescalar."
+
+#: includes/Abilities/Content_Resizing/Content_Resizing.php:54
+msgid "The ID of the post to resize content for."
+msgstr "El ID de la entrada para la que se va reescalar el contenido."
+
+#: includes/Abilities/Comment_Moderation/Comment_Analysis.php:260
+msgid "Failed to parse AI response."
+msgstr "Error al analizar la respuesta de la IA."
+
+#: includes/Abilities/Comment_Moderation/Comment_Analysis.php:162
+msgid "You do not have permission to analyze comments."
+msgstr "No tienes permiso para analizar los comentarios."
+
+#: includes/Abilities/Comment_Moderation/Comment_Analysis.php:124
+msgid "This comment is already being analyzed."
+msgstr "Este comentario ya se está analizando."
+
+#: includes/Abilities/Content_Resizing/Content_Resizing.php:104
+msgid "Content is required to resize."
+msgstr "Es necesario introducir contenido para redimensionar."
+
+#: includes/Admin/Dashboard/AI_Status_Widget.php:153
+#: build-scripts/admin/ai-request-logs.js:154
+#: build-scripts/experiments/alt-text-generation.js:1
+#: build-scripts/experiments/content-classification.js:1
+#: build-scripts/experiments/content-resizing.js:1
+#: build-scripts/experiments/editorial-notes.js:1
+#: build-scripts/experiments/editorial-updates.js:1
+#: build-scripts/experiments/excerpt-generation.js:1
+#: build-scripts/experiments/meta-description.js:1
+#: build-scripts/experiments/summarization.js:1
+#: build-scripts/experiments/title-generation.js:1
+#: build-scripts/features/image-generation.js:2
+#: build/routes/ai-home/content.js:24455
+msgid "Manage Connectors"
+msgstr "Gestionar conectores"
+
+#: includes/Experiments/Abilities_Explorer/Ability_Table.php:302
+msgid "All Categories"
+msgstr "Todas las categorías"
+
+#: includes/Experiments/Abilities_Explorer/Ability_Handler.php:124
+msgid "Other"
+msgstr "Otras"
+
+#: includes/Settings/Settings_Page.php:178
+#: build/routes/ai-home/content.js:23744
+msgid "Other Features"
+msgstr "Otras características"
+
+#: includes/Experiments/Alt_Text_Generation/Alt_Text_Generation.php:217
+#: includes/Experiments/Alt_Text_Generation/Alt_Text_Generation.php:342
+msgid "Alt Text"
+msgstr "Texto alternativo"
+
+#. Plugin Name of the plugin
+#: ai.php includes/Logging/Logging_Http_Transporter.php:311
+#: includes/Main.php:196 includes/Settings/Settings_Page.php:68
+#: includes/Settings/Settings_Page.php:69 build/routes/ai-home/content.js:24374
+msgid "AI"
+msgstr "IA"
+
+#: includes/Features/Loader.php:136
+msgid "Attempted to register invalid feature. All features must implement the Feature interface."
+msgstr "Se ha intentado registrar una característica no válida. Todas las características deben implementar la interfaz de características."
+
+#: includes/Features/Loader.php:127
+msgid "Attempted to register invalid feature. Default features must be class-strings."
+msgstr "Se ha intentado registrar una característica no válida. Las características predeterminadas deben ser cadenas de clase."
+
+#: includes/Features/Image_Generation/Image_Generation.php:42
+msgid "Image Generation and Editing"
+msgstr "Generación y edición de imágenes"
+
+#: includes/Deprecated.php:174 includes/Deprecated.php:192
+msgid "This action will be removed in v1.0"
+msgstr "Esta acción se eliminará en la v1.0"
+
+#: includes/Deprecated.php:42 includes/Deprecated.php:61
+#: includes/Deprecated.php:80 includes/Deprecated.php:99
+#: includes/Deprecated.php:118 includes/Deprecated.php:137
+#: includes/Deprecated.php:156
+msgid "This filter will be removed in v1.0"
+msgstr "Este filtro se eliminará en v1.0"
+
+#: includes/Main.php:197
+msgid "Various AI features and experiments."
+msgstr "Varias características y experimentos de IA."
+
+#: includes/Abstracts/Abstract_Feature.php:187
+msgid "This will be removed in v1.0"
+msgstr "Esto se eliminará en v1.0"
+
+#. translators: 1. The version the upgrade failed on, 2. The error message.
+#: includes/Admin/Upgrades.php:131
+msgid "WordPress AI failed to upgrade to %1$s. Migration version %2$s failed with the following error: %3$s. Please deactivate and reactivate the plugin to try again."
+msgstr "La IA de WordPress no ha podido actualizarse a %1$s. La migración de la versión %2$s ha fallado con el siguiente error: %3$s. Desactiva y vuelve a activar el plugin para volver a intentarlo."
+
+#: includes/Abilities/Title_Generation/Title_Generation.php:52
+msgid "Additional context to use when generating title suggestions. This can either be a string of additional context or can be a post ID that will then be used to get context from that post (if it exists). If no content is provided but a valid post ID is used here, the content from that post will be used."
+msgstr "Contexto adicional que se utilizará al generar sugerencias de títulos. Puede tratarse de una cadena de texto con contexto adicional o de un ID de entrada, que se utilizará para obtener el contexto de dicha entrada (si existe). Si no se proporciona ningún contenido, pero se utiliza aquí un ID de entrada válido, se utilizará el contenido de dicha entrada."
+
+#: includes/Abstracts/Abstract_Feature.php:113
+msgid "Feature description is required in load_metadata()."
+msgstr "La descripción de la característica es obligatoria en load_metadata()."
+
+#: includes/Abstracts/Abstract_Feature.php:107
+msgid "Feature label is required in load_metadata()."
+msgstr "La etiqueta de la característica es obligatoria en load_metadata()."
+
+#: includes/Abstracts/Abstract_Feature.php:100
+msgid "Invalid Feature id returned by ::get_id()."
+msgstr "ID de característica no válido devuelto por ::get_id()."
+
+#: includes/Abilities/Image/Generate_Image.php:273
+msgid "The reference image is not valid base64-encoded data."
+msgstr "La imagen de referencia no es un dato cifrado en base64."
+
+#: includes/Abilities/Image/Generate_Image.php:57
+msgid "Optional base64-encoded image to use as a reference image for edits."
+msgstr "Imagen opcional en cifrada en base64 para usar como imagen de referencia en las modificaciones."
+
+#: includes/Admin/Dashboard/AI_Status_Widget.php:139 includes/Main.php:166
+msgid "Connectors"
+msgstr "Conectores"
+
+#: includes/Settings/Settings_Page.php:173
+msgid "Admin Experiments"
+msgstr "Experimentos en la administración"
+
+#: includes/Settings/Settings_Page.php:168
+msgid "Editor Experiments"
+msgstr "Experimentos en el editor"
+
+#: includes/Experiments/Editorial_Notes/Editorial_Notes.php:112
+msgid "WordPress AI"
+msgstr "IA WordPress"
+
+#: includes/Features/Image_Generation/Image_Generation.php:69
+#: includes/Features/Image_Generation/Image_Generation.php:70
+#: includes/Features/Image_Generation/Image_Generation.php:84
+#: includes/Features/Image_Generation/Image_Generation.php:106
+#: build-scripts/features/image-generation.js:9
+msgid "Generate Image"
+msgstr "Generar imagen"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:539
+msgid "For more information:"
+msgstr "Para más información:"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:526
+msgid "Testing"
+msgstr "Pruebas"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:512
+msgid "Providers"
+msgstr "Proveedores"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:500
+msgid "Overview"
+msgstr "Resúmen"
+
+#: includes/Experiments/Abilities_Explorer/Ability_Handler.php:164
+#: build-scripts/experiments/connector-approval.js:1
+msgid "Plugin"
+msgstr "Plugin"
+
+#: includes/Experiments/Abilities_Explorer/Abilities_Explorer.php:91
+#: build-scripts/experiments/meta-description.js:3
+msgid "Copied!"
+msgstr "¡Copiado!"
+
+#: includes/Settings/Settings_Page.php:174
+msgid "AI-powered experiments for the WordPress admin area, including exploration and testing tools."
+msgstr "Experimentos que funcionan con IA para el área de administración de WordPress, incluidas herramientas para exploración y pruebas."
+
+#: includes/Settings/Settings_Page.php:169
+msgid "AI-powered experiments for the block editor, including content generation and enhancement tools."
+msgstr "Experimentos que funcionan con IA para el editor de bloques, incluidas herramientas de generación y mejora de contenidos."
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:540
+msgid "Abilities API Documentation"
+msgstr "Documentación de la API de capacidades"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:533
+msgid "Click \"Invoke Ability\" to execute it and see the result."
+msgstr "Haz clic en «Invocar capacidad» para ejecutarla y ver el resultado."
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:532
+msgid "Use \"Validate Input\" to check your JSON against the schema."
+msgstr "Usa «Validar entrada» para probar tu JSON con el schema."
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:531
+msgid "Edit the pre-filled Input Data if the ability accepts JSON parameters."
+msgstr "Modifica los datos de entrada prefijados si la capacidad admite parámetros JSON."
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:530
+msgid "Click \"Test\" next to an ability in the list."
+msgstr "Haz clic en «Probar« junto a la capacidad en el listado."
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:528
+msgid "You can test any ability directly from this screen:"
+msgstr "Puedes probar cualquier capacidad directamente desde esta pantalla:"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:514
+msgid "Every ability is associated with a provider that indicates where it comes from:"
+msgstr "Cada capacidad está asociada a un proveedor que indica su procedencia:"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:503
+msgid "The Abilities Explorer lets you browse every registered ability, inspect its schemas, and test it with custom input right from the admin."
+msgstr "El explorador de capacidades te permite examinar todas las capacidades registradas, revisar sus schemas y probarlas con datos de entrada personalizados directamente desde la administración."
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:502
+msgid "Abilities are a standardized way for WordPress core, plugins, and themes to expose discrete units of functionality. Each ability has a name, optional input/output schemas, and can be invoked programmatically."
+msgstr "Las capacidades son una forma estandarizada que utilizan el núcleo de WordPress, los plugins y los temas para ofrecer unidades de funcionalidad independientes. Cada capacidad tiene un nombre, schemas de entrada/salida opcionales y puede invocarse a voluntad."
+
+#: includes/Abilities/Editorial_Notes/Editorial_Notes.php:235
+msgid "You do not have permission to run AI reviews."
+msgstr "No tienes permisos para ejecutar revisiones IA."
+
+#: includes/Abilities/Editorial_Notes/Editorial_Notes.php:215
+msgid "You do not have permission to run AI reviews on this post."
+msgstr "No tienes permisos para ejecutar revisiones IA en esta entrada."
+
+#: includes/Abilities/Editorial_Notes/Editorial_Notes.php:159
+msgid "Block content is required to perform a review."
+msgstr "Es obligatorio que el bloque tenga contenido para poder realizar una revisión."
+
+#: includes/Abilities/Editorial_Notes/Editorial_Notes.php:126
+msgid "The suggestion text."
+msgstr "El texto de la sugerencia."
+
+#: includes/Abilities/Editorial_Notes/Editorial_Notes.php:122
+msgid "The review type."
+msgstr "El tipo de revisión."
+
+#: includes/Abilities/Editorial_Notes/Editorial_Notes.php:116
+msgid "Review suggestions for the block."
+msgstr "Sugerencias de revisión para el bloque."
+
+#: includes/Abilities/Editorial_Notes/Editorial_Notes.php:96
+msgid "Review types to perform."
+msgstr "Tipos de revisión a realizar."
+
+#: includes/Abilities/Editorial_Notes/Editorial_Notes.php:88
+msgid "Existing Note texts for this block from prior review runs, used to avoid repeating suggestions."
+msgstr "Textos de notas existentes para este bloque, procedentes de revisiones anteriores, que se utilizan para evitar repetir sugerencias."
+
+#: includes/Abilities/Editorial_Notes/Editorial_Notes.php:81
+msgid "ID of the post being reviewed."
+msgstr "ID de la entrada que está siendo revisada."
+
+#: includes/Abilities/Editorial_Notes/Editorial_Notes.php:76
+msgid "Surrounding content to improve review relevance."
+msgstr "Contenido adicional para mejorar la relevancia de la reseña."
+
+#: includes/Abilities/Editorial_Notes/Editorial_Notes.php:71
+msgid "The plain-text content of the block to review."
+msgstr "El contenido en texto plano del bloque a revisar."
+
+#: includes/Abilities/Editorial_Notes/Editorial_Notes.php:66
+#: includes/Abilities/Editorial_Updates/Editorial_Updates.php:45
+msgid "The block type, e.g. core/paragraph, core/heading."
+msgstr "El tipo de bloque, p.ej. core/paragraph, core/heading."
+
+#: includes/Connector_Approval/Admin_Notice.php:173
+#: build-scripts/experiments/alt-text-generation.js:1
+#: build-scripts/experiments/connector-approval.js:1
+#: build/routes/ai-home/content.js:13006
+msgid "Dismiss"
+msgstr "Descartar"
+
+#: includes/Experiments/Alt_Text_Generation/Alt_Text_Generation.php:257
+#: build-scripts/experiments/alt-text-generation-media-editor.js:1
+#: build-scripts/experiments/alt-text-generation.js:1
+msgid "Generate Alt Text"
+msgstr "Generar texto alternativo"
+
+#: includes/Experiments/Alt_Text_Generation/Alt_Text_Generation.php:231
+#: includes/Experiments/Alt_Text_Generation/Alt_Text_Generation.php:339
+#: build-scripts/experiments/alt-text-generation-media.js:1
+#: build-scripts/experiments/content-resizing.js:5
+#: build-scripts/experiments/meta-description.js:3
+#: build-scripts/experiments/title-generation.js:1
+msgid "Regenerate"
+msgstr "Regenerar"
+
+#: includes/Features/Image_Generation/Image_Generation.php:171
+msgid "Image Prompt Generation"
+msgstr "Generación de instrucción de imagen"
+
+#: includes/Experiments/Alt_Text_Generation/Alt_Text_Generation.php:51
+msgid "Alt Text Generation"
+msgstr "Generación de texto alternativo"
+
+#: includes/Abilities/Image/Import_Base64_Image.php:77
+msgid "The value of the meta data."
+msgstr "El valor de los datos meta."
+
+#: includes/Abilities/Image/Import_Base64_Image.php:72
+msgid "The key of the meta data."
+msgstr "La clave de los datos meta."
+
+#: includes/Abilities/Image/Import_Base64_Image.php:65
+msgid "Optional meta data to save with the image."
+msgstr "Datos meta opcionales a guardar con la imagen."
+
+#: includes/Abilities/Image/Generate_Image_Prompt.php:190
+msgid "You do not have permission to generate image prompts."
+msgstr "No tienes permiso para generar instrucciones de imagen."
+
+#: includes/Abilities/Image/Generate_Image_Prompt.php:138
+msgid "No prompt was generated."
+msgstr "No se ha generado ninguna instrucción."
+
+#: includes/Abilities/Image/Generate_Image.php:109
+msgid "The model name."
+msgstr "El nombre del modelo."
+
+#: includes/Abilities/Image/Generate_Image.php:105
+msgid "The model ID."
+msgstr "El ID del modelo."
+
+#: includes/Abilities/Image/Generate_Image.php:95
+msgid "The provider type."
+msgstr "El tipo de proveedor."
+
+#: includes/Abilities/Image/Generate_Image.php:91
+msgid "The provider name."
+msgstr "El nombre del proveedor."
+
+#: includes/Abilities/Image/Generate_Image.php:87
+msgid "The provider ID."
+msgstr "El ID del proveedor."
+
+#: includes/Features/Image_Generation/Image_Generation.php:172
+msgid "Generates a prompt from post content that can be used to generate an image"
+msgstr "Genera una instrucción a partir del contenido de la entrada que puede utilizarse para generar una imagen"
+
+#: includes/Abilities/Image/Generate_Image_Prompt.php:122
+msgid "Content is required to generate a prompt."
+msgstr "Es obligatorio que haya contenido para poder generar una instrucción."
+
+#: includes/Abilities/Image/Generate_Image_Prompt.php:72
+msgid "The image generation prompt."
+msgstr "La instrucción para la generación de la imagen."
+
+#: includes/Abilities/Image/Generate_Image_Prompt.php:57
+msgid "Any additional style instructions to apply to the generated image."
+msgstr "Cualquier instrucción de estilo adicional que aplicar a la imagen generada."
+
+#: includes/Abilities/Image/Generate_Image_Prompt.php:52
+msgid "Any additional context to help generate the prompt. This can either be a string of additional context or can be a post ID that will then be used to get context from that post (if it exists)."
+msgstr "Cualquier contexto adicional que ayude a generar la instrucción. Puede tratarse de una cadena de texto con contexto adicional o el ID de una entrada, que se utilizará para obtener el contexto de dicha entrada (si existe)."
+
+#: includes/Abilities/Image/Generate_Image_Prompt.php:47
+msgid "The content to use as inspiration for the generated image."
+msgstr "El contexto a utilizar como inspiración para la imagen generada."
+
+#: includes/Abilities/Image/Generate_Image.php:101
+msgid "Information about the model that generated the image."
+msgstr "Información sobre el modelo que generó la imagen."
+
+#: includes/Abilities/Image/Generate_Image.php:83
+msgid "Information about the provider that generated the image."
+msgstr "Información sobre el proveedor que generó la imagen."
+
+#: includes/Abilities/Image/Generate_Image.php:75
+msgid "Generated image data."
+msgstr "Datos de la imagen generada."
+
+#: includes/Abilities/Image/Alt_Text_Generation.php:582
+msgid "You do not have permission to generate alt text."
+msgstr "No tienes permisos para generar textos alternativos."
+
+#: includes/Abilities/Image/Alt_Text_Generation.php:575
+msgid "You do not have permission to edit this attachment."
+msgstr "No tienes permisos para editar este adjunto."
+
+#: includes/Abilities/Image/Alt_Text_Generation.php:429
+msgid "Generate alt text for this image."
+msgstr "Genera un texto alternativo para esta imagen."
+
+#: includes/Abilities/Image/Alt_Text_Generation.php:291
+msgid "Could not retrieve image URL from attachment."
+msgstr "No se pudo recuperar la URL de la imagen a partir del adjunto."
+
+#: includes/Abilities/Image/Alt_Text_Generation.php:268
+msgid "The specified attachment is not an image."
+msgstr "El adjunto especificado no es una imagen."
+
+#. translators: %d: Attachment ID.
+#: includes/Abilities/Image/Alt_Text_Generation.php:260
+#: includes/Abilities/Image/Alt_Text_Generation.php:567
+msgid "Attachment with ID %d not found."
+msgstr "No se ha encontrado el adjunto con el ID %d."
+
+#: includes/Abilities/Image/Alt_Text_Generation.php:210
+msgid "Either attachment_id or image_url must be provided."
+msgstr "Debe facilitarse el attachment_id o la image_url."
+
+#: includes/Abilities/Image/Alt_Text_Generation.php:201
+#: includes/Abilities/Image/Alt_Text_Generation.php:308
+msgid "Could not read the downloaded image file."
+msgstr "No se pudo leer el archivo de imagen descargado."
+
+#: includes/Abilities/Image/Alt_Text_Generation.php:77
+msgid "Optional context about the image or surrounding content to improve alt text relevance."
+msgstr "Contexto opcional sobre la imagen o contenido adicional para mejorar la relevancia del texto alternativo."
+
+#: includes/Abilities/Image/Alt_Text_Generation.php:72
+msgid "URL or data URI of the image to generate alt text for. Used if attachment_id is not provided."
+msgstr "URL o URI de los datos de la imagen para la que hay que generar el texto alternativo. Se usarán si no se facilita el attachment_id."
+
+#: includes/Abilities/Image/Alt_Text_Generation.php:67
+msgid "The attachment ID of the image to generate alt text for."
+msgstr "El ID del adjunto de la imagen para la que hay que generar el texto alternativo."
+
+#: includes/Admin/Dashboard/AI_Capabilities_Widget.php:209
+msgid "Image Generation"
+msgstr "Generación de imágenes"
+
+#: includes/Experiments/Excerpt_Generation/Excerpt_Generation.php:40
+msgid "Excerpt Generation"
+msgstr "Generación de extractos"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:478
+msgid "Unknown error occurred."
+msgstr "Ha ocurrido un error desconocido."
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:331
+msgid "Result"
+msgstr "Resultado"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:323
+msgid "Clear Result"
+msgstr "Vaciar resultado"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:198
+msgid "Details"
+msgstr "Detalles"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:211
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:221
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:230
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:339
+msgid "Copy"
+msgstr "Copiar"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:275
+msgid "View Details"
+msgstr "Ver detalles"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:192
+msgid "Description"
+msgstr "Descripción"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:184
+msgid "Test Ability"
+msgstr "Probar capacidad"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:166
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:254
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:446
+msgid "Ability not found."
+msgstr "Capacidad no encontrada."
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:159
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:247
+msgid "No ability specified."
+msgstr "No se ha especificado ninguna capacidad."
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:143
+msgid "Search Abilities"
+msgstr "Buscar capacidades"
+
+#: includes/Admin/Dashboard/AI_Capabilities_Widget.php:91
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:109
+msgid "Total Abilities"
+msgstr "Total de capacidades"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:68
+#: includes/Experiments/Connector_Approval/Admin_Page.php:120
+msgid "You do not have sufficient permissions to access this page."
+msgstr "No tienes permisos suficientes para acceder a esta página."
+
+#: includes/Experiments/Abilities_Explorer/Ability_Table.php:308
+msgid "Filter"
+msgstr "Filtrar"
+
+#: includes/Admin/Dashboard/AI_Capabilities_Widget.php:103
+#: includes/Experiments/Abilities_Explorer/Ability_Handler.php:165
+#: includes/Experiments/Abilities_Explorer/Ability_Table.php:298
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:124
+#: build-scripts/experiments/connector-approval.js:1
+msgid "Theme"
+msgstr "Tema"
+
+#: includes/Admin/Dashboard/AI_Capabilities_Widget.php:99
+#: includes/Experiments/Abilities_Explorer/Ability_Table.php:297
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:119
+msgid "Plugins"
+msgstr "Plugins"
+
+#: includes/Admin/Dashboard/AI_Capabilities_Widget.php:95
+#: includes/Experiments/Abilities_Explorer/Ability_Handler.php:163
+#: includes/Experiments/Abilities_Explorer/Ability_Table.php:296
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:114
+msgid "Core"
+msgstr "Núcleo"
+
+#: includes/Experiments/Abilities_Explorer/Ability_Table.php:295
+msgid "All Providers"
+msgstr "Todos los proveedores"
+
+#: includes/Experiments/Abilities_Explorer/Ability_Table.php:277
+msgid "Test"
+msgstr "Probar"
+
+#: includes/Experiments/Abilities_Explorer/Ability_Table.php:275
+msgid "View"
+msgstr "Ver"
+
+#: includes/Experiments/Abilities_Explorer/Ability_Table.php:66
+#: build-scripts/admin/ai-request-logs.js:4
+#: build-scripts/admin/ai-request-logs.js:16
+#: build-scripts/admin/ai-request-logs.js:22
+#: build-scripts/experiments/connector-approval.js:1
+msgid "Actions"
+msgstr "Acciones"
+
+#: includes/Experiments/Abilities_Explorer/Ability_Table.php:65
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:201
+#: build-scripts/admin/ai-request-logs.js:2
+#: build/routes/ai-home/content.js:23501 build/routes/ai-home/content.js:23546
+msgid "Provider"
+msgstr "Proveedor"
+
+#: includes/Experiments/Abilities_Explorer/Ability_Table.php:64
+msgid "Slug"
+msgstr "Slug"
+
+#: includes/Experiments/Abilities_Explorer/Ability_Table.php:63
+msgid "Name"
+msgstr "Nombre"
+
+#: includes/Experiments/Abilities_Explorer/Abilities_Explorer.php:92
+msgid "Failed to copy"
+msgstr "No se pudo copiar"
+
+#: includes/Experiments/Abilities_Explorer/Abilities_Explorer.php:88
+#: build-scripts/admin/ai-request-logs.js:2
+msgid "Error"
+msgstr "Error"
+
+#: includes/Experiments/Abilities_Explorer/Abilities_Explorer.php:87
+msgid "Success!"
+msgstr "¡Conseguido!"
+
+#: includes/Admin/Dashboard/AI_Capabilities_Widget.php:113
+#: includes/Experiments/Abilities_Explorer/Abilities_Explorer.php:45
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:46
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:47
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:75
+msgid "Abilities Explorer"
+msgstr "Explorador de capacidades"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:278
+msgid "Test Ability:"
+msgstr "Probar capacidad:"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:228
+msgid "Raw Data"
+msgstr "Datos sin procesar"
+
+#: includes/Abilities/Excerpt_Generation/Excerpt_Generation.php:66
+msgid "Generated excerpt."
+msgstr "Extracto generado."
+
+#: includes/Experiments/Summarization/Summarization.php:41
+msgid "Content Summarization"
+msgstr "Resumen del contenido"
+
+#: includes/Features/Image_Generation/Image_Generation.php:162
+msgid "Base64 Image Import"
+msgstr "Importar imagen base64"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:471
+msgid "Ability invoked successfully."
+msgstr "Capacidad invocada correctamente."
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:458
+msgid "Input validation failed."
+msgstr "La validación ha fallado."
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:435
+msgid "Ability slug is required."
+msgstr "El slug de la capacidad es obligatorio."
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:423
+msgid "Insufficient permissions."
+msgstr "Permisos insuficientes."
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:317
+msgid "Invoke Ability"
+msgstr "Invocar capacidad"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:307
+msgid "View the results below"
+msgstr "Ver los resultados abajo"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:302
+msgid "How to test:"
+msgstr "Cómo probarlo:"
+
+#: includes/Abilities/Excerpt_Generation/Excerpt_Generation.php:52
+msgid "Additional context to use when generating an excerpt suggestion for the content. This can either be a string of additional context or can be a post ID that will then be used to get context from that post (if it exists). If no content is provided but a valid post ID is used here, the content from that post will be used."
+msgstr "Contexto adicional que se utilizará al generar una sugerencia de extracto para el contenido. Puede tratarse de una cadena de texto con contexto adicional o de un ID de entrada, que se utilizará para obtener el contexto de dicha entrada (si existe). Si no se proporciona ningún contenido, pero se utiliza aquí un ID de entrada válido, se utilizará el contenido de dicha entrada."
+
+#: includes/Experiments/Abilities_Explorer/Abilities_Explorer.php:46
+msgid "Discover, inspect, test, and document all abilities registered via the WordPress Abilities API."
+msgstr "Descubre, inspecciona, prueba y documenta todas las capacidades registradas usando la API de capacidades de WordPress."
+
+#: includes/Experiments/Abilities_Explorer/Abilities_Explorer.php:86
+msgid "Invoking ability..."
+msgstr "Invocando capacidad…"
+
+#: includes/Experiments/Abilities_Explorer/Abilities_Explorer.php:90
+msgid "Are you sure you want to invoke this ability?"
+msgstr "¿Seguro que quieres invocar esta capacidad?"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:291
+msgid "This ability does not accept any input parameters. Simply click \"Invoke Ability\" to execute it."
+msgstr "Esta capacidad no acepta parámetros de entrada. Simplemente haz clic en «Invocar capacidad» para ejecutarla."
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:290
+msgid "No Input Required"
+msgstr "No se requiere entrada de datos"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:219
+msgid "Output Schema"
+msgstr "Schema de salida"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:209
+msgid "Input Schema"
+msgstr "Schema de entrada"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:286
+msgid "Input Data"
+msgstr "Datos de entrada"
+
+#: includes/Experiments/Abilities_Explorer/Abilities_Explorer.php:89
+msgid "Invalid JSON input"
+msgstr "Entrada JSON no válida"
+
+#: includes/Abilities/Summarization/Summarization.php:199
+msgid "You do not have permission to summarize content."
+msgstr "No tienes permisos para resumir contenido."
+
+#: includes/Abilities/Summarization/Summarization.php:179
+msgid "You do not have permission to summarize this post."
+msgstr "No tienes permisos para resumir esta entrada."
+
+#: includes/Abilities/Summarization/Summarization.php:147
+msgid "No summary was generated."
+msgstr "No se ha generado ningún resumen."
+
+#: includes/Abilities/Summarization/Summarization.php:81
+msgid "The summary of the content."
+msgstr "El resumen del contenido."
+
+#: includes/Abilities/Summarization/Summarization.php:67
+msgid "The length of the summary."
+msgstr "La longitud del resumen."
+
+#: includes/Abilities/Summarization/Summarization.php:61
+msgid "Additional context to use when summarizing the content. This can either be a string of additional context or can be a post ID that will then be used to get context from that post (if it exists). If no content is provided but a valid post ID is used here, the content from that post will be used."
+msgstr "Contexto adicional que se utilizará al resumir el contenido. Puede tratarse de una cadena de texto con información adicional o de un ID de entrada, que se utilizará para obtener el contexto de dicha entrada (si existe). Si no se proporciona ningún contenido, pero se utiliza aquí un ID de entrada válido, se utilizará el contenido de dicha entrada."
+
+#: includes/Abilities/Image/Import_Base64_Image.php:165
+msgid "The data is not a valid image."
+msgstr "El dato no es una imagen válida."
+
+#: includes/Abilities/Image/Import_Base64_Image.php:157
+msgid "The data is not a valid base64 encoded string."
+msgstr "El dato no es una cadena cifrada en base64 válida."
+
+#: includes/Abilities/Image/Import_Base64_Image.php:124
+msgid "Attachment alt text."
+msgstr "Texto alternativo del adjunto."
+
+#: includes/Abilities/Image/Import_Base64_Image.php:120
+msgid "Attachment description."
+msgstr "Descripción del adjunto."
+
+#: includes/Abilities/Image/Import_Base64_Image.php:116
+msgid "Attachment title."
+msgstr "Título del adjunto."
+
+#: includes/Abilities/Image/Import_Base64_Image.php:112
+msgid "Attachment filename."
+msgstr "Nombre de archivo del adjunto."
+
+#: includes/Abilities/Image/Import_Base64_Image.php:108
+msgid "Attachment URL."
+msgstr "URL del adjunto."
+
+#: includes/Abilities/Image/Import_Base64_Image.php:104
+msgid "Attachment ID."
+msgstr "ID del adjunto."
+
+#: includes/Abilities/Image/Import_Base64_Image.php:100
+msgid "Imported image data."
+msgstr "Datos de la imagen importada."
+
+#: includes/Abilities/Image/Import_Base64_Image.php:61
+msgid "The MIME type of the image."
+msgstr "El tipo MIME de la imagen."
+
+#: includes/Abilities/Image/Import_Base64_Image.php:56
+msgid "The alt text of the image."
+msgstr "El texto alternativo de la imagen."
+
+#: includes/Abilities/Image/Import_Base64_Image.php:51
+msgid "The description of the image."
+msgstr "La descripción de la imagen."
+
+#: includes/Abilities/Image/Import_Base64_Image.php:46
+msgid "The title of the image."
+msgstr "El título de la imagen."
+
+#: includes/Abilities/Image/Import_Base64_Image.php:41
+msgid "The filename of the image."
+msgstr "El nombre de archivo de la imagen."
+
+#: includes/Abilities/Image/Generate_Image.php:216
+#: includes/Abilities/Image/Generate_Image.php:231
+msgid "No image data was generated."
+msgstr "No se ha generado ningún dato de imagen."
+
+#: includes/Abilities/Image/Generate_Image.php:159
+msgid "You do not have permission to generate images."
+msgstr "No tienes permisos para generar imágenes."
+
+#: includes/Abilities/Image/Generate_Image.php:139
+msgid "No image was generated."
+msgstr "No se ha generado ninguna imagen."
+
+#: includes/Abilities/Image/Generate_Image.php:79
+msgid "The base64 encoded image data."
+msgstr "Los datos de la imagen cifrada en base64."
+
+#: includes/Abilities/Image/Generate_Image.php:52
+msgid "Prompt used to generate an image."
+msgstr "Instrucción utilizada para generar una imagen."
+
+#: includes/Abilities/Excerpt_Generation/Excerpt_Generation.php:183
+msgid "You do not have permission to generate excerpts."
+msgstr "No tienes permiso para generar extractos."
+
+#: includes/Abilities/Excerpt_Generation/Excerpt_Generation.php:163
+#: includes/Abilities/Image/Generate_Image_Prompt.php:170
+msgid "You do not have permission to generate excerpts for this post."
+msgstr "No tienes permiso para generar extractos para esta entrada."
+
+#: includes/Abilities/Excerpt_Generation/Excerpt_Generation.php:131
+msgid "No excerpt suggestion was generated."
+msgstr "No se ha generado ninguna sugerencia de extracto."
+
+#: includes/Abilities/Excerpt_Generation/Excerpt_Generation.php:47
+msgid "Content to generate an excerpt suggestion for."
+msgstr "El contenido para el que generar una sugerencia de extracto."
+
+#: includes/Abilities/Excerpt_Generation/Excerpt_Generation.php:115
+msgid "Content is required to generate an excerpt suggestion."
+msgstr "El contenido es obligatorio para generar una sugerencia de extracto."
+
+#: includes/Abilities/Summarization/Summarization.php:56
+msgid "Content to summarize."
+msgstr "Contenido a resumir."
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:320
+msgid "Validate Input"
+msgstr "Validar entrada"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:337
+msgid "Input Schema Reference"
+msgstr "Referencia del schema de entrada"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:306
+msgid "Click \"Invoke Ability\" to execute the ability with your input"
+msgstr "Haz clic en «Invocar capacidad» para ejecutar la capacidad con tu entrada"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:305
+msgid "Click \"Validate Input\" to check your JSON is correct"
+msgstr "Haz clic en «Invocar capacidad» para comprobar si tu JSON es correcto"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:304
+msgid "Edit the JSON input below with your test data"
+msgstr "Modifica la entrada JSON de abajo con tus datos de prueba"
+
+#: includes/Experiments/Abilities_Explorer/Admin_Page.php:297
+msgid "Edit the JSON input below to test the ability. The input will be validated against the input schema if available."
+msgstr "Modifica la entrada JSON de abajo para probar la capacidad. La entrada se validará con el schema de entrada si estuviese disponible."
+
+#: includes/Abilities/Summarization/Summarization.php:131
+msgid "Content is required to generate a summary."
+msgstr "Es obligatorio que haya contenido para poder generar un resumen."
+
+#: includes/Features/Image_Generation/Image_Generation.php:163
+msgid "Imports a base64 encoded image into the media library"
+msgstr "Importa una imagen cifrada en base64 en la biblioteca de medios"
+
+#: includes/Abilities/Image/Import_Base64_Image.php:337
+msgid "Failed to retrieve attachment data."
+msgstr "Error al recuperar datos del adjunto."
+
+#: includes/Abilities/Image/Import_Base64_Image.php:275
+msgid "Failed to write image data to temporary file."
+msgstr "Error al escribir datos de la imagen en un archivo temporal."
+
+#: includes/Abilities/Image/Import_Base64_Image.php:261
+msgid "Failed to decode base64 image data."
+msgstr "Error al descifrar los datos de la imagen base64."
+
+#: includes/Abilities/Image/Import_Base64_Image.php:217
+msgid "You do not have permission to import images."
+msgstr "No tienes permisos para importar imágenes."
+
+#: includes/Abilities/Image/Import_Base64_Image.php:175
+msgid "No base64 data found in the provided input."
+msgstr "No se han encontrado datos base64 en la entrada facilitada."
+
+#: includes/Abilities/Image/Import_Base64_Image.php:36
+msgid "The base64 encoded image data to import into the media library."
+msgstr "Los datos de la imagen cifrada en base64 a importar en la biblioteca de medios."
+
+#: includes/Experiments/Alt_Text_Generation/Alt_Text_Generation.php:231
+#: includes/Experiments/Alt_Text_Generation/Alt_Text_Generation.php:339
+#: build-scripts/experiments/alt-text-generation-media.js:1
+#: build-scripts/experiments/meta-description.js:3
+#: build-scripts/experiments/title-generation.js:1
+#: build-scripts/features/image-generation.js:5
+#: build-scripts/features/image-generation.js:8
+msgid "Generate"
+msgstr "Generar"
+
+#: includes/Main.php:160
+msgid "Settings"
+msgstr "Ajustes"
+
+#. Plugin URI of the plugin
+#: ai.php
+msgid "https://github.com/WordPress/ai"
+msgstr "https://github.com/WordPress/ai"
+
+#. Author URI of the plugin
+#: ai.php
+msgid "https://make.wordpress.org/ai/"
+msgstr "https://make.wordpress.org/ai/"
+
+#. Author of the plugin
+#: ai.php
+msgid "WordPress.org Contributors"
+msgstr "Colaboradores de WordPress.org"
+
+#: includes/Experiments/Title_Generation/Title_Generation.php:40
+msgid "Title Generation"
+msgstr "Generación de títulos"
+
+#: includes/Experiments/Example_Experiment/Example_Experiment.php:110
+msgid "Example experiment is active!"
+msgstr "¡El experimento de ejemplo está activo!"
+
+#: includes/Experiments/Example_Experiment/Example_Experiment.php:38
+msgid "Demonstrates the AI experiment system with example hooks and functionality."
+msgstr "Demuestra el sistema de experimento de IA con ganchos y funcionalidades de ejemplo."
+
+#: includes/Experiments/Example_Experiment/Example_Experiment.php:37
+msgid "Example Experiment"
+msgstr "Experimento de ejemplo"
+
+#. translators: %s: Error message.
+#: includes/Main.php:137
+msgid "AI Plugin initialization failed: %s"
+msgstr "La inicialización del plugin de IA falló: %s"
+
+#: includes/Abilities/Utilities/Posts.php:371
+msgid "Post not found."
+msgstr "Entrada no encontrada."
+
+#. translators: %1$s: Error message.
+#: includes/Abilities/Utilities/Posts.php:307
+msgid "Error getting terms: %1$s"
+msgstr "Error al obtener los términos: %1$s"
+
+#: includes/Abilities/Utilities/Posts.php:277
+msgid "Taxonomy not found."
+msgstr "Taxonomía no encontrada."
+
+#: includes/Abilities/Utilities/Posts.php:254
+msgid "How the term should be filtered."
+msgstr "Cómo debería filtrarse el término."
+
+#: includes/Abilities/Utilities/Posts.php:250
+msgid "How many times the term is used."
+msgstr "Cuántas veces se ha usado el término."
+
+#: includes/Abilities/Utilities/Posts.php:246
+msgid "The parent ID of the term."
+msgstr "El ID superior del término."
+
+#: includes/Abilities/Utilities/Posts.php:242
+msgid "The description of the term."
+msgstr "La descripción del término."
+
+#: includes/Abilities/Utilities/Posts.php:238
+msgid "The taxonomy name of the term."
+msgstr "El nombre de la taxonomía del término."
+
+#: includes/Abilities/Utilities/Posts.php:234
+msgid "The taxonomy ID of the term."
+msgstr "El ID de la taxonomía del término."
+
+#: includes/Abilities/Utilities/Posts.php:230
+msgid "The group ID of the term."
+msgstr "El ID del grupo del término."
+
+#: includes/Abilities/Utilities/Posts.php:226
+msgid "The slug of the term."
+msgstr "El slug del término."
+
+#: includes/Abilities/Utilities/Posts.php:222
+msgid "The name of the term."
+msgstr "El nombre del término."
+
+#: includes/Abilities/Utilities/Posts.php:218
+msgid "The ID of the term."
+msgstr "El ID del término."
+
+#: includes/Abilities/Utilities/Posts.php:100
+msgid "The author of the post."
+msgstr "El autor de la entrada."
+
+#: includes/Abilities/Utilities/Posts.php:203
+msgid "The taxonomy to filter the terms by."
+msgstr "La taxonomía para filtrar los términos."
+
+#: includes/Abilities/Utilities/Posts.php:199
+msgid "The ID of the post to get the terms of."
+msgstr "El ID de la entrada para obtener los términos."
+
+#: includes/Abilities/Utilities/Posts.php:92
+msgid "The title of the post."
+msgstr "El título de la entrada."
+
+#: includes/Abilities/Utilities/Posts.php:191
+msgid "Get the post terms"
+msgstr "Obtener términos de la entrada"
+
+#: includes/Abilities/Utilities/Posts.php:104
+msgid "The type of the post."
+msgstr "El tipo de contenido."
+
+#: includes/Abilities/Utilities/Posts.php:88
+msgid "The content of the post."
+msgstr "El contenido de la publicación."
+
+#: includes/Abilities/Utilities/Posts.php:84
+msgid "The details of the post."
+msgstr "Los detalles de la publicación."
+
+#: includes/Abilities/Utilities/Posts.php:96
+msgid "The slug of the post."
+msgstr "El slug de la publicación."
+
+#: includes/Abilities/Utilities/Posts.php:108
+msgid "The excerpt of the post."
+msgstr "El extracto de la publicación."
+
+#: includes/Abilities/Utilities/Posts.php:192
+msgid "Get the terms of a post based on the post ID and optionally filter by taxonomy."
+msgstr "Obtiene los términos de una entrada basado en el ID de la publicación y, opcionalmente, filtrando por taxonomía."
+
+#: includes/Abilities/Utilities/Posts.php:210
+msgid "An array of WP_Term objects assigned to the post."
+msgstr "Un array de objetos WP_Term asignados a la publicación."
+
+#: includes/Abilities/Utilities/Posts.php:73
+msgid "The fields to get the details of. Will default to all fields if not provided."
+msgstr "Los campos a partir de los que obtener los detalles. Por defecto serán todos los campos si no se facilita ninguno."
+
+#: includes/Abilities/Utilities/Posts.php:69
+msgid "The ID of the post to get the details of."
+msgstr "El ID de la publicación de la que obtener los detalles."
+
+#: includes/Abilities/Utilities/Posts.php:62
+msgid "Get the details of a post based on the post ID. Optionally, limit the details to specific fields."
+msgstr "Obtiene los detalles de una publicación basado en el ID de la publicación. Opcionalmente, limita los detalles a campos específicos."
+
+#: includes/Abilities/Utilities/Posts.php:61
+msgid "Get post details"
+msgstr "Obtener detalles de la publicación"
+
+#: includes/Abilities/Title_Generation/Title_Generation.php:190
+msgid "You do not have permission to generate titles."
+msgstr "No tienes permiso para generar títulos."
+
+#: includes/Abilities/Title_Generation/Title_Generation.php:170
+msgid "You do not have permission to generate titles for this post."
+msgstr "No tienes permiso para generar títulos para esta publicación."
+
+#: includes/Abilities/Title_Generation/Title_Generation.php:120
+msgid "Content is required to generate title suggestions."
+msgstr "El contenido es obligatorio para generar sugerencias de título."
+
+#. translators: %d: Post ID.
+#: includes/Abilities/Content_Classification/Content_Classification.php:159
+#: includes/Abilities/Content_Classification/Content_Classification.php:236
+#: includes/Abilities/Content_Resizing/Content_Resizing.php:161
+#: includes/Abilities/Editorial_Notes/Editorial_Notes.php:207
+#: includes/Abilities/Editorial_Updates/Editorial_Updates.php:155
+#: includes/Abilities/Excerpt_Generation/Excerpt_Generation.php:93
+#: includes/Abilities/Excerpt_Generation/Excerpt_Generation.php:155
+#: includes/Abilities/Image/Generate_Image_Prompt.php:100
+#: includes/Abilities/Image/Generate_Image_Prompt.php:162
+#: includes/Abilities/Meta_Description/Meta_Description.php:117
+#: includes/Abilities/Meta_Description/Meta_Description.php:177
+#: includes/Abilities/Summarization/Summarization.php:109
+#: includes/Abilities/Summarization/Summarization.php:171
+#: includes/Abilities/Title_Generation/Title_Generation.php:98
+#: includes/Abilities/Title_Generation/Title_Generation.php:162
+msgid "Post with ID %d not found."
+msgstr "No se encontró la publicación con el ID %d."
+
+#: includes/Abilities/Title_Generation/Title_Generation.php:47
+msgid "Content to generate title suggestions for."
+msgstr "El contenido para el que generar sugerencias de título."
+
+#. translators: 1: Feature class name, 2: Error message.
+#: includes/Features/Loader.php:152
+msgid "Failed to instantiate feature \"%1$s\": %2$s"
+msgstr "Falló la instancia de la característica «%1$s»: %2$s"
+
+#. Description of the plugin
+#: ai.php
+msgid "AI features, experiments and capabilities for WordPress."
+msgstr "Características, experimentos y capacidades IA para WordPress."
+
+#: includes/Abilities/Title_Generation/Title_Generation.php:136
+#: build-scripts/experiments/title-generation.js:1
+msgid "No title suggestion was generated."
+msgstr "No se ha generado ninguna sugerencia de título."
+
+#: includes/Abilities/Title_Generation/Title_Generation.php:69
+msgid "Generated title suggestion."
+msgstr "Sugerencia de título generada."
+
+#: includes/Abilities/Content_Classification/Content_Classification.php:56
+msgid "Content from this post will be used to generate taxonomy suggestions. This overrides the content parameter if both are provided."
+msgstr "Se usará el contenido de esta publicación para generar sugerencias de taxonomías. Esto omite el parámetro de contenido se se facilitan ambos."

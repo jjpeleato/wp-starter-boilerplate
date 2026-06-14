@@ -11,17 +11,17 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: Themes - Twenty Twenty-Four\n"
 
-#. Description of the theme
-#: style.css
-#, gp-priority: high
-msgid "Twenty Twenty-Four is designed to be flexible, versatile and applicable to any website. Its collection of templates and patterns tailor to different needs, such as presenting a business, blogging and writing or showcasing work. A multitude of possibilities open up with just a few adjustments to color and typography. Twenty Twenty-Four comes with style variations and full page designs to help speed up the site building process, is fully compatible with the site editor, and takes advantage of new design tools introduced in WordPress 6.4."
-msgstr "Twenty Twenty-Four está diseñado para ser flexible, versátil y aplicable a cualquier sitio web. Su colección de plantillas y patrones se adapta a distintas necesidades, como presentar un negocio, escribir en un blog o exponer un trabajo. Se abren multitud de posibilidades con unos pocos ajustes de color y tipografía. Twenty Twenty-Four incluye variaciones de estilo y diseños de página completa para ayudar a acelerar el proceso de creación del sitio, es totalmente compatible con el editor del sitio y aprovecha las nuevas herramientas de diseño introducidas en WordPress 6.4."
-
 #. Theme Name of the theme
 #: style.css
 #, gp-priority: high
 msgid "Twenty Twenty-Four"
 msgstr "Twenty Twenty-Four"
+
+#. Description of the theme
+#: style.css
+#, gp-priority: high
+msgid "Twenty Twenty-Four is designed to be flexible, versatile and applicable to any website. Its collection of templates and patterns tailor to different needs, such as presenting a business, blogging and writing or showcasing work. A multitude of possibilities open up with just a few adjustments to color and typography. Twenty Twenty-Four comes with style variations and full page designs to help speed up the site building process, is fully compatible with the site editor, and takes advantage of new design tools introduced in WordPress 6.4."
+msgstr "Twenty Twenty-Four está diseñado para ser flexible, versátil y aplicable a cualquier sitio web. Su colección de plantillas y patrones se adapta a distintas necesidades, como presentar un negocio, escribir en un blog o exponer un trabajo. Se abren multitud de posibilidades con unos pocos ajustes de color y tipografía. Twenty Twenty-Four incluye variaciones de estilo y diseños de página completa para ayudar a acelerar el proceso de creación del sitio, es totalmente compatible con el editor del sitio y aprovecha las nuevas herramientas de diseño introducidas en WordPress 6.4."
 
 #: patterns/text-centered-statement.php
 msgctxt "Pattern description"
@@ -52,26 +52,6 @@ msgstr "Una cuadrícula de características de 2 filas y 3 columnas con encabeza
 msgctxt "Question in the FAQ pattern"
 msgid "Who is behind Études?"
 msgstr "¿Quién está tras Études?"
-
-#: patterns/text-faq.php
-msgctxt "Pattern description"
-msgid "A FAQ section with a large FAQ heading and a group of questions and answers."
-msgstr "Una sección de FAQ con un encabezado grande de FAQ y un grupo de preguntas y respuestas."
-
-#: patterns/text-centered-statement-small.php
-msgctxt "Pattern description"
-msgid "A centered italic text statement with compact padding."
-msgstr "Una declaración centrada de texto en cursiva con relleno compacto."
-
-#: patterns/text-alternating-images.php
-msgctxt "Pattern description"
-msgid "A text section, then a two-column section with text in one column and an image in the other."
-msgstr "Una sección de texto, luego una sección de dos columnas con texto en una y una imagen en la otra."
-
-#: patterns/testimonial-centered.php
-msgctxt "Pattern description"
-msgid "A centered testimonial section with an avatar, name, and job title."
-msgstr "Una sección centrada de recomendaciones con un avatar, nombre y cargo."
 
 #: patterns/team-4-col.php
 msgctxt "Pattern description"
@@ -122,11 +102,6 @@ msgstr "Un bloque con una llamada a la acción de suscripción al boletín para 
 msgctxt "Pattern description"
 msgid "A portfolio home page with a description and a 4-column post section with only feature images."
 msgstr "Una página de inicio de porfolio con una descripción y una sección de entradas de 4 columnas con solo imágenes destacadas."
-
-#: patterns/page-home-portfolio-gallery.php
-msgctxt "Pattern description"
-msgid "A portfolio home page that features a gallery."
-msgstr "Una página de inicio de porfolio que destaca una galería."
 
 #: patterns/page-home-business.php
 msgctxt "Pattern description"
@@ -218,6 +193,31 @@ msgctxt "Pattern description"
 msgid "A hero section with a title, a paragraph, a CTA button, and an image."
 msgstr "Una sección a pantalla completa con un título, un párrafo, un botón de llamada a la acción y una imagen."
 
+#: patterns/text-faq.php
+msgctxt "Pattern description"
+msgid "A FAQ section with a large FAQ heading and a group of questions and answers."
+msgstr "Una sección de FAQ con un encabezado grande de FAQ y un grupo de preguntas y respuestas."
+
+#: patterns/text-centered-statement-small.php
+msgctxt "Pattern description"
+msgid "A centered italic text statement with compact padding."
+msgstr "Una declaración centrada de texto en cursiva con relleno compacto."
+
+#: patterns/text-alternating-images.php
+msgctxt "Pattern description"
+msgid "A text section, then a two-column section with text in one column and an image in the other."
+msgstr "Una sección de texto, luego una sección de dos columnas con texto en una y una imagen en la otra."
+
+#: patterns/testimonial-centered.php
+msgctxt "Pattern description"
+msgid "A centered testimonial section with an avatar, name, and job title."
+msgstr "Una sección centrada de recomendaciones con un avatar, nombre y cargo."
+
+#: patterns/page-home-portfolio-gallery.php
+msgctxt "Pattern description"
+msgid "A portfolio home page that features a gallery."
+msgstr "Una página de inicio de porfolio que destaca una galería."
+
 #: patterns/footer.php:96
 msgid "Twitter/X"
 msgstr "Twitter/X"
@@ -255,54 +255,56 @@ msgstr "Lista de entradas sin imágenes, 1 columna"
 msgid "I’m <em>Leia Acosta</em>, a passionate photographer who finds inspiration in capturing the fleeting beauty of life."
 msgstr "Soy <em>Leia Acosta</em>, una fotógrafa apasionada que encuentra inspiración en capturar la belleza fugaz de la vida."
 
-#: functions.php:200
+#: functions.php:188
 msgid "A collection of full page layouts."
 msgstr "Una colección de diseños de página completa."
 
-#: functions.php:199
+#: functions.php:187
 msgctxt "Block pattern category"
 msgid "Pages"
 msgstr "Páginas"
 
-#: theme.json
-msgctxt "Custom template name"
-msgid "Single with Sidebar"
-msgstr "Individual con barra lateral"
-
-#: theme.json
-msgctxt "Custom template name"
-msgid "Page with Wide Image"
-msgstr "Página con imagen ancha"
-
-#: theme.json
-msgctxt "Custom template name"
-msgid "Page with Sidebar"
-msgstr "Página con barra lateral"
-
-#: theme.json
-msgctxt "Custom template name"
-msgid "Page No Title"
-msgstr "Página sin título"
+#. Author URI of the theme
+#. Translators: WordPress link.
+#: style.css patterns/footer-centered-logo-nav.php:22
+#: patterns/footer-colophon-3-col.php:91 patterns/footer.php:117
+msgid "https://wordpress.org"
+msgstr "https://es.wordpress.org"
 
 #: theme.json
 msgctxt "Template part name"
-msgid "Post Meta"
-msgstr "Metadatos de la entrada"
-
-#: theme.json
-msgctxt "Template part name"
-msgid "Sidebar"
-msgstr "Barra lateral"
+msgid "Header"
+msgstr "Cabecera"
 
 #: theme.json
 msgctxt "Template part name"
 msgid "Footer"
 msgstr "Pie de página"
 
+#: theme.json styles/fossil.json styles/ice.json
+msgctxt "Font family name"
+msgid "Inter"
+msgstr "Inter"
+
 #: theme.json
 msgctxt "Template part name"
-msgid "Header"
-msgstr "Cabecera"
+msgid "Post Meta"
+msgstr "Metadatos de la entrada"
+
+#: theme.json styles/fossil.json styles/ice.json styles/maelstrom.json
+msgctxt "Font size name"
+msgid "Extra Large"
+msgstr "Extra grande"
+
+#: theme.json styles/fossil.json styles/ice.json styles/maelstrom.json
+msgctxt "Font size name"
+msgid "Large"
+msgstr "Grande"
+
+#: theme.json styles/fossil.json styles/ice.json styles/maelstrom.json
+msgctxt "Font size name"
+msgid "Medium"
+msgstr "Medio"
 
 #: theme.json
 msgctxt "Space size name"
@@ -334,40 +336,42 @@ msgctxt "Space size name"
 msgid "1"
 msgstr "1"
 
-#: theme.json
-msgctxt "Gradient name"
-msgid "Vertical hard pewter to white"
-msgstr "Vertical peltre duro a blanco"
+#: theme.json styles/ember.json styles/fossil.json styles/ice.json
+#: styles/maelstrom.json styles/mint.json styles/onyx.json styles/rust.json
+msgctxt "Color name"
+msgid "Contrast"
+msgstr "Contraste"
+
+#: theme.json styles/ember.json styles/fossil.json styles/ice.json
+#: styles/maelstrom.json styles/mint.json styles/onyx.json styles/rust.json
+msgctxt "Color name"
+msgid "Base"
+msgstr "Base"
 
 #: theme.json
-msgctxt "Gradient name"
-msgid "Vertical hard mint to white"
-msgstr "Vertical menta dura a blanco"
+msgctxt "Custom template name"
+msgid "Single with Sidebar"
+msgstr "Individual con barra lateral"
 
 #: theme.json
-msgctxt "Gradient name"
-msgid "Vertical hard sage to white"
-msgstr "Vertical salvia dura a blanco"
+msgctxt "Custom template name"
+msgid "Page with Wide Image"
+msgstr "Página con imagen ancha"
 
 #: theme.json
-msgctxt "Gradient name"
-msgid "Vertical hard rust to white"
-msgstr "Vertical óxido duro a blanco"
+msgctxt "Custom template name"
+msgid "Page with Sidebar"
+msgstr "Página con barra lateral"
 
 #: theme.json
-msgctxt "Gradient name"
-msgid "Vertical hard sandstone to white"
-msgstr "Vertical arenisca dura a blanco"
+msgctxt "Custom template name"
+msgid "Page No Title"
+msgstr "Página sin título"
 
 #: theme.json
-msgctxt "Gradient name"
-msgid "Vertical hard beige to white"
-msgstr "Vertical beige duro a blanco"
-
-#: theme.json
-msgctxt "Gradient name"
-msgid "Vertical soft pewter to white"
-msgstr "Vertical peltre suave a blanco"
+msgctxt "Template part name"
+msgid "Sidebar"
+msgstr "Barra lateral"
 
 #: theme.json
 msgctxt "Gradient name"
@@ -383,11 +387,6 @@ msgstr "Vertical salvia suave a blanco"
 msgctxt "Gradient name"
 msgid "Vertical soft rust to white"
 msgstr "Vertical óxido suave a blanco"
-
-#: theme.json
-msgctxt "Gradient name"
-msgid "Vertical soft sandstone to white"
-msgstr "Vertical arenisca blanda a blanco"
 
 #: theme.json
 msgctxt "Gradient name"
@@ -435,54 +434,14 @@ msgid "Vertical rust to beige"
 msgstr "Vertical óxido a beige"
 
 #: styles/rust.json
-msgctxt "Gradient name"
-msgid "Vertical hard transparent rust to beige"
-msgstr "Vertical óxido duro transparente a beige"
-
-#: styles/rust.json
-msgctxt "Gradient name"
-msgid "Vertical transparent rust to beige"
-msgstr "Vertical óxido transparente a beige"
+msgctxt "Style variation name"
+msgid "Rust"
+msgstr "Óxido"
 
 #: styles/rust.json
 msgctxt "Duotone name"
 msgid "Dark rust to beige"
 msgstr "Óxido oscuro a beige"
-
-#: styles/rust.json
-msgctxt "Style variation name"
-msgid "Rust"
-msgstr "Óxido"
-
-#: theme.json styles/onyx.json
-msgctxt "Color name"
-msgid "Accent / Five"
-msgstr "Acento / Cinco"
-
-#: theme.json styles/onyx.json
-msgctxt "Color name"
-msgid "Accent / Four"
-msgstr "Acento / Cuatro"
-
-#: theme.json styles/onyx.json
-msgctxt "Color name"
-msgid "Accent / Three"
-msgstr "Acento / Tres"
-
-#: theme.json styles/onyx.json
-msgctxt "Color name"
-msgid "Accent / Two"
-msgstr "Acento / Dos"
-
-#: theme.json styles/onyx.json
-msgctxt "Color name"
-msgid "Accent"
-msgstr "Realce"
-
-#: styles/onyx.json
-msgctxt "Gradient name"
-msgid "Vertical hard pewter to dark gray"
-msgstr "Vertical peltre duro a gris oscuro"
 
 #: styles/onyx.json
 msgctxt "Gradient name"
@@ -533,6 +492,66 @@ msgstr "Vertical canela suave a gris oscuro"
 msgctxt "Gradient name"
 msgid "Vertical soft walnut to dark gray"
 msgstr "Vertical nogal suave a gris oscuro"
+
+#: theme.json
+msgctxt "Gradient name"
+msgid "Vertical hard pewter to white"
+msgstr "Vertical peltre duro a blanco"
+
+#: theme.json
+msgctxt "Gradient name"
+msgid "Vertical hard mint to white"
+msgstr "Vertical menta dura a blanco"
+
+#: theme.json
+msgctxt "Gradient name"
+msgid "Vertical hard sage to white"
+msgstr "Vertical salvia dura a blanco"
+
+#: theme.json
+msgctxt "Gradient name"
+msgid "Vertical hard rust to white"
+msgstr "Vertical óxido duro a blanco"
+
+#: theme.json
+msgctxt "Gradient name"
+msgid "Vertical hard sandstone to white"
+msgstr "Vertical arenisca dura a blanco"
+
+#: theme.json
+msgctxt "Gradient name"
+msgid "Vertical hard beige to white"
+msgstr "Vertical beige duro a blanco"
+
+#: theme.json
+msgctxt "Gradient name"
+msgid "Vertical soft pewter to white"
+msgstr "Vertical peltre suave a blanco"
+
+#: theme.json
+msgctxt "Gradient name"
+msgid "Vertical soft sandstone to white"
+msgstr "Vertical arenisca blanda a blanco"
+
+#: styles/rust.json
+msgctxt "Gradient name"
+msgid "Vertical hard transparent rust to beige"
+msgstr "Vertical óxido duro transparente a beige"
+
+#: styles/rust.json
+msgctxt "Gradient name"
+msgid "Vertical transparent rust to beige"
+msgstr "Vertical óxido transparente a beige"
+
+#: theme.json styles/onyx.json
+msgctxt "Color name"
+msgid "Accent"
+msgstr "Realce"
+
+#: styles/onyx.json
+msgctxt "Gradient name"
+msgid "Vertical hard pewter to dark gray"
+msgstr "Vertical peltre duro a gris oscuro"
 
 #: styles/onyx.json
 msgctxt "Gradient name"
@@ -654,35 +673,10 @@ msgctxt "Font size name"
 msgid "Extra Extra Large"
 msgstr "Extra extra grande"
 
-#: theme.json styles/fossil.json styles/ice.json styles/maelstrom.json
-msgctxt "Font size name"
-msgid "Extra Large"
-msgstr "Extra grande"
-
-#: theme.json styles/fossil.json styles/ice.json styles/maelstrom.json
-msgctxt "Font size name"
-msgid "Large"
-msgstr "Grande"
-
-#: theme.json styles/fossil.json styles/ice.json styles/maelstrom.json
-msgctxt "Font size name"
-msgid "Medium"
-msgstr "Medio"
-
-#: theme.json styles/fossil.json styles/ice.json styles/maelstrom.json
-msgctxt "Font size name"
-msgid "Small"
-msgstr "Pequeño"
-
 #: theme.json styles/fossil.json styles/maelstrom.json
 msgctxt "Font family name"
 msgid "Cardo"
 msgstr "Cardo"
-
-#: theme.json styles/fossil.json styles/ice.json
-msgctxt "Font family name"
-msgid "Inter"
-msgstr "Inter"
 
 #: theme.json styles/fossil.json styles/ice.json styles/mint.json
 #: styles/onyx.json
@@ -701,6 +695,16 @@ msgctxt "Style variation name"
 msgid "Fossil"
 msgstr "Fósil"
 
+#: styles/ember.json styles/ice.json styles/maelstrom.json styles/mint.json
+msgctxt "Font family name"
+msgid "Jost"
+msgstr "Jost"
+
+#: styles/ember.json styles/mint.json
+msgctxt "Font family name"
+msgid "Instrument Sans"
+msgstr "Instrument Sans"
+
 #: theme.json styles/ember.json styles/fossil.json styles/ice.json
 #: styles/maelstrom.json styles/mint.json
 msgctxt "Font family name"
@@ -713,38 +717,16 @@ msgctxt "Font family name"
 msgid "System Sans-serif"
 msgstr "System Sans-serif"
 
-#: styles/ember.json styles/ice.json styles/maelstrom.json styles/mint.json
-msgctxt "Font family name"
-msgid "Jost"
-msgstr "Jost"
-
-#: styles/ember.json styles/mint.json
-msgctxt "Font family name"
-msgid "Instrument Sans"
-msgstr "Instrument Sans"
-
 #: theme.json styles/ember.json styles/fossil.json styles/ice.json
 #: styles/maelstrom.json styles/mint.json styles/onyx.json
 msgctxt "Color name"
 msgid "Base / Two"
 msgstr "Base / Dos"
 
-#: theme.json styles/ember.json styles/fossil.json styles/ice.json
-#: styles/maelstrom.json styles/mint.json styles/onyx.json styles/rust.json
-msgctxt "Color name"
-msgid "Contrast"
-msgstr "Contraste"
-
 #: styles/ember.json styles/maelstrom.json
 msgctxt "Color name"
 msgid "Contrast / 2"
 msgstr "Contraste / 2"
-
-#: theme.json styles/ember.json styles/fossil.json styles/ice.json
-#: styles/maelstrom.json styles/mint.json styles/onyx.json styles/rust.json
-msgctxt "Color name"
-msgid "Base"
-msgstr "Base"
 
 #: styles/ember.json styles/fossil.json
 msgctxt "Gradient name"
@@ -805,11 +787,6 @@ msgstr "Vertical lino a beige"
 msgctxt "Duotone name"
 msgid "Orange and white"
 msgstr "Naranja y blanco"
-
-#: styles/ember.json
-msgctxt "Style variation name"
-msgid "Ember"
-msgstr "Ascua"
 
 #: patterns/text-title-left-image-right.php:35
 msgctxt "Call to Action button text"
@@ -920,12 +897,6 @@ msgctxt "Question in the FAQ pattern"
 msgid "I'd like to get to meet fellow architects, how can I do that?"
 msgstr "Me gustaría conocer a otros arquitectos, ¿cómo puedo hacerlo?"
 
-#: patterns/text-faq.php:27 patterns/text-faq.php:38 patterns/text-faq.php:49
-#: patterns/text-faq.php:60
-msgctxt "Answer in the FAQ pattern"
-msgid "Études offers comprehensive consulting, management, design, and research solutions. Our vision is to be at the forefront of architectural innovation, fostering a global community of architects and enthusiasts united by a passion for creating spaces. Every architectural endeavor is an opportunity to shape the future."
-msgstr "Études ofrece soluciones integrales de consultoría, gestión, diseño e investigación. Nuestra visión es estar a la vanguardia de la innovación arquitectónica, fomentando una comunidad global de arquitectos y entusiastas unidos por la pasión de crear espacios. Cada esfuerzo arquitectónico es una oportunidad para dar forma al futuro."
-
 #: patterns/text-faq.php:24
 msgctxt "Question in the FAQ pattern"
 msgid "What is your process working in smaller projects?"
@@ -935,6 +906,12 @@ msgstr "¿Cuál es tu proceso de trabajo en proyectos más pequeños?"
 msgctxt "Heading of the FAQs"
 msgid "FAQs"
 msgstr "FAQs"
+
+#: patterns/text-faq.php:27 patterns/text-faq.php:38 patterns/text-faq.php:49
+#: patterns/text-faq.php:60
+msgctxt "Answer in the FAQ pattern"
+msgid "Études offers comprehensive consulting, management, design, and research solutions. Our vision is to be at the forefront of architectural innovation, fostering a global community of architects and enthusiasts united by a passion for creating spaces. Every architectural endeavor is an opportunity to shape the future."
+msgstr "Études ofrece soluciones integrales de consultoría, gestión, diseño e investigación. Nuestra visión es estar a la vanguardia de la innovación arquitectónica, fomentando una comunidad global de arquitectos y entusiastas unidos por la pasión de crear espacios. Cada esfuerzo arquitectónico es una oportunidad para dar forma al futuro."
 
 #: patterns/text-faq.php:12
 msgctxt "Name of the FAQ pattern"
@@ -1048,11 +1025,6 @@ msgctxt "Pattern title"
 msgid "Centered testimonial"
 msgstr "Testimonio centrado"
 
-#: patterns/template-single-portfolio.php
-msgctxt "Pattern title"
-msgid "Portfolio single post template"
-msgstr "Plantilla de entrada única de porfolio"
-
 #: patterns/template-search-blogging.php
 msgctxt "Pattern title"
 msgid "Blogging search template"
@@ -1062,6 +1034,11 @@ msgstr "Plantilla de búsqueda de blogs"
 msgctxt "Pattern title"
 msgid "Portfolio search template"
 msgstr "Plantilla de búsqueda de porfolio"
+
+#: patterns/template-single-portfolio.php
+msgctxt "Pattern title"
+msgid "Portfolio single post template"
+msgstr "Plantilla de entrada única de porfolio"
 
 #: patterns/template-index-portfolio.php
 msgctxt "Pattern title"
@@ -1092,6 +1069,62 @@ msgstr "Plantilla de página de inicio de blogging"
 msgctxt "Pattern title"
 msgid "Portfolio archive template"
 msgstr "Plantilla de archivo de porfolio"
+
+#: patterns/hidden-sidebar.php
+msgctxt "Pattern title"
+msgid "Sidebar"
+msgstr "Barra lateral"
+
+#: patterns/hidden-search.php:9
+msgctxt "search button text"
+msgid "Search"
+msgstr "Buscar"
+
+#: patterns/hidden-search.php:9 patterns/hidden-sidebar.php:75
+msgctxt "search form label"
+msgid "Search"
+msgstr "Buscar"
+
+#: patterns/hidden-search.php
+msgctxt "Pattern title"
+msgid "Search"
+msgstr "Buscar"
+
+#: patterns/hidden-post-navigation.php:12
+msgctxt "Label before the title of the next post. There is a space after the colon."
+msgid "Next: "
+msgstr "Siguiente: "
+
+#: patterns/hidden-post-navigation.php:11
+msgctxt "Label before the title of the previous post. There is a space after the colon."
+msgid "Previous: "
+msgstr "Anterior: "
+
+#: patterns/hidden-post-navigation.php:9 patterns/hidden-post-navigation.php:10
+#: patterns/hidden-posts-heading.php:10
+#: patterns/template-index-portfolio.php:16
+msgid "Posts"
+msgstr "Entradas"
+
+#: patterns/hidden-post-navigation.php
+msgctxt "Pattern title"
+msgid "Post navigation"
+msgstr "Navegación de entradas"
+
+#: patterns/hidden-post-meta.php:25
+msgctxt "Prefix for the post category block: in category name"
+msgid "in "
+msgstr "en "
+
+#: patterns/hidden-post-meta.php:20
+msgctxt "Prefix for the post author block: By author name"
+msgid "by"
+msgstr "por"
+
+#: patterns/hidden-post-meta.php
+msgctxt "Pattern title"
+msgid "Post meta"
+msgstr "Metadatos de la entrada"
 
 #: patterns/template-archive-blogging.php
 msgctxt "Pattern title"
@@ -1128,15 +1161,15 @@ msgctxt "Sample name of a team member"
 msgid "Rhye Moore"
 msgstr "Rhye Moore"
 
-#: patterns/team-4-col.php:49
-msgctxt "Sample role of a team member"
-msgid "Founder, CEO & Architect"
-msgstr "Fundador, Director general y Arquitecto"
-
 #: patterns/team-4-col.php:44
 msgctxt "Sample name of a team member"
 msgid "Francesca Piovani"
 msgstr "Francesca Piovani"
+
+#: patterns/team-4-col.php:49
+msgctxt "Sample role of a team member"
+msgid "Founder, CEO & Architect"
+msgstr "Fundador, Director general y Arquitecto"
 
 #: patterns/team-4-col.php:20
 msgctxt "Sample descriptive text of the team pattern"
@@ -1191,11 +1224,6 @@ msgstr "Lista de entradas, 1 columna"
 #: patterns/page-rsvp-landing.php:49
 msgid "Green staircase at Western University, London, Canada"
 msgstr "Escalera verde en la Universidad Western, Londres, Canadá"
-
-#: patterns/page-rsvp-landing.php:14
-msgctxt "Name of RSVP landing page pattern"
-msgid "RSVP Landing Page"
-msgstr "Página de destino de reserva"
 
 #: patterns/page-rsvp-landing.php
 msgctxt "Pattern title"
@@ -1279,62 +1307,6 @@ msgstr "Categorías populares"
 #: patterns/hidden-sidebar.php:17
 msgid "About the author"
 msgstr "Sobre el autor"
-
-#: patterns/hidden-sidebar.php
-msgctxt "Pattern title"
-msgid "Sidebar"
-msgstr "Barra lateral"
-
-#: patterns/hidden-search.php:9
-msgctxt "search button text"
-msgid "Search"
-msgstr "Buscar"
-
-#: patterns/hidden-search.php:9 patterns/hidden-sidebar.php:75
-msgctxt "search form label"
-msgid "Search"
-msgstr "Buscar"
-
-#: patterns/hidden-search.php
-msgctxt "Pattern title"
-msgid "Search"
-msgstr "Buscar"
-
-#: patterns/hidden-post-navigation.php:12
-msgctxt "Label before the title of the next post. There is a space after the colon."
-msgid "Next: "
-msgstr "Siguiente: "
-
-#: patterns/hidden-post-navigation.php:11
-msgctxt "Label before the title of the previous post. There is a space after the colon."
-msgid "Previous: "
-msgstr "Anterior: "
-
-#: patterns/hidden-post-navigation.php:9 patterns/hidden-post-navigation.php:10
-#: patterns/hidden-posts-heading.php:10
-#: patterns/template-index-portfolio.php:16
-msgid "Posts"
-msgstr "Entradas"
-
-#: patterns/hidden-post-navigation.php
-msgctxt "Pattern title"
-msgid "Post navigation"
-msgstr "Navegación de entradas"
-
-#: patterns/hidden-post-meta.php:25
-msgctxt "Prefix for the post category block: in category name"
-msgid "in "
-msgstr "en "
-
-#: patterns/hidden-post-meta.php:20
-msgctxt "Prefix for the post author block: By author name"
-msgid "by"
-msgstr "por"
-
-#: patterns/hidden-post-meta.php
-msgctxt "Pattern title"
-msgid "Post meta"
-msgstr "Metadatos de la entrada"
 
 #: patterns/hidden-portfolio-hero.php
 msgctxt "Pattern title"
@@ -1460,11 +1432,6 @@ msgstr "Instagram"
 msgid "Follow"
 msgstr "Seguir"
 
-#: patterns/footer-colophon-3-col.php:42
-msgctxt "Example email in site footer"
-msgid "info@example.com"
-msgstr "info@example.com"
-
 #: patterns/footer-colophon-3-col.php:39
 msgid "Contact"
 msgstr "Contacto"
@@ -1547,6 +1514,11 @@ msgstr "Experimenta la fusión de imaginación y experiencia en la Cumbre de arq
 msgctxt "Initials for ´please respond´"
 msgid "RSVP"
 msgstr "Reserva"
+
+#: patterns/page-rsvp-landing.php:14
+msgctxt "Name of RSVP landing page pattern"
+msgid "RSVP Landing Page"
+msgstr "Página de destino de reserva"
 
 #: patterns/cta-rsvp.php:11
 msgctxt "Name of RSVP pattern"
@@ -1740,32 +1712,60 @@ msgctxt "Pattern title"
 msgid "Hero"
 msgstr "A pantalla completa"
 
-#: functions.php:111
+#: functions.php:107
 msgid "With asterisk"
 msgstr "Con asterisco"
 
-#: functions.php:93
+#: functions.php:89
 msgid "With arrow"
 msgstr "Con flecha"
 
-#: functions.php:74
+#: functions.php:70
 msgid "Checkmark"
 msgstr "Marca de comprobación"
 
-#: functions.php:51
+#: functions.php:47
 msgid "Pill"
 msgstr "Pastilla"
 
-#: functions.php:28
+#: functions.php:24
 msgid "Arrow icon"
 msgstr "Icono de flecha"
 
-#. Author URI of the theme
-#. Translators: WordPress link.
-#: style.css patterns/footer-centered-logo-nav.php:22
-#: patterns/footer-colophon-3-col.php:91 patterns/footer.php:117
-msgid "https://wordpress.org"
-msgstr "https://es.wordpress.org"
+#: theme.json styles/onyx.json
+msgctxt "Color name"
+msgid "Accent / Three"
+msgstr "Acento / Tres"
+
+#: theme.json styles/onyx.json
+msgctxt "Color name"
+msgid "Accent / Two"
+msgstr "Acento / Dos"
+
+#: theme.json styles/onyx.json
+msgctxt "Color name"
+msgid "Accent / Five"
+msgstr "Acento / Cinco"
+
+#: theme.json styles/onyx.json
+msgctxt "Color name"
+msgid "Accent / Four"
+msgstr "Acento / Cuatro"
+
+#: theme.json styles/fossil.json styles/ice.json styles/maelstrom.json
+msgctxt "Font size name"
+msgid "Small"
+msgstr "Pequeño"
+
+#: styles/ember.json
+msgctxt "Style variation name"
+msgid "Ember"
+msgstr "Ascua"
+
+#: patterns/footer-colophon-3-col.php:42
+msgctxt "Example email in site footer"
+msgid "info@example.com"
+msgstr "info@example.com"
 
 #. Author of the theme
 #: style.css

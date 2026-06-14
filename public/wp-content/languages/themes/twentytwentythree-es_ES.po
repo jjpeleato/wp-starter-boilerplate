@@ -33,11 +33,6 @@ msgctxt "Pattern title"
 msgid "Hidden Heading for Homepage"
 msgstr "Encabezado oculto para la página de inicio."
 
-#: patterns/post-meta.php
-msgctxt "Pattern description"
-msgid "Post meta information with separator on the top."
-msgstr "Información de metadatos de la entrada con separador en la parte superior."
-
 #: patterns/footer-default.php
 msgctxt "Pattern description"
 msgid "Footer with site title and powered by WordPress."
@@ -48,30 +43,25 @@ msgctxt "Pattern description"
 msgid "Left-aligned text with a CTA button and a separator."
 msgstr "Texto alineado a la izquierda con un botón CTA y un separador."
 
+#: patterns/post-meta.php
+msgctxt "Pattern description"
+msgid "Post meta information with separator on the top."
+msgstr "Información de metadatos de la entrada con separador en la parte superior."
+
 #: theme.json
 msgctxt "Template part name"
 msgid "Comments Template Part"
 msgstr "Parte de plantilla de comentarios"
 
-#: theme.json
-msgctxt "Template part name"
-msgid "Post Meta"
-msgstr "Metadatos de la entrada"
+#. Translators: WordPress link.
+#: patterns/footer-default.php:20
+msgid "Proudly powered by %s"
+msgstr "Funciona gracias a %s"
 
-#: theme.json
-msgctxt "Template part name"
-msgid "Footer"
-msgstr "Pie de página"
-
-#: theme.json
-msgctxt "Template part name"
-msgid "Header"
-msgstr "Cabecera"
-
-#: theme.json
-msgctxt "Font family name"
-msgid "Source Serif Pro"
-msgstr "Source Serif Pro"
+#: patterns/hidden-404.php:13
+msgctxt "Error code for a webpage that is not found."
+msgid "404"
+msgstr "404"
 
 #: theme.json
 msgctxt "Font family name"
@@ -80,8 +70,61 @@ msgstr "Fuente del sistema"
 
 #: theme.json
 msgctxt "Font family name"
-msgid "Inter"
-msgstr "Inter"
+msgid "Source Serif Pro"
+msgstr "Source Serif Pro"
+
+#: styles/aubergine.json styles/block-out.json styles/canary.json
+#: styles/electric.json styles/grapes.json styles/marigold.json
+#: styles/pilgrimage.json styles/pitch.json styles/sherbet.json
+#: styles/whisper.json theme.json
+msgctxt "Color name"
+msgid "Primary"
+msgstr "Principal"
+
+#: styles/aubergine.json styles/block-out.json styles/canary.json
+#: styles/electric.json styles/grapes.json styles/marigold.json
+#: styles/pilgrimage.json styles/pitch.json styles/sherbet.json
+#: styles/whisper.json theme.json
+msgctxt "Color name"
+msgid "Secondary"
+msgstr "Secundario"
+
+#: styles/aubergine.json styles/block-out.json styles/canary.json
+#: styles/electric.json styles/grapes.json styles/marigold.json
+#: styles/pilgrimage.json styles/pitch.json styles/sherbet.json
+#: styles/whisper.json theme.json
+msgctxt "Color name"
+msgid "Tertiary"
+msgstr "Terciario"
+
+#: theme.json
+msgctxt "Custom template name"
+msgid "Blank"
+msgstr "En blanco"
+
+#: theme.json
+msgctxt "Template part name"
+msgid "Header"
+msgstr "Cabecera"
+
+#: theme.json
+msgctxt "Template part name"
+msgid "Footer"
+msgstr "Pie de página"
+
+#: patterns/hidden-404.php:22 patterns/hidden-no-results.php:14
+msgctxt "label"
+msgid "Search"
+msgstr "Buscar"
+
+#: patterns/hidden-404.php:22 patterns/hidden-no-results.php:14
+msgid "Search"
+msgstr "Buscar"
+
+#: theme.json
+msgctxt "Font family name"
+msgid "DM Sans"
+msgstr "DM Sans"
 
 #: theme.json
 msgctxt "Font family name"
@@ -90,8 +133,19 @@ msgstr "IBM Plex Mono"
 
 #: theme.json
 msgctxt "Font family name"
-msgid "DM Sans"
-msgstr "DM Sans"
+msgid "Inter"
+msgstr "Inter"
+
+#: styles/block-out.json styles/canary.json styles/pilgrimage.json
+#: styles/sherbet.json
+msgctxt "Duotone name"
+msgid "Default filter"
+msgstr "Filtro por defecto"
+
+#: theme.json
+msgctxt "Template part name"
+msgid "Post Meta"
+msgstr "Metadatos de la entrada"
 
 #: theme.json
 msgctxt "Custom template name"
@@ -103,30 +157,10 @@ msgctxt "Custom template name"
 msgid "Blog (Alternative)"
 msgstr "Blog (Alternativo)"
 
-#: theme.json
-msgctxt "Custom template name"
-msgid "Blank"
-msgstr "En blanco"
-
 #: styles/whisper.json
 msgctxt "Style variation name"
 msgid "Whisper"
 msgstr "Susurro"
-
-#: styles/sherbet.json
-msgctxt "Gradient name"
-msgid "Tertiary to Secondary to Primary Fixed"
-msgstr "Terciario a secundario a principal fijo"
-
-#: styles/sherbet.json
-msgctxt "Gradient name"
-msgid "Primary to Secondary to Tertiary Fixed"
-msgstr "Principal a secundario a terciario fijo"
-
-#: styles/sherbet.json
-msgctxt "Gradient name"
-msgid "Primary to Secondary to Tertiary"
-msgstr "Principal a secundario a terciario"
 
 #: styles/sherbet.json
 msgctxt "Style variation name"
@@ -268,40 +302,10 @@ msgctxt "Style variation name"
 msgid "Canary"
 msgstr "Canarias"
 
-#: styles/block-out.json styles/canary.json styles/pilgrimage.json
-#: styles/sherbet.json
-msgctxt "Duotone name"
-msgid "Default filter"
-msgstr "Filtro por defecto"
-
 #: styles/block-out.json
 msgctxt "Style variation name"
 msgid "Block out"
 msgstr "Bloqueo"
-
-#: styles/aubergine.json styles/block-out.json styles/canary.json
-#: styles/electric.json styles/grapes.json styles/marigold.json
-#: styles/pilgrimage.json styles/pitch.json styles/sherbet.json
-#: styles/whisper.json theme.json
-msgctxt "Color name"
-msgid "Tertiary"
-msgstr "Terciario"
-
-#: styles/aubergine.json styles/block-out.json styles/canary.json
-#: styles/electric.json styles/grapes.json styles/marigold.json
-#: styles/pilgrimage.json styles/pitch.json styles/sherbet.json
-#: styles/whisper.json theme.json
-msgctxt "Color name"
-msgid "Secondary"
-msgstr "Secundario"
-
-#: styles/aubergine.json styles/block-out.json styles/canary.json
-#: styles/electric.json styles/grapes.json styles/marigold.json
-#: styles/pilgrimage.json styles/pitch.json styles/sherbet.json
-#: styles/whisper.json theme.json
-msgctxt "Color name"
-msgid "Primary"
-msgstr "Principal"
 
 #: styles/aubergine.json styles/block-out.json styles/canary.json
 #: styles/electric.json styles/grapes.json styles/marigold.json
@@ -374,11 +378,6 @@ msgctxt "Message explaining that there are no results returned from a search"
 msgid "Sorry, but nothing matched your search terms. Please try again with some different keywords."
 msgstr "Lo siento, pero no hay nada que coincida con tus términos de búsqueda. Por favor, inténtalo de nuevo con algunas palabras clave diferentes."
 
-#: patterns/hidden-no-results.php
-msgctxt "Pattern title"
-msgid "Hidden No Results Content"
-msgstr "Contenido sin resultados oculto"
-
 #: patterns/hidden-comments.php:13
 msgctxt "Title of comments section"
 msgid "Comments"
@@ -390,38 +389,19 @@ msgid "Hidden Comments"
 msgstr "Comentarios ocultos"
 
 #: patterns/hidden-404.php:22 patterns/hidden-no-results.php:14
-msgid "Search"
-msgstr "Buscar"
-
-#: patterns/hidden-404.php:22 patterns/hidden-no-results.php:14
 msgctxt "placeholder for search field"
 msgid "Search..."
 msgstr "Buscar…"
-
-#: patterns/hidden-404.php:22 patterns/hidden-no-results.php:14
-msgctxt "label"
-msgid "Search"
-msgstr "Buscar"
 
 #: patterns/hidden-404.php:19
 msgctxt "Message to convey that a webpage could not be found"
 msgid "This page could not be found."
 msgstr "No se ha podido encontrar esta página."
 
-#: patterns/hidden-404.php:13
-msgctxt "Error code for a webpage that is not found."
-msgid "404"
-msgstr "404"
-
 #: patterns/hidden-404.php
 msgctxt "Pattern title"
 msgid "Hidden 404"
 msgstr "404 oculta"
-
-#. Translators: WordPress link.
-#: patterns/footer-default.php:20
-msgid "Proudly powered by %s"
-msgstr "Funciona gracias a %s"
 
 #: patterns/footer-default.php
 msgctxt "Pattern title"
@@ -443,20 +423,40 @@ msgctxt "Pattern title"
 msgid "Call to action"
 msgstr "Llamada a la acción"
 
+#: styles/sherbet.json
+msgctxt "Gradient name"
+msgid "Tertiary to Secondary to Primary Fixed"
+msgstr "Terciario a secundario a principal fijo"
+
+#: styles/sherbet.json
+msgctxt "Gradient name"
+msgid "Primary to Secondary to Tertiary Fixed"
+msgstr "Principal a secundario a terciario fijo"
+
+#: styles/sherbet.json
+msgctxt "Gradient name"
+msgid "Primary to Secondary to Tertiary"
+msgstr "Principal a secundario a terciario"
+
+#: patterns/hidden-no-results.php
+msgctxt "Pattern title"
+msgid "Hidden No Results Content"
+msgstr "Contenido sin resultados oculto"
+
 #. Author URI of the theme
 #: style.css patterns/footer-default.php:21
 #, gp-priority: low
 msgid "https://wordpress.org"
 msgstr "https://es.wordpress.org"
 
-#. Author of the theme
-#: style.css
-#, gp-priority: low
-msgid "the WordPress team"
-msgstr "el equipo de WordPress"
-
 #. Theme URI of the theme
 #: style.css
 #, gp-priority: low
 msgid "https://wordpress.org/themes/twentytwentythree"
 msgstr "https://es.wordpress.org/themes/twentytwentythree"
+
+#. Author of the theme
+#: style.css
+#, gp-priority: low
+msgid "the WordPress team"
+msgstr "el equipo de WordPress"
